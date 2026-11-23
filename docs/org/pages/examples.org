@@ -295,7 +295,7 @@ hello()
 
 #+begin_src shell :exports results
 if command -v php >/dev/null 2>&1; then
-  if [ ! -f build/datamungePHP/libdatamungePHP.so ]; then
+  if [ ! -f build/php/prefix/lib/libdatamunge_php.so ]; then
     if command -v just >/dev/null 2>&1; then
       just build-php >/dev/null 2>&1 || { echo "SKIP: php binding build failed"; exit 0; }
     else
@@ -303,7 +303,7 @@ if command -v php >/dev/null 2>&1; then
       exit 0
     fi
   fi
-  php --php-ini .user.ini examples/php/datamunge_ex.php || { echo "SKIP: php binding not loadable"; exit 0; }
+  DATAMUNGE_PHP_LIBRARY="$(pwd)/build/php/prefix/lib/libdatamunge_php.so" php examples/php/datamunge_ex.php || { echo "SKIP: php binding not loadable"; exit 0; }
 else
   echo "SKIP: php not available"
 fi

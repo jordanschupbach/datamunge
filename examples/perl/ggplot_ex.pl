@@ -1,74 +1,63 @@
 # CMD: just TARGET=ggplot_ex run-perl
-
+# Demonstrates GgPlot -- the ggplot2-style grammar-of-graphics library.
 use strict;
 use warnings;
 
-use Datamunge;
+use Datamunge qw(:all);
 
-# Demonstrates Datamunge::GGPlot -- the ggplot2-style grammar-of-graphics library.
+$| = 1;    # flush each print so it interleaves with the C++ library's output
 
-sub rgb {
-  my ($r, $g, $b) = @_;
-  my $c = Datamunge::RGB->new();
-  $c->swig_r_set($r);
-  $c->swig_g_set($g);
-  $c->swig_b_set($b);
-  return $c;
-}
-
-my $iris = Datamunge::data_iris();
+my $iris = Datamunge::Data::iris();
 
 # ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color = Species)) + geom_point()
-my $scatter = Datamunge::GGPlot->new($iris, "Sepal.Length", "Sepal.Width", "Species");
-$scatter->geom_point();
-$scatter->labs("Iris Sepal Dimensions", "Sepal Length", "Sepal Width");
-$scatter->theme_minimal();
-$scatter->save_svg("perl_ggplot_point.svg");
+Datamunge::GgPlot->new($iris, "Sepal.Length", "Sepal.Width", "Species")
+    ->geom_point()
+    ->labs("Iris Sepal Dimensions", "Sepal Length", "Sepal Width")
+    ->theme_minimal()
+    ->save_svg("perl_ggplot_point.svg");
 
 # + geom_smooth(): an lm() fit line, reusing stats::LM internally.
-my $smooth = Datamunge::GGPlot->new($iris, "Sepal.Length", "Petal.Length");
-$smooth->geom_point(rgb(156, 163, 175), 2.5);
-$smooth->geom_smooth();
-$smooth->labs("Petal Length vs Sepal Length With a Linear Fit", "Sepal Length", "Petal Length");
-$smooth->save_svg("perl_ggplot_smooth.svg");
+Datamunge::GgPlot->new($iris, "Sepal.Length", "Petal.Length")
+    ->geom_point(Datamunge::Rgb->new(156, 163, 175), 2.5)
+    ->geom_smooth()
+    ->labs("Petal Length vs Sepal Length With a Linear Fit", "Sepal Length", "Petal Length")
+    ->save_svg("perl_ggplot_smooth.svg");
 
 # geom_bar(): counts a discrete column (stat = "count").
-my $bar = Datamunge::GGPlot->new($iris, "Species");
-$bar->geom_bar();
-$bar->labs("Observations per Species", "Species", "Count");
-$bar->theme_bw();
-$bar->save_svg("perl_ggplot_bar.svg");
+Datamunge::GgPlot->new($iris, "Species")
+    ->geom_bar()
+    ->labs("Observations per Species", "Species", "Count")
+    ->theme_bw()
+    ->save_svg("perl_ggplot_bar.svg");
 
 # geom_boxplot(): grouped by a discrete x column.
-my $box = Datamunge::GGPlot->new($iris, "Species", "Petal.Width");
-$box->geom_boxplot();
-$box->labs("Petal Width by Species", "Species", "Petal Width");
-$box->save_svg("perl_ggplot_boxplot.svg");
+Datamunge::GgPlot->new($iris, "Species", "Petal.Width")
+    ->geom_boxplot()
+    ->labs("Petal Width by Species", "Species", "Petal Width")
+    ->save_svg("perl_ggplot_boxplot.svg");
 
 # geom_histogram() + geom_density(): distribution of a single numeric column.
-my $hist = Datamunge::GGPlot->new($iris, "Sepal.Length");
-$hist->geom_histogram(20);
-$hist->labs("Distribution of Sepal Length", "Sepal Length", "Count");
-$hist->save_svg("perl_ggplot_histogram.svg");
+Datamunge::GgPlot->new($iris, "Sepal.Length")
+    ->geom_histogram(20)
+    ->labs("Distribution of Sepal Length", "Sepal Length", "Count")
+    ->save_svg("perl_ggplot_histogram.svg");
 
-my $density = Datamunge::GGPlot->new($iris, "Sepal.Length");
-$density->geom_density();
-$density->labs("Density of Sepal Length", "Sepal Length", "Density");
-$density->save_svg("perl_ggplot_density.svg");
+Datamunge::GgPlot->new($iris, "Sepal.Length")
+    ->geom_density()
+    ->labs("Density of Sepal Length", "Sepal Length", "Density")
+    ->save_svg("perl_ggplot_density.svg");
 
 # facet_wrap(): one panel per Species, composed via RLayout under the hood.
-my $faceted = Datamunge::GGPlot->new($iris, "Petal.Length", "Petal.Width");
-$faceted->geom_point();
-$faceted->facet_wrap("Species");
-$faceted->labs("Petal Dimensions", "Petal Length", "Petal Width");
-$faceted->save_svg("perl_ggplot_facet.svg");
+Datamunge::GgPlot->new($iris, "Petal.Length", "Petal.Width")
+    ->geom_point()
+    ->facet_wrap("Species")
+    ->labs("Petal Dimensions", "Petal Length", "Petal Width")
+    ->save_svg("perl_ggplot_facet.svg");
 
-# theme_classic(): another built-in theme. (scale_color_manual is omitted here -- the
-# std::vector<RGB> overload it needs has no template (RGBVector) in the Perl binding's
-# exposed surface.)
-my $classic = Datamunge::GGPlot->new($iris, "Sepal.Length", "Sepal.Width", "Species");
-$classic->geom_point();
-$classic->theme_classic();
-$classic->save_svg("perl_ggplot_classic.svg");
+# theme_classic(): another built-in theme.
+Datamunge::GgPlot->new($iris, "Sepal.Length", "Sepal.Width", "Species")
+    ->geom_point()
+    ->theme_classic()
+    ->save_svg("perl_ggplot_classic.svg");
 
 print "Wrote 7 SVGs to perl_ggplot_*.svg\n";

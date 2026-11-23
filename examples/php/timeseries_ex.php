@@ -1,105 +1,201 @@
 <?php
 // CMD: just TARGET=timeseries_ex run-php
+// Time series: ARIMA, seasonal ARIMA and exponential smoothing (SES, Holt, Holt-Winters).
+declare(strict_types=1);
 
+require_once __DIR__ . '/../../src/datamungephp/php/datamunge.php';
 
-function dvector($values) {
-    $out = new DVector(count($values));
-    foreach ($values as $i => $v) $out->set($i, $v);
-    return $out;
+use Datamunge\{Arima, ArimaOptions, ExponentialSmoothing, ExponentialSmoothingOptions, SeasonalType, TrendType};
+
+/** A double the way C# prints it (shortest round-trip, e.g. 6, 0.1, 1E-05). */
+function cs(float $x): string
+{
+    if (is_nan($x)) {
+        return 'NaN';
+    }
+    if (is_infinite($x)) {
+        return $x > 0 ? '∞' : '-∞';
+    }
+    if ($x == 0.0) {
+        return fdiv(1.0, $x) < 0 ? '-0' : '0';
+    }
+    for ($p = 0; $p < 17; $p++) {
+        $s = sprintf("%.{$p}e", $x);
+        if ((float) $s === $x) {
+            break;
+        }
+    }
+    [$mant, $exp] = explode('e', $s);
+    $exp = (int) $exp;
+    $sign = $mant[0] === '-' ? '-' : '';
+    $digits = rtrim(str_replace(['-', '.'], '', $mant), '0');
+    if ($exp < -5 || $exp >= 15) {
+        $body = $digits[0] . (strlen($digits) > 1 ? '.' . substr($digits, 1) : '')
+            . 'E' . ($exp < 0 ? '-' : '+') . sprintf('%02d', abs($exp));
+    } elseif ($exp < 0) {
+        $body = '0.' . str_repeat('0', -$exp - 1) . $digits;
+    } elseif (strlen($digits) <= $exp + 1) {
+        $body = $digits . str_repeat('0', $exp + 1 - strlen($digits));
+    } else {
+        $body = substr($digits, 0, $exp + 1) . '.' . substr($digits, $exp + 1);
+    }
+    return $sign . $body;
 }
 
-function randn() {
-    $u1 = mt_rand() / mt_getrandmax();
-    $u2 = mt_rand() / mt_getrandmax();
-    return sqrt(-2.0 * log($u1)) * cos(2.0 * M_PI * $u2);
+/**
+ * .NET's seeded System.Random (Knuth's subtractive generator), so the simulated data -- and so
+ * the output -- match the C# example exactly.
+ */
+final class DotNetRandom
+{
+    private const MBIG = 2147483647;
+    private const MSEED = 161803398;
+    /** @var array<int, int> */
+    private array $seedArray;
+    private int $inext = 0;
+    private int $inextp = 21;
+
+    public function __construct(int $seed)
+    {
+        $this->seedArray = array_fill(0, 56, 0);
+        $mj = self::MSEED - abs($seed);
+        $this->seedArray[55] = $mj;
+        $mk = 1;
+        for ($i = 1; $i < 55; $i++) {
+            $ii = (21 * $i) % 55;
+            $this->seedArray[$ii] = $mk;
+            $mk = $mj - $mk;
+            if ($mk < 0) {
+                $mk += self::MBIG;
+            }
+            $mj = $this->seedArray[$ii];
+        }
+        for ($k = 1; $k < 5; $k++) {
+            for ($i = 1; $i < 56; $i++) {
+                $this->seedArray[$i] -= $this->seedArray[1 + ($i + 30) % 55];
+                if ($this->seedArray[$i] < 0) {
+                    $this->seedArray[$i] += self::MBIG;
+                }
+            }
+        }
+    }
+
+    private function sample(): float
+    {
+        $this->inext = $this->inext + 1 >= 56 ? 1 : $this->inext + 1;
+        $this->inextp = $this->inextp + 1 >= 56 ? 1 : $this->inextp + 1;
+        $ret = $this->seedArray[$this->inext] - $this->seedArray[$this->inextp];
+        if ($ret === self::MBIG) {
+            $ret--;
+        }
+        if ($ret < 0) {
+            $ret += self::MBIG;
+        }
+        $this->seedArray[$this->inext] = $ret;
+        return $ret * (1.0 / self::MBIG);
+    }
+
+    /** A double in [0, 1). */
+    public function nextDouble(): float
+    {
+        return $this->sample();
+    }
+
+    /** An int in [$min, $max). */
+    public function next(int $min, int $max): int
+    {
+        return (int) ($this->sample() * ($max - $min)) + $min;
+    }
 }
 
-function cell_join($v) {
-    $parts = array();
-    for ($i = 0; $i < $v->size(); $i++) $parts[] = $v->get($i);
-    return implode(", ", $parts);
+$rng = new DotNetRandom(42);
+$seed = function (int $n) use (&$rng): void {
+    $rng = new DotNetRandom($n);
+};
+$uniform = function () use (&$rng): float {
+    return 1 - $rng->nextDouble();  // (0, 1]: avoids log(0) in the Box-Muller transform.
+};
+$gauss = fn(): float => sqrt(-2 * log($uniform())) * cos(2 * M_PI * $uniform());
+
+/** @param list<float> $v */
+function joined(array $v): string
+{
+    return implode(', ', array_map('cs', $v));
 }
 
-print("=================== ARIMA(1,1,1) on a simulated random walk with drift ===================\n");
-$y = array();
-$level = 100.0;
-$prev_shock = 0.0;
+echo "=================== ARIMA(1,1,1) on a simulated random walk with drift ===================\n";
+$seed(42);
+$y = [];
+[$level, $prevShock] = [100.0, 0.0];
 for ($i = 0; $i < 150; $i++) {
-    $shock = randn();
-    $level = $level + 0.3 + 0.4 * $prev_shock + $shock;
+    $shock = $gauss();
+    $level += 0.3 + 0.4 * $prevShock + $shock;  // integrated ARMA(0,1) increments with drift
     $y[] = $level;
-    $prev_shock = $shock;
+    $prevShock = $shock;
 }
 
-$options = new ARIMAOptions();
+$options = new ArimaOptions();
 $options->p = 1;
 $options->d = 1;
 $options->q = 1;
-$options->de_population_size = 80;
-$options->de_max_generations = 400;
-$model = new ARIMA(dvector($y), $options);
+$options->dePopulationSize = 80;
+$options->deMaxGenerations = 400;
+$model = new Arima($y, $options);
 
-$ar = $model->ar_coefficients();
-$ma = $model->ma_coefficients();
-print("AR coefficient: " . $ar->get(0) . "\n");
-print("MA coefficient: " . $ma->get(0) . "\n");
-print("sigma^2: " . $model->sigma2() . ", AIC: " . $model->aic() . ", BIC: " . $model->bic() . "\n");
+echo 'AR coefficient: ' . cs($model->arCoefficients()[0]) . "\n";
+echo 'MA coefficient: ' . cs($model->maCoefficients()[0]) . "\n";
+echo 'sigma^2: ' . cs($model->sigma2()) . ', AIC: ' . cs($model->aic()) . ', BIC: ' . cs($model->bic()) . "\n";
 
-$pair = $model->forecast_with_intervals(6);
-print("6-step forecast: " . cell_join($pair->first) . "\n");
-print("forecast std. errors: " . cell_join($pair->second) . "\n");
+[$forecastValues, $stdErrors] = $model->forecastWithIntervals(6);
+echo '6-step forecast: ' . joined($forecastValues) . "\n";
+echo 'forecast std. errors: ' . joined($stdErrors) . "\n";
 
-print("\n=================== SARIMA(1,0,0)(1,1,0)_12 on a seasonal series ===================\n");
-$s = array();
+echo "\n=================== SARIMA(1,0,0)(1,1,0)_12 on a seasonal series ===================\n";
+$seed(7);
+$s = [];
 $prev = 0.0;
 for ($i = 0; $i < 120; $i++) {
-    $prev = 0.5 * $prev + randn();
-    $s[] = 20.0 + 0.2 * $i + 5.0 * sin((2.0 * M_PI * $i) / 12.0) + $prev;
+    $prev = 0.5 * $prev + $gauss();
+    $s[] = 20 + 0.2 * $i + 5 * sin(2 * M_PI * $i / 12) + $prev;
 }
 
-$options2 = new ARIMAOptions();
+$options2 = new ArimaOptions();
 $options2->p = 1;
-$options2->seasonal_p = 1;
-$options2->seasonal_d = 1;
-$options2->seasonal_period = 12;
-$options2->de_population_size = 100;
-$options2->de_max_generations = 500;
-$model2 = new ARIMA(dvector($s), $options2);
-$ar2 = $model2->ar_coefficients();
-$sar2 = $model2->seasonal_ar_coefficients();
-print("AR coefficient: " . $ar2->get(0) . ", seasonal AR coefficient: " . $sar2->get(0) . "\n");
-print("12-step forecast: " . cell_join($model2->forecast(12)) . "\n");
+$options2->seasonalP = 1;
+$options2->seasonalD = 1;
+$options2->seasonalPeriod = 12;
+$options2->dePopulationSize = 100;
+$options2->deMaxGenerations = 500;
+$model2 = new Arima($s, $options2);
+echo 'AR coefficient: ' . cs($model2->arCoefficients()[0]) . ', seasonal AR coefficient: '
+    . cs($model2->seasonalArCoefficients()[0]) . "\n";
+echo '12-step forecast: ' . joined($model2->forecast(12)) . "\n";
 
-print("\n=================== Exponential smoothing: Holt-Winters on retail-style seasonal data ===================\n");
-$seasonal_shape = array(0.8, 0.75, 0.9, 0.95, 1.0, 1.05, 1.1, 1.05, 1.0, 1.1, 1.3, 1.6);
-$y2 = array();
-for ($i = 0; $i < 48; $i++) {
-    $lvl = 100.0 + 2.0 * $i;
-    $y2[] = $lvl * $seasonal_shape[$i % 12] + randn() * 3.0;
-}
+echo "\n=================== Exponential smoothing: Holt-Winters on retail-style seasonal data ===================\n";
+$seasonalShape = [0.8, 0.75, 0.9, 0.95, 1.0, 1.05, 1.1, 1.05, 1.0, 1.1, 1.3, 1.6];
+$seed(11);
+$y2 = array_map(fn(int $i): float => (100 + 2 * $i) * $seasonalShape[$i % 12] + $gauss() * 3, range(0, 47));
 
-$es_options = new ExponentialSmoothingOptions();
-$es_options->trend = datamunge::TrendType_Additive;
-$es_options->seasonal = datamunge::SeasonalType_Multiplicative;
-$es_options->seasonal_period = 12;
-$es_options->de_population_size = 60;
-$es_options->de_max_generations = 300;
-$es_model = new ExponentialSmoothing(dvector($y2), $es_options);
-print("alpha=" . $es_model->alpha() . " beta=" . $es_model->beta() . " gamma=" . $es_model->gamma() . "\n");
-print("sigma^2: " . $es_model->sigma2() . ", AIC: " . $es_model->aic() . "\n");
-print("12-month forecast: " . cell_join($es_model->forecast(12)) . "\n");
+$esOptions = new ExponentialSmoothingOptions();
+$esOptions->trend = TrendType::Additive;
+$esOptions->seasonal = SeasonalType::Multiplicative;
+$esOptions->seasonalPeriod = 12;
+$esOptions->dePopulationSize = 60;
+$esOptions->deMaxGenerations = 300;
+$esModel = new ExponentialSmoothing($y2, $esOptions);
+echo 'alpha=' . cs($esModel->alpha()) . ' beta=' . cs($esModel->beta()) . ' gamma=' . cs($esModel->gamma()) . "\n";
+echo 'sigma^2: ' . cs($esModel->sigma2()) . ', AIC: ' . cs($esModel->aic()) . "\n";
+echo '12-month forecast: ' . joined($esModel->forecast(12)) . "\n";
 
-print("\n=================== Simple exponential smoothing vs. Holt's linear trend ===================\n");
-$flat = array(50.2, 49.8, 50.5, 49.6, 50.1, 50.3, 49.9, 50.0, 50.4, 49.7);
+echo "\n=================== Simple exponential smoothing vs. Holt's linear trend ===================\n";
+$flat = [50.2, 49.8, 50.5, 49.6, 50.1, 50.3, 49.9, 50.0, 50.4, 49.7];
 
-$ses = new ExponentialSmoothing(dvector($flat), new ExponentialSmoothingOptions());
-print("SES alpha= " . $ses->alpha() . "\n");
-print("SES 5-step forecast: " . cell_join($ses->forecast(5)) . "\n");
+$ses = new ExponentialSmoothing($flat, new ExponentialSmoothingOptions());
+echo 'SES alpha= ' . cs($ses->alpha()) . "\n";
+echo 'SES 5-step forecast: ' . joined($ses->forecast(5)) . "\n";
 
-$holt_options = new ExponentialSmoothingOptions();
-$holt_options->trend = datamunge::TrendType_Additive;
-$holt = new ExponentialSmoothing(dvector($flat), $holt_options);
-print("Holt alpha=" . $holt->alpha() . " beta=" . $holt->beta() . "\n");
-print("Holt 5-step forecast: " . cell_join($holt->forecast(5)) . "\n");
-
-?>
+$holtOptions = new ExponentialSmoothingOptions();
+$holtOptions->trend = TrendType::Additive;
+$holt = new ExponentialSmoothing($flat, $holtOptions);
+echo 'Holt alpha=' . cs($holt->alpha()) . ' beta=' . cs($holt->beta()) . "\n";
+echo 'Holt 5-step forecast: ' . joined($holt->forecast(5)) . "\n";

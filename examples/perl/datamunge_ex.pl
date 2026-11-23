@@ -1,27 +1,21 @@
 # CMD: just TARGET=datamunge_ex run-perl
-
+# Smoke test of the basic bindings: vectors, pairs and a native Callback object.
 use strict;
 use warnings;
 
-use Datamunge;
+use Datamunge qw(:all);
 
-Datamunge::hello();
+$| = 1;    # flush each print so it interleaves with the C++ library's output
 
-my $dp = Datamunge::DPair->new(1.0, 2.0);
-print "DPair: First=" . $dp->swig_first_get() . ", Second=" . $dp->swig_second_get() . "\n";
+hello();
 
-{
-  package TimesTwo;
-  our @ISA = ('Datamunge::Callback');
+my $v = make_dvector(1.0, 2.0, 3.0);
+print "sum_dvector:\t", sum_dvector($v), "\n";
 
-  sub call {
-    my ($self, $x) = @_;
-    return $x * 2.0;
-  }
-}
+my $p = make_dpair(1.25, 2.75);
+print "sum_dpair:\t", sum_dpair($p), "\n";
 
-my $cb = TimesTwo->new();
-print "call_with_callback(3.0) = ", Datamunge::call_with_callback(3.0, $cb), "\n";
-my $v = Datamunge::make_dvector(1.0, 2.0, 3.0);
-my $v2 = Datamunge::map_dvector_with_callback($v, $cb);
-print "sum_dvector(map_dvector_with_callback(1,2,3)) = ", Datamunge::sum_dvector($v2), "\n";
+my $cb = Datamunge::Callback->new();
+print "call_with_callback(3.0):\t", call_with_callback(3.0, $cb), "\n";
+my $v2 = map_dvector_with_callback(make_dvector(1.0, 2.0, 3.0), $cb);
+print "sum_dvector(map_dvector_with_callback(1,2,3)):\t", sum_dvector($v2), "\n";

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Smoke tests of the Visual Basic binding (just test-vb):
+       dotnet run, with the project tests/vb/Test.vbproj. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>test_datamunge</AssemblyName>
+    <RootNamespace></RootNamespace>
+    <StartupObject>TestDatamunge</StartupObject>
+    <OptionStrict>On</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="test_datamunge.vb" />
+    <ProjectReference Include="../../src/datamungevb/Datamunge.vbproj" />
+  </ItemGroup>
+</Project>

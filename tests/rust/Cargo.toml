@@ -4,5 +4,7 @@ version = "0.0.1"
 edition = "2021"
 publish = false
 
+# The Rosetta-generated crate (just prebuild-rust); it links libdatamunge_rust from
+# DATAMUNGE_RUST_LIB_DIR (just build-rust installs it into build/rust/prefix/lib).
 [dependencies]
-rustdatamunge = { path = "../../src/rustdatamunge" }
+datamunge = { path = "../../src/datamungerust/datamunge" }

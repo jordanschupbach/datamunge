@@ -36,6 +36,9 @@
     # latest main. Only its package is used; its own nixpkgs pin is kept (that is
     # what mep is built and tested against).
     mep.url = "github:jordanschupbach/mep";
+    # The Swift toolchain only: nixpkgs' Swift at the main pin is not in the binary cache and fails
+    # to build, so it comes from the revision rosetta tests its Swift backend with.
+    nixpkgs-swift.url = "github:NixOS/nixpkgs/f20cd90e28fe0403873f473b29e42662cd86e8c4";
   };
   outputs =
     {
@@ -47,6 +50,7 @@
       crepl,
       rosetta,
       mep,
+      nixpkgs-swift,
       ...
     }:
     flake-utils.lib.eachDefaultSystem (
@@ -54,6 +58,15 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         inherit (pkgs) lib;
+        # swiftc (with its own clang, so it stays off PATH: the justfile and CMake find it through
+        # DATAMUNGE_SWIFT_ROOT).
+        swiftToolchain = nixpkgs-swift.legacyPackages.${system}.swift;
+        # The Objective-C classes (src/datamungeobjc): GNUstep Base (Foundation) and libobjc2.
+        objcHook = ''
+          export DATAMUNGE_GNUSTEP_BASE_ROOT=${pkgs.gnustep-base.dev}
+          export DATAMUNGE_GNUSTEP_BASE_LIB=${pkgs.gnustep-base.lib}
+          export DATAMUNGE_LIBOBJC_ROOT=${pkgs.gnustep-libobjc}
+        '';
         has = builtins.hasAttr;
         nodePackages = if has "nodePackages" pkgs then pkgs.nodePackages else { };
         opt = cond: xs: lib.optionals cond xs;
@@ -97,10 +110,9 @@
           export CUDA_PATH="${cudaToolkit}"
           export LD_LIBRARY_PATH="/run/opengl-driver/lib:${cudaToolkit}/lib''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
         '';
-        # The custom php-from-source flake only targets x86_64-linux; fall back to the
-        # nixpkgs PHP (which supports darwin) on any host it doesn't provide.
-        phpPackage =
-          if has system php-from-source.packages then php-from-source.packages.${system} else pkgs.php;
+        # The Rosetta PHP binding (src/datamungephp) calls libdatamunge_php through PHP's FFI
+        # extension, which the custom php-from-source build lacks, so this is nixpkgs' PHP with FFI.
+        phpPackage = (pkgs.php84 or pkgs.php).withExtensions ({ enabled, all }: enabled ++ [ all.ffi ]);
         lua = pkgs.lua5_4 or (pkgs.lua54 or pkgs.lua);
         # SBCL plus the ASDF systems the generated Common Lisp system loads (cffi, trivial-garbage).
         # sbcl.withPackages' wrapper fails nixpkgs' makeWrapper check, so shells export the source
@@ -180,6 +192,13 @@
           csharpLibrary="$datamungeRoot/build/csharp/prefix/share/dotnet/Datamunge/lib/datamunge_csharp.so"
           if [ "$(uname)" = Darwin ]; then csharpLibrary="''${csharpLibrary%.so}.dylib"; fi
           export DATAMUNGE_CSHARP_LIBRARY="''${DATAMUNGE_CSHARP_LIBRARY:-$csharpLibrary}"
+          # just build-vb (installs the native library into build/vb/prefix): examples/vb/Example.vbproj
+          # and tests/vb reference src/datamungevb/Datamunge.vbproj, whose loader reads this variable.
+          # mep's Visual Basic server reads the XML doc comments of Datamunge.vb through MEP_VB_PATH.
+          vbLibrary="$datamungeRoot/build/vb/prefix/share/dotnet/DatamungeVB/lib/datamunge_vb.so"
+          if [ "$(uname)" = Darwin ]; then vbLibrary="''${vbLibrary%.so}.dylib"; fi
+          export DATAMUNGE_VB_LIBRARY="''${DATAMUNGE_VB_LIBRARY:-$vbLibrary}"
+          export MEP_VB_PATH="$datamungeRoot/src/datamungevb''${MEP_VB_PATH:+:$MEP_VB_PATH}"
           # just build-fortran (installs libdatamunge_fortran, libdatamunge_fortran_mod.a and the .mod
           # files into build/fortran/prefix): compile with $DATAMUNGE_FORTRAN_FLAGS after the source
           # (just run-fortran spells it out). mep's Fortran LSP resolves `use datamunge` through
@@ -280,9 +299,31 @@
             Darwin) export DYLD_FALLBACK_LIBRARY_PATH="$datamungeRoot/build/d:''${DYLD_FALLBACK_LIBRARY_PATH:-$HOME/lib:/usr/local/lib:/usr/lib}" ;;
             *) export LD_LIBRARY_PATH="$datamungeRoot/build/d''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" ;;
           esac
-          # just build-php writes an ini loading the extension here (the leading ':' keeps PHP's
-          # own scan directory too)
-          export PHP_INI_SCAN_DIR=":$datamungeRoot/build/php/conf.d"
+          # just build-php installs libdatamunge_php into build/php/prefix/lib; the generated
+          # src/datamungephp/php/datamunge.php loads it from DATAMUNGE_PHP_LIBRARY through FFI, and
+          # mep's PHP server reads its PHPDoc through MEP_PHP_PATH.
+          phpLibrary="$datamungeRoot/build/php/prefix/lib/libdatamunge_php.so"
+          if [ "$(uname)" = Darwin ]; then phpLibrary="''${phpLibrary%.so}.dylib"; fi
+          export DATAMUNGE_PHP_LIBRARY="''${DATAMUNGE_PHP_LIBRARY:-$phpLibrary}"
+          # just build-perl installs Datamunge.pm and its library into build/perl/prefix/lib/perl5; mep's
+          # Perl server reads the POD of the committed src/datamungeperl/lib/Datamunge.pm (MEP_PERL_PATH).
+          export PERL5LIB="$datamungeRoot/build/perl/prefix/lib/perl5''${PERL5LIB:+:$PERL5LIB}"
+          export MEP_PERL_PATH="$datamungeRoot/src/datamungeperl/lib''${MEP_PERL_PATH:+:$MEP_PERL_PATH}"
+          # mep's Swift server reads the DocC comments of the committed Swift module (MEP_SWIFT_PATH).
+          export MEP_SWIFT_PATH="$datamungeRoot/src/datamungeswift/Datamunge/Sources/Datamunge''${MEP_SWIFT_PATH:+:$MEP_SWIFT_PATH}"
+          # mep's Pascal server reads the XML doc comments of the committed unit (MEP_PASCAL_PATH).
+          export MEP_PASCAL_PATH="$datamungeRoot/src/datamungepascal/pascal''${MEP_PASCAL_PATH:+:$MEP_PASCAL_PATH}"
+          # mep's Dart server reads the dartdoc comments of the committed package (MEP_DART_PATH).
+          export MEP_DART_PATH="$datamungeRoot/src/datamungedart/datamunge/lib''${MEP_DART_PATH:+:$MEP_DART_PATH}"
+          # mep's Ada server reads the GNATdoc comments of the committed package spec (MEP_ADA_PATH).
+          export MEP_ADA_PATH="$datamungeRoot/src/datamungeada/ada''${MEP_ADA_PATH:+:$MEP_ADA_PATH}"
+          # mep's Objective-C server reads the /// comments of the committed header (MEP_OBJC_PATH).
+          export MEP_OBJC_PATH="$datamungeRoot/src/datamungeobjc/objc''${MEP_OBJC_PATH:+:$MEP_OBJC_PATH}"
+          # mep's Prolog server reads the PlDoc of the committed module (MEP_PROLOG_PATH).
+          export MEP_PROLOG_PATH="$datamungeRoot/src/datamungeprolog/prolog''${MEP_PROLOG_PATH:+:$MEP_PROLOG_PATH}"
+          # mep's Haskell server reads the Haddock of the committed module (MEP_HASKELL_PATH).
+          export MEP_HASKELL_PATH="$datamungeRoot/src/datamungehaskell/haskell''${MEP_HASKELL_PATH:+:$MEP_HASKELL_PATH}"
+          export MEP_PHP_PATH="$datamungeRoot/src/datamungephp/php''${MEP_PHP_PATH:+:$MEP_PHP_PATH}"
         '';
 
         # {{{ Bindings
@@ -342,6 +383,17 @@
         datamungelisp = import ./nix/datamungelisp.nix { pkgs = bindingPkgs; };
         datamungejulia = import ./nix/datamungejulia.nix { pkgs = bindingPkgs; };
         datamungecsharp = import ./nix/datamungecsharp.nix { pkgs = bindingPkgs; inherit dotnetSdk; };
+        datamungevb = import ./nix/datamungevb.nix { pkgs = bindingPkgs; inherit dotnetSdk; };
+        datamungerust = import ./nix/datamungerust.nix { pkgs = bindingPkgs; };
+        datamungephp = import ./nix/datamungephp.nix { pkgs = bindingPkgs; inherit datamunge; };
+        datamungepascal = import ./nix/datamungepascal.nix { pkgs = bindingPkgs; };
+        datamungedart = import ./nix/datamungedart.nix { pkgs = bindingPkgs; };
+        datamungeada = import ./nix/datamungeada.nix { pkgs = bindingPkgs; };
+        datamungeobjc = import ./nix/datamungeobjc.nix { pkgs = bindingPkgs; };
+        datamungeprolog = import ./nix/datamungeprolog.nix { pkgs = bindingPkgs; };
+        datamungehaskell = import ./nix/datamungehaskell.nix { pkgs = bindingPkgs; };
+        datamungeperl = import ./nix/datamungeperl.nix { pkgs = bindingPkgs; inherit datamunge; };
+        datamungeswift = import ./nix/datamungeswift.nix { pkgs = bindingPkgs; swift = swiftToolchain; };
         datamungecobol = import ./nix/datamungecobol.nix { pkgs = bindingPkgs; };
         datamungefortran = import ./nix/datamungefortran.nix { pkgs = bindingPkgs; };
         # GnuCOBOL: cobc lives in the bin output, which a shell's packages leave out.
@@ -893,37 +945,26 @@
             installPhase = "mkdir -p $out";
           };
 
-          rust = pkgs.rustPlatform.buildRustPackage {
-            pname = "datamunge-rust-check";
-            version = "0.0.1";
+          rust = pkgs.stdenv.mkDerivation {
+            name = "datamunge-rust-check";
             src = pkgs.lib.cleanSource ./.;
-            cargoLock = {
-              lockFile = ./tests/rust/Cargo.lock;
-            };
             nativeBuildInputs = [
-              pkgs.pkg-config
+              pkgs.rustc
+              pkgs.cargo
             ];
-            buildInputs = [
-              datamunge
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
             ];
             doCheck = true;
-            buildPhase = ''
-              runHook preBuild
-              export HOME="$TMPDIR"
-              export CARGO_NET_OFFLINE=true
-              export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
-              export LD_LIBRARY_PATH="$(${pkgs.pkg-config}/bin/pkg-config --variable=libdir datamunge)''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
-              cargo build --manifest-path tests/rust/Cargo.toml --offline --locked --release
-              runHook postBuild
-            '';
+            # tests/rust depends on the committed crate src/datamungerust/datamunge, which has no
+            # dependencies, so the tests build offline against the nix-built libdatamunge_rust.
             checkPhase = ''
-              runHook preCheck
-              export HOME="$TMPDIR"
-              export CARGO_NET_OFFLINE=true
-              export PKG_CONFIG_PATH="${datamunge}/lib/pkgconfig''${PKG_CONFIG_PATH:+:}$PKG_CONFIG_PATH"
-              export LD_LIBRARY_PATH="$(${pkgs.pkg-config}/bin/pkg-config --variable=libdir datamunge)''${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH"
-              cargo test --manifest-path tests/rust/Cargo.toml --offline --locked --release
-              runHook postCheck
+              export HOME="$TMPDIR" CARGO_HOME="$TMPDIR/cargo" CARGO_NET_OFFLINE=true
+              export DATAMUNGE_RUST_LIB_DIR="${datamungerust}/lib"
+              export RUSTFLAGS="-C link-arg=-Wl,-rpath,${datamungerust}/lib"
+              cargo test --manifest-path tests/rust/Cargo.toml --offline --release
             '';
             installPhase = "mkdir -p $out";
           };
@@ -944,6 +985,194 @@
               export HOME="$TMPDIR" DOTNET_CLI_HOME="$TMPDIR" DOTNET_NOLOGO=1 DOTNET_CLI_TELEMETRY_OPTOUT=1
               export DATAMUNGE_CSHARP_LIBRARY="${datamungecsharp}/share/dotnet/Datamunge/lib/datamunge_csharp${pkgs.stdenv.hostPlatform.extensions.sharedLibrary}"
               dotnet run tests/csharp/test_datamunge.cs
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          php = pkgs.stdenv.mkDerivation {
+            name = "datamunge-php-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [ phpPackage ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            # tests/php requires the committed src/datamungephp/php/datamunge.php, which loads the
+            # nix-built library through FFI.
+            checkPhase = ''
+              export DATAMUNGE_PHP_LIBRARY="${datamungephp}/lib/libdatamunge_php${pkgs.stdenv.hostPlatform.extensions.sharedLibrary}"
+              php tests/php/test_datamunge.php
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          perl = pkgs.stdenv.mkDerivation {
+            name = "datamunge-perl-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [ pkgs.perl ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            checkPhase = ''
+              export PERL5LIB="${datamungeperl}/lib/perl5"
+              prove tests/perl
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          swift = pkgs.stdenv.mkDerivation {
+            name = "datamunge-swift-check";
+            src = pkgs.lib.cleanSource ./.;
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            checkPhase = ''
+              p=${datamungeswift}
+              ${swiftToolchain}/bin/swiftc -swift-version 5 -I $p/lib/swift -I $p/share/swift/CDatamunge -L $p/lib -lDatamunge \
+                -L ${swiftToolchain}/lib -Xlinker -rpath -Xlinker $p/lib -Xlinker -rpath -Xlinker ${swiftToolchain}/lib \
+                tests/swift/test_datamunge.swift -o test_datamunge
+              ./test_datamunge
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          pascal = pkgs.stdenv.mkDerivation {
+            name = "datamunge-pascal-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [ pkgs.fpc ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            checkPhase = ''
+              p=${datamungepascal}
+              fpc -vw -Fu$p/lib/fpc/datamunge -Fl$p/lib -k-rpath -k$p/lib tests/pascal/test_datamunge.pas
+              tests/pascal/test_datamunge
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          dart = pkgs.stdenv.mkDerivation {
+            name = "datamunge-dart-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [ pkgs.dart ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            checkPhase = ''
+              export HOME=$TMPDIR PUB_CACHE=$TMPDIR/pub-cache
+              export DATAMUNGE_DART_LIBRARY=${datamungedart}/lib/libdatamunge_dart.so
+              cd tests/dart
+              dart pub get --offline
+              dart run bin/test_datamunge.dart
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          ada = pkgs.stdenv.mkDerivation {
+            name = "datamunge-ada-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [ pkgs.gnat ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            checkPhase = ''
+              p=${datamungeada}
+              mkdir obj
+              (cd obj && gnatmake -q -gnat2022 -aI$p/lib/ada/datamunge -aO$p/lib/ada/datamunge -aI../tests/ada ../tests/ada/test_datamunge.adb \
+                -o ../test_datamunge -largs -L$p/lib -Wl,-rpath,$p/lib)
+              ./test_datamunge
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          objc = pkgs.stdenv.mkDerivation {
+            name = "datamunge-objc-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [ pkgs.clang ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            checkPhase = ''
+              p=${datamungeobjc}
+              clang -fobjc-arc -fobjc-arc-exceptions -fobjc-runtime=gnustep-2.0 -fblocks -I${pkgs.gnustep-base.dev}/include \
+                -I${pkgs.gnustep-libobjc}/include -I$p/include/DM tests/objc/test_datamunge.m -o test_datamunge -L$p/lib -lDM \
+                -L${pkgs.gnustep-base.lib}/lib -L${pkgs.gnustep-libobjc}/lib -lgnustep-base -lobjc -Wl,-rpath,$p/lib
+              ./test_datamunge
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          prolog = pkgs.stdenv.mkDerivation {
+            name = "datamunge-prolog-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [ pkgs.swi-prolog ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            checkPhase = ''
+              swipl -p library=${datamungeprolog}/prolog tests/prolog/test_datamunge.pl
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          haskell = pkgs.stdenv.mkDerivation {
+            name = "datamunge-haskell-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [ pkgs.ghc ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            checkPhase = ''
+              p=${datamungehaskell}
+              ghc -threaded -package-db $p/lib/haskell/package.db -package datamunge -outputdir obj tests/haskell/test_datamunge.hs \
+                -o test_datamunge -optl-Wl,-rpath,$p/lib
+              ./test_datamunge
+            '';
+            installPhase = "mkdir -p $out";
+          };
+
+          vb = pkgs.stdenv.mkDerivation {
+            name = "datamunge-vb-check";
+            src = pkgs.lib.cleanSource ./.;
+            nativeBuildInputs = [ dotnetSdk ];
+            phases = [
+              "unpackPhase"
+              "checkPhase"
+              "installPhase"
+            ];
+            doCheck = true;
+            # tests/vb/Test.vbproj references the generated project; it needs no NuGet packages
+            # (tests/vb/nuget.config clears the sources).
+            checkPhase = ''
+              export HOME="$TMPDIR" DOTNET_CLI_HOME="$TMPDIR" DOTNET_NOLOGO=1 DOTNET_CLI_TELEMETRY_OPTOUT=1
+              export DATAMUNGE_VB_LIBRARY="${datamungevb}/share/dotnet/DatamungeVB/lib/datamunge_vb${pkgs.stdenv.hostPlatform.extensions.sharedLibrary}"
+              dotnet run --project tests/vb/Test.vbproj
             '';
             installPhase = "mkdir -p $out";
           };
@@ -988,6 +1217,17 @@
             datamungelisp
             datamungejulia
             datamungecsharp
+            datamungevb
+            datamungerust
+            datamungephp
+            datamungeperl
+            datamungehaskell
+            datamungeprolog
+            datamungeobjc
+            datamungeada
+            datamungedart
+            datamungepascal
+            datamungeswift
             datamungecobol
             datamungefortran
             datamungeocaml
@@ -1397,22 +1637,20 @@
 
         devShells.php = pkgs.mkShell {
           packages = [
+            datamunge
             phpPackage
-          ]
-          ++ phpDev
-          ++ [
-            pkgs.libxml2
-            pkgs.pkg-config
+            # just prebuild-php: scripts/prebuild_bindings.py php runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            # just build-php builds libdatamunge_php with CMake; datamungeConfig.cmake
+            # find_dependency(Arrow).
             pkgs.cmake
-            pkgs.stdenv.cc
+            pkgs.ninja
+            pkgs.pkg-config
+            pkgs.arrow-cpp
             pkgs.just
-            # just build-php builds the core from source via CPM, which
-            # requires the data-asset dependencies (DATAMUNGE_ENABLE_DATA_ASSETS).
-            pkgs.libarchive
-            pkgs.openssl
-            pkgs.nlohmann_json
-            pkgs.hdf5-cpp
           ];
+          shellHook = localBindingsHook;
         };
 
         devShells.go = pkgs.mkShell {
@@ -1442,12 +1680,19 @@
             pkgs.cargo
             pkgs.rustfmt
             pkgs.clippy
-            pkgs.rust-bindgen
             pkgs.clang
             pkgs.llvmPackages.libclang
             pkgs.pkg-config
             pkgs.evcxr
             pkgs.just
+            # just prebuild-rust: scripts/prebuild_bindings.py rust runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            # just build-rust builds libdatamunge_rust with CMake; datamungeConfig.cmake
+            # find_dependency(Arrow).
+            pkgs.cmake
+            pkgs.ninja
+            pkgs.arrow-cpp
           ];
 
           shellHook = ''
@@ -1496,15 +1741,144 @@
           '';
         };
 
-        devShells.perl = pkgs.mkShell {
+        devShells.swift = pkgs.mkShell {
           packages = [
-            pkgs.perl
-            pkgs.perlPackages.ExtUtilsMakeMaker
-            pkgs.perlPackages.TestMore
-            pkgs.gnumake
-            pkgs.stdenv.cc
+            datamunge
+            # just prebuild-swift: scripts/prebuild_bindings.py swift runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            # just build-swift builds libdatamunge_swift with CMake and the module with swiftc;
+            # datamungeConfig.cmake find_dependency(Arrow).
+            pkgs.cmake
+            pkgs.ninja
+            pkgs.pkg-config
+            pkgs.arrow-cpp
             pkgs.just
           ];
+          shellHook = localBindingsHook + ''
+            export DATAMUNGE_SWIFT_ROOT=${swiftToolchain}
+          '';
+        };
+
+        devShells.pascal = pkgs.mkShell {
+          packages = [
+            datamunge
+            # just prebuild-pascal: scripts/prebuild_bindings.py pascal runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            # just build-pascal builds the C ABI library with CMake; datamungeConfig.cmake
+            # find_dependency(Arrow).
+            pkgs.cmake
+            pkgs.ninja
+            pkgs.pkg-config
+            pkgs.arrow-cpp
+            pkgs.just
+          ] ++ [ pkgs.fpc ];
+          shellHook = localBindingsHook;
+        };
+
+        devShells.dart = pkgs.mkShell {
+          packages = [
+            datamunge
+            # just prebuild-dart: scripts/prebuild_bindings.py dart runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            # just build-dart builds the C ABI library with CMake; datamungeConfig.cmake
+            # find_dependency(Arrow).
+            pkgs.cmake
+            pkgs.ninja
+            pkgs.pkg-config
+            pkgs.arrow-cpp
+            pkgs.just
+          ] ++ [ pkgs.dart ];
+          shellHook = localBindingsHook;
+        };
+
+        devShells.ada = pkgs.mkShell {
+          packages = [
+            datamunge
+            # just prebuild-ada: scripts/prebuild_bindings.py ada runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            # just build-ada builds the C ABI library with CMake; datamungeConfig.cmake
+            # find_dependency(Arrow).
+            pkgs.cmake
+            pkgs.ninja
+            pkgs.pkg-config
+            pkgs.arrow-cpp
+            pkgs.just
+          ] ++ [ pkgs.gnat ];
+          shellHook = localBindingsHook;
+        };
+
+        devShells.objc = pkgs.mkShell {
+          packages = [
+            datamunge
+            # just prebuild-objc: scripts/prebuild_bindings.py objc runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            # just build-objc builds the C ABI library with CMake; datamungeConfig.cmake
+            # find_dependency(Arrow).
+            pkgs.cmake
+            pkgs.ninja
+            pkgs.pkg-config
+            pkgs.arrow-cpp
+            pkgs.just
+          ] ++ [ pkgs.clang pkgs.gnustep-base pkgs.gnustep-libobjc ];
+          shellHook = localBindingsHook + objcHook;
+        };
+
+        devShells.prolog = pkgs.mkShell {
+          packages = [
+            datamunge
+            # just prebuild-prolog: scripts/prebuild_bindings.py prolog runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            # just build-prolog builds the C ABI library with CMake; datamungeConfig.cmake
+            # find_dependency(Arrow).
+            pkgs.cmake
+            pkgs.ninja
+            pkgs.pkg-config
+            pkgs.arrow-cpp
+            pkgs.just
+          ] ++ [ pkgs.swi-prolog ];
+          shellHook = localBindingsHook;
+        };
+
+        devShells.haskell = pkgs.mkShell {
+          packages = [
+            datamunge
+            # just prebuild-haskell: scripts/prebuild_bindings.py haskell runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            # just build-haskell builds the C ABI library with CMake; datamungeConfig.cmake
+            # find_dependency(Arrow).
+            pkgs.cmake
+            pkgs.ninja
+            pkgs.pkg-config
+            pkgs.arrow-cpp
+            pkgs.just
+          ] ++ [ pkgs.ghc ];
+          shellHook = localBindingsHook;
+        };
+
+        devShells.perl = pkgs.mkShell {
+          packages = [
+            datamunge
+            pkgs.perl
+            pkgs.perlPackages.TestMore
+            pkgs.just
+            # just prebuild-perl: scripts/prebuild_bindings.py perl runs rosetta.
+            rosettaPkg
+            pkgs.python3
+            # just build-perl builds libdatamunge_perl (with the XS glue) with CMake;
+            # datamungeConfig.cmake find_dependency(Arrow).
+            pkgs.cmake
+            pkgs.ninja
+            pkgs.pkg-config
+            pkgs.arrow-cpp
+          ];
+          shellHook = localBindingsHook;
         };
 
         devShells.tcl = pkgs.mkShell {

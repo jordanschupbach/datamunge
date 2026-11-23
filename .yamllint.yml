@@ -11,7 +11,7 @@ ignore: |
   **/target/**
   result/**
   **/result/**
-  src/perldatamunge/**
+  src/datamungeperl/lib/**
   **/MYMETA.yml
 
 rules:

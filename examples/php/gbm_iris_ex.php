@@ -1,40 +1,89 @@
 <?php
 // CMD: just TARGET=gbm_iris_ex run-php
+// Gradient-boosted trees (GBM) on iris: summary, confusion matrix, misclassified rows, 5 vs 100 rounds.
+declare(strict_types=1);
 
+require_once __DIR__ . '/../../src/datamungephp/php/datamunge.php';
 
-$iris = data_iris();
-print("iris: " . $iris->nrows() . " rows x " . $iris->ncols() . " cols\n\n");
+use Datamunge\GbmClassifier;
+use function Datamunge\Data\iris;
 
-$model = new GBMClassifier($iris, "Species ~ Petal.Length + Petal.Width");
-$model->print_summary();
-
-print("\nConfusion matrix (rows = actual, cols = predicted):\n");
-print($model->confusion_matrix()->to_string() . "\n");
-
-print("\nMisclassified rows:\n");
-$predictions = $model->predict($iris);
-$misclassified = 0;
-$n = $iris->nrows();
-for ($i = 0; $i < $n; $i++) {
-    $actual = $iris->string_at("Species", $i);
-    $pred = $predictions->get($i);
-    if ($pred !== $actual) {
-        $misclassified += 1;
-        print("  row $i: Petal.Length=" . $iris->numeric_at("Petal.Length", $i) . " Petal.Width=" . $iris->numeric_at("Petal.Width", $i) . "  actual=$actual  predicted=$pred\n");
+/** A double the way C# prints it (shortest round-trip, e.g. 6, 0.1, 1E-05). */
+function cs(float $x): string
+{
+    if (is_nan($x)) {
+        return 'NaN';
     }
+    if (is_infinite($x)) {
+        return $x > 0 ? '∞' : '-∞';
+    }
+    if ($x == 0.0) {
+        return fdiv(1.0, $x) < 0 ? '-0' : '0';
+    }
+    for ($p = 0; $p < 17; $p++) {
+        $s = sprintf("%.{$p}e", $x);
+        if ((float) $s === $x) {
+            break;
+        }
+    }
+    [$mant, $exp] = explode('e', $s);
+    $exp = (int) $exp;
+    $sign = $mant[0] === '-' ? '-' : '';
+    $digits = rtrim(str_replace(['-', '.'], '', $mant), '0');
+    if ($exp < -5 || $exp >= 15) {
+        $body = $digits[0] . (strlen($digits) > 1 ? '.' . substr($digits, 1) : '')
+            . 'E' . ($exp < 0 ? '-' : '+') . sprintf('%02d', abs($exp));
+    } elseif ($exp < 0) {
+        $body = '0.' . str_repeat('0', -$exp - 1) . $digits;
+    } elseif (strlen($digits) <= $exp + 1) {
+        $body = $digits . str_repeat('0', $exp + 1 - strlen($digits));
+    } else {
+        $body = substr($digits, 0, $exp + 1) . '.' . substr($digits, $exp + 1);
+    }
+    return $sign . $body;
 }
-print("$misclassified of $n misclassified (" . (100.0 * $misclassified / $n) . "%)\n");
 
-$model->plot_training_deviance()->save("gbm_iris_training_deviance.svg");
-$model->plot_decision_regions("Petal.Length", "Petal.Width")->save("gbm_iris_decision_regions.svg");
-print("\nSaved gbm_iris_training_deviance.svg and gbm_iris_decision_regions.svg\n");
+/** The last element of a list (C#'s [^1]). */
+function last(array $values): float
+{
+    return $values[count($values) - 1];
+}
 
-$few = new GBMClassifier($iris, "Species ~ Petal.Length + Petal.Width", 5);
-$few_dev = $few->training_deviance();
-$model_dev = $model->training_deviance();
-print("\n5-round ensemble:   training accuracy=" . ($few->training_accuracy() * 100.0) . "%  deviance=" . $few_dev->get($few_dev->size() - 1) . "\n");
-print("100-round ensemble: training accuracy=" . ($model->training_accuracy() * 100.0) . "%  deviance=" . $model_dev->get($model_dev->size() - 1) . "\n");
-$few->plot_decision_regions("Petal.Length", "Petal.Width")->save("gbm_iris_decision_regions_5rounds.svg");
-print("Saved gbm_iris_decision_regions_5rounds.svg\n");
+$iris = iris();
+echo "iris: {$iris->nrows()} rows x {$iris->ncols()} cols\n\n";
 
-?>
+$model = new GbmClassifier($iris, 'Species ~ Petal.Length + Petal.Width');
+$model->printSummary();
+
+echo "\nConfusion matrix (rows = actual, cols = predicted):\n{$model->confusionMatrix()}\n";
+
+echo "\nMisclassified rows:\n";
+$predictions = $model->predict($iris);
+$n = $iris->nrows();
+$misclassified = 0;
+for ($i = 0; $i < $n; $i++) {
+    [$actual, $predicted] = [$iris->stringAt('Species', $i), $predictions[$i]];
+    if ($predicted === $actual) {
+        continue;
+    }
+    $misclassified++;
+    echo "  row $i: Petal.Length=" . cs($iris->numericAt('Petal.Length', $i)) . ' Petal.Width='
+        . cs($iris->numericAt('Petal.Width', $i)) . "  actual=$actual  predicted=$predicted\n";
+}
+echo "$misclassified of $n misclassified (" . cs(100.0 * $misclassified / $n) . "%)\n";
+
+$model->plotTrainingDeviance()->save('gbm_iris_training_deviance.svg');
+$model->plotDecisionRegions('Petal.Length', 'Petal.Width')->save('gbm_iris_decision_regions.svg');
+echo "\nSaved gbm_iris_training_deviance.svg and gbm_iris_decision_regions.svg\n";
+
+// A handful of boosting rounds vs a well-boosted ensemble: each additional round chips away
+// at the training loss, gradually sharpening the decision boundary.
+// new GbmClassifier(data, formula, nTrees, learningRate, maxDepth, minSamplesSplit,
+//                   minSamplesLeaf, subsample, seed)
+$few = new GbmClassifier($iris, 'Species ~ Petal.Length + Petal.Width', 5);
+echo "\n5-round ensemble:   training accuracy=" . cs(100 * $few->trainingAccuracy()) . '%  deviance='
+    . cs(last($few->trainingDeviance())) . "\n";
+echo '100-round ensemble: training accuracy=' . cs(100 * $model->trainingAccuracy()) . '%  deviance='
+    . cs(last($model->trainingDeviance())) . "\n";
+$few->plotDecisionRegions('Petal.Length', 'Petal.Width')->save('gbm_iris_decision_regions_5rounds.svg');
+echo "Saved gbm_iris_decision_regions_5rounds.svg\n";

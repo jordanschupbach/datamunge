@@ -1,6 +1,7 @@
 [workspace]
 members = [
-  "src/rustdatamunge",
+  "src/datamungerust/datamunge",
+  "examples/rust",
   "tests/rust",
 ]
 resolver = "2"

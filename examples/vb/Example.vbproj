@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Builds one example, examples/vb/$(Example).vb, against the generated Datamunge project:
+       dotnet run with the project examples/vb/Example.vbproj and the property Example=dataframe_ex (just run-vb).
+       Visual Basic has no file-based apps, so this project stands in for C#'s `#:project`. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Example Condition="'$(Example)' == ''">dataframe_ex</Example>
+    <AssemblyName>$(Example)</AssemblyName>
+    <RootNamespace></RootNamespace>
+    <StartupObject>Example</StartupObject>
+    <OptionStrict>On</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(Example).vb" />
+    <ProjectReference Include="../../src/datamungevb/Datamunge.vbproj" />
+  </ItemGroup>
+</Project>

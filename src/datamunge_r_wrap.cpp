@@ -1250,20 +1250,29 @@ template<> struct Bound<datamunge::optim::InequalityConstrainedFunction> : std::
 template<> struct Copyable<datamunge::optim::InequalityConstrainedFunction> : std::false_type {};
 template<> struct Bound<datamunge::optim::ResidualFunction> : std::true_type {};
 template<> struct Copyable<datamunge::optim::ResidualFunction> : std::false_type {};
+template<> struct Bound<datamunge::bayes::NUTSOptions> : std::true_type {};
+template<> struct Bound<datamunge::bayes::NUTSResult> : std::true_type {};
+template<> struct Bound<datamunge::bayes::NUTS> : std::true_type {};
+template<> struct Bound<datamunge::Callback> : std::true_type {};
+template<> struct Bound<datamunge::graphics::RGB> : std::true_type {};
+template<> struct Bound<datamunge::graphics::DataSeries> : std::true_type {};
+template<> struct Bound<datamunge::graphics::ABLine> : std::true_type {};
+template<> struct Bound<datamunge::graphics::LegendEntry> : std::true_type {};
+template<> struct Bound<datamunge::graphics::Plot> : std::true_type {};
+template<> struct Bound<datamunge::graphics::RPlot> : std::true_type {};
+template<> struct Bound<datamunge::graphics::RLayout> : std::true_type {};
 template<> struct Bound<datamunge::bayes::GibbsOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::GibbsResult> : std::true_type {};
 template<> struct Bound<datamunge::bayes::GibbsSampler> : std::true_type {};
 template<> struct Bound<datamunge::bayes::HMCOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::HMCResult> : std::true_type {};
 template<> struct Bound<datamunge::bayes::HMC> : std::true_type {};
+template<> struct Bound<datamunge::bayes::HMCProposal> : std::true_type {};
 template<> struct Bound<datamunge::bayes::ImportanceSamplingOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::ImportanceSamplingResult> : std::true_type {};
 template<> struct Bound<datamunge::bayes::ImportanceSampling> : std::true_type {};
 template<> struct Bound<datamunge::bayes::MAPOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::MAP> : std::true_type {};
-template<> struct Bound<datamunge::bayes::NUTSOptions> : std::true_type {};
-template<> struct Bound<datamunge::bayes::NUTSResult> : std::true_type {};
-template<> struct Bound<datamunge::bayes::NUTS> : std::true_type {};
 template<> struct Bound<datamunge::bayes::RWMOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::RWMResult> : std::true_type {};
 template<> struct Bound<datamunge::bayes::RandomWalkMetropolis> : std::true_type {};
@@ -1319,29 +1328,39 @@ template<> struct Bound<datamunge::geometry::ConvexHullWork> : std::true_type {}
 template<> struct Bound<datamunge::geometry::HullEvent> : std::true_type {};
 template<> struct Bound<datamunge::geometry::ConvexHullAnalysis> : std::true_type {};
 template<> struct Bound<datamunge::geometry::ConvexHullTrace> : std::true_type {};
-template<> struct Bound<datamunge::Callback> : std::true_type {};
-template<> struct Bound<datamunge::graphics::RGB> : std::true_type {};
-template<> struct Bound<datamunge::graphics::DataSeries> : std::true_type {};
-template<> struct Bound<datamunge::graphics::ABLine> : std::true_type {};
-template<> struct Bound<datamunge::graphics::LegendEntry> : std::true_type {};
-template<> struct Bound<datamunge::graphics::Plot> : std::true_type {};
-template<> struct Bound<datamunge::graphics::RPlot> : std::true_type {};
-template<> struct Bound<datamunge::graphics::RLayout> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DTWResult> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DTWWork> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DTWComputation> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DTWTrace> : std::true_type {};
+template<> struct Bound<datamunge::geometry::KDNearestProbe> : std::true_type {};
+template<> struct Bound<datamunge::geometry::KDSearchWork> : std::true_type {};
+template<> struct Bound<datamunge::geometry::KDNearestTrace> : std::true_type {};
 template<> struct Bound<datamunge::geometry::KDTree2D> : std::true_type {};
 template<> struct Copyable<datamunge::geometry::KDTree2D> : std::false_type {};
 template<> struct Bound<datamunge::geometry::Circle> : std::true_type {};
+template<> struct Bound<datamunge::geometry::EnclosingCircleEvent> : std::true_type {};
+template<> struct Bound<datamunge::geometry::EnclosingCircleTrace> : std::true_type {};
+template<> struct Bound<datamunge::geometry::EnclosingCircleCheck> : std::true_type {};
+template<> struct Bound<datamunge::geometry::SegmentIntersectionRun> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonEarCandidate> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonEarClip> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonTriangulationOptions> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonTriangulationRun> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonTriangulationTrace> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DiameterResult> : std::true_type {};
-template<> struct Bound<datamunge::geometry::MinimumBoundingRectangle> : std::true_type {};
+template<> struct Bound<datamunge::geometry::DiameterOptions> : std::true_type {};
+template<> struct Bound<datamunge::geometry::CaliperEvent> : std::true_type {};
+template<> struct Bound<datamunge::geometry::DiameterRun> : std::true_type {};
 template<> struct Bound<datamunge::geometry::VoronoiDiagram> : std::true_type {};
 template<> struct Bound<datamunge::LinalgMatrix> : std::true_type {};
 template<> struct Bound<datamunge::ode::RHS> : std::true_type {};
 template<> struct Copyable<datamunge::ode::RHS> : std::false_type {};
 template<> struct Bound<datamunge::ode::ODEOptions> : std::true_type {};
+template<> struct Bound<datamunge::ode::ODEExecutionLimits> : std::true_type {};
 template<> struct Bound<datamunge::ode::ODESolution> : std::true_type {};
+template<> struct Bound<datamunge::ode::ODEEvaluation> : std::true_type {};
+template<> struct Bound<datamunge::ode::ODEAttempt> : std::true_type {};
+template<> struct Bound<datamunge::ode::ODETrace> : std::true_type {};
 template<> struct Bound<datamunge::ode::ODESolver> : std::true_type {};
 template<> struct Bound<datamunge::optim::ACOROptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::ACOR> : std::true_type {};
@@ -1392,6 +1411,10 @@ template<> struct Bound<datamunge::optim::HarmonySearchOptions> : std::true_type
 template<> struct Bound<datamunge::optim::HarmonySearch> : std::true_type {};
 template<> struct Bound<datamunge::optim::InteriorPointOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::InteriorPoint> : std::true_type {};
+template<> struct Bound<datamunge::optim::SurrogatePrediction> : std::true_type {};
+template<> struct Bound<datamunge::optim::GaussianJointPosterior> : std::true_type {};
+template<> struct Bound<datamunge::optim::GaussianProcessSurrogateOptions> : std::true_type {};
+template<> struct Bound<datamunge::optim::RBFGaussianProcessSurrogate> : std::true_type {};
 template<> struct Bound<datamunge::optim::LBFGSOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::LBFGS> : std::true_type {};
 template<> struct Bound<datamunge::optim::LevenbergMarquardtOptions> : std::true_type {};
@@ -1414,9 +1437,6 @@ template<> struct Bound<datamunge::optim::RandomizedBlockCoordinateDescentOption
 template<> struct Bound<datamunge::optim::RandomizedBlockCoordinateDescent> : std::true_type {};
 template<> struct Bound<datamunge::optim::RMSPropOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::RMSProp> : std::true_type {};
-template<> struct Bound<datamunge::optim::SurrogatePrediction> : std::true_type {};
-template<> struct Bound<datamunge::optim::GaussianProcessSurrogateOptions> : std::true_type {};
-template<> struct Bound<datamunge::optim::RBFGaussianProcessSurrogate> : std::true_type {};
 template<> struct Bound<datamunge::optim::SGDOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::SGD> : std::true_type {};
 template<> struct Bound<datamunge::optim::SimulatedAnnealingOptions> : std::true_type {};
@@ -1431,13 +1451,18 @@ template<> struct Bound<datamunge::optim::TrustRegionNewtonOptions> : std::true_
 template<> struct Bound<datamunge::optim::TrustRegionNewton> : std::true_type {};
 template<> struct Bound<datamunge::optim::WhaleOptimizationOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::WhaleOptimization> : std::true_type {};
-template<> struct Bound<datamunge::fda::BSplineBasis> : std::true_type {};
 template<> struct Bound<datamunge::stats::HypothesisTestResult> : std::true_type {};
+template<> struct Bound<datamunge::fda::BSplineBasis> : std::true_type {};
+template<> struct Bound<datamunge::stats::GamesHowellComparison> : std::true_type {};
+template<> struct Bound<datamunge::stats::DunnComparison> : std::true_type {};
 template<> struct Bound<datamunge::stats::ARIMAOptions> : std::true_type {};
 template<> struct Bound<datamunge::stats::ARIMA> : std::true_type {};
 template<> struct Bound<datamunge::stats::KendallTau> : std::true_type {};
 template<> struct Bound<datamunge::stats::ExponentialSmoothingOptions> : std::true_type {};
 template<> struct Bound<datamunge::stats::ExponentialSmoothing> : std::true_type {};
+template<> struct Bound<datamunge::stats::ProportionDifferenceInterval> : std::true_type {};
+template<> struct Bound<datamunge::stats::RiskRatioInterval> : std::true_type {};
+template<> struct Bound<datamunge::stats::PoissonRateInterval> : std::true_type {};
 template<> struct Bound<datamunge::Bspline> : std::true_type {};
 template<> struct Bound<datamunge::BSplineRegression> : std::true_type {};
 template<> struct Bound<datamunge::PSplineRegression> : std::true_type {};
@@ -1758,80 +1783,82 @@ SEXP rosetta_r_241(SEXP, SEXP);
 SEXP rosetta_r_242(SEXP, SEXP);
 SEXP rosetta_r_243(SEXP, SEXP);
 SEXP rosetta_r_244(SEXP, SEXP);
-SEXP rosetta_r_263(SEXP);
-SEXP rosetta_r_280(SEXP);
-SEXP rosetta_r_281(SEXP);
-SEXP rosetta_r_282(SEXP, SEXP);
-SEXP rosetta_r_283(SEXP);
-SEXP rosetta_r_284(SEXP, SEXP);
-SEXP rosetta_r_285(SEXP);
-SEXP rosetta_r_286(SEXP, SEXP);
-SEXP rosetta_r_287(SEXP);
-SEXP rosetta_r_288(SEXP);
-SEXP rosetta_r_289(SEXP, SEXP);
-SEXP rosetta_r_290(SEXP);
-SEXP rosetta_r_291(SEXP, SEXP);
-SEXP rosetta_r_292(SEXP);
-SEXP rosetta_r_296(SEXP);
-SEXP rosetta_r_297(SEXP, SEXP);
-SEXP rosetta_r_298(SEXP);
-SEXP rosetta_r_299(SEXP, SEXP);
-SEXP rosetta_r_300(SEXP);
+SEXP rosetta_r_245(SEXP, SEXP);
+SEXP rosetta_r_246(SEXP, SEXP);
+SEXP rosetta_r_247(SEXP, SEXP);
+SEXP rosetta_r_248(SEXP, SEXP);
+SEXP rosetta_r_249(SEXP, SEXP);
+SEXP rosetta_r_250(SEXP, SEXP);
+SEXP rosetta_r_251(SEXP, SEXP);
+SEXP rosetta_r_252(SEXP, SEXP);
+SEXP rosetta_r_253(SEXP, SEXP);
+SEXP rosetta_r_254(SEXP, SEXP);
+SEXP rosetta_r_255(SEXP, SEXP);
+SEXP rosetta_r_256(SEXP, SEXP);
+SEXP rosetta_r_257(SEXP, SEXP);
+SEXP rosetta_r_258(SEXP, SEXP);
+SEXP rosetta_r_259(SEXP, SEXP);
+SEXP rosetta_r_260(SEXP, SEXP);
+SEXP rosetta_r_261(SEXP, SEXP);
+SEXP rosetta_r_262(SEXP, SEXP);
+SEXP rosetta_r_263(SEXP, SEXP);
+SEXP rosetta_r_264(SEXP, SEXP);
+SEXP rosetta_r_265(SEXP, SEXP);
+SEXP rosetta_r_284(SEXP);
 SEXP rosetta_r_301(SEXP);
-SEXP rosetta_r_302(SEXP, SEXP);
-SEXP rosetta_r_303(SEXP);
-SEXP rosetta_r_304(SEXP, SEXP);
-SEXP rosetta_r_305(SEXP);
+SEXP rosetta_r_302(SEXP);
+SEXP rosetta_r_303(SEXP, SEXP);
+SEXP rosetta_r_304(SEXP);
+SEXP rosetta_r_305(SEXP, SEXP);
 SEXP rosetta_r_306(SEXP);
 SEXP rosetta_r_307(SEXP, SEXP);
 SEXP rosetta_r_308(SEXP);
-SEXP rosetta_r_309(SEXP, SEXP);
-SEXP rosetta_r_310(SEXP);
+SEXP rosetta_r_309(SEXP);
+SEXP rosetta_r_310(SEXP, SEXP);
 SEXP rosetta_r_311(SEXP);
 SEXP rosetta_r_312(SEXP, SEXP);
 SEXP rosetta_r_313(SEXP);
-SEXP rosetta_r_314(SEXP, SEXP);
-SEXP rosetta_r_315(SEXP);
-SEXP rosetta_r_318(SEXP);
-SEXP rosetta_r_319(SEXP, SEXP);
-SEXP rosetta_r_320(SEXP);
+SEXP rosetta_r_317(SEXP);
+SEXP rosetta_r_318(SEXP, SEXP);
+SEXP rosetta_r_319(SEXP);
+SEXP rosetta_r_320(SEXP, SEXP);
+SEXP rosetta_r_321(SEXP);
+SEXP rosetta_r_322(SEXP);
+SEXP rosetta_r_323(SEXP, SEXP);
+SEXP rosetta_r_324(SEXP);
+SEXP rosetta_r_325(SEXP, SEXP);
+SEXP rosetta_r_326(SEXP);
+SEXP rosetta_r_327(SEXP);
+SEXP rosetta_r_328(SEXP, SEXP);
+SEXP rosetta_r_329(SEXP);
+SEXP rosetta_r_330(SEXP, SEXP);
+SEXP rosetta_r_331(SEXP);
+SEXP rosetta_r_332(SEXP);
+SEXP rosetta_r_333(SEXP, SEXP);
 SEXP rosetta_r_334(SEXP);
-SEXP rosetta_r_335(SEXP);
-SEXP rosetta_r_336(SEXP, SEXP);
-SEXP rosetta_r_337(SEXP);
-SEXP rosetta_r_338(SEXP, SEXP);
+SEXP rosetta_r_335(SEXP, SEXP);
+SEXP rosetta_r_336(SEXP);
 SEXP rosetta_r_339(SEXP);
 SEXP rosetta_r_340(SEXP, SEXP);
 SEXP rosetta_r_341(SEXP);
-SEXP rosetta_r_351(SEXP);
-SEXP rosetta_r_353(SEXP, SEXP);
-SEXP rosetta_r_355(SEXP, SEXP);
+SEXP rosetta_r_355(SEXP);
+SEXP rosetta_r_356(SEXP);
+SEXP rosetta_r_357(SEXP, SEXP);
+SEXP rosetta_r_358(SEXP);
 SEXP rosetta_r_359(SEXP, SEXP);
-SEXP rosetta_r_365(SEXP, SEXP);
-SEXP rosetta_r_367(SEXP, SEXP);
-SEXP rosetta_r_369(SEXP, SEXP);
-SEXP rosetta_r_372(SEXP, SEXP);
-SEXP rosetta_r_375(SEXP, SEXP);
-SEXP rosetta_r_378(SEXP, SEXP);
-SEXP rosetta_r_379(SEXP);
+SEXP rosetta_r_360(SEXP);
+SEXP rosetta_r_361(SEXP, SEXP);
+SEXP rosetta_r_362(SEXP);
+SEXP rosetta_r_372(SEXP);
+SEXP rosetta_r_374(SEXP, SEXP);
+SEXP rosetta_r_376(SEXP, SEXP);
 SEXP rosetta_r_380(SEXP, SEXP);
-SEXP rosetta_r_381(SEXP);
-SEXP rosetta_r_382(SEXP, SEXP);
-SEXP rosetta_r_383(SEXP);
-SEXP rosetta_r_384(SEXP, SEXP);
-SEXP rosetta_r_385(SEXP);
 SEXP rosetta_r_386(SEXP, SEXP);
-SEXP rosetta_r_387(SEXP);
 SEXP rosetta_r_388(SEXP, SEXP);
-SEXP rosetta_r_389(SEXP);
-SEXP rosetta_r_390(SEXP);
-SEXP rosetta_r_391(SEXP, SEXP);
-SEXP rosetta_r_392(SEXP);
+SEXP rosetta_r_390(SEXP, SEXP);
 SEXP rosetta_r_393(SEXP, SEXP);
-SEXP rosetta_r_394(SEXP);
-SEXP rosetta_r_395(SEXP, SEXP);
-SEXP rosetta_r_396(SEXP);
-SEXP rosetta_r_399(SEXP);
+SEXP rosetta_r_396(SEXP, SEXP);
+SEXP rosetta_r_399(SEXP, SEXP);
 SEXP rosetta_r_400(SEXP);
 SEXP rosetta_r_401(SEXP, SEXP);
 SEXP rosetta_r_402(SEXP);
@@ -1845,37 +1872,40 @@ SEXP rosetta_r_409(SEXP, SEXP);
 SEXP rosetta_r_410(SEXP);
 SEXP rosetta_r_411(SEXP, SEXP);
 SEXP rosetta_r_412(SEXP);
-SEXP rosetta_r_413(SEXP);
-SEXP rosetta_r_414(SEXP, SEXP);
+SEXP rosetta_r_413(SEXP, SEXP);
+SEXP rosetta_r_414(SEXP);
 SEXP rosetta_r_415(SEXP);
 SEXP rosetta_r_416(SEXP, SEXP);
 SEXP rosetta_r_417(SEXP);
 SEXP rosetta_r_418(SEXP, SEXP);
 SEXP rosetta_r_419(SEXP);
-SEXP rosetta_r_422(SEXP);
+SEXP rosetta_r_420(SEXP, SEXP);
+SEXP rosetta_r_421(SEXP);
+SEXP rosetta_r_422(SEXP, SEXP);
 SEXP rosetta_r_423(SEXP);
 SEXP rosetta_r_424(SEXP, SEXP);
 SEXP rosetta_r_425(SEXP);
 SEXP rosetta_r_426(SEXP, SEXP);
 SEXP rosetta_r_427(SEXP);
-SEXP rosetta_r_428(SEXP);
-SEXP rosetta_r_429(SEXP, SEXP);
-SEXP rosetta_r_430(SEXP);
-SEXP rosetta_r_431(SEXP, SEXP);
-SEXP rosetta_r_432(SEXP);
-SEXP rosetta_r_433(SEXP, SEXP);
+SEXP rosetta_r_428(SEXP, SEXP);
+SEXP rosetta_r_429(SEXP);
+SEXP rosetta_r_430(SEXP, SEXP);
+SEXP rosetta_r_431(SEXP);
 SEXP rosetta_r_434(SEXP);
-SEXP rosetta_r_435(SEXP, SEXP);
-SEXP rosetta_r_436(SEXP);
+SEXP rosetta_r_436(SEXP, SEXP);
+SEXP rosetta_r_437(SEXP);
+SEXP rosetta_r_438(SEXP, SEXP);
 SEXP rosetta_r_439(SEXP);
-SEXP rosetta_r_440(SEXP);
-SEXP rosetta_r_441(SEXP, SEXP);
-SEXP rosetta_r_442(SEXP);
-SEXP rosetta_r_443(SEXP, SEXP);
-SEXP rosetta_r_444(SEXP);
-SEXP rosetta_r_445(SEXP, SEXP);
+SEXP rosetta_r_440(SEXP, SEXP);
+SEXP rosetta_r_441(SEXP);
+SEXP rosetta_r_442(SEXP, SEXP);
+SEXP rosetta_r_443(SEXP);
+SEXP rosetta_r_444(SEXP, SEXP);
+SEXP rosetta_r_445(SEXP);
 SEXP rosetta_r_446(SEXP);
-SEXP rosetta_r_449(SEXP);
+SEXP rosetta_r_447(SEXP, SEXP);
+SEXP rosetta_r_448(SEXP);
+SEXP rosetta_r_449(SEXP, SEXP);
 SEXP rosetta_r_450(SEXP);
 SEXP rosetta_r_451(SEXP, SEXP);
 SEXP rosetta_r_452(SEXP);
@@ -1891,8 +1921,8 @@ SEXP rosetta_r_461(SEXP, SEXP);
 SEXP rosetta_r_462(SEXP);
 SEXP rosetta_r_463(SEXP, SEXP);
 SEXP rosetta_r_464(SEXP);
-SEXP rosetta_r_465(SEXP);
-SEXP rosetta_r_466(SEXP, SEXP);
+SEXP rosetta_r_465(SEXP, SEXP);
+SEXP rosetta_r_466(SEXP);
 SEXP rosetta_r_467(SEXP);
 SEXP rosetta_r_468(SEXP, SEXP);
 SEXP rosetta_r_469(SEXP);
@@ -1904,149 +1934,46 @@ SEXP rosetta_r_474(SEXP, SEXP);
 SEXP rosetta_r_475(SEXP);
 SEXP rosetta_r_476(SEXP, SEXP);
 SEXP rosetta_r_477(SEXP);
-SEXP rosetta_r_478(SEXP, SEXP);
-SEXP rosetta_r_479(SEXP);
-SEXP rosetta_r_480(SEXP, SEXP);
-SEXP rosetta_r_481(SEXP);
-SEXP rosetta_r_484(SEXP);
-SEXP rosetta_r_485(SEXP);
-SEXP rosetta_r_486(SEXP, SEXP);
-SEXP rosetta_r_487(SEXP);
-SEXP rosetta_r_488(SEXP, SEXP);
-SEXP rosetta_r_489(SEXP);
-SEXP rosetta_r_490(SEXP, SEXP);
-SEXP rosetta_r_491(SEXP);
-SEXP rosetta_r_492(SEXP, SEXP);
-SEXP rosetta_r_493(SEXP);
-SEXP rosetta_r_494(SEXP, SEXP);
-SEXP rosetta_r_495(SEXP);
-SEXP rosetta_r_496(SEXP, SEXP);
-SEXP rosetta_r_497(SEXP);
-SEXP rosetta_r_498(SEXP);
-SEXP rosetta_r_499(SEXP, SEXP);
-SEXP rosetta_r_500(SEXP);
-SEXP rosetta_r_501(SEXP, SEXP);
-SEXP rosetta_r_502(SEXP);
-SEXP rosetta_r_503(SEXP, SEXP);
-SEXP rosetta_r_504(SEXP);
-SEXP rosetta_r_505(SEXP, SEXP);
-SEXP rosetta_r_506(SEXP);
-SEXP rosetta_r_509(SEXP);
-SEXP rosetta_r_510(SEXP);
-SEXP rosetta_r_511(SEXP, SEXP);
-SEXP rosetta_r_512(SEXP);
-SEXP rosetta_r_513(SEXP, SEXP);
-SEXP rosetta_r_514(SEXP);
-SEXP rosetta_r_515(SEXP, SEXP);
-SEXP rosetta_r_516(SEXP);
-SEXP rosetta_r_517(SEXP, SEXP);
-SEXP rosetta_r_518(SEXP);
-SEXP rosetta_r_528(SEXP);
-SEXP rosetta_r_529(SEXP);
-SEXP rosetta_r_530(SEXP, SEXP);
-SEXP rosetta_r_531(SEXP);
-SEXP rosetta_r_532(SEXP, SEXP);
-SEXP rosetta_r_533(SEXP);
-SEXP rosetta_r_534(SEXP, SEXP);
-SEXP rosetta_r_535(SEXP);
-SEXP rosetta_r_536(SEXP);
-SEXP rosetta_r_537(SEXP, SEXP);
-SEXP rosetta_r_538(SEXP);
-SEXP rosetta_r_539(SEXP, SEXP);
-SEXP rosetta_r_540(SEXP);
-SEXP rosetta_r_541(SEXP, SEXP);
-SEXP rosetta_r_542(SEXP);
-SEXP rosetta_r_543(SEXP, SEXP);
-SEXP rosetta_r_544(SEXP);
-SEXP rosetta_r_545(SEXP);
-SEXP rosetta_r_546(SEXP, SEXP);
-SEXP rosetta_r_547(SEXP);
-SEXP rosetta_r_548(SEXP, SEXP);
-SEXP rosetta_r_549(SEXP);
-SEXP rosetta_r_550(SEXP, SEXP);
-SEXP rosetta_r_551(SEXP);
-SEXP rosetta_r_552(SEXP);
-SEXP rosetta_r_553(SEXP, SEXP);
-SEXP rosetta_r_554(SEXP);
-SEXP rosetta_r_555(SEXP, SEXP);
-SEXP rosetta_r_556(SEXP);
-SEXP rosetta_r_557(SEXP, SEXP);
-SEXP rosetta_r_558(SEXP);
-SEXP rosetta_r_559(SEXP);
-SEXP rosetta_r_560(SEXP, SEXP);
-SEXP rosetta_r_561(SEXP);
-SEXP rosetta_r_562(SEXP, SEXP);
-SEXP rosetta_r_563(SEXP);
-SEXP rosetta_r_564(SEXP, SEXP);
-SEXP rosetta_r_565(SEXP);
-SEXP rosetta_r_566(SEXP);
-SEXP rosetta_r_567(SEXP, SEXP);
-SEXP rosetta_r_568(SEXP);
-SEXP rosetta_r_569(SEXP, SEXP);
-SEXP rosetta_r_570(SEXP);
-SEXP rosetta_r_571(SEXP, SEXP);
-SEXP rosetta_r_572(SEXP);
-SEXP rosetta_r_573(SEXP, SEXP);
-SEXP rosetta_r_574(SEXP);
-SEXP rosetta_r_575(SEXP);
-SEXP rosetta_r_576(SEXP, SEXP);
-SEXP rosetta_r_577(SEXP);
-SEXP rosetta_r_578(SEXP, SEXP);
-SEXP rosetta_r_579(SEXP);
-SEXP rosetta_r_580(SEXP, SEXP);
-SEXP rosetta_r_581(SEXP);
-SEXP rosetta_r_582(SEXP);
-SEXP rosetta_r_583(SEXP, SEXP);
-SEXP rosetta_r_584(SEXP);
-SEXP rosetta_r_585(SEXP, SEXP);
-SEXP rosetta_r_586(SEXP);
-SEXP rosetta_r_587(SEXP, SEXP);
-SEXP rosetta_r_588(SEXP);
-SEXP rosetta_r_589(SEXP, SEXP);
-SEXP rosetta_r_590(SEXP);
-SEXP rosetta_r_594(SEXP);
-SEXP rosetta_r_595(SEXP, SEXP);
-SEXP rosetta_r_596(SEXP);
-SEXP rosetta_r_597(SEXP, SEXP);
-SEXP rosetta_r_598(SEXP);
-SEXP rosetta_r_599(SEXP, SEXP);
-SEXP rosetta_r_600(SEXP);
-SEXP rosetta_r_601(SEXP, SEXP);
-SEXP rosetta_r_602(SEXP);
-SEXP rosetta_r_637(SEXP);
-SEXP rosetta_r_642(SEXP);
-SEXP rosetta_r_644(SEXP, SEXP);
-SEXP rosetta_r_646(SEXP, SEXP);
-SEXP rosetta_r_647(SEXP);
-SEXP rosetta_r_648(SEXP, SEXP);
-SEXP rosetta_r_649(SEXP);
-SEXP rosetta_r_650(SEXP, SEXP);
-SEXP rosetta_r_651(SEXP);
-SEXP rosetta_r_652(SEXP, SEXP);
-SEXP rosetta_r_653(SEXP);
+SEXP rosetta_r_478(SEXP);
+SEXP rosetta_r_479(SEXP, SEXP);
+SEXP rosetta_r_480(SEXP);
+SEXP rosetta_r_481(SEXP, SEXP);
+SEXP rosetta_r_482(SEXP);
+SEXP rosetta_r_543(SEXP);
+SEXP rosetta_r_633(SEXP);
+SEXP rosetta_r_656(SEXP);
 SEXP rosetta_r_657(SEXP);
+SEXP rosetta_r_658(SEXP, SEXP);
+SEXP rosetta_r_659(SEXP);
+SEXP rosetta_r_660(SEXP, SEXP);
+SEXP rosetta_r_661(SEXP);
+SEXP rosetta_r_662(SEXP, SEXP);
 SEXP rosetta_r_663(SEXP);
+SEXP rosetta_r_664(SEXP, SEXP);
+SEXP rosetta_r_665(SEXP);
+SEXP rosetta_r_666(SEXP, SEXP);
+SEXP rosetta_r_667(SEXP);
 SEXP rosetta_r_668(SEXP);
-SEXP rosetta_r_671(SEXP);
-SEXP rosetta_r_672(SEXP, SEXP);
-SEXP rosetta_r_673(SEXP);
-SEXP rosetta_r_674(SEXP, SEXP);
-SEXP rosetta_r_675(SEXP);
-SEXP rosetta_r_676(SEXP);
-SEXP rosetta_r_677(SEXP, SEXP);
+SEXP rosetta_r_669(SEXP, SEXP);
+SEXP rosetta_r_670(SEXP);
+SEXP rosetta_r_671(SEXP, SEXP);
+SEXP rosetta_r_672(SEXP);
+SEXP rosetta_r_673(SEXP, SEXP);
+SEXP rosetta_r_674(SEXP);
+SEXP rosetta_r_677(SEXP);
 SEXP rosetta_r_678(SEXP);
 SEXP rosetta_r_679(SEXP, SEXP);
 SEXP rosetta_r_680(SEXP);
 SEXP rosetta_r_681(SEXP, SEXP);
 SEXP rosetta_r_682(SEXP);
-SEXP rosetta_r_683(SEXP);
-SEXP rosetta_r_684(SEXP, SEXP);
-SEXP rosetta_r_685(SEXP);
-SEXP rosetta_r_686(SEXP, SEXP);
-SEXP rosetta_r_687(SEXP);
-SEXP rosetta_r_688(SEXP, SEXP);
-SEXP rosetta_r_689(SEXP);
-SEXP rosetta_r_690(SEXP, SEXP);
+SEXP rosetta_r_683(SEXP, SEXP);
+SEXP rosetta_r_684(SEXP);
+SEXP rosetta_r_685(SEXP, SEXP);
+SEXP rosetta_r_686(SEXP);
+SEXP rosetta_r_687(SEXP, SEXP);
+SEXP rosetta_r_688(SEXP);
+SEXP rosetta_r_689(SEXP, SEXP);
+SEXP rosetta_r_690(SEXP);
 SEXP rosetta_r_691(SEXP);
 SEXP rosetta_r_692(SEXP, SEXP);
 SEXP rosetta_r_693(SEXP);
@@ -2054,21 +1981,19 @@ SEXP rosetta_r_694(SEXP, SEXP);
 SEXP rosetta_r_695(SEXP);
 SEXP rosetta_r_696(SEXP, SEXP);
 SEXP rosetta_r_697(SEXP);
-SEXP rosetta_r_698(SEXP);
-SEXP rosetta_r_699(SEXP, SEXP);
 SEXP rosetta_r_700(SEXP);
-SEXP rosetta_r_701(SEXP, SEXP);
-SEXP rosetta_r_702(SEXP);
-SEXP rosetta_r_703(SEXP, SEXP);
-SEXP rosetta_r_704(SEXP);
-SEXP rosetta_r_705(SEXP, SEXP);
-SEXP rosetta_r_706(SEXP);
-SEXP rosetta_r_707(SEXP, SEXP);
+SEXP rosetta_r_701(SEXP);
+SEXP rosetta_r_702(SEXP, SEXP);
+SEXP rosetta_r_703(SEXP);
+SEXP rosetta_r_704(SEXP, SEXP);
+SEXP rosetta_r_705(SEXP);
+SEXP rosetta_r_706(SEXP, SEXP);
+SEXP rosetta_r_707(SEXP);
 SEXP rosetta_r_708(SEXP);
 SEXP rosetta_r_709(SEXP, SEXP);
 SEXP rosetta_r_710(SEXP);
-SEXP rosetta_r_711(SEXP);
-SEXP rosetta_r_712(SEXP, SEXP);
+SEXP rosetta_r_711(SEXP, SEXP);
+SEXP rosetta_r_712(SEXP);
 SEXP rosetta_r_713(SEXP);
 SEXP rosetta_r_714(SEXP, SEXP);
 SEXP rosetta_r_715(SEXP);
@@ -2078,159 +2003,145 @@ SEXP rosetta_r_718(SEXP, SEXP);
 SEXP rosetta_r_719(SEXP);
 SEXP rosetta_r_720(SEXP, SEXP);
 SEXP rosetta_r_721(SEXP);
-SEXP rosetta_r_722(SEXP, SEXP);
-SEXP rosetta_r_723(SEXP);
-SEXP rosetta_r_724(SEXP, SEXP);
+SEXP rosetta_r_724(SEXP);
 SEXP rosetta_r_725(SEXP);
 SEXP rosetta_r_726(SEXP, SEXP);
 SEXP rosetta_r_727(SEXP);
-SEXP rosetta_r_728(SEXP);
-SEXP rosetta_r_729(SEXP, SEXP);
-SEXP rosetta_r_730(SEXP);
-SEXP rosetta_r_731(SEXP, SEXP);
-SEXP rosetta_r_732(SEXP);
-SEXP rosetta_r_733(SEXP, SEXP);
+SEXP rosetta_r_728(SEXP, SEXP);
+SEXP rosetta_r_729(SEXP);
+SEXP rosetta_r_730(SEXP, SEXP);
+SEXP rosetta_r_731(SEXP);
 SEXP rosetta_r_734(SEXP);
-SEXP rosetta_r_735(SEXP, SEXP);
-SEXP rosetta_r_736(SEXP);
-SEXP rosetta_r_737(SEXP, SEXP);
-SEXP rosetta_r_738(SEXP);
-SEXP rosetta_r_739(SEXP, SEXP);
-SEXP rosetta_r_740(SEXP);
-SEXP rosetta_r_741(SEXP, SEXP);
-SEXP rosetta_r_742(SEXP);
-SEXP rosetta_r_743(SEXP, SEXP);
-SEXP rosetta_r_744(SEXP);
-SEXP rosetta_r_749(SEXP);
-SEXP rosetta_r_753(SEXP);
+SEXP rosetta_r_735(SEXP);
+SEXP rosetta_r_736(SEXP, SEXP);
+SEXP rosetta_r_737(SEXP);
+SEXP rosetta_r_738(SEXP, SEXP);
+SEXP rosetta_r_739(SEXP);
+SEXP rosetta_r_740(SEXP, SEXP);
+SEXP rosetta_r_741(SEXP);
+SEXP rosetta_r_742(SEXP, SEXP);
+SEXP rosetta_r_743(SEXP);
+SEXP rosetta_r_744(SEXP, SEXP);
+SEXP rosetta_r_745(SEXP);
+SEXP rosetta_r_746(SEXP, SEXP);
+SEXP rosetta_r_747(SEXP);
+SEXP rosetta_r_748(SEXP);
+SEXP rosetta_r_749(SEXP, SEXP);
+SEXP rosetta_r_750(SEXP);
+SEXP rosetta_r_751(SEXP, SEXP);
+SEXP rosetta_r_752(SEXP);
+SEXP rosetta_r_753(SEXP, SEXP);
+SEXP rosetta_r_754(SEXP);
+SEXP rosetta_r_755(SEXP, SEXP);
 SEXP rosetta_r_756(SEXP);
-SEXP rosetta_r_757(SEXP);
-SEXP rosetta_r_758(SEXP, SEXP);
 SEXP rosetta_r_759(SEXP);
-SEXP rosetta_r_760(SEXP, SEXP);
-SEXP rosetta_r_761(SEXP);
-SEXP rosetta_r_769(SEXP);
-SEXP rosetta_r_770(SEXP);
-SEXP rosetta_r_771(SEXP, SEXP);
-SEXP rosetta_r_772(SEXP);
-SEXP rosetta_r_773(SEXP, SEXP);
-SEXP rosetta_r_774(SEXP);
-SEXP rosetta_r_775(SEXP, SEXP);
-SEXP rosetta_r_776(SEXP);
+SEXP rosetta_r_760(SEXP);
+SEXP rosetta_r_761(SEXP, SEXP);
+SEXP rosetta_r_762(SEXP);
+SEXP rosetta_r_763(SEXP, SEXP);
+SEXP rosetta_r_764(SEXP);
+SEXP rosetta_r_765(SEXP, SEXP);
+SEXP rosetta_r_766(SEXP);
+SEXP rosetta_r_767(SEXP, SEXP);
+SEXP rosetta_r_768(SEXP);
+SEXP rosetta_r_778(SEXP);
+SEXP rosetta_r_779(SEXP);
+SEXP rosetta_r_780(SEXP, SEXP);
+SEXP rosetta_r_781(SEXP);
+SEXP rosetta_r_782(SEXP, SEXP);
+SEXP rosetta_r_783(SEXP);
+SEXP rosetta_r_784(SEXP, SEXP);
+SEXP rosetta_r_785(SEXP);
 SEXP rosetta_r_786(SEXP);
-SEXP rosetta_r_787(SEXP);
-SEXP rosetta_r_788(SEXP, SEXP);
-SEXP rosetta_r_789(SEXP);
-SEXP rosetta_r_790(SEXP, SEXP);
-SEXP rosetta_r_791(SEXP);
+SEXP rosetta_r_787(SEXP, SEXP);
+SEXP rosetta_r_788(SEXP);
+SEXP rosetta_r_789(SEXP, SEXP);
+SEXP rosetta_r_790(SEXP);
+SEXP rosetta_r_791(SEXP, SEXP);
 SEXP rosetta_r_792(SEXP);
 SEXP rosetta_r_793(SEXP, SEXP);
 SEXP rosetta_r_794(SEXP);
-SEXP rosetta_r_795(SEXP, SEXP);
-SEXP rosetta_r_796(SEXP);
-SEXP rosetta_r_803(SEXP);
+SEXP rosetta_r_795(SEXP);
+SEXP rosetta_r_796(SEXP, SEXP);
+SEXP rosetta_r_797(SEXP);
+SEXP rosetta_r_798(SEXP, SEXP);
+SEXP rosetta_r_799(SEXP);
+SEXP rosetta_r_800(SEXP, SEXP);
+SEXP rosetta_r_801(SEXP);
+SEXP rosetta_r_802(SEXP);
+SEXP rosetta_r_803(SEXP, SEXP);
+SEXP rosetta_r_804(SEXP);
 SEXP rosetta_r_805(SEXP, SEXP);
+SEXP rosetta_r_806(SEXP);
+SEXP rosetta_r_807(SEXP, SEXP);
+SEXP rosetta_r_808(SEXP);
+SEXP rosetta_r_809(SEXP);
+SEXP rosetta_r_810(SEXP, SEXP);
 SEXP rosetta_r_811(SEXP);
-SEXP rosetta_r_817(SEXP);
-SEXP rosetta_r_823(SEXP);
+SEXP rosetta_r_812(SEXP, SEXP);
+SEXP rosetta_r_813(SEXP);
+SEXP rosetta_r_814(SEXP, SEXP);
+SEXP rosetta_r_815(SEXP);
+SEXP rosetta_r_816(SEXP);
+SEXP rosetta_r_817(SEXP, SEXP);
+SEXP rosetta_r_818(SEXP);
+SEXP rosetta_r_819(SEXP, SEXP);
+SEXP rosetta_r_820(SEXP);
+SEXP rosetta_r_821(SEXP, SEXP);
+SEXP rosetta_r_822(SEXP);
+SEXP rosetta_r_823(SEXP, SEXP);
+SEXP rosetta_r_824(SEXP);
+SEXP rosetta_r_825(SEXP);
+SEXP rosetta_r_826(SEXP, SEXP);
+SEXP rosetta_r_827(SEXP);
+SEXP rosetta_r_828(SEXP, SEXP);
 SEXP rosetta_r_829(SEXP);
-SEXP rosetta_r_835(SEXP);
+SEXP rosetta_r_830(SEXP, SEXP);
+SEXP rosetta_r_831(SEXP);
+SEXP rosetta_r_832(SEXP);
+SEXP rosetta_r_833(SEXP, SEXP);
+SEXP rosetta_r_834(SEXP);
+SEXP rosetta_r_835(SEXP, SEXP);
 SEXP rosetta_r_836(SEXP);
 SEXP rosetta_r_837(SEXP, SEXP);
 SEXP rosetta_r_838(SEXP);
 SEXP rosetta_r_839(SEXP, SEXP);
 SEXP rosetta_r_840(SEXP);
-SEXP rosetta_r_841(SEXP);
-SEXP rosetta_r_842(SEXP, SEXP);
-SEXP rosetta_r_843(SEXP);
-SEXP rosetta_r_844(SEXP, SEXP);
-SEXP rosetta_r_845(SEXP);
-SEXP rosetta_r_846(SEXP, SEXP);
-SEXP rosetta_r_847(SEXP);
+SEXP rosetta_r_844(SEXP);
+SEXP rosetta_r_845(SEXP, SEXP);
+SEXP rosetta_r_846(SEXP);
+SEXP rosetta_r_847(SEXP, SEXP);
 SEXP rosetta_r_848(SEXP);
 SEXP rosetta_r_849(SEXP, SEXP);
 SEXP rosetta_r_850(SEXP);
 SEXP rosetta_r_851(SEXP, SEXP);
 SEXP rosetta_r_852(SEXP);
-SEXP rosetta_r_853(SEXP);
-SEXP rosetta_r_854(SEXP, SEXP);
-SEXP rosetta_r_855(SEXP);
-SEXP rosetta_r_856(SEXP, SEXP);
-SEXP rosetta_r_857(SEXP);
-SEXP rosetta_r_858(SEXP);
-SEXP rosetta_r_859(SEXP, SEXP);
-SEXP rosetta_r_860(SEXP);
-SEXP rosetta_r_861(SEXP, SEXP);
-SEXP rosetta_r_862(SEXP);
-SEXP rosetta_r_863(SEXP, SEXP);
-SEXP rosetta_r_864(SEXP);
-SEXP rosetta_r_865(SEXP, SEXP);
-SEXP rosetta_r_866(SEXP);
-SEXP rosetta_r_867(SEXP, SEXP);
-SEXP rosetta_r_868(SEXP);
-SEXP rosetta_r_869(SEXP, SEXP);
-SEXP rosetta_r_870(SEXP);
-SEXP rosetta_r_871(SEXP, SEXP);
-SEXP rosetta_r_872(SEXP);
-SEXP rosetta_r_873(SEXP, SEXP);
-SEXP rosetta_r_874(SEXP);
-SEXP rosetta_r_875(SEXP);
-SEXP rosetta_r_876(SEXP, SEXP);
-SEXP rosetta_r_877(SEXP);
-SEXP rosetta_r_878(SEXP, SEXP);
-SEXP rosetta_r_879(SEXP);
-SEXP rosetta_r_880(SEXP, SEXP);
-SEXP rosetta_r_881(SEXP);
-SEXP rosetta_r_882(SEXP, SEXP);
-SEXP rosetta_r_883(SEXP);
-SEXP rosetta_r_884(SEXP, SEXP);
-SEXP rosetta_r_885(SEXP);
-SEXP rosetta_r_886(SEXP, SEXP);
 SEXP rosetta_r_887(SEXP);
-SEXP rosetta_r_888(SEXP, SEXP);
-SEXP rosetta_r_889(SEXP);
-SEXP rosetta_r_890(SEXP, SEXP);
-SEXP rosetta_r_891(SEXP);
 SEXP rosetta_r_892(SEXP);
-SEXP rosetta_r_893(SEXP, SEXP);
-SEXP rosetta_r_894(SEXP);
-SEXP rosetta_r_895(SEXP, SEXP);
-SEXP rosetta_r_896(SEXP);
-SEXP rosetta_r_897(SEXP, SEXP);
-SEXP rosetta_r_898(SEXP);
+SEXP rosetta_r_894(SEXP, SEXP);
+SEXP rosetta_r_896(SEXP, SEXP);
+SEXP rosetta_r_897(SEXP);
+SEXP rosetta_r_898(SEXP, SEXP);
 SEXP rosetta_r_899(SEXP);
 SEXP rosetta_r_900(SEXP, SEXP);
 SEXP rosetta_r_901(SEXP);
 SEXP rosetta_r_902(SEXP, SEXP);
 SEXP rosetta_r_903(SEXP);
-SEXP rosetta_r_904(SEXP, SEXP);
-SEXP rosetta_r_905(SEXP);
-SEXP rosetta_r_906(SEXP, SEXP);
 SEXP rosetta_r_907(SEXP);
-SEXP rosetta_r_908(SEXP, SEXP);
-SEXP rosetta_r_909(SEXP);
-SEXP rosetta_r_911(SEXP, SEXP);
-SEXP rosetta_r_912(SEXP);
-SEXP rosetta_r_913(SEXP, SEXP);
-SEXP rosetta_r_914(SEXP);
-SEXP rosetta_r_915(SEXP, SEXP);
-SEXP rosetta_r_916(SEXP);
-SEXP rosetta_r_917(SEXP, SEXP);
+SEXP rosetta_r_913(SEXP);
 SEXP rosetta_r_918(SEXP);
-SEXP rosetta_r_919(SEXP, SEXP);
-SEXP rosetta_r_920(SEXP);
 SEXP rosetta_r_921(SEXP);
 SEXP rosetta_r_922(SEXP, SEXP);
 SEXP rosetta_r_923(SEXP);
 SEXP rosetta_r_924(SEXP, SEXP);
 SEXP rosetta_r_925(SEXP);
-SEXP rosetta_r_926(SEXP, SEXP);
-SEXP rosetta_r_927(SEXP);
-SEXP rosetta_r_928(SEXP, SEXP);
-SEXP rosetta_r_929(SEXP);
-SEXP rosetta_r_930(SEXP, SEXP);
-SEXP rosetta_r_931(SEXP);
-SEXP rosetta_r_932(SEXP, SEXP);
+SEXP rosetta_r_926(SEXP);
+SEXP rosetta_r_927(SEXP, SEXP);
+SEXP rosetta_r_928(SEXP);
+SEXP rosetta_r_929(SEXP, SEXP);
+SEXP rosetta_r_930(SEXP);
+SEXP rosetta_r_931(SEXP, SEXP);
+SEXP rosetta_r_932(SEXP);
 SEXP rosetta_r_933(SEXP);
 SEXP rosetta_r_934(SEXP, SEXP);
 SEXP rosetta_r_935(SEXP);
@@ -2240,107 +2151,203 @@ SEXP rosetta_r_938(SEXP, SEXP);
 SEXP rosetta_r_939(SEXP);
 SEXP rosetta_r_940(SEXP, SEXP);
 SEXP rosetta_r_941(SEXP);
-SEXP rosetta_r_942(SEXP);
-SEXP rosetta_r_943(SEXP, SEXP);
-SEXP rosetta_r_944(SEXP);
-SEXP rosetta_r_945(SEXP, SEXP);
-SEXP rosetta_r_946(SEXP);
-SEXP rosetta_r_947(SEXP, SEXP);
+SEXP rosetta_r_942(SEXP, SEXP);
+SEXP rosetta_r_943(SEXP);
+SEXP rosetta_r_944(SEXP, SEXP);
+SEXP rosetta_r_945(SEXP);
+SEXP rosetta_r_946(SEXP, SEXP);
+SEXP rosetta_r_947(SEXP);
 SEXP rosetta_r_948(SEXP);
 SEXP rosetta_r_949(SEXP, SEXP);
 SEXP rosetta_r_950(SEXP);
 SEXP rosetta_r_951(SEXP, SEXP);
 SEXP rosetta_r_952(SEXP);
-SEXP rosetta_r_953(SEXP);
-SEXP rosetta_r_954(SEXP, SEXP);
-SEXP rosetta_r_955(SEXP);
-SEXP rosetta_r_956(SEXP, SEXP);
-SEXP rosetta_r_957(SEXP);
-SEXP rosetta_r_1017(SEXP);
-SEXP rosetta_r_1069(SEXP);
+SEXP rosetta_r_953(SEXP, SEXP);
+SEXP rosetta_r_954(SEXP);
+SEXP rosetta_r_955(SEXP, SEXP);
+SEXP rosetta_r_956(SEXP);
+SEXP rosetta_r_957(SEXP, SEXP);
+SEXP rosetta_r_958(SEXP);
+SEXP rosetta_r_959(SEXP, SEXP);
+SEXP rosetta_r_960(SEXP);
+SEXP rosetta_r_961(SEXP);
+SEXP rosetta_r_962(SEXP, SEXP);
+SEXP rosetta_r_963(SEXP);
+SEXP rosetta_r_964(SEXP, SEXP);
+SEXP rosetta_r_965(SEXP);
+SEXP rosetta_r_966(SEXP, SEXP);
+SEXP rosetta_r_967(SEXP);
+SEXP rosetta_r_968(SEXP, SEXP);
+SEXP rosetta_r_969(SEXP);
+SEXP rosetta_r_970(SEXP, SEXP);
+SEXP rosetta_r_971(SEXP);
+SEXP rosetta_r_972(SEXP, SEXP);
+SEXP rosetta_r_973(SEXP);
+SEXP rosetta_r_974(SEXP, SEXP);
+SEXP rosetta_r_975(SEXP);
+SEXP rosetta_r_976(SEXP, SEXP);
+SEXP rosetta_r_977(SEXP);
+SEXP rosetta_r_978(SEXP);
+SEXP rosetta_r_979(SEXP, SEXP);
+SEXP rosetta_r_980(SEXP);
+SEXP rosetta_r_981(SEXP, SEXP);
+SEXP rosetta_r_982(SEXP);
+SEXP rosetta_r_983(SEXP, SEXP);
+SEXP rosetta_r_984(SEXP);
+SEXP rosetta_r_985(SEXP, SEXP);
+SEXP rosetta_r_986(SEXP);
+SEXP rosetta_r_987(SEXP, SEXP);
+SEXP rosetta_r_988(SEXP);
+SEXP rosetta_r_989(SEXP, SEXP);
+SEXP rosetta_r_990(SEXP);
+SEXP rosetta_r_991(SEXP, SEXP);
+SEXP rosetta_r_992(SEXP);
+SEXP rosetta_r_993(SEXP, SEXP);
+SEXP rosetta_r_994(SEXP);
+SEXP rosetta_r_999(SEXP);
+SEXP rosetta_r_1003(SEXP);
+SEXP rosetta_r_1006(SEXP);
+SEXP rosetta_r_1007(SEXP);
+SEXP rosetta_r_1008(SEXP, SEXP);
+SEXP rosetta_r_1009(SEXP);
+SEXP rosetta_r_1010(SEXP, SEXP);
+SEXP rosetta_r_1011(SEXP);
+SEXP rosetta_r_1019(SEXP);
+SEXP rosetta_r_1020(SEXP);
+SEXP rosetta_r_1021(SEXP, SEXP);
+SEXP rosetta_r_1022(SEXP);
+SEXP rosetta_r_1023(SEXP, SEXP);
+SEXP rosetta_r_1024(SEXP);
+SEXP rosetta_r_1025(SEXP, SEXP);
+SEXP rosetta_r_1026(SEXP);
+SEXP rosetta_r_1036(SEXP);
+SEXP rosetta_r_1037(SEXP);
+SEXP rosetta_r_1038(SEXP, SEXP);
+SEXP rosetta_r_1039(SEXP);
+SEXP rosetta_r_1040(SEXP, SEXP);
+SEXP rosetta_r_1041(SEXP);
+SEXP rosetta_r_1042(SEXP);
+SEXP rosetta_r_1043(SEXP, SEXP);
+SEXP rosetta_r_1044(SEXP);
+SEXP rosetta_r_1045(SEXP, SEXP);
+SEXP rosetta_r_1046(SEXP);
+SEXP rosetta_r_1053(SEXP);
+SEXP rosetta_r_1055(SEXP, SEXP);
+SEXP rosetta_r_1061(SEXP);
+SEXP rosetta_r_1067(SEXP);
+SEXP rosetta_r_1073(SEXP);
+SEXP rosetta_r_1079(SEXP);
+SEXP rosetta_r_1085(SEXP);
+SEXP rosetta_r_1086(SEXP);
+SEXP rosetta_r_1087(SEXP, SEXP);
+SEXP rosetta_r_1088(SEXP);
+SEXP rosetta_r_1089(SEXP, SEXP);
+SEXP rosetta_r_1090(SEXP);
 SEXP rosetta_r_1091(SEXP);
-SEXP rosetta_r_1092(SEXP);
-SEXP rosetta_r_1093(SEXP, SEXP);
-SEXP rosetta_r_1094(SEXP);
-SEXP rosetta_r_1095(SEXP, SEXP);
-SEXP rosetta_r_1096(SEXP);
-SEXP rosetta_r_1097(SEXP, SEXP);
+SEXP rosetta_r_1092(SEXP, SEXP);
+SEXP rosetta_r_1093(SEXP);
+SEXP rosetta_r_1094(SEXP, SEXP);
+SEXP rosetta_r_1095(SEXP);
+SEXP rosetta_r_1096(SEXP, SEXP);
+SEXP rosetta_r_1097(SEXP);
 SEXP rosetta_r_1098(SEXP);
-SEXP rosetta_r_1099(SEXP);
-SEXP rosetta_r_1100(SEXP, SEXP);
-SEXP rosetta_r_1101(SEXP);
-SEXP rosetta_r_1102(SEXP, SEXP);
+SEXP rosetta_r_1099(SEXP, SEXP);
+SEXP rosetta_r_1100(SEXP);
+SEXP rosetta_r_1101(SEXP, SEXP);
+SEXP rosetta_r_1102(SEXP);
 SEXP rosetta_r_1103(SEXP);
 SEXP rosetta_r_1104(SEXP, SEXP);
 SEXP rosetta_r_1105(SEXP);
-SEXP rosetta_r_1106(SEXP);
-SEXP rosetta_r_1107(SEXP, SEXP);
+SEXP rosetta_r_1106(SEXP, SEXP);
+SEXP rosetta_r_1107(SEXP);
 SEXP rosetta_r_1108(SEXP);
 SEXP rosetta_r_1109(SEXP, SEXP);
 SEXP rosetta_r_1110(SEXP);
-SEXP rosetta_r_1111(SEXP);
-SEXP rosetta_r_1112(SEXP, SEXP);
-SEXP rosetta_r_1113(SEXP);
-SEXP rosetta_r_1114(SEXP, SEXP);
-SEXP rosetta_r_1115(SEXP);
-SEXP rosetta_r_1116(SEXP, SEXP);
-SEXP rosetta_r_1117(SEXP);
-SEXP rosetta_r_1118(SEXP, SEXP);
-SEXP rosetta_r_1119(SEXP);
-SEXP rosetta_r_1120(SEXP, SEXP);
-SEXP rosetta_r_1121(SEXP);
-SEXP rosetta_r_1122(SEXP, SEXP);
-SEXP rosetta_r_1123(SEXP);
-SEXP rosetta_r_1124(SEXP, SEXP);
+SEXP rosetta_r_1111(SEXP, SEXP);
+SEXP rosetta_r_1112(SEXP);
+SEXP rosetta_r_1113(SEXP, SEXP);
+SEXP rosetta_r_1114(SEXP);
+SEXP rosetta_r_1115(SEXP, SEXP);
+SEXP rosetta_r_1116(SEXP);
+SEXP rosetta_r_1117(SEXP, SEXP);
+SEXP rosetta_r_1118(SEXP);
+SEXP rosetta_r_1119(SEXP, SEXP);
+SEXP rosetta_r_1120(SEXP);
+SEXP rosetta_r_1121(SEXP, SEXP);
+SEXP rosetta_r_1122(SEXP);
+SEXP rosetta_r_1123(SEXP, SEXP);
+SEXP rosetta_r_1124(SEXP);
 SEXP rosetta_r_1125(SEXP);
+SEXP rosetta_r_1126(SEXP, SEXP);
+SEXP rosetta_r_1127(SEXP);
+SEXP rosetta_r_1128(SEXP, SEXP);
+SEXP rosetta_r_1129(SEXP);
+SEXP rosetta_r_1130(SEXP, SEXP);
 SEXP rosetta_r_1131(SEXP);
-SEXP rosetta_r_1132(SEXP);
-SEXP rosetta_r_1133(SEXP, SEXP);
-SEXP rosetta_r_1134(SEXP);
-SEXP rosetta_r_1135(SEXP, SEXP);
-SEXP rosetta_r_1136(SEXP);
+SEXP rosetta_r_1132(SEXP, SEXP);
+SEXP rosetta_r_1133(SEXP);
+SEXP rosetta_r_1134(SEXP, SEXP);
+SEXP rosetta_r_1135(SEXP);
+SEXP rosetta_r_1136(SEXP, SEXP);
 SEXP rosetta_r_1137(SEXP);
 SEXP rosetta_r_1138(SEXP, SEXP);
 SEXP rosetta_r_1139(SEXP);
 SEXP rosetta_r_1140(SEXP, SEXP);
 SEXP rosetta_r_1141(SEXP);
-SEXP rosetta_r_1142(SEXP, SEXP);
-SEXP rosetta_r_1143(SEXP);
+SEXP rosetta_r_1142(SEXP);
+SEXP rosetta_r_1143(SEXP, SEXP);
 SEXP rosetta_r_1144(SEXP);
 SEXP rosetta_r_1145(SEXP, SEXP);
 SEXP rosetta_r_1146(SEXP);
 SEXP rosetta_r_1147(SEXP, SEXP);
 SEXP rosetta_r_1148(SEXP);
-SEXP rosetta_r_1149(SEXP, SEXP);
-SEXP rosetta_r_1150(SEXP);
-SEXP rosetta_r_1151(SEXP, SEXP);
-SEXP rosetta_r_1152(SEXP);
+SEXP rosetta_r_1149(SEXP);
+SEXP rosetta_r_1150(SEXP, SEXP);
+SEXP rosetta_r_1151(SEXP);
+SEXP rosetta_r_1152(SEXP, SEXP);
 SEXP rosetta_r_1153(SEXP);
 SEXP rosetta_r_1154(SEXP, SEXP);
 SEXP rosetta_r_1155(SEXP);
 SEXP rosetta_r_1156(SEXP, SEXP);
 SEXP rosetta_r_1157(SEXP);
-SEXP rosetta_r_1168(SEXP);
+SEXP rosetta_r_1158(SEXP, SEXP);
+SEXP rosetta_r_1159(SEXP);
+SEXP rosetta_r_1160(SEXP);
+SEXP rosetta_r_1161(SEXP, SEXP);
+SEXP rosetta_r_1162(SEXP);
+SEXP rosetta_r_1163(SEXP, SEXP);
+SEXP rosetta_r_1164(SEXP);
+SEXP rosetta_r_1165(SEXP, SEXP);
+SEXP rosetta_r_1166(SEXP);
+SEXP rosetta_r_1167(SEXP);
+SEXP rosetta_r_1168(SEXP, SEXP);
+SEXP rosetta_r_1169(SEXP);
 SEXP rosetta_r_1170(SEXP, SEXP);
 SEXP rosetta_r_1171(SEXP);
 SEXP rosetta_r_1172(SEXP, SEXP);
 SEXP rosetta_r_1173(SEXP);
-SEXP rosetta_r_1174(SEXP, SEXP);
-SEXP rosetta_r_1175(SEXP);
-SEXP rosetta_r_1176(SEXP, SEXP);
-SEXP rosetta_r_1177(SEXP);
-SEXP rosetta_r_1178(SEXP, SEXP);
+SEXP rosetta_r_1174(SEXP);
+SEXP rosetta_r_1175(SEXP, SEXP);
+SEXP rosetta_r_1176(SEXP);
+SEXP rosetta_r_1177(SEXP, SEXP);
+SEXP rosetta_r_1178(SEXP);
 SEXP rosetta_r_1179(SEXP);
 SEXP rosetta_r_1180(SEXP, SEXP);
 SEXP rosetta_r_1181(SEXP);
 SEXP rosetta_r_1182(SEXP, SEXP);
 SEXP rosetta_r_1183(SEXP);
+SEXP rosetta_r_1184(SEXP, SEXP);
+SEXP rosetta_r_1185(SEXP);
+SEXP rosetta_r_1186(SEXP, SEXP);
 SEXP rosetta_r_1187(SEXP);
 SEXP rosetta_r_1188(SEXP, SEXP);
 SEXP rosetta_r_1189(SEXP);
 SEXP rosetta_r_1190(SEXP, SEXP);
 SEXP rosetta_r_1191(SEXP);
-SEXP rosetta_r_1195(SEXP);
+SEXP rosetta_r_1192(SEXP, SEXP);
+SEXP rosetta_r_1193(SEXP);
+SEXP rosetta_r_1194(SEXP);
+SEXP rosetta_r_1195(SEXP, SEXP);
 SEXP rosetta_r_1196(SEXP);
 SEXP rosetta_r_1197(SEXP, SEXP);
 SEXP rosetta_r_1198(SEXP);
@@ -2354,11 +2361,13 @@ SEXP rosetta_r_1205(SEXP, SEXP);
 SEXP rosetta_r_1206(SEXP);
 SEXP rosetta_r_1207(SEXP, SEXP);
 SEXP rosetta_r_1208(SEXP);
-SEXP rosetta_r_1209(SEXP, SEXP);
-SEXP rosetta_r_1210(SEXP);
+SEXP rosetta_r_1209(SEXP);
+SEXP rosetta_r_1210(SEXP, SEXP);
+SEXP rosetta_r_1211(SEXP);
+SEXP rosetta_r_1212(SEXP, SEXP);
 SEXP rosetta_r_1213(SEXP);
-SEXP rosetta_r_1214(SEXP);
-SEXP rosetta_r_1215(SEXP, SEXP);
+SEXP rosetta_r_1214(SEXP, SEXP);
+SEXP rosetta_r_1215(SEXP);
 SEXP rosetta_r_1216(SEXP);
 SEXP rosetta_r_1217(SEXP, SEXP);
 SEXP rosetta_r_1218(SEXP);
@@ -2370,27 +2379,27 @@ SEXP rosetta_r_1223(SEXP, SEXP);
 SEXP rosetta_r_1224(SEXP);
 SEXP rosetta_r_1225(SEXP, SEXP);
 SEXP rosetta_r_1226(SEXP);
-SEXP rosetta_r_1229(SEXP);
-SEXP rosetta_r_1230(SEXP);
-SEXP rosetta_r_1231(SEXP, SEXP);
-SEXP rosetta_r_1232(SEXP);
-SEXP rosetta_r_1233(SEXP, SEXP);
-SEXP rosetta_r_1234(SEXP);
-SEXP rosetta_r_1235(SEXP, SEXP);
+SEXP rosetta_r_1227(SEXP, SEXP);
+SEXP rosetta_r_1228(SEXP);
+SEXP rosetta_r_1235(SEXP);
 SEXP rosetta_r_1236(SEXP);
 SEXP rosetta_r_1237(SEXP, SEXP);
 SEXP rosetta_r_1238(SEXP);
+SEXP rosetta_r_1239(SEXP, SEXP);
+SEXP rosetta_r_1240(SEXP);
 SEXP rosetta_r_1241(SEXP);
-SEXP rosetta_r_1242(SEXP);
-SEXP rosetta_r_1243(SEXP, SEXP);
-SEXP rosetta_r_1244(SEXP);
-SEXP rosetta_r_1245(SEXP, SEXP);
-SEXP rosetta_r_1246(SEXP);
-SEXP rosetta_r_1247(SEXP, SEXP);
-SEXP rosetta_r_1248(SEXP);
-SEXP rosetta_r_1249(SEXP, SEXP);
-SEXP rosetta_r_1250(SEXP);
-SEXP rosetta_r_1253(SEXP);
+SEXP rosetta_r_1242(SEXP, SEXP);
+SEXP rosetta_r_1243(SEXP);
+SEXP rosetta_r_1244(SEXP, SEXP);
+SEXP rosetta_r_1245(SEXP);
+SEXP rosetta_r_1246(SEXP, SEXP);
+SEXP rosetta_r_1247(SEXP);
+SEXP rosetta_r_1248(SEXP, SEXP);
+SEXP rosetta_r_1249(SEXP);
+SEXP rosetta_r_1250(SEXP, SEXP);
+SEXP rosetta_r_1251(SEXP);
+SEXP rosetta_r_1252(SEXP);
+SEXP rosetta_r_1253(SEXP, SEXP);
 SEXP rosetta_r_1254(SEXP);
 SEXP rosetta_r_1255(SEXP, SEXP);
 SEXP rosetta_r_1256(SEXP);
@@ -2404,11 +2413,13 @@ SEXP rosetta_r_1263(SEXP, SEXP);
 SEXP rosetta_r_1264(SEXP);
 SEXP rosetta_r_1265(SEXP, SEXP);
 SEXP rosetta_r_1266(SEXP);
+SEXP rosetta_r_1267(SEXP);
+SEXP rosetta_r_1268(SEXP, SEXP);
 SEXP rosetta_r_1269(SEXP);
-SEXP rosetta_r_1270(SEXP);
-SEXP rosetta_r_1271(SEXP, SEXP);
-SEXP rosetta_r_1272(SEXP);
-SEXP rosetta_r_1273(SEXP, SEXP);
+SEXP rosetta_r_1270(SEXP, SEXP);
+SEXP rosetta_r_1271(SEXP);
+SEXP rosetta_r_1272(SEXP, SEXP);
+SEXP rosetta_r_1273(SEXP);
 SEXP rosetta_r_1274(SEXP);
 SEXP rosetta_r_1275(SEXP, SEXP);
 SEXP rosetta_r_1276(SEXP);
@@ -2416,33 +2427,39 @@ SEXP rosetta_r_1277(SEXP, SEXP);
 SEXP rosetta_r_1278(SEXP);
 SEXP rosetta_r_1279(SEXP, SEXP);
 SEXP rosetta_r_1280(SEXP);
-SEXP rosetta_r_1283(SEXP);
+SEXP rosetta_r_1281(SEXP, SEXP);
+SEXP rosetta_r_1282(SEXP);
+SEXP rosetta_r_1283(SEXP, SEXP);
 SEXP rosetta_r_1284(SEXP);
 SEXP rosetta_r_1285(SEXP, SEXP);
 SEXP rosetta_r_1286(SEXP);
 SEXP rosetta_r_1287(SEXP, SEXP);
 SEXP rosetta_r_1288(SEXP);
-SEXP rosetta_r_1289(SEXP, SEXP);
-SEXP rosetta_r_1290(SEXP);
-SEXP rosetta_r_1291(SEXP, SEXP);
-SEXP rosetta_r_1292(SEXP);
-SEXP rosetta_r_1293(SEXP, SEXP);
-SEXP rosetta_r_1294(SEXP);
+SEXP rosetta_r_1289(SEXP);
+SEXP rosetta_r_1290(SEXP, SEXP);
+SEXP rosetta_r_1291(SEXP);
+SEXP rosetta_r_1292(SEXP, SEXP);
+SEXP rosetta_r_1293(SEXP);
+SEXP rosetta_r_1294(SEXP, SEXP);
+SEXP rosetta_r_1295(SEXP);
+SEXP rosetta_r_1296(SEXP, SEXP);
 SEXP rosetta_r_1297(SEXP);
+SEXP rosetta_r_1298(SEXP, SEXP);
+SEXP rosetta_r_1299(SEXP);
 SEXP rosetta_r_1300(SEXP, SEXP);
 SEXP rosetta_r_1301(SEXP);
 SEXP rosetta_r_1302(SEXP, SEXP);
 SEXP rosetta_r_1303(SEXP);
-SEXP rosetta_r_1304(SEXP, SEXP);
-SEXP rosetta_r_1305(SEXP);
-SEXP rosetta_r_1306(SEXP, SEXP);
-SEXP rosetta_r_1307(SEXP);
-SEXP rosetta_r_1308(SEXP, SEXP);
+SEXP rosetta_r_1304(SEXP);
+SEXP rosetta_r_1305(SEXP, SEXP);
+SEXP rosetta_r_1306(SEXP);
+SEXP rosetta_r_1307(SEXP, SEXP);
+SEXP rosetta_r_1308(SEXP);
 SEXP rosetta_r_1309(SEXP);
 SEXP rosetta_r_1310(SEXP, SEXP);
 SEXP rosetta_r_1311(SEXP);
-SEXP rosetta_r_1312(SEXP);
-SEXP rosetta_r_1313(SEXP, SEXP);
+SEXP rosetta_r_1312(SEXP, SEXP);
+SEXP rosetta_r_1313(SEXP);
 SEXP rosetta_r_1314(SEXP);
 SEXP rosetta_r_1315(SEXP, SEXP);
 SEXP rosetta_r_1316(SEXP);
@@ -2454,37 +2471,44 @@ SEXP rosetta_r_1321(SEXP, SEXP);
 SEXP rosetta_r_1322(SEXP);
 SEXP rosetta_r_1323(SEXP, SEXP);
 SEXP rosetta_r_1324(SEXP);
-SEXP rosetta_r_1328(SEXP);
+SEXP rosetta_r_1325(SEXP);
+SEXP rosetta_r_1326(SEXP, SEXP);
+SEXP rosetta_r_1327(SEXP);
+SEXP rosetta_r_1328(SEXP, SEXP);
 SEXP rosetta_r_1329(SEXP);
 SEXP rosetta_r_1330(SEXP, SEXP);
 SEXP rosetta_r_1331(SEXP);
 SEXP rosetta_r_1332(SEXP, SEXP);
 SEXP rosetta_r_1333(SEXP);
-SEXP rosetta_r_1334(SEXP, SEXP);
-SEXP rosetta_r_1335(SEXP);
-SEXP rosetta_r_1336(SEXP, SEXP);
-SEXP rosetta_r_1337(SEXP);
-SEXP rosetta_r_1338(SEXP, SEXP);
-SEXP rosetta_r_1339(SEXP);
-SEXP rosetta_r_1342(SEXP);
+SEXP rosetta_r_1334(SEXP);
+SEXP rosetta_r_1335(SEXP, SEXP);
+SEXP rosetta_r_1336(SEXP);
+SEXP rosetta_r_1337(SEXP, SEXP);
+SEXP rosetta_r_1338(SEXP);
+SEXP rosetta_r_1339(SEXP, SEXP);
+SEXP rosetta_r_1340(SEXP);
+SEXP rosetta_r_1341(SEXP);
+SEXP rosetta_r_1342(SEXP, SEXP);
 SEXP rosetta_r_1343(SEXP);
 SEXP rosetta_r_1344(SEXP, SEXP);
 SEXP rosetta_r_1345(SEXP);
 SEXP rosetta_r_1346(SEXP, SEXP);
 SEXP rosetta_r_1347(SEXP);
-SEXP rosetta_r_1348(SEXP, SEXP);
-SEXP rosetta_r_1349(SEXP);
-SEXP rosetta_r_1350(SEXP, SEXP);
-SEXP rosetta_r_1351(SEXP);
-SEXP rosetta_r_1352(SEXP, SEXP);
-SEXP rosetta_r_1353(SEXP);
+SEXP rosetta_r_1348(SEXP);
+SEXP rosetta_r_1349(SEXP, SEXP);
+SEXP rosetta_r_1350(SEXP);
+SEXP rosetta_r_1351(SEXP, SEXP);
+SEXP rosetta_r_1352(SEXP);
+SEXP rosetta_r_1353(SEXP, SEXP);
+SEXP rosetta_r_1354(SEXP);
+SEXP rosetta_r_1355(SEXP, SEXP);
 SEXP rosetta_r_1356(SEXP);
-SEXP rosetta_r_1357(SEXP);
-SEXP rosetta_r_1358(SEXP, SEXP);
-SEXP rosetta_r_1359(SEXP);
-SEXP rosetta_r_1360(SEXP, SEXP);
-SEXP rosetta_r_1361(SEXP);
-SEXP rosetta_r_1362(SEXP, SEXP);
+SEXP rosetta_r_1357(SEXP, SEXP);
+SEXP rosetta_r_1358(SEXP);
+SEXP rosetta_r_1359(SEXP, SEXP);
+SEXP rosetta_r_1360(SEXP);
+SEXP rosetta_r_1361(SEXP, SEXP);
+SEXP rosetta_r_1362(SEXP);
 SEXP rosetta_r_1363(SEXP);
 SEXP rosetta_r_1364(SEXP, SEXP);
 SEXP rosetta_r_1365(SEXP);
@@ -2492,39 +2516,34 @@ SEXP rosetta_r_1366(SEXP, SEXP);
 SEXP rosetta_r_1367(SEXP);
 SEXP rosetta_r_1368(SEXP, SEXP);
 SEXP rosetta_r_1369(SEXP);
-SEXP rosetta_r_1372(SEXP);
+SEXP rosetta_r_1370(SEXP, SEXP);
+SEXP rosetta_r_1371(SEXP);
+SEXP rosetta_r_1372(SEXP, SEXP);
 SEXP rosetta_r_1373(SEXP);
 SEXP rosetta_r_1374(SEXP, SEXP);
 SEXP rosetta_r_1375(SEXP);
-SEXP rosetta_r_1376(SEXP, SEXP);
-SEXP rosetta_r_1377(SEXP);
-SEXP rosetta_r_1378(SEXP, SEXP);
-SEXP rosetta_r_1379(SEXP);
-SEXP rosetta_r_1380(SEXP, SEXP);
-SEXP rosetta_r_1381(SEXP);
-SEXP rosetta_r_1382(SEXP, SEXP);
-SEXP rosetta_r_1383(SEXP);
-SEXP rosetta_r_1384(SEXP, SEXP);
-SEXP rosetta_r_1385(SEXP);
-SEXP rosetta_r_1386(SEXP, SEXP);
-SEXP rosetta_r_1387(SEXP);
-SEXP rosetta_r_1390(SEXP);
+SEXP rosetta_r_1376(SEXP);
+SEXP rosetta_r_1377(SEXP, SEXP);
+SEXP rosetta_r_1378(SEXP);
+SEXP rosetta_r_1379(SEXP, SEXP);
+SEXP rosetta_r_1380(SEXP);
 SEXP rosetta_r_1391(SEXP);
-SEXP rosetta_r_1392(SEXP, SEXP);
-SEXP rosetta_r_1393(SEXP);
-SEXP rosetta_r_1394(SEXP, SEXP);
-SEXP rosetta_r_1395(SEXP);
-SEXP rosetta_r_1396(SEXP, SEXP);
-SEXP rosetta_r_1397(SEXP);
-SEXP rosetta_r_1398(SEXP, SEXP);
-SEXP rosetta_r_1399(SEXP);
-SEXP rosetta_r_1400(SEXP, SEXP);
-SEXP rosetta_r_1401(SEXP);
-SEXP rosetta_r_1402(SEXP, SEXP);
-SEXP rosetta_r_1403(SEXP);
-SEXP rosetta_r_1404(SEXP, SEXP);
-SEXP rosetta_r_1405(SEXP);
-SEXP rosetta_r_1408(SEXP);
+SEXP rosetta_r_1393(SEXP, SEXP);
+SEXP rosetta_r_1394(SEXP);
+SEXP rosetta_r_1395(SEXP, SEXP);
+SEXP rosetta_r_1396(SEXP);
+SEXP rosetta_r_1397(SEXP, SEXP);
+SEXP rosetta_r_1398(SEXP);
+SEXP rosetta_r_1399(SEXP, SEXP);
+SEXP rosetta_r_1400(SEXP);
+SEXP rosetta_r_1401(SEXP, SEXP);
+SEXP rosetta_r_1402(SEXP);
+SEXP rosetta_r_1403(SEXP, SEXP);
+SEXP rosetta_r_1404(SEXP);
+SEXP rosetta_r_1405(SEXP, SEXP);
+SEXP rosetta_r_1406(SEXP);
+SEXP rosetta_r_1407(SEXP);
+SEXP rosetta_r_1408(SEXP, SEXP);
 SEXP rosetta_r_1409(SEXP);
 SEXP rosetta_r_1410(SEXP, SEXP);
 SEXP rosetta_r_1411(SEXP);
@@ -2532,19 +2551,18 @@ SEXP rosetta_r_1412(SEXP, SEXP);
 SEXP rosetta_r_1413(SEXP);
 SEXP rosetta_r_1414(SEXP, SEXP);
 SEXP rosetta_r_1415(SEXP);
-SEXP rosetta_r_1416(SEXP, SEXP);
-SEXP rosetta_r_1417(SEXP);
-SEXP rosetta_r_1418(SEXP, SEXP);
 SEXP rosetta_r_1419(SEXP);
 SEXP rosetta_r_1420(SEXP, SEXP);
 SEXP rosetta_r_1421(SEXP);
 SEXP rosetta_r_1422(SEXP, SEXP);
 SEXP rosetta_r_1423(SEXP);
-SEXP rosetta_r_1424(SEXP, SEXP);
-SEXP rosetta_r_1425(SEXP);
+SEXP rosetta_r_1424(SEXP);
+SEXP rosetta_r_1425(SEXP, SEXP);
+SEXP rosetta_r_1426(SEXP);
+SEXP rosetta_r_1427(SEXP, SEXP);
 SEXP rosetta_r_1428(SEXP);
-SEXP rosetta_r_1429(SEXP);
-SEXP rosetta_r_1430(SEXP, SEXP);
+SEXP rosetta_r_1429(SEXP, SEXP);
+SEXP rosetta_r_1430(SEXP);
 SEXP rosetta_r_1431(SEXP);
 SEXP rosetta_r_1432(SEXP, SEXP);
 SEXP rosetta_r_1433(SEXP);
@@ -2558,7 +2576,9 @@ SEXP rosetta_r_1440(SEXP, SEXP);
 SEXP rosetta_r_1441(SEXP);
 SEXP rosetta_r_1442(SEXP, SEXP);
 SEXP rosetta_r_1443(SEXP);
-SEXP rosetta_r_1446(SEXP);
+SEXP rosetta_r_1444(SEXP, SEXP);
+SEXP rosetta_r_1445(SEXP);
+SEXP rosetta_r_1446(SEXP, SEXP);
 SEXP rosetta_r_1447(SEXP);
 SEXP rosetta_r_1448(SEXP, SEXP);
 SEXP rosetta_r_1449(SEXP);
@@ -2566,33 +2586,30 @@ SEXP rosetta_r_1450(SEXP, SEXP);
 SEXP rosetta_r_1451(SEXP);
 SEXP rosetta_r_1452(SEXP, SEXP);
 SEXP rosetta_r_1453(SEXP);
-SEXP rosetta_r_1454(SEXP, SEXP);
-SEXP rosetta_r_1455(SEXP);
-SEXP rosetta_r_1456(SEXP, SEXP);
-SEXP rosetta_r_1457(SEXP);
-SEXP rosetta_r_1458(SEXP, SEXP);
-SEXP rosetta_r_1459(SEXP);
-SEXP rosetta_r_1460(SEXP, SEXP);
-SEXP rosetta_r_1461(SEXP);
+SEXP rosetta_r_1454(SEXP);
+SEXP rosetta_r_1455(SEXP, SEXP);
+SEXP rosetta_r_1456(SEXP);
+SEXP rosetta_r_1457(SEXP, SEXP);
+SEXP rosetta_r_1458(SEXP);
+SEXP rosetta_r_1459(SEXP, SEXP);
+SEXP rosetta_r_1460(SEXP);
+SEXP rosetta_r_1461(SEXP, SEXP);
+SEXP rosetta_r_1462(SEXP);
+SEXP rosetta_r_1463(SEXP, SEXP);
 SEXP rosetta_r_1464(SEXP);
-SEXP rosetta_r_1465(SEXP);
-SEXP rosetta_r_1466(SEXP, SEXP);
-SEXP rosetta_r_1467(SEXP);
-SEXP rosetta_r_1468(SEXP, SEXP);
-SEXP rosetta_r_1469(SEXP);
-SEXP rosetta_r_1470(SEXP, SEXP);
-SEXP rosetta_r_1471(SEXP);
-SEXP rosetta_r_1472(SEXP, SEXP);
-SEXP rosetta_r_1473(SEXP);
-SEXP rosetta_r_1474(SEXP, SEXP);
-SEXP rosetta_r_1475(SEXP);
-SEXP rosetta_r_1476(SEXP, SEXP);
-SEXP rosetta_r_1477(SEXP);
-SEXP rosetta_r_1478(SEXP, SEXP);
-SEXP rosetta_r_1479(SEXP);
-SEXP rosetta_r_1480(SEXP, SEXP);
+SEXP rosetta_r_1465(SEXP, SEXP);
+SEXP rosetta_r_1466(SEXP);
+SEXP rosetta_r_1467(SEXP, SEXP);
+SEXP rosetta_r_1468(SEXP);
+SEXP rosetta_r_1469(SEXP, SEXP);
+SEXP rosetta_r_1470(SEXP);
+SEXP rosetta_r_1471(SEXP, SEXP);
+SEXP rosetta_r_1472(SEXP);
+SEXP rosetta_r_1480(SEXP);
 SEXP rosetta_r_1481(SEXP);
-SEXP rosetta_r_1484(SEXP);
+SEXP rosetta_r_1482(SEXP, SEXP);
+SEXP rosetta_r_1483(SEXP);
+SEXP rosetta_r_1484(SEXP, SEXP);
 SEXP rosetta_r_1485(SEXP);
 SEXP rosetta_r_1486(SEXP, SEXP);
 SEXP rosetta_r_1487(SEXP);
@@ -2600,11 +2617,11 @@ SEXP rosetta_r_1488(SEXP, SEXP);
 SEXP rosetta_r_1489(SEXP);
 SEXP rosetta_r_1490(SEXP, SEXP);
 SEXP rosetta_r_1491(SEXP);
-SEXP rosetta_r_1494(SEXP);
+SEXP rosetta_r_1492(SEXP, SEXP);
+SEXP rosetta_r_1493(SEXP);
+SEXP rosetta_r_1494(SEXP, SEXP);
 SEXP rosetta_r_1495(SEXP);
-SEXP rosetta_r_1496(SEXP, SEXP);
-SEXP rosetta_r_1497(SEXP);
-SEXP rosetta_r_1498(SEXP, SEXP);
+SEXP rosetta_r_1498(SEXP);
 SEXP rosetta_r_1499(SEXP);
 SEXP rosetta_r_1500(SEXP, SEXP);
 SEXP rosetta_r_1501(SEXP);
@@ -2618,9 +2635,7 @@ SEXP rosetta_r_1508(SEXP, SEXP);
 SEXP rosetta_r_1509(SEXP);
 SEXP rosetta_r_1510(SEXP, SEXP);
 SEXP rosetta_r_1511(SEXP);
-SEXP rosetta_r_1512(SEXP, SEXP);
-SEXP rosetta_r_1513(SEXP);
-SEXP rosetta_r_1514(SEXP, SEXP);
+SEXP rosetta_r_1514(SEXP);
 SEXP rosetta_r_1515(SEXP);
 SEXP rosetta_r_1516(SEXP, SEXP);
 SEXP rosetta_r_1517(SEXP);
@@ -2628,9 +2643,9 @@ SEXP rosetta_r_1518(SEXP, SEXP);
 SEXP rosetta_r_1519(SEXP);
 SEXP rosetta_r_1520(SEXP, SEXP);
 SEXP rosetta_r_1521(SEXP);
-SEXP rosetta_r_1524(SEXP);
-SEXP rosetta_r_1525(SEXP);
-SEXP rosetta_r_1526(SEXP, SEXP);
+SEXP rosetta_r_1522(SEXP, SEXP);
+SEXP rosetta_r_1523(SEXP);
+SEXP rosetta_r_1526(SEXP);
 SEXP rosetta_r_1527(SEXP);
 SEXP rosetta_r_1528(SEXP, SEXP);
 SEXP rosetta_r_1529(SEXP);
@@ -2638,9 +2653,9 @@ SEXP rosetta_r_1530(SEXP, SEXP);
 SEXP rosetta_r_1531(SEXP);
 SEXP rosetta_r_1532(SEXP, SEXP);
 SEXP rosetta_r_1533(SEXP);
-SEXP rosetta_r_1536(SEXP);
-SEXP rosetta_r_1537(SEXP);
-SEXP rosetta_r_1538(SEXP, SEXP);
+SEXP rosetta_r_1534(SEXP, SEXP);
+SEXP rosetta_r_1535(SEXP);
+SEXP rosetta_r_1538(SEXP);
 SEXP rosetta_r_1539(SEXP);
 SEXP rosetta_r_1540(SEXP, SEXP);
 SEXP rosetta_r_1541(SEXP);
@@ -2648,13 +2663,13 @@ SEXP rosetta_r_1542(SEXP, SEXP);
 SEXP rosetta_r_1543(SEXP);
 SEXP rosetta_r_1544(SEXP, SEXP);
 SEXP rosetta_r_1545(SEXP);
-SEXP rosetta_r_1548(SEXP);
+SEXP rosetta_r_1546(SEXP, SEXP);
+SEXP rosetta_r_1547(SEXP);
+SEXP rosetta_r_1548(SEXP, SEXP);
 SEXP rosetta_r_1549(SEXP);
 SEXP rosetta_r_1550(SEXP, SEXP);
 SEXP rosetta_r_1551(SEXP);
-SEXP rosetta_r_1552(SEXP, SEXP);
-SEXP rosetta_r_1553(SEXP);
-SEXP rosetta_r_1554(SEXP, SEXP);
+SEXP rosetta_r_1554(SEXP);
 SEXP rosetta_r_1555(SEXP);
 SEXP rosetta_r_1556(SEXP, SEXP);
 SEXP rosetta_r_1557(SEXP);
@@ -2664,9 +2679,9 @@ SEXP rosetta_r_1560(SEXP, SEXP);
 SEXP rosetta_r_1561(SEXP);
 SEXP rosetta_r_1562(SEXP, SEXP);
 SEXP rosetta_r_1563(SEXP);
-SEXP rosetta_r_1566(SEXP);
-SEXP rosetta_r_1567(SEXP);
-SEXP rosetta_r_1568(SEXP, SEXP);
+SEXP rosetta_r_1564(SEXP, SEXP);
+SEXP rosetta_r_1565(SEXP);
+SEXP rosetta_r_1568(SEXP);
 SEXP rosetta_r_1569(SEXP);
 SEXP rosetta_r_1570(SEXP, SEXP);
 SEXP rosetta_r_1571(SEXP);
@@ -2676,20 +2691,20 @@ SEXP rosetta_r_1574(SEXP, SEXP);
 SEXP rosetta_r_1575(SEXP);
 SEXP rosetta_r_1576(SEXP, SEXP);
 SEXP rosetta_r_1577(SEXP);
-SEXP rosetta_r_1580(SEXP);
-SEXP rosetta_r_1581(SEXP);
-SEXP rosetta_r_1582(SEXP, SEXP);
-SEXP rosetta_r_1583(SEXP);
-SEXP rosetta_r_1584(SEXP, SEXP);
-SEXP rosetta_r_1585(SEXP);
-SEXP rosetta_r_1586(SEXP, SEXP);
-SEXP rosetta_r_1587(SEXP);
-SEXP rosetta_r_1588(SEXP, SEXP);
-SEXP rosetta_r_1589(SEXP);
-SEXP rosetta_r_1590(SEXP, SEXP);
-SEXP rosetta_r_1591(SEXP);
-SEXP rosetta_r_1592(SEXP, SEXP);
-SEXP rosetta_r_1593(SEXP);
+SEXP rosetta_r_1578(SEXP, SEXP);
+SEXP rosetta_r_1579(SEXP);
+SEXP rosetta_r_1582(SEXP);
+SEXP rosetta_r_1585(SEXP, SEXP);
+SEXP rosetta_r_1586(SEXP);
+SEXP rosetta_r_1587(SEXP, SEXP);
+SEXP rosetta_r_1588(SEXP);
+SEXP rosetta_r_1589(SEXP, SEXP);
+SEXP rosetta_r_1590(SEXP);
+SEXP rosetta_r_1591(SEXP, SEXP);
+SEXP rosetta_r_1592(SEXP);
+SEXP rosetta_r_1593(SEXP, SEXP);
+SEXP rosetta_r_1594(SEXP);
+SEXP rosetta_r_1595(SEXP, SEXP);
 SEXP rosetta_r_1596(SEXP);
 SEXP rosetta_r_1597(SEXP);
 SEXP rosetta_r_1598(SEXP, SEXP);
@@ -2698,138 +2713,139 @@ SEXP rosetta_r_1600(SEXP, SEXP);
 SEXP rosetta_r_1601(SEXP);
 SEXP rosetta_r_1602(SEXP, SEXP);
 SEXP rosetta_r_1603(SEXP);
-SEXP rosetta_r_1606(SEXP);
+SEXP rosetta_r_1604(SEXP, SEXP);
+SEXP rosetta_r_1605(SEXP);
+SEXP rosetta_r_1606(SEXP, SEXP);
 SEXP rosetta_r_1607(SEXP);
 SEXP rosetta_r_1608(SEXP, SEXP);
 SEXP rosetta_r_1609(SEXP);
-SEXP rosetta_r_1610(SEXP, SEXP);
-SEXP rosetta_r_1611(SEXP);
-SEXP rosetta_r_1612(SEXP, SEXP);
 SEXP rosetta_r_1613(SEXP);
-SEXP rosetta_r_1614(SEXP, SEXP);
-SEXP rosetta_r_1615(SEXP);
-SEXP rosetta_r_1616(SEXP, SEXP);
-SEXP rosetta_r_1617(SEXP);
-SEXP rosetta_r_1618(SEXP, SEXP);
-SEXP rosetta_r_1619(SEXP);
-SEXP rosetta_r_1620(SEXP, SEXP);
-SEXP rosetta_r_1621(SEXP);
+SEXP rosetta_r_1614(SEXP);
+SEXP rosetta_r_1615(SEXP, SEXP);
+SEXP rosetta_r_1616(SEXP);
+SEXP rosetta_r_1617(SEXP, SEXP);
+SEXP rosetta_r_1618(SEXP);
+SEXP rosetta_r_1619(SEXP, SEXP);
+SEXP rosetta_r_1620(SEXP);
+SEXP rosetta_r_1621(SEXP, SEXP);
+SEXP rosetta_r_1622(SEXP);
+SEXP rosetta_r_1623(SEXP, SEXP);
 SEXP rosetta_r_1624(SEXP);
-SEXP rosetta_r_1625(SEXP);
-SEXP rosetta_r_1626(SEXP, SEXP);
 SEXP rosetta_r_1627(SEXP);
-SEXP rosetta_r_1628(SEXP, SEXP);
-SEXP rosetta_r_1629(SEXP);
-SEXP rosetta_r_1630(SEXP, SEXP);
-SEXP rosetta_r_1631(SEXP);
-SEXP rosetta_r_1632(SEXP, SEXP);
-SEXP rosetta_r_1633(SEXP);
+SEXP rosetta_r_1628(SEXP);
+SEXP rosetta_r_1629(SEXP, SEXP);
+SEXP rosetta_r_1630(SEXP);
+SEXP rosetta_r_1631(SEXP, SEXP);
+SEXP rosetta_r_1632(SEXP);
+SEXP rosetta_r_1633(SEXP, SEXP);
+SEXP rosetta_r_1634(SEXP);
+SEXP rosetta_r_1635(SEXP, SEXP);
 SEXP rosetta_r_1636(SEXP);
-SEXP rosetta_r_1637(SEXP);
-SEXP rosetta_r_1638(SEXP, SEXP);
-SEXP rosetta_r_1639(SEXP);
-SEXP rosetta_r_1640(SEXP, SEXP);
+SEXP rosetta_r_1637(SEXP, SEXP);
+SEXP rosetta_r_1638(SEXP);
 SEXP rosetta_r_1641(SEXP);
-SEXP rosetta_r_1642(SEXP, SEXP);
-SEXP rosetta_r_1643(SEXP);
-SEXP rosetta_r_1644(SEXP, SEXP);
-SEXP rosetta_r_1645(SEXP);
-SEXP rosetta_r_1646(SEXP, SEXP);
-SEXP rosetta_r_1647(SEXP);
-SEXP rosetta_r_1648(SEXP, SEXP);
-SEXP rosetta_r_1649(SEXP);
+SEXP rosetta_r_1642(SEXP);
+SEXP rosetta_r_1643(SEXP, SEXP);
+SEXP rosetta_r_1644(SEXP);
+SEXP rosetta_r_1645(SEXP, SEXP);
+SEXP rosetta_r_1646(SEXP);
+SEXP rosetta_r_1647(SEXP, SEXP);
+SEXP rosetta_r_1648(SEXP);
+SEXP rosetta_r_1649(SEXP, SEXP);
+SEXP rosetta_r_1650(SEXP);
+SEXP rosetta_r_1651(SEXP, SEXP);
 SEXP rosetta_r_1652(SEXP);
-SEXP rosetta_r_1653(SEXP);
-SEXP rosetta_r_1654(SEXP, SEXP);
-SEXP rosetta_r_1655(SEXP);
-SEXP rosetta_r_1656(SEXP, SEXP);
+SEXP rosetta_r_1653(SEXP, SEXP);
+SEXP rosetta_r_1654(SEXP);
 SEXP rosetta_r_1657(SEXP);
-SEXP rosetta_r_1658(SEXP, SEXP);
-SEXP rosetta_r_1659(SEXP);
+SEXP rosetta_r_1658(SEXP);
+SEXP rosetta_r_1659(SEXP, SEXP);
+SEXP rosetta_r_1660(SEXP);
+SEXP rosetta_r_1661(SEXP, SEXP);
 SEXP rosetta_r_1662(SEXP);
-SEXP rosetta_r_1663(SEXP);
-SEXP rosetta_r_1664(SEXP, SEXP);
-SEXP rosetta_r_1665(SEXP);
-SEXP rosetta_r_1666(SEXP, SEXP);
-SEXP rosetta_r_1667(SEXP);
-SEXP rosetta_r_1668(SEXP, SEXP);
-SEXP rosetta_r_1669(SEXP);
-SEXP rosetta_r_1670(SEXP, SEXP);
-SEXP rosetta_r_1671(SEXP);
-SEXP rosetta_r_1672(SEXP, SEXP);
-SEXP rosetta_r_1673(SEXP);
-SEXP rosetta_r_1674(SEXP, SEXP);
+SEXP rosetta_r_1663(SEXP, SEXP);
+SEXP rosetta_r_1664(SEXP);
+SEXP rosetta_r_1665(SEXP, SEXP);
+SEXP rosetta_r_1666(SEXP);
+SEXP rosetta_r_1667(SEXP, SEXP);
+SEXP rosetta_r_1668(SEXP);
+SEXP rosetta_r_1669(SEXP, SEXP);
+SEXP rosetta_r_1670(SEXP);
+SEXP rosetta_r_1671(SEXP, SEXP);
+SEXP rosetta_r_1672(SEXP);
 SEXP rosetta_r_1675(SEXP);
-SEXP rosetta_r_1676(SEXP, SEXP);
-SEXP rosetta_r_1677(SEXP);
+SEXP rosetta_r_1676(SEXP);
+SEXP rosetta_r_1677(SEXP, SEXP);
+SEXP rosetta_r_1678(SEXP);
+SEXP rosetta_r_1679(SEXP, SEXP);
 SEXP rosetta_r_1680(SEXP);
-SEXP rosetta_r_1681(SEXP);
-SEXP rosetta_r_1682(SEXP, SEXP);
-SEXP rosetta_r_1683(SEXP);
-SEXP rosetta_r_1684(SEXP, SEXP);
-SEXP rosetta_r_1685(SEXP);
-SEXP rosetta_r_1686(SEXP, SEXP);
-SEXP rosetta_r_1687(SEXP);
-SEXP rosetta_r_1688(SEXP, SEXP);
-SEXP rosetta_r_1689(SEXP);
-SEXP rosetta_r_1690(SEXP, SEXP);
-SEXP rosetta_r_1691(SEXP);
-SEXP rosetta_r_1692(SEXP, SEXP);
+SEXP rosetta_r_1681(SEXP, SEXP);
+SEXP rosetta_r_1682(SEXP);
+SEXP rosetta_r_1683(SEXP, SEXP);
+SEXP rosetta_r_1684(SEXP);
+SEXP rosetta_r_1685(SEXP, SEXP);
+SEXP rosetta_r_1686(SEXP);
+SEXP rosetta_r_1687(SEXP, SEXP);
+SEXP rosetta_r_1688(SEXP);
+SEXP rosetta_r_1689(SEXP, SEXP);
+SEXP rosetta_r_1690(SEXP);
 SEXP rosetta_r_1693(SEXP);
-SEXP rosetta_r_1694(SEXP, SEXP);
-SEXP rosetta_r_1695(SEXP);
-SEXP rosetta_r_1696(SEXP, SEXP);
-SEXP rosetta_r_1697(SEXP);
-SEXP rosetta_r_1698(SEXP, SEXP);
-SEXP rosetta_r_1699(SEXP);
-SEXP rosetta_r_1700(SEXP, SEXP);
-SEXP rosetta_r_1701(SEXP);
-SEXP rosetta_r_1702(SEXP, SEXP);
-SEXP rosetta_r_1703(SEXP);
+SEXP rosetta_r_1694(SEXP);
+SEXP rosetta_r_1695(SEXP, SEXP);
+SEXP rosetta_r_1696(SEXP);
+SEXP rosetta_r_1697(SEXP, SEXP);
+SEXP rosetta_r_1698(SEXP);
+SEXP rosetta_r_1699(SEXP, SEXP);
+SEXP rosetta_r_1700(SEXP);
+SEXP rosetta_r_1701(SEXP, SEXP);
+SEXP rosetta_r_1702(SEXP);
+SEXP rosetta_r_1703(SEXP, SEXP);
+SEXP rosetta_r_1704(SEXP);
+SEXP rosetta_r_1705(SEXP, SEXP);
 SEXP rosetta_r_1706(SEXP);
-SEXP rosetta_r_1707(SEXP);
-SEXP rosetta_r_1708(SEXP, SEXP);
-SEXP rosetta_r_1709(SEXP);
-SEXP rosetta_r_1710(SEXP, SEXP);
-SEXP rosetta_r_1711(SEXP);
-SEXP rosetta_r_1712(SEXP, SEXP);
+SEXP rosetta_r_1707(SEXP, SEXP);
+SEXP rosetta_r_1708(SEXP);
+SEXP rosetta_r_1709(SEXP, SEXP);
+SEXP rosetta_r_1710(SEXP);
 SEXP rosetta_r_1713(SEXP);
+SEXP rosetta_r_1714(SEXP);
+SEXP rosetta_r_1715(SEXP, SEXP);
 SEXP rosetta_r_1716(SEXP);
-SEXP rosetta_r_1717(SEXP);
-SEXP rosetta_r_1718(SEXP, SEXP);
-SEXP rosetta_r_1719(SEXP);
-SEXP rosetta_r_1720(SEXP, SEXP);
-SEXP rosetta_r_1721(SEXP);
-SEXP rosetta_r_1722(SEXP, SEXP);
-SEXP rosetta_r_1723(SEXP);
-SEXP rosetta_r_1724(SEXP, SEXP);
-SEXP rosetta_r_1725(SEXP);
-SEXP rosetta_r_1726(SEXP, SEXP);
-SEXP rosetta_r_1727(SEXP);
-SEXP rosetta_r_1728(SEXP, SEXP);
-SEXP rosetta_r_1729(SEXP);
-SEXP rosetta_r_1730(SEXP, SEXP);
+SEXP rosetta_r_1717(SEXP, SEXP);
+SEXP rosetta_r_1718(SEXP);
+SEXP rosetta_r_1719(SEXP, SEXP);
+SEXP rosetta_r_1720(SEXP);
+SEXP rosetta_r_1721(SEXP, SEXP);
+SEXP rosetta_r_1722(SEXP);
+SEXP rosetta_r_1723(SEXP, SEXP);
+SEXP rosetta_r_1724(SEXP);
+SEXP rosetta_r_1725(SEXP, SEXP);
+SEXP rosetta_r_1726(SEXP);
+SEXP rosetta_r_1727(SEXP, SEXP);
+SEXP rosetta_r_1728(SEXP);
 SEXP rosetta_r_1731(SEXP);
-SEXP rosetta_r_1732(SEXP, SEXP);
-SEXP rosetta_r_1733(SEXP);
+SEXP rosetta_r_1732(SEXP);
+SEXP rosetta_r_1733(SEXP, SEXP);
+SEXP rosetta_r_1734(SEXP);
+SEXP rosetta_r_1735(SEXP, SEXP);
 SEXP rosetta_r_1736(SEXP);
-SEXP rosetta_r_1737(SEXP);
-SEXP rosetta_r_1738(SEXP, SEXP);
-SEXP rosetta_r_1739(SEXP);
-SEXP rosetta_r_1740(SEXP, SEXP);
-SEXP rosetta_r_1741(SEXP);
-SEXP rosetta_r_1742(SEXP, SEXP);
-SEXP rosetta_r_1743(SEXP);
-SEXP rosetta_r_1744(SEXP, SEXP);
-SEXP rosetta_r_1745(SEXP);
-SEXP rosetta_r_1746(SEXP, SEXP);
-SEXP rosetta_r_1747(SEXP);
+SEXP rosetta_r_1737(SEXP, SEXP);
+SEXP rosetta_r_1738(SEXP);
+SEXP rosetta_r_1739(SEXP, SEXP);
+SEXP rosetta_r_1740(SEXP);
+SEXP rosetta_r_1741(SEXP, SEXP);
+SEXP rosetta_r_1742(SEXP);
+SEXP rosetta_r_1743(SEXP, SEXP);
+SEXP rosetta_r_1744(SEXP);
+SEXP rosetta_r_1745(SEXP, SEXP);
+SEXP rosetta_r_1746(SEXP);
+SEXP rosetta_r_1749(SEXP);
 SEXP rosetta_r_1750(SEXP);
-SEXP rosetta_r_1751(SEXP);
-SEXP rosetta_r_1752(SEXP, SEXP);
-SEXP rosetta_r_1753(SEXP);
-SEXP rosetta_r_1754(SEXP, SEXP);
-SEXP rosetta_r_1755(SEXP);
+SEXP rosetta_r_1751(SEXP, SEXP);
+SEXP rosetta_r_1752(SEXP);
+SEXP rosetta_r_1753(SEXP, SEXP);
+SEXP rosetta_r_1754(SEXP);
+SEXP rosetta_r_1755(SEXP, SEXP);
 SEXP rosetta_r_1756(SEXP);
 SEXP rosetta_r_1757(SEXP, SEXP);
 SEXP rosetta_r_1758(SEXP);
@@ -2841,9 +2857,7 @@ SEXP rosetta_r_1763(SEXP, SEXP);
 SEXP rosetta_r_1764(SEXP);
 SEXP rosetta_r_1765(SEXP, SEXP);
 SEXP rosetta_r_1766(SEXP);
-SEXP rosetta_r_1767(SEXP, SEXP);
-SEXP rosetta_r_1768(SEXP);
-SEXP rosetta_r_1769(SEXP, SEXP);
+SEXP rosetta_r_1769(SEXP);
 SEXP rosetta_r_1770(SEXP);
 SEXP rosetta_r_1771(SEXP, SEXP);
 SEXP rosetta_r_1772(SEXP);
@@ -2851,8 +2865,18 @@ SEXP rosetta_r_1773(SEXP, SEXP);
 SEXP rosetta_r_1774(SEXP);
 SEXP rosetta_r_1775(SEXP, SEXP);
 SEXP rosetta_r_1776(SEXP);
-SEXP rosetta_r_1777(SEXP, SEXP);
-SEXP rosetta_r_1778(SEXP);
+SEXP rosetta_r_1779(SEXP);
+SEXP rosetta_r_1780(SEXP);
+SEXP rosetta_r_1781(SEXP, SEXP);
+SEXP rosetta_r_1782(SEXP);
+SEXP rosetta_r_1783(SEXP, SEXP);
+SEXP rosetta_r_1784(SEXP);
+SEXP rosetta_r_1785(SEXP, SEXP);
+SEXP rosetta_r_1786(SEXP);
+SEXP rosetta_r_1787(SEXP, SEXP);
+SEXP rosetta_r_1788(SEXP);
+SEXP rosetta_r_1789(SEXP, SEXP);
+SEXP rosetta_r_1790(SEXP);
 SEXP rosetta_r_1791(SEXP, SEXP);
 SEXP rosetta_r_1792(SEXP);
 SEXP rosetta_r_1793(SEXP, SEXP);
@@ -2867,9 +2891,9 @@ SEXP rosetta_r_1801(SEXP, SEXP);
 SEXP rosetta_r_1802(SEXP);
 SEXP rosetta_r_1803(SEXP, SEXP);
 SEXP rosetta_r_1804(SEXP);
-SEXP rosetta_r_1807(SEXP);
-SEXP rosetta_r_1808(SEXP);
-SEXP rosetta_r_1809(SEXP, SEXP);
+SEXP rosetta_r_1805(SEXP, SEXP);
+SEXP rosetta_r_1806(SEXP);
+SEXP rosetta_r_1809(SEXP);
 SEXP rosetta_r_1810(SEXP);
 SEXP rosetta_r_1811(SEXP, SEXP);
 SEXP rosetta_r_1812(SEXP);
@@ -2901,31 +2925,33 @@ SEXP rosetta_r_1841(SEXP, SEXP);
 SEXP rosetta_r_1842(SEXP);
 SEXP rosetta_r_1843(SEXP, SEXP);
 SEXP rosetta_r_1844(SEXP);
-SEXP rosetta_r_1847(SEXP);
+SEXP rosetta_r_1845(SEXP, SEXP);
+SEXP rosetta_r_1846(SEXP);
+SEXP rosetta_r_1847(SEXP, SEXP);
 SEXP rosetta_r_1848(SEXP);
-SEXP rosetta_r_1849(SEXP, SEXP);
-SEXP rosetta_r_1850(SEXP);
-SEXP rosetta_r_1851(SEXP, SEXP);
+SEXP rosetta_r_1851(SEXP);
 SEXP rosetta_r_1852(SEXP);
 SEXP rosetta_r_1853(SEXP, SEXP);
 SEXP rosetta_r_1854(SEXP);
 SEXP rosetta_r_1855(SEXP, SEXP);
 SEXP rosetta_r_1856(SEXP);
-SEXP rosetta_r_1859(SEXP);
+SEXP rosetta_r_1857(SEXP, SEXP);
+SEXP rosetta_r_1858(SEXP);
+SEXP rosetta_r_1859(SEXP, SEXP);
 SEXP rosetta_r_1860(SEXP);
 SEXP rosetta_r_1861(SEXP, SEXP);
 SEXP rosetta_r_1862(SEXP);
-SEXP rosetta_r_1863(SEXP, SEXP);
-SEXP rosetta_r_1864(SEXP);
-SEXP rosetta_r_1865(SEXP, SEXP);
+SEXP rosetta_r_1865(SEXP);
 SEXP rosetta_r_1866(SEXP);
 SEXP rosetta_r_1867(SEXP, SEXP);
 SEXP rosetta_r_1868(SEXP);
+SEXP rosetta_r_1869(SEXP, SEXP);
+SEXP rosetta_r_1870(SEXP);
 SEXP rosetta_r_1871(SEXP);
-SEXP rosetta_r_1872(SEXP);
-SEXP rosetta_r_1873(SEXP, SEXP);
-SEXP rosetta_r_1874(SEXP);
-SEXP rosetta_r_1875(SEXP, SEXP);
+SEXP rosetta_r_1872(SEXP, SEXP);
+SEXP rosetta_r_1873(SEXP);
+SEXP rosetta_r_1874(SEXP, SEXP);
+SEXP rosetta_r_1875(SEXP);
 SEXP rosetta_r_1876(SEXP);
 SEXP rosetta_r_1877(SEXP, SEXP);
 SEXP rosetta_r_1878(SEXP);
@@ -2933,8 +2959,15 @@ SEXP rosetta_r_1879(SEXP, SEXP);
 SEXP rosetta_r_1880(SEXP);
 SEXP rosetta_r_1881(SEXP, SEXP);
 SEXP rosetta_r_1882(SEXP);
-SEXP rosetta_r_1885(SEXP);
-SEXP rosetta_r_1891(SEXP);
+SEXP rosetta_r_1883(SEXP, SEXP);
+SEXP rosetta_r_1884(SEXP);
+SEXP rosetta_r_1885(SEXP, SEXP);
+SEXP rosetta_r_1886(SEXP);
+SEXP rosetta_r_1887(SEXP, SEXP);
+SEXP rosetta_r_1888(SEXP);
+SEXP rosetta_r_1889(SEXP, SEXP);
+SEXP rosetta_r_1890(SEXP);
+SEXP rosetta_r_1891(SEXP, SEXP);
 SEXP rosetta_r_1892(SEXP);
 SEXP rosetta_r_1893(SEXP, SEXP);
 SEXP rosetta_r_1894(SEXP);
@@ -2942,22 +2975,9 @@ SEXP rosetta_r_1895(SEXP, SEXP);
 SEXP rosetta_r_1896(SEXP);
 SEXP rosetta_r_1897(SEXP, SEXP);
 SEXP rosetta_r_1898(SEXP);
-SEXP rosetta_r_1899(SEXP, SEXP);
-SEXP rosetta_r_1900(SEXP);
-SEXP rosetta_r_1901(SEXP, SEXP);
-SEXP rosetta_r_1902(SEXP);
-SEXP rosetta_r_1903(SEXP, SEXP);
-SEXP rosetta_r_1904(SEXP);
-SEXP rosetta_r_1905(SEXP, SEXP);
-SEXP rosetta_r_1906(SEXP);
-SEXP rosetta_r_1907(SEXP, SEXP);
-SEXP rosetta_r_1908(SEXP);
-SEXP rosetta_r_1909(SEXP, SEXP);
-SEXP rosetta_r_1910(SEXP);
-SEXP rosetta_r_1911(SEXP, SEXP);
-SEXP rosetta_r_1912(SEXP);
-SEXP rosetta_r_1913(SEXP, SEXP);
-SEXP rosetta_r_1914(SEXP);
+SEXP rosetta_r_1912(SEXP, SEXP);
+SEXP rosetta_r_1913(SEXP);
+SEXP rosetta_r_1914(SEXP, SEXP);
 SEXP rosetta_r_1915(SEXP);
 SEXP rosetta_r_1916(SEXP, SEXP);
 SEXP rosetta_r_1917(SEXP);
@@ -2969,9 +2989,7 @@ SEXP rosetta_r_1922(SEXP, SEXP);
 SEXP rosetta_r_1923(SEXP);
 SEXP rosetta_r_1924(SEXP, SEXP);
 SEXP rosetta_r_1925(SEXP);
-SEXP rosetta_r_1926(SEXP, SEXP);
-SEXP rosetta_r_1927(SEXP);
-SEXP rosetta_r_1928(SEXP, SEXP);
+SEXP rosetta_r_1928(SEXP);
 SEXP rosetta_r_1929(SEXP);
 SEXP rosetta_r_1930(SEXP, SEXP);
 SEXP rosetta_r_1931(SEXP);
@@ -2979,26 +2997,39 @@ SEXP rosetta_r_1932(SEXP, SEXP);
 SEXP rosetta_r_1933(SEXP);
 SEXP rosetta_r_1934(SEXP, SEXP);
 SEXP rosetta_r_1935(SEXP);
-SEXP rosetta_r_1936(SEXP, SEXP);
-SEXP rosetta_r_1937(SEXP);
-SEXP rosetta_r_1938(SEXP, SEXP);
+SEXP rosetta_r_1938(SEXP);
 SEXP rosetta_r_1939(SEXP);
+SEXP rosetta_r_1940(SEXP, SEXP);
+SEXP rosetta_r_1941(SEXP);
+SEXP rosetta_r_1942(SEXP, SEXP);
+SEXP rosetta_r_1943(SEXP);
+SEXP rosetta_r_1944(SEXP, SEXP);
+SEXP rosetta_r_1945(SEXP);
+SEXP rosetta_r_1946(SEXP, SEXP);
+SEXP rosetta_r_1947(SEXP);
+SEXP rosetta_r_1948(SEXP, SEXP);
+SEXP rosetta_r_1949(SEXP);
+SEXP rosetta_r_1950(SEXP, SEXP);
+SEXP rosetta_r_1951(SEXP);
+SEXP rosetta_r_1952(SEXP, SEXP);
+SEXP rosetta_r_1953(SEXP);
+SEXP rosetta_r_1956(SEXP);
+SEXP rosetta_r_1957(SEXP);
+SEXP rosetta_r_1958(SEXP, SEXP);
 SEXP rosetta_r_1959(SEXP);
-SEXP rosetta_r_1960(SEXP);
-SEXP rosetta_r_1961(SEXP, SEXP);
-SEXP rosetta_r_1962(SEXP);
-SEXP rosetta_r_1963(SEXP, SEXP);
-SEXP rosetta_r_1964(SEXP);
-SEXP rosetta_r_1965(SEXP, SEXP);
-SEXP rosetta_r_1966(SEXP);
-SEXP rosetta_r_1967(SEXP, SEXP);
+SEXP rosetta_r_1960(SEXP, SEXP);
+SEXP rosetta_r_1961(SEXP);
+SEXP rosetta_r_1962(SEXP, SEXP);
+SEXP rosetta_r_1963(SEXP);
+SEXP rosetta_r_1964(SEXP, SEXP);
+SEXP rosetta_r_1965(SEXP);
 SEXP rosetta_r_1968(SEXP);
-SEXP rosetta_r_1969(SEXP, SEXP);
-SEXP rosetta_r_1970(SEXP);
-SEXP rosetta_r_1971(SEXP, SEXP);
-SEXP rosetta_r_1972(SEXP);
-SEXP rosetta_r_1973(SEXP, SEXP);
-SEXP rosetta_r_1974(SEXP);
+SEXP rosetta_r_1969(SEXP);
+SEXP rosetta_r_1970(SEXP, SEXP);
+SEXP rosetta_r_1971(SEXP);
+SEXP rosetta_r_1972(SEXP, SEXP);
+SEXP rosetta_r_1973(SEXP);
+SEXP rosetta_r_1974(SEXP, SEXP);
 SEXP rosetta_r_1975(SEXP);
 SEXP rosetta_r_1976(SEXP, SEXP);
 SEXP rosetta_r_1977(SEXP);
@@ -3006,9 +3037,7 @@ SEXP rosetta_r_1978(SEXP, SEXP);
 SEXP rosetta_r_1979(SEXP);
 SEXP rosetta_r_1980(SEXP, SEXP);
 SEXP rosetta_r_1981(SEXP);
-SEXP rosetta_r_1982(SEXP, SEXP);
-SEXP rosetta_r_1983(SEXP);
-SEXP rosetta_r_1984(SEXP, SEXP);
+SEXP rosetta_r_1984(SEXP);
 SEXP rosetta_r_1985(SEXP);
 SEXP rosetta_r_1986(SEXP, SEXP);
 SEXP rosetta_r_1987(SEXP);
@@ -3016,100 +3045,390 @@ SEXP rosetta_r_1988(SEXP, SEXP);
 SEXP rosetta_r_1989(SEXP);
 SEXP rosetta_r_1990(SEXP, SEXP);
 SEXP rosetta_r_1991(SEXP);
-SEXP rosetta_r_1992(SEXP, SEXP);
-SEXP rosetta_r_1993(SEXP);
-SEXP rosetta_r_1994(SEXP, SEXP);
+SEXP rosetta_r_1994(SEXP);
 SEXP rosetta_r_1995(SEXP);
-SEXP rosetta_r_2010(SEXP);
-SEXP rosetta_r_2011(SEXP);
+SEXP rosetta_r_1996(SEXP, SEXP);
+SEXP rosetta_r_1997(SEXP);
+SEXP rosetta_r_1998(SEXP, SEXP);
+SEXP rosetta_r_1999(SEXP);
+SEXP rosetta_r_2000(SEXP, SEXP);
+SEXP rosetta_r_2001(SEXP);
+SEXP rosetta_r_2002(SEXP, SEXP);
+SEXP rosetta_r_2003(SEXP);
+SEXP rosetta_r_2004(SEXP, SEXP);
+SEXP rosetta_r_2005(SEXP);
+SEXP rosetta_r_2006(SEXP, SEXP);
+SEXP rosetta_r_2007(SEXP);
+SEXP rosetta_r_2008(SEXP, SEXP);
+SEXP rosetta_r_2009(SEXP);
+SEXP rosetta_r_2012(SEXP);
+SEXP rosetta_r_2013(SEXP);
+SEXP rosetta_r_2014(SEXP, SEXP);
+SEXP rosetta_r_2015(SEXP);
+SEXP rosetta_r_2016(SEXP, SEXP);
+SEXP rosetta_r_2017(SEXP);
+SEXP rosetta_r_2018(SEXP, SEXP);
+SEXP rosetta_r_2019(SEXP);
+SEXP rosetta_r_2020(SEXP, SEXP);
 SEXP rosetta_r_2021(SEXP);
-SEXP rosetta_r_2036(SEXP);
+SEXP rosetta_r_2022(SEXP, SEXP);
+SEXP rosetta_r_2023(SEXP);
+SEXP rosetta_r_2024(SEXP, SEXP);
+SEXP rosetta_r_2025(SEXP);
+SEXP rosetta_r_2026(SEXP, SEXP);
+SEXP rosetta_r_2027(SEXP);
+SEXP rosetta_r_2028(SEXP, SEXP);
+SEXP rosetta_r_2029(SEXP);
+SEXP rosetta_r_2030(SEXP, SEXP);
+SEXP rosetta_r_2031(SEXP);
+SEXP rosetta_r_2032(SEXP, SEXP);
+SEXP rosetta_r_2033(SEXP);
+SEXP rosetta_r_2034(SEXP, SEXP);
+SEXP rosetta_r_2035(SEXP);
+SEXP rosetta_r_2038(SEXP);
+SEXP rosetta_r_2039(SEXP);
+SEXP rosetta_r_2040(SEXP, SEXP);
+SEXP rosetta_r_2041(SEXP);
+SEXP rosetta_r_2042(SEXP, SEXP);
+SEXP rosetta_r_2043(SEXP);
+SEXP rosetta_r_2044(SEXP, SEXP);
+SEXP rosetta_r_2045(SEXP);
+SEXP rosetta_r_2048(SEXP);
+SEXP rosetta_r_2049(SEXP);
+SEXP rosetta_r_2050(SEXP, SEXP);
+SEXP rosetta_r_2051(SEXP);
+SEXP rosetta_r_2052(SEXP, SEXP);
+SEXP rosetta_r_2053(SEXP);
+SEXP rosetta_r_2054(SEXP, SEXP);
+SEXP rosetta_r_2055(SEXP);
+SEXP rosetta_r_2056(SEXP, SEXP);
+SEXP rosetta_r_2057(SEXP);
+SEXP rosetta_r_2058(SEXP, SEXP);
+SEXP rosetta_r_2059(SEXP);
+SEXP rosetta_r_2060(SEXP, SEXP);
+SEXP rosetta_r_2061(SEXP);
+SEXP rosetta_r_2062(SEXP, SEXP);
+SEXP rosetta_r_2063(SEXP);
+SEXP rosetta_r_2064(SEXP, SEXP);
+SEXP rosetta_r_2065(SEXP);
+SEXP rosetta_r_2068(SEXP);
+SEXP rosetta_r_2069(SEXP);
+SEXP rosetta_r_2070(SEXP, SEXP);
+SEXP rosetta_r_2071(SEXP);
+SEXP rosetta_r_2072(SEXP, SEXP);
+SEXP rosetta_r_2073(SEXP);
+SEXP rosetta_r_2074(SEXP, SEXP);
+SEXP rosetta_r_2075(SEXP);
+SEXP rosetta_r_2076(SEXP, SEXP);
+SEXP rosetta_r_2077(SEXP);
+SEXP rosetta_r_2078(SEXP, SEXP);
+SEXP rosetta_r_2079(SEXP);
+SEXP rosetta_r_2082(SEXP);
+SEXP rosetta_r_2083(SEXP);
+SEXP rosetta_r_2084(SEXP, SEXP);
+SEXP rosetta_r_2085(SEXP);
+SEXP rosetta_r_2086(SEXP, SEXP);
+SEXP rosetta_r_2087(SEXP);
+SEXP rosetta_r_2088(SEXP, SEXP);
+SEXP rosetta_r_2089(SEXP);
+SEXP rosetta_r_2090(SEXP, SEXP);
+SEXP rosetta_r_2091(SEXP);
+SEXP rosetta_r_2092(SEXP, SEXP);
+SEXP rosetta_r_2093(SEXP);
+SEXP rosetta_r_2094(SEXP, SEXP);
 SEXP rosetta_r_2095(SEXP);
+SEXP rosetta_r_2098(SEXP);
+SEXP rosetta_r_2099(SEXP);
+SEXP rosetta_r_2100(SEXP, SEXP);
+SEXP rosetta_r_2101(SEXP);
+SEXP rosetta_r_2102(SEXP, SEXP);
 SEXP rosetta_r_2103(SEXP);
+SEXP rosetta_r_2104(SEXP, SEXP);
+SEXP rosetta_r_2105(SEXP);
+SEXP rosetta_r_2106(SEXP, SEXP);
+SEXP rosetta_r_2107(SEXP);
+SEXP rosetta_r_2108(SEXP, SEXP);
+SEXP rosetta_r_2109(SEXP);
+SEXP rosetta_r_2112(SEXP);
+SEXP rosetta_r_2113(SEXP);
+SEXP rosetta_r_2114(SEXP, SEXP);
+SEXP rosetta_r_2115(SEXP);
+SEXP rosetta_r_2116(SEXP, SEXP);
+SEXP rosetta_r_2117(SEXP);
+SEXP rosetta_r_2118(SEXP, SEXP);
+SEXP rosetta_r_2119(SEXP);
+SEXP rosetta_r_2120(SEXP, SEXP);
+SEXP rosetta_r_2121(SEXP);
+SEXP rosetta_r_2124(SEXP);
+SEXP rosetta_r_2125(SEXP);
+SEXP rosetta_r_2126(SEXP, SEXP);
+SEXP rosetta_r_2127(SEXP);
+SEXP rosetta_r_2128(SEXP, SEXP);
+SEXP rosetta_r_2129(SEXP);
+SEXP rosetta_r_2130(SEXP, SEXP);
+SEXP rosetta_r_2131(SEXP);
+SEXP rosetta_r_2132(SEXP, SEXP);
+SEXP rosetta_r_2133(SEXP);
+SEXP rosetta_r_2134(SEXP, SEXP);
+SEXP rosetta_r_2135(SEXP);
+SEXP rosetta_r_2138(SEXP);
+SEXP rosetta_r_2139(SEXP);
+SEXP rosetta_r_2140(SEXP, SEXP);
+SEXP rosetta_r_2141(SEXP);
+SEXP rosetta_r_2142(SEXP, SEXP);
+SEXP rosetta_r_2143(SEXP);
+SEXP rosetta_r_2144(SEXP, SEXP);
+SEXP rosetta_r_2145(SEXP);
+SEXP rosetta_r_2146(SEXP, SEXP);
 SEXP rosetta_r_2147(SEXP);
-SEXP rosetta_r_2174(SEXP);
+SEXP rosetta_r_2150(SEXP);
+SEXP rosetta_r_2151(SEXP);
+SEXP rosetta_r_2152(SEXP, SEXP);
+SEXP rosetta_r_2153(SEXP);
+SEXP rosetta_r_2154(SEXP, SEXP);
+SEXP rosetta_r_2155(SEXP);
+SEXP rosetta_r_2156(SEXP, SEXP);
+SEXP rosetta_r_2157(SEXP);
+SEXP rosetta_r_2158(SEXP, SEXP);
+SEXP rosetta_r_2159(SEXP);
+SEXP rosetta_r_2162(SEXP);
+SEXP rosetta_r_2163(SEXP);
+SEXP rosetta_r_2164(SEXP, SEXP);
+SEXP rosetta_r_2165(SEXP);
+SEXP rosetta_r_2166(SEXP, SEXP);
+SEXP rosetta_r_2167(SEXP);
+SEXP rosetta_r_2168(SEXP, SEXP);
+SEXP rosetta_r_2169(SEXP);
+SEXP rosetta_r_2170(SEXP, SEXP);
+SEXP rosetta_r_2171(SEXP);
+SEXP rosetta_r_2172(SEXP, SEXP);
+SEXP rosetta_r_2173(SEXP);
+SEXP rosetta_r_2176(SEXP);
+SEXP rosetta_r_2177(SEXP);
+SEXP rosetta_r_2178(SEXP, SEXP);
+SEXP rosetta_r_2179(SEXP);
+SEXP rosetta_r_2180(SEXP, SEXP);
+SEXP rosetta_r_2181(SEXP);
+SEXP rosetta_r_2182(SEXP, SEXP);
+SEXP rosetta_r_2183(SEXP);
+SEXP rosetta_r_2184(SEXP, SEXP);
+SEXP rosetta_r_2185(SEXP);
+SEXP rosetta_r_2186(SEXP, SEXP);
+SEXP rosetta_r_2187(SEXP);
+SEXP rosetta_r_2188(SEXP, SEXP);
+SEXP rosetta_r_2189(SEXP);
+SEXP rosetta_r_2190(SEXP, SEXP);
+SEXP rosetta_r_2191(SEXP);
+SEXP rosetta_r_2192(SEXP, SEXP);
+SEXP rosetta_r_2193(SEXP);
+SEXP rosetta_r_2194(SEXP, SEXP);
+SEXP rosetta_r_2195(SEXP);
+SEXP rosetta_r_2196(SEXP, SEXP);
+SEXP rosetta_r_2197(SEXP);
+SEXP rosetta_r_2198(SEXP, SEXP);
+SEXP rosetta_r_2199(SEXP);
+SEXP rosetta_r_2205(SEXP);
+SEXP rosetta_r_2206(SEXP);
+SEXP rosetta_r_2207(SEXP, SEXP);
 SEXP rosetta_r_2208(SEXP);
-SEXP rosetta_r_2237(SEXP);
-SEXP rosetta_r_2263(SEXP);
-SEXP rosetta_r_2282(SEXP);
-SEXP rosetta_r_2301(SEXP);
+SEXP rosetta_r_2209(SEXP, SEXP);
+SEXP rosetta_r_2210(SEXP);
+SEXP rosetta_r_2211(SEXP, SEXP);
+SEXP rosetta_r_2212(SEXP);
+SEXP rosetta_r_2213(SEXP, SEXP);
+SEXP rosetta_r_2214(SEXP);
+SEXP rosetta_r_2215(SEXP, SEXP);
+SEXP rosetta_r_2216(SEXP);
+SEXP rosetta_r_2217(SEXP, SEXP);
+SEXP rosetta_r_2218(SEXP);
+SEXP rosetta_r_2219(SEXP, SEXP);
+SEXP rosetta_r_2220(SEXP);
+SEXP rosetta_r_2221(SEXP);
+SEXP rosetta_r_2222(SEXP, SEXP);
+SEXP rosetta_r_2223(SEXP);
+SEXP rosetta_r_2224(SEXP, SEXP);
+SEXP rosetta_r_2225(SEXP);
+SEXP rosetta_r_2226(SEXP, SEXP);
+SEXP rosetta_r_2227(SEXP);
+SEXP rosetta_r_2228(SEXP, SEXP);
+SEXP rosetta_r_2229(SEXP);
+SEXP rosetta_r_2230(SEXP, SEXP);
+SEXP rosetta_r_2231(SEXP);
+SEXP rosetta_r_2232(SEXP, SEXP);
+SEXP rosetta_r_2233(SEXP);
+SEXP rosetta_r_2234(SEXP);
+SEXP rosetta_r_2235(SEXP, SEXP);
+SEXP rosetta_r_2236(SEXP);
+SEXP rosetta_r_2237(SEXP, SEXP);
+SEXP rosetta_r_2238(SEXP);
+SEXP rosetta_r_2239(SEXP, SEXP);
+SEXP rosetta_r_2240(SEXP);
+SEXP rosetta_r_2241(SEXP, SEXP);
+SEXP rosetta_r_2242(SEXP);
+SEXP rosetta_r_2243(SEXP, SEXP);
+SEXP rosetta_r_2244(SEXP);
+SEXP rosetta_r_2245(SEXP, SEXP);
+SEXP rosetta_r_2246(SEXP);
+SEXP rosetta_r_2247(SEXP, SEXP);
+SEXP rosetta_r_2248(SEXP);
+SEXP rosetta_r_2249(SEXP, SEXP);
+SEXP rosetta_r_2250(SEXP);
+SEXP rosetta_r_2251(SEXP, SEXP);
+SEXP rosetta_r_2252(SEXP);
+SEXP rosetta_r_2253(SEXP, SEXP);
+SEXP rosetta_r_2254(SEXP);
+SEXP rosetta_r_2255(SEXP, SEXP);
+SEXP rosetta_r_2256(SEXP);
+SEXP rosetta_r_2257(SEXP, SEXP);
+SEXP rosetta_r_2258(SEXP);
+SEXP rosetta_r_2278(SEXP);
+SEXP rosetta_r_2279(SEXP);
+SEXP rosetta_r_2280(SEXP, SEXP);
+SEXP rosetta_r_2281(SEXP);
+SEXP rosetta_r_2282(SEXP, SEXP);
+SEXP rosetta_r_2283(SEXP);
+SEXP rosetta_r_2284(SEXP, SEXP);
+SEXP rosetta_r_2285(SEXP);
+SEXP rosetta_r_2286(SEXP, SEXP);
+SEXP rosetta_r_2287(SEXP);
+SEXP rosetta_r_2288(SEXP, SEXP);
+SEXP rosetta_r_2289(SEXP);
+SEXP rosetta_r_2290(SEXP, SEXP);
+SEXP rosetta_r_2291(SEXP);
+SEXP rosetta_r_2292(SEXP, SEXP);
+SEXP rosetta_r_2293(SEXP);
+SEXP rosetta_r_2294(SEXP);
+SEXP rosetta_r_2295(SEXP, SEXP);
+SEXP rosetta_r_2296(SEXP);
+SEXP rosetta_r_2297(SEXP, SEXP);
+SEXP rosetta_r_2298(SEXP);
+SEXP rosetta_r_2299(SEXP, SEXP);
+SEXP rosetta_r_2300(SEXP);
+SEXP rosetta_r_2301(SEXP, SEXP);
+SEXP rosetta_r_2302(SEXP);
+SEXP rosetta_r_2303(SEXP, SEXP);
+SEXP rosetta_r_2304(SEXP);
+SEXP rosetta_r_2305(SEXP, SEXP);
+SEXP rosetta_r_2306(SEXP);
+SEXP rosetta_r_2307(SEXP, SEXP);
+SEXP rosetta_r_2308(SEXP);
+SEXP rosetta_r_2309(SEXP, SEXP);
+SEXP rosetta_r_2310(SEXP);
+SEXP rosetta_r_2311(SEXP, SEXP);
 SEXP rosetta_r_2312(SEXP);
-SEXP rosetta_r_2328(SEXP);
+SEXP rosetta_r_2313(SEXP, SEXP);
+SEXP rosetta_r_2314(SEXP);
+SEXP rosetta_r_2329(SEXP);
+SEXP rosetta_r_2330(SEXP);
+SEXP rosetta_r_2331(SEXP, SEXP);
+SEXP rosetta_r_2332(SEXP);
+SEXP rosetta_r_2333(SEXP, SEXP);
+SEXP rosetta_r_2334(SEXP);
+SEXP rosetta_r_2335(SEXP, SEXP);
+SEXP rosetta_r_2336(SEXP);
+SEXP rosetta_r_2337(SEXP);
+SEXP rosetta_r_2338(SEXP, SEXP);
+SEXP rosetta_r_2339(SEXP);
+SEXP rosetta_r_2340(SEXP, SEXP);
+SEXP rosetta_r_2341(SEXP);
+SEXP rosetta_r_2342(SEXP, SEXP);
 SEXP rosetta_r_2343(SEXP);
-SEXP rosetta_r_2359(SEXP);
-SEXP rosetta_r_2375(SEXP);
-SEXP rosetta_r_2399(SEXP);
-SEXP rosetta_r_2421(SEXP);
-SEXP rosetta_r_2444(SEXP);
-SEXP rosetta_r_2457(SEXP);
-SEXP rosetta_r_2469(SEXP);
-SEXP rosetta_r_2480(SEXP);
-SEXP rosetta_r_2497(SEXP);
-SEXP rosetta_r_2510(SEXP);
-SEXP rosetta_r_2523(SEXP);
-SEXP rosetta_r_2535(SEXP);
-SEXP rosetta_r_2547(SEXP);
-SEXP rosetta_r_2559(SEXP);
-SEXP rosetta_r_2571(SEXP);
-SEXP rosetta_r_2583(SEXP);
-SEXP rosetta_r_2596(SEXP);
-SEXP rosetta_r_2609(SEXP);
-SEXP rosetta_r_2621(SEXP);
-SEXP rosetta_r_2629(SEXP);
-SEXP rosetta_r_2645(SEXP);
-SEXP rosetta_r_2660(SEXP);
-SEXP rosetta_r_2676(SEXP);
-SEXP rosetta_r_2691(SEXP);
-SEXP rosetta_r_2708(SEXP);
-SEXP rosetta_r_2730(SEXP);
-SEXP rosetta_r_2743(SEXP);
-SEXP rosetta_r_2776(SEXP);
-SEXP rosetta_r_2856(SEXP);
-SEXP rosetta_r_2877(SEXP);
+SEXP rosetta_r_2344(SEXP);
+SEXP rosetta_r_2345(SEXP, SEXP);
+SEXP rosetta_r_2346(SEXP);
+SEXP rosetta_r_2347(SEXP, SEXP);
+SEXP rosetta_r_2348(SEXP);
+SEXP rosetta_r_2349(SEXP, SEXP);
+SEXP rosetta_r_2350(SEXP);
+SEXP rosetta_r_2351(SEXP);
+SEXP rosetta_r_2361(SEXP);
+SEXP rosetta_r_2376(SEXP);
+SEXP rosetta_r_2435(SEXP);
+SEXP rosetta_r_2443(SEXP);
+SEXP rosetta_r_2487(SEXP);
+SEXP rosetta_r_2514(SEXP);
+SEXP rosetta_r_2548(SEXP);
+SEXP rosetta_r_2577(SEXP);
+SEXP rosetta_r_2603(SEXP);
+SEXP rosetta_r_2622(SEXP);
+SEXP rosetta_r_2641(SEXP);
+SEXP rosetta_r_2652(SEXP);
+SEXP rosetta_r_2668(SEXP);
+SEXP rosetta_r_2683(SEXP);
+SEXP rosetta_r_2699(SEXP);
+SEXP rosetta_r_2715(SEXP);
+SEXP rosetta_r_2739(SEXP);
+SEXP rosetta_r_2761(SEXP);
+SEXP rosetta_r_2784(SEXP);
+SEXP rosetta_r_2797(SEXP);
+SEXP rosetta_r_2809(SEXP);
+SEXP rosetta_r_2820(SEXP);
+SEXP rosetta_r_2837(SEXP);
+SEXP rosetta_r_2850(SEXP);
+SEXP rosetta_r_2863(SEXP);
+SEXP rosetta_r_2875(SEXP);
+SEXP rosetta_r_2887(SEXP);
 SEXP rosetta_r_2899(SEXP);
-SEXP rosetta_r_2920(SEXP);
-SEXP rosetta_r_2924(SEXP);
-SEXP rosetta_r_2935(SEXP);
-SEXP rosetta_r_2971(SEXP);
-SEXP rosetta_r_2972(SEXP);
-SEXP rosetta_r_2973(SEXP, SEXP);
-SEXP rosetta_r_2974(SEXP);
-SEXP rosetta_r_2975(SEXP, SEXP);
-SEXP rosetta_r_2976(SEXP);
-SEXP rosetta_r_2977(SEXP, SEXP);
-SEXP rosetta_r_2978(SEXP);
-SEXP rosetta_r_2979(SEXP, SEXP);
-SEXP rosetta_r_2980(SEXP);
-SEXP rosetta_r_2982(SEXP);
-SEXP rosetta_r_2983(SEXP, SEXP);
-SEXP rosetta_r_2984(SEXP);
-SEXP rosetta_r_2998(SEXP);
-SEXP rosetta_r_3019(SEXP);
-SEXP rosetta_r_3020(SEXP);
-SEXP rosetta_r_3021(SEXP, SEXP);
-SEXP rosetta_r_3022(SEXP);
-SEXP rosetta_r_3023(SEXP, SEXP);
-SEXP rosetta_r_3024(SEXP);
-SEXP rosetta_r_3046(SEXP);
-SEXP rosetta_r_3076(SEXP);
-SEXP rosetta_r_3131(SEXP);
-SEXP rosetta_r_3158(SEXP);
-SEXP rosetta_r_3159(SEXP);
-SEXP rosetta_r_3160(SEXP, SEXP);
-SEXP rosetta_r_3161(SEXP);
-SEXP rosetta_r_3162(SEXP, SEXP);
-SEXP rosetta_r_3163(SEXP);
-SEXP rosetta_r_3164(SEXP, SEXP);
-SEXP rosetta_r_3165(SEXP);
-SEXP rosetta_r_3166(SEXP, SEXP);
-SEXP rosetta_r_3167(SEXP);
-SEXP rosetta_r_3168(SEXP, SEXP);
-SEXP rosetta_r_3169(SEXP);
-SEXP rosetta_r_3170(SEXP, SEXP);
-SEXP rosetta_r_3171(SEXP);
-SEXP rosetta_r_3200(SEXP);
-SEXP rosetta_r_3219(SEXP);
-SEXP rosetta_r_3241(SEXP);
+SEXP rosetta_r_2911(SEXP);
+SEXP rosetta_r_2923(SEXP);
+SEXP rosetta_r_2936(SEXP);
+SEXP rosetta_r_2949(SEXP);
+SEXP rosetta_r_2961(SEXP);
+SEXP rosetta_r_2969(SEXP);
+SEXP rosetta_r_2985(SEXP);
+SEXP rosetta_r_3000(SEXP);
+SEXP rosetta_r_3016(SEXP);
+SEXP rosetta_r_3031(SEXP);
+SEXP rosetta_r_3048(SEXP);
+SEXP rosetta_r_3070(SEXP);
+SEXP rosetta_r_3083(SEXP);
+SEXP rosetta_r_3116(SEXP);
+SEXP rosetta_r_3196(SEXP);
+SEXP rosetta_r_3217(SEXP);
+SEXP rosetta_r_3239(SEXP);
+SEXP rosetta_r_3260(SEXP);
+SEXP rosetta_r_3264(SEXP);
+SEXP rosetta_r_3275(SEXP);
+SEXP rosetta_r_3311(SEXP);
+SEXP rosetta_r_3312(SEXP);
+SEXP rosetta_r_3313(SEXP, SEXP);
+SEXP rosetta_r_3314(SEXP);
+SEXP rosetta_r_3315(SEXP, SEXP);
+SEXP rosetta_r_3316(SEXP);
+SEXP rosetta_r_3317(SEXP, SEXP);
+SEXP rosetta_r_3318(SEXP);
+SEXP rosetta_r_3319(SEXP, SEXP);
+SEXP rosetta_r_3320(SEXP);
+SEXP rosetta_r_3322(SEXP);
+SEXP rosetta_r_3323(SEXP, SEXP);
+SEXP rosetta_r_3324(SEXP);
+SEXP rosetta_r_3338(SEXP);
+SEXP rosetta_r_3359(SEXP);
+SEXP rosetta_r_3360(SEXP);
+SEXP rosetta_r_3361(SEXP, SEXP);
+SEXP rosetta_r_3362(SEXP);
+SEXP rosetta_r_3363(SEXP, SEXP);
+SEXP rosetta_r_3364(SEXP);
+SEXP rosetta_r_3386(SEXP);
+SEXP rosetta_r_3416(SEXP);
+SEXP rosetta_r_3471(SEXP);
+SEXP rosetta_r_3498(SEXP);
+SEXP rosetta_r_3499(SEXP);
+SEXP rosetta_r_3500(SEXP, SEXP);
+SEXP rosetta_r_3501(SEXP);
+SEXP rosetta_r_3502(SEXP, SEXP);
+SEXP rosetta_r_3503(SEXP);
+SEXP rosetta_r_3504(SEXP, SEXP);
+SEXP rosetta_r_3505(SEXP);
+SEXP rosetta_r_3506(SEXP, SEXP);
+SEXP rosetta_r_3507(SEXP);
+SEXP rosetta_r_3508(SEXP, SEXP);
+SEXP rosetta_r_3509(SEXP);
+SEXP rosetta_r_3510(SEXP, SEXP);
+SEXP rosetta_r_3511(SEXP);
+SEXP rosetta_r_3540(SEXP);
+SEXP rosetta_r_3559(SEXP);
+SEXP rosetta_r_3581(SEXP);
 SEXP rosetta_r_0(SEXP, SEXP);
 SEXP rosetta_r_1(SEXP, SEXP);
 SEXP rosetta_r_2(SEXP, SEXP);
@@ -3373,7 +3692,7 @@ SEXP rosetta_r_259(SEXP, SEXP);
 SEXP rosetta_r_260(SEXP, SEXP);
 SEXP rosetta_r_261(SEXP, SEXP);
 SEXP rosetta_r_262(SEXP, SEXP);
-SEXP rosetta_r_263(SEXP);
+SEXP rosetta_r_263(SEXP, SEXP);
 SEXP rosetta_r_264(SEXP, SEXP);
 SEXP rosetta_r_265(SEXP, SEXP);
 SEXP rosetta_r_266(SEXP, SEXP);
@@ -3390,64 +3709,64 @@ SEXP rosetta_r_276(SEXP, SEXP);
 SEXP rosetta_r_277(SEXP, SEXP);
 SEXP rosetta_r_278(SEXP, SEXP);
 SEXP rosetta_r_279(SEXP, SEXP);
-SEXP rosetta_r_280(SEXP);
-SEXP rosetta_r_281(SEXP);
+SEXP rosetta_r_280(SEXP, SEXP);
+SEXP rosetta_r_281(SEXP, SEXP);
 SEXP rosetta_r_282(SEXP, SEXP);
-SEXP rosetta_r_283(SEXP);
-SEXP rosetta_r_284(SEXP, SEXP);
-SEXP rosetta_r_285(SEXP);
+SEXP rosetta_r_283(SEXP, SEXP);
+SEXP rosetta_r_284(SEXP);
+SEXP rosetta_r_285(SEXP, SEXP);
 SEXP rosetta_r_286(SEXP, SEXP);
-SEXP rosetta_r_287(SEXP);
-SEXP rosetta_r_288(SEXP);
+SEXP rosetta_r_287(SEXP, SEXP);
+SEXP rosetta_r_288(SEXP, SEXP);
 SEXP rosetta_r_289(SEXP, SEXP);
-SEXP rosetta_r_290(SEXP);
+SEXP rosetta_r_290(SEXP, SEXP);
 SEXP rosetta_r_291(SEXP, SEXP);
-SEXP rosetta_r_292(SEXP);
+SEXP rosetta_r_292(SEXP, SEXP);
 SEXP rosetta_r_293(SEXP, SEXP);
 SEXP rosetta_r_294(SEXP, SEXP);
 SEXP rosetta_r_295(SEXP, SEXP);
-SEXP rosetta_r_296(SEXP);
+SEXP rosetta_r_296(SEXP, SEXP);
 SEXP rosetta_r_297(SEXP, SEXP);
-SEXP rosetta_r_298(SEXP);
+SEXP rosetta_r_298(SEXP, SEXP);
 SEXP rosetta_r_299(SEXP, SEXP);
-SEXP rosetta_r_300(SEXP);
+SEXP rosetta_r_300(SEXP, SEXP);
 SEXP rosetta_r_301(SEXP);
-SEXP rosetta_r_302(SEXP, SEXP);
-SEXP rosetta_r_303(SEXP);
-SEXP rosetta_r_304(SEXP, SEXP);
-SEXP rosetta_r_305(SEXP);
+SEXP rosetta_r_302(SEXP);
+SEXP rosetta_r_303(SEXP, SEXP);
+SEXP rosetta_r_304(SEXP);
+SEXP rosetta_r_305(SEXP, SEXP);
 SEXP rosetta_r_306(SEXP);
 SEXP rosetta_r_307(SEXP, SEXP);
 SEXP rosetta_r_308(SEXP);
-SEXP rosetta_r_309(SEXP, SEXP);
-SEXP rosetta_r_310(SEXP);
+SEXP rosetta_r_309(SEXP);
+SEXP rosetta_r_310(SEXP, SEXP);
 SEXP rosetta_r_311(SEXP);
 SEXP rosetta_r_312(SEXP, SEXP);
 SEXP rosetta_r_313(SEXP);
 SEXP rosetta_r_314(SEXP, SEXP);
-SEXP rosetta_r_315(SEXP);
+SEXP rosetta_r_315(SEXP, SEXP);
 SEXP rosetta_r_316(SEXP, SEXP);
-SEXP rosetta_r_317(SEXP, SEXP);
-SEXP rosetta_r_318(SEXP);
-SEXP rosetta_r_319(SEXP, SEXP);
-SEXP rosetta_r_320(SEXP);
-SEXP rosetta_r_321(SEXP, SEXP);
-SEXP rosetta_r_322(SEXP, SEXP);
+SEXP rosetta_r_317(SEXP);
+SEXP rosetta_r_318(SEXP, SEXP);
+SEXP rosetta_r_319(SEXP);
+SEXP rosetta_r_320(SEXP, SEXP);
+SEXP rosetta_r_321(SEXP);
+SEXP rosetta_r_322(SEXP);
 SEXP rosetta_r_323(SEXP, SEXP);
-SEXP rosetta_r_324(SEXP, SEXP);
+SEXP rosetta_r_324(SEXP);
 SEXP rosetta_r_325(SEXP, SEXP);
-SEXP rosetta_r_326(SEXP, SEXP);
-SEXP rosetta_r_327(SEXP, SEXP);
+SEXP rosetta_r_326(SEXP);
+SEXP rosetta_r_327(SEXP);
 SEXP rosetta_r_328(SEXP, SEXP);
-SEXP rosetta_r_329(SEXP, SEXP);
+SEXP rosetta_r_329(SEXP);
 SEXP rosetta_r_330(SEXP, SEXP);
-SEXP rosetta_r_331(SEXP, SEXP);
-SEXP rosetta_r_332(SEXP, SEXP);
+SEXP rosetta_r_331(SEXP);
+SEXP rosetta_r_332(SEXP);
 SEXP rosetta_r_333(SEXP, SEXP);
 SEXP rosetta_r_334(SEXP);
-SEXP rosetta_r_335(SEXP);
-SEXP rosetta_r_336(SEXP, SEXP);
-SEXP rosetta_r_337(SEXP);
+SEXP rosetta_r_335(SEXP, SEXP);
+SEXP rosetta_r_336(SEXP);
+SEXP rosetta_r_337(SEXP, SEXP);
 SEXP rosetta_r_338(SEXP, SEXP);
 SEXP rosetta_r_339(SEXP);
 SEXP rosetta_r_340(SEXP, SEXP);
@@ -3461,18 +3780,18 @@ SEXP rosetta_r_347(SEXP, SEXP);
 SEXP rosetta_r_348(SEXP, SEXP);
 SEXP rosetta_r_349(SEXP, SEXP);
 SEXP rosetta_r_350(SEXP, SEXP);
-SEXP rosetta_r_351(SEXP);
+SEXP rosetta_r_351(SEXP, SEXP);
 SEXP rosetta_r_352(SEXP, SEXP);
 SEXP rosetta_r_353(SEXP, SEXP);
 SEXP rosetta_r_354(SEXP, SEXP);
-SEXP rosetta_r_355(SEXP, SEXP);
-SEXP rosetta_r_356(SEXP, SEXP);
+SEXP rosetta_r_355(SEXP);
+SEXP rosetta_r_356(SEXP);
 SEXP rosetta_r_357(SEXP, SEXP);
-SEXP rosetta_r_358(SEXP, SEXP);
+SEXP rosetta_r_358(SEXP);
 SEXP rosetta_r_359(SEXP, SEXP);
-SEXP rosetta_r_360(SEXP, SEXP);
+SEXP rosetta_r_360(SEXP);
 SEXP rosetta_r_361(SEXP, SEXP);
-SEXP rosetta_r_362(SEXP, SEXP);
+SEXP rosetta_r_362(SEXP);
 SEXP rosetta_r_363(SEXP, SEXP);
 SEXP rosetta_r_364(SEXP, SEXP);
 SEXP rosetta_r_365(SEXP, SEXP);
@@ -3482,34 +3801,34 @@ SEXP rosetta_r_368(SEXP, SEXP);
 SEXP rosetta_r_369(SEXP, SEXP);
 SEXP rosetta_r_370(SEXP, SEXP);
 SEXP rosetta_r_371(SEXP, SEXP);
-SEXP rosetta_r_372(SEXP, SEXP);
+SEXP rosetta_r_372(SEXP);
 SEXP rosetta_r_373(SEXP, SEXP);
 SEXP rosetta_r_374(SEXP, SEXP);
 SEXP rosetta_r_375(SEXP, SEXP);
 SEXP rosetta_r_376(SEXP, SEXP);
 SEXP rosetta_r_377(SEXP, SEXP);
 SEXP rosetta_r_378(SEXP, SEXP);
-SEXP rosetta_r_379(SEXP);
+SEXP rosetta_r_379(SEXP, SEXP);
 SEXP rosetta_r_380(SEXP, SEXP);
-SEXP rosetta_r_381(SEXP);
+SEXP rosetta_r_381(SEXP, SEXP);
 SEXP rosetta_r_382(SEXP, SEXP);
-SEXP rosetta_r_383(SEXP);
+SEXP rosetta_r_383(SEXP, SEXP);
 SEXP rosetta_r_384(SEXP, SEXP);
-SEXP rosetta_r_385(SEXP);
+SEXP rosetta_r_385(SEXP, SEXP);
 SEXP rosetta_r_386(SEXP, SEXP);
-SEXP rosetta_r_387(SEXP);
+SEXP rosetta_r_387(SEXP, SEXP);
 SEXP rosetta_r_388(SEXP, SEXP);
-SEXP rosetta_r_389(SEXP);
-SEXP rosetta_r_390(SEXP);
+SEXP rosetta_r_389(SEXP, SEXP);
+SEXP rosetta_r_390(SEXP, SEXP);
 SEXP rosetta_r_391(SEXP, SEXP);
-SEXP rosetta_r_392(SEXP);
+SEXP rosetta_r_392(SEXP, SEXP);
 SEXP rosetta_r_393(SEXP, SEXP);
-SEXP rosetta_r_394(SEXP);
+SEXP rosetta_r_394(SEXP, SEXP);
 SEXP rosetta_r_395(SEXP, SEXP);
-SEXP rosetta_r_396(SEXP);
+SEXP rosetta_r_396(SEXP, SEXP);
 SEXP rosetta_r_397(SEXP, SEXP);
 SEXP rosetta_r_398(SEXP, SEXP);
-SEXP rosetta_r_399(SEXP);
+SEXP rosetta_r_399(SEXP, SEXP);
 SEXP rosetta_r_400(SEXP);
 SEXP rosetta_r_401(SEXP, SEXP);
 SEXP rosetta_r_402(SEXP);
@@ -3523,43 +3842,43 @@ SEXP rosetta_r_409(SEXP, SEXP);
 SEXP rosetta_r_410(SEXP);
 SEXP rosetta_r_411(SEXP, SEXP);
 SEXP rosetta_r_412(SEXP);
-SEXP rosetta_r_413(SEXP);
-SEXP rosetta_r_414(SEXP, SEXP);
+SEXP rosetta_r_413(SEXP, SEXP);
+SEXP rosetta_r_414(SEXP);
 SEXP rosetta_r_415(SEXP);
 SEXP rosetta_r_416(SEXP, SEXP);
 SEXP rosetta_r_417(SEXP);
 SEXP rosetta_r_418(SEXP, SEXP);
 SEXP rosetta_r_419(SEXP);
 SEXP rosetta_r_420(SEXP, SEXP);
-SEXP rosetta_r_421(SEXP, SEXP);
-SEXP rosetta_r_422(SEXP);
+SEXP rosetta_r_421(SEXP);
+SEXP rosetta_r_422(SEXP, SEXP);
 SEXP rosetta_r_423(SEXP);
 SEXP rosetta_r_424(SEXP, SEXP);
 SEXP rosetta_r_425(SEXP);
 SEXP rosetta_r_426(SEXP, SEXP);
 SEXP rosetta_r_427(SEXP);
-SEXP rosetta_r_428(SEXP);
-SEXP rosetta_r_429(SEXP, SEXP);
-SEXP rosetta_r_430(SEXP);
-SEXP rosetta_r_431(SEXP, SEXP);
-SEXP rosetta_r_432(SEXP);
+SEXP rosetta_r_428(SEXP, SEXP);
+SEXP rosetta_r_429(SEXP);
+SEXP rosetta_r_430(SEXP, SEXP);
+SEXP rosetta_r_431(SEXP);
+SEXP rosetta_r_432(SEXP, SEXP);
 SEXP rosetta_r_433(SEXP, SEXP);
 SEXP rosetta_r_434(SEXP);
 SEXP rosetta_r_435(SEXP, SEXP);
-SEXP rosetta_r_436(SEXP);
-SEXP rosetta_r_437(SEXP, SEXP);
+SEXP rosetta_r_436(SEXP, SEXP);
+SEXP rosetta_r_437(SEXP);
 SEXP rosetta_r_438(SEXP, SEXP);
 SEXP rosetta_r_439(SEXP);
-SEXP rosetta_r_440(SEXP);
-SEXP rosetta_r_441(SEXP, SEXP);
-SEXP rosetta_r_442(SEXP);
-SEXP rosetta_r_443(SEXP, SEXP);
-SEXP rosetta_r_444(SEXP);
-SEXP rosetta_r_445(SEXP, SEXP);
+SEXP rosetta_r_440(SEXP, SEXP);
+SEXP rosetta_r_441(SEXP);
+SEXP rosetta_r_442(SEXP, SEXP);
+SEXP rosetta_r_443(SEXP);
+SEXP rosetta_r_444(SEXP, SEXP);
+SEXP rosetta_r_445(SEXP);
 SEXP rosetta_r_446(SEXP);
 SEXP rosetta_r_447(SEXP, SEXP);
-SEXP rosetta_r_448(SEXP, SEXP);
-SEXP rosetta_r_449(SEXP);
+SEXP rosetta_r_448(SEXP);
+SEXP rosetta_r_449(SEXP, SEXP);
 SEXP rosetta_r_450(SEXP);
 SEXP rosetta_r_451(SEXP, SEXP);
 SEXP rosetta_r_452(SEXP);
@@ -3575,8 +3894,8 @@ SEXP rosetta_r_461(SEXP, SEXP);
 SEXP rosetta_r_462(SEXP);
 SEXP rosetta_r_463(SEXP, SEXP);
 SEXP rosetta_r_464(SEXP);
-SEXP rosetta_r_465(SEXP);
-SEXP rosetta_r_466(SEXP, SEXP);
+SEXP rosetta_r_465(SEXP, SEXP);
+SEXP rosetta_r_466(SEXP);
 SEXP rosetta_r_467(SEXP);
 SEXP rosetta_r_468(SEXP, SEXP);
 SEXP rosetta_r_469(SEXP);
@@ -3588,47 +3907,47 @@ SEXP rosetta_r_474(SEXP, SEXP);
 SEXP rosetta_r_475(SEXP);
 SEXP rosetta_r_476(SEXP, SEXP);
 SEXP rosetta_r_477(SEXP);
-SEXP rosetta_r_478(SEXP, SEXP);
-SEXP rosetta_r_479(SEXP);
-SEXP rosetta_r_480(SEXP, SEXP);
-SEXP rosetta_r_481(SEXP);
-SEXP rosetta_r_482(SEXP, SEXP);
+SEXP rosetta_r_478(SEXP);
+SEXP rosetta_r_479(SEXP, SEXP);
+SEXP rosetta_r_480(SEXP);
+SEXP rosetta_r_481(SEXP, SEXP);
+SEXP rosetta_r_482(SEXP);
 SEXP rosetta_r_483(SEXP, SEXP);
-SEXP rosetta_r_484(SEXP);
-SEXP rosetta_r_485(SEXP);
+SEXP rosetta_r_484(SEXP, SEXP);
+SEXP rosetta_r_485(SEXP, SEXP);
 SEXP rosetta_r_486(SEXP, SEXP);
-SEXP rosetta_r_487(SEXP);
+SEXP rosetta_r_487(SEXP, SEXP);
 SEXP rosetta_r_488(SEXP, SEXP);
-SEXP rosetta_r_489(SEXP);
+SEXP rosetta_r_489(SEXP, SEXP);
 SEXP rosetta_r_490(SEXP, SEXP);
-SEXP rosetta_r_491(SEXP);
+SEXP rosetta_r_491(SEXP, SEXP);
 SEXP rosetta_r_492(SEXP, SEXP);
-SEXP rosetta_r_493(SEXP);
+SEXP rosetta_r_493(SEXP, SEXP);
 SEXP rosetta_r_494(SEXP, SEXP);
-SEXP rosetta_r_495(SEXP);
+SEXP rosetta_r_495(SEXP, SEXP);
 SEXP rosetta_r_496(SEXP, SEXP);
-SEXP rosetta_r_497(SEXP);
-SEXP rosetta_r_498(SEXP);
+SEXP rosetta_r_497(SEXP, SEXP);
+SEXP rosetta_r_498(SEXP, SEXP);
 SEXP rosetta_r_499(SEXP, SEXP);
-SEXP rosetta_r_500(SEXP);
+SEXP rosetta_r_500(SEXP, SEXP);
 SEXP rosetta_r_501(SEXP, SEXP);
-SEXP rosetta_r_502(SEXP);
+SEXP rosetta_r_502(SEXP, SEXP);
 SEXP rosetta_r_503(SEXP, SEXP);
-SEXP rosetta_r_504(SEXP);
+SEXP rosetta_r_504(SEXP, SEXP);
 SEXP rosetta_r_505(SEXP, SEXP);
-SEXP rosetta_r_506(SEXP);
+SEXP rosetta_r_506(SEXP, SEXP);
 SEXP rosetta_r_507(SEXP, SEXP);
 SEXP rosetta_r_508(SEXP, SEXP);
-SEXP rosetta_r_509(SEXP);
-SEXP rosetta_r_510(SEXP);
+SEXP rosetta_r_509(SEXP, SEXP);
+SEXP rosetta_r_510(SEXP, SEXP);
 SEXP rosetta_r_511(SEXP, SEXP);
-SEXP rosetta_r_512(SEXP);
+SEXP rosetta_r_512(SEXP, SEXP);
 SEXP rosetta_r_513(SEXP, SEXP);
-SEXP rosetta_r_514(SEXP);
+SEXP rosetta_r_514(SEXP, SEXP);
 SEXP rosetta_r_515(SEXP, SEXP);
-SEXP rosetta_r_516(SEXP);
+SEXP rosetta_r_516(SEXP, SEXP);
 SEXP rosetta_r_517(SEXP, SEXP);
-SEXP rosetta_r_518(SEXP);
+SEXP rosetta_r_518(SEXP, SEXP);
 SEXP rosetta_r_519(SEXP, SEXP);
 SEXP rosetta_r_520(SEXP, SEXP);
 SEXP rosetta_r_521(SEXP, SEXP);
@@ -3638,81 +3957,81 @@ SEXP rosetta_r_524(SEXP, SEXP);
 SEXP rosetta_r_525(SEXP, SEXP);
 SEXP rosetta_r_526(SEXP, SEXP);
 SEXP rosetta_r_527(SEXP, SEXP);
-SEXP rosetta_r_528(SEXP);
-SEXP rosetta_r_529(SEXP);
+SEXP rosetta_r_528(SEXP, SEXP);
+SEXP rosetta_r_529(SEXP, SEXP);
 SEXP rosetta_r_530(SEXP, SEXP);
-SEXP rosetta_r_531(SEXP);
+SEXP rosetta_r_531(SEXP, SEXP);
 SEXP rosetta_r_532(SEXP, SEXP);
-SEXP rosetta_r_533(SEXP);
+SEXP rosetta_r_533(SEXP, SEXP);
 SEXP rosetta_r_534(SEXP, SEXP);
-SEXP rosetta_r_535(SEXP);
-SEXP rosetta_r_536(SEXP);
+SEXP rosetta_r_535(SEXP, SEXP);
+SEXP rosetta_r_536(SEXP, SEXP);
 SEXP rosetta_r_537(SEXP, SEXP);
-SEXP rosetta_r_538(SEXP);
+SEXP rosetta_r_538(SEXP, SEXP);
 SEXP rosetta_r_539(SEXP, SEXP);
-SEXP rosetta_r_540(SEXP);
+SEXP rosetta_r_540(SEXP, SEXP);
 SEXP rosetta_r_541(SEXP, SEXP);
-SEXP rosetta_r_542(SEXP);
-SEXP rosetta_r_543(SEXP, SEXP);
-SEXP rosetta_r_544(SEXP);
-SEXP rosetta_r_545(SEXP);
+SEXP rosetta_r_542(SEXP, SEXP);
+SEXP rosetta_r_543(SEXP);
+SEXP rosetta_r_544(SEXP, SEXP);
+SEXP rosetta_r_545(SEXP, SEXP);
 SEXP rosetta_r_546(SEXP, SEXP);
-SEXP rosetta_r_547(SEXP);
+SEXP rosetta_r_547(SEXP, SEXP);
 SEXP rosetta_r_548(SEXP, SEXP);
-SEXP rosetta_r_549(SEXP);
+SEXP rosetta_r_549(SEXP, SEXP);
 SEXP rosetta_r_550(SEXP, SEXP);
-SEXP rosetta_r_551(SEXP);
-SEXP rosetta_r_552(SEXP);
+SEXP rosetta_r_551(SEXP, SEXP);
+SEXP rosetta_r_552(SEXP, SEXP);
 SEXP rosetta_r_553(SEXP, SEXP);
-SEXP rosetta_r_554(SEXP);
+SEXP rosetta_r_554(SEXP, SEXP);
 SEXP rosetta_r_555(SEXP, SEXP);
-SEXP rosetta_r_556(SEXP);
+SEXP rosetta_r_556(SEXP, SEXP);
 SEXP rosetta_r_557(SEXP, SEXP);
-SEXP rosetta_r_558(SEXP);
-SEXP rosetta_r_559(SEXP);
+SEXP rosetta_r_558(SEXP, SEXP);
+SEXP rosetta_r_559(SEXP, SEXP);
 SEXP rosetta_r_560(SEXP, SEXP);
-SEXP rosetta_r_561(SEXP);
+SEXP rosetta_r_561(SEXP, SEXP);
 SEXP rosetta_r_562(SEXP, SEXP);
-SEXP rosetta_r_563(SEXP);
+SEXP rosetta_r_563(SEXP, SEXP);
 SEXP rosetta_r_564(SEXP, SEXP);
-SEXP rosetta_r_565(SEXP);
-SEXP rosetta_r_566(SEXP);
+SEXP rosetta_r_565(SEXP, SEXP);
+SEXP rosetta_r_566(SEXP, SEXP);
 SEXP rosetta_r_567(SEXP, SEXP);
-SEXP rosetta_r_568(SEXP);
+SEXP rosetta_r_568(SEXP, SEXP);
 SEXP rosetta_r_569(SEXP, SEXP);
-SEXP rosetta_r_570(SEXP);
+SEXP rosetta_r_570(SEXP, SEXP);
 SEXP rosetta_r_571(SEXP, SEXP);
-SEXP rosetta_r_572(SEXP);
+SEXP rosetta_r_572(SEXP, SEXP);
 SEXP rosetta_r_573(SEXP, SEXP);
-SEXP rosetta_r_574(SEXP);
-SEXP rosetta_r_575(SEXP);
+SEXP rosetta_r_574(SEXP, SEXP);
+SEXP rosetta_r_575(SEXP, SEXP);
 SEXP rosetta_r_576(SEXP, SEXP);
-SEXP rosetta_r_577(SEXP);
+SEXP rosetta_r_577(SEXP, SEXP);
 SEXP rosetta_r_578(SEXP, SEXP);
-SEXP rosetta_r_579(SEXP);
+SEXP rosetta_r_579(SEXP, SEXP);
 SEXP rosetta_r_580(SEXP, SEXP);
-SEXP rosetta_r_581(SEXP);
-SEXP rosetta_r_582(SEXP);
+SEXP rosetta_r_581(SEXP, SEXP);
+SEXP rosetta_r_582(SEXP, SEXP);
 SEXP rosetta_r_583(SEXP, SEXP);
-SEXP rosetta_r_584(SEXP);
+SEXP rosetta_r_584(SEXP, SEXP);
 SEXP rosetta_r_585(SEXP, SEXP);
-SEXP rosetta_r_586(SEXP);
+SEXP rosetta_r_586(SEXP, SEXP);
 SEXP rosetta_r_587(SEXP, SEXP);
-SEXP rosetta_r_588(SEXP);
+SEXP rosetta_r_588(SEXP, SEXP);
 SEXP rosetta_r_589(SEXP, SEXP);
-SEXP rosetta_r_590(SEXP);
+SEXP rosetta_r_590(SEXP, SEXP);
 SEXP rosetta_r_591(SEXP, SEXP);
 SEXP rosetta_r_592(SEXP, SEXP);
 SEXP rosetta_r_593(SEXP, SEXP);
-SEXP rosetta_r_594(SEXP);
+SEXP rosetta_r_594(SEXP, SEXP);
 SEXP rosetta_r_595(SEXP, SEXP);
-SEXP rosetta_r_596(SEXP);
+SEXP rosetta_r_596(SEXP, SEXP);
 SEXP rosetta_r_597(SEXP, SEXP);
-SEXP rosetta_r_598(SEXP);
+SEXP rosetta_r_598(SEXP, SEXP);
 SEXP rosetta_r_599(SEXP, SEXP);
-SEXP rosetta_r_600(SEXP);
+SEXP rosetta_r_600(SEXP, SEXP);
 SEXP rosetta_r_601(SEXP, SEXP);
-SEXP rosetta_r_602(SEXP);
+SEXP rosetta_r_602(SEXP, SEXP);
 SEXP rosetta_r_603(SEXP, SEXP);
 SEXP rosetta_r_604(SEXP, SEXP);
 SEXP rosetta_r_605(SEXP, SEXP);
@@ -3743,64 +4062,64 @@ SEXP rosetta_r_629(SEXP, SEXP);
 SEXP rosetta_r_630(SEXP, SEXP);
 SEXP rosetta_r_631(SEXP, SEXP);
 SEXP rosetta_r_632(SEXP, SEXP);
-SEXP rosetta_r_633(SEXP, SEXP);
+SEXP rosetta_r_633(SEXP);
 SEXP rosetta_r_634(SEXP, SEXP);
 SEXP rosetta_r_635(SEXP, SEXP);
 SEXP rosetta_r_636(SEXP, SEXP);
-SEXP rosetta_r_637(SEXP);
+SEXP rosetta_r_637(SEXP, SEXP);
 SEXP rosetta_r_638(SEXP, SEXP);
 SEXP rosetta_r_639(SEXP, SEXP);
 SEXP rosetta_r_640(SEXP, SEXP);
 SEXP rosetta_r_641(SEXP, SEXP);
-SEXP rosetta_r_642(SEXP);
+SEXP rosetta_r_642(SEXP, SEXP);
 SEXP rosetta_r_643(SEXP, SEXP);
 SEXP rosetta_r_644(SEXP, SEXP);
 SEXP rosetta_r_645(SEXP, SEXP);
 SEXP rosetta_r_646(SEXP, SEXP);
-SEXP rosetta_r_647(SEXP);
+SEXP rosetta_r_647(SEXP, SEXP);
 SEXP rosetta_r_648(SEXP, SEXP);
-SEXP rosetta_r_649(SEXP);
+SEXP rosetta_r_649(SEXP, SEXP);
 SEXP rosetta_r_650(SEXP, SEXP);
-SEXP rosetta_r_651(SEXP);
+SEXP rosetta_r_651(SEXP, SEXP);
 SEXP rosetta_r_652(SEXP, SEXP);
-SEXP rosetta_r_653(SEXP);
+SEXP rosetta_r_653(SEXP, SEXP);
 SEXP rosetta_r_654(SEXP, SEXP);
 SEXP rosetta_r_655(SEXP, SEXP);
-SEXP rosetta_r_656(SEXP, SEXP);
+SEXP rosetta_r_656(SEXP);
 SEXP rosetta_r_657(SEXP);
 SEXP rosetta_r_658(SEXP, SEXP);
-SEXP rosetta_r_659(SEXP, SEXP);
+SEXP rosetta_r_659(SEXP);
 SEXP rosetta_r_660(SEXP, SEXP);
-SEXP rosetta_r_661(SEXP, SEXP);
+SEXP rosetta_r_661(SEXP);
 SEXP rosetta_r_662(SEXP, SEXP);
 SEXP rosetta_r_663(SEXP);
 SEXP rosetta_r_664(SEXP, SEXP);
-SEXP rosetta_r_665(SEXP, SEXP);
+SEXP rosetta_r_665(SEXP);
 SEXP rosetta_r_666(SEXP, SEXP);
-SEXP rosetta_r_667(SEXP, SEXP);
+SEXP rosetta_r_667(SEXP);
 SEXP rosetta_r_668(SEXP);
 SEXP rosetta_r_669(SEXP, SEXP);
-SEXP rosetta_r_670(SEXP, SEXP);
-SEXP rosetta_r_671(SEXP);
-SEXP rosetta_r_672(SEXP, SEXP);
-SEXP rosetta_r_673(SEXP);
-SEXP rosetta_r_674(SEXP, SEXP);
-SEXP rosetta_r_675(SEXP);
-SEXP rosetta_r_676(SEXP);
-SEXP rosetta_r_677(SEXP, SEXP);
+SEXP rosetta_r_670(SEXP);
+SEXP rosetta_r_671(SEXP, SEXP);
+SEXP rosetta_r_672(SEXP);
+SEXP rosetta_r_673(SEXP, SEXP);
+SEXP rosetta_r_674(SEXP);
+SEXP rosetta_r_675(SEXP, SEXP);
+SEXP rosetta_r_676(SEXP, SEXP);
+SEXP rosetta_r_677(SEXP);
 SEXP rosetta_r_678(SEXP);
 SEXP rosetta_r_679(SEXP, SEXP);
 SEXP rosetta_r_680(SEXP);
 SEXP rosetta_r_681(SEXP, SEXP);
 SEXP rosetta_r_682(SEXP);
-SEXP rosetta_r_683(SEXP);
-SEXP rosetta_r_684(SEXP, SEXP);
-SEXP rosetta_r_685(SEXP);
-SEXP rosetta_r_686(SEXP, SEXP);
-SEXP rosetta_r_687(SEXP);
-SEXP rosetta_r_688(SEXP, SEXP);
-SEXP rosetta_r_689(SEXP);
-SEXP rosetta_r_690(SEXP, SEXP);
+SEXP rosetta_r_683(SEXP, SEXP);
+SEXP rosetta_r_684(SEXP);
+SEXP rosetta_r_685(SEXP, SEXP);
+SEXP rosetta_r_686(SEXP);
+SEXP rosetta_r_687(SEXP, SEXP);
+SEXP rosetta_r_688(SEXP);
+SEXP rosetta_r_689(SEXP, SEXP);
+SEXP rosetta_r_690(SEXP);
 SEXP rosetta_r_691(SEXP);
 SEXP rosetta_r_692(SEXP, SEXP);
 SEXP rosetta_r_693(SEXP);
@@ -3808,21 +4127,21 @@ SEXP rosetta_r_694(SEXP, SEXP);
 SEXP rosetta_r_695(SEXP);
 SEXP rosetta_r_696(SEXP, SEXP);
 SEXP rosetta_r_697(SEXP);
-SEXP rosetta_r_698(SEXP);
+SEXP rosetta_r_698(SEXP, SEXP);
 SEXP rosetta_r_699(SEXP, SEXP);
 SEXP rosetta_r_700(SEXP);
-SEXP rosetta_r_701(SEXP, SEXP);
-SEXP rosetta_r_702(SEXP);
-SEXP rosetta_r_703(SEXP, SEXP);
-SEXP rosetta_r_704(SEXP);
-SEXP rosetta_r_705(SEXP, SEXP);
-SEXP rosetta_r_706(SEXP);
-SEXP rosetta_r_707(SEXP, SEXP);
+SEXP rosetta_r_701(SEXP);
+SEXP rosetta_r_702(SEXP, SEXP);
+SEXP rosetta_r_703(SEXP);
+SEXP rosetta_r_704(SEXP, SEXP);
+SEXP rosetta_r_705(SEXP);
+SEXP rosetta_r_706(SEXP, SEXP);
+SEXP rosetta_r_707(SEXP);
 SEXP rosetta_r_708(SEXP);
 SEXP rosetta_r_709(SEXP, SEXP);
 SEXP rosetta_r_710(SEXP);
-SEXP rosetta_r_711(SEXP);
-SEXP rosetta_r_712(SEXP, SEXP);
+SEXP rosetta_r_711(SEXP, SEXP);
+SEXP rosetta_r_712(SEXP);
 SEXP rosetta_r_713(SEXP);
 SEXP rosetta_r_714(SEXP, SEXP);
 SEXP rosetta_r_715(SEXP);
@@ -3833,216 +4152,216 @@ SEXP rosetta_r_719(SEXP);
 SEXP rosetta_r_720(SEXP, SEXP);
 SEXP rosetta_r_721(SEXP);
 SEXP rosetta_r_722(SEXP, SEXP);
-SEXP rosetta_r_723(SEXP);
-SEXP rosetta_r_724(SEXP, SEXP);
+SEXP rosetta_r_723(SEXP, SEXP);
+SEXP rosetta_r_724(SEXP);
 SEXP rosetta_r_725(SEXP);
 SEXP rosetta_r_726(SEXP, SEXP);
 SEXP rosetta_r_727(SEXP);
-SEXP rosetta_r_728(SEXP);
-SEXP rosetta_r_729(SEXP, SEXP);
-SEXP rosetta_r_730(SEXP);
-SEXP rosetta_r_731(SEXP, SEXP);
-SEXP rosetta_r_732(SEXP);
+SEXP rosetta_r_728(SEXP, SEXP);
+SEXP rosetta_r_729(SEXP);
+SEXP rosetta_r_730(SEXP, SEXP);
+SEXP rosetta_r_731(SEXP);
+SEXP rosetta_r_732(SEXP, SEXP);
 SEXP rosetta_r_733(SEXP, SEXP);
 SEXP rosetta_r_734(SEXP);
-SEXP rosetta_r_735(SEXP, SEXP);
-SEXP rosetta_r_736(SEXP);
-SEXP rosetta_r_737(SEXP, SEXP);
-SEXP rosetta_r_738(SEXP);
-SEXP rosetta_r_739(SEXP, SEXP);
-SEXP rosetta_r_740(SEXP);
-SEXP rosetta_r_741(SEXP, SEXP);
-SEXP rosetta_r_742(SEXP);
-SEXP rosetta_r_743(SEXP, SEXP);
-SEXP rosetta_r_744(SEXP);
-SEXP rosetta_r_745(SEXP, SEXP);
+SEXP rosetta_r_735(SEXP);
+SEXP rosetta_r_736(SEXP, SEXP);
+SEXP rosetta_r_737(SEXP);
+SEXP rosetta_r_738(SEXP, SEXP);
+SEXP rosetta_r_739(SEXP);
+SEXP rosetta_r_740(SEXP, SEXP);
+SEXP rosetta_r_741(SEXP);
+SEXP rosetta_r_742(SEXP, SEXP);
+SEXP rosetta_r_743(SEXP);
+SEXP rosetta_r_744(SEXP, SEXP);
+SEXP rosetta_r_745(SEXP);
 SEXP rosetta_r_746(SEXP, SEXP);
-SEXP rosetta_r_747(SEXP, SEXP);
-SEXP rosetta_r_748(SEXP, SEXP);
-SEXP rosetta_r_749(SEXP);
-SEXP rosetta_r_750(SEXP, SEXP);
+SEXP rosetta_r_747(SEXP);
+SEXP rosetta_r_748(SEXP);
+SEXP rosetta_r_749(SEXP, SEXP);
+SEXP rosetta_r_750(SEXP);
 SEXP rosetta_r_751(SEXP, SEXP);
-SEXP rosetta_r_752(SEXP, SEXP);
-SEXP rosetta_r_753(SEXP);
-SEXP rosetta_r_754(SEXP, SEXP);
+SEXP rosetta_r_752(SEXP);
+SEXP rosetta_r_753(SEXP, SEXP);
+SEXP rosetta_r_754(SEXP);
 SEXP rosetta_r_755(SEXP, SEXP);
 SEXP rosetta_r_756(SEXP);
-SEXP rosetta_r_757(SEXP);
+SEXP rosetta_r_757(SEXP, SEXP);
 SEXP rosetta_r_758(SEXP, SEXP);
 SEXP rosetta_r_759(SEXP);
-SEXP rosetta_r_760(SEXP, SEXP);
-SEXP rosetta_r_761(SEXP);
-SEXP rosetta_r_762(SEXP, SEXP);
+SEXP rosetta_r_760(SEXP);
+SEXP rosetta_r_761(SEXP, SEXP);
+SEXP rosetta_r_762(SEXP);
 SEXP rosetta_r_763(SEXP, SEXP);
-SEXP rosetta_r_764(SEXP, SEXP);
+SEXP rosetta_r_764(SEXP);
 SEXP rosetta_r_765(SEXP, SEXP);
-SEXP rosetta_r_766(SEXP, SEXP);
+SEXP rosetta_r_766(SEXP);
 SEXP rosetta_r_767(SEXP, SEXP);
-SEXP rosetta_r_768(SEXP, SEXP);
-SEXP rosetta_r_769(SEXP);
-SEXP rosetta_r_770(SEXP);
+SEXP rosetta_r_768(SEXP);
+SEXP rosetta_r_769(SEXP, SEXP);
+SEXP rosetta_r_770(SEXP, SEXP);
 SEXP rosetta_r_771(SEXP, SEXP);
-SEXP rosetta_r_772(SEXP);
+SEXP rosetta_r_772(SEXP, SEXP);
 SEXP rosetta_r_773(SEXP, SEXP);
-SEXP rosetta_r_774(SEXP);
+SEXP rosetta_r_774(SEXP, SEXP);
 SEXP rosetta_r_775(SEXP, SEXP);
-SEXP rosetta_r_776(SEXP);
+SEXP rosetta_r_776(SEXP, SEXP);
 SEXP rosetta_r_777(SEXP, SEXP);
-SEXP rosetta_r_778(SEXP, SEXP);
-SEXP rosetta_r_779(SEXP, SEXP);
+SEXP rosetta_r_778(SEXP);
+SEXP rosetta_r_779(SEXP);
 SEXP rosetta_r_780(SEXP, SEXP);
-SEXP rosetta_r_781(SEXP, SEXP);
+SEXP rosetta_r_781(SEXP);
 SEXP rosetta_r_782(SEXP, SEXP);
-SEXP rosetta_r_783(SEXP, SEXP);
+SEXP rosetta_r_783(SEXP);
 SEXP rosetta_r_784(SEXP, SEXP);
-SEXP rosetta_r_785(SEXP, SEXP);
+SEXP rosetta_r_785(SEXP);
 SEXP rosetta_r_786(SEXP);
-SEXP rosetta_r_787(SEXP);
-SEXP rosetta_r_788(SEXP, SEXP);
-SEXP rosetta_r_789(SEXP);
-SEXP rosetta_r_790(SEXP, SEXP);
-SEXP rosetta_r_791(SEXP);
+SEXP rosetta_r_787(SEXP, SEXP);
+SEXP rosetta_r_788(SEXP);
+SEXP rosetta_r_789(SEXP, SEXP);
+SEXP rosetta_r_790(SEXP);
+SEXP rosetta_r_791(SEXP, SEXP);
 SEXP rosetta_r_792(SEXP);
 SEXP rosetta_r_793(SEXP, SEXP);
 SEXP rosetta_r_794(SEXP);
-SEXP rosetta_r_795(SEXP, SEXP);
-SEXP rosetta_r_796(SEXP);
-SEXP rosetta_r_797(SEXP, SEXP);
+SEXP rosetta_r_795(SEXP);
+SEXP rosetta_r_796(SEXP, SEXP);
+SEXP rosetta_r_797(SEXP);
 SEXP rosetta_r_798(SEXP, SEXP);
-SEXP rosetta_r_799(SEXP, SEXP);
+SEXP rosetta_r_799(SEXP);
 SEXP rosetta_r_800(SEXP, SEXP);
-SEXP rosetta_r_801(SEXP, SEXP);
-SEXP rosetta_r_802(SEXP, SEXP);
-SEXP rosetta_r_803(SEXP);
-SEXP rosetta_r_804(SEXP, SEXP);
+SEXP rosetta_r_801(SEXP);
+SEXP rosetta_r_802(SEXP);
+SEXP rosetta_r_803(SEXP, SEXP);
+SEXP rosetta_r_804(SEXP);
 SEXP rosetta_r_805(SEXP, SEXP);
-SEXP rosetta_r_806(SEXP, SEXP);
+SEXP rosetta_r_806(SEXP);
 SEXP rosetta_r_807(SEXP, SEXP);
-SEXP rosetta_r_808(SEXP, SEXP);
-SEXP rosetta_r_809(SEXP, SEXP);
+SEXP rosetta_r_808(SEXP);
+SEXP rosetta_r_809(SEXP);
 SEXP rosetta_r_810(SEXP, SEXP);
 SEXP rosetta_r_811(SEXP);
 SEXP rosetta_r_812(SEXP, SEXP);
-SEXP rosetta_r_813(SEXP, SEXP);
+SEXP rosetta_r_813(SEXP);
 SEXP rosetta_r_814(SEXP, SEXP);
-SEXP rosetta_r_815(SEXP, SEXP);
-SEXP rosetta_r_816(SEXP, SEXP);
-SEXP rosetta_r_817(SEXP);
-SEXP rosetta_r_818(SEXP, SEXP);
+SEXP rosetta_r_815(SEXP);
+SEXP rosetta_r_816(SEXP);
+SEXP rosetta_r_817(SEXP, SEXP);
+SEXP rosetta_r_818(SEXP);
 SEXP rosetta_r_819(SEXP, SEXP);
-SEXP rosetta_r_820(SEXP, SEXP);
+SEXP rosetta_r_820(SEXP);
 SEXP rosetta_r_821(SEXP, SEXP);
-SEXP rosetta_r_822(SEXP, SEXP);
-SEXP rosetta_r_823(SEXP);
-SEXP rosetta_r_824(SEXP, SEXP);
-SEXP rosetta_r_825(SEXP, SEXP);
+SEXP rosetta_r_822(SEXP);
+SEXP rosetta_r_823(SEXP, SEXP);
+SEXP rosetta_r_824(SEXP);
+SEXP rosetta_r_825(SEXP);
 SEXP rosetta_r_826(SEXP, SEXP);
-SEXP rosetta_r_827(SEXP, SEXP);
+SEXP rosetta_r_827(SEXP);
 SEXP rosetta_r_828(SEXP, SEXP);
 SEXP rosetta_r_829(SEXP);
 SEXP rosetta_r_830(SEXP, SEXP);
-SEXP rosetta_r_831(SEXP, SEXP);
-SEXP rosetta_r_832(SEXP, SEXP);
+SEXP rosetta_r_831(SEXP);
+SEXP rosetta_r_832(SEXP);
 SEXP rosetta_r_833(SEXP, SEXP);
-SEXP rosetta_r_834(SEXP, SEXP);
-SEXP rosetta_r_835(SEXP);
+SEXP rosetta_r_834(SEXP);
+SEXP rosetta_r_835(SEXP, SEXP);
 SEXP rosetta_r_836(SEXP);
 SEXP rosetta_r_837(SEXP, SEXP);
 SEXP rosetta_r_838(SEXP);
 SEXP rosetta_r_839(SEXP, SEXP);
 SEXP rosetta_r_840(SEXP);
-SEXP rosetta_r_841(SEXP);
+SEXP rosetta_r_841(SEXP, SEXP);
 SEXP rosetta_r_842(SEXP, SEXP);
-SEXP rosetta_r_843(SEXP);
-SEXP rosetta_r_844(SEXP, SEXP);
-SEXP rosetta_r_845(SEXP);
-SEXP rosetta_r_846(SEXP, SEXP);
-SEXP rosetta_r_847(SEXP);
+SEXP rosetta_r_843(SEXP, SEXP);
+SEXP rosetta_r_844(SEXP);
+SEXP rosetta_r_845(SEXP, SEXP);
+SEXP rosetta_r_846(SEXP);
+SEXP rosetta_r_847(SEXP, SEXP);
 SEXP rosetta_r_848(SEXP);
 SEXP rosetta_r_849(SEXP, SEXP);
 SEXP rosetta_r_850(SEXP);
 SEXP rosetta_r_851(SEXP, SEXP);
 SEXP rosetta_r_852(SEXP);
-SEXP rosetta_r_853(SEXP);
+SEXP rosetta_r_853(SEXP, SEXP);
 SEXP rosetta_r_854(SEXP, SEXP);
-SEXP rosetta_r_855(SEXP);
+SEXP rosetta_r_855(SEXP, SEXP);
 SEXP rosetta_r_856(SEXP, SEXP);
-SEXP rosetta_r_857(SEXP);
-SEXP rosetta_r_858(SEXP);
+SEXP rosetta_r_857(SEXP, SEXP);
+SEXP rosetta_r_858(SEXP, SEXP);
 SEXP rosetta_r_859(SEXP, SEXP);
-SEXP rosetta_r_860(SEXP);
+SEXP rosetta_r_860(SEXP, SEXP);
 SEXP rosetta_r_861(SEXP, SEXP);
-SEXP rosetta_r_862(SEXP);
+SEXP rosetta_r_862(SEXP, SEXP);
 SEXP rosetta_r_863(SEXP, SEXP);
-SEXP rosetta_r_864(SEXP);
+SEXP rosetta_r_864(SEXP, SEXP);
 SEXP rosetta_r_865(SEXP, SEXP);
-SEXP rosetta_r_866(SEXP);
+SEXP rosetta_r_866(SEXP, SEXP);
 SEXP rosetta_r_867(SEXP, SEXP);
-SEXP rosetta_r_868(SEXP);
+SEXP rosetta_r_868(SEXP, SEXP);
 SEXP rosetta_r_869(SEXP, SEXP);
-SEXP rosetta_r_870(SEXP);
+SEXP rosetta_r_870(SEXP, SEXP);
 SEXP rosetta_r_871(SEXP, SEXP);
-SEXP rosetta_r_872(SEXP);
+SEXP rosetta_r_872(SEXP, SEXP);
 SEXP rosetta_r_873(SEXP, SEXP);
-SEXP rosetta_r_874(SEXP);
-SEXP rosetta_r_875(SEXP);
+SEXP rosetta_r_874(SEXP, SEXP);
+SEXP rosetta_r_875(SEXP, SEXP);
 SEXP rosetta_r_876(SEXP, SEXP);
-SEXP rosetta_r_877(SEXP);
+SEXP rosetta_r_877(SEXP, SEXP);
 SEXP rosetta_r_878(SEXP, SEXP);
-SEXP rosetta_r_879(SEXP);
+SEXP rosetta_r_879(SEXP, SEXP);
 SEXP rosetta_r_880(SEXP, SEXP);
-SEXP rosetta_r_881(SEXP);
+SEXP rosetta_r_881(SEXP, SEXP);
 SEXP rosetta_r_882(SEXP, SEXP);
-SEXP rosetta_r_883(SEXP);
+SEXP rosetta_r_883(SEXP, SEXP);
 SEXP rosetta_r_884(SEXP, SEXP);
-SEXP rosetta_r_885(SEXP);
+SEXP rosetta_r_885(SEXP, SEXP);
 SEXP rosetta_r_886(SEXP, SEXP);
 SEXP rosetta_r_887(SEXP);
 SEXP rosetta_r_888(SEXP, SEXP);
-SEXP rosetta_r_889(SEXP);
+SEXP rosetta_r_889(SEXP, SEXP);
 SEXP rosetta_r_890(SEXP, SEXP);
-SEXP rosetta_r_891(SEXP);
+SEXP rosetta_r_891(SEXP, SEXP);
 SEXP rosetta_r_892(SEXP);
 SEXP rosetta_r_893(SEXP, SEXP);
-SEXP rosetta_r_894(SEXP);
+SEXP rosetta_r_894(SEXP, SEXP);
 SEXP rosetta_r_895(SEXP, SEXP);
-SEXP rosetta_r_896(SEXP);
-SEXP rosetta_r_897(SEXP, SEXP);
-SEXP rosetta_r_898(SEXP);
+SEXP rosetta_r_896(SEXP, SEXP);
+SEXP rosetta_r_897(SEXP);
+SEXP rosetta_r_898(SEXP, SEXP);
 SEXP rosetta_r_899(SEXP);
 SEXP rosetta_r_900(SEXP, SEXP);
 SEXP rosetta_r_901(SEXP);
 SEXP rosetta_r_902(SEXP, SEXP);
 SEXP rosetta_r_903(SEXP);
 SEXP rosetta_r_904(SEXP, SEXP);
-SEXP rosetta_r_905(SEXP);
+SEXP rosetta_r_905(SEXP, SEXP);
 SEXP rosetta_r_906(SEXP, SEXP);
 SEXP rosetta_r_907(SEXP);
 SEXP rosetta_r_908(SEXP, SEXP);
-SEXP rosetta_r_909(SEXP);
+SEXP rosetta_r_909(SEXP, SEXP);
 SEXP rosetta_r_910(SEXP, SEXP);
 SEXP rosetta_r_911(SEXP, SEXP);
-SEXP rosetta_r_912(SEXP);
-SEXP rosetta_r_913(SEXP, SEXP);
-SEXP rosetta_r_914(SEXP);
+SEXP rosetta_r_912(SEXP, SEXP);
+SEXP rosetta_r_913(SEXP);
+SEXP rosetta_r_914(SEXP, SEXP);
 SEXP rosetta_r_915(SEXP, SEXP);
-SEXP rosetta_r_916(SEXP);
+SEXP rosetta_r_916(SEXP, SEXP);
 SEXP rosetta_r_917(SEXP, SEXP);
 SEXP rosetta_r_918(SEXP);
 SEXP rosetta_r_919(SEXP, SEXP);
-SEXP rosetta_r_920(SEXP);
+SEXP rosetta_r_920(SEXP, SEXP);
 SEXP rosetta_r_921(SEXP);
 SEXP rosetta_r_922(SEXP, SEXP);
 SEXP rosetta_r_923(SEXP);
 SEXP rosetta_r_924(SEXP, SEXP);
 SEXP rosetta_r_925(SEXP);
-SEXP rosetta_r_926(SEXP, SEXP);
-SEXP rosetta_r_927(SEXP);
-SEXP rosetta_r_928(SEXP, SEXP);
-SEXP rosetta_r_929(SEXP);
-SEXP rosetta_r_930(SEXP, SEXP);
-SEXP rosetta_r_931(SEXP);
-SEXP rosetta_r_932(SEXP, SEXP);
+SEXP rosetta_r_926(SEXP);
+SEXP rosetta_r_927(SEXP, SEXP);
+SEXP rosetta_r_928(SEXP);
+SEXP rosetta_r_929(SEXP, SEXP);
+SEXP rosetta_r_930(SEXP);
+SEXP rosetta_r_931(SEXP, SEXP);
+SEXP rosetta_r_932(SEXP);
 SEXP rosetta_r_933(SEXP);
 SEXP rosetta_r_934(SEXP, SEXP);
 SEXP rosetta_r_935(SEXP);
@@ -4052,91 +4371,91 @@ SEXP rosetta_r_938(SEXP, SEXP);
 SEXP rosetta_r_939(SEXP);
 SEXP rosetta_r_940(SEXP, SEXP);
 SEXP rosetta_r_941(SEXP);
-SEXP rosetta_r_942(SEXP);
-SEXP rosetta_r_943(SEXP, SEXP);
-SEXP rosetta_r_944(SEXP);
-SEXP rosetta_r_945(SEXP, SEXP);
-SEXP rosetta_r_946(SEXP);
-SEXP rosetta_r_947(SEXP, SEXP);
+SEXP rosetta_r_942(SEXP, SEXP);
+SEXP rosetta_r_943(SEXP);
+SEXP rosetta_r_944(SEXP, SEXP);
+SEXP rosetta_r_945(SEXP);
+SEXP rosetta_r_946(SEXP, SEXP);
+SEXP rosetta_r_947(SEXP);
 SEXP rosetta_r_948(SEXP);
 SEXP rosetta_r_949(SEXP, SEXP);
 SEXP rosetta_r_950(SEXP);
 SEXP rosetta_r_951(SEXP, SEXP);
 SEXP rosetta_r_952(SEXP);
-SEXP rosetta_r_953(SEXP);
-SEXP rosetta_r_954(SEXP, SEXP);
-SEXP rosetta_r_955(SEXP);
-SEXP rosetta_r_956(SEXP, SEXP);
-SEXP rosetta_r_957(SEXP);
-SEXP rosetta_r_958(SEXP, SEXP);
+SEXP rosetta_r_953(SEXP, SEXP);
+SEXP rosetta_r_954(SEXP);
+SEXP rosetta_r_955(SEXP, SEXP);
+SEXP rosetta_r_956(SEXP);
+SEXP rosetta_r_957(SEXP, SEXP);
+SEXP rosetta_r_958(SEXP);
 SEXP rosetta_r_959(SEXP, SEXP);
-SEXP rosetta_r_960(SEXP, SEXP);
-SEXP rosetta_r_961(SEXP, SEXP);
+SEXP rosetta_r_960(SEXP);
+SEXP rosetta_r_961(SEXP);
 SEXP rosetta_r_962(SEXP, SEXP);
-SEXP rosetta_r_963(SEXP, SEXP);
+SEXP rosetta_r_963(SEXP);
 SEXP rosetta_r_964(SEXP, SEXP);
-SEXP rosetta_r_965(SEXP, SEXP);
+SEXP rosetta_r_965(SEXP);
 SEXP rosetta_r_966(SEXP, SEXP);
-SEXP rosetta_r_967(SEXP, SEXP);
+SEXP rosetta_r_967(SEXP);
 SEXP rosetta_r_968(SEXP, SEXP);
-SEXP rosetta_r_969(SEXP, SEXP);
+SEXP rosetta_r_969(SEXP);
 SEXP rosetta_r_970(SEXP, SEXP);
-SEXP rosetta_r_971(SEXP, SEXP);
+SEXP rosetta_r_971(SEXP);
 SEXP rosetta_r_972(SEXP, SEXP);
-SEXP rosetta_r_973(SEXP, SEXP);
+SEXP rosetta_r_973(SEXP);
 SEXP rosetta_r_974(SEXP, SEXP);
-SEXP rosetta_r_975(SEXP, SEXP);
+SEXP rosetta_r_975(SEXP);
 SEXP rosetta_r_976(SEXP, SEXP);
-SEXP rosetta_r_977(SEXP, SEXP);
-SEXP rosetta_r_978(SEXP, SEXP);
+SEXP rosetta_r_977(SEXP);
+SEXP rosetta_r_978(SEXP);
 SEXP rosetta_r_979(SEXP, SEXP);
-SEXP rosetta_r_980(SEXP, SEXP);
+SEXP rosetta_r_980(SEXP);
 SEXP rosetta_r_981(SEXP, SEXP);
-SEXP rosetta_r_982(SEXP, SEXP);
+SEXP rosetta_r_982(SEXP);
 SEXP rosetta_r_983(SEXP, SEXP);
-SEXP rosetta_r_984(SEXP, SEXP);
+SEXP rosetta_r_984(SEXP);
 SEXP rosetta_r_985(SEXP, SEXP);
-SEXP rosetta_r_986(SEXP, SEXP);
+SEXP rosetta_r_986(SEXP);
 SEXP rosetta_r_987(SEXP, SEXP);
-SEXP rosetta_r_988(SEXP, SEXP);
+SEXP rosetta_r_988(SEXP);
 SEXP rosetta_r_989(SEXP, SEXP);
-SEXP rosetta_r_990(SEXP, SEXP);
+SEXP rosetta_r_990(SEXP);
 SEXP rosetta_r_991(SEXP, SEXP);
-SEXP rosetta_r_992(SEXP, SEXP);
+SEXP rosetta_r_992(SEXP);
 SEXP rosetta_r_993(SEXP, SEXP);
-SEXP rosetta_r_994(SEXP, SEXP);
+SEXP rosetta_r_994(SEXP);
 SEXP rosetta_r_995(SEXP, SEXP);
 SEXP rosetta_r_996(SEXP, SEXP);
 SEXP rosetta_r_997(SEXP, SEXP);
 SEXP rosetta_r_998(SEXP, SEXP);
-SEXP rosetta_r_999(SEXP, SEXP);
+SEXP rosetta_r_999(SEXP);
 SEXP rosetta_r_1000(SEXP, SEXP);
 SEXP rosetta_r_1001(SEXP, SEXP);
 SEXP rosetta_r_1002(SEXP, SEXP);
-SEXP rosetta_r_1003(SEXP, SEXP);
+SEXP rosetta_r_1003(SEXP);
 SEXP rosetta_r_1004(SEXP, SEXP);
 SEXP rosetta_r_1005(SEXP, SEXP);
-SEXP rosetta_r_1006(SEXP, SEXP);
-SEXP rosetta_r_1007(SEXP, SEXP);
+SEXP rosetta_r_1006(SEXP);
+SEXP rosetta_r_1007(SEXP);
 SEXP rosetta_r_1008(SEXP, SEXP);
-SEXP rosetta_r_1009(SEXP, SEXP);
+SEXP rosetta_r_1009(SEXP);
 SEXP rosetta_r_1010(SEXP, SEXP);
-SEXP rosetta_r_1011(SEXP, SEXP);
+SEXP rosetta_r_1011(SEXP);
 SEXP rosetta_r_1012(SEXP, SEXP);
 SEXP rosetta_r_1013(SEXP, SEXP);
 SEXP rosetta_r_1014(SEXP, SEXP);
 SEXP rosetta_r_1015(SEXP, SEXP);
 SEXP rosetta_r_1016(SEXP, SEXP);
-SEXP rosetta_r_1017(SEXP);
+SEXP rosetta_r_1017(SEXP, SEXP);
 SEXP rosetta_r_1018(SEXP, SEXP);
-SEXP rosetta_r_1019(SEXP, SEXP);
-SEXP rosetta_r_1020(SEXP, SEXP);
+SEXP rosetta_r_1019(SEXP);
+SEXP rosetta_r_1020(SEXP);
 SEXP rosetta_r_1021(SEXP, SEXP);
-SEXP rosetta_r_1022(SEXP, SEXP);
+SEXP rosetta_r_1022(SEXP);
 SEXP rosetta_r_1023(SEXP, SEXP);
-SEXP rosetta_r_1024(SEXP, SEXP);
+SEXP rosetta_r_1024(SEXP);
 SEXP rosetta_r_1025(SEXP, SEXP);
-SEXP rosetta_r_1026(SEXP, SEXP);
+SEXP rosetta_r_1026(SEXP);
 SEXP rosetta_r_1027(SEXP, SEXP);
 SEXP rosetta_r_1028(SEXP, SEXP);
 SEXP rosetta_r_1029(SEXP, SEXP);
@@ -4146,24 +4465,24 @@ SEXP rosetta_r_1032(SEXP, SEXP);
 SEXP rosetta_r_1033(SEXP, SEXP);
 SEXP rosetta_r_1034(SEXP, SEXP);
 SEXP rosetta_r_1035(SEXP, SEXP);
-SEXP rosetta_r_1036(SEXP, SEXP);
-SEXP rosetta_r_1037(SEXP, SEXP);
+SEXP rosetta_r_1036(SEXP);
+SEXP rosetta_r_1037(SEXP);
 SEXP rosetta_r_1038(SEXP, SEXP);
-SEXP rosetta_r_1039(SEXP, SEXP);
+SEXP rosetta_r_1039(SEXP);
 SEXP rosetta_r_1040(SEXP, SEXP);
-SEXP rosetta_r_1041(SEXP, SEXP);
-SEXP rosetta_r_1042(SEXP, SEXP);
+SEXP rosetta_r_1041(SEXP);
+SEXP rosetta_r_1042(SEXP);
 SEXP rosetta_r_1043(SEXP, SEXP);
-SEXP rosetta_r_1044(SEXP, SEXP);
+SEXP rosetta_r_1044(SEXP);
 SEXP rosetta_r_1045(SEXP, SEXP);
-SEXP rosetta_r_1046(SEXP, SEXP);
+SEXP rosetta_r_1046(SEXP);
 SEXP rosetta_r_1047(SEXP, SEXP);
 SEXP rosetta_r_1048(SEXP, SEXP);
 SEXP rosetta_r_1049(SEXP, SEXP);
 SEXP rosetta_r_1050(SEXP, SEXP);
 SEXP rosetta_r_1051(SEXP, SEXP);
 SEXP rosetta_r_1052(SEXP, SEXP);
-SEXP rosetta_r_1053(SEXP, SEXP);
+SEXP rosetta_r_1053(SEXP);
 SEXP rosetta_r_1054(SEXP, SEXP);
 SEXP rosetta_r_1055(SEXP, SEXP);
 SEXP rosetta_r_1056(SEXP, SEXP);
@@ -4171,131 +4490,131 @@ SEXP rosetta_r_1057(SEXP, SEXP);
 SEXP rosetta_r_1058(SEXP, SEXP);
 SEXP rosetta_r_1059(SEXP, SEXP);
 SEXP rosetta_r_1060(SEXP, SEXP);
-SEXP rosetta_r_1061(SEXP, SEXP);
+SEXP rosetta_r_1061(SEXP);
 SEXP rosetta_r_1062(SEXP, SEXP);
 SEXP rosetta_r_1063(SEXP, SEXP);
 SEXP rosetta_r_1064(SEXP, SEXP);
 SEXP rosetta_r_1065(SEXP, SEXP);
 SEXP rosetta_r_1066(SEXP, SEXP);
-SEXP rosetta_r_1067(SEXP, SEXP);
+SEXP rosetta_r_1067(SEXP);
 SEXP rosetta_r_1068(SEXP, SEXP);
-SEXP rosetta_r_1069(SEXP);
+SEXP rosetta_r_1069(SEXP, SEXP);
 SEXP rosetta_r_1070(SEXP, SEXP);
 SEXP rosetta_r_1071(SEXP, SEXP);
 SEXP rosetta_r_1072(SEXP, SEXP);
-SEXP rosetta_r_1073(SEXP, SEXP);
+SEXP rosetta_r_1073(SEXP);
 SEXP rosetta_r_1074(SEXP, SEXP);
 SEXP rosetta_r_1075(SEXP, SEXP);
 SEXP rosetta_r_1076(SEXP, SEXP);
 SEXP rosetta_r_1077(SEXP, SEXP);
 SEXP rosetta_r_1078(SEXP, SEXP);
-SEXP rosetta_r_1079(SEXP, SEXP);
+SEXP rosetta_r_1079(SEXP);
 SEXP rosetta_r_1080(SEXP, SEXP);
 SEXP rosetta_r_1081(SEXP, SEXP);
 SEXP rosetta_r_1082(SEXP, SEXP);
 SEXP rosetta_r_1083(SEXP, SEXP);
 SEXP rosetta_r_1084(SEXP, SEXP);
-SEXP rosetta_r_1085(SEXP, SEXP);
-SEXP rosetta_r_1086(SEXP, SEXP);
+SEXP rosetta_r_1085(SEXP);
+SEXP rosetta_r_1086(SEXP);
 SEXP rosetta_r_1087(SEXP, SEXP);
-SEXP rosetta_r_1088(SEXP, SEXP);
+SEXP rosetta_r_1088(SEXP);
 SEXP rosetta_r_1089(SEXP, SEXP);
-SEXP rosetta_r_1090(SEXP, SEXP);
+SEXP rosetta_r_1090(SEXP);
 SEXP rosetta_r_1091(SEXP);
-SEXP rosetta_r_1092(SEXP);
-SEXP rosetta_r_1093(SEXP, SEXP);
-SEXP rosetta_r_1094(SEXP);
-SEXP rosetta_r_1095(SEXP, SEXP);
-SEXP rosetta_r_1096(SEXP);
-SEXP rosetta_r_1097(SEXP, SEXP);
+SEXP rosetta_r_1092(SEXP, SEXP);
+SEXP rosetta_r_1093(SEXP);
+SEXP rosetta_r_1094(SEXP, SEXP);
+SEXP rosetta_r_1095(SEXP);
+SEXP rosetta_r_1096(SEXP, SEXP);
+SEXP rosetta_r_1097(SEXP);
 SEXP rosetta_r_1098(SEXP);
-SEXP rosetta_r_1099(SEXP);
-SEXP rosetta_r_1100(SEXP, SEXP);
-SEXP rosetta_r_1101(SEXP);
-SEXP rosetta_r_1102(SEXP, SEXP);
+SEXP rosetta_r_1099(SEXP, SEXP);
+SEXP rosetta_r_1100(SEXP);
+SEXP rosetta_r_1101(SEXP, SEXP);
+SEXP rosetta_r_1102(SEXP);
 SEXP rosetta_r_1103(SEXP);
 SEXP rosetta_r_1104(SEXP, SEXP);
 SEXP rosetta_r_1105(SEXP);
-SEXP rosetta_r_1106(SEXP);
-SEXP rosetta_r_1107(SEXP, SEXP);
+SEXP rosetta_r_1106(SEXP, SEXP);
+SEXP rosetta_r_1107(SEXP);
 SEXP rosetta_r_1108(SEXP);
 SEXP rosetta_r_1109(SEXP, SEXP);
 SEXP rosetta_r_1110(SEXP);
-SEXP rosetta_r_1111(SEXP);
-SEXP rosetta_r_1112(SEXP, SEXP);
-SEXP rosetta_r_1113(SEXP);
-SEXP rosetta_r_1114(SEXP, SEXP);
-SEXP rosetta_r_1115(SEXP);
-SEXP rosetta_r_1116(SEXP, SEXP);
-SEXP rosetta_r_1117(SEXP);
-SEXP rosetta_r_1118(SEXP, SEXP);
-SEXP rosetta_r_1119(SEXP);
-SEXP rosetta_r_1120(SEXP, SEXP);
-SEXP rosetta_r_1121(SEXP);
-SEXP rosetta_r_1122(SEXP, SEXP);
-SEXP rosetta_r_1123(SEXP);
-SEXP rosetta_r_1124(SEXP, SEXP);
+SEXP rosetta_r_1111(SEXP, SEXP);
+SEXP rosetta_r_1112(SEXP);
+SEXP rosetta_r_1113(SEXP, SEXP);
+SEXP rosetta_r_1114(SEXP);
+SEXP rosetta_r_1115(SEXP, SEXP);
+SEXP rosetta_r_1116(SEXP);
+SEXP rosetta_r_1117(SEXP, SEXP);
+SEXP rosetta_r_1118(SEXP);
+SEXP rosetta_r_1119(SEXP, SEXP);
+SEXP rosetta_r_1120(SEXP);
+SEXP rosetta_r_1121(SEXP, SEXP);
+SEXP rosetta_r_1122(SEXP);
+SEXP rosetta_r_1123(SEXP, SEXP);
+SEXP rosetta_r_1124(SEXP);
 SEXP rosetta_r_1125(SEXP);
 SEXP rosetta_r_1126(SEXP, SEXP);
-SEXP rosetta_r_1127(SEXP, SEXP);
+SEXP rosetta_r_1127(SEXP);
 SEXP rosetta_r_1128(SEXP, SEXP);
-SEXP rosetta_r_1129(SEXP, SEXP);
+SEXP rosetta_r_1129(SEXP);
 SEXP rosetta_r_1130(SEXP, SEXP);
 SEXP rosetta_r_1131(SEXP);
-SEXP rosetta_r_1132(SEXP);
-SEXP rosetta_r_1133(SEXP, SEXP);
-SEXP rosetta_r_1134(SEXP);
-SEXP rosetta_r_1135(SEXP, SEXP);
-SEXP rosetta_r_1136(SEXP);
+SEXP rosetta_r_1132(SEXP, SEXP);
+SEXP rosetta_r_1133(SEXP);
+SEXP rosetta_r_1134(SEXP, SEXP);
+SEXP rosetta_r_1135(SEXP);
+SEXP rosetta_r_1136(SEXP, SEXP);
 SEXP rosetta_r_1137(SEXP);
 SEXP rosetta_r_1138(SEXP, SEXP);
 SEXP rosetta_r_1139(SEXP);
 SEXP rosetta_r_1140(SEXP, SEXP);
 SEXP rosetta_r_1141(SEXP);
-SEXP rosetta_r_1142(SEXP, SEXP);
-SEXP rosetta_r_1143(SEXP);
+SEXP rosetta_r_1142(SEXP);
+SEXP rosetta_r_1143(SEXP, SEXP);
 SEXP rosetta_r_1144(SEXP);
 SEXP rosetta_r_1145(SEXP, SEXP);
 SEXP rosetta_r_1146(SEXP);
 SEXP rosetta_r_1147(SEXP, SEXP);
 SEXP rosetta_r_1148(SEXP);
-SEXP rosetta_r_1149(SEXP, SEXP);
-SEXP rosetta_r_1150(SEXP);
-SEXP rosetta_r_1151(SEXP, SEXP);
-SEXP rosetta_r_1152(SEXP);
+SEXP rosetta_r_1149(SEXP);
+SEXP rosetta_r_1150(SEXP, SEXP);
+SEXP rosetta_r_1151(SEXP);
+SEXP rosetta_r_1152(SEXP, SEXP);
 SEXP rosetta_r_1153(SEXP);
 SEXP rosetta_r_1154(SEXP, SEXP);
 SEXP rosetta_r_1155(SEXP);
 SEXP rosetta_r_1156(SEXP, SEXP);
 SEXP rosetta_r_1157(SEXP);
 SEXP rosetta_r_1158(SEXP, SEXP);
-SEXP rosetta_r_1159(SEXP, SEXP);
-SEXP rosetta_r_1160(SEXP, SEXP);
+SEXP rosetta_r_1159(SEXP);
+SEXP rosetta_r_1160(SEXP);
 SEXP rosetta_r_1161(SEXP, SEXP);
-SEXP rosetta_r_1162(SEXP, SEXP);
+SEXP rosetta_r_1162(SEXP);
 SEXP rosetta_r_1163(SEXP, SEXP);
-SEXP rosetta_r_1164(SEXP, SEXP);
+SEXP rosetta_r_1164(SEXP);
 SEXP rosetta_r_1165(SEXP, SEXP);
-SEXP rosetta_r_1166(SEXP, SEXP);
-SEXP rosetta_r_1167(SEXP, SEXP);
-SEXP rosetta_r_1168(SEXP);
-SEXP rosetta_r_1169(SEXP, SEXP);
+SEXP rosetta_r_1166(SEXP);
+SEXP rosetta_r_1167(SEXP);
+SEXP rosetta_r_1168(SEXP, SEXP);
+SEXP rosetta_r_1169(SEXP);
 SEXP rosetta_r_1170(SEXP, SEXP);
 SEXP rosetta_r_1171(SEXP);
 SEXP rosetta_r_1172(SEXP, SEXP);
 SEXP rosetta_r_1173(SEXP);
-SEXP rosetta_r_1174(SEXP, SEXP);
-SEXP rosetta_r_1175(SEXP);
-SEXP rosetta_r_1176(SEXP, SEXP);
-SEXP rosetta_r_1177(SEXP);
-SEXP rosetta_r_1178(SEXP, SEXP);
+SEXP rosetta_r_1174(SEXP);
+SEXP rosetta_r_1175(SEXP, SEXP);
+SEXP rosetta_r_1176(SEXP);
+SEXP rosetta_r_1177(SEXP, SEXP);
+SEXP rosetta_r_1178(SEXP);
 SEXP rosetta_r_1179(SEXP);
 SEXP rosetta_r_1180(SEXP, SEXP);
 SEXP rosetta_r_1181(SEXP);
 SEXP rosetta_r_1182(SEXP, SEXP);
 SEXP rosetta_r_1183(SEXP);
 SEXP rosetta_r_1184(SEXP, SEXP);
-SEXP rosetta_r_1185(SEXP, SEXP);
+SEXP rosetta_r_1185(SEXP);
 SEXP rosetta_r_1186(SEXP, SEXP);
 SEXP rosetta_r_1187(SEXP);
 SEXP rosetta_r_1188(SEXP, SEXP);
@@ -4303,9 +4622,9 @@ SEXP rosetta_r_1189(SEXP);
 SEXP rosetta_r_1190(SEXP, SEXP);
 SEXP rosetta_r_1191(SEXP);
 SEXP rosetta_r_1192(SEXP, SEXP);
-SEXP rosetta_r_1193(SEXP, SEXP);
-SEXP rosetta_r_1194(SEXP, SEXP);
-SEXP rosetta_r_1195(SEXP);
+SEXP rosetta_r_1193(SEXP);
+SEXP rosetta_r_1194(SEXP);
+SEXP rosetta_r_1195(SEXP, SEXP);
 SEXP rosetta_r_1196(SEXP);
 SEXP rosetta_r_1197(SEXP, SEXP);
 SEXP rosetta_r_1198(SEXP);
@@ -4319,13 +4638,13 @@ SEXP rosetta_r_1205(SEXP, SEXP);
 SEXP rosetta_r_1206(SEXP);
 SEXP rosetta_r_1207(SEXP, SEXP);
 SEXP rosetta_r_1208(SEXP);
-SEXP rosetta_r_1209(SEXP, SEXP);
-SEXP rosetta_r_1210(SEXP);
-SEXP rosetta_r_1211(SEXP, SEXP);
+SEXP rosetta_r_1209(SEXP);
+SEXP rosetta_r_1210(SEXP, SEXP);
+SEXP rosetta_r_1211(SEXP);
 SEXP rosetta_r_1212(SEXP, SEXP);
 SEXP rosetta_r_1213(SEXP);
-SEXP rosetta_r_1214(SEXP);
-SEXP rosetta_r_1215(SEXP, SEXP);
+SEXP rosetta_r_1214(SEXP, SEXP);
+SEXP rosetta_r_1215(SEXP);
 SEXP rosetta_r_1216(SEXP);
 SEXP rosetta_r_1217(SEXP, SEXP);
 SEXP rosetta_r_1218(SEXP);
@@ -4338,32 +4657,32 @@ SEXP rosetta_r_1224(SEXP);
 SEXP rosetta_r_1225(SEXP, SEXP);
 SEXP rosetta_r_1226(SEXP);
 SEXP rosetta_r_1227(SEXP, SEXP);
-SEXP rosetta_r_1228(SEXP, SEXP);
-SEXP rosetta_r_1229(SEXP);
-SEXP rosetta_r_1230(SEXP);
+SEXP rosetta_r_1228(SEXP);
+SEXP rosetta_r_1229(SEXP, SEXP);
+SEXP rosetta_r_1230(SEXP, SEXP);
 SEXP rosetta_r_1231(SEXP, SEXP);
-SEXP rosetta_r_1232(SEXP);
+SEXP rosetta_r_1232(SEXP, SEXP);
 SEXP rosetta_r_1233(SEXP, SEXP);
-SEXP rosetta_r_1234(SEXP);
-SEXP rosetta_r_1235(SEXP, SEXP);
+SEXP rosetta_r_1234(SEXP, SEXP);
+SEXP rosetta_r_1235(SEXP);
 SEXP rosetta_r_1236(SEXP);
 SEXP rosetta_r_1237(SEXP, SEXP);
 SEXP rosetta_r_1238(SEXP);
 SEXP rosetta_r_1239(SEXP, SEXP);
-SEXP rosetta_r_1240(SEXP, SEXP);
+SEXP rosetta_r_1240(SEXP);
 SEXP rosetta_r_1241(SEXP);
-SEXP rosetta_r_1242(SEXP);
-SEXP rosetta_r_1243(SEXP, SEXP);
-SEXP rosetta_r_1244(SEXP);
-SEXP rosetta_r_1245(SEXP, SEXP);
-SEXP rosetta_r_1246(SEXP);
-SEXP rosetta_r_1247(SEXP, SEXP);
-SEXP rosetta_r_1248(SEXP);
-SEXP rosetta_r_1249(SEXP, SEXP);
-SEXP rosetta_r_1250(SEXP);
-SEXP rosetta_r_1251(SEXP, SEXP);
-SEXP rosetta_r_1252(SEXP, SEXP);
-SEXP rosetta_r_1253(SEXP);
+SEXP rosetta_r_1242(SEXP, SEXP);
+SEXP rosetta_r_1243(SEXP);
+SEXP rosetta_r_1244(SEXP, SEXP);
+SEXP rosetta_r_1245(SEXP);
+SEXP rosetta_r_1246(SEXP, SEXP);
+SEXP rosetta_r_1247(SEXP);
+SEXP rosetta_r_1248(SEXP, SEXP);
+SEXP rosetta_r_1249(SEXP);
+SEXP rosetta_r_1250(SEXP, SEXP);
+SEXP rosetta_r_1251(SEXP);
+SEXP rosetta_r_1252(SEXP);
+SEXP rosetta_r_1253(SEXP, SEXP);
 SEXP rosetta_r_1254(SEXP);
 SEXP rosetta_r_1255(SEXP, SEXP);
 SEXP rosetta_r_1256(SEXP);
@@ -4377,13 +4696,13 @@ SEXP rosetta_r_1263(SEXP, SEXP);
 SEXP rosetta_r_1264(SEXP);
 SEXP rosetta_r_1265(SEXP, SEXP);
 SEXP rosetta_r_1266(SEXP);
-SEXP rosetta_r_1267(SEXP, SEXP);
+SEXP rosetta_r_1267(SEXP);
 SEXP rosetta_r_1268(SEXP, SEXP);
 SEXP rosetta_r_1269(SEXP);
-SEXP rosetta_r_1270(SEXP);
-SEXP rosetta_r_1271(SEXP, SEXP);
-SEXP rosetta_r_1272(SEXP);
-SEXP rosetta_r_1273(SEXP, SEXP);
+SEXP rosetta_r_1270(SEXP, SEXP);
+SEXP rosetta_r_1271(SEXP);
+SEXP rosetta_r_1272(SEXP, SEXP);
+SEXP rosetta_r_1273(SEXP);
 SEXP rosetta_r_1274(SEXP);
 SEXP rosetta_r_1275(SEXP, SEXP);
 SEXP rosetta_r_1276(SEXP);
@@ -4392,38 +4711,38 @@ SEXP rosetta_r_1278(SEXP);
 SEXP rosetta_r_1279(SEXP, SEXP);
 SEXP rosetta_r_1280(SEXP);
 SEXP rosetta_r_1281(SEXP, SEXP);
-SEXP rosetta_r_1282(SEXP, SEXP);
-SEXP rosetta_r_1283(SEXP);
+SEXP rosetta_r_1282(SEXP);
+SEXP rosetta_r_1283(SEXP, SEXP);
 SEXP rosetta_r_1284(SEXP);
 SEXP rosetta_r_1285(SEXP, SEXP);
 SEXP rosetta_r_1286(SEXP);
 SEXP rosetta_r_1287(SEXP, SEXP);
 SEXP rosetta_r_1288(SEXP);
-SEXP rosetta_r_1289(SEXP, SEXP);
-SEXP rosetta_r_1290(SEXP);
-SEXP rosetta_r_1291(SEXP, SEXP);
-SEXP rosetta_r_1292(SEXP);
-SEXP rosetta_r_1293(SEXP, SEXP);
-SEXP rosetta_r_1294(SEXP);
-SEXP rosetta_r_1295(SEXP, SEXP);
+SEXP rosetta_r_1289(SEXP);
+SEXP rosetta_r_1290(SEXP, SEXP);
+SEXP rosetta_r_1291(SEXP);
+SEXP rosetta_r_1292(SEXP, SEXP);
+SEXP rosetta_r_1293(SEXP);
+SEXP rosetta_r_1294(SEXP, SEXP);
+SEXP rosetta_r_1295(SEXP);
 SEXP rosetta_r_1296(SEXP, SEXP);
 SEXP rosetta_r_1297(SEXP);
 SEXP rosetta_r_1298(SEXP, SEXP);
-SEXP rosetta_r_1299(SEXP, SEXP);
+SEXP rosetta_r_1299(SEXP);
 SEXP rosetta_r_1300(SEXP, SEXP);
 SEXP rosetta_r_1301(SEXP);
 SEXP rosetta_r_1302(SEXP, SEXP);
 SEXP rosetta_r_1303(SEXP);
-SEXP rosetta_r_1304(SEXP, SEXP);
-SEXP rosetta_r_1305(SEXP);
-SEXP rosetta_r_1306(SEXP, SEXP);
-SEXP rosetta_r_1307(SEXP);
-SEXP rosetta_r_1308(SEXP, SEXP);
+SEXP rosetta_r_1304(SEXP);
+SEXP rosetta_r_1305(SEXP, SEXP);
+SEXP rosetta_r_1306(SEXP);
+SEXP rosetta_r_1307(SEXP, SEXP);
+SEXP rosetta_r_1308(SEXP);
 SEXP rosetta_r_1309(SEXP);
 SEXP rosetta_r_1310(SEXP, SEXP);
 SEXP rosetta_r_1311(SEXP);
-SEXP rosetta_r_1312(SEXP);
-SEXP rosetta_r_1313(SEXP, SEXP);
+SEXP rosetta_r_1312(SEXP, SEXP);
+SEXP rosetta_r_1313(SEXP);
 SEXP rosetta_r_1314(SEXP);
 SEXP rosetta_r_1315(SEXP, SEXP);
 SEXP rosetta_r_1316(SEXP);
@@ -4435,44 +4754,44 @@ SEXP rosetta_r_1321(SEXP, SEXP);
 SEXP rosetta_r_1322(SEXP);
 SEXP rosetta_r_1323(SEXP, SEXP);
 SEXP rosetta_r_1324(SEXP);
-SEXP rosetta_r_1325(SEXP, SEXP);
+SEXP rosetta_r_1325(SEXP);
 SEXP rosetta_r_1326(SEXP, SEXP);
-SEXP rosetta_r_1327(SEXP, SEXP);
-SEXP rosetta_r_1328(SEXP);
+SEXP rosetta_r_1327(SEXP);
+SEXP rosetta_r_1328(SEXP, SEXP);
 SEXP rosetta_r_1329(SEXP);
 SEXP rosetta_r_1330(SEXP, SEXP);
 SEXP rosetta_r_1331(SEXP);
 SEXP rosetta_r_1332(SEXP, SEXP);
 SEXP rosetta_r_1333(SEXP);
-SEXP rosetta_r_1334(SEXP, SEXP);
-SEXP rosetta_r_1335(SEXP);
-SEXP rosetta_r_1336(SEXP, SEXP);
-SEXP rosetta_r_1337(SEXP);
-SEXP rosetta_r_1338(SEXP, SEXP);
-SEXP rosetta_r_1339(SEXP);
-SEXP rosetta_r_1340(SEXP, SEXP);
-SEXP rosetta_r_1341(SEXP, SEXP);
-SEXP rosetta_r_1342(SEXP);
+SEXP rosetta_r_1334(SEXP);
+SEXP rosetta_r_1335(SEXP, SEXP);
+SEXP rosetta_r_1336(SEXP);
+SEXP rosetta_r_1337(SEXP, SEXP);
+SEXP rosetta_r_1338(SEXP);
+SEXP rosetta_r_1339(SEXP, SEXP);
+SEXP rosetta_r_1340(SEXP);
+SEXP rosetta_r_1341(SEXP);
+SEXP rosetta_r_1342(SEXP, SEXP);
 SEXP rosetta_r_1343(SEXP);
 SEXP rosetta_r_1344(SEXP, SEXP);
 SEXP rosetta_r_1345(SEXP);
 SEXP rosetta_r_1346(SEXP, SEXP);
 SEXP rosetta_r_1347(SEXP);
-SEXP rosetta_r_1348(SEXP, SEXP);
-SEXP rosetta_r_1349(SEXP);
-SEXP rosetta_r_1350(SEXP, SEXP);
-SEXP rosetta_r_1351(SEXP);
-SEXP rosetta_r_1352(SEXP, SEXP);
-SEXP rosetta_r_1353(SEXP);
-SEXP rosetta_r_1354(SEXP, SEXP);
+SEXP rosetta_r_1348(SEXP);
+SEXP rosetta_r_1349(SEXP, SEXP);
+SEXP rosetta_r_1350(SEXP);
+SEXP rosetta_r_1351(SEXP, SEXP);
+SEXP rosetta_r_1352(SEXP);
+SEXP rosetta_r_1353(SEXP, SEXP);
+SEXP rosetta_r_1354(SEXP);
 SEXP rosetta_r_1355(SEXP, SEXP);
 SEXP rosetta_r_1356(SEXP);
-SEXP rosetta_r_1357(SEXP);
-SEXP rosetta_r_1358(SEXP, SEXP);
-SEXP rosetta_r_1359(SEXP);
-SEXP rosetta_r_1360(SEXP, SEXP);
-SEXP rosetta_r_1361(SEXP);
-SEXP rosetta_r_1362(SEXP, SEXP);
+SEXP rosetta_r_1357(SEXP, SEXP);
+SEXP rosetta_r_1358(SEXP);
+SEXP rosetta_r_1359(SEXP, SEXP);
+SEXP rosetta_r_1360(SEXP);
+SEXP rosetta_r_1361(SEXP, SEXP);
+SEXP rosetta_r_1362(SEXP);
 SEXP rosetta_r_1363(SEXP);
 SEXP rosetta_r_1364(SEXP, SEXP);
 SEXP rosetta_r_1365(SEXP);
@@ -4481,44 +4800,44 @@ SEXP rosetta_r_1367(SEXP);
 SEXP rosetta_r_1368(SEXP, SEXP);
 SEXP rosetta_r_1369(SEXP);
 SEXP rosetta_r_1370(SEXP, SEXP);
-SEXP rosetta_r_1371(SEXP, SEXP);
-SEXP rosetta_r_1372(SEXP);
+SEXP rosetta_r_1371(SEXP);
+SEXP rosetta_r_1372(SEXP, SEXP);
 SEXP rosetta_r_1373(SEXP);
 SEXP rosetta_r_1374(SEXP, SEXP);
 SEXP rosetta_r_1375(SEXP);
-SEXP rosetta_r_1376(SEXP, SEXP);
-SEXP rosetta_r_1377(SEXP);
-SEXP rosetta_r_1378(SEXP, SEXP);
-SEXP rosetta_r_1379(SEXP);
-SEXP rosetta_r_1380(SEXP, SEXP);
-SEXP rosetta_r_1381(SEXP);
+SEXP rosetta_r_1376(SEXP);
+SEXP rosetta_r_1377(SEXP, SEXP);
+SEXP rosetta_r_1378(SEXP);
+SEXP rosetta_r_1379(SEXP, SEXP);
+SEXP rosetta_r_1380(SEXP);
+SEXP rosetta_r_1381(SEXP, SEXP);
 SEXP rosetta_r_1382(SEXP, SEXP);
-SEXP rosetta_r_1383(SEXP);
+SEXP rosetta_r_1383(SEXP, SEXP);
 SEXP rosetta_r_1384(SEXP, SEXP);
-SEXP rosetta_r_1385(SEXP);
+SEXP rosetta_r_1385(SEXP, SEXP);
 SEXP rosetta_r_1386(SEXP, SEXP);
-SEXP rosetta_r_1387(SEXP);
+SEXP rosetta_r_1387(SEXP, SEXP);
 SEXP rosetta_r_1388(SEXP, SEXP);
 SEXP rosetta_r_1389(SEXP, SEXP);
-SEXP rosetta_r_1390(SEXP);
+SEXP rosetta_r_1390(SEXP, SEXP);
 SEXP rosetta_r_1391(SEXP);
 SEXP rosetta_r_1392(SEXP, SEXP);
-SEXP rosetta_r_1393(SEXP);
-SEXP rosetta_r_1394(SEXP, SEXP);
-SEXP rosetta_r_1395(SEXP);
-SEXP rosetta_r_1396(SEXP, SEXP);
-SEXP rosetta_r_1397(SEXP);
-SEXP rosetta_r_1398(SEXP, SEXP);
-SEXP rosetta_r_1399(SEXP);
-SEXP rosetta_r_1400(SEXP, SEXP);
-SEXP rosetta_r_1401(SEXP);
-SEXP rosetta_r_1402(SEXP, SEXP);
-SEXP rosetta_r_1403(SEXP);
-SEXP rosetta_r_1404(SEXP, SEXP);
-SEXP rosetta_r_1405(SEXP);
-SEXP rosetta_r_1406(SEXP, SEXP);
-SEXP rosetta_r_1407(SEXP, SEXP);
-SEXP rosetta_r_1408(SEXP);
+SEXP rosetta_r_1393(SEXP, SEXP);
+SEXP rosetta_r_1394(SEXP);
+SEXP rosetta_r_1395(SEXP, SEXP);
+SEXP rosetta_r_1396(SEXP);
+SEXP rosetta_r_1397(SEXP, SEXP);
+SEXP rosetta_r_1398(SEXP);
+SEXP rosetta_r_1399(SEXP, SEXP);
+SEXP rosetta_r_1400(SEXP);
+SEXP rosetta_r_1401(SEXP, SEXP);
+SEXP rosetta_r_1402(SEXP);
+SEXP rosetta_r_1403(SEXP, SEXP);
+SEXP rosetta_r_1404(SEXP);
+SEXP rosetta_r_1405(SEXP, SEXP);
+SEXP rosetta_r_1406(SEXP);
+SEXP rosetta_r_1407(SEXP);
+SEXP rosetta_r_1408(SEXP, SEXP);
 SEXP rosetta_r_1409(SEXP);
 SEXP rosetta_r_1410(SEXP, SEXP);
 SEXP rosetta_r_1411(SEXP);
@@ -4527,20 +4846,20 @@ SEXP rosetta_r_1413(SEXP);
 SEXP rosetta_r_1414(SEXP, SEXP);
 SEXP rosetta_r_1415(SEXP);
 SEXP rosetta_r_1416(SEXP, SEXP);
-SEXP rosetta_r_1417(SEXP);
+SEXP rosetta_r_1417(SEXP, SEXP);
 SEXP rosetta_r_1418(SEXP, SEXP);
 SEXP rosetta_r_1419(SEXP);
 SEXP rosetta_r_1420(SEXP, SEXP);
 SEXP rosetta_r_1421(SEXP);
 SEXP rosetta_r_1422(SEXP, SEXP);
 SEXP rosetta_r_1423(SEXP);
-SEXP rosetta_r_1424(SEXP, SEXP);
-SEXP rosetta_r_1425(SEXP);
-SEXP rosetta_r_1426(SEXP, SEXP);
+SEXP rosetta_r_1424(SEXP);
+SEXP rosetta_r_1425(SEXP, SEXP);
+SEXP rosetta_r_1426(SEXP);
 SEXP rosetta_r_1427(SEXP, SEXP);
 SEXP rosetta_r_1428(SEXP);
-SEXP rosetta_r_1429(SEXP);
-SEXP rosetta_r_1430(SEXP, SEXP);
+SEXP rosetta_r_1429(SEXP, SEXP);
+SEXP rosetta_r_1430(SEXP);
 SEXP rosetta_r_1431(SEXP);
 SEXP rosetta_r_1432(SEXP, SEXP);
 SEXP rosetta_r_1433(SEXP);
@@ -4555,8 +4874,8 @@ SEXP rosetta_r_1441(SEXP);
 SEXP rosetta_r_1442(SEXP, SEXP);
 SEXP rosetta_r_1443(SEXP);
 SEXP rosetta_r_1444(SEXP, SEXP);
-SEXP rosetta_r_1445(SEXP, SEXP);
-SEXP rosetta_r_1446(SEXP);
+SEXP rosetta_r_1445(SEXP);
+SEXP rosetta_r_1446(SEXP, SEXP);
 SEXP rosetta_r_1447(SEXP);
 SEXP rosetta_r_1448(SEXP, SEXP);
 SEXP rosetta_r_1449(SEXP);
@@ -4564,37 +4883,37 @@ SEXP rosetta_r_1450(SEXP, SEXP);
 SEXP rosetta_r_1451(SEXP);
 SEXP rosetta_r_1452(SEXP, SEXP);
 SEXP rosetta_r_1453(SEXP);
-SEXP rosetta_r_1454(SEXP, SEXP);
-SEXP rosetta_r_1455(SEXP);
-SEXP rosetta_r_1456(SEXP, SEXP);
-SEXP rosetta_r_1457(SEXP);
-SEXP rosetta_r_1458(SEXP, SEXP);
-SEXP rosetta_r_1459(SEXP);
-SEXP rosetta_r_1460(SEXP, SEXP);
-SEXP rosetta_r_1461(SEXP);
-SEXP rosetta_r_1462(SEXP, SEXP);
+SEXP rosetta_r_1454(SEXP);
+SEXP rosetta_r_1455(SEXP, SEXP);
+SEXP rosetta_r_1456(SEXP);
+SEXP rosetta_r_1457(SEXP, SEXP);
+SEXP rosetta_r_1458(SEXP);
+SEXP rosetta_r_1459(SEXP, SEXP);
+SEXP rosetta_r_1460(SEXP);
+SEXP rosetta_r_1461(SEXP, SEXP);
+SEXP rosetta_r_1462(SEXP);
 SEXP rosetta_r_1463(SEXP, SEXP);
 SEXP rosetta_r_1464(SEXP);
-SEXP rosetta_r_1465(SEXP);
-SEXP rosetta_r_1466(SEXP, SEXP);
-SEXP rosetta_r_1467(SEXP);
-SEXP rosetta_r_1468(SEXP, SEXP);
-SEXP rosetta_r_1469(SEXP);
-SEXP rosetta_r_1470(SEXP, SEXP);
-SEXP rosetta_r_1471(SEXP);
-SEXP rosetta_r_1472(SEXP, SEXP);
-SEXP rosetta_r_1473(SEXP);
+SEXP rosetta_r_1465(SEXP, SEXP);
+SEXP rosetta_r_1466(SEXP);
+SEXP rosetta_r_1467(SEXP, SEXP);
+SEXP rosetta_r_1468(SEXP);
+SEXP rosetta_r_1469(SEXP, SEXP);
+SEXP rosetta_r_1470(SEXP);
+SEXP rosetta_r_1471(SEXP, SEXP);
+SEXP rosetta_r_1472(SEXP);
+SEXP rosetta_r_1473(SEXP, SEXP);
 SEXP rosetta_r_1474(SEXP, SEXP);
-SEXP rosetta_r_1475(SEXP);
+SEXP rosetta_r_1475(SEXP, SEXP);
 SEXP rosetta_r_1476(SEXP, SEXP);
-SEXP rosetta_r_1477(SEXP);
+SEXP rosetta_r_1477(SEXP, SEXP);
 SEXP rosetta_r_1478(SEXP, SEXP);
-SEXP rosetta_r_1479(SEXP);
-SEXP rosetta_r_1480(SEXP, SEXP);
+SEXP rosetta_r_1479(SEXP, SEXP);
+SEXP rosetta_r_1480(SEXP);
 SEXP rosetta_r_1481(SEXP);
 SEXP rosetta_r_1482(SEXP, SEXP);
-SEXP rosetta_r_1483(SEXP, SEXP);
-SEXP rosetta_r_1484(SEXP);
+SEXP rosetta_r_1483(SEXP);
+SEXP rosetta_r_1484(SEXP, SEXP);
 SEXP rosetta_r_1485(SEXP);
 SEXP rosetta_r_1486(SEXP, SEXP);
 SEXP rosetta_r_1487(SEXP);
@@ -4603,12 +4922,12 @@ SEXP rosetta_r_1489(SEXP);
 SEXP rosetta_r_1490(SEXP, SEXP);
 SEXP rosetta_r_1491(SEXP);
 SEXP rosetta_r_1492(SEXP, SEXP);
-SEXP rosetta_r_1493(SEXP, SEXP);
-SEXP rosetta_r_1494(SEXP);
+SEXP rosetta_r_1493(SEXP);
+SEXP rosetta_r_1494(SEXP, SEXP);
 SEXP rosetta_r_1495(SEXP);
 SEXP rosetta_r_1496(SEXP, SEXP);
-SEXP rosetta_r_1497(SEXP);
-SEXP rosetta_r_1498(SEXP, SEXP);
+SEXP rosetta_r_1497(SEXP, SEXP);
+SEXP rosetta_r_1498(SEXP);
 SEXP rosetta_r_1499(SEXP);
 SEXP rosetta_r_1500(SEXP, SEXP);
 SEXP rosetta_r_1501(SEXP);
@@ -4623,8 +4942,8 @@ SEXP rosetta_r_1509(SEXP);
 SEXP rosetta_r_1510(SEXP, SEXP);
 SEXP rosetta_r_1511(SEXP);
 SEXP rosetta_r_1512(SEXP, SEXP);
-SEXP rosetta_r_1513(SEXP);
-SEXP rosetta_r_1514(SEXP, SEXP);
+SEXP rosetta_r_1513(SEXP, SEXP);
+SEXP rosetta_r_1514(SEXP);
 SEXP rosetta_r_1515(SEXP);
 SEXP rosetta_r_1516(SEXP, SEXP);
 SEXP rosetta_r_1517(SEXP);
@@ -4633,10 +4952,10 @@ SEXP rosetta_r_1519(SEXP);
 SEXP rosetta_r_1520(SEXP, SEXP);
 SEXP rosetta_r_1521(SEXP);
 SEXP rosetta_r_1522(SEXP, SEXP);
-SEXP rosetta_r_1523(SEXP, SEXP);
-SEXP rosetta_r_1524(SEXP);
-SEXP rosetta_r_1525(SEXP);
-SEXP rosetta_r_1526(SEXP, SEXP);
+SEXP rosetta_r_1523(SEXP);
+SEXP rosetta_r_1524(SEXP, SEXP);
+SEXP rosetta_r_1525(SEXP, SEXP);
+SEXP rosetta_r_1526(SEXP);
 SEXP rosetta_r_1527(SEXP);
 SEXP rosetta_r_1528(SEXP, SEXP);
 SEXP rosetta_r_1529(SEXP);
@@ -4645,10 +4964,10 @@ SEXP rosetta_r_1531(SEXP);
 SEXP rosetta_r_1532(SEXP, SEXP);
 SEXP rosetta_r_1533(SEXP);
 SEXP rosetta_r_1534(SEXP, SEXP);
-SEXP rosetta_r_1535(SEXP, SEXP);
-SEXP rosetta_r_1536(SEXP);
-SEXP rosetta_r_1537(SEXP);
-SEXP rosetta_r_1538(SEXP, SEXP);
+SEXP rosetta_r_1535(SEXP);
+SEXP rosetta_r_1536(SEXP, SEXP);
+SEXP rosetta_r_1537(SEXP, SEXP);
+SEXP rosetta_r_1538(SEXP);
 SEXP rosetta_r_1539(SEXP);
 SEXP rosetta_r_1540(SEXP, SEXP);
 SEXP rosetta_r_1541(SEXP);
@@ -4657,14 +4976,14 @@ SEXP rosetta_r_1543(SEXP);
 SEXP rosetta_r_1544(SEXP, SEXP);
 SEXP rosetta_r_1545(SEXP);
 SEXP rosetta_r_1546(SEXP, SEXP);
-SEXP rosetta_r_1547(SEXP, SEXP);
-SEXP rosetta_r_1548(SEXP);
+SEXP rosetta_r_1547(SEXP);
+SEXP rosetta_r_1548(SEXP, SEXP);
 SEXP rosetta_r_1549(SEXP);
 SEXP rosetta_r_1550(SEXP, SEXP);
 SEXP rosetta_r_1551(SEXP);
 SEXP rosetta_r_1552(SEXP, SEXP);
-SEXP rosetta_r_1553(SEXP);
-SEXP rosetta_r_1554(SEXP, SEXP);
+SEXP rosetta_r_1553(SEXP, SEXP);
+SEXP rosetta_r_1554(SEXP);
 SEXP rosetta_r_1555(SEXP);
 SEXP rosetta_r_1556(SEXP, SEXP);
 SEXP rosetta_r_1557(SEXP);
@@ -4675,10 +4994,10 @@ SEXP rosetta_r_1561(SEXP);
 SEXP rosetta_r_1562(SEXP, SEXP);
 SEXP rosetta_r_1563(SEXP);
 SEXP rosetta_r_1564(SEXP, SEXP);
-SEXP rosetta_r_1565(SEXP, SEXP);
-SEXP rosetta_r_1566(SEXP);
-SEXP rosetta_r_1567(SEXP);
-SEXP rosetta_r_1568(SEXP, SEXP);
+SEXP rosetta_r_1565(SEXP);
+SEXP rosetta_r_1566(SEXP, SEXP);
+SEXP rosetta_r_1567(SEXP, SEXP);
+SEXP rosetta_r_1568(SEXP);
 SEXP rosetta_r_1569(SEXP);
 SEXP rosetta_r_1570(SEXP, SEXP);
 SEXP rosetta_r_1571(SEXP);
@@ -4689,22 +5008,22 @@ SEXP rosetta_r_1575(SEXP);
 SEXP rosetta_r_1576(SEXP, SEXP);
 SEXP rosetta_r_1577(SEXP);
 SEXP rosetta_r_1578(SEXP, SEXP);
-SEXP rosetta_r_1579(SEXP, SEXP);
-SEXP rosetta_r_1580(SEXP);
-SEXP rosetta_r_1581(SEXP);
-SEXP rosetta_r_1582(SEXP, SEXP);
-SEXP rosetta_r_1583(SEXP);
+SEXP rosetta_r_1579(SEXP);
+SEXP rosetta_r_1580(SEXP, SEXP);
+SEXP rosetta_r_1581(SEXP, SEXP);
+SEXP rosetta_r_1582(SEXP);
+SEXP rosetta_r_1583(SEXP, SEXP);
 SEXP rosetta_r_1584(SEXP, SEXP);
-SEXP rosetta_r_1585(SEXP);
-SEXP rosetta_r_1586(SEXP, SEXP);
-SEXP rosetta_r_1587(SEXP);
-SEXP rosetta_r_1588(SEXP, SEXP);
-SEXP rosetta_r_1589(SEXP);
-SEXP rosetta_r_1590(SEXP, SEXP);
-SEXP rosetta_r_1591(SEXP);
-SEXP rosetta_r_1592(SEXP, SEXP);
-SEXP rosetta_r_1593(SEXP);
-SEXP rosetta_r_1594(SEXP, SEXP);
+SEXP rosetta_r_1585(SEXP, SEXP);
+SEXP rosetta_r_1586(SEXP);
+SEXP rosetta_r_1587(SEXP, SEXP);
+SEXP rosetta_r_1588(SEXP);
+SEXP rosetta_r_1589(SEXP, SEXP);
+SEXP rosetta_r_1590(SEXP);
+SEXP rosetta_r_1591(SEXP, SEXP);
+SEXP rosetta_r_1592(SEXP);
+SEXP rosetta_r_1593(SEXP, SEXP);
+SEXP rosetta_r_1594(SEXP);
 SEXP rosetta_r_1595(SEXP, SEXP);
 SEXP rosetta_r_1596(SEXP);
 SEXP rosetta_r_1597(SEXP);
@@ -4715,157 +5034,157 @@ SEXP rosetta_r_1601(SEXP);
 SEXP rosetta_r_1602(SEXP, SEXP);
 SEXP rosetta_r_1603(SEXP);
 SEXP rosetta_r_1604(SEXP, SEXP);
-SEXP rosetta_r_1605(SEXP, SEXP);
-SEXP rosetta_r_1606(SEXP);
+SEXP rosetta_r_1605(SEXP);
+SEXP rosetta_r_1606(SEXP, SEXP);
 SEXP rosetta_r_1607(SEXP);
 SEXP rosetta_r_1608(SEXP, SEXP);
 SEXP rosetta_r_1609(SEXP);
 SEXP rosetta_r_1610(SEXP, SEXP);
-SEXP rosetta_r_1611(SEXP);
+SEXP rosetta_r_1611(SEXP, SEXP);
 SEXP rosetta_r_1612(SEXP, SEXP);
 SEXP rosetta_r_1613(SEXP);
-SEXP rosetta_r_1614(SEXP, SEXP);
-SEXP rosetta_r_1615(SEXP);
-SEXP rosetta_r_1616(SEXP, SEXP);
-SEXP rosetta_r_1617(SEXP);
-SEXP rosetta_r_1618(SEXP, SEXP);
-SEXP rosetta_r_1619(SEXP);
-SEXP rosetta_r_1620(SEXP, SEXP);
-SEXP rosetta_r_1621(SEXP);
-SEXP rosetta_r_1622(SEXP, SEXP);
+SEXP rosetta_r_1614(SEXP);
+SEXP rosetta_r_1615(SEXP, SEXP);
+SEXP rosetta_r_1616(SEXP);
+SEXP rosetta_r_1617(SEXP, SEXP);
+SEXP rosetta_r_1618(SEXP);
+SEXP rosetta_r_1619(SEXP, SEXP);
+SEXP rosetta_r_1620(SEXP);
+SEXP rosetta_r_1621(SEXP, SEXP);
+SEXP rosetta_r_1622(SEXP);
 SEXP rosetta_r_1623(SEXP, SEXP);
 SEXP rosetta_r_1624(SEXP);
-SEXP rosetta_r_1625(SEXP);
+SEXP rosetta_r_1625(SEXP, SEXP);
 SEXP rosetta_r_1626(SEXP, SEXP);
 SEXP rosetta_r_1627(SEXP);
-SEXP rosetta_r_1628(SEXP, SEXP);
-SEXP rosetta_r_1629(SEXP);
-SEXP rosetta_r_1630(SEXP, SEXP);
-SEXP rosetta_r_1631(SEXP);
-SEXP rosetta_r_1632(SEXP, SEXP);
-SEXP rosetta_r_1633(SEXP);
-SEXP rosetta_r_1634(SEXP, SEXP);
+SEXP rosetta_r_1628(SEXP);
+SEXP rosetta_r_1629(SEXP, SEXP);
+SEXP rosetta_r_1630(SEXP);
+SEXP rosetta_r_1631(SEXP, SEXP);
+SEXP rosetta_r_1632(SEXP);
+SEXP rosetta_r_1633(SEXP, SEXP);
+SEXP rosetta_r_1634(SEXP);
 SEXP rosetta_r_1635(SEXP, SEXP);
 SEXP rosetta_r_1636(SEXP);
-SEXP rosetta_r_1637(SEXP);
-SEXP rosetta_r_1638(SEXP, SEXP);
-SEXP rosetta_r_1639(SEXP);
+SEXP rosetta_r_1637(SEXP, SEXP);
+SEXP rosetta_r_1638(SEXP);
+SEXP rosetta_r_1639(SEXP, SEXP);
 SEXP rosetta_r_1640(SEXP, SEXP);
 SEXP rosetta_r_1641(SEXP);
-SEXP rosetta_r_1642(SEXP, SEXP);
-SEXP rosetta_r_1643(SEXP);
-SEXP rosetta_r_1644(SEXP, SEXP);
-SEXP rosetta_r_1645(SEXP);
-SEXP rosetta_r_1646(SEXP, SEXP);
-SEXP rosetta_r_1647(SEXP);
-SEXP rosetta_r_1648(SEXP, SEXP);
-SEXP rosetta_r_1649(SEXP);
-SEXP rosetta_r_1650(SEXP, SEXP);
+SEXP rosetta_r_1642(SEXP);
+SEXP rosetta_r_1643(SEXP, SEXP);
+SEXP rosetta_r_1644(SEXP);
+SEXP rosetta_r_1645(SEXP, SEXP);
+SEXP rosetta_r_1646(SEXP);
+SEXP rosetta_r_1647(SEXP, SEXP);
+SEXP rosetta_r_1648(SEXP);
+SEXP rosetta_r_1649(SEXP, SEXP);
+SEXP rosetta_r_1650(SEXP);
 SEXP rosetta_r_1651(SEXP, SEXP);
 SEXP rosetta_r_1652(SEXP);
-SEXP rosetta_r_1653(SEXP);
-SEXP rosetta_r_1654(SEXP, SEXP);
-SEXP rosetta_r_1655(SEXP);
+SEXP rosetta_r_1653(SEXP, SEXP);
+SEXP rosetta_r_1654(SEXP);
+SEXP rosetta_r_1655(SEXP, SEXP);
 SEXP rosetta_r_1656(SEXP, SEXP);
 SEXP rosetta_r_1657(SEXP);
-SEXP rosetta_r_1658(SEXP, SEXP);
-SEXP rosetta_r_1659(SEXP);
-SEXP rosetta_r_1660(SEXP, SEXP);
+SEXP rosetta_r_1658(SEXP);
+SEXP rosetta_r_1659(SEXP, SEXP);
+SEXP rosetta_r_1660(SEXP);
 SEXP rosetta_r_1661(SEXP, SEXP);
 SEXP rosetta_r_1662(SEXP);
-SEXP rosetta_r_1663(SEXP);
-SEXP rosetta_r_1664(SEXP, SEXP);
-SEXP rosetta_r_1665(SEXP);
-SEXP rosetta_r_1666(SEXP, SEXP);
-SEXP rosetta_r_1667(SEXP);
-SEXP rosetta_r_1668(SEXP, SEXP);
-SEXP rosetta_r_1669(SEXP);
-SEXP rosetta_r_1670(SEXP, SEXP);
-SEXP rosetta_r_1671(SEXP);
-SEXP rosetta_r_1672(SEXP, SEXP);
-SEXP rosetta_r_1673(SEXP);
+SEXP rosetta_r_1663(SEXP, SEXP);
+SEXP rosetta_r_1664(SEXP);
+SEXP rosetta_r_1665(SEXP, SEXP);
+SEXP rosetta_r_1666(SEXP);
+SEXP rosetta_r_1667(SEXP, SEXP);
+SEXP rosetta_r_1668(SEXP);
+SEXP rosetta_r_1669(SEXP, SEXP);
+SEXP rosetta_r_1670(SEXP);
+SEXP rosetta_r_1671(SEXP, SEXP);
+SEXP rosetta_r_1672(SEXP);
+SEXP rosetta_r_1673(SEXP, SEXP);
 SEXP rosetta_r_1674(SEXP, SEXP);
 SEXP rosetta_r_1675(SEXP);
-SEXP rosetta_r_1676(SEXP, SEXP);
-SEXP rosetta_r_1677(SEXP);
-SEXP rosetta_r_1678(SEXP, SEXP);
+SEXP rosetta_r_1676(SEXP);
+SEXP rosetta_r_1677(SEXP, SEXP);
+SEXP rosetta_r_1678(SEXP);
 SEXP rosetta_r_1679(SEXP, SEXP);
 SEXP rosetta_r_1680(SEXP);
-SEXP rosetta_r_1681(SEXP);
-SEXP rosetta_r_1682(SEXP, SEXP);
-SEXP rosetta_r_1683(SEXP);
-SEXP rosetta_r_1684(SEXP, SEXP);
-SEXP rosetta_r_1685(SEXP);
-SEXP rosetta_r_1686(SEXP, SEXP);
-SEXP rosetta_r_1687(SEXP);
-SEXP rosetta_r_1688(SEXP, SEXP);
-SEXP rosetta_r_1689(SEXP);
-SEXP rosetta_r_1690(SEXP, SEXP);
-SEXP rosetta_r_1691(SEXP);
+SEXP rosetta_r_1681(SEXP, SEXP);
+SEXP rosetta_r_1682(SEXP);
+SEXP rosetta_r_1683(SEXP, SEXP);
+SEXP rosetta_r_1684(SEXP);
+SEXP rosetta_r_1685(SEXP, SEXP);
+SEXP rosetta_r_1686(SEXP);
+SEXP rosetta_r_1687(SEXP, SEXP);
+SEXP rosetta_r_1688(SEXP);
+SEXP rosetta_r_1689(SEXP, SEXP);
+SEXP rosetta_r_1690(SEXP);
+SEXP rosetta_r_1691(SEXP, SEXP);
 SEXP rosetta_r_1692(SEXP, SEXP);
 SEXP rosetta_r_1693(SEXP);
-SEXP rosetta_r_1694(SEXP, SEXP);
-SEXP rosetta_r_1695(SEXP);
-SEXP rosetta_r_1696(SEXP, SEXP);
-SEXP rosetta_r_1697(SEXP);
-SEXP rosetta_r_1698(SEXP, SEXP);
-SEXP rosetta_r_1699(SEXP);
-SEXP rosetta_r_1700(SEXP, SEXP);
-SEXP rosetta_r_1701(SEXP);
-SEXP rosetta_r_1702(SEXP, SEXP);
-SEXP rosetta_r_1703(SEXP);
-SEXP rosetta_r_1704(SEXP, SEXP);
+SEXP rosetta_r_1694(SEXP);
+SEXP rosetta_r_1695(SEXP, SEXP);
+SEXP rosetta_r_1696(SEXP);
+SEXP rosetta_r_1697(SEXP, SEXP);
+SEXP rosetta_r_1698(SEXP);
+SEXP rosetta_r_1699(SEXP, SEXP);
+SEXP rosetta_r_1700(SEXP);
+SEXP rosetta_r_1701(SEXP, SEXP);
+SEXP rosetta_r_1702(SEXP);
+SEXP rosetta_r_1703(SEXP, SEXP);
+SEXP rosetta_r_1704(SEXP);
 SEXP rosetta_r_1705(SEXP, SEXP);
 SEXP rosetta_r_1706(SEXP);
-SEXP rosetta_r_1707(SEXP);
-SEXP rosetta_r_1708(SEXP, SEXP);
-SEXP rosetta_r_1709(SEXP);
-SEXP rosetta_r_1710(SEXP, SEXP);
-SEXP rosetta_r_1711(SEXP);
+SEXP rosetta_r_1707(SEXP, SEXP);
+SEXP rosetta_r_1708(SEXP);
+SEXP rosetta_r_1709(SEXP, SEXP);
+SEXP rosetta_r_1710(SEXP);
+SEXP rosetta_r_1711(SEXP, SEXP);
 SEXP rosetta_r_1712(SEXP, SEXP);
 SEXP rosetta_r_1713(SEXP);
-SEXP rosetta_r_1714(SEXP, SEXP);
+SEXP rosetta_r_1714(SEXP);
 SEXP rosetta_r_1715(SEXP, SEXP);
 SEXP rosetta_r_1716(SEXP);
-SEXP rosetta_r_1717(SEXP);
-SEXP rosetta_r_1718(SEXP, SEXP);
-SEXP rosetta_r_1719(SEXP);
-SEXP rosetta_r_1720(SEXP, SEXP);
-SEXP rosetta_r_1721(SEXP);
-SEXP rosetta_r_1722(SEXP, SEXP);
-SEXP rosetta_r_1723(SEXP);
-SEXP rosetta_r_1724(SEXP, SEXP);
-SEXP rosetta_r_1725(SEXP);
-SEXP rosetta_r_1726(SEXP, SEXP);
-SEXP rosetta_r_1727(SEXP);
-SEXP rosetta_r_1728(SEXP, SEXP);
-SEXP rosetta_r_1729(SEXP);
+SEXP rosetta_r_1717(SEXP, SEXP);
+SEXP rosetta_r_1718(SEXP);
+SEXP rosetta_r_1719(SEXP, SEXP);
+SEXP rosetta_r_1720(SEXP);
+SEXP rosetta_r_1721(SEXP, SEXP);
+SEXP rosetta_r_1722(SEXP);
+SEXP rosetta_r_1723(SEXP, SEXP);
+SEXP rosetta_r_1724(SEXP);
+SEXP rosetta_r_1725(SEXP, SEXP);
+SEXP rosetta_r_1726(SEXP);
+SEXP rosetta_r_1727(SEXP, SEXP);
+SEXP rosetta_r_1728(SEXP);
+SEXP rosetta_r_1729(SEXP, SEXP);
 SEXP rosetta_r_1730(SEXP, SEXP);
 SEXP rosetta_r_1731(SEXP);
-SEXP rosetta_r_1732(SEXP, SEXP);
-SEXP rosetta_r_1733(SEXP);
-SEXP rosetta_r_1734(SEXP, SEXP);
+SEXP rosetta_r_1732(SEXP);
+SEXP rosetta_r_1733(SEXP, SEXP);
+SEXP rosetta_r_1734(SEXP);
 SEXP rosetta_r_1735(SEXP, SEXP);
 SEXP rosetta_r_1736(SEXP);
-SEXP rosetta_r_1737(SEXP);
-SEXP rosetta_r_1738(SEXP, SEXP);
-SEXP rosetta_r_1739(SEXP);
-SEXP rosetta_r_1740(SEXP, SEXP);
-SEXP rosetta_r_1741(SEXP);
-SEXP rosetta_r_1742(SEXP, SEXP);
-SEXP rosetta_r_1743(SEXP);
-SEXP rosetta_r_1744(SEXP, SEXP);
-SEXP rosetta_r_1745(SEXP);
-SEXP rosetta_r_1746(SEXP, SEXP);
-SEXP rosetta_r_1747(SEXP);
+SEXP rosetta_r_1737(SEXP, SEXP);
+SEXP rosetta_r_1738(SEXP);
+SEXP rosetta_r_1739(SEXP, SEXP);
+SEXP rosetta_r_1740(SEXP);
+SEXP rosetta_r_1741(SEXP, SEXP);
+SEXP rosetta_r_1742(SEXP);
+SEXP rosetta_r_1743(SEXP, SEXP);
+SEXP rosetta_r_1744(SEXP);
+SEXP rosetta_r_1745(SEXP, SEXP);
+SEXP rosetta_r_1746(SEXP);
+SEXP rosetta_r_1747(SEXP, SEXP);
 SEXP rosetta_r_1748(SEXP, SEXP);
-SEXP rosetta_r_1749(SEXP, SEXP);
+SEXP rosetta_r_1749(SEXP);
 SEXP rosetta_r_1750(SEXP);
-SEXP rosetta_r_1751(SEXP);
-SEXP rosetta_r_1752(SEXP, SEXP);
-SEXP rosetta_r_1753(SEXP);
-SEXP rosetta_r_1754(SEXP, SEXP);
-SEXP rosetta_r_1755(SEXP);
+SEXP rosetta_r_1751(SEXP, SEXP);
+SEXP rosetta_r_1752(SEXP);
+SEXP rosetta_r_1753(SEXP, SEXP);
+SEXP rosetta_r_1754(SEXP);
+SEXP rosetta_r_1755(SEXP, SEXP);
 SEXP rosetta_r_1756(SEXP);
 SEXP rosetta_r_1757(SEXP, SEXP);
 SEXP rosetta_r_1758(SEXP);
@@ -4878,8 +5197,8 @@ SEXP rosetta_r_1764(SEXP);
 SEXP rosetta_r_1765(SEXP, SEXP);
 SEXP rosetta_r_1766(SEXP);
 SEXP rosetta_r_1767(SEXP, SEXP);
-SEXP rosetta_r_1768(SEXP);
-SEXP rosetta_r_1769(SEXP, SEXP);
+SEXP rosetta_r_1768(SEXP, SEXP);
+SEXP rosetta_r_1769(SEXP);
 SEXP rosetta_r_1770(SEXP);
 SEXP rosetta_r_1771(SEXP, SEXP);
 SEXP rosetta_r_1772(SEXP);
@@ -4888,19 +5207,19 @@ SEXP rosetta_r_1774(SEXP);
 SEXP rosetta_r_1775(SEXP, SEXP);
 SEXP rosetta_r_1776(SEXP);
 SEXP rosetta_r_1777(SEXP, SEXP);
-SEXP rosetta_r_1778(SEXP);
-SEXP rosetta_r_1779(SEXP, SEXP);
-SEXP rosetta_r_1780(SEXP, SEXP);
+SEXP rosetta_r_1778(SEXP, SEXP);
+SEXP rosetta_r_1779(SEXP);
+SEXP rosetta_r_1780(SEXP);
 SEXP rosetta_r_1781(SEXP, SEXP);
-SEXP rosetta_r_1782(SEXP, SEXP);
+SEXP rosetta_r_1782(SEXP);
 SEXP rosetta_r_1783(SEXP, SEXP);
-SEXP rosetta_r_1784(SEXP, SEXP);
+SEXP rosetta_r_1784(SEXP);
 SEXP rosetta_r_1785(SEXP, SEXP);
-SEXP rosetta_r_1786(SEXP, SEXP);
+SEXP rosetta_r_1786(SEXP);
 SEXP rosetta_r_1787(SEXP, SEXP);
-SEXP rosetta_r_1788(SEXP, SEXP);
+SEXP rosetta_r_1788(SEXP);
 SEXP rosetta_r_1789(SEXP, SEXP);
-SEXP rosetta_r_1790(SEXP, SEXP);
+SEXP rosetta_r_1790(SEXP);
 SEXP rosetta_r_1791(SEXP, SEXP);
 SEXP rosetta_r_1792(SEXP);
 SEXP rosetta_r_1793(SEXP, SEXP);
@@ -4916,10 +5235,10 @@ SEXP rosetta_r_1802(SEXP);
 SEXP rosetta_r_1803(SEXP, SEXP);
 SEXP rosetta_r_1804(SEXP);
 SEXP rosetta_r_1805(SEXP, SEXP);
-SEXP rosetta_r_1806(SEXP, SEXP);
-SEXP rosetta_r_1807(SEXP);
-SEXP rosetta_r_1808(SEXP);
-SEXP rosetta_r_1809(SEXP, SEXP);
+SEXP rosetta_r_1806(SEXP);
+SEXP rosetta_r_1807(SEXP, SEXP);
+SEXP rosetta_r_1808(SEXP, SEXP);
+SEXP rosetta_r_1809(SEXP);
 SEXP rosetta_r_1810(SEXP);
 SEXP rosetta_r_1811(SEXP, SEXP);
 SEXP rosetta_r_1812(SEXP);
@@ -4956,36 +5275,36 @@ SEXP rosetta_r_1842(SEXP);
 SEXP rosetta_r_1843(SEXP, SEXP);
 SEXP rosetta_r_1844(SEXP);
 SEXP rosetta_r_1845(SEXP, SEXP);
-SEXP rosetta_r_1846(SEXP, SEXP);
-SEXP rosetta_r_1847(SEXP);
+SEXP rosetta_r_1846(SEXP);
+SEXP rosetta_r_1847(SEXP, SEXP);
 SEXP rosetta_r_1848(SEXP);
 SEXP rosetta_r_1849(SEXP, SEXP);
-SEXP rosetta_r_1850(SEXP);
-SEXP rosetta_r_1851(SEXP, SEXP);
+SEXP rosetta_r_1850(SEXP, SEXP);
+SEXP rosetta_r_1851(SEXP);
 SEXP rosetta_r_1852(SEXP);
 SEXP rosetta_r_1853(SEXP, SEXP);
 SEXP rosetta_r_1854(SEXP);
 SEXP rosetta_r_1855(SEXP, SEXP);
 SEXP rosetta_r_1856(SEXP);
 SEXP rosetta_r_1857(SEXP, SEXP);
-SEXP rosetta_r_1858(SEXP, SEXP);
-SEXP rosetta_r_1859(SEXP);
+SEXP rosetta_r_1858(SEXP);
+SEXP rosetta_r_1859(SEXP, SEXP);
 SEXP rosetta_r_1860(SEXP);
 SEXP rosetta_r_1861(SEXP, SEXP);
 SEXP rosetta_r_1862(SEXP);
 SEXP rosetta_r_1863(SEXP, SEXP);
-SEXP rosetta_r_1864(SEXP);
-SEXP rosetta_r_1865(SEXP, SEXP);
+SEXP rosetta_r_1864(SEXP, SEXP);
+SEXP rosetta_r_1865(SEXP);
 SEXP rosetta_r_1866(SEXP);
 SEXP rosetta_r_1867(SEXP, SEXP);
 SEXP rosetta_r_1868(SEXP);
 SEXP rosetta_r_1869(SEXP, SEXP);
-SEXP rosetta_r_1870(SEXP, SEXP);
+SEXP rosetta_r_1870(SEXP);
 SEXP rosetta_r_1871(SEXP);
-SEXP rosetta_r_1872(SEXP);
-SEXP rosetta_r_1873(SEXP, SEXP);
-SEXP rosetta_r_1874(SEXP);
-SEXP rosetta_r_1875(SEXP, SEXP);
+SEXP rosetta_r_1872(SEXP, SEXP);
+SEXP rosetta_r_1873(SEXP);
+SEXP rosetta_r_1874(SEXP, SEXP);
+SEXP rosetta_r_1875(SEXP);
 SEXP rosetta_r_1876(SEXP);
 SEXP rosetta_r_1877(SEXP, SEXP);
 SEXP rosetta_r_1878(SEXP);
@@ -4994,14 +5313,14 @@ SEXP rosetta_r_1880(SEXP);
 SEXP rosetta_r_1881(SEXP, SEXP);
 SEXP rosetta_r_1882(SEXP);
 SEXP rosetta_r_1883(SEXP, SEXP);
-SEXP rosetta_r_1884(SEXP, SEXP);
-SEXP rosetta_r_1885(SEXP);
-SEXP rosetta_r_1886(SEXP, SEXP);
+SEXP rosetta_r_1884(SEXP);
+SEXP rosetta_r_1885(SEXP, SEXP);
+SEXP rosetta_r_1886(SEXP);
 SEXP rosetta_r_1887(SEXP, SEXP);
-SEXP rosetta_r_1888(SEXP, SEXP);
+SEXP rosetta_r_1888(SEXP);
 SEXP rosetta_r_1889(SEXP, SEXP);
-SEXP rosetta_r_1890(SEXP, SEXP);
-SEXP rosetta_r_1891(SEXP);
+SEXP rosetta_r_1890(SEXP);
+SEXP rosetta_r_1891(SEXP, SEXP);
 SEXP rosetta_r_1892(SEXP);
 SEXP rosetta_r_1893(SEXP, SEXP);
 SEXP rosetta_r_1894(SEXP);
@@ -5010,21 +5329,21 @@ SEXP rosetta_r_1896(SEXP);
 SEXP rosetta_r_1897(SEXP, SEXP);
 SEXP rosetta_r_1898(SEXP);
 SEXP rosetta_r_1899(SEXP, SEXP);
-SEXP rosetta_r_1900(SEXP);
+SEXP rosetta_r_1900(SEXP, SEXP);
 SEXP rosetta_r_1901(SEXP, SEXP);
-SEXP rosetta_r_1902(SEXP);
+SEXP rosetta_r_1902(SEXP, SEXP);
 SEXP rosetta_r_1903(SEXP, SEXP);
-SEXP rosetta_r_1904(SEXP);
+SEXP rosetta_r_1904(SEXP, SEXP);
 SEXP rosetta_r_1905(SEXP, SEXP);
-SEXP rosetta_r_1906(SEXP);
+SEXP rosetta_r_1906(SEXP, SEXP);
 SEXP rosetta_r_1907(SEXP, SEXP);
-SEXP rosetta_r_1908(SEXP);
+SEXP rosetta_r_1908(SEXP, SEXP);
 SEXP rosetta_r_1909(SEXP, SEXP);
-SEXP rosetta_r_1910(SEXP);
+SEXP rosetta_r_1910(SEXP, SEXP);
 SEXP rosetta_r_1911(SEXP, SEXP);
-SEXP rosetta_r_1912(SEXP);
-SEXP rosetta_r_1913(SEXP, SEXP);
-SEXP rosetta_r_1914(SEXP);
+SEXP rosetta_r_1912(SEXP, SEXP);
+SEXP rosetta_r_1913(SEXP);
+SEXP rosetta_r_1914(SEXP, SEXP);
 SEXP rosetta_r_1915(SEXP);
 SEXP rosetta_r_1916(SEXP, SEXP);
 SEXP rosetta_r_1917(SEXP);
@@ -5037,8 +5356,8 @@ SEXP rosetta_r_1923(SEXP);
 SEXP rosetta_r_1924(SEXP, SEXP);
 SEXP rosetta_r_1925(SEXP);
 SEXP rosetta_r_1926(SEXP, SEXP);
-SEXP rosetta_r_1927(SEXP);
-SEXP rosetta_r_1928(SEXP, SEXP);
+SEXP rosetta_r_1927(SEXP, SEXP);
+SEXP rosetta_r_1928(SEXP);
 SEXP rosetta_r_1929(SEXP);
 SEXP rosetta_r_1930(SEXP, SEXP);
 SEXP rosetta_r_1931(SEXP);
@@ -5047,44 +5366,44 @@ SEXP rosetta_r_1933(SEXP);
 SEXP rosetta_r_1934(SEXP, SEXP);
 SEXP rosetta_r_1935(SEXP);
 SEXP rosetta_r_1936(SEXP, SEXP);
-SEXP rosetta_r_1937(SEXP);
-SEXP rosetta_r_1938(SEXP, SEXP);
+SEXP rosetta_r_1937(SEXP, SEXP);
+SEXP rosetta_r_1938(SEXP);
 SEXP rosetta_r_1939(SEXP);
 SEXP rosetta_r_1940(SEXP, SEXP);
-SEXP rosetta_r_1941(SEXP, SEXP);
+SEXP rosetta_r_1941(SEXP);
 SEXP rosetta_r_1942(SEXP, SEXP);
-SEXP rosetta_r_1943(SEXP, SEXP);
+SEXP rosetta_r_1943(SEXP);
 SEXP rosetta_r_1944(SEXP, SEXP);
-SEXP rosetta_r_1945(SEXP, SEXP);
+SEXP rosetta_r_1945(SEXP);
 SEXP rosetta_r_1946(SEXP, SEXP);
-SEXP rosetta_r_1947(SEXP, SEXP);
+SEXP rosetta_r_1947(SEXP);
 SEXP rosetta_r_1948(SEXP, SEXP);
-SEXP rosetta_r_1949(SEXP, SEXP);
+SEXP rosetta_r_1949(SEXP);
 SEXP rosetta_r_1950(SEXP, SEXP);
-SEXP rosetta_r_1951(SEXP, SEXP);
+SEXP rosetta_r_1951(SEXP);
 SEXP rosetta_r_1952(SEXP, SEXP);
-SEXP rosetta_r_1953(SEXP, SEXP);
+SEXP rosetta_r_1953(SEXP);
 SEXP rosetta_r_1954(SEXP, SEXP);
 SEXP rosetta_r_1955(SEXP, SEXP);
-SEXP rosetta_r_1956(SEXP, SEXP);
-SEXP rosetta_r_1957(SEXP, SEXP);
+SEXP rosetta_r_1956(SEXP);
+SEXP rosetta_r_1957(SEXP);
 SEXP rosetta_r_1958(SEXP, SEXP);
 SEXP rosetta_r_1959(SEXP);
-SEXP rosetta_r_1960(SEXP);
-SEXP rosetta_r_1961(SEXP, SEXP);
-SEXP rosetta_r_1962(SEXP);
-SEXP rosetta_r_1963(SEXP, SEXP);
-SEXP rosetta_r_1964(SEXP);
-SEXP rosetta_r_1965(SEXP, SEXP);
-SEXP rosetta_r_1966(SEXP);
+SEXP rosetta_r_1960(SEXP, SEXP);
+SEXP rosetta_r_1961(SEXP);
+SEXP rosetta_r_1962(SEXP, SEXP);
+SEXP rosetta_r_1963(SEXP);
+SEXP rosetta_r_1964(SEXP, SEXP);
+SEXP rosetta_r_1965(SEXP);
+SEXP rosetta_r_1966(SEXP, SEXP);
 SEXP rosetta_r_1967(SEXP, SEXP);
 SEXP rosetta_r_1968(SEXP);
-SEXP rosetta_r_1969(SEXP, SEXP);
-SEXP rosetta_r_1970(SEXP);
-SEXP rosetta_r_1971(SEXP, SEXP);
-SEXP rosetta_r_1972(SEXP);
-SEXP rosetta_r_1973(SEXP, SEXP);
-SEXP rosetta_r_1974(SEXP);
+SEXP rosetta_r_1969(SEXP);
+SEXP rosetta_r_1970(SEXP, SEXP);
+SEXP rosetta_r_1971(SEXP);
+SEXP rosetta_r_1972(SEXP, SEXP);
+SEXP rosetta_r_1973(SEXP);
+SEXP rosetta_r_1974(SEXP, SEXP);
 SEXP rosetta_r_1975(SEXP);
 SEXP rosetta_r_1976(SEXP, SEXP);
 SEXP rosetta_r_1977(SEXP);
@@ -5093,8 +5412,8 @@ SEXP rosetta_r_1979(SEXP);
 SEXP rosetta_r_1980(SEXP, SEXP);
 SEXP rosetta_r_1981(SEXP);
 SEXP rosetta_r_1982(SEXP, SEXP);
-SEXP rosetta_r_1983(SEXP);
-SEXP rosetta_r_1984(SEXP, SEXP);
+SEXP rosetta_r_1983(SEXP, SEXP);
+SEXP rosetta_r_1984(SEXP);
 SEXP rosetta_r_1985(SEXP);
 SEXP rosetta_r_1986(SEXP, SEXP);
 SEXP rosetta_r_1987(SEXP);
@@ -5103,277 +5422,277 @@ SEXP rosetta_r_1989(SEXP);
 SEXP rosetta_r_1990(SEXP, SEXP);
 SEXP rosetta_r_1991(SEXP);
 SEXP rosetta_r_1992(SEXP, SEXP);
-SEXP rosetta_r_1993(SEXP);
-SEXP rosetta_r_1994(SEXP, SEXP);
+SEXP rosetta_r_1993(SEXP, SEXP);
+SEXP rosetta_r_1994(SEXP);
 SEXP rosetta_r_1995(SEXP);
 SEXP rosetta_r_1996(SEXP, SEXP);
-SEXP rosetta_r_1997(SEXP, SEXP);
+SEXP rosetta_r_1997(SEXP);
 SEXP rosetta_r_1998(SEXP, SEXP);
-SEXP rosetta_r_1999(SEXP, SEXP);
+SEXP rosetta_r_1999(SEXP);
 SEXP rosetta_r_2000(SEXP, SEXP);
-SEXP rosetta_r_2001(SEXP, SEXP);
+SEXP rosetta_r_2001(SEXP);
 SEXP rosetta_r_2002(SEXP, SEXP);
-SEXP rosetta_r_2003(SEXP, SEXP);
+SEXP rosetta_r_2003(SEXP);
 SEXP rosetta_r_2004(SEXP, SEXP);
-SEXP rosetta_r_2005(SEXP, SEXP);
+SEXP rosetta_r_2005(SEXP);
 SEXP rosetta_r_2006(SEXP, SEXP);
-SEXP rosetta_r_2007(SEXP, SEXP);
+SEXP rosetta_r_2007(SEXP);
 SEXP rosetta_r_2008(SEXP, SEXP);
-SEXP rosetta_r_2009(SEXP, SEXP);
-SEXP rosetta_r_2010(SEXP);
-SEXP rosetta_r_2011(SEXP);
-SEXP rosetta_r_2012(SEXP, SEXP);
-SEXP rosetta_r_2013(SEXP, SEXP);
+SEXP rosetta_r_2009(SEXP);
+SEXP rosetta_r_2010(SEXP, SEXP);
+SEXP rosetta_r_2011(SEXP, SEXP);
+SEXP rosetta_r_2012(SEXP);
+SEXP rosetta_r_2013(SEXP);
 SEXP rosetta_r_2014(SEXP, SEXP);
-SEXP rosetta_r_2015(SEXP, SEXP);
+SEXP rosetta_r_2015(SEXP);
 SEXP rosetta_r_2016(SEXP, SEXP);
-SEXP rosetta_r_2017(SEXP, SEXP);
+SEXP rosetta_r_2017(SEXP);
 SEXP rosetta_r_2018(SEXP, SEXP);
-SEXP rosetta_r_2019(SEXP, SEXP);
+SEXP rosetta_r_2019(SEXP);
 SEXP rosetta_r_2020(SEXP, SEXP);
 SEXP rosetta_r_2021(SEXP);
 SEXP rosetta_r_2022(SEXP, SEXP);
-SEXP rosetta_r_2023(SEXP, SEXP);
+SEXP rosetta_r_2023(SEXP);
 SEXP rosetta_r_2024(SEXP, SEXP);
-SEXP rosetta_r_2025(SEXP, SEXP);
+SEXP rosetta_r_2025(SEXP);
 SEXP rosetta_r_2026(SEXP, SEXP);
-SEXP rosetta_r_2027(SEXP, SEXP);
+SEXP rosetta_r_2027(SEXP);
 SEXP rosetta_r_2028(SEXP, SEXP);
-SEXP rosetta_r_2029(SEXP, SEXP);
+SEXP rosetta_r_2029(SEXP);
 SEXP rosetta_r_2030(SEXP, SEXP);
-SEXP rosetta_r_2031(SEXP, SEXP);
+SEXP rosetta_r_2031(SEXP);
 SEXP rosetta_r_2032(SEXP, SEXP);
-SEXP rosetta_r_2033(SEXP, SEXP);
+SEXP rosetta_r_2033(SEXP);
 SEXP rosetta_r_2034(SEXP, SEXP);
-SEXP rosetta_r_2035(SEXP, SEXP);
-SEXP rosetta_r_2036(SEXP);
+SEXP rosetta_r_2035(SEXP);
+SEXP rosetta_r_2036(SEXP, SEXP);
 SEXP rosetta_r_2037(SEXP, SEXP);
-SEXP rosetta_r_2038(SEXP, SEXP);
-SEXP rosetta_r_2039(SEXP, SEXP);
+SEXP rosetta_r_2038(SEXP);
+SEXP rosetta_r_2039(SEXP);
 SEXP rosetta_r_2040(SEXP, SEXP);
-SEXP rosetta_r_2041(SEXP, SEXP);
+SEXP rosetta_r_2041(SEXP);
 SEXP rosetta_r_2042(SEXP, SEXP);
-SEXP rosetta_r_2043(SEXP, SEXP);
+SEXP rosetta_r_2043(SEXP);
 SEXP rosetta_r_2044(SEXP, SEXP);
-SEXP rosetta_r_2045(SEXP, SEXP);
+SEXP rosetta_r_2045(SEXP);
 SEXP rosetta_r_2046(SEXP, SEXP);
 SEXP rosetta_r_2047(SEXP, SEXP);
-SEXP rosetta_r_2048(SEXP, SEXP);
-SEXP rosetta_r_2049(SEXP, SEXP);
+SEXP rosetta_r_2048(SEXP);
+SEXP rosetta_r_2049(SEXP);
 SEXP rosetta_r_2050(SEXP, SEXP);
-SEXP rosetta_r_2051(SEXP, SEXP);
+SEXP rosetta_r_2051(SEXP);
 SEXP rosetta_r_2052(SEXP, SEXP);
-SEXP rosetta_r_2053(SEXP, SEXP);
+SEXP rosetta_r_2053(SEXP);
 SEXP rosetta_r_2054(SEXP, SEXP);
-SEXP rosetta_r_2055(SEXP, SEXP);
+SEXP rosetta_r_2055(SEXP);
 SEXP rosetta_r_2056(SEXP, SEXP);
-SEXP rosetta_r_2057(SEXP, SEXP);
+SEXP rosetta_r_2057(SEXP);
 SEXP rosetta_r_2058(SEXP, SEXP);
-SEXP rosetta_r_2059(SEXP, SEXP);
+SEXP rosetta_r_2059(SEXP);
 SEXP rosetta_r_2060(SEXP, SEXP);
-SEXP rosetta_r_2061(SEXP, SEXP);
+SEXP rosetta_r_2061(SEXP);
 SEXP rosetta_r_2062(SEXP, SEXP);
-SEXP rosetta_r_2063(SEXP, SEXP);
+SEXP rosetta_r_2063(SEXP);
 SEXP rosetta_r_2064(SEXP, SEXP);
-SEXP rosetta_r_2065(SEXP, SEXP);
+SEXP rosetta_r_2065(SEXP);
 SEXP rosetta_r_2066(SEXP, SEXP);
 SEXP rosetta_r_2067(SEXP, SEXP);
-SEXP rosetta_r_2068(SEXP, SEXP);
-SEXP rosetta_r_2069(SEXP, SEXP);
+SEXP rosetta_r_2068(SEXP);
+SEXP rosetta_r_2069(SEXP);
 SEXP rosetta_r_2070(SEXP, SEXP);
-SEXP rosetta_r_2071(SEXP, SEXP);
+SEXP rosetta_r_2071(SEXP);
 SEXP rosetta_r_2072(SEXP, SEXP);
-SEXP rosetta_r_2073(SEXP, SEXP);
+SEXP rosetta_r_2073(SEXP);
 SEXP rosetta_r_2074(SEXP, SEXP);
-SEXP rosetta_r_2075(SEXP, SEXP);
+SEXP rosetta_r_2075(SEXP);
 SEXP rosetta_r_2076(SEXP, SEXP);
-SEXP rosetta_r_2077(SEXP, SEXP);
+SEXP rosetta_r_2077(SEXP);
 SEXP rosetta_r_2078(SEXP, SEXP);
-SEXP rosetta_r_2079(SEXP, SEXP);
+SEXP rosetta_r_2079(SEXP);
 SEXP rosetta_r_2080(SEXP, SEXP);
 SEXP rosetta_r_2081(SEXP, SEXP);
-SEXP rosetta_r_2082(SEXP, SEXP);
-SEXP rosetta_r_2083(SEXP, SEXP);
+SEXP rosetta_r_2082(SEXP);
+SEXP rosetta_r_2083(SEXP);
 SEXP rosetta_r_2084(SEXP, SEXP);
-SEXP rosetta_r_2085(SEXP, SEXP);
+SEXP rosetta_r_2085(SEXP);
 SEXP rosetta_r_2086(SEXP, SEXP);
-SEXP rosetta_r_2087(SEXP, SEXP);
+SEXP rosetta_r_2087(SEXP);
 SEXP rosetta_r_2088(SEXP, SEXP);
-SEXP rosetta_r_2089(SEXP, SEXP);
+SEXP rosetta_r_2089(SEXP);
 SEXP rosetta_r_2090(SEXP, SEXP);
-SEXP rosetta_r_2091(SEXP, SEXP);
+SEXP rosetta_r_2091(SEXP);
 SEXP rosetta_r_2092(SEXP, SEXP);
-SEXP rosetta_r_2093(SEXP, SEXP);
+SEXP rosetta_r_2093(SEXP);
 SEXP rosetta_r_2094(SEXP, SEXP);
 SEXP rosetta_r_2095(SEXP);
 SEXP rosetta_r_2096(SEXP, SEXP);
 SEXP rosetta_r_2097(SEXP, SEXP);
-SEXP rosetta_r_2098(SEXP, SEXP);
-SEXP rosetta_r_2099(SEXP, SEXP);
+SEXP rosetta_r_2098(SEXP);
+SEXP rosetta_r_2099(SEXP);
 SEXP rosetta_r_2100(SEXP, SEXP);
-SEXP rosetta_r_2101(SEXP, SEXP);
+SEXP rosetta_r_2101(SEXP);
 SEXP rosetta_r_2102(SEXP, SEXP);
 SEXP rosetta_r_2103(SEXP);
 SEXP rosetta_r_2104(SEXP, SEXP);
-SEXP rosetta_r_2105(SEXP, SEXP);
+SEXP rosetta_r_2105(SEXP);
 SEXP rosetta_r_2106(SEXP, SEXP);
-SEXP rosetta_r_2107(SEXP, SEXP);
+SEXP rosetta_r_2107(SEXP);
 SEXP rosetta_r_2108(SEXP, SEXP);
-SEXP rosetta_r_2109(SEXP, SEXP);
+SEXP rosetta_r_2109(SEXP);
 SEXP rosetta_r_2110(SEXP, SEXP);
 SEXP rosetta_r_2111(SEXP, SEXP);
-SEXP rosetta_r_2112(SEXP, SEXP);
-SEXP rosetta_r_2113(SEXP, SEXP);
+SEXP rosetta_r_2112(SEXP);
+SEXP rosetta_r_2113(SEXP);
 SEXP rosetta_r_2114(SEXP, SEXP);
-SEXP rosetta_r_2115(SEXP, SEXP);
+SEXP rosetta_r_2115(SEXP);
 SEXP rosetta_r_2116(SEXP, SEXP);
-SEXP rosetta_r_2117(SEXP, SEXP);
+SEXP rosetta_r_2117(SEXP);
 SEXP rosetta_r_2118(SEXP, SEXP);
-SEXP rosetta_r_2119(SEXP, SEXP);
+SEXP rosetta_r_2119(SEXP);
 SEXP rosetta_r_2120(SEXP, SEXP);
-SEXP rosetta_r_2121(SEXP, SEXP);
+SEXP rosetta_r_2121(SEXP);
 SEXP rosetta_r_2122(SEXP, SEXP);
 SEXP rosetta_r_2123(SEXP, SEXP);
-SEXP rosetta_r_2124(SEXP, SEXP);
-SEXP rosetta_r_2125(SEXP, SEXP);
+SEXP rosetta_r_2124(SEXP);
+SEXP rosetta_r_2125(SEXP);
 SEXP rosetta_r_2126(SEXP, SEXP);
-SEXP rosetta_r_2127(SEXP, SEXP);
+SEXP rosetta_r_2127(SEXP);
 SEXP rosetta_r_2128(SEXP, SEXP);
-SEXP rosetta_r_2129(SEXP, SEXP);
+SEXP rosetta_r_2129(SEXP);
 SEXP rosetta_r_2130(SEXP, SEXP);
-SEXP rosetta_r_2131(SEXP, SEXP);
+SEXP rosetta_r_2131(SEXP);
 SEXP rosetta_r_2132(SEXP, SEXP);
-SEXP rosetta_r_2133(SEXP, SEXP);
+SEXP rosetta_r_2133(SEXP);
 SEXP rosetta_r_2134(SEXP, SEXP);
-SEXP rosetta_r_2135(SEXP, SEXP);
+SEXP rosetta_r_2135(SEXP);
 SEXP rosetta_r_2136(SEXP, SEXP);
 SEXP rosetta_r_2137(SEXP, SEXP);
-SEXP rosetta_r_2138(SEXP, SEXP);
-SEXP rosetta_r_2139(SEXP, SEXP);
+SEXP rosetta_r_2138(SEXP);
+SEXP rosetta_r_2139(SEXP);
 SEXP rosetta_r_2140(SEXP, SEXP);
-SEXP rosetta_r_2141(SEXP, SEXP);
+SEXP rosetta_r_2141(SEXP);
 SEXP rosetta_r_2142(SEXP, SEXP);
-SEXP rosetta_r_2143(SEXP, SEXP);
+SEXP rosetta_r_2143(SEXP);
 SEXP rosetta_r_2144(SEXP, SEXP);
-SEXP rosetta_r_2145(SEXP, SEXP);
+SEXP rosetta_r_2145(SEXP);
 SEXP rosetta_r_2146(SEXP, SEXP);
 SEXP rosetta_r_2147(SEXP);
 SEXP rosetta_r_2148(SEXP, SEXP);
 SEXP rosetta_r_2149(SEXP, SEXP);
-SEXP rosetta_r_2150(SEXP, SEXP);
-SEXP rosetta_r_2151(SEXP, SEXP);
+SEXP rosetta_r_2150(SEXP);
+SEXP rosetta_r_2151(SEXP);
 SEXP rosetta_r_2152(SEXP, SEXP);
-SEXP rosetta_r_2153(SEXP, SEXP);
+SEXP rosetta_r_2153(SEXP);
 SEXP rosetta_r_2154(SEXP, SEXP);
-SEXP rosetta_r_2155(SEXP, SEXP);
+SEXP rosetta_r_2155(SEXP);
 SEXP rosetta_r_2156(SEXP, SEXP);
-SEXP rosetta_r_2157(SEXP, SEXP);
+SEXP rosetta_r_2157(SEXP);
 SEXP rosetta_r_2158(SEXP, SEXP);
-SEXP rosetta_r_2159(SEXP, SEXP);
+SEXP rosetta_r_2159(SEXP);
 SEXP rosetta_r_2160(SEXP, SEXP);
 SEXP rosetta_r_2161(SEXP, SEXP);
-SEXP rosetta_r_2162(SEXP, SEXP);
-SEXP rosetta_r_2163(SEXP, SEXP);
+SEXP rosetta_r_2162(SEXP);
+SEXP rosetta_r_2163(SEXP);
 SEXP rosetta_r_2164(SEXP, SEXP);
-SEXP rosetta_r_2165(SEXP, SEXP);
+SEXP rosetta_r_2165(SEXP);
 SEXP rosetta_r_2166(SEXP, SEXP);
-SEXP rosetta_r_2167(SEXP, SEXP);
+SEXP rosetta_r_2167(SEXP);
 SEXP rosetta_r_2168(SEXP, SEXP);
-SEXP rosetta_r_2169(SEXP, SEXP);
+SEXP rosetta_r_2169(SEXP);
 SEXP rosetta_r_2170(SEXP, SEXP);
-SEXP rosetta_r_2171(SEXP, SEXP);
+SEXP rosetta_r_2171(SEXP);
 SEXP rosetta_r_2172(SEXP, SEXP);
-SEXP rosetta_r_2173(SEXP, SEXP);
-SEXP rosetta_r_2174(SEXP);
+SEXP rosetta_r_2173(SEXP);
+SEXP rosetta_r_2174(SEXP, SEXP);
 SEXP rosetta_r_2175(SEXP, SEXP);
-SEXP rosetta_r_2176(SEXP, SEXP);
-SEXP rosetta_r_2177(SEXP, SEXP);
+SEXP rosetta_r_2176(SEXP);
+SEXP rosetta_r_2177(SEXP);
 SEXP rosetta_r_2178(SEXP, SEXP);
-SEXP rosetta_r_2179(SEXP, SEXP);
+SEXP rosetta_r_2179(SEXP);
 SEXP rosetta_r_2180(SEXP, SEXP);
-SEXP rosetta_r_2181(SEXP, SEXP);
+SEXP rosetta_r_2181(SEXP);
 SEXP rosetta_r_2182(SEXP, SEXP);
-SEXP rosetta_r_2183(SEXP, SEXP);
+SEXP rosetta_r_2183(SEXP);
 SEXP rosetta_r_2184(SEXP, SEXP);
-SEXP rosetta_r_2185(SEXP, SEXP);
+SEXP rosetta_r_2185(SEXP);
 SEXP rosetta_r_2186(SEXP, SEXP);
-SEXP rosetta_r_2187(SEXP, SEXP);
+SEXP rosetta_r_2187(SEXP);
 SEXP rosetta_r_2188(SEXP, SEXP);
-SEXP rosetta_r_2189(SEXP, SEXP);
+SEXP rosetta_r_2189(SEXP);
 SEXP rosetta_r_2190(SEXP, SEXP);
-SEXP rosetta_r_2191(SEXP, SEXP);
+SEXP rosetta_r_2191(SEXP);
 SEXP rosetta_r_2192(SEXP, SEXP);
-SEXP rosetta_r_2193(SEXP, SEXP);
+SEXP rosetta_r_2193(SEXP);
 SEXP rosetta_r_2194(SEXP, SEXP);
-SEXP rosetta_r_2195(SEXP, SEXP);
+SEXP rosetta_r_2195(SEXP);
 SEXP rosetta_r_2196(SEXP, SEXP);
-SEXP rosetta_r_2197(SEXP, SEXP);
+SEXP rosetta_r_2197(SEXP);
 SEXP rosetta_r_2198(SEXP, SEXP);
-SEXP rosetta_r_2199(SEXP, SEXP);
+SEXP rosetta_r_2199(SEXP);
 SEXP rosetta_r_2200(SEXP, SEXP);
 SEXP rosetta_r_2201(SEXP, SEXP);
 SEXP rosetta_r_2202(SEXP, SEXP);
 SEXP rosetta_r_2203(SEXP, SEXP);
 SEXP rosetta_r_2204(SEXP, SEXP);
-SEXP rosetta_r_2205(SEXP, SEXP);
-SEXP rosetta_r_2206(SEXP, SEXP);
+SEXP rosetta_r_2205(SEXP);
+SEXP rosetta_r_2206(SEXP);
 SEXP rosetta_r_2207(SEXP, SEXP);
 SEXP rosetta_r_2208(SEXP);
 SEXP rosetta_r_2209(SEXP, SEXP);
-SEXP rosetta_r_2210(SEXP, SEXP);
+SEXP rosetta_r_2210(SEXP);
 SEXP rosetta_r_2211(SEXP, SEXP);
-SEXP rosetta_r_2212(SEXP, SEXP);
+SEXP rosetta_r_2212(SEXP);
 SEXP rosetta_r_2213(SEXP, SEXP);
-SEXP rosetta_r_2214(SEXP, SEXP);
+SEXP rosetta_r_2214(SEXP);
 SEXP rosetta_r_2215(SEXP, SEXP);
-SEXP rosetta_r_2216(SEXP, SEXP);
+SEXP rosetta_r_2216(SEXP);
 SEXP rosetta_r_2217(SEXP, SEXP);
-SEXP rosetta_r_2218(SEXP, SEXP);
+SEXP rosetta_r_2218(SEXP);
 SEXP rosetta_r_2219(SEXP, SEXP);
-SEXP rosetta_r_2220(SEXP, SEXP);
-SEXP rosetta_r_2221(SEXP, SEXP);
+SEXP rosetta_r_2220(SEXP);
+SEXP rosetta_r_2221(SEXP);
 SEXP rosetta_r_2222(SEXP, SEXP);
-SEXP rosetta_r_2223(SEXP, SEXP);
+SEXP rosetta_r_2223(SEXP);
 SEXP rosetta_r_2224(SEXP, SEXP);
-SEXP rosetta_r_2225(SEXP, SEXP);
+SEXP rosetta_r_2225(SEXP);
 SEXP rosetta_r_2226(SEXP, SEXP);
-SEXP rosetta_r_2227(SEXP, SEXP);
+SEXP rosetta_r_2227(SEXP);
 SEXP rosetta_r_2228(SEXP, SEXP);
-SEXP rosetta_r_2229(SEXP, SEXP);
+SEXP rosetta_r_2229(SEXP);
 SEXP rosetta_r_2230(SEXP, SEXP);
-SEXP rosetta_r_2231(SEXP, SEXP);
+SEXP rosetta_r_2231(SEXP);
 SEXP rosetta_r_2232(SEXP, SEXP);
-SEXP rosetta_r_2233(SEXP, SEXP);
-SEXP rosetta_r_2234(SEXP, SEXP);
+SEXP rosetta_r_2233(SEXP);
+SEXP rosetta_r_2234(SEXP);
 SEXP rosetta_r_2235(SEXP, SEXP);
-SEXP rosetta_r_2236(SEXP, SEXP);
-SEXP rosetta_r_2237(SEXP);
-SEXP rosetta_r_2238(SEXP, SEXP);
+SEXP rosetta_r_2236(SEXP);
+SEXP rosetta_r_2237(SEXP, SEXP);
+SEXP rosetta_r_2238(SEXP);
 SEXP rosetta_r_2239(SEXP, SEXP);
-SEXP rosetta_r_2240(SEXP, SEXP);
+SEXP rosetta_r_2240(SEXP);
 SEXP rosetta_r_2241(SEXP, SEXP);
-SEXP rosetta_r_2242(SEXP, SEXP);
+SEXP rosetta_r_2242(SEXP);
 SEXP rosetta_r_2243(SEXP, SEXP);
-SEXP rosetta_r_2244(SEXP, SEXP);
+SEXP rosetta_r_2244(SEXP);
 SEXP rosetta_r_2245(SEXP, SEXP);
-SEXP rosetta_r_2246(SEXP, SEXP);
+SEXP rosetta_r_2246(SEXP);
 SEXP rosetta_r_2247(SEXP, SEXP);
-SEXP rosetta_r_2248(SEXP, SEXP);
+SEXP rosetta_r_2248(SEXP);
 SEXP rosetta_r_2249(SEXP, SEXP);
-SEXP rosetta_r_2250(SEXP, SEXP);
+SEXP rosetta_r_2250(SEXP);
 SEXP rosetta_r_2251(SEXP, SEXP);
-SEXP rosetta_r_2252(SEXP, SEXP);
+SEXP rosetta_r_2252(SEXP);
 SEXP rosetta_r_2253(SEXP, SEXP);
-SEXP rosetta_r_2254(SEXP, SEXP);
+SEXP rosetta_r_2254(SEXP);
 SEXP rosetta_r_2255(SEXP, SEXP);
-SEXP rosetta_r_2256(SEXP, SEXP);
+SEXP rosetta_r_2256(SEXP);
 SEXP rosetta_r_2257(SEXP, SEXP);
-SEXP rosetta_r_2258(SEXP, SEXP);
+SEXP rosetta_r_2258(SEXP);
 SEXP rosetta_r_2259(SEXP, SEXP);
 SEXP rosetta_r_2260(SEXP, SEXP);
 SEXP rosetta_r_2261(SEXP, SEXP);
 SEXP rosetta_r_2262(SEXP, SEXP);
-SEXP rosetta_r_2263(SEXP);
+SEXP rosetta_r_2263(SEXP, SEXP);
 SEXP rosetta_r_2264(SEXP, SEXP);
 SEXP rosetta_r_2265(SEXP, SEXP);
 SEXP rosetta_r_2266(SEXP, SEXP);
@@ -5388,43 +5707,43 @@ SEXP rosetta_r_2274(SEXP, SEXP);
 SEXP rosetta_r_2275(SEXP, SEXP);
 SEXP rosetta_r_2276(SEXP, SEXP);
 SEXP rosetta_r_2277(SEXP, SEXP);
-SEXP rosetta_r_2278(SEXP, SEXP);
-SEXP rosetta_r_2279(SEXP, SEXP);
+SEXP rosetta_r_2278(SEXP);
+SEXP rosetta_r_2279(SEXP);
 SEXP rosetta_r_2280(SEXP, SEXP);
-SEXP rosetta_r_2281(SEXP, SEXP);
-SEXP rosetta_r_2282(SEXP);
-SEXP rosetta_r_2283(SEXP, SEXP);
+SEXP rosetta_r_2281(SEXP);
+SEXP rosetta_r_2282(SEXP, SEXP);
+SEXP rosetta_r_2283(SEXP);
 SEXP rosetta_r_2284(SEXP, SEXP);
-SEXP rosetta_r_2285(SEXP, SEXP);
+SEXP rosetta_r_2285(SEXP);
 SEXP rosetta_r_2286(SEXP, SEXP);
-SEXP rosetta_r_2287(SEXP, SEXP);
+SEXP rosetta_r_2287(SEXP);
 SEXP rosetta_r_2288(SEXP, SEXP);
-SEXP rosetta_r_2289(SEXP, SEXP);
+SEXP rosetta_r_2289(SEXP);
 SEXP rosetta_r_2290(SEXP, SEXP);
-SEXP rosetta_r_2291(SEXP, SEXP);
+SEXP rosetta_r_2291(SEXP);
 SEXP rosetta_r_2292(SEXP, SEXP);
-SEXP rosetta_r_2293(SEXP, SEXP);
-SEXP rosetta_r_2294(SEXP, SEXP);
+SEXP rosetta_r_2293(SEXP);
+SEXP rosetta_r_2294(SEXP);
 SEXP rosetta_r_2295(SEXP, SEXP);
-SEXP rosetta_r_2296(SEXP, SEXP);
+SEXP rosetta_r_2296(SEXP);
 SEXP rosetta_r_2297(SEXP, SEXP);
-SEXP rosetta_r_2298(SEXP, SEXP);
+SEXP rosetta_r_2298(SEXP);
 SEXP rosetta_r_2299(SEXP, SEXP);
-SEXP rosetta_r_2300(SEXP, SEXP);
-SEXP rosetta_r_2301(SEXP);
-SEXP rosetta_r_2302(SEXP, SEXP);
+SEXP rosetta_r_2300(SEXP);
+SEXP rosetta_r_2301(SEXP, SEXP);
+SEXP rosetta_r_2302(SEXP);
 SEXP rosetta_r_2303(SEXP, SEXP);
-SEXP rosetta_r_2304(SEXP, SEXP);
+SEXP rosetta_r_2304(SEXP);
 SEXP rosetta_r_2305(SEXP, SEXP);
-SEXP rosetta_r_2306(SEXP, SEXP);
+SEXP rosetta_r_2306(SEXP);
 SEXP rosetta_r_2307(SEXP, SEXP);
-SEXP rosetta_r_2308(SEXP, SEXP);
+SEXP rosetta_r_2308(SEXP);
 SEXP rosetta_r_2309(SEXP, SEXP);
-SEXP rosetta_r_2310(SEXP, SEXP);
+SEXP rosetta_r_2310(SEXP);
 SEXP rosetta_r_2311(SEXP, SEXP);
 SEXP rosetta_r_2312(SEXP);
 SEXP rosetta_r_2313(SEXP, SEXP);
-SEXP rosetta_r_2314(SEXP, SEXP);
+SEXP rosetta_r_2314(SEXP);
 SEXP rosetta_r_2315(SEXP, SEXP);
 SEXP rosetta_r_2316(SEXP, SEXP);
 SEXP rosetta_r_2317(SEXP, SEXP);
@@ -5438,30 +5757,30 @@ SEXP rosetta_r_2324(SEXP, SEXP);
 SEXP rosetta_r_2325(SEXP, SEXP);
 SEXP rosetta_r_2326(SEXP, SEXP);
 SEXP rosetta_r_2327(SEXP, SEXP);
-SEXP rosetta_r_2328(SEXP);
-SEXP rosetta_r_2329(SEXP, SEXP);
-SEXP rosetta_r_2330(SEXP, SEXP);
+SEXP rosetta_r_2328(SEXP, SEXP);
+SEXP rosetta_r_2329(SEXP);
+SEXP rosetta_r_2330(SEXP);
 SEXP rosetta_r_2331(SEXP, SEXP);
-SEXP rosetta_r_2332(SEXP, SEXP);
+SEXP rosetta_r_2332(SEXP);
 SEXP rosetta_r_2333(SEXP, SEXP);
-SEXP rosetta_r_2334(SEXP, SEXP);
+SEXP rosetta_r_2334(SEXP);
 SEXP rosetta_r_2335(SEXP, SEXP);
-SEXP rosetta_r_2336(SEXP, SEXP);
-SEXP rosetta_r_2337(SEXP, SEXP);
+SEXP rosetta_r_2336(SEXP);
+SEXP rosetta_r_2337(SEXP);
 SEXP rosetta_r_2338(SEXP, SEXP);
-SEXP rosetta_r_2339(SEXP, SEXP);
+SEXP rosetta_r_2339(SEXP);
 SEXP rosetta_r_2340(SEXP, SEXP);
-SEXP rosetta_r_2341(SEXP, SEXP);
+SEXP rosetta_r_2341(SEXP);
 SEXP rosetta_r_2342(SEXP, SEXP);
 SEXP rosetta_r_2343(SEXP);
-SEXP rosetta_r_2344(SEXP, SEXP);
+SEXP rosetta_r_2344(SEXP);
 SEXP rosetta_r_2345(SEXP, SEXP);
-SEXP rosetta_r_2346(SEXP, SEXP);
+SEXP rosetta_r_2346(SEXP);
 SEXP rosetta_r_2347(SEXP, SEXP);
-SEXP rosetta_r_2348(SEXP, SEXP);
+SEXP rosetta_r_2348(SEXP);
 SEXP rosetta_r_2349(SEXP, SEXP);
-SEXP rosetta_r_2350(SEXP, SEXP);
-SEXP rosetta_r_2351(SEXP, SEXP);
+SEXP rosetta_r_2350(SEXP);
+SEXP rosetta_r_2351(SEXP);
 SEXP rosetta_r_2352(SEXP, SEXP);
 SEXP rosetta_r_2353(SEXP, SEXP);
 SEXP rosetta_r_2354(SEXP, SEXP);
@@ -5469,9 +5788,9 @@ SEXP rosetta_r_2355(SEXP, SEXP);
 SEXP rosetta_r_2356(SEXP, SEXP);
 SEXP rosetta_r_2357(SEXP, SEXP);
 SEXP rosetta_r_2358(SEXP, SEXP);
-SEXP rosetta_r_2359(SEXP);
+SEXP rosetta_r_2359(SEXP, SEXP);
 SEXP rosetta_r_2360(SEXP, SEXP);
-SEXP rosetta_r_2361(SEXP, SEXP);
+SEXP rosetta_r_2361(SEXP);
 SEXP rosetta_r_2362(SEXP, SEXP);
 SEXP rosetta_r_2363(SEXP, SEXP);
 SEXP rosetta_r_2364(SEXP, SEXP);
@@ -5485,8 +5804,8 @@ SEXP rosetta_r_2371(SEXP, SEXP);
 SEXP rosetta_r_2372(SEXP, SEXP);
 SEXP rosetta_r_2373(SEXP, SEXP);
 SEXP rosetta_r_2374(SEXP, SEXP);
-SEXP rosetta_r_2375(SEXP);
-SEXP rosetta_r_2376(SEXP, SEXP);
+SEXP rosetta_r_2375(SEXP, SEXP);
+SEXP rosetta_r_2376(SEXP);
 SEXP rosetta_r_2377(SEXP, SEXP);
 SEXP rosetta_r_2378(SEXP, SEXP);
 SEXP rosetta_r_2379(SEXP, SEXP);
@@ -5509,7 +5828,7 @@ SEXP rosetta_r_2395(SEXP, SEXP);
 SEXP rosetta_r_2396(SEXP, SEXP);
 SEXP rosetta_r_2397(SEXP, SEXP);
 SEXP rosetta_r_2398(SEXP, SEXP);
-SEXP rosetta_r_2399(SEXP);
+SEXP rosetta_r_2399(SEXP, SEXP);
 SEXP rosetta_r_2400(SEXP, SEXP);
 SEXP rosetta_r_2401(SEXP, SEXP);
 SEXP rosetta_r_2402(SEXP, SEXP);
@@ -5531,7 +5850,7 @@ SEXP rosetta_r_2417(SEXP, SEXP);
 SEXP rosetta_r_2418(SEXP, SEXP);
 SEXP rosetta_r_2419(SEXP, SEXP);
 SEXP rosetta_r_2420(SEXP, SEXP);
-SEXP rosetta_r_2421(SEXP);
+SEXP rosetta_r_2421(SEXP, SEXP);
 SEXP rosetta_r_2422(SEXP, SEXP);
 SEXP rosetta_r_2423(SEXP, SEXP);
 SEXP rosetta_r_2424(SEXP, SEXP);
@@ -5545,7 +5864,7 @@ SEXP rosetta_r_2431(SEXP, SEXP);
 SEXP rosetta_r_2432(SEXP, SEXP);
 SEXP rosetta_r_2433(SEXP, SEXP);
 SEXP rosetta_r_2434(SEXP, SEXP);
-SEXP rosetta_r_2435(SEXP, SEXP);
+SEXP rosetta_r_2435(SEXP);
 SEXP rosetta_r_2436(SEXP, SEXP);
 SEXP rosetta_r_2437(SEXP, SEXP);
 SEXP rosetta_r_2438(SEXP, SEXP);
@@ -5553,8 +5872,8 @@ SEXP rosetta_r_2439(SEXP, SEXP);
 SEXP rosetta_r_2440(SEXP, SEXP);
 SEXP rosetta_r_2441(SEXP, SEXP);
 SEXP rosetta_r_2442(SEXP, SEXP);
-SEXP rosetta_r_2443(SEXP, SEXP);
-SEXP rosetta_r_2444(SEXP);
+SEXP rosetta_r_2443(SEXP);
+SEXP rosetta_r_2444(SEXP, SEXP);
 SEXP rosetta_r_2445(SEXP, SEXP);
 SEXP rosetta_r_2446(SEXP, SEXP);
 SEXP rosetta_r_2447(SEXP, SEXP);
@@ -5567,7 +5886,7 @@ SEXP rosetta_r_2453(SEXP, SEXP);
 SEXP rosetta_r_2454(SEXP, SEXP);
 SEXP rosetta_r_2455(SEXP, SEXP);
 SEXP rosetta_r_2456(SEXP, SEXP);
-SEXP rosetta_r_2457(SEXP);
+SEXP rosetta_r_2457(SEXP, SEXP);
 SEXP rosetta_r_2458(SEXP, SEXP);
 SEXP rosetta_r_2459(SEXP, SEXP);
 SEXP rosetta_r_2460(SEXP, SEXP);
@@ -5579,7 +5898,7 @@ SEXP rosetta_r_2465(SEXP, SEXP);
 SEXP rosetta_r_2466(SEXP, SEXP);
 SEXP rosetta_r_2467(SEXP, SEXP);
 SEXP rosetta_r_2468(SEXP, SEXP);
-SEXP rosetta_r_2469(SEXP);
+SEXP rosetta_r_2469(SEXP, SEXP);
 SEXP rosetta_r_2470(SEXP, SEXP);
 SEXP rosetta_r_2471(SEXP, SEXP);
 SEXP rosetta_r_2472(SEXP, SEXP);
@@ -5590,14 +5909,14 @@ SEXP rosetta_r_2476(SEXP, SEXP);
 SEXP rosetta_r_2477(SEXP, SEXP);
 SEXP rosetta_r_2478(SEXP, SEXP);
 SEXP rosetta_r_2479(SEXP, SEXP);
-SEXP rosetta_r_2480(SEXP);
+SEXP rosetta_r_2480(SEXP, SEXP);
 SEXP rosetta_r_2481(SEXP, SEXP);
 SEXP rosetta_r_2482(SEXP, SEXP);
 SEXP rosetta_r_2483(SEXP, SEXP);
 SEXP rosetta_r_2484(SEXP, SEXP);
 SEXP rosetta_r_2485(SEXP, SEXP);
 SEXP rosetta_r_2486(SEXP, SEXP);
-SEXP rosetta_r_2487(SEXP, SEXP);
+SEXP rosetta_r_2487(SEXP);
 SEXP rosetta_r_2488(SEXP, SEXP);
 SEXP rosetta_r_2489(SEXP, SEXP);
 SEXP rosetta_r_2490(SEXP, SEXP);
@@ -5607,7 +5926,7 @@ SEXP rosetta_r_2493(SEXP, SEXP);
 SEXP rosetta_r_2494(SEXP, SEXP);
 SEXP rosetta_r_2495(SEXP, SEXP);
 SEXP rosetta_r_2496(SEXP, SEXP);
-SEXP rosetta_r_2497(SEXP);
+SEXP rosetta_r_2497(SEXP, SEXP);
 SEXP rosetta_r_2498(SEXP, SEXP);
 SEXP rosetta_r_2499(SEXP, SEXP);
 SEXP rosetta_r_2500(SEXP, SEXP);
@@ -5620,11 +5939,11 @@ SEXP rosetta_r_2506(SEXP, SEXP);
 SEXP rosetta_r_2507(SEXP, SEXP);
 SEXP rosetta_r_2508(SEXP, SEXP);
 SEXP rosetta_r_2509(SEXP, SEXP);
-SEXP rosetta_r_2510(SEXP);
+SEXP rosetta_r_2510(SEXP, SEXP);
 SEXP rosetta_r_2511(SEXP, SEXP);
 SEXP rosetta_r_2512(SEXP, SEXP);
 SEXP rosetta_r_2513(SEXP, SEXP);
-SEXP rosetta_r_2514(SEXP, SEXP);
+SEXP rosetta_r_2514(SEXP);
 SEXP rosetta_r_2515(SEXP, SEXP);
 SEXP rosetta_r_2516(SEXP, SEXP);
 SEXP rosetta_r_2517(SEXP, SEXP);
@@ -5633,7 +5952,7 @@ SEXP rosetta_r_2519(SEXP, SEXP);
 SEXP rosetta_r_2520(SEXP, SEXP);
 SEXP rosetta_r_2521(SEXP, SEXP);
 SEXP rosetta_r_2522(SEXP, SEXP);
-SEXP rosetta_r_2523(SEXP);
+SEXP rosetta_r_2523(SEXP, SEXP);
 SEXP rosetta_r_2524(SEXP, SEXP);
 SEXP rosetta_r_2525(SEXP, SEXP);
 SEXP rosetta_r_2526(SEXP, SEXP);
@@ -5645,7 +5964,7 @@ SEXP rosetta_r_2531(SEXP, SEXP);
 SEXP rosetta_r_2532(SEXP, SEXP);
 SEXP rosetta_r_2533(SEXP, SEXP);
 SEXP rosetta_r_2534(SEXP, SEXP);
-SEXP rosetta_r_2535(SEXP);
+SEXP rosetta_r_2535(SEXP, SEXP);
 SEXP rosetta_r_2536(SEXP, SEXP);
 SEXP rosetta_r_2537(SEXP, SEXP);
 SEXP rosetta_r_2538(SEXP, SEXP);
@@ -5657,8 +5976,8 @@ SEXP rosetta_r_2543(SEXP, SEXP);
 SEXP rosetta_r_2544(SEXP, SEXP);
 SEXP rosetta_r_2545(SEXP, SEXP);
 SEXP rosetta_r_2546(SEXP, SEXP);
-SEXP rosetta_r_2547(SEXP);
-SEXP rosetta_r_2548(SEXP, SEXP);
+SEXP rosetta_r_2547(SEXP, SEXP);
+SEXP rosetta_r_2548(SEXP);
 SEXP rosetta_r_2549(SEXP, SEXP);
 SEXP rosetta_r_2550(SEXP, SEXP);
 SEXP rosetta_r_2551(SEXP, SEXP);
@@ -5669,7 +5988,7 @@ SEXP rosetta_r_2555(SEXP, SEXP);
 SEXP rosetta_r_2556(SEXP, SEXP);
 SEXP rosetta_r_2557(SEXP, SEXP);
 SEXP rosetta_r_2558(SEXP, SEXP);
-SEXP rosetta_r_2559(SEXP);
+SEXP rosetta_r_2559(SEXP, SEXP);
 SEXP rosetta_r_2560(SEXP, SEXP);
 SEXP rosetta_r_2561(SEXP, SEXP);
 SEXP rosetta_r_2562(SEXP, SEXP);
@@ -5681,19 +6000,19 @@ SEXP rosetta_r_2567(SEXP, SEXP);
 SEXP rosetta_r_2568(SEXP, SEXP);
 SEXP rosetta_r_2569(SEXP, SEXP);
 SEXP rosetta_r_2570(SEXP, SEXP);
-SEXP rosetta_r_2571(SEXP);
+SEXP rosetta_r_2571(SEXP, SEXP);
 SEXP rosetta_r_2572(SEXP, SEXP);
 SEXP rosetta_r_2573(SEXP, SEXP);
 SEXP rosetta_r_2574(SEXP, SEXP);
 SEXP rosetta_r_2575(SEXP, SEXP);
 SEXP rosetta_r_2576(SEXP, SEXP);
-SEXP rosetta_r_2577(SEXP, SEXP);
+SEXP rosetta_r_2577(SEXP);
 SEXP rosetta_r_2578(SEXP, SEXP);
 SEXP rosetta_r_2579(SEXP, SEXP);
 SEXP rosetta_r_2580(SEXP, SEXP);
 SEXP rosetta_r_2581(SEXP, SEXP);
 SEXP rosetta_r_2582(SEXP, SEXP);
-SEXP rosetta_r_2583(SEXP);
+SEXP rosetta_r_2583(SEXP, SEXP);
 SEXP rosetta_r_2584(SEXP, SEXP);
 SEXP rosetta_r_2585(SEXP, SEXP);
 SEXP rosetta_r_2586(SEXP, SEXP);
@@ -5706,20 +6025,20 @@ SEXP rosetta_r_2592(SEXP, SEXP);
 SEXP rosetta_r_2593(SEXP, SEXP);
 SEXP rosetta_r_2594(SEXP, SEXP);
 SEXP rosetta_r_2595(SEXP, SEXP);
-SEXP rosetta_r_2596(SEXP);
+SEXP rosetta_r_2596(SEXP, SEXP);
 SEXP rosetta_r_2597(SEXP, SEXP);
 SEXP rosetta_r_2598(SEXP, SEXP);
 SEXP rosetta_r_2599(SEXP, SEXP);
 SEXP rosetta_r_2600(SEXP, SEXP);
 SEXP rosetta_r_2601(SEXP, SEXP);
 SEXP rosetta_r_2602(SEXP, SEXP);
-SEXP rosetta_r_2603(SEXP, SEXP);
+SEXP rosetta_r_2603(SEXP);
 SEXP rosetta_r_2604(SEXP, SEXP);
 SEXP rosetta_r_2605(SEXP, SEXP);
 SEXP rosetta_r_2606(SEXP, SEXP);
 SEXP rosetta_r_2607(SEXP, SEXP);
 SEXP rosetta_r_2608(SEXP, SEXP);
-SEXP rosetta_r_2609(SEXP);
+SEXP rosetta_r_2609(SEXP, SEXP);
 SEXP rosetta_r_2610(SEXP, SEXP);
 SEXP rosetta_r_2611(SEXP, SEXP);
 SEXP rosetta_r_2612(SEXP, SEXP);
@@ -5731,15 +6050,15 @@ SEXP rosetta_r_2617(SEXP, SEXP);
 SEXP rosetta_r_2618(SEXP, SEXP);
 SEXP rosetta_r_2619(SEXP, SEXP);
 SEXP rosetta_r_2620(SEXP, SEXP);
-SEXP rosetta_r_2621(SEXP);
-SEXP rosetta_r_2622(SEXP, SEXP);
+SEXP rosetta_r_2621(SEXP, SEXP);
+SEXP rosetta_r_2622(SEXP);
 SEXP rosetta_r_2623(SEXP, SEXP);
 SEXP rosetta_r_2624(SEXP, SEXP);
 SEXP rosetta_r_2625(SEXP, SEXP);
 SEXP rosetta_r_2626(SEXP, SEXP);
 SEXP rosetta_r_2627(SEXP, SEXP);
 SEXP rosetta_r_2628(SEXP, SEXP);
-SEXP rosetta_r_2629(SEXP);
+SEXP rosetta_r_2629(SEXP, SEXP);
 SEXP rosetta_r_2630(SEXP, SEXP);
 SEXP rosetta_r_2631(SEXP, SEXP);
 SEXP rosetta_r_2632(SEXP, SEXP);
@@ -5751,18 +6070,18 @@ SEXP rosetta_r_2637(SEXP, SEXP);
 SEXP rosetta_r_2638(SEXP, SEXP);
 SEXP rosetta_r_2639(SEXP, SEXP);
 SEXP rosetta_r_2640(SEXP, SEXP);
-SEXP rosetta_r_2641(SEXP, SEXP);
+SEXP rosetta_r_2641(SEXP);
 SEXP rosetta_r_2642(SEXP, SEXP);
 SEXP rosetta_r_2643(SEXP, SEXP);
 SEXP rosetta_r_2644(SEXP, SEXP);
-SEXP rosetta_r_2645(SEXP);
+SEXP rosetta_r_2645(SEXP, SEXP);
 SEXP rosetta_r_2646(SEXP, SEXP);
 SEXP rosetta_r_2647(SEXP, SEXP);
 SEXP rosetta_r_2648(SEXP, SEXP);
 SEXP rosetta_r_2649(SEXP, SEXP);
 SEXP rosetta_r_2650(SEXP, SEXP);
 SEXP rosetta_r_2651(SEXP, SEXP);
-SEXP rosetta_r_2652(SEXP, SEXP);
+SEXP rosetta_r_2652(SEXP);
 SEXP rosetta_r_2653(SEXP, SEXP);
 SEXP rosetta_r_2654(SEXP, SEXP);
 SEXP rosetta_r_2655(SEXP, SEXP);
@@ -5770,7 +6089,7 @@ SEXP rosetta_r_2656(SEXP, SEXP);
 SEXP rosetta_r_2657(SEXP, SEXP);
 SEXP rosetta_r_2658(SEXP, SEXP);
 SEXP rosetta_r_2659(SEXP, SEXP);
-SEXP rosetta_r_2660(SEXP);
+SEXP rosetta_r_2660(SEXP, SEXP);
 SEXP rosetta_r_2661(SEXP, SEXP);
 SEXP rosetta_r_2662(SEXP, SEXP);
 SEXP rosetta_r_2663(SEXP, SEXP);
@@ -5778,7 +6097,7 @@ SEXP rosetta_r_2664(SEXP, SEXP);
 SEXP rosetta_r_2665(SEXP, SEXP);
 SEXP rosetta_r_2666(SEXP, SEXP);
 SEXP rosetta_r_2667(SEXP, SEXP);
-SEXP rosetta_r_2668(SEXP, SEXP);
+SEXP rosetta_r_2668(SEXP);
 SEXP rosetta_r_2669(SEXP, SEXP);
 SEXP rosetta_r_2670(SEXP, SEXP);
 SEXP rosetta_r_2671(SEXP, SEXP);
@@ -5786,14 +6105,14 @@ SEXP rosetta_r_2672(SEXP, SEXP);
 SEXP rosetta_r_2673(SEXP, SEXP);
 SEXP rosetta_r_2674(SEXP, SEXP);
 SEXP rosetta_r_2675(SEXP, SEXP);
-SEXP rosetta_r_2676(SEXP);
+SEXP rosetta_r_2676(SEXP, SEXP);
 SEXP rosetta_r_2677(SEXP, SEXP);
 SEXP rosetta_r_2678(SEXP, SEXP);
 SEXP rosetta_r_2679(SEXP, SEXP);
 SEXP rosetta_r_2680(SEXP, SEXP);
 SEXP rosetta_r_2681(SEXP, SEXP);
 SEXP rosetta_r_2682(SEXP, SEXP);
-SEXP rosetta_r_2683(SEXP, SEXP);
+SEXP rosetta_r_2683(SEXP);
 SEXP rosetta_r_2684(SEXP, SEXP);
 SEXP rosetta_r_2685(SEXP, SEXP);
 SEXP rosetta_r_2686(SEXP, SEXP);
@@ -5801,7 +6120,7 @@ SEXP rosetta_r_2687(SEXP, SEXP);
 SEXP rosetta_r_2688(SEXP, SEXP);
 SEXP rosetta_r_2689(SEXP, SEXP);
 SEXP rosetta_r_2690(SEXP, SEXP);
-SEXP rosetta_r_2691(SEXP);
+SEXP rosetta_r_2691(SEXP, SEXP);
 SEXP rosetta_r_2692(SEXP, SEXP);
 SEXP rosetta_r_2693(SEXP, SEXP);
 SEXP rosetta_r_2694(SEXP, SEXP);
@@ -5809,7 +6128,7 @@ SEXP rosetta_r_2695(SEXP, SEXP);
 SEXP rosetta_r_2696(SEXP, SEXP);
 SEXP rosetta_r_2697(SEXP, SEXP);
 SEXP rosetta_r_2698(SEXP, SEXP);
-SEXP rosetta_r_2699(SEXP, SEXP);
+SEXP rosetta_r_2699(SEXP);
 SEXP rosetta_r_2700(SEXP, SEXP);
 SEXP rosetta_r_2701(SEXP, SEXP);
 SEXP rosetta_r_2702(SEXP, SEXP);
@@ -5818,14 +6137,14 @@ SEXP rosetta_r_2704(SEXP, SEXP);
 SEXP rosetta_r_2705(SEXP, SEXP);
 SEXP rosetta_r_2706(SEXP, SEXP);
 SEXP rosetta_r_2707(SEXP, SEXP);
-SEXP rosetta_r_2708(SEXP);
+SEXP rosetta_r_2708(SEXP, SEXP);
 SEXP rosetta_r_2709(SEXP, SEXP);
 SEXP rosetta_r_2710(SEXP, SEXP);
 SEXP rosetta_r_2711(SEXP, SEXP);
 SEXP rosetta_r_2712(SEXP, SEXP);
 SEXP rosetta_r_2713(SEXP, SEXP);
 SEXP rosetta_r_2714(SEXP, SEXP);
-SEXP rosetta_r_2715(SEXP, SEXP);
+SEXP rosetta_r_2715(SEXP);
 SEXP rosetta_r_2716(SEXP, SEXP);
 SEXP rosetta_r_2717(SEXP, SEXP);
 SEXP rosetta_r_2718(SEXP, SEXP);
@@ -5840,7 +6159,7 @@ SEXP rosetta_r_2726(SEXP, SEXP);
 SEXP rosetta_r_2727(SEXP, SEXP);
 SEXP rosetta_r_2728(SEXP, SEXP);
 SEXP rosetta_r_2729(SEXP, SEXP);
-SEXP rosetta_r_2730(SEXP);
+SEXP rosetta_r_2730(SEXP, SEXP);
 SEXP rosetta_r_2731(SEXP, SEXP);
 SEXP rosetta_r_2732(SEXP, SEXP);
 SEXP rosetta_r_2733(SEXP, SEXP);
@@ -5849,11 +6168,11 @@ SEXP rosetta_r_2735(SEXP, SEXP);
 SEXP rosetta_r_2736(SEXP, SEXP);
 SEXP rosetta_r_2737(SEXP, SEXP);
 SEXP rosetta_r_2738(SEXP, SEXP);
-SEXP rosetta_r_2739(SEXP, SEXP);
+SEXP rosetta_r_2739(SEXP);
 SEXP rosetta_r_2740(SEXP, SEXP);
 SEXP rosetta_r_2741(SEXP, SEXP);
 SEXP rosetta_r_2742(SEXP, SEXP);
-SEXP rosetta_r_2743(SEXP);
+SEXP rosetta_r_2743(SEXP, SEXP);
 SEXP rosetta_r_2744(SEXP, SEXP);
 SEXP rosetta_r_2745(SEXP, SEXP);
 SEXP rosetta_r_2746(SEXP, SEXP);
@@ -5871,7 +6190,7 @@ SEXP rosetta_r_2757(SEXP, SEXP);
 SEXP rosetta_r_2758(SEXP, SEXP);
 SEXP rosetta_r_2759(SEXP, SEXP);
 SEXP rosetta_r_2760(SEXP, SEXP);
-SEXP rosetta_r_2761(SEXP, SEXP);
+SEXP rosetta_r_2761(SEXP);
 SEXP rosetta_r_2762(SEXP, SEXP);
 SEXP rosetta_r_2763(SEXP, SEXP);
 SEXP rosetta_r_2764(SEXP, SEXP);
@@ -5886,7 +6205,7 @@ SEXP rosetta_r_2772(SEXP, SEXP);
 SEXP rosetta_r_2773(SEXP, SEXP);
 SEXP rosetta_r_2774(SEXP, SEXP);
 SEXP rosetta_r_2775(SEXP, SEXP);
-SEXP rosetta_r_2776(SEXP);
+SEXP rosetta_r_2776(SEXP, SEXP);
 SEXP rosetta_r_2777(SEXP, SEXP);
 SEXP rosetta_r_2778(SEXP, SEXP);
 SEXP rosetta_r_2779(SEXP, SEXP);
@@ -5894,7 +6213,7 @@ SEXP rosetta_r_2780(SEXP, SEXP);
 SEXP rosetta_r_2781(SEXP, SEXP);
 SEXP rosetta_r_2782(SEXP, SEXP);
 SEXP rosetta_r_2783(SEXP, SEXP);
-SEXP rosetta_r_2784(SEXP, SEXP);
+SEXP rosetta_r_2784(SEXP);
 SEXP rosetta_r_2785(SEXP, SEXP);
 SEXP rosetta_r_2786(SEXP, SEXP);
 SEXP rosetta_r_2787(SEXP, SEXP);
@@ -5907,7 +6226,7 @@ SEXP rosetta_r_2793(SEXP, SEXP);
 SEXP rosetta_r_2794(SEXP, SEXP);
 SEXP rosetta_r_2795(SEXP, SEXP);
 SEXP rosetta_r_2796(SEXP, SEXP);
-SEXP rosetta_r_2797(SEXP, SEXP);
+SEXP rosetta_r_2797(SEXP);
 SEXP rosetta_r_2798(SEXP, SEXP);
 SEXP rosetta_r_2799(SEXP, SEXP);
 SEXP rosetta_r_2800(SEXP, SEXP);
@@ -5919,7 +6238,7 @@ SEXP rosetta_r_2805(SEXP, SEXP);
 SEXP rosetta_r_2806(SEXP, SEXP);
 SEXP rosetta_r_2807(SEXP, SEXP);
 SEXP rosetta_r_2808(SEXP, SEXP);
-SEXP rosetta_r_2809(SEXP, SEXP);
+SEXP rosetta_r_2809(SEXP);
 SEXP rosetta_r_2810(SEXP, SEXP);
 SEXP rosetta_r_2811(SEXP, SEXP);
 SEXP rosetta_r_2812(SEXP, SEXP);
@@ -5930,7 +6249,7 @@ SEXP rosetta_r_2816(SEXP, SEXP);
 SEXP rosetta_r_2817(SEXP, SEXP);
 SEXP rosetta_r_2818(SEXP, SEXP);
 SEXP rosetta_r_2819(SEXP, SEXP);
-SEXP rosetta_r_2820(SEXP, SEXP);
+SEXP rosetta_r_2820(SEXP);
 SEXP rosetta_r_2821(SEXP, SEXP);
 SEXP rosetta_r_2822(SEXP, SEXP);
 SEXP rosetta_r_2823(SEXP, SEXP);
@@ -5947,7 +6266,7 @@ SEXP rosetta_r_2833(SEXP, SEXP);
 SEXP rosetta_r_2834(SEXP, SEXP);
 SEXP rosetta_r_2835(SEXP, SEXP);
 SEXP rosetta_r_2836(SEXP, SEXP);
-SEXP rosetta_r_2837(SEXP, SEXP);
+SEXP rosetta_r_2837(SEXP);
 SEXP rosetta_r_2838(SEXP, SEXP);
 SEXP rosetta_r_2839(SEXP, SEXP);
 SEXP rosetta_r_2840(SEXP, SEXP);
@@ -5960,20 +6279,20 @@ SEXP rosetta_r_2846(SEXP, SEXP);
 SEXP rosetta_r_2847(SEXP, SEXP);
 SEXP rosetta_r_2848(SEXP, SEXP);
 SEXP rosetta_r_2849(SEXP, SEXP);
-SEXP rosetta_r_2850(SEXP, SEXP);
+SEXP rosetta_r_2850(SEXP);
 SEXP rosetta_r_2851(SEXP, SEXP);
 SEXP rosetta_r_2852(SEXP, SEXP);
 SEXP rosetta_r_2853(SEXP, SEXP);
 SEXP rosetta_r_2854(SEXP, SEXP);
 SEXP rosetta_r_2855(SEXP, SEXP);
-SEXP rosetta_r_2856(SEXP);
+SEXP rosetta_r_2856(SEXP, SEXP);
 SEXP rosetta_r_2857(SEXP, SEXP);
 SEXP rosetta_r_2858(SEXP, SEXP);
 SEXP rosetta_r_2859(SEXP, SEXP);
 SEXP rosetta_r_2860(SEXP, SEXP);
 SEXP rosetta_r_2861(SEXP, SEXP);
 SEXP rosetta_r_2862(SEXP, SEXP);
-SEXP rosetta_r_2863(SEXP, SEXP);
+SEXP rosetta_r_2863(SEXP);
 SEXP rosetta_r_2864(SEXP, SEXP);
 SEXP rosetta_r_2865(SEXP, SEXP);
 SEXP rosetta_r_2866(SEXP, SEXP);
@@ -5985,9 +6304,9 @@ SEXP rosetta_r_2871(SEXP, SEXP);
 SEXP rosetta_r_2872(SEXP, SEXP);
 SEXP rosetta_r_2873(SEXP, SEXP);
 SEXP rosetta_r_2874(SEXP, SEXP);
-SEXP rosetta_r_2875(SEXP, SEXP);
+SEXP rosetta_r_2875(SEXP);
 SEXP rosetta_r_2876(SEXP, SEXP);
-SEXP rosetta_r_2877(SEXP);
+SEXP rosetta_r_2877(SEXP, SEXP);
 SEXP rosetta_r_2878(SEXP, SEXP);
 SEXP rosetta_r_2879(SEXP, SEXP);
 SEXP rosetta_r_2880(SEXP, SEXP);
@@ -5997,7 +6316,7 @@ SEXP rosetta_r_2883(SEXP, SEXP);
 SEXP rosetta_r_2884(SEXP, SEXP);
 SEXP rosetta_r_2885(SEXP, SEXP);
 SEXP rosetta_r_2886(SEXP, SEXP);
-SEXP rosetta_r_2887(SEXP, SEXP);
+SEXP rosetta_r_2887(SEXP);
 SEXP rosetta_r_2888(SEXP, SEXP);
 SEXP rosetta_r_2889(SEXP, SEXP);
 SEXP rosetta_r_2890(SEXP, SEXP);
@@ -6021,7 +6340,7 @@ SEXP rosetta_r_2907(SEXP, SEXP);
 SEXP rosetta_r_2908(SEXP, SEXP);
 SEXP rosetta_r_2909(SEXP, SEXP);
 SEXP rosetta_r_2910(SEXP, SEXP);
-SEXP rosetta_r_2911(SEXP, SEXP);
+SEXP rosetta_r_2911(SEXP);
 SEXP rosetta_r_2912(SEXP, SEXP);
 SEXP rosetta_r_2913(SEXP, SEXP);
 SEXP rosetta_r_2914(SEXP, SEXP);
@@ -6030,11 +6349,11 @@ SEXP rosetta_r_2916(SEXP, SEXP);
 SEXP rosetta_r_2917(SEXP, SEXP);
 SEXP rosetta_r_2918(SEXP, SEXP);
 SEXP rosetta_r_2919(SEXP, SEXP);
-SEXP rosetta_r_2920(SEXP);
+SEXP rosetta_r_2920(SEXP, SEXP);
 SEXP rosetta_r_2921(SEXP, SEXP);
 SEXP rosetta_r_2922(SEXP, SEXP);
-SEXP rosetta_r_2923(SEXP, SEXP);
-SEXP rosetta_r_2924(SEXP);
+SEXP rosetta_r_2923(SEXP);
+SEXP rosetta_r_2924(SEXP, SEXP);
 SEXP rosetta_r_2925(SEXP, SEXP);
 SEXP rosetta_r_2926(SEXP, SEXP);
 SEXP rosetta_r_2927(SEXP, SEXP);
@@ -6045,8 +6364,8 @@ SEXP rosetta_r_2931(SEXP, SEXP);
 SEXP rosetta_r_2932(SEXP, SEXP);
 SEXP rosetta_r_2933(SEXP, SEXP);
 SEXP rosetta_r_2934(SEXP, SEXP);
-SEXP rosetta_r_2935(SEXP);
-SEXP rosetta_r_2936(SEXP, SEXP);
+SEXP rosetta_r_2935(SEXP, SEXP);
+SEXP rosetta_r_2936(SEXP);
 SEXP rosetta_r_2937(SEXP, SEXP);
 SEXP rosetta_r_2938(SEXP, SEXP);
 SEXP rosetta_r_2939(SEXP, SEXP);
@@ -6059,7 +6378,7 @@ SEXP rosetta_r_2945(SEXP, SEXP);
 SEXP rosetta_r_2946(SEXP, SEXP);
 SEXP rosetta_r_2947(SEXP, SEXP);
 SEXP rosetta_r_2948(SEXP, SEXP);
-SEXP rosetta_r_2949(SEXP, SEXP);
+SEXP rosetta_r_2949(SEXP);
 SEXP rosetta_r_2950(SEXP, SEXP);
 SEXP rosetta_r_2951(SEXP, SEXP);
 SEXP rosetta_r_2952(SEXP, SEXP);
@@ -6071,7 +6390,7 @@ SEXP rosetta_r_2957(SEXP, SEXP);
 SEXP rosetta_r_2958(SEXP, SEXP);
 SEXP rosetta_r_2959(SEXP, SEXP);
 SEXP rosetta_r_2960(SEXP, SEXP);
-SEXP rosetta_r_2961(SEXP, SEXP);
+SEXP rosetta_r_2961(SEXP);
 SEXP rosetta_r_2962(SEXP, SEXP);
 SEXP rosetta_r_2963(SEXP, SEXP);
 SEXP rosetta_r_2964(SEXP, SEXP);
@@ -6079,23 +6398,23 @@ SEXP rosetta_r_2965(SEXP, SEXP);
 SEXP rosetta_r_2966(SEXP, SEXP);
 SEXP rosetta_r_2967(SEXP, SEXP);
 SEXP rosetta_r_2968(SEXP, SEXP);
-SEXP rosetta_r_2969(SEXP, SEXP);
+SEXP rosetta_r_2969(SEXP);
 SEXP rosetta_r_2970(SEXP, SEXP);
-SEXP rosetta_r_2971(SEXP);
-SEXP rosetta_r_2972(SEXP);
+SEXP rosetta_r_2971(SEXP, SEXP);
+SEXP rosetta_r_2972(SEXP, SEXP);
 SEXP rosetta_r_2973(SEXP, SEXP);
-SEXP rosetta_r_2974(SEXP);
+SEXP rosetta_r_2974(SEXP, SEXP);
 SEXP rosetta_r_2975(SEXP, SEXP);
-SEXP rosetta_r_2976(SEXP);
+SEXP rosetta_r_2976(SEXP, SEXP);
 SEXP rosetta_r_2977(SEXP, SEXP);
-SEXP rosetta_r_2978(SEXP);
+SEXP rosetta_r_2978(SEXP, SEXP);
 SEXP rosetta_r_2979(SEXP, SEXP);
-SEXP rosetta_r_2980(SEXP);
+SEXP rosetta_r_2980(SEXP, SEXP);
 SEXP rosetta_r_2981(SEXP, SEXP);
-SEXP rosetta_r_2982(SEXP);
+SEXP rosetta_r_2982(SEXP, SEXP);
 SEXP rosetta_r_2983(SEXP, SEXP);
-SEXP rosetta_r_2984(SEXP);
-SEXP rosetta_r_2985(SEXP, SEXP);
+SEXP rosetta_r_2984(SEXP, SEXP);
+SEXP rosetta_r_2985(SEXP);
 SEXP rosetta_r_2986(SEXP, SEXP);
 SEXP rosetta_r_2987(SEXP, SEXP);
 SEXP rosetta_r_2988(SEXP, SEXP);
@@ -6108,9 +6427,9 @@ SEXP rosetta_r_2994(SEXP, SEXP);
 SEXP rosetta_r_2995(SEXP, SEXP);
 SEXP rosetta_r_2996(SEXP, SEXP);
 SEXP rosetta_r_2997(SEXP, SEXP);
-SEXP rosetta_r_2998(SEXP);
+SEXP rosetta_r_2998(SEXP, SEXP);
 SEXP rosetta_r_2999(SEXP, SEXP);
-SEXP rosetta_r_3000(SEXP, SEXP);
+SEXP rosetta_r_3000(SEXP);
 SEXP rosetta_r_3001(SEXP, SEXP);
 SEXP rosetta_r_3002(SEXP, SEXP);
 SEXP rosetta_r_3003(SEXP, SEXP);
@@ -6126,22 +6445,22 @@ SEXP rosetta_r_3012(SEXP, SEXP);
 SEXP rosetta_r_3013(SEXP, SEXP);
 SEXP rosetta_r_3014(SEXP, SEXP);
 SEXP rosetta_r_3015(SEXP, SEXP);
-SEXP rosetta_r_3016(SEXP, SEXP);
+SEXP rosetta_r_3016(SEXP);
 SEXP rosetta_r_3017(SEXP, SEXP);
 SEXP rosetta_r_3018(SEXP, SEXP);
-SEXP rosetta_r_3019(SEXP);
-SEXP rosetta_r_3020(SEXP);
+SEXP rosetta_r_3019(SEXP, SEXP);
+SEXP rosetta_r_3020(SEXP, SEXP);
 SEXP rosetta_r_3021(SEXP, SEXP);
-SEXP rosetta_r_3022(SEXP);
+SEXP rosetta_r_3022(SEXP, SEXP);
 SEXP rosetta_r_3023(SEXP, SEXP);
-SEXP rosetta_r_3024(SEXP);
+SEXP rosetta_r_3024(SEXP, SEXP);
 SEXP rosetta_r_3025(SEXP, SEXP);
 SEXP rosetta_r_3026(SEXP, SEXP);
 SEXP rosetta_r_3027(SEXP, SEXP);
 SEXP rosetta_r_3028(SEXP, SEXP);
 SEXP rosetta_r_3029(SEXP, SEXP);
 SEXP rosetta_r_3030(SEXP, SEXP);
-SEXP rosetta_r_3031(SEXP, SEXP);
+SEXP rosetta_r_3031(SEXP);
 SEXP rosetta_r_3032(SEXP, SEXP);
 SEXP rosetta_r_3033(SEXP, SEXP);
 SEXP rosetta_r_3034(SEXP, SEXP);
@@ -6156,9 +6475,9 @@ SEXP rosetta_r_3042(SEXP, SEXP);
 SEXP rosetta_r_3043(SEXP, SEXP);
 SEXP rosetta_r_3044(SEXP, SEXP);
 SEXP rosetta_r_3045(SEXP, SEXP);
-SEXP rosetta_r_3046(SEXP);
+SEXP rosetta_r_3046(SEXP, SEXP);
 SEXP rosetta_r_3047(SEXP, SEXP);
-SEXP rosetta_r_3048(SEXP, SEXP);
+SEXP rosetta_r_3048(SEXP);
 SEXP rosetta_r_3049(SEXP, SEXP);
 SEXP rosetta_r_3050(SEXP, SEXP);
 SEXP rosetta_r_3051(SEXP, SEXP);
@@ -6180,20 +6499,20 @@ SEXP rosetta_r_3066(SEXP, SEXP);
 SEXP rosetta_r_3067(SEXP, SEXP);
 SEXP rosetta_r_3068(SEXP, SEXP);
 SEXP rosetta_r_3069(SEXP, SEXP);
-SEXP rosetta_r_3070(SEXP, SEXP);
+SEXP rosetta_r_3070(SEXP);
 SEXP rosetta_r_3071(SEXP, SEXP);
 SEXP rosetta_r_3072(SEXP, SEXP);
 SEXP rosetta_r_3073(SEXP, SEXP);
 SEXP rosetta_r_3074(SEXP, SEXP);
 SEXP rosetta_r_3075(SEXP, SEXP);
-SEXP rosetta_r_3076(SEXP);
+SEXP rosetta_r_3076(SEXP, SEXP);
 SEXP rosetta_r_3077(SEXP, SEXP);
 SEXP rosetta_r_3078(SEXP, SEXP);
 SEXP rosetta_r_3079(SEXP, SEXP);
 SEXP rosetta_r_3080(SEXP, SEXP);
 SEXP rosetta_r_3081(SEXP, SEXP);
 SEXP rosetta_r_3082(SEXP, SEXP);
-SEXP rosetta_r_3083(SEXP, SEXP);
+SEXP rosetta_r_3083(SEXP);
 SEXP rosetta_r_3084(SEXP, SEXP);
 SEXP rosetta_r_3085(SEXP, SEXP);
 SEXP rosetta_r_3086(SEXP, SEXP);
@@ -6226,7 +6545,7 @@ SEXP rosetta_r_3112(SEXP, SEXP);
 SEXP rosetta_r_3113(SEXP, SEXP);
 SEXP rosetta_r_3114(SEXP, SEXP);
 SEXP rosetta_r_3115(SEXP, SEXP);
-SEXP rosetta_r_3116(SEXP, SEXP);
+SEXP rosetta_r_3116(SEXP);
 SEXP rosetta_r_3117(SEXP, SEXP);
 SEXP rosetta_r_3118(SEXP, SEXP);
 SEXP rosetta_r_3119(SEXP, SEXP);
@@ -6241,7 +6560,7 @@ SEXP rosetta_r_3127(SEXP, SEXP);
 SEXP rosetta_r_3128(SEXP, SEXP);
 SEXP rosetta_r_3129(SEXP, SEXP);
 SEXP rosetta_r_3130(SEXP, SEXP);
-SEXP rosetta_r_3131(SEXP);
+SEXP rosetta_r_3131(SEXP, SEXP);
 SEXP rosetta_r_3132(SEXP, SEXP);
 SEXP rosetta_r_3133(SEXP, SEXP);
 SEXP rosetta_r_3134(SEXP, SEXP);
@@ -6268,20 +6587,20 @@ SEXP rosetta_r_3154(SEXP, SEXP);
 SEXP rosetta_r_3155(SEXP, SEXP);
 SEXP rosetta_r_3156(SEXP, SEXP);
 SEXP rosetta_r_3157(SEXP, SEXP);
-SEXP rosetta_r_3158(SEXP);
-SEXP rosetta_r_3159(SEXP);
+SEXP rosetta_r_3158(SEXP, SEXP);
+SEXP rosetta_r_3159(SEXP, SEXP);
 SEXP rosetta_r_3160(SEXP, SEXP);
-SEXP rosetta_r_3161(SEXP);
+SEXP rosetta_r_3161(SEXP, SEXP);
 SEXP rosetta_r_3162(SEXP, SEXP);
-SEXP rosetta_r_3163(SEXP);
+SEXP rosetta_r_3163(SEXP, SEXP);
 SEXP rosetta_r_3164(SEXP, SEXP);
-SEXP rosetta_r_3165(SEXP);
+SEXP rosetta_r_3165(SEXP, SEXP);
 SEXP rosetta_r_3166(SEXP, SEXP);
-SEXP rosetta_r_3167(SEXP);
+SEXP rosetta_r_3167(SEXP, SEXP);
 SEXP rosetta_r_3168(SEXP, SEXP);
-SEXP rosetta_r_3169(SEXP);
+SEXP rosetta_r_3169(SEXP, SEXP);
 SEXP rosetta_r_3170(SEXP, SEXP);
-SEXP rosetta_r_3171(SEXP);
+SEXP rosetta_r_3171(SEXP, SEXP);
 SEXP rosetta_r_3172(SEXP, SEXP);
 SEXP rosetta_r_3173(SEXP, SEXP);
 SEXP rosetta_r_3174(SEXP, SEXP);
@@ -6306,11 +6625,11 @@ SEXP rosetta_r_3192(SEXP, SEXP);
 SEXP rosetta_r_3193(SEXP, SEXP);
 SEXP rosetta_r_3194(SEXP, SEXP);
 SEXP rosetta_r_3195(SEXP, SEXP);
-SEXP rosetta_r_3196(SEXP, SEXP);
+SEXP rosetta_r_3196(SEXP);
 SEXP rosetta_r_3197(SEXP, SEXP);
 SEXP rosetta_r_3198(SEXP, SEXP);
 SEXP rosetta_r_3199(SEXP, SEXP);
-SEXP rosetta_r_3200(SEXP);
+SEXP rosetta_r_3200(SEXP, SEXP);
 SEXP rosetta_r_3201(SEXP, SEXP);
 SEXP rosetta_r_3202(SEXP, SEXP);
 SEXP rosetta_r_3203(SEXP, SEXP);
@@ -6327,9 +6646,9 @@ SEXP rosetta_r_3213(SEXP, SEXP);
 SEXP rosetta_r_3214(SEXP, SEXP);
 SEXP rosetta_r_3215(SEXP, SEXP);
 SEXP rosetta_r_3216(SEXP, SEXP);
-SEXP rosetta_r_3217(SEXP, SEXP);
+SEXP rosetta_r_3217(SEXP);
 SEXP rosetta_r_3218(SEXP, SEXP);
-SEXP rosetta_r_3219(SEXP);
+SEXP rosetta_r_3219(SEXP, SEXP);
 SEXP rosetta_r_3220(SEXP, SEXP);
 SEXP rosetta_r_3221(SEXP, SEXP);
 SEXP rosetta_r_3222(SEXP, SEXP);
@@ -6349,9 +6668,349 @@ SEXP rosetta_r_3235(SEXP, SEXP);
 SEXP rosetta_r_3236(SEXP, SEXP);
 SEXP rosetta_r_3237(SEXP, SEXP);
 SEXP rosetta_r_3238(SEXP, SEXP);
-SEXP rosetta_r_3239(SEXP, SEXP);
+SEXP rosetta_r_3239(SEXP);
 SEXP rosetta_r_3240(SEXP, SEXP);
-SEXP rosetta_r_3241(SEXP);
+SEXP rosetta_r_3241(SEXP, SEXP);
+SEXP rosetta_r_3242(SEXP, SEXP);
+SEXP rosetta_r_3243(SEXP, SEXP);
+SEXP rosetta_r_3244(SEXP, SEXP);
+SEXP rosetta_r_3245(SEXP, SEXP);
+SEXP rosetta_r_3246(SEXP, SEXP);
+SEXP rosetta_r_3247(SEXP, SEXP);
+SEXP rosetta_r_3248(SEXP, SEXP);
+SEXP rosetta_r_3249(SEXP, SEXP);
+SEXP rosetta_r_3250(SEXP, SEXP);
+SEXP rosetta_r_3251(SEXP, SEXP);
+SEXP rosetta_r_3252(SEXP, SEXP);
+SEXP rosetta_r_3253(SEXP, SEXP);
+SEXP rosetta_r_3254(SEXP, SEXP);
+SEXP rosetta_r_3255(SEXP, SEXP);
+SEXP rosetta_r_3256(SEXP, SEXP);
+SEXP rosetta_r_3257(SEXP, SEXP);
+SEXP rosetta_r_3258(SEXP, SEXP);
+SEXP rosetta_r_3259(SEXP, SEXP);
+SEXP rosetta_r_3260(SEXP);
+SEXP rosetta_r_3261(SEXP, SEXP);
+SEXP rosetta_r_3262(SEXP, SEXP);
+SEXP rosetta_r_3263(SEXP, SEXP);
+SEXP rosetta_r_3264(SEXP);
+SEXP rosetta_r_3265(SEXP, SEXP);
+SEXP rosetta_r_3266(SEXP, SEXP);
+SEXP rosetta_r_3267(SEXP, SEXP);
+SEXP rosetta_r_3268(SEXP, SEXP);
+SEXP rosetta_r_3269(SEXP, SEXP);
+SEXP rosetta_r_3270(SEXP, SEXP);
+SEXP rosetta_r_3271(SEXP, SEXP);
+SEXP rosetta_r_3272(SEXP, SEXP);
+SEXP rosetta_r_3273(SEXP, SEXP);
+SEXP rosetta_r_3274(SEXP, SEXP);
+SEXP rosetta_r_3275(SEXP);
+SEXP rosetta_r_3276(SEXP, SEXP);
+SEXP rosetta_r_3277(SEXP, SEXP);
+SEXP rosetta_r_3278(SEXP, SEXP);
+SEXP rosetta_r_3279(SEXP, SEXP);
+SEXP rosetta_r_3280(SEXP, SEXP);
+SEXP rosetta_r_3281(SEXP, SEXP);
+SEXP rosetta_r_3282(SEXP, SEXP);
+SEXP rosetta_r_3283(SEXP, SEXP);
+SEXP rosetta_r_3284(SEXP, SEXP);
+SEXP rosetta_r_3285(SEXP, SEXP);
+SEXP rosetta_r_3286(SEXP, SEXP);
+SEXP rosetta_r_3287(SEXP, SEXP);
+SEXP rosetta_r_3288(SEXP, SEXP);
+SEXP rosetta_r_3289(SEXP, SEXP);
+SEXP rosetta_r_3290(SEXP, SEXP);
+SEXP rosetta_r_3291(SEXP, SEXP);
+SEXP rosetta_r_3292(SEXP, SEXP);
+SEXP rosetta_r_3293(SEXP, SEXP);
+SEXP rosetta_r_3294(SEXP, SEXP);
+SEXP rosetta_r_3295(SEXP, SEXP);
+SEXP rosetta_r_3296(SEXP, SEXP);
+SEXP rosetta_r_3297(SEXP, SEXP);
+SEXP rosetta_r_3298(SEXP, SEXP);
+SEXP rosetta_r_3299(SEXP, SEXP);
+SEXP rosetta_r_3300(SEXP, SEXP);
+SEXP rosetta_r_3301(SEXP, SEXP);
+SEXP rosetta_r_3302(SEXP, SEXP);
+SEXP rosetta_r_3303(SEXP, SEXP);
+SEXP rosetta_r_3304(SEXP, SEXP);
+SEXP rosetta_r_3305(SEXP, SEXP);
+SEXP rosetta_r_3306(SEXP, SEXP);
+SEXP rosetta_r_3307(SEXP, SEXP);
+SEXP rosetta_r_3308(SEXP, SEXP);
+SEXP rosetta_r_3309(SEXP, SEXP);
+SEXP rosetta_r_3310(SEXP, SEXP);
+SEXP rosetta_r_3311(SEXP);
+SEXP rosetta_r_3312(SEXP);
+SEXP rosetta_r_3313(SEXP, SEXP);
+SEXP rosetta_r_3314(SEXP);
+SEXP rosetta_r_3315(SEXP, SEXP);
+SEXP rosetta_r_3316(SEXP);
+SEXP rosetta_r_3317(SEXP, SEXP);
+SEXP rosetta_r_3318(SEXP);
+SEXP rosetta_r_3319(SEXP, SEXP);
+SEXP rosetta_r_3320(SEXP);
+SEXP rosetta_r_3321(SEXP, SEXP);
+SEXP rosetta_r_3322(SEXP);
+SEXP rosetta_r_3323(SEXP, SEXP);
+SEXP rosetta_r_3324(SEXP);
+SEXP rosetta_r_3325(SEXP, SEXP);
+SEXP rosetta_r_3326(SEXP, SEXP);
+SEXP rosetta_r_3327(SEXP, SEXP);
+SEXP rosetta_r_3328(SEXP, SEXP);
+SEXP rosetta_r_3329(SEXP, SEXP);
+SEXP rosetta_r_3330(SEXP, SEXP);
+SEXP rosetta_r_3331(SEXP, SEXP);
+SEXP rosetta_r_3332(SEXP, SEXP);
+SEXP rosetta_r_3333(SEXP, SEXP);
+SEXP rosetta_r_3334(SEXP, SEXP);
+SEXP rosetta_r_3335(SEXP, SEXP);
+SEXP rosetta_r_3336(SEXP, SEXP);
+SEXP rosetta_r_3337(SEXP, SEXP);
+SEXP rosetta_r_3338(SEXP);
+SEXP rosetta_r_3339(SEXP, SEXP);
+SEXP rosetta_r_3340(SEXP, SEXP);
+SEXP rosetta_r_3341(SEXP, SEXP);
+SEXP rosetta_r_3342(SEXP, SEXP);
+SEXP rosetta_r_3343(SEXP, SEXP);
+SEXP rosetta_r_3344(SEXP, SEXP);
+SEXP rosetta_r_3345(SEXP, SEXP);
+SEXP rosetta_r_3346(SEXP, SEXP);
+SEXP rosetta_r_3347(SEXP, SEXP);
+SEXP rosetta_r_3348(SEXP, SEXP);
+SEXP rosetta_r_3349(SEXP, SEXP);
+SEXP rosetta_r_3350(SEXP, SEXP);
+SEXP rosetta_r_3351(SEXP, SEXP);
+SEXP rosetta_r_3352(SEXP, SEXP);
+SEXP rosetta_r_3353(SEXP, SEXP);
+SEXP rosetta_r_3354(SEXP, SEXP);
+SEXP rosetta_r_3355(SEXP, SEXP);
+SEXP rosetta_r_3356(SEXP, SEXP);
+SEXP rosetta_r_3357(SEXP, SEXP);
+SEXP rosetta_r_3358(SEXP, SEXP);
+SEXP rosetta_r_3359(SEXP);
+SEXP rosetta_r_3360(SEXP);
+SEXP rosetta_r_3361(SEXP, SEXP);
+SEXP rosetta_r_3362(SEXP);
+SEXP rosetta_r_3363(SEXP, SEXP);
+SEXP rosetta_r_3364(SEXP);
+SEXP rosetta_r_3365(SEXP, SEXP);
+SEXP rosetta_r_3366(SEXP, SEXP);
+SEXP rosetta_r_3367(SEXP, SEXP);
+SEXP rosetta_r_3368(SEXP, SEXP);
+SEXP rosetta_r_3369(SEXP, SEXP);
+SEXP rosetta_r_3370(SEXP, SEXP);
+SEXP rosetta_r_3371(SEXP, SEXP);
+SEXP rosetta_r_3372(SEXP, SEXP);
+SEXP rosetta_r_3373(SEXP, SEXP);
+SEXP rosetta_r_3374(SEXP, SEXP);
+SEXP rosetta_r_3375(SEXP, SEXP);
+SEXP rosetta_r_3376(SEXP, SEXP);
+SEXP rosetta_r_3377(SEXP, SEXP);
+SEXP rosetta_r_3378(SEXP, SEXP);
+SEXP rosetta_r_3379(SEXP, SEXP);
+SEXP rosetta_r_3380(SEXP, SEXP);
+SEXP rosetta_r_3381(SEXP, SEXP);
+SEXP rosetta_r_3382(SEXP, SEXP);
+SEXP rosetta_r_3383(SEXP, SEXP);
+SEXP rosetta_r_3384(SEXP, SEXP);
+SEXP rosetta_r_3385(SEXP, SEXP);
+SEXP rosetta_r_3386(SEXP);
+SEXP rosetta_r_3387(SEXP, SEXP);
+SEXP rosetta_r_3388(SEXP, SEXP);
+SEXP rosetta_r_3389(SEXP, SEXP);
+SEXP rosetta_r_3390(SEXP, SEXP);
+SEXP rosetta_r_3391(SEXP, SEXP);
+SEXP rosetta_r_3392(SEXP, SEXP);
+SEXP rosetta_r_3393(SEXP, SEXP);
+SEXP rosetta_r_3394(SEXP, SEXP);
+SEXP rosetta_r_3395(SEXP, SEXP);
+SEXP rosetta_r_3396(SEXP, SEXP);
+SEXP rosetta_r_3397(SEXP, SEXP);
+SEXP rosetta_r_3398(SEXP, SEXP);
+SEXP rosetta_r_3399(SEXP, SEXP);
+SEXP rosetta_r_3400(SEXP, SEXP);
+SEXP rosetta_r_3401(SEXP, SEXP);
+SEXP rosetta_r_3402(SEXP, SEXP);
+SEXP rosetta_r_3403(SEXP, SEXP);
+SEXP rosetta_r_3404(SEXP, SEXP);
+SEXP rosetta_r_3405(SEXP, SEXP);
+SEXP rosetta_r_3406(SEXP, SEXP);
+SEXP rosetta_r_3407(SEXP, SEXP);
+SEXP rosetta_r_3408(SEXP, SEXP);
+SEXP rosetta_r_3409(SEXP, SEXP);
+SEXP rosetta_r_3410(SEXP, SEXP);
+SEXP rosetta_r_3411(SEXP, SEXP);
+SEXP rosetta_r_3412(SEXP, SEXP);
+SEXP rosetta_r_3413(SEXP, SEXP);
+SEXP rosetta_r_3414(SEXP, SEXP);
+SEXP rosetta_r_3415(SEXP, SEXP);
+SEXP rosetta_r_3416(SEXP);
+SEXP rosetta_r_3417(SEXP, SEXP);
+SEXP rosetta_r_3418(SEXP, SEXP);
+SEXP rosetta_r_3419(SEXP, SEXP);
+SEXP rosetta_r_3420(SEXP, SEXP);
+SEXP rosetta_r_3421(SEXP, SEXP);
+SEXP rosetta_r_3422(SEXP, SEXP);
+SEXP rosetta_r_3423(SEXP, SEXP);
+SEXP rosetta_r_3424(SEXP, SEXP);
+SEXP rosetta_r_3425(SEXP, SEXP);
+SEXP rosetta_r_3426(SEXP, SEXP);
+SEXP rosetta_r_3427(SEXP, SEXP);
+SEXP rosetta_r_3428(SEXP, SEXP);
+SEXP rosetta_r_3429(SEXP, SEXP);
+SEXP rosetta_r_3430(SEXP, SEXP);
+SEXP rosetta_r_3431(SEXP, SEXP);
+SEXP rosetta_r_3432(SEXP, SEXP);
+SEXP rosetta_r_3433(SEXP, SEXP);
+SEXP rosetta_r_3434(SEXP, SEXP);
+SEXP rosetta_r_3435(SEXP, SEXP);
+SEXP rosetta_r_3436(SEXP, SEXP);
+SEXP rosetta_r_3437(SEXP, SEXP);
+SEXP rosetta_r_3438(SEXP, SEXP);
+SEXP rosetta_r_3439(SEXP, SEXP);
+SEXP rosetta_r_3440(SEXP, SEXP);
+SEXP rosetta_r_3441(SEXP, SEXP);
+SEXP rosetta_r_3442(SEXP, SEXP);
+SEXP rosetta_r_3443(SEXP, SEXP);
+SEXP rosetta_r_3444(SEXP, SEXP);
+SEXP rosetta_r_3445(SEXP, SEXP);
+SEXP rosetta_r_3446(SEXP, SEXP);
+SEXP rosetta_r_3447(SEXP, SEXP);
+SEXP rosetta_r_3448(SEXP, SEXP);
+SEXP rosetta_r_3449(SEXP, SEXP);
+SEXP rosetta_r_3450(SEXP, SEXP);
+SEXP rosetta_r_3451(SEXP, SEXP);
+SEXP rosetta_r_3452(SEXP, SEXP);
+SEXP rosetta_r_3453(SEXP, SEXP);
+SEXP rosetta_r_3454(SEXP, SEXP);
+SEXP rosetta_r_3455(SEXP, SEXP);
+SEXP rosetta_r_3456(SEXP, SEXP);
+SEXP rosetta_r_3457(SEXP, SEXP);
+SEXP rosetta_r_3458(SEXP, SEXP);
+SEXP rosetta_r_3459(SEXP, SEXP);
+SEXP rosetta_r_3460(SEXP, SEXP);
+SEXP rosetta_r_3461(SEXP, SEXP);
+SEXP rosetta_r_3462(SEXP, SEXP);
+SEXP rosetta_r_3463(SEXP, SEXP);
+SEXP rosetta_r_3464(SEXP, SEXP);
+SEXP rosetta_r_3465(SEXP, SEXP);
+SEXP rosetta_r_3466(SEXP, SEXP);
+SEXP rosetta_r_3467(SEXP, SEXP);
+SEXP rosetta_r_3468(SEXP, SEXP);
+SEXP rosetta_r_3469(SEXP, SEXP);
+SEXP rosetta_r_3470(SEXP, SEXP);
+SEXP rosetta_r_3471(SEXP);
+SEXP rosetta_r_3472(SEXP, SEXP);
+SEXP rosetta_r_3473(SEXP, SEXP);
+SEXP rosetta_r_3474(SEXP, SEXP);
+SEXP rosetta_r_3475(SEXP, SEXP);
+SEXP rosetta_r_3476(SEXP, SEXP);
+SEXP rosetta_r_3477(SEXP, SEXP);
+SEXP rosetta_r_3478(SEXP, SEXP);
+SEXP rosetta_r_3479(SEXP, SEXP);
+SEXP rosetta_r_3480(SEXP, SEXP);
+SEXP rosetta_r_3481(SEXP, SEXP);
+SEXP rosetta_r_3482(SEXP, SEXP);
+SEXP rosetta_r_3483(SEXP, SEXP);
+SEXP rosetta_r_3484(SEXP, SEXP);
+SEXP rosetta_r_3485(SEXP, SEXP);
+SEXP rosetta_r_3486(SEXP, SEXP);
+SEXP rosetta_r_3487(SEXP, SEXP);
+SEXP rosetta_r_3488(SEXP, SEXP);
+SEXP rosetta_r_3489(SEXP, SEXP);
+SEXP rosetta_r_3490(SEXP, SEXP);
+SEXP rosetta_r_3491(SEXP, SEXP);
+SEXP rosetta_r_3492(SEXP, SEXP);
+SEXP rosetta_r_3493(SEXP, SEXP);
+SEXP rosetta_r_3494(SEXP, SEXP);
+SEXP rosetta_r_3495(SEXP, SEXP);
+SEXP rosetta_r_3496(SEXP, SEXP);
+SEXP rosetta_r_3497(SEXP, SEXP);
+SEXP rosetta_r_3498(SEXP);
+SEXP rosetta_r_3499(SEXP);
+SEXP rosetta_r_3500(SEXP, SEXP);
+SEXP rosetta_r_3501(SEXP);
+SEXP rosetta_r_3502(SEXP, SEXP);
+SEXP rosetta_r_3503(SEXP);
+SEXP rosetta_r_3504(SEXP, SEXP);
+SEXP rosetta_r_3505(SEXP);
+SEXP rosetta_r_3506(SEXP, SEXP);
+SEXP rosetta_r_3507(SEXP);
+SEXP rosetta_r_3508(SEXP, SEXP);
+SEXP rosetta_r_3509(SEXP);
+SEXP rosetta_r_3510(SEXP, SEXP);
+SEXP rosetta_r_3511(SEXP);
+SEXP rosetta_r_3512(SEXP, SEXP);
+SEXP rosetta_r_3513(SEXP, SEXP);
+SEXP rosetta_r_3514(SEXP, SEXP);
+SEXP rosetta_r_3515(SEXP, SEXP);
+SEXP rosetta_r_3516(SEXP, SEXP);
+SEXP rosetta_r_3517(SEXP, SEXP);
+SEXP rosetta_r_3518(SEXP, SEXP);
+SEXP rosetta_r_3519(SEXP, SEXP);
+SEXP rosetta_r_3520(SEXP, SEXP);
+SEXP rosetta_r_3521(SEXP, SEXP);
+SEXP rosetta_r_3522(SEXP, SEXP);
+SEXP rosetta_r_3523(SEXP, SEXP);
+SEXP rosetta_r_3524(SEXP, SEXP);
+SEXP rosetta_r_3525(SEXP, SEXP);
+SEXP rosetta_r_3526(SEXP, SEXP);
+SEXP rosetta_r_3527(SEXP, SEXP);
+SEXP rosetta_r_3528(SEXP, SEXP);
+SEXP rosetta_r_3529(SEXP, SEXP);
+SEXP rosetta_r_3530(SEXP, SEXP);
+SEXP rosetta_r_3531(SEXP, SEXP);
+SEXP rosetta_r_3532(SEXP, SEXP);
+SEXP rosetta_r_3533(SEXP, SEXP);
+SEXP rosetta_r_3534(SEXP, SEXP);
+SEXP rosetta_r_3535(SEXP, SEXP);
+SEXP rosetta_r_3536(SEXP, SEXP);
+SEXP rosetta_r_3537(SEXP, SEXP);
+SEXP rosetta_r_3538(SEXP, SEXP);
+SEXP rosetta_r_3539(SEXP, SEXP);
+SEXP rosetta_r_3540(SEXP);
+SEXP rosetta_r_3541(SEXP, SEXP);
+SEXP rosetta_r_3542(SEXP, SEXP);
+SEXP rosetta_r_3543(SEXP, SEXP);
+SEXP rosetta_r_3544(SEXP, SEXP);
+SEXP rosetta_r_3545(SEXP, SEXP);
+SEXP rosetta_r_3546(SEXP, SEXP);
+SEXP rosetta_r_3547(SEXP, SEXP);
+SEXP rosetta_r_3548(SEXP, SEXP);
+SEXP rosetta_r_3549(SEXP, SEXP);
+SEXP rosetta_r_3550(SEXP, SEXP);
+SEXP rosetta_r_3551(SEXP, SEXP);
+SEXP rosetta_r_3552(SEXP, SEXP);
+SEXP rosetta_r_3553(SEXP, SEXP);
+SEXP rosetta_r_3554(SEXP, SEXP);
+SEXP rosetta_r_3555(SEXP, SEXP);
+SEXP rosetta_r_3556(SEXP, SEXP);
+SEXP rosetta_r_3557(SEXP, SEXP);
+SEXP rosetta_r_3558(SEXP, SEXP);
+SEXP rosetta_r_3559(SEXP);
+SEXP rosetta_r_3560(SEXP, SEXP);
+SEXP rosetta_r_3561(SEXP, SEXP);
+SEXP rosetta_r_3562(SEXP, SEXP);
+SEXP rosetta_r_3563(SEXP, SEXP);
+SEXP rosetta_r_3564(SEXP, SEXP);
+SEXP rosetta_r_3565(SEXP, SEXP);
+SEXP rosetta_r_3566(SEXP, SEXP);
+SEXP rosetta_r_3567(SEXP, SEXP);
+SEXP rosetta_r_3568(SEXP, SEXP);
+SEXP rosetta_r_3569(SEXP, SEXP);
+SEXP rosetta_r_3570(SEXP, SEXP);
+SEXP rosetta_r_3571(SEXP, SEXP);
+SEXP rosetta_r_3572(SEXP, SEXP);
+SEXP rosetta_r_3573(SEXP, SEXP);
+SEXP rosetta_r_3574(SEXP, SEXP);
+SEXP rosetta_r_3575(SEXP, SEXP);
+SEXP rosetta_r_3576(SEXP, SEXP);
+SEXP rosetta_r_3577(SEXP, SEXP);
+SEXP rosetta_r_3578(SEXP, SEXP);
+SEXP rosetta_r_3579(SEXP, SEXP);
+SEXP rosetta_r_3580(SEXP, SEXP);
+SEXP rosetta_r_3581(SEXP);
 struct Constant { const char* owner; const char* name; SEXP (*make)(); };
 static const Constant rosetta_constants[] = {
     {"RLayout", "title_band_px", [] { return rosetta_r::Value<std::remove_cv_t<decltype(datamunge::graphics::RLayout::title_band_px)>>::cast(static_cast<std::remove_cv_t<decltype(datamunge::graphics::RLayout::title_band_px)>>(datamunge::graphics::RLayout::title_band_px)); }},
@@ -6649,7 +7308,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_260", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_260), 2},
     {".rs_261", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_261), 2},
     {".rs_262", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_262), 2},
-    {".rs_263", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_263), 1},
+    {".rs_263", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_263), 2},
     {".rs_264", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_264), 2},
     {".rs_265", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_265), 2},
     {".rs_266", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_266), 2},
@@ -6666,64 +7325,64 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_277", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_277), 2},
     {".rs_278", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_278), 2},
     {".rs_279", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_279), 2},
-    {".rs_280", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_280), 1},
-    {".rs_281", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_281), 1},
+    {".rs_280", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_280), 2},
+    {".rs_281", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_281), 2},
     {".rs_282", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_282), 2},
-    {".rs_283", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_283), 1},
-    {".rs_284", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_284), 2},
-    {".rs_285", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_285), 1},
+    {".rs_283", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_283), 2},
+    {".rs_284", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_284), 1},
+    {".rs_285", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_285), 2},
     {".rs_286", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_286), 2},
-    {".rs_287", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_287), 1},
-    {".rs_288", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_288), 1},
+    {".rs_287", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_287), 2},
+    {".rs_288", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_288), 2},
     {".rs_289", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_289), 2},
-    {".rs_290", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_290), 1},
+    {".rs_290", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_290), 2},
     {".rs_291", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_291), 2},
-    {".rs_292", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_292), 1},
+    {".rs_292", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_292), 2},
     {".rs_293", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_293), 2},
     {".rs_294", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_294), 2},
     {".rs_295", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_295), 2},
-    {".rs_296", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_296), 1},
+    {".rs_296", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_296), 2},
     {".rs_297", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_297), 2},
-    {".rs_298", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_298), 1},
+    {".rs_298", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_298), 2},
     {".rs_299", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_299), 2},
-    {".rs_300", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_300), 1},
+    {".rs_300", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_300), 2},
     {".rs_301", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_301), 1},
-    {".rs_302", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_302), 2},
-    {".rs_303", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_303), 1},
-    {".rs_304", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_304), 2},
-    {".rs_305", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_305), 1},
+    {".rs_302", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_302), 1},
+    {".rs_303", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_303), 2},
+    {".rs_304", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_304), 1},
+    {".rs_305", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_305), 2},
     {".rs_306", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_306), 1},
     {".rs_307", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_307), 2},
     {".rs_308", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_308), 1},
-    {".rs_309", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_309), 2},
-    {".rs_310", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_310), 1},
+    {".rs_309", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_309), 1},
+    {".rs_310", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_310), 2},
     {".rs_311", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_311), 1},
     {".rs_312", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_312), 2},
     {".rs_313", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_313), 1},
     {".rs_314", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_314), 2},
-    {".rs_315", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_315), 1},
+    {".rs_315", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_315), 2},
     {".rs_316", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_316), 2},
-    {".rs_317", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_317), 2},
-    {".rs_318", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_318), 1},
-    {".rs_319", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_319), 2},
-    {".rs_320", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_320), 1},
-    {".rs_321", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_321), 2},
-    {".rs_322", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_322), 2},
+    {".rs_317", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_317), 1},
+    {".rs_318", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_318), 2},
+    {".rs_319", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_319), 1},
+    {".rs_320", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_320), 2},
+    {".rs_321", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_321), 1},
+    {".rs_322", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_322), 1},
     {".rs_323", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_323), 2},
-    {".rs_324", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_324), 2},
+    {".rs_324", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_324), 1},
     {".rs_325", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_325), 2},
-    {".rs_326", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_326), 2},
-    {".rs_327", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_327), 2},
+    {".rs_326", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_326), 1},
+    {".rs_327", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_327), 1},
     {".rs_328", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_328), 2},
-    {".rs_329", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_329), 2},
+    {".rs_329", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_329), 1},
     {".rs_330", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_330), 2},
-    {".rs_331", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_331), 2},
-    {".rs_332", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_332), 2},
+    {".rs_331", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_331), 1},
+    {".rs_332", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_332), 1},
     {".rs_333", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_333), 2},
     {".rs_334", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_334), 1},
-    {".rs_335", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_335), 1},
-    {".rs_336", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_336), 2},
-    {".rs_337", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_337), 1},
+    {".rs_335", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_335), 2},
+    {".rs_336", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_336), 1},
+    {".rs_337", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_337), 2},
     {".rs_338", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_338), 2},
     {".rs_339", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_339), 1},
     {".rs_340", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_340), 2},
@@ -6737,18 +7396,18 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_348", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_348), 2},
     {".rs_349", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_349), 2},
     {".rs_350", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_350), 2},
-    {".rs_351", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_351), 1},
+    {".rs_351", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_351), 2},
     {".rs_352", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_352), 2},
     {".rs_353", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_353), 2},
     {".rs_354", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_354), 2},
-    {".rs_355", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_355), 2},
-    {".rs_356", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_356), 2},
+    {".rs_355", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_355), 1},
+    {".rs_356", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_356), 1},
     {".rs_357", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_357), 2},
-    {".rs_358", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_358), 2},
+    {".rs_358", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_358), 1},
     {".rs_359", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_359), 2},
-    {".rs_360", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_360), 2},
+    {".rs_360", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_360), 1},
     {".rs_361", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_361), 2},
-    {".rs_362", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_362), 2},
+    {".rs_362", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_362), 1},
     {".rs_363", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_363), 2},
     {".rs_364", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_364), 2},
     {".rs_365", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_365), 2},
@@ -6758,34 +7417,34 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_369", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_369), 2},
     {".rs_370", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_370), 2},
     {".rs_371", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_371), 2},
-    {".rs_372", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_372), 2},
+    {".rs_372", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_372), 1},
     {".rs_373", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_373), 2},
     {".rs_374", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_374), 2},
     {".rs_375", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_375), 2},
     {".rs_376", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_376), 2},
     {".rs_377", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_377), 2},
     {".rs_378", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_378), 2},
-    {".rs_379", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_379), 1},
+    {".rs_379", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_379), 2},
     {".rs_380", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_380), 2},
-    {".rs_381", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_381), 1},
+    {".rs_381", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_381), 2},
     {".rs_382", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_382), 2},
-    {".rs_383", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_383), 1},
+    {".rs_383", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_383), 2},
     {".rs_384", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_384), 2},
-    {".rs_385", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_385), 1},
+    {".rs_385", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_385), 2},
     {".rs_386", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_386), 2},
-    {".rs_387", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_387), 1},
+    {".rs_387", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_387), 2},
     {".rs_388", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_388), 2},
-    {".rs_389", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_389), 1},
-    {".rs_390", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_390), 1},
+    {".rs_389", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_389), 2},
+    {".rs_390", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_390), 2},
     {".rs_391", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_391), 2},
-    {".rs_392", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_392), 1},
+    {".rs_392", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_392), 2},
     {".rs_393", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_393), 2},
-    {".rs_394", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_394), 1},
+    {".rs_394", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_394), 2},
     {".rs_395", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_395), 2},
-    {".rs_396", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_396), 1},
+    {".rs_396", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_396), 2},
     {".rs_397", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_397), 2},
     {".rs_398", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_398), 2},
-    {".rs_399", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_399), 1},
+    {".rs_399", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_399), 2},
     {".rs_400", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_400), 1},
     {".rs_401", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_401), 2},
     {".rs_402", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_402), 1},
@@ -6799,43 +7458,43 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_410", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_410), 1},
     {".rs_411", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_411), 2},
     {".rs_412", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_412), 1},
-    {".rs_413", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_413), 1},
-    {".rs_414", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_414), 2},
+    {".rs_413", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_413), 2},
+    {".rs_414", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_414), 1},
     {".rs_415", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_415), 1},
     {".rs_416", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_416), 2},
     {".rs_417", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_417), 1},
     {".rs_418", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_418), 2},
     {".rs_419", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_419), 1},
     {".rs_420", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_420), 2},
-    {".rs_421", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_421), 2},
-    {".rs_422", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_422), 1},
+    {".rs_421", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_421), 1},
+    {".rs_422", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_422), 2},
     {".rs_423", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_423), 1},
     {".rs_424", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_424), 2},
     {".rs_425", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_425), 1},
     {".rs_426", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_426), 2},
     {".rs_427", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_427), 1},
-    {".rs_428", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_428), 1},
-    {".rs_429", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_429), 2},
-    {".rs_430", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_430), 1},
-    {".rs_431", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_431), 2},
-    {".rs_432", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_432), 1},
+    {".rs_428", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_428), 2},
+    {".rs_429", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_429), 1},
+    {".rs_430", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_430), 2},
+    {".rs_431", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_431), 1},
+    {".rs_432", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_432), 2},
     {".rs_433", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_433), 2},
     {".rs_434", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_434), 1},
     {".rs_435", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_435), 2},
-    {".rs_436", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_436), 1},
-    {".rs_437", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_437), 2},
+    {".rs_436", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_436), 2},
+    {".rs_437", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_437), 1},
     {".rs_438", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_438), 2},
     {".rs_439", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_439), 1},
-    {".rs_440", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_440), 1},
-    {".rs_441", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_441), 2},
-    {".rs_442", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_442), 1},
-    {".rs_443", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_443), 2},
-    {".rs_444", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_444), 1},
-    {".rs_445", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_445), 2},
+    {".rs_440", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_440), 2},
+    {".rs_441", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_441), 1},
+    {".rs_442", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_442), 2},
+    {".rs_443", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_443), 1},
+    {".rs_444", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_444), 2},
+    {".rs_445", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_445), 1},
     {".rs_446", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_446), 1},
     {".rs_447", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_447), 2},
-    {".rs_448", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_448), 2},
-    {".rs_449", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_449), 1},
+    {".rs_448", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_448), 1},
+    {".rs_449", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_449), 2},
     {".rs_450", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_450), 1},
     {".rs_451", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_451), 2},
     {".rs_452", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_452), 1},
@@ -6851,8 +7510,8 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_462", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_462), 1},
     {".rs_463", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_463), 2},
     {".rs_464", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_464), 1},
-    {".rs_465", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_465), 1},
-    {".rs_466", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_466), 2},
+    {".rs_465", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_465), 2},
+    {".rs_466", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_466), 1},
     {".rs_467", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_467), 1},
     {".rs_468", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_468), 2},
     {".rs_469", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_469), 1},
@@ -6864,47 +7523,47 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_475", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_475), 1},
     {".rs_476", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_476), 2},
     {".rs_477", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_477), 1},
-    {".rs_478", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_478), 2},
-    {".rs_479", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_479), 1},
-    {".rs_480", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_480), 2},
-    {".rs_481", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_481), 1},
-    {".rs_482", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_482), 2},
+    {".rs_478", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_478), 1},
+    {".rs_479", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_479), 2},
+    {".rs_480", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_480), 1},
+    {".rs_481", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_481), 2},
+    {".rs_482", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_482), 1},
     {".rs_483", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_483), 2},
-    {".rs_484", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_484), 1},
-    {".rs_485", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_485), 1},
+    {".rs_484", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_484), 2},
+    {".rs_485", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_485), 2},
     {".rs_486", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_486), 2},
-    {".rs_487", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_487), 1},
+    {".rs_487", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_487), 2},
     {".rs_488", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_488), 2},
-    {".rs_489", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_489), 1},
+    {".rs_489", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_489), 2},
     {".rs_490", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_490), 2},
-    {".rs_491", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_491), 1},
+    {".rs_491", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_491), 2},
     {".rs_492", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_492), 2},
-    {".rs_493", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_493), 1},
+    {".rs_493", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_493), 2},
     {".rs_494", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_494), 2},
-    {".rs_495", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_495), 1},
+    {".rs_495", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_495), 2},
     {".rs_496", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_496), 2},
-    {".rs_497", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_497), 1},
-    {".rs_498", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_498), 1},
+    {".rs_497", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_497), 2},
+    {".rs_498", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_498), 2},
     {".rs_499", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_499), 2},
-    {".rs_500", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_500), 1},
+    {".rs_500", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_500), 2},
     {".rs_501", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_501), 2},
-    {".rs_502", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_502), 1},
+    {".rs_502", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_502), 2},
     {".rs_503", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_503), 2},
-    {".rs_504", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_504), 1},
+    {".rs_504", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_504), 2},
     {".rs_505", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_505), 2},
-    {".rs_506", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_506), 1},
+    {".rs_506", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_506), 2},
     {".rs_507", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_507), 2},
     {".rs_508", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_508), 2},
-    {".rs_509", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_509), 1},
-    {".rs_510", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_510), 1},
+    {".rs_509", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_509), 2},
+    {".rs_510", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_510), 2},
     {".rs_511", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_511), 2},
-    {".rs_512", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_512), 1},
+    {".rs_512", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_512), 2},
     {".rs_513", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_513), 2},
-    {".rs_514", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_514), 1},
+    {".rs_514", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_514), 2},
     {".rs_515", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_515), 2},
-    {".rs_516", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_516), 1},
+    {".rs_516", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_516), 2},
     {".rs_517", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_517), 2},
-    {".rs_518", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_518), 1},
+    {".rs_518", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_518), 2},
     {".rs_519", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_519), 2},
     {".rs_520", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_520), 2},
     {".rs_521", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_521), 2},
@@ -6914,81 +7573,81 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_525", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_525), 2},
     {".rs_526", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_526), 2},
     {".rs_527", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_527), 2},
-    {".rs_528", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_528), 1},
-    {".rs_529", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_529), 1},
+    {".rs_528", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_528), 2},
+    {".rs_529", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_529), 2},
     {".rs_530", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_530), 2},
-    {".rs_531", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_531), 1},
+    {".rs_531", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_531), 2},
     {".rs_532", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_532), 2},
-    {".rs_533", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_533), 1},
+    {".rs_533", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_533), 2},
     {".rs_534", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_534), 2},
-    {".rs_535", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_535), 1},
-    {".rs_536", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_536), 1},
+    {".rs_535", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_535), 2},
+    {".rs_536", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_536), 2},
     {".rs_537", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_537), 2},
-    {".rs_538", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_538), 1},
+    {".rs_538", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_538), 2},
     {".rs_539", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_539), 2},
-    {".rs_540", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_540), 1},
+    {".rs_540", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_540), 2},
     {".rs_541", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_541), 2},
-    {".rs_542", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_542), 1},
-    {".rs_543", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_543), 2},
-    {".rs_544", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_544), 1},
-    {".rs_545", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_545), 1},
+    {".rs_542", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_542), 2},
+    {".rs_543", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_543), 1},
+    {".rs_544", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_544), 2},
+    {".rs_545", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_545), 2},
     {".rs_546", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_546), 2},
-    {".rs_547", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_547), 1},
+    {".rs_547", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_547), 2},
     {".rs_548", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_548), 2},
-    {".rs_549", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_549), 1},
+    {".rs_549", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_549), 2},
     {".rs_550", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_550), 2},
-    {".rs_551", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_551), 1},
-    {".rs_552", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_552), 1},
+    {".rs_551", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_551), 2},
+    {".rs_552", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_552), 2},
     {".rs_553", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_553), 2},
-    {".rs_554", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_554), 1},
+    {".rs_554", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_554), 2},
     {".rs_555", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_555), 2},
-    {".rs_556", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_556), 1},
+    {".rs_556", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_556), 2},
     {".rs_557", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_557), 2},
-    {".rs_558", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_558), 1},
-    {".rs_559", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_559), 1},
+    {".rs_558", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_558), 2},
+    {".rs_559", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_559), 2},
     {".rs_560", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_560), 2},
-    {".rs_561", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_561), 1},
+    {".rs_561", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_561), 2},
     {".rs_562", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_562), 2},
-    {".rs_563", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_563), 1},
+    {".rs_563", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_563), 2},
     {".rs_564", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_564), 2},
-    {".rs_565", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_565), 1},
-    {".rs_566", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_566), 1},
+    {".rs_565", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_565), 2},
+    {".rs_566", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_566), 2},
     {".rs_567", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_567), 2},
-    {".rs_568", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_568), 1},
+    {".rs_568", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_568), 2},
     {".rs_569", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_569), 2},
-    {".rs_570", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_570), 1},
+    {".rs_570", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_570), 2},
     {".rs_571", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_571), 2},
-    {".rs_572", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_572), 1},
+    {".rs_572", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_572), 2},
     {".rs_573", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_573), 2},
-    {".rs_574", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_574), 1},
-    {".rs_575", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_575), 1},
+    {".rs_574", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_574), 2},
+    {".rs_575", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_575), 2},
     {".rs_576", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_576), 2},
-    {".rs_577", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_577), 1},
+    {".rs_577", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_577), 2},
     {".rs_578", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_578), 2},
-    {".rs_579", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_579), 1},
+    {".rs_579", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_579), 2},
     {".rs_580", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_580), 2},
-    {".rs_581", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_581), 1},
-    {".rs_582", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_582), 1},
+    {".rs_581", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_581), 2},
+    {".rs_582", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_582), 2},
     {".rs_583", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_583), 2},
-    {".rs_584", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_584), 1},
+    {".rs_584", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_584), 2},
     {".rs_585", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_585), 2},
-    {".rs_586", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_586), 1},
+    {".rs_586", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_586), 2},
     {".rs_587", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_587), 2},
-    {".rs_588", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_588), 1},
+    {".rs_588", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_588), 2},
     {".rs_589", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_589), 2},
-    {".rs_590", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_590), 1},
+    {".rs_590", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_590), 2},
     {".rs_591", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_591), 2},
     {".rs_592", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_592), 2},
     {".rs_593", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_593), 2},
-    {".rs_594", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_594), 1},
+    {".rs_594", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_594), 2},
     {".rs_595", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_595), 2},
-    {".rs_596", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_596), 1},
+    {".rs_596", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_596), 2},
     {".rs_597", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_597), 2},
-    {".rs_598", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_598), 1},
+    {".rs_598", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_598), 2},
     {".rs_599", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_599), 2},
-    {".rs_600", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_600), 1},
+    {".rs_600", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_600), 2},
     {".rs_601", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_601), 2},
-    {".rs_602", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_602), 1},
+    {".rs_602", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_602), 2},
     {".rs_603", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_603), 2},
     {".rs_604", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_604), 2},
     {".rs_605", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_605), 2},
@@ -7019,64 +7678,64 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_630", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_630), 2},
     {".rs_631", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_631), 2},
     {".rs_632", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_632), 2},
-    {".rs_633", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_633), 2},
+    {".rs_633", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_633), 1},
     {".rs_634", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_634), 2},
     {".rs_635", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_635), 2},
     {".rs_636", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_636), 2},
-    {".rs_637", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_637), 1},
+    {".rs_637", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_637), 2},
     {".rs_638", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_638), 2},
     {".rs_639", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_639), 2},
     {".rs_640", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_640), 2},
     {".rs_641", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_641), 2},
-    {".rs_642", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_642), 1},
+    {".rs_642", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_642), 2},
     {".rs_643", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_643), 2},
     {".rs_644", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_644), 2},
     {".rs_645", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_645), 2},
     {".rs_646", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_646), 2},
-    {".rs_647", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_647), 1},
+    {".rs_647", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_647), 2},
     {".rs_648", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_648), 2},
-    {".rs_649", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_649), 1},
+    {".rs_649", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_649), 2},
     {".rs_650", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_650), 2},
-    {".rs_651", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_651), 1},
+    {".rs_651", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_651), 2},
     {".rs_652", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_652), 2},
-    {".rs_653", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_653), 1},
+    {".rs_653", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_653), 2},
     {".rs_654", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_654), 2},
     {".rs_655", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_655), 2},
-    {".rs_656", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_656), 2},
+    {".rs_656", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_656), 1},
     {".rs_657", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_657), 1},
     {".rs_658", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_658), 2},
-    {".rs_659", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_659), 2},
+    {".rs_659", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_659), 1},
     {".rs_660", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_660), 2},
-    {".rs_661", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_661), 2},
+    {".rs_661", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_661), 1},
     {".rs_662", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_662), 2},
     {".rs_663", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_663), 1},
     {".rs_664", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_664), 2},
-    {".rs_665", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_665), 2},
+    {".rs_665", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_665), 1},
     {".rs_666", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_666), 2},
-    {".rs_667", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_667), 2},
+    {".rs_667", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_667), 1},
     {".rs_668", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_668), 1},
     {".rs_669", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_669), 2},
-    {".rs_670", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_670), 2},
-    {".rs_671", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_671), 1},
-    {".rs_672", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_672), 2},
-    {".rs_673", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_673), 1},
-    {".rs_674", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_674), 2},
-    {".rs_675", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_675), 1},
-    {".rs_676", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_676), 1},
-    {".rs_677", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_677), 2},
+    {".rs_670", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_670), 1},
+    {".rs_671", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_671), 2},
+    {".rs_672", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_672), 1},
+    {".rs_673", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_673), 2},
+    {".rs_674", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_674), 1},
+    {".rs_675", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_675), 2},
+    {".rs_676", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_676), 2},
+    {".rs_677", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_677), 1},
     {".rs_678", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_678), 1},
     {".rs_679", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_679), 2},
     {".rs_680", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_680), 1},
     {".rs_681", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_681), 2},
     {".rs_682", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_682), 1},
-    {".rs_683", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_683), 1},
-    {".rs_684", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_684), 2},
-    {".rs_685", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_685), 1},
-    {".rs_686", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_686), 2},
-    {".rs_687", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_687), 1},
-    {".rs_688", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_688), 2},
-    {".rs_689", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_689), 1},
-    {".rs_690", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_690), 2},
+    {".rs_683", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_683), 2},
+    {".rs_684", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_684), 1},
+    {".rs_685", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_685), 2},
+    {".rs_686", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_686), 1},
+    {".rs_687", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_687), 2},
+    {".rs_688", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_688), 1},
+    {".rs_689", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_689), 2},
+    {".rs_690", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_690), 1},
     {".rs_691", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_691), 1},
     {".rs_692", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_692), 2},
     {".rs_693", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_693), 1},
@@ -7084,21 +7743,21 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_695", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_695), 1},
     {".rs_696", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_696), 2},
     {".rs_697", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_697), 1},
-    {".rs_698", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_698), 1},
+    {".rs_698", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_698), 2},
     {".rs_699", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_699), 2},
     {".rs_700", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_700), 1},
-    {".rs_701", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_701), 2},
-    {".rs_702", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_702), 1},
-    {".rs_703", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_703), 2},
-    {".rs_704", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_704), 1},
-    {".rs_705", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_705), 2},
-    {".rs_706", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_706), 1},
-    {".rs_707", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_707), 2},
+    {".rs_701", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_701), 1},
+    {".rs_702", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_702), 2},
+    {".rs_703", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_703), 1},
+    {".rs_704", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_704), 2},
+    {".rs_705", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_705), 1},
+    {".rs_706", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_706), 2},
+    {".rs_707", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_707), 1},
     {".rs_708", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_708), 1},
     {".rs_709", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_709), 2},
     {".rs_710", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_710), 1},
-    {".rs_711", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_711), 1},
-    {".rs_712", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_712), 2},
+    {".rs_711", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_711), 2},
+    {".rs_712", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_712), 1},
     {".rs_713", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_713), 1},
     {".rs_714", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_714), 2},
     {".rs_715", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_715), 1},
@@ -7109,216 +7768,216 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_720", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_720), 2},
     {".rs_721", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_721), 1},
     {".rs_722", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_722), 2},
-    {".rs_723", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_723), 1},
-    {".rs_724", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_724), 2},
+    {".rs_723", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_723), 2},
+    {".rs_724", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_724), 1},
     {".rs_725", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_725), 1},
     {".rs_726", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_726), 2},
     {".rs_727", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_727), 1},
-    {".rs_728", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_728), 1},
-    {".rs_729", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_729), 2},
-    {".rs_730", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_730), 1},
-    {".rs_731", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_731), 2},
-    {".rs_732", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_732), 1},
+    {".rs_728", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_728), 2},
+    {".rs_729", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_729), 1},
+    {".rs_730", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_730), 2},
+    {".rs_731", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_731), 1},
+    {".rs_732", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_732), 2},
     {".rs_733", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_733), 2},
     {".rs_734", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_734), 1},
-    {".rs_735", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_735), 2},
-    {".rs_736", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_736), 1},
-    {".rs_737", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_737), 2},
-    {".rs_738", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_738), 1},
-    {".rs_739", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_739), 2},
-    {".rs_740", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_740), 1},
-    {".rs_741", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_741), 2},
-    {".rs_742", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_742), 1},
-    {".rs_743", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_743), 2},
-    {".rs_744", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_744), 1},
-    {".rs_745", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_745), 2},
+    {".rs_735", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_735), 1},
+    {".rs_736", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_736), 2},
+    {".rs_737", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_737), 1},
+    {".rs_738", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_738), 2},
+    {".rs_739", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_739), 1},
+    {".rs_740", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_740), 2},
+    {".rs_741", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_741), 1},
+    {".rs_742", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_742), 2},
+    {".rs_743", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_743), 1},
+    {".rs_744", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_744), 2},
+    {".rs_745", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_745), 1},
     {".rs_746", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_746), 2},
-    {".rs_747", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_747), 2},
-    {".rs_748", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_748), 2},
-    {".rs_749", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_749), 1},
-    {".rs_750", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_750), 2},
+    {".rs_747", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_747), 1},
+    {".rs_748", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_748), 1},
+    {".rs_749", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_749), 2},
+    {".rs_750", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_750), 1},
     {".rs_751", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_751), 2},
-    {".rs_752", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_752), 2},
-    {".rs_753", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_753), 1},
-    {".rs_754", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_754), 2},
+    {".rs_752", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_752), 1},
+    {".rs_753", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_753), 2},
+    {".rs_754", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_754), 1},
     {".rs_755", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_755), 2},
     {".rs_756", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_756), 1},
-    {".rs_757", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_757), 1},
+    {".rs_757", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_757), 2},
     {".rs_758", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_758), 2},
     {".rs_759", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_759), 1},
-    {".rs_760", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_760), 2},
-    {".rs_761", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_761), 1},
-    {".rs_762", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_762), 2},
+    {".rs_760", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_760), 1},
+    {".rs_761", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_761), 2},
+    {".rs_762", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_762), 1},
     {".rs_763", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_763), 2},
-    {".rs_764", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_764), 2},
+    {".rs_764", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_764), 1},
     {".rs_765", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_765), 2},
-    {".rs_766", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_766), 2},
+    {".rs_766", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_766), 1},
     {".rs_767", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_767), 2},
-    {".rs_768", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_768), 2},
-    {".rs_769", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_769), 1},
-    {".rs_770", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_770), 1},
+    {".rs_768", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_768), 1},
+    {".rs_769", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_769), 2},
+    {".rs_770", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_770), 2},
     {".rs_771", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_771), 2},
-    {".rs_772", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_772), 1},
+    {".rs_772", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_772), 2},
     {".rs_773", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_773), 2},
-    {".rs_774", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_774), 1},
+    {".rs_774", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_774), 2},
     {".rs_775", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_775), 2},
-    {".rs_776", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_776), 1},
+    {".rs_776", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_776), 2},
     {".rs_777", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_777), 2},
-    {".rs_778", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_778), 2},
-    {".rs_779", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_779), 2},
+    {".rs_778", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_778), 1},
+    {".rs_779", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_779), 1},
     {".rs_780", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_780), 2},
-    {".rs_781", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_781), 2},
+    {".rs_781", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_781), 1},
     {".rs_782", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_782), 2},
-    {".rs_783", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_783), 2},
+    {".rs_783", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_783), 1},
     {".rs_784", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_784), 2},
-    {".rs_785", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_785), 2},
+    {".rs_785", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_785), 1},
     {".rs_786", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_786), 1},
-    {".rs_787", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_787), 1},
-    {".rs_788", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_788), 2},
-    {".rs_789", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_789), 1},
-    {".rs_790", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_790), 2},
-    {".rs_791", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_791), 1},
+    {".rs_787", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_787), 2},
+    {".rs_788", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_788), 1},
+    {".rs_789", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_789), 2},
+    {".rs_790", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_790), 1},
+    {".rs_791", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_791), 2},
     {".rs_792", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_792), 1},
     {".rs_793", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_793), 2},
     {".rs_794", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_794), 1},
-    {".rs_795", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_795), 2},
-    {".rs_796", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_796), 1},
-    {".rs_797", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_797), 2},
+    {".rs_795", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_795), 1},
+    {".rs_796", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_796), 2},
+    {".rs_797", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_797), 1},
     {".rs_798", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_798), 2},
-    {".rs_799", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_799), 2},
+    {".rs_799", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_799), 1},
     {".rs_800", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_800), 2},
-    {".rs_801", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_801), 2},
-    {".rs_802", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_802), 2},
-    {".rs_803", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_803), 1},
-    {".rs_804", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_804), 2},
+    {".rs_801", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_801), 1},
+    {".rs_802", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_802), 1},
+    {".rs_803", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_803), 2},
+    {".rs_804", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_804), 1},
     {".rs_805", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_805), 2},
-    {".rs_806", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_806), 2},
+    {".rs_806", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_806), 1},
     {".rs_807", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_807), 2},
-    {".rs_808", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_808), 2},
-    {".rs_809", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_809), 2},
+    {".rs_808", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_808), 1},
+    {".rs_809", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_809), 1},
     {".rs_810", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_810), 2},
     {".rs_811", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_811), 1},
     {".rs_812", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_812), 2},
-    {".rs_813", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_813), 2},
+    {".rs_813", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_813), 1},
     {".rs_814", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_814), 2},
-    {".rs_815", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_815), 2},
-    {".rs_816", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_816), 2},
-    {".rs_817", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_817), 1},
-    {".rs_818", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_818), 2},
+    {".rs_815", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_815), 1},
+    {".rs_816", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_816), 1},
+    {".rs_817", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_817), 2},
+    {".rs_818", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_818), 1},
     {".rs_819", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_819), 2},
-    {".rs_820", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_820), 2},
+    {".rs_820", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_820), 1},
     {".rs_821", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_821), 2},
-    {".rs_822", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_822), 2},
-    {".rs_823", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_823), 1},
-    {".rs_824", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_824), 2},
-    {".rs_825", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_825), 2},
+    {".rs_822", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_822), 1},
+    {".rs_823", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_823), 2},
+    {".rs_824", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_824), 1},
+    {".rs_825", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_825), 1},
     {".rs_826", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_826), 2},
-    {".rs_827", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_827), 2},
+    {".rs_827", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_827), 1},
     {".rs_828", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_828), 2},
     {".rs_829", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_829), 1},
     {".rs_830", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_830), 2},
-    {".rs_831", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_831), 2},
-    {".rs_832", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_832), 2},
+    {".rs_831", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_831), 1},
+    {".rs_832", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_832), 1},
     {".rs_833", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_833), 2},
-    {".rs_834", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_834), 2},
-    {".rs_835", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_835), 1},
+    {".rs_834", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_834), 1},
+    {".rs_835", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_835), 2},
     {".rs_836", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_836), 1},
     {".rs_837", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_837), 2},
     {".rs_838", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_838), 1},
     {".rs_839", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_839), 2},
     {".rs_840", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_840), 1},
-    {".rs_841", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_841), 1},
+    {".rs_841", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_841), 2},
     {".rs_842", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_842), 2},
-    {".rs_843", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_843), 1},
-    {".rs_844", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_844), 2},
-    {".rs_845", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_845), 1},
-    {".rs_846", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_846), 2},
-    {".rs_847", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_847), 1},
+    {".rs_843", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_843), 2},
+    {".rs_844", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_844), 1},
+    {".rs_845", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_845), 2},
+    {".rs_846", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_846), 1},
+    {".rs_847", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_847), 2},
     {".rs_848", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_848), 1},
     {".rs_849", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_849), 2},
     {".rs_850", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_850), 1},
     {".rs_851", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_851), 2},
     {".rs_852", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_852), 1},
-    {".rs_853", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_853), 1},
+    {".rs_853", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_853), 2},
     {".rs_854", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_854), 2},
-    {".rs_855", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_855), 1},
+    {".rs_855", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_855), 2},
     {".rs_856", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_856), 2},
-    {".rs_857", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_857), 1},
-    {".rs_858", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_858), 1},
+    {".rs_857", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_857), 2},
+    {".rs_858", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_858), 2},
     {".rs_859", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_859), 2},
-    {".rs_860", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_860), 1},
+    {".rs_860", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_860), 2},
     {".rs_861", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_861), 2},
-    {".rs_862", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_862), 1},
+    {".rs_862", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_862), 2},
     {".rs_863", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_863), 2},
-    {".rs_864", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_864), 1},
+    {".rs_864", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_864), 2},
     {".rs_865", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_865), 2},
-    {".rs_866", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_866), 1},
+    {".rs_866", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_866), 2},
     {".rs_867", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_867), 2},
-    {".rs_868", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_868), 1},
+    {".rs_868", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_868), 2},
     {".rs_869", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_869), 2},
-    {".rs_870", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_870), 1},
+    {".rs_870", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_870), 2},
     {".rs_871", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_871), 2},
-    {".rs_872", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_872), 1},
+    {".rs_872", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_872), 2},
     {".rs_873", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_873), 2},
-    {".rs_874", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_874), 1},
-    {".rs_875", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_875), 1},
+    {".rs_874", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_874), 2},
+    {".rs_875", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_875), 2},
     {".rs_876", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_876), 2},
-    {".rs_877", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_877), 1},
+    {".rs_877", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_877), 2},
     {".rs_878", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_878), 2},
-    {".rs_879", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_879), 1},
+    {".rs_879", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_879), 2},
     {".rs_880", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_880), 2},
-    {".rs_881", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_881), 1},
+    {".rs_881", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_881), 2},
     {".rs_882", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_882), 2},
-    {".rs_883", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_883), 1},
+    {".rs_883", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_883), 2},
     {".rs_884", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_884), 2},
-    {".rs_885", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_885), 1},
+    {".rs_885", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_885), 2},
     {".rs_886", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_886), 2},
     {".rs_887", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_887), 1},
     {".rs_888", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_888), 2},
-    {".rs_889", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_889), 1},
+    {".rs_889", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_889), 2},
     {".rs_890", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_890), 2},
-    {".rs_891", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_891), 1},
+    {".rs_891", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_891), 2},
     {".rs_892", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_892), 1},
     {".rs_893", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_893), 2},
-    {".rs_894", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_894), 1},
+    {".rs_894", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_894), 2},
     {".rs_895", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_895), 2},
-    {".rs_896", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_896), 1},
-    {".rs_897", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_897), 2},
-    {".rs_898", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_898), 1},
+    {".rs_896", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_896), 2},
+    {".rs_897", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_897), 1},
+    {".rs_898", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_898), 2},
     {".rs_899", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_899), 1},
     {".rs_900", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_900), 2},
     {".rs_901", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_901), 1},
     {".rs_902", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_902), 2},
     {".rs_903", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_903), 1},
     {".rs_904", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_904), 2},
-    {".rs_905", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_905), 1},
+    {".rs_905", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_905), 2},
     {".rs_906", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_906), 2},
     {".rs_907", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_907), 1},
     {".rs_908", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_908), 2},
-    {".rs_909", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_909), 1},
+    {".rs_909", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_909), 2},
     {".rs_910", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_910), 2},
     {".rs_911", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_911), 2},
-    {".rs_912", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_912), 1},
-    {".rs_913", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_913), 2},
-    {".rs_914", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_914), 1},
+    {".rs_912", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_912), 2},
+    {".rs_913", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_913), 1},
+    {".rs_914", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_914), 2},
     {".rs_915", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_915), 2},
-    {".rs_916", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_916), 1},
+    {".rs_916", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_916), 2},
     {".rs_917", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_917), 2},
     {".rs_918", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_918), 1},
     {".rs_919", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_919), 2},
-    {".rs_920", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_920), 1},
+    {".rs_920", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_920), 2},
     {".rs_921", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_921), 1},
     {".rs_922", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_922), 2},
     {".rs_923", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_923), 1},
     {".rs_924", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_924), 2},
     {".rs_925", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_925), 1},
-    {".rs_926", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_926), 2},
-    {".rs_927", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_927), 1},
-    {".rs_928", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_928), 2},
-    {".rs_929", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_929), 1},
-    {".rs_930", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_930), 2},
-    {".rs_931", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_931), 1},
-    {".rs_932", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_932), 2},
+    {".rs_926", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_926), 1},
+    {".rs_927", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_927), 2},
+    {".rs_928", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_928), 1},
+    {".rs_929", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_929), 2},
+    {".rs_930", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_930), 1},
+    {".rs_931", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_931), 2},
+    {".rs_932", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_932), 1},
     {".rs_933", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_933), 1},
     {".rs_934", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_934), 2},
     {".rs_935", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_935), 1},
@@ -7328,91 +7987,91 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_939", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_939), 1},
     {".rs_940", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_940), 2},
     {".rs_941", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_941), 1},
-    {".rs_942", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_942), 1},
-    {".rs_943", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_943), 2},
-    {".rs_944", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_944), 1},
-    {".rs_945", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_945), 2},
-    {".rs_946", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_946), 1},
-    {".rs_947", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_947), 2},
+    {".rs_942", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_942), 2},
+    {".rs_943", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_943), 1},
+    {".rs_944", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_944), 2},
+    {".rs_945", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_945), 1},
+    {".rs_946", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_946), 2},
+    {".rs_947", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_947), 1},
     {".rs_948", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_948), 1},
     {".rs_949", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_949), 2},
     {".rs_950", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_950), 1},
     {".rs_951", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_951), 2},
     {".rs_952", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_952), 1},
-    {".rs_953", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_953), 1},
-    {".rs_954", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_954), 2},
-    {".rs_955", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_955), 1},
-    {".rs_956", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_956), 2},
-    {".rs_957", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_957), 1},
-    {".rs_958", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_958), 2},
+    {".rs_953", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_953), 2},
+    {".rs_954", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_954), 1},
+    {".rs_955", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_955), 2},
+    {".rs_956", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_956), 1},
+    {".rs_957", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_957), 2},
+    {".rs_958", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_958), 1},
     {".rs_959", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_959), 2},
-    {".rs_960", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_960), 2},
-    {".rs_961", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_961), 2},
+    {".rs_960", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_960), 1},
+    {".rs_961", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_961), 1},
     {".rs_962", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_962), 2},
-    {".rs_963", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_963), 2},
+    {".rs_963", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_963), 1},
     {".rs_964", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_964), 2},
-    {".rs_965", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_965), 2},
+    {".rs_965", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_965), 1},
     {".rs_966", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_966), 2},
-    {".rs_967", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_967), 2},
+    {".rs_967", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_967), 1},
     {".rs_968", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_968), 2},
-    {".rs_969", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_969), 2},
+    {".rs_969", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_969), 1},
     {".rs_970", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_970), 2},
-    {".rs_971", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_971), 2},
+    {".rs_971", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_971), 1},
     {".rs_972", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_972), 2},
-    {".rs_973", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_973), 2},
+    {".rs_973", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_973), 1},
     {".rs_974", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_974), 2},
-    {".rs_975", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_975), 2},
+    {".rs_975", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_975), 1},
     {".rs_976", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_976), 2},
-    {".rs_977", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_977), 2},
-    {".rs_978", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_978), 2},
+    {".rs_977", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_977), 1},
+    {".rs_978", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_978), 1},
     {".rs_979", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_979), 2},
-    {".rs_980", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_980), 2},
+    {".rs_980", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_980), 1},
     {".rs_981", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_981), 2},
-    {".rs_982", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_982), 2},
+    {".rs_982", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_982), 1},
     {".rs_983", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_983), 2},
-    {".rs_984", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_984), 2},
+    {".rs_984", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_984), 1},
     {".rs_985", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_985), 2},
-    {".rs_986", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_986), 2},
+    {".rs_986", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_986), 1},
     {".rs_987", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_987), 2},
-    {".rs_988", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_988), 2},
+    {".rs_988", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_988), 1},
     {".rs_989", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_989), 2},
-    {".rs_990", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_990), 2},
+    {".rs_990", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_990), 1},
     {".rs_991", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_991), 2},
-    {".rs_992", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_992), 2},
+    {".rs_992", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_992), 1},
     {".rs_993", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_993), 2},
-    {".rs_994", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_994), 2},
+    {".rs_994", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_994), 1},
     {".rs_995", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_995), 2},
     {".rs_996", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_996), 2},
     {".rs_997", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_997), 2},
     {".rs_998", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_998), 2},
-    {".rs_999", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_999), 2},
+    {".rs_999", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_999), 1},
     {".rs_1000", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1000), 2},
     {".rs_1001", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1001), 2},
     {".rs_1002", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1002), 2},
-    {".rs_1003", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1003), 2},
+    {".rs_1003", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1003), 1},
     {".rs_1004", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1004), 2},
     {".rs_1005", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1005), 2},
-    {".rs_1006", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1006), 2},
-    {".rs_1007", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1007), 2},
+    {".rs_1006", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1006), 1},
+    {".rs_1007", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1007), 1},
     {".rs_1008", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1008), 2},
-    {".rs_1009", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1009), 2},
+    {".rs_1009", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1009), 1},
     {".rs_1010", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1010), 2},
-    {".rs_1011", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1011), 2},
+    {".rs_1011", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1011), 1},
     {".rs_1012", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1012), 2},
     {".rs_1013", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1013), 2},
     {".rs_1014", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1014), 2},
     {".rs_1015", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1015), 2},
     {".rs_1016", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1016), 2},
-    {".rs_1017", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1017), 1},
+    {".rs_1017", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1017), 2},
     {".rs_1018", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1018), 2},
-    {".rs_1019", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1019), 2},
-    {".rs_1020", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1020), 2},
+    {".rs_1019", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1019), 1},
+    {".rs_1020", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1020), 1},
     {".rs_1021", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1021), 2},
-    {".rs_1022", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1022), 2},
+    {".rs_1022", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1022), 1},
     {".rs_1023", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1023), 2},
-    {".rs_1024", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1024), 2},
+    {".rs_1024", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1024), 1},
     {".rs_1025", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1025), 2},
-    {".rs_1026", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1026), 2},
+    {".rs_1026", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1026), 1},
     {".rs_1027", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1027), 2},
     {".rs_1028", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1028), 2},
     {".rs_1029", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1029), 2},
@@ -7422,24 +8081,24 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1033", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1033), 2},
     {".rs_1034", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1034), 2},
     {".rs_1035", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1035), 2},
-    {".rs_1036", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1036), 2},
-    {".rs_1037", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1037), 2},
+    {".rs_1036", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1036), 1},
+    {".rs_1037", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1037), 1},
     {".rs_1038", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1038), 2},
-    {".rs_1039", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1039), 2},
+    {".rs_1039", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1039), 1},
     {".rs_1040", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1040), 2},
-    {".rs_1041", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1041), 2},
-    {".rs_1042", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1042), 2},
+    {".rs_1041", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1041), 1},
+    {".rs_1042", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1042), 1},
     {".rs_1043", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1043), 2},
-    {".rs_1044", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1044), 2},
+    {".rs_1044", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1044), 1},
     {".rs_1045", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1045), 2},
-    {".rs_1046", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1046), 2},
+    {".rs_1046", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1046), 1},
     {".rs_1047", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1047), 2},
     {".rs_1048", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1048), 2},
     {".rs_1049", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1049), 2},
     {".rs_1050", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1050), 2},
     {".rs_1051", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1051), 2},
     {".rs_1052", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1052), 2},
-    {".rs_1053", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1053), 2},
+    {".rs_1053", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1053), 1},
     {".rs_1054", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1054), 2},
     {".rs_1055", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1055), 2},
     {".rs_1056", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1056), 2},
@@ -7447,131 +8106,131 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1058", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1058), 2},
     {".rs_1059", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1059), 2},
     {".rs_1060", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1060), 2},
-    {".rs_1061", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1061), 2},
+    {".rs_1061", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1061), 1},
     {".rs_1062", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1062), 2},
     {".rs_1063", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1063), 2},
     {".rs_1064", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1064), 2},
     {".rs_1065", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1065), 2},
     {".rs_1066", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1066), 2},
-    {".rs_1067", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1067), 2},
+    {".rs_1067", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1067), 1},
     {".rs_1068", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1068), 2},
-    {".rs_1069", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1069), 1},
+    {".rs_1069", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1069), 2},
     {".rs_1070", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1070), 2},
     {".rs_1071", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1071), 2},
     {".rs_1072", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1072), 2},
-    {".rs_1073", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1073), 2},
+    {".rs_1073", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1073), 1},
     {".rs_1074", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1074), 2},
     {".rs_1075", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1075), 2},
     {".rs_1076", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1076), 2},
     {".rs_1077", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1077), 2},
     {".rs_1078", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1078), 2},
-    {".rs_1079", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1079), 2},
+    {".rs_1079", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1079), 1},
     {".rs_1080", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1080), 2},
     {".rs_1081", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1081), 2},
     {".rs_1082", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1082), 2},
     {".rs_1083", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1083), 2},
     {".rs_1084", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1084), 2},
-    {".rs_1085", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1085), 2},
-    {".rs_1086", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1086), 2},
+    {".rs_1085", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1085), 1},
+    {".rs_1086", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1086), 1},
     {".rs_1087", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1087), 2},
-    {".rs_1088", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1088), 2},
+    {".rs_1088", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1088), 1},
     {".rs_1089", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1089), 2},
-    {".rs_1090", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1090), 2},
+    {".rs_1090", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1090), 1},
     {".rs_1091", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1091), 1},
-    {".rs_1092", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1092), 1},
-    {".rs_1093", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1093), 2},
-    {".rs_1094", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1094), 1},
-    {".rs_1095", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1095), 2},
-    {".rs_1096", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1096), 1},
-    {".rs_1097", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1097), 2},
+    {".rs_1092", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1092), 2},
+    {".rs_1093", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1093), 1},
+    {".rs_1094", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1094), 2},
+    {".rs_1095", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1095), 1},
+    {".rs_1096", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1096), 2},
+    {".rs_1097", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1097), 1},
     {".rs_1098", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1098), 1},
-    {".rs_1099", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1099), 1},
-    {".rs_1100", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1100), 2},
-    {".rs_1101", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1101), 1},
-    {".rs_1102", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1102), 2},
+    {".rs_1099", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1099), 2},
+    {".rs_1100", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1100), 1},
+    {".rs_1101", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1101), 2},
+    {".rs_1102", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1102), 1},
     {".rs_1103", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1103), 1},
     {".rs_1104", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1104), 2},
     {".rs_1105", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1105), 1},
-    {".rs_1106", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1106), 1},
-    {".rs_1107", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1107), 2},
+    {".rs_1106", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1106), 2},
+    {".rs_1107", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1107), 1},
     {".rs_1108", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1108), 1},
     {".rs_1109", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1109), 2},
     {".rs_1110", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1110), 1},
-    {".rs_1111", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1111), 1},
-    {".rs_1112", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1112), 2},
-    {".rs_1113", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1113), 1},
-    {".rs_1114", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1114), 2},
-    {".rs_1115", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1115), 1},
-    {".rs_1116", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1116), 2},
-    {".rs_1117", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1117), 1},
-    {".rs_1118", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1118), 2},
-    {".rs_1119", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1119), 1},
-    {".rs_1120", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1120), 2},
-    {".rs_1121", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1121), 1},
-    {".rs_1122", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1122), 2},
-    {".rs_1123", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1123), 1},
-    {".rs_1124", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1124), 2},
+    {".rs_1111", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1111), 2},
+    {".rs_1112", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1112), 1},
+    {".rs_1113", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1113), 2},
+    {".rs_1114", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1114), 1},
+    {".rs_1115", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1115), 2},
+    {".rs_1116", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1116), 1},
+    {".rs_1117", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1117), 2},
+    {".rs_1118", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1118), 1},
+    {".rs_1119", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1119), 2},
+    {".rs_1120", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1120), 1},
+    {".rs_1121", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1121), 2},
+    {".rs_1122", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1122), 1},
+    {".rs_1123", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1123), 2},
+    {".rs_1124", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1124), 1},
     {".rs_1125", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1125), 1},
     {".rs_1126", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1126), 2},
-    {".rs_1127", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1127), 2},
+    {".rs_1127", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1127), 1},
     {".rs_1128", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1128), 2},
-    {".rs_1129", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1129), 2},
+    {".rs_1129", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1129), 1},
     {".rs_1130", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1130), 2},
     {".rs_1131", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1131), 1},
-    {".rs_1132", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1132), 1},
-    {".rs_1133", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1133), 2},
-    {".rs_1134", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1134), 1},
-    {".rs_1135", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1135), 2},
-    {".rs_1136", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1136), 1},
+    {".rs_1132", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1132), 2},
+    {".rs_1133", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1133), 1},
+    {".rs_1134", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1134), 2},
+    {".rs_1135", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1135), 1},
+    {".rs_1136", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1136), 2},
     {".rs_1137", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1137), 1},
     {".rs_1138", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1138), 2},
     {".rs_1139", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1139), 1},
     {".rs_1140", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1140), 2},
     {".rs_1141", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1141), 1},
-    {".rs_1142", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1142), 2},
-    {".rs_1143", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1143), 1},
+    {".rs_1142", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1142), 1},
+    {".rs_1143", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1143), 2},
     {".rs_1144", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1144), 1},
     {".rs_1145", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1145), 2},
     {".rs_1146", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1146), 1},
     {".rs_1147", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1147), 2},
     {".rs_1148", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1148), 1},
-    {".rs_1149", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1149), 2},
-    {".rs_1150", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1150), 1},
-    {".rs_1151", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1151), 2},
-    {".rs_1152", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1152), 1},
+    {".rs_1149", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1149), 1},
+    {".rs_1150", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1150), 2},
+    {".rs_1151", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1151), 1},
+    {".rs_1152", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1152), 2},
     {".rs_1153", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1153), 1},
     {".rs_1154", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1154), 2},
     {".rs_1155", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1155), 1},
     {".rs_1156", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1156), 2},
     {".rs_1157", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1157), 1},
     {".rs_1158", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1158), 2},
-    {".rs_1159", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1159), 2},
-    {".rs_1160", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1160), 2},
+    {".rs_1159", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1159), 1},
+    {".rs_1160", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1160), 1},
     {".rs_1161", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1161), 2},
-    {".rs_1162", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1162), 2},
+    {".rs_1162", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1162), 1},
     {".rs_1163", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1163), 2},
-    {".rs_1164", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1164), 2},
+    {".rs_1164", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1164), 1},
     {".rs_1165", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1165), 2},
-    {".rs_1166", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1166), 2},
-    {".rs_1167", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1167), 2},
-    {".rs_1168", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1168), 1},
-    {".rs_1169", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1169), 2},
+    {".rs_1166", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1166), 1},
+    {".rs_1167", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1167), 1},
+    {".rs_1168", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1168), 2},
+    {".rs_1169", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1169), 1},
     {".rs_1170", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1170), 2},
     {".rs_1171", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1171), 1},
     {".rs_1172", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1172), 2},
     {".rs_1173", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1173), 1},
-    {".rs_1174", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1174), 2},
-    {".rs_1175", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1175), 1},
-    {".rs_1176", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1176), 2},
-    {".rs_1177", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1177), 1},
-    {".rs_1178", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1178), 2},
+    {".rs_1174", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1174), 1},
+    {".rs_1175", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1175), 2},
+    {".rs_1176", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1176), 1},
+    {".rs_1177", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1177), 2},
+    {".rs_1178", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1178), 1},
     {".rs_1179", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1179), 1},
     {".rs_1180", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1180), 2},
     {".rs_1181", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1181), 1},
     {".rs_1182", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1182), 2},
     {".rs_1183", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1183), 1},
     {".rs_1184", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1184), 2},
-    {".rs_1185", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1185), 2},
+    {".rs_1185", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1185), 1},
     {".rs_1186", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1186), 2},
     {".rs_1187", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1187), 1},
     {".rs_1188", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1188), 2},
@@ -7579,9 +8238,9 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1190", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1190), 2},
     {".rs_1191", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1191), 1},
     {".rs_1192", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1192), 2},
-    {".rs_1193", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1193), 2},
-    {".rs_1194", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1194), 2},
-    {".rs_1195", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1195), 1},
+    {".rs_1193", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1193), 1},
+    {".rs_1194", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1194), 1},
+    {".rs_1195", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1195), 2},
     {".rs_1196", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1196), 1},
     {".rs_1197", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1197), 2},
     {".rs_1198", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1198), 1},
@@ -7595,13 +8254,13 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1206", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1206), 1},
     {".rs_1207", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1207), 2},
     {".rs_1208", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1208), 1},
-    {".rs_1209", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1209), 2},
-    {".rs_1210", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1210), 1},
-    {".rs_1211", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1211), 2},
+    {".rs_1209", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1209), 1},
+    {".rs_1210", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1210), 2},
+    {".rs_1211", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1211), 1},
     {".rs_1212", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1212), 2},
     {".rs_1213", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1213), 1},
-    {".rs_1214", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1214), 1},
-    {".rs_1215", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1215), 2},
+    {".rs_1214", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1214), 2},
+    {".rs_1215", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1215), 1},
     {".rs_1216", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1216), 1},
     {".rs_1217", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1217), 2},
     {".rs_1218", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1218), 1},
@@ -7614,32 +8273,32 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1225", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1225), 2},
     {".rs_1226", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1226), 1},
     {".rs_1227", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1227), 2},
-    {".rs_1228", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1228), 2},
-    {".rs_1229", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1229), 1},
-    {".rs_1230", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1230), 1},
+    {".rs_1228", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1228), 1},
+    {".rs_1229", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1229), 2},
+    {".rs_1230", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1230), 2},
     {".rs_1231", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1231), 2},
-    {".rs_1232", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1232), 1},
+    {".rs_1232", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1232), 2},
     {".rs_1233", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1233), 2},
-    {".rs_1234", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1234), 1},
-    {".rs_1235", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1235), 2},
+    {".rs_1234", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1234), 2},
+    {".rs_1235", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1235), 1},
     {".rs_1236", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1236), 1},
     {".rs_1237", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1237), 2},
     {".rs_1238", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1238), 1},
     {".rs_1239", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1239), 2},
-    {".rs_1240", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1240), 2},
+    {".rs_1240", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1240), 1},
     {".rs_1241", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1241), 1},
-    {".rs_1242", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1242), 1},
-    {".rs_1243", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1243), 2},
-    {".rs_1244", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1244), 1},
-    {".rs_1245", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1245), 2},
-    {".rs_1246", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1246), 1},
-    {".rs_1247", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1247), 2},
-    {".rs_1248", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1248), 1},
-    {".rs_1249", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1249), 2},
-    {".rs_1250", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1250), 1},
-    {".rs_1251", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1251), 2},
-    {".rs_1252", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1252), 2},
-    {".rs_1253", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1253), 1},
+    {".rs_1242", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1242), 2},
+    {".rs_1243", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1243), 1},
+    {".rs_1244", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1244), 2},
+    {".rs_1245", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1245), 1},
+    {".rs_1246", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1246), 2},
+    {".rs_1247", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1247), 1},
+    {".rs_1248", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1248), 2},
+    {".rs_1249", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1249), 1},
+    {".rs_1250", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1250), 2},
+    {".rs_1251", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1251), 1},
+    {".rs_1252", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1252), 1},
+    {".rs_1253", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1253), 2},
     {".rs_1254", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1254), 1},
     {".rs_1255", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1255), 2},
     {".rs_1256", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1256), 1},
@@ -7653,13 +8312,13 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1264", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1264), 1},
     {".rs_1265", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1265), 2},
     {".rs_1266", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1266), 1},
-    {".rs_1267", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1267), 2},
+    {".rs_1267", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1267), 1},
     {".rs_1268", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1268), 2},
     {".rs_1269", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1269), 1},
-    {".rs_1270", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1270), 1},
-    {".rs_1271", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1271), 2},
-    {".rs_1272", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1272), 1},
-    {".rs_1273", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1273), 2},
+    {".rs_1270", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1270), 2},
+    {".rs_1271", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1271), 1},
+    {".rs_1272", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1272), 2},
+    {".rs_1273", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1273), 1},
     {".rs_1274", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1274), 1},
     {".rs_1275", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1275), 2},
     {".rs_1276", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1276), 1},
@@ -7668,38 +8327,38 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1279", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1279), 2},
     {".rs_1280", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1280), 1},
     {".rs_1281", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1281), 2},
-    {".rs_1282", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1282), 2},
-    {".rs_1283", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1283), 1},
+    {".rs_1282", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1282), 1},
+    {".rs_1283", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1283), 2},
     {".rs_1284", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1284), 1},
     {".rs_1285", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1285), 2},
     {".rs_1286", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1286), 1},
     {".rs_1287", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1287), 2},
     {".rs_1288", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1288), 1},
-    {".rs_1289", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1289), 2},
-    {".rs_1290", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1290), 1},
-    {".rs_1291", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1291), 2},
-    {".rs_1292", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1292), 1},
-    {".rs_1293", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1293), 2},
-    {".rs_1294", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1294), 1},
-    {".rs_1295", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1295), 2},
+    {".rs_1289", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1289), 1},
+    {".rs_1290", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1290), 2},
+    {".rs_1291", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1291), 1},
+    {".rs_1292", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1292), 2},
+    {".rs_1293", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1293), 1},
+    {".rs_1294", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1294), 2},
+    {".rs_1295", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1295), 1},
     {".rs_1296", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1296), 2},
     {".rs_1297", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1297), 1},
     {".rs_1298", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1298), 2},
-    {".rs_1299", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1299), 2},
+    {".rs_1299", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1299), 1},
     {".rs_1300", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1300), 2},
     {".rs_1301", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1301), 1},
     {".rs_1302", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1302), 2},
     {".rs_1303", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1303), 1},
-    {".rs_1304", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1304), 2},
-    {".rs_1305", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1305), 1},
-    {".rs_1306", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1306), 2},
-    {".rs_1307", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1307), 1},
-    {".rs_1308", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1308), 2},
+    {".rs_1304", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1304), 1},
+    {".rs_1305", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1305), 2},
+    {".rs_1306", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1306), 1},
+    {".rs_1307", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1307), 2},
+    {".rs_1308", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1308), 1},
     {".rs_1309", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1309), 1},
     {".rs_1310", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1310), 2},
     {".rs_1311", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1311), 1},
-    {".rs_1312", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1312), 1},
-    {".rs_1313", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1313), 2},
+    {".rs_1312", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1312), 2},
+    {".rs_1313", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1313), 1},
     {".rs_1314", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1314), 1},
     {".rs_1315", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1315), 2},
     {".rs_1316", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1316), 1},
@@ -7711,44 +8370,44 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1322", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1322), 1},
     {".rs_1323", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1323), 2},
     {".rs_1324", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1324), 1},
-    {".rs_1325", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1325), 2},
+    {".rs_1325", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1325), 1},
     {".rs_1326", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1326), 2},
-    {".rs_1327", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1327), 2},
-    {".rs_1328", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1328), 1},
+    {".rs_1327", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1327), 1},
+    {".rs_1328", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1328), 2},
     {".rs_1329", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1329), 1},
     {".rs_1330", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1330), 2},
     {".rs_1331", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1331), 1},
     {".rs_1332", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1332), 2},
     {".rs_1333", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1333), 1},
-    {".rs_1334", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1334), 2},
-    {".rs_1335", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1335), 1},
-    {".rs_1336", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1336), 2},
-    {".rs_1337", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1337), 1},
-    {".rs_1338", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1338), 2},
-    {".rs_1339", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1339), 1},
-    {".rs_1340", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1340), 2},
-    {".rs_1341", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1341), 2},
-    {".rs_1342", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1342), 1},
+    {".rs_1334", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1334), 1},
+    {".rs_1335", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1335), 2},
+    {".rs_1336", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1336), 1},
+    {".rs_1337", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1337), 2},
+    {".rs_1338", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1338), 1},
+    {".rs_1339", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1339), 2},
+    {".rs_1340", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1340), 1},
+    {".rs_1341", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1341), 1},
+    {".rs_1342", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1342), 2},
     {".rs_1343", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1343), 1},
     {".rs_1344", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1344), 2},
     {".rs_1345", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1345), 1},
     {".rs_1346", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1346), 2},
     {".rs_1347", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1347), 1},
-    {".rs_1348", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1348), 2},
-    {".rs_1349", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1349), 1},
-    {".rs_1350", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1350), 2},
-    {".rs_1351", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1351), 1},
-    {".rs_1352", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1352), 2},
-    {".rs_1353", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1353), 1},
-    {".rs_1354", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1354), 2},
+    {".rs_1348", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1348), 1},
+    {".rs_1349", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1349), 2},
+    {".rs_1350", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1350), 1},
+    {".rs_1351", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1351), 2},
+    {".rs_1352", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1352), 1},
+    {".rs_1353", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1353), 2},
+    {".rs_1354", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1354), 1},
     {".rs_1355", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1355), 2},
     {".rs_1356", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1356), 1},
-    {".rs_1357", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1357), 1},
-    {".rs_1358", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1358), 2},
-    {".rs_1359", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1359), 1},
-    {".rs_1360", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1360), 2},
-    {".rs_1361", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1361), 1},
-    {".rs_1362", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1362), 2},
+    {".rs_1357", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1357), 2},
+    {".rs_1358", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1358), 1},
+    {".rs_1359", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1359), 2},
+    {".rs_1360", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1360), 1},
+    {".rs_1361", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1361), 2},
+    {".rs_1362", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1362), 1},
     {".rs_1363", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1363), 1},
     {".rs_1364", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1364), 2},
     {".rs_1365", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1365), 1},
@@ -7757,44 +8416,44 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1368", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1368), 2},
     {".rs_1369", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1369), 1},
     {".rs_1370", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1370), 2},
-    {".rs_1371", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1371), 2},
-    {".rs_1372", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1372), 1},
+    {".rs_1371", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1371), 1},
+    {".rs_1372", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1372), 2},
     {".rs_1373", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1373), 1},
     {".rs_1374", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1374), 2},
     {".rs_1375", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1375), 1},
-    {".rs_1376", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1376), 2},
-    {".rs_1377", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1377), 1},
-    {".rs_1378", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1378), 2},
-    {".rs_1379", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1379), 1},
-    {".rs_1380", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1380), 2},
-    {".rs_1381", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1381), 1},
+    {".rs_1376", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1376), 1},
+    {".rs_1377", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1377), 2},
+    {".rs_1378", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1378), 1},
+    {".rs_1379", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1379), 2},
+    {".rs_1380", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1380), 1},
+    {".rs_1381", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1381), 2},
     {".rs_1382", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1382), 2},
-    {".rs_1383", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1383), 1},
+    {".rs_1383", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1383), 2},
     {".rs_1384", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1384), 2},
-    {".rs_1385", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1385), 1},
+    {".rs_1385", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1385), 2},
     {".rs_1386", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1386), 2},
-    {".rs_1387", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1387), 1},
+    {".rs_1387", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1387), 2},
     {".rs_1388", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1388), 2},
     {".rs_1389", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1389), 2},
-    {".rs_1390", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1390), 1},
+    {".rs_1390", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1390), 2},
     {".rs_1391", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1391), 1},
     {".rs_1392", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1392), 2},
-    {".rs_1393", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1393), 1},
-    {".rs_1394", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1394), 2},
-    {".rs_1395", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1395), 1},
-    {".rs_1396", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1396), 2},
-    {".rs_1397", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1397), 1},
-    {".rs_1398", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1398), 2},
-    {".rs_1399", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1399), 1},
-    {".rs_1400", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1400), 2},
-    {".rs_1401", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1401), 1},
-    {".rs_1402", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1402), 2},
-    {".rs_1403", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1403), 1},
-    {".rs_1404", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1404), 2},
-    {".rs_1405", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1405), 1},
-    {".rs_1406", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1406), 2},
-    {".rs_1407", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1407), 2},
-    {".rs_1408", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1408), 1},
+    {".rs_1393", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1393), 2},
+    {".rs_1394", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1394), 1},
+    {".rs_1395", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1395), 2},
+    {".rs_1396", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1396), 1},
+    {".rs_1397", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1397), 2},
+    {".rs_1398", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1398), 1},
+    {".rs_1399", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1399), 2},
+    {".rs_1400", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1400), 1},
+    {".rs_1401", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1401), 2},
+    {".rs_1402", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1402), 1},
+    {".rs_1403", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1403), 2},
+    {".rs_1404", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1404), 1},
+    {".rs_1405", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1405), 2},
+    {".rs_1406", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1406), 1},
+    {".rs_1407", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1407), 1},
+    {".rs_1408", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1408), 2},
     {".rs_1409", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1409), 1},
     {".rs_1410", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1410), 2},
     {".rs_1411", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1411), 1},
@@ -7803,20 +8462,20 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1414", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1414), 2},
     {".rs_1415", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1415), 1},
     {".rs_1416", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1416), 2},
-    {".rs_1417", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1417), 1},
+    {".rs_1417", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1417), 2},
     {".rs_1418", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1418), 2},
     {".rs_1419", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1419), 1},
     {".rs_1420", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1420), 2},
     {".rs_1421", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1421), 1},
     {".rs_1422", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1422), 2},
     {".rs_1423", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1423), 1},
-    {".rs_1424", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1424), 2},
-    {".rs_1425", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1425), 1},
-    {".rs_1426", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1426), 2},
+    {".rs_1424", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1424), 1},
+    {".rs_1425", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1425), 2},
+    {".rs_1426", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1426), 1},
     {".rs_1427", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1427), 2},
     {".rs_1428", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1428), 1},
-    {".rs_1429", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1429), 1},
-    {".rs_1430", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1430), 2},
+    {".rs_1429", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1429), 2},
+    {".rs_1430", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1430), 1},
     {".rs_1431", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1431), 1},
     {".rs_1432", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1432), 2},
     {".rs_1433", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1433), 1},
@@ -7831,8 +8490,8 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1442", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1442), 2},
     {".rs_1443", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1443), 1},
     {".rs_1444", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1444), 2},
-    {".rs_1445", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1445), 2},
-    {".rs_1446", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1446), 1},
+    {".rs_1445", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1445), 1},
+    {".rs_1446", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1446), 2},
     {".rs_1447", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1447), 1},
     {".rs_1448", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1448), 2},
     {".rs_1449", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1449), 1},
@@ -7840,37 +8499,37 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1451", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1451), 1},
     {".rs_1452", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1452), 2},
     {".rs_1453", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1453), 1},
-    {".rs_1454", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1454), 2},
-    {".rs_1455", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1455), 1},
-    {".rs_1456", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1456), 2},
-    {".rs_1457", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1457), 1},
-    {".rs_1458", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1458), 2},
-    {".rs_1459", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1459), 1},
-    {".rs_1460", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1460), 2},
-    {".rs_1461", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1461), 1},
-    {".rs_1462", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1462), 2},
+    {".rs_1454", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1454), 1},
+    {".rs_1455", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1455), 2},
+    {".rs_1456", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1456), 1},
+    {".rs_1457", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1457), 2},
+    {".rs_1458", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1458), 1},
+    {".rs_1459", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1459), 2},
+    {".rs_1460", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1460), 1},
+    {".rs_1461", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1461), 2},
+    {".rs_1462", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1462), 1},
     {".rs_1463", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1463), 2},
     {".rs_1464", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1464), 1},
-    {".rs_1465", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1465), 1},
-    {".rs_1466", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1466), 2},
-    {".rs_1467", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1467), 1},
-    {".rs_1468", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1468), 2},
-    {".rs_1469", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1469), 1},
-    {".rs_1470", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1470), 2},
-    {".rs_1471", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1471), 1},
-    {".rs_1472", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1472), 2},
-    {".rs_1473", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1473), 1},
+    {".rs_1465", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1465), 2},
+    {".rs_1466", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1466), 1},
+    {".rs_1467", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1467), 2},
+    {".rs_1468", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1468), 1},
+    {".rs_1469", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1469), 2},
+    {".rs_1470", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1470), 1},
+    {".rs_1471", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1471), 2},
+    {".rs_1472", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1472), 1},
+    {".rs_1473", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1473), 2},
     {".rs_1474", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1474), 2},
-    {".rs_1475", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1475), 1},
+    {".rs_1475", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1475), 2},
     {".rs_1476", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1476), 2},
-    {".rs_1477", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1477), 1},
+    {".rs_1477", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1477), 2},
     {".rs_1478", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1478), 2},
-    {".rs_1479", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1479), 1},
-    {".rs_1480", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1480), 2},
+    {".rs_1479", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1479), 2},
+    {".rs_1480", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1480), 1},
     {".rs_1481", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1481), 1},
     {".rs_1482", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1482), 2},
-    {".rs_1483", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1483), 2},
-    {".rs_1484", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1484), 1},
+    {".rs_1483", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1483), 1},
+    {".rs_1484", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1484), 2},
     {".rs_1485", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1485), 1},
     {".rs_1486", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1486), 2},
     {".rs_1487", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1487), 1},
@@ -7879,12 +8538,12 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1490", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1490), 2},
     {".rs_1491", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1491), 1},
     {".rs_1492", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1492), 2},
-    {".rs_1493", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1493), 2},
-    {".rs_1494", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1494), 1},
+    {".rs_1493", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1493), 1},
+    {".rs_1494", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1494), 2},
     {".rs_1495", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1495), 1},
     {".rs_1496", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1496), 2},
-    {".rs_1497", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1497), 1},
-    {".rs_1498", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1498), 2},
+    {".rs_1497", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1497), 2},
+    {".rs_1498", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1498), 1},
     {".rs_1499", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1499), 1},
     {".rs_1500", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1500), 2},
     {".rs_1501", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1501), 1},
@@ -7899,8 +8558,8 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1510", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1510), 2},
     {".rs_1511", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1511), 1},
     {".rs_1512", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1512), 2},
-    {".rs_1513", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1513), 1},
-    {".rs_1514", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1514), 2},
+    {".rs_1513", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1513), 2},
+    {".rs_1514", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1514), 1},
     {".rs_1515", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1515), 1},
     {".rs_1516", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1516), 2},
     {".rs_1517", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1517), 1},
@@ -7909,10 +8568,10 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1520", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1520), 2},
     {".rs_1521", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1521), 1},
     {".rs_1522", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1522), 2},
-    {".rs_1523", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1523), 2},
-    {".rs_1524", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1524), 1},
-    {".rs_1525", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1525), 1},
-    {".rs_1526", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1526), 2},
+    {".rs_1523", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1523), 1},
+    {".rs_1524", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1524), 2},
+    {".rs_1525", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1525), 2},
+    {".rs_1526", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1526), 1},
     {".rs_1527", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1527), 1},
     {".rs_1528", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1528), 2},
     {".rs_1529", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1529), 1},
@@ -7921,10 +8580,10 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1532", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1532), 2},
     {".rs_1533", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1533), 1},
     {".rs_1534", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1534), 2},
-    {".rs_1535", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1535), 2},
-    {".rs_1536", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1536), 1},
-    {".rs_1537", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1537), 1},
-    {".rs_1538", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1538), 2},
+    {".rs_1535", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1535), 1},
+    {".rs_1536", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1536), 2},
+    {".rs_1537", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1537), 2},
+    {".rs_1538", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1538), 1},
     {".rs_1539", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1539), 1},
     {".rs_1540", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1540), 2},
     {".rs_1541", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1541), 1},
@@ -7933,14 +8592,14 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1544", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1544), 2},
     {".rs_1545", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1545), 1},
     {".rs_1546", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1546), 2},
-    {".rs_1547", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1547), 2},
-    {".rs_1548", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1548), 1},
+    {".rs_1547", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1547), 1},
+    {".rs_1548", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1548), 2},
     {".rs_1549", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1549), 1},
     {".rs_1550", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1550), 2},
     {".rs_1551", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1551), 1},
     {".rs_1552", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1552), 2},
-    {".rs_1553", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1553), 1},
-    {".rs_1554", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1554), 2},
+    {".rs_1553", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1553), 2},
+    {".rs_1554", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1554), 1},
     {".rs_1555", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1555), 1},
     {".rs_1556", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1556), 2},
     {".rs_1557", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1557), 1},
@@ -7951,10 +8610,10 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1562", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1562), 2},
     {".rs_1563", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1563), 1},
     {".rs_1564", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1564), 2},
-    {".rs_1565", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1565), 2},
-    {".rs_1566", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1566), 1},
-    {".rs_1567", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1567), 1},
-    {".rs_1568", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1568), 2},
+    {".rs_1565", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1565), 1},
+    {".rs_1566", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1566), 2},
+    {".rs_1567", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1567), 2},
+    {".rs_1568", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1568), 1},
     {".rs_1569", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1569), 1},
     {".rs_1570", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1570), 2},
     {".rs_1571", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1571), 1},
@@ -7965,22 +8624,22 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1576", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1576), 2},
     {".rs_1577", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1577), 1},
     {".rs_1578", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1578), 2},
-    {".rs_1579", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1579), 2},
-    {".rs_1580", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1580), 1},
-    {".rs_1581", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1581), 1},
-    {".rs_1582", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1582), 2},
-    {".rs_1583", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1583), 1},
+    {".rs_1579", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1579), 1},
+    {".rs_1580", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1580), 2},
+    {".rs_1581", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1581), 2},
+    {".rs_1582", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1582), 1},
+    {".rs_1583", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1583), 2},
     {".rs_1584", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1584), 2},
-    {".rs_1585", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1585), 1},
-    {".rs_1586", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1586), 2},
-    {".rs_1587", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1587), 1},
-    {".rs_1588", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1588), 2},
-    {".rs_1589", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1589), 1},
-    {".rs_1590", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1590), 2},
-    {".rs_1591", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1591), 1},
-    {".rs_1592", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1592), 2},
-    {".rs_1593", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1593), 1},
-    {".rs_1594", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1594), 2},
+    {".rs_1585", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1585), 2},
+    {".rs_1586", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1586), 1},
+    {".rs_1587", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1587), 2},
+    {".rs_1588", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1588), 1},
+    {".rs_1589", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1589), 2},
+    {".rs_1590", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1590), 1},
+    {".rs_1591", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1591), 2},
+    {".rs_1592", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1592), 1},
+    {".rs_1593", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1593), 2},
+    {".rs_1594", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1594), 1},
     {".rs_1595", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1595), 2},
     {".rs_1596", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1596), 1},
     {".rs_1597", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1597), 1},
@@ -7991,157 +8650,157 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1602", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1602), 2},
     {".rs_1603", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1603), 1},
     {".rs_1604", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1604), 2},
-    {".rs_1605", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1605), 2},
-    {".rs_1606", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1606), 1},
+    {".rs_1605", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1605), 1},
+    {".rs_1606", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1606), 2},
     {".rs_1607", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1607), 1},
     {".rs_1608", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1608), 2},
     {".rs_1609", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1609), 1},
     {".rs_1610", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1610), 2},
-    {".rs_1611", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1611), 1},
+    {".rs_1611", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1611), 2},
     {".rs_1612", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1612), 2},
     {".rs_1613", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1613), 1},
-    {".rs_1614", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1614), 2},
-    {".rs_1615", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1615), 1},
-    {".rs_1616", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1616), 2},
-    {".rs_1617", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1617), 1},
-    {".rs_1618", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1618), 2},
-    {".rs_1619", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1619), 1},
-    {".rs_1620", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1620), 2},
-    {".rs_1621", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1621), 1},
-    {".rs_1622", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1622), 2},
+    {".rs_1614", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1614), 1},
+    {".rs_1615", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1615), 2},
+    {".rs_1616", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1616), 1},
+    {".rs_1617", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1617), 2},
+    {".rs_1618", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1618), 1},
+    {".rs_1619", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1619), 2},
+    {".rs_1620", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1620), 1},
+    {".rs_1621", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1621), 2},
+    {".rs_1622", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1622), 1},
     {".rs_1623", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1623), 2},
     {".rs_1624", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1624), 1},
-    {".rs_1625", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1625), 1},
+    {".rs_1625", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1625), 2},
     {".rs_1626", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1626), 2},
     {".rs_1627", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1627), 1},
-    {".rs_1628", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1628), 2},
-    {".rs_1629", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1629), 1},
-    {".rs_1630", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1630), 2},
-    {".rs_1631", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1631), 1},
-    {".rs_1632", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1632), 2},
-    {".rs_1633", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1633), 1},
-    {".rs_1634", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1634), 2},
+    {".rs_1628", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1628), 1},
+    {".rs_1629", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1629), 2},
+    {".rs_1630", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1630), 1},
+    {".rs_1631", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1631), 2},
+    {".rs_1632", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1632), 1},
+    {".rs_1633", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1633), 2},
+    {".rs_1634", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1634), 1},
     {".rs_1635", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1635), 2},
     {".rs_1636", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1636), 1},
-    {".rs_1637", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1637), 1},
-    {".rs_1638", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1638), 2},
-    {".rs_1639", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1639), 1},
+    {".rs_1637", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1637), 2},
+    {".rs_1638", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1638), 1},
+    {".rs_1639", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1639), 2},
     {".rs_1640", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1640), 2},
     {".rs_1641", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1641), 1},
-    {".rs_1642", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1642), 2},
-    {".rs_1643", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1643), 1},
-    {".rs_1644", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1644), 2},
-    {".rs_1645", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1645), 1},
-    {".rs_1646", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1646), 2},
-    {".rs_1647", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1647), 1},
-    {".rs_1648", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1648), 2},
-    {".rs_1649", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1649), 1},
-    {".rs_1650", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1650), 2},
+    {".rs_1642", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1642), 1},
+    {".rs_1643", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1643), 2},
+    {".rs_1644", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1644), 1},
+    {".rs_1645", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1645), 2},
+    {".rs_1646", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1646), 1},
+    {".rs_1647", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1647), 2},
+    {".rs_1648", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1648), 1},
+    {".rs_1649", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1649), 2},
+    {".rs_1650", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1650), 1},
     {".rs_1651", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1651), 2},
     {".rs_1652", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1652), 1},
-    {".rs_1653", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1653), 1},
-    {".rs_1654", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1654), 2},
-    {".rs_1655", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1655), 1},
+    {".rs_1653", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1653), 2},
+    {".rs_1654", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1654), 1},
+    {".rs_1655", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1655), 2},
     {".rs_1656", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1656), 2},
     {".rs_1657", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1657), 1},
-    {".rs_1658", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1658), 2},
-    {".rs_1659", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1659), 1},
-    {".rs_1660", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1660), 2},
+    {".rs_1658", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1658), 1},
+    {".rs_1659", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1659), 2},
+    {".rs_1660", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1660), 1},
     {".rs_1661", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1661), 2},
     {".rs_1662", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1662), 1},
-    {".rs_1663", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1663), 1},
-    {".rs_1664", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1664), 2},
-    {".rs_1665", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1665), 1},
-    {".rs_1666", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1666), 2},
-    {".rs_1667", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1667), 1},
-    {".rs_1668", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1668), 2},
-    {".rs_1669", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1669), 1},
-    {".rs_1670", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1670), 2},
-    {".rs_1671", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1671), 1},
-    {".rs_1672", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1672), 2},
-    {".rs_1673", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1673), 1},
+    {".rs_1663", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1663), 2},
+    {".rs_1664", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1664), 1},
+    {".rs_1665", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1665), 2},
+    {".rs_1666", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1666), 1},
+    {".rs_1667", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1667), 2},
+    {".rs_1668", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1668), 1},
+    {".rs_1669", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1669), 2},
+    {".rs_1670", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1670), 1},
+    {".rs_1671", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1671), 2},
+    {".rs_1672", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1672), 1},
+    {".rs_1673", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1673), 2},
     {".rs_1674", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1674), 2},
     {".rs_1675", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1675), 1},
-    {".rs_1676", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1676), 2},
-    {".rs_1677", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1677), 1},
-    {".rs_1678", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1678), 2},
+    {".rs_1676", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1676), 1},
+    {".rs_1677", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1677), 2},
+    {".rs_1678", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1678), 1},
     {".rs_1679", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1679), 2},
     {".rs_1680", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1680), 1},
-    {".rs_1681", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1681), 1},
-    {".rs_1682", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1682), 2},
-    {".rs_1683", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1683), 1},
-    {".rs_1684", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1684), 2},
-    {".rs_1685", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1685), 1},
-    {".rs_1686", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1686), 2},
-    {".rs_1687", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1687), 1},
-    {".rs_1688", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1688), 2},
-    {".rs_1689", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1689), 1},
-    {".rs_1690", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1690), 2},
-    {".rs_1691", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1691), 1},
+    {".rs_1681", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1681), 2},
+    {".rs_1682", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1682), 1},
+    {".rs_1683", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1683), 2},
+    {".rs_1684", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1684), 1},
+    {".rs_1685", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1685), 2},
+    {".rs_1686", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1686), 1},
+    {".rs_1687", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1687), 2},
+    {".rs_1688", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1688), 1},
+    {".rs_1689", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1689), 2},
+    {".rs_1690", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1690), 1},
+    {".rs_1691", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1691), 2},
     {".rs_1692", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1692), 2},
     {".rs_1693", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1693), 1},
-    {".rs_1694", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1694), 2},
-    {".rs_1695", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1695), 1},
-    {".rs_1696", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1696), 2},
-    {".rs_1697", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1697), 1},
-    {".rs_1698", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1698), 2},
-    {".rs_1699", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1699), 1},
-    {".rs_1700", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1700), 2},
-    {".rs_1701", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1701), 1},
-    {".rs_1702", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1702), 2},
-    {".rs_1703", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1703), 1},
-    {".rs_1704", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1704), 2},
+    {".rs_1694", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1694), 1},
+    {".rs_1695", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1695), 2},
+    {".rs_1696", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1696), 1},
+    {".rs_1697", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1697), 2},
+    {".rs_1698", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1698), 1},
+    {".rs_1699", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1699), 2},
+    {".rs_1700", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1700), 1},
+    {".rs_1701", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1701), 2},
+    {".rs_1702", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1702), 1},
+    {".rs_1703", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1703), 2},
+    {".rs_1704", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1704), 1},
     {".rs_1705", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1705), 2},
     {".rs_1706", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1706), 1},
-    {".rs_1707", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1707), 1},
-    {".rs_1708", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1708), 2},
-    {".rs_1709", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1709), 1},
-    {".rs_1710", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1710), 2},
-    {".rs_1711", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1711), 1},
+    {".rs_1707", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1707), 2},
+    {".rs_1708", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1708), 1},
+    {".rs_1709", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1709), 2},
+    {".rs_1710", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1710), 1},
+    {".rs_1711", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1711), 2},
     {".rs_1712", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1712), 2},
     {".rs_1713", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1713), 1},
-    {".rs_1714", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1714), 2},
+    {".rs_1714", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1714), 1},
     {".rs_1715", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1715), 2},
     {".rs_1716", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1716), 1},
-    {".rs_1717", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1717), 1},
-    {".rs_1718", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1718), 2},
-    {".rs_1719", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1719), 1},
-    {".rs_1720", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1720), 2},
-    {".rs_1721", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1721), 1},
-    {".rs_1722", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1722), 2},
-    {".rs_1723", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1723), 1},
-    {".rs_1724", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1724), 2},
-    {".rs_1725", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1725), 1},
-    {".rs_1726", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1726), 2},
-    {".rs_1727", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1727), 1},
-    {".rs_1728", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1728), 2},
-    {".rs_1729", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1729), 1},
+    {".rs_1717", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1717), 2},
+    {".rs_1718", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1718), 1},
+    {".rs_1719", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1719), 2},
+    {".rs_1720", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1720), 1},
+    {".rs_1721", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1721), 2},
+    {".rs_1722", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1722), 1},
+    {".rs_1723", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1723), 2},
+    {".rs_1724", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1724), 1},
+    {".rs_1725", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1725), 2},
+    {".rs_1726", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1726), 1},
+    {".rs_1727", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1727), 2},
+    {".rs_1728", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1728), 1},
+    {".rs_1729", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1729), 2},
     {".rs_1730", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1730), 2},
     {".rs_1731", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1731), 1},
-    {".rs_1732", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1732), 2},
-    {".rs_1733", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1733), 1},
-    {".rs_1734", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1734), 2},
+    {".rs_1732", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1732), 1},
+    {".rs_1733", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1733), 2},
+    {".rs_1734", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1734), 1},
     {".rs_1735", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1735), 2},
     {".rs_1736", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1736), 1},
-    {".rs_1737", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1737), 1},
-    {".rs_1738", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1738), 2},
-    {".rs_1739", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1739), 1},
-    {".rs_1740", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1740), 2},
-    {".rs_1741", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1741), 1},
-    {".rs_1742", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1742), 2},
-    {".rs_1743", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1743), 1},
-    {".rs_1744", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1744), 2},
-    {".rs_1745", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1745), 1},
-    {".rs_1746", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1746), 2},
-    {".rs_1747", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1747), 1},
+    {".rs_1737", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1737), 2},
+    {".rs_1738", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1738), 1},
+    {".rs_1739", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1739), 2},
+    {".rs_1740", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1740), 1},
+    {".rs_1741", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1741), 2},
+    {".rs_1742", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1742), 1},
+    {".rs_1743", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1743), 2},
+    {".rs_1744", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1744), 1},
+    {".rs_1745", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1745), 2},
+    {".rs_1746", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1746), 1},
+    {".rs_1747", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1747), 2},
     {".rs_1748", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1748), 2},
-    {".rs_1749", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1749), 2},
+    {".rs_1749", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1749), 1},
     {".rs_1750", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1750), 1},
-    {".rs_1751", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1751), 1},
-    {".rs_1752", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1752), 2},
-    {".rs_1753", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1753), 1},
-    {".rs_1754", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1754), 2},
-    {".rs_1755", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1755), 1},
+    {".rs_1751", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1751), 2},
+    {".rs_1752", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1752), 1},
+    {".rs_1753", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1753), 2},
+    {".rs_1754", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1754), 1},
+    {".rs_1755", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1755), 2},
     {".rs_1756", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1756), 1},
     {".rs_1757", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1757), 2},
     {".rs_1758", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1758), 1},
@@ -8154,8 +8813,8 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1765", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1765), 2},
     {".rs_1766", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1766), 1},
     {".rs_1767", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1767), 2},
-    {".rs_1768", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1768), 1},
-    {".rs_1769", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1769), 2},
+    {".rs_1768", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1768), 2},
+    {".rs_1769", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1769), 1},
     {".rs_1770", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1770), 1},
     {".rs_1771", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1771), 2},
     {".rs_1772", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1772), 1},
@@ -8164,19 +8823,19 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1775", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1775), 2},
     {".rs_1776", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1776), 1},
     {".rs_1777", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1777), 2},
-    {".rs_1778", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1778), 1},
-    {".rs_1779", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1779), 2},
-    {".rs_1780", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1780), 2},
+    {".rs_1778", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1778), 2},
+    {".rs_1779", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1779), 1},
+    {".rs_1780", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1780), 1},
     {".rs_1781", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1781), 2},
-    {".rs_1782", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1782), 2},
+    {".rs_1782", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1782), 1},
     {".rs_1783", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1783), 2},
-    {".rs_1784", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1784), 2},
+    {".rs_1784", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1784), 1},
     {".rs_1785", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1785), 2},
-    {".rs_1786", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1786), 2},
+    {".rs_1786", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1786), 1},
     {".rs_1787", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1787), 2},
-    {".rs_1788", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1788), 2},
+    {".rs_1788", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1788), 1},
     {".rs_1789", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1789), 2},
-    {".rs_1790", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1790), 2},
+    {".rs_1790", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1790), 1},
     {".rs_1791", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1791), 2},
     {".rs_1792", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1792), 1},
     {".rs_1793", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1793), 2},
@@ -8192,10 +8851,10 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1803", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1803), 2},
     {".rs_1804", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1804), 1},
     {".rs_1805", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1805), 2},
-    {".rs_1806", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1806), 2},
-    {".rs_1807", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1807), 1},
-    {".rs_1808", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1808), 1},
-    {".rs_1809", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1809), 2},
+    {".rs_1806", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1806), 1},
+    {".rs_1807", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1807), 2},
+    {".rs_1808", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1808), 2},
+    {".rs_1809", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1809), 1},
     {".rs_1810", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1810), 1},
     {".rs_1811", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1811), 2},
     {".rs_1812", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1812), 1},
@@ -8232,36 +8891,36 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1843", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1843), 2},
     {".rs_1844", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1844), 1},
     {".rs_1845", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1845), 2},
-    {".rs_1846", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1846), 2},
-    {".rs_1847", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1847), 1},
+    {".rs_1846", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1846), 1},
+    {".rs_1847", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1847), 2},
     {".rs_1848", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1848), 1},
     {".rs_1849", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1849), 2},
-    {".rs_1850", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1850), 1},
-    {".rs_1851", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1851), 2},
+    {".rs_1850", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1850), 2},
+    {".rs_1851", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1851), 1},
     {".rs_1852", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1852), 1},
     {".rs_1853", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1853), 2},
     {".rs_1854", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1854), 1},
     {".rs_1855", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1855), 2},
     {".rs_1856", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1856), 1},
     {".rs_1857", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1857), 2},
-    {".rs_1858", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1858), 2},
-    {".rs_1859", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1859), 1},
+    {".rs_1858", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1858), 1},
+    {".rs_1859", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1859), 2},
     {".rs_1860", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1860), 1},
     {".rs_1861", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1861), 2},
     {".rs_1862", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1862), 1},
     {".rs_1863", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1863), 2},
-    {".rs_1864", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1864), 1},
-    {".rs_1865", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1865), 2},
+    {".rs_1864", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1864), 2},
+    {".rs_1865", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1865), 1},
     {".rs_1866", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1866), 1},
     {".rs_1867", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1867), 2},
     {".rs_1868", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1868), 1},
     {".rs_1869", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1869), 2},
-    {".rs_1870", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1870), 2},
+    {".rs_1870", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1870), 1},
     {".rs_1871", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1871), 1},
-    {".rs_1872", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1872), 1},
-    {".rs_1873", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1873), 2},
-    {".rs_1874", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1874), 1},
-    {".rs_1875", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1875), 2},
+    {".rs_1872", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1872), 2},
+    {".rs_1873", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1873), 1},
+    {".rs_1874", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1874), 2},
+    {".rs_1875", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1875), 1},
     {".rs_1876", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1876), 1},
     {".rs_1877", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1877), 2},
     {".rs_1878", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1878), 1},
@@ -8270,14 +8929,14 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1881", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1881), 2},
     {".rs_1882", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1882), 1},
     {".rs_1883", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1883), 2},
-    {".rs_1884", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1884), 2},
-    {".rs_1885", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1885), 1},
-    {".rs_1886", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1886), 2},
+    {".rs_1884", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1884), 1},
+    {".rs_1885", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1885), 2},
+    {".rs_1886", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1886), 1},
     {".rs_1887", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1887), 2},
-    {".rs_1888", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1888), 2},
+    {".rs_1888", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1888), 1},
     {".rs_1889", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1889), 2},
-    {".rs_1890", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1890), 2},
-    {".rs_1891", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1891), 1},
+    {".rs_1890", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1890), 1},
+    {".rs_1891", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1891), 2},
     {".rs_1892", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1892), 1},
     {".rs_1893", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1893), 2},
     {".rs_1894", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1894), 1},
@@ -8286,21 +8945,21 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1897", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1897), 2},
     {".rs_1898", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1898), 1},
     {".rs_1899", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1899), 2},
-    {".rs_1900", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1900), 1},
+    {".rs_1900", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1900), 2},
     {".rs_1901", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1901), 2},
-    {".rs_1902", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1902), 1},
+    {".rs_1902", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1902), 2},
     {".rs_1903", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1903), 2},
-    {".rs_1904", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1904), 1},
+    {".rs_1904", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1904), 2},
     {".rs_1905", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1905), 2},
-    {".rs_1906", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1906), 1},
+    {".rs_1906", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1906), 2},
     {".rs_1907", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1907), 2},
-    {".rs_1908", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1908), 1},
+    {".rs_1908", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1908), 2},
     {".rs_1909", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1909), 2},
-    {".rs_1910", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1910), 1},
+    {".rs_1910", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1910), 2},
     {".rs_1911", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1911), 2},
-    {".rs_1912", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1912), 1},
-    {".rs_1913", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1913), 2},
-    {".rs_1914", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1914), 1},
+    {".rs_1912", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1912), 2},
+    {".rs_1913", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1913), 1},
+    {".rs_1914", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1914), 2},
     {".rs_1915", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1915), 1},
     {".rs_1916", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1916), 2},
     {".rs_1917", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1917), 1},
@@ -8313,8 +8972,8 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1924", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1924), 2},
     {".rs_1925", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1925), 1},
     {".rs_1926", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1926), 2},
-    {".rs_1927", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1927), 1},
-    {".rs_1928", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1928), 2},
+    {".rs_1927", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1927), 2},
+    {".rs_1928", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1928), 1},
     {".rs_1929", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1929), 1},
     {".rs_1930", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1930), 2},
     {".rs_1931", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1931), 1},
@@ -8323,44 +8982,44 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1934", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1934), 2},
     {".rs_1935", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1935), 1},
     {".rs_1936", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1936), 2},
-    {".rs_1937", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1937), 1},
-    {".rs_1938", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1938), 2},
+    {".rs_1937", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1937), 2},
+    {".rs_1938", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1938), 1},
     {".rs_1939", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1939), 1},
     {".rs_1940", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1940), 2},
-    {".rs_1941", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1941), 2},
+    {".rs_1941", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1941), 1},
     {".rs_1942", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1942), 2},
-    {".rs_1943", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1943), 2},
+    {".rs_1943", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1943), 1},
     {".rs_1944", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1944), 2},
-    {".rs_1945", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1945), 2},
+    {".rs_1945", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1945), 1},
     {".rs_1946", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1946), 2},
-    {".rs_1947", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1947), 2},
+    {".rs_1947", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1947), 1},
     {".rs_1948", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1948), 2},
-    {".rs_1949", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1949), 2},
+    {".rs_1949", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1949), 1},
     {".rs_1950", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1950), 2},
-    {".rs_1951", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1951), 2},
+    {".rs_1951", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1951), 1},
     {".rs_1952", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1952), 2},
-    {".rs_1953", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1953), 2},
+    {".rs_1953", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1953), 1},
     {".rs_1954", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1954), 2},
     {".rs_1955", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1955), 2},
-    {".rs_1956", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1956), 2},
-    {".rs_1957", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1957), 2},
+    {".rs_1956", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1956), 1},
+    {".rs_1957", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1957), 1},
     {".rs_1958", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1958), 2},
     {".rs_1959", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1959), 1},
-    {".rs_1960", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1960), 1},
-    {".rs_1961", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1961), 2},
-    {".rs_1962", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1962), 1},
-    {".rs_1963", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1963), 2},
-    {".rs_1964", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1964), 1},
-    {".rs_1965", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1965), 2},
-    {".rs_1966", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1966), 1},
+    {".rs_1960", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1960), 2},
+    {".rs_1961", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1961), 1},
+    {".rs_1962", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1962), 2},
+    {".rs_1963", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1963), 1},
+    {".rs_1964", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1964), 2},
+    {".rs_1965", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1965), 1},
+    {".rs_1966", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1966), 2},
     {".rs_1967", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1967), 2},
     {".rs_1968", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1968), 1},
-    {".rs_1969", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1969), 2},
-    {".rs_1970", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1970), 1},
-    {".rs_1971", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1971), 2},
-    {".rs_1972", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1972), 1},
-    {".rs_1973", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1973), 2},
-    {".rs_1974", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1974), 1},
+    {".rs_1969", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1969), 1},
+    {".rs_1970", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1970), 2},
+    {".rs_1971", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1971), 1},
+    {".rs_1972", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1972), 2},
+    {".rs_1973", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1973), 1},
+    {".rs_1974", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1974), 2},
     {".rs_1975", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1975), 1},
     {".rs_1976", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1976), 2},
     {".rs_1977", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1977), 1},
@@ -8369,8 +9028,8 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1980", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1980), 2},
     {".rs_1981", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1981), 1},
     {".rs_1982", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1982), 2},
-    {".rs_1983", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1983), 1},
-    {".rs_1984", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1984), 2},
+    {".rs_1983", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1983), 2},
+    {".rs_1984", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1984), 1},
     {".rs_1985", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1985), 1},
     {".rs_1986", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1986), 2},
     {".rs_1987", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1987), 1},
@@ -8379,277 +9038,277 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_1990", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1990), 2},
     {".rs_1991", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1991), 1},
     {".rs_1992", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1992), 2},
-    {".rs_1993", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1993), 1},
-    {".rs_1994", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1994), 2},
+    {".rs_1993", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1993), 2},
+    {".rs_1994", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1994), 1},
     {".rs_1995", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1995), 1},
     {".rs_1996", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1996), 2},
-    {".rs_1997", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1997), 2},
+    {".rs_1997", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1997), 1},
     {".rs_1998", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1998), 2},
-    {".rs_1999", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1999), 2},
+    {".rs_1999", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_1999), 1},
     {".rs_2000", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2000), 2},
-    {".rs_2001", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2001), 2},
+    {".rs_2001", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2001), 1},
     {".rs_2002", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2002), 2},
-    {".rs_2003", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2003), 2},
+    {".rs_2003", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2003), 1},
     {".rs_2004", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2004), 2},
-    {".rs_2005", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2005), 2},
+    {".rs_2005", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2005), 1},
     {".rs_2006", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2006), 2},
-    {".rs_2007", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2007), 2},
+    {".rs_2007", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2007), 1},
     {".rs_2008", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2008), 2},
-    {".rs_2009", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2009), 2},
-    {".rs_2010", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2010), 1},
-    {".rs_2011", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2011), 1},
-    {".rs_2012", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2012), 2},
-    {".rs_2013", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2013), 2},
+    {".rs_2009", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2009), 1},
+    {".rs_2010", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2010), 2},
+    {".rs_2011", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2011), 2},
+    {".rs_2012", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2012), 1},
+    {".rs_2013", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2013), 1},
     {".rs_2014", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2014), 2},
-    {".rs_2015", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2015), 2},
+    {".rs_2015", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2015), 1},
     {".rs_2016", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2016), 2},
-    {".rs_2017", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2017), 2},
+    {".rs_2017", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2017), 1},
     {".rs_2018", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2018), 2},
-    {".rs_2019", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2019), 2},
+    {".rs_2019", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2019), 1},
     {".rs_2020", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2020), 2},
     {".rs_2021", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2021), 1},
     {".rs_2022", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2022), 2},
-    {".rs_2023", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2023), 2},
+    {".rs_2023", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2023), 1},
     {".rs_2024", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2024), 2},
-    {".rs_2025", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2025), 2},
+    {".rs_2025", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2025), 1},
     {".rs_2026", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2026), 2},
-    {".rs_2027", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2027), 2},
+    {".rs_2027", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2027), 1},
     {".rs_2028", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2028), 2},
-    {".rs_2029", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2029), 2},
+    {".rs_2029", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2029), 1},
     {".rs_2030", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2030), 2},
-    {".rs_2031", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2031), 2},
+    {".rs_2031", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2031), 1},
     {".rs_2032", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2032), 2},
-    {".rs_2033", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2033), 2},
+    {".rs_2033", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2033), 1},
     {".rs_2034", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2034), 2},
-    {".rs_2035", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2035), 2},
-    {".rs_2036", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2036), 1},
+    {".rs_2035", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2035), 1},
+    {".rs_2036", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2036), 2},
     {".rs_2037", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2037), 2},
-    {".rs_2038", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2038), 2},
-    {".rs_2039", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2039), 2},
+    {".rs_2038", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2038), 1},
+    {".rs_2039", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2039), 1},
     {".rs_2040", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2040), 2},
-    {".rs_2041", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2041), 2},
+    {".rs_2041", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2041), 1},
     {".rs_2042", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2042), 2},
-    {".rs_2043", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2043), 2},
+    {".rs_2043", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2043), 1},
     {".rs_2044", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2044), 2},
-    {".rs_2045", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2045), 2},
+    {".rs_2045", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2045), 1},
     {".rs_2046", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2046), 2},
     {".rs_2047", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2047), 2},
-    {".rs_2048", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2048), 2},
-    {".rs_2049", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2049), 2},
+    {".rs_2048", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2048), 1},
+    {".rs_2049", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2049), 1},
     {".rs_2050", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2050), 2},
-    {".rs_2051", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2051), 2},
+    {".rs_2051", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2051), 1},
     {".rs_2052", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2052), 2},
-    {".rs_2053", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2053), 2},
+    {".rs_2053", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2053), 1},
     {".rs_2054", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2054), 2},
-    {".rs_2055", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2055), 2},
+    {".rs_2055", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2055), 1},
     {".rs_2056", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2056), 2},
-    {".rs_2057", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2057), 2},
+    {".rs_2057", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2057), 1},
     {".rs_2058", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2058), 2},
-    {".rs_2059", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2059), 2},
+    {".rs_2059", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2059), 1},
     {".rs_2060", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2060), 2},
-    {".rs_2061", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2061), 2},
+    {".rs_2061", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2061), 1},
     {".rs_2062", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2062), 2},
-    {".rs_2063", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2063), 2},
+    {".rs_2063", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2063), 1},
     {".rs_2064", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2064), 2},
-    {".rs_2065", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2065), 2},
+    {".rs_2065", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2065), 1},
     {".rs_2066", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2066), 2},
     {".rs_2067", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2067), 2},
-    {".rs_2068", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2068), 2},
-    {".rs_2069", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2069), 2},
+    {".rs_2068", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2068), 1},
+    {".rs_2069", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2069), 1},
     {".rs_2070", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2070), 2},
-    {".rs_2071", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2071), 2},
+    {".rs_2071", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2071), 1},
     {".rs_2072", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2072), 2},
-    {".rs_2073", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2073), 2},
+    {".rs_2073", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2073), 1},
     {".rs_2074", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2074), 2},
-    {".rs_2075", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2075), 2},
+    {".rs_2075", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2075), 1},
     {".rs_2076", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2076), 2},
-    {".rs_2077", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2077), 2},
+    {".rs_2077", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2077), 1},
     {".rs_2078", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2078), 2},
-    {".rs_2079", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2079), 2},
+    {".rs_2079", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2079), 1},
     {".rs_2080", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2080), 2},
     {".rs_2081", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2081), 2},
-    {".rs_2082", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2082), 2},
-    {".rs_2083", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2083), 2},
+    {".rs_2082", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2082), 1},
+    {".rs_2083", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2083), 1},
     {".rs_2084", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2084), 2},
-    {".rs_2085", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2085), 2},
+    {".rs_2085", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2085), 1},
     {".rs_2086", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2086), 2},
-    {".rs_2087", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2087), 2},
+    {".rs_2087", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2087), 1},
     {".rs_2088", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2088), 2},
-    {".rs_2089", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2089), 2},
+    {".rs_2089", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2089), 1},
     {".rs_2090", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2090), 2},
-    {".rs_2091", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2091), 2},
+    {".rs_2091", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2091), 1},
     {".rs_2092", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2092), 2},
-    {".rs_2093", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2093), 2},
+    {".rs_2093", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2093), 1},
     {".rs_2094", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2094), 2},
     {".rs_2095", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2095), 1},
     {".rs_2096", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2096), 2},
     {".rs_2097", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2097), 2},
-    {".rs_2098", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2098), 2},
-    {".rs_2099", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2099), 2},
+    {".rs_2098", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2098), 1},
+    {".rs_2099", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2099), 1},
     {".rs_2100", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2100), 2},
-    {".rs_2101", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2101), 2},
+    {".rs_2101", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2101), 1},
     {".rs_2102", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2102), 2},
     {".rs_2103", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2103), 1},
     {".rs_2104", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2104), 2},
-    {".rs_2105", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2105), 2},
+    {".rs_2105", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2105), 1},
     {".rs_2106", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2106), 2},
-    {".rs_2107", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2107), 2},
+    {".rs_2107", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2107), 1},
     {".rs_2108", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2108), 2},
-    {".rs_2109", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2109), 2},
+    {".rs_2109", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2109), 1},
     {".rs_2110", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2110), 2},
     {".rs_2111", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2111), 2},
-    {".rs_2112", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2112), 2},
-    {".rs_2113", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2113), 2},
+    {".rs_2112", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2112), 1},
+    {".rs_2113", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2113), 1},
     {".rs_2114", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2114), 2},
-    {".rs_2115", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2115), 2},
+    {".rs_2115", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2115), 1},
     {".rs_2116", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2116), 2},
-    {".rs_2117", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2117), 2},
+    {".rs_2117", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2117), 1},
     {".rs_2118", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2118), 2},
-    {".rs_2119", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2119), 2},
+    {".rs_2119", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2119), 1},
     {".rs_2120", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2120), 2},
-    {".rs_2121", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2121), 2},
+    {".rs_2121", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2121), 1},
     {".rs_2122", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2122), 2},
     {".rs_2123", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2123), 2},
-    {".rs_2124", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2124), 2},
-    {".rs_2125", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2125), 2},
+    {".rs_2124", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2124), 1},
+    {".rs_2125", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2125), 1},
     {".rs_2126", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2126), 2},
-    {".rs_2127", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2127), 2},
+    {".rs_2127", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2127), 1},
     {".rs_2128", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2128), 2},
-    {".rs_2129", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2129), 2},
+    {".rs_2129", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2129), 1},
     {".rs_2130", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2130), 2},
-    {".rs_2131", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2131), 2},
+    {".rs_2131", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2131), 1},
     {".rs_2132", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2132), 2},
-    {".rs_2133", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2133), 2},
+    {".rs_2133", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2133), 1},
     {".rs_2134", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2134), 2},
-    {".rs_2135", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2135), 2},
+    {".rs_2135", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2135), 1},
     {".rs_2136", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2136), 2},
     {".rs_2137", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2137), 2},
-    {".rs_2138", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2138), 2},
-    {".rs_2139", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2139), 2},
+    {".rs_2138", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2138), 1},
+    {".rs_2139", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2139), 1},
     {".rs_2140", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2140), 2},
-    {".rs_2141", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2141), 2},
+    {".rs_2141", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2141), 1},
     {".rs_2142", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2142), 2},
-    {".rs_2143", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2143), 2},
+    {".rs_2143", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2143), 1},
     {".rs_2144", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2144), 2},
-    {".rs_2145", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2145), 2},
+    {".rs_2145", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2145), 1},
     {".rs_2146", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2146), 2},
     {".rs_2147", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2147), 1},
     {".rs_2148", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2148), 2},
     {".rs_2149", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2149), 2},
-    {".rs_2150", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2150), 2},
-    {".rs_2151", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2151), 2},
+    {".rs_2150", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2150), 1},
+    {".rs_2151", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2151), 1},
     {".rs_2152", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2152), 2},
-    {".rs_2153", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2153), 2},
+    {".rs_2153", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2153), 1},
     {".rs_2154", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2154), 2},
-    {".rs_2155", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2155), 2},
+    {".rs_2155", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2155), 1},
     {".rs_2156", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2156), 2},
-    {".rs_2157", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2157), 2},
+    {".rs_2157", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2157), 1},
     {".rs_2158", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2158), 2},
-    {".rs_2159", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2159), 2},
+    {".rs_2159", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2159), 1},
     {".rs_2160", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2160), 2},
     {".rs_2161", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2161), 2},
-    {".rs_2162", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2162), 2},
-    {".rs_2163", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2163), 2},
+    {".rs_2162", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2162), 1},
+    {".rs_2163", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2163), 1},
     {".rs_2164", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2164), 2},
-    {".rs_2165", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2165), 2},
+    {".rs_2165", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2165), 1},
     {".rs_2166", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2166), 2},
-    {".rs_2167", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2167), 2},
+    {".rs_2167", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2167), 1},
     {".rs_2168", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2168), 2},
-    {".rs_2169", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2169), 2},
+    {".rs_2169", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2169), 1},
     {".rs_2170", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2170), 2},
-    {".rs_2171", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2171), 2},
+    {".rs_2171", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2171), 1},
     {".rs_2172", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2172), 2},
-    {".rs_2173", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2173), 2},
-    {".rs_2174", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2174), 1},
+    {".rs_2173", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2173), 1},
+    {".rs_2174", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2174), 2},
     {".rs_2175", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2175), 2},
-    {".rs_2176", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2176), 2},
-    {".rs_2177", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2177), 2},
+    {".rs_2176", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2176), 1},
+    {".rs_2177", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2177), 1},
     {".rs_2178", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2178), 2},
-    {".rs_2179", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2179), 2},
+    {".rs_2179", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2179), 1},
     {".rs_2180", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2180), 2},
-    {".rs_2181", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2181), 2},
+    {".rs_2181", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2181), 1},
     {".rs_2182", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2182), 2},
-    {".rs_2183", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2183), 2},
+    {".rs_2183", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2183), 1},
     {".rs_2184", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2184), 2},
-    {".rs_2185", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2185), 2},
+    {".rs_2185", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2185), 1},
     {".rs_2186", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2186), 2},
-    {".rs_2187", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2187), 2},
+    {".rs_2187", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2187), 1},
     {".rs_2188", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2188), 2},
-    {".rs_2189", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2189), 2},
+    {".rs_2189", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2189), 1},
     {".rs_2190", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2190), 2},
-    {".rs_2191", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2191), 2},
+    {".rs_2191", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2191), 1},
     {".rs_2192", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2192), 2},
-    {".rs_2193", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2193), 2},
+    {".rs_2193", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2193), 1},
     {".rs_2194", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2194), 2},
-    {".rs_2195", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2195), 2},
+    {".rs_2195", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2195), 1},
     {".rs_2196", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2196), 2},
-    {".rs_2197", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2197), 2},
+    {".rs_2197", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2197), 1},
     {".rs_2198", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2198), 2},
-    {".rs_2199", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2199), 2},
+    {".rs_2199", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2199), 1},
     {".rs_2200", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2200), 2},
     {".rs_2201", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2201), 2},
     {".rs_2202", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2202), 2},
     {".rs_2203", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2203), 2},
     {".rs_2204", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2204), 2},
-    {".rs_2205", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2205), 2},
-    {".rs_2206", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2206), 2},
+    {".rs_2205", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2205), 1},
+    {".rs_2206", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2206), 1},
     {".rs_2207", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2207), 2},
     {".rs_2208", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2208), 1},
     {".rs_2209", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2209), 2},
-    {".rs_2210", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2210), 2},
+    {".rs_2210", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2210), 1},
     {".rs_2211", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2211), 2},
-    {".rs_2212", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2212), 2},
+    {".rs_2212", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2212), 1},
     {".rs_2213", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2213), 2},
-    {".rs_2214", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2214), 2},
+    {".rs_2214", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2214), 1},
     {".rs_2215", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2215), 2},
-    {".rs_2216", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2216), 2},
+    {".rs_2216", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2216), 1},
     {".rs_2217", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2217), 2},
-    {".rs_2218", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2218), 2},
+    {".rs_2218", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2218), 1},
     {".rs_2219", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2219), 2},
-    {".rs_2220", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2220), 2},
-    {".rs_2221", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2221), 2},
+    {".rs_2220", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2220), 1},
+    {".rs_2221", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2221), 1},
     {".rs_2222", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2222), 2},
-    {".rs_2223", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2223), 2},
+    {".rs_2223", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2223), 1},
     {".rs_2224", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2224), 2},
-    {".rs_2225", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2225), 2},
+    {".rs_2225", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2225), 1},
     {".rs_2226", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2226), 2},
-    {".rs_2227", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2227), 2},
+    {".rs_2227", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2227), 1},
     {".rs_2228", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2228), 2},
-    {".rs_2229", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2229), 2},
+    {".rs_2229", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2229), 1},
     {".rs_2230", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2230), 2},
-    {".rs_2231", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2231), 2},
+    {".rs_2231", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2231), 1},
     {".rs_2232", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2232), 2},
-    {".rs_2233", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2233), 2},
-    {".rs_2234", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2234), 2},
+    {".rs_2233", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2233), 1},
+    {".rs_2234", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2234), 1},
     {".rs_2235", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2235), 2},
-    {".rs_2236", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2236), 2},
-    {".rs_2237", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2237), 1},
-    {".rs_2238", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2238), 2},
+    {".rs_2236", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2236), 1},
+    {".rs_2237", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2237), 2},
+    {".rs_2238", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2238), 1},
     {".rs_2239", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2239), 2},
-    {".rs_2240", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2240), 2},
+    {".rs_2240", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2240), 1},
     {".rs_2241", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2241), 2},
-    {".rs_2242", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2242), 2},
+    {".rs_2242", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2242), 1},
     {".rs_2243", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2243), 2},
-    {".rs_2244", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2244), 2},
+    {".rs_2244", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2244), 1},
     {".rs_2245", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2245), 2},
-    {".rs_2246", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2246), 2},
+    {".rs_2246", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2246), 1},
     {".rs_2247", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2247), 2},
-    {".rs_2248", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2248), 2},
+    {".rs_2248", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2248), 1},
     {".rs_2249", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2249), 2},
-    {".rs_2250", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2250), 2},
+    {".rs_2250", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2250), 1},
     {".rs_2251", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2251), 2},
-    {".rs_2252", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2252), 2},
+    {".rs_2252", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2252), 1},
     {".rs_2253", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2253), 2},
-    {".rs_2254", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2254), 2},
+    {".rs_2254", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2254), 1},
     {".rs_2255", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2255), 2},
-    {".rs_2256", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2256), 2},
+    {".rs_2256", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2256), 1},
     {".rs_2257", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2257), 2},
-    {".rs_2258", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2258), 2},
+    {".rs_2258", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2258), 1},
     {".rs_2259", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2259), 2},
     {".rs_2260", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2260), 2},
     {".rs_2261", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2261), 2},
     {".rs_2262", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2262), 2},
-    {".rs_2263", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2263), 1},
+    {".rs_2263", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2263), 2},
     {".rs_2264", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2264), 2},
     {".rs_2265", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2265), 2},
     {".rs_2266", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2266), 2},
@@ -8664,43 +9323,43 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2275", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2275), 2},
     {".rs_2276", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2276), 2},
     {".rs_2277", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2277), 2},
-    {".rs_2278", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2278), 2},
-    {".rs_2279", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2279), 2},
+    {".rs_2278", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2278), 1},
+    {".rs_2279", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2279), 1},
     {".rs_2280", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2280), 2},
-    {".rs_2281", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2281), 2},
-    {".rs_2282", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2282), 1},
-    {".rs_2283", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2283), 2},
+    {".rs_2281", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2281), 1},
+    {".rs_2282", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2282), 2},
+    {".rs_2283", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2283), 1},
     {".rs_2284", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2284), 2},
-    {".rs_2285", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2285), 2},
+    {".rs_2285", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2285), 1},
     {".rs_2286", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2286), 2},
-    {".rs_2287", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2287), 2},
+    {".rs_2287", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2287), 1},
     {".rs_2288", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2288), 2},
-    {".rs_2289", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2289), 2},
+    {".rs_2289", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2289), 1},
     {".rs_2290", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2290), 2},
-    {".rs_2291", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2291), 2},
+    {".rs_2291", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2291), 1},
     {".rs_2292", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2292), 2},
-    {".rs_2293", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2293), 2},
-    {".rs_2294", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2294), 2},
+    {".rs_2293", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2293), 1},
+    {".rs_2294", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2294), 1},
     {".rs_2295", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2295), 2},
-    {".rs_2296", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2296), 2},
+    {".rs_2296", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2296), 1},
     {".rs_2297", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2297), 2},
-    {".rs_2298", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2298), 2},
+    {".rs_2298", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2298), 1},
     {".rs_2299", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2299), 2},
-    {".rs_2300", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2300), 2},
-    {".rs_2301", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2301), 1},
-    {".rs_2302", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2302), 2},
+    {".rs_2300", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2300), 1},
+    {".rs_2301", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2301), 2},
+    {".rs_2302", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2302), 1},
     {".rs_2303", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2303), 2},
-    {".rs_2304", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2304), 2},
+    {".rs_2304", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2304), 1},
     {".rs_2305", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2305), 2},
-    {".rs_2306", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2306), 2},
+    {".rs_2306", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2306), 1},
     {".rs_2307", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2307), 2},
-    {".rs_2308", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2308), 2},
+    {".rs_2308", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2308), 1},
     {".rs_2309", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2309), 2},
-    {".rs_2310", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2310), 2},
+    {".rs_2310", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2310), 1},
     {".rs_2311", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2311), 2},
     {".rs_2312", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2312), 1},
     {".rs_2313", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2313), 2},
-    {".rs_2314", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2314), 2},
+    {".rs_2314", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2314), 1},
     {".rs_2315", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2315), 2},
     {".rs_2316", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2316), 2},
     {".rs_2317", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2317), 2},
@@ -8714,30 +9373,30 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2325", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2325), 2},
     {".rs_2326", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2326), 2},
     {".rs_2327", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2327), 2},
-    {".rs_2328", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2328), 1},
-    {".rs_2329", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2329), 2},
-    {".rs_2330", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2330), 2},
+    {".rs_2328", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2328), 2},
+    {".rs_2329", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2329), 1},
+    {".rs_2330", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2330), 1},
     {".rs_2331", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2331), 2},
-    {".rs_2332", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2332), 2},
+    {".rs_2332", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2332), 1},
     {".rs_2333", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2333), 2},
-    {".rs_2334", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2334), 2},
+    {".rs_2334", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2334), 1},
     {".rs_2335", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2335), 2},
-    {".rs_2336", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2336), 2},
-    {".rs_2337", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2337), 2},
+    {".rs_2336", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2336), 1},
+    {".rs_2337", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2337), 1},
     {".rs_2338", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2338), 2},
-    {".rs_2339", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2339), 2},
+    {".rs_2339", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2339), 1},
     {".rs_2340", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2340), 2},
-    {".rs_2341", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2341), 2},
+    {".rs_2341", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2341), 1},
     {".rs_2342", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2342), 2},
     {".rs_2343", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2343), 1},
-    {".rs_2344", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2344), 2},
+    {".rs_2344", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2344), 1},
     {".rs_2345", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2345), 2},
-    {".rs_2346", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2346), 2},
+    {".rs_2346", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2346), 1},
     {".rs_2347", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2347), 2},
-    {".rs_2348", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2348), 2},
+    {".rs_2348", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2348), 1},
     {".rs_2349", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2349), 2},
-    {".rs_2350", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2350), 2},
-    {".rs_2351", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2351), 2},
+    {".rs_2350", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2350), 1},
+    {".rs_2351", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2351), 1},
     {".rs_2352", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2352), 2},
     {".rs_2353", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2353), 2},
     {".rs_2354", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2354), 2},
@@ -8745,9 +9404,9 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2356", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2356), 2},
     {".rs_2357", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2357), 2},
     {".rs_2358", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2358), 2},
-    {".rs_2359", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2359), 1},
+    {".rs_2359", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2359), 2},
     {".rs_2360", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2360), 2},
-    {".rs_2361", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2361), 2},
+    {".rs_2361", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2361), 1},
     {".rs_2362", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2362), 2},
     {".rs_2363", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2363), 2},
     {".rs_2364", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2364), 2},
@@ -8761,8 +9420,8 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2372", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2372), 2},
     {".rs_2373", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2373), 2},
     {".rs_2374", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2374), 2},
-    {".rs_2375", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2375), 1},
-    {".rs_2376", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2376), 2},
+    {".rs_2375", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2375), 2},
+    {".rs_2376", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2376), 1},
     {".rs_2377", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2377), 2},
     {".rs_2378", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2378), 2},
     {".rs_2379", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2379), 2},
@@ -8785,7 +9444,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2396", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2396), 2},
     {".rs_2397", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2397), 2},
     {".rs_2398", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2398), 2},
-    {".rs_2399", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2399), 1},
+    {".rs_2399", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2399), 2},
     {".rs_2400", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2400), 2},
     {".rs_2401", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2401), 2},
     {".rs_2402", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2402), 2},
@@ -8807,7 +9466,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2418", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2418), 2},
     {".rs_2419", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2419), 2},
     {".rs_2420", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2420), 2},
-    {".rs_2421", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2421), 1},
+    {".rs_2421", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2421), 2},
     {".rs_2422", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2422), 2},
     {".rs_2423", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2423), 2},
     {".rs_2424", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2424), 2},
@@ -8821,7 +9480,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2432", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2432), 2},
     {".rs_2433", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2433), 2},
     {".rs_2434", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2434), 2},
-    {".rs_2435", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2435), 2},
+    {".rs_2435", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2435), 1},
     {".rs_2436", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2436), 2},
     {".rs_2437", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2437), 2},
     {".rs_2438", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2438), 2},
@@ -8829,8 +9488,8 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2440", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2440), 2},
     {".rs_2441", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2441), 2},
     {".rs_2442", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2442), 2},
-    {".rs_2443", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2443), 2},
-    {".rs_2444", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2444), 1},
+    {".rs_2443", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2443), 1},
+    {".rs_2444", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2444), 2},
     {".rs_2445", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2445), 2},
     {".rs_2446", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2446), 2},
     {".rs_2447", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2447), 2},
@@ -8843,7 +9502,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2454", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2454), 2},
     {".rs_2455", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2455), 2},
     {".rs_2456", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2456), 2},
-    {".rs_2457", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2457), 1},
+    {".rs_2457", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2457), 2},
     {".rs_2458", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2458), 2},
     {".rs_2459", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2459), 2},
     {".rs_2460", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2460), 2},
@@ -8855,7 +9514,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2466", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2466), 2},
     {".rs_2467", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2467), 2},
     {".rs_2468", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2468), 2},
-    {".rs_2469", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2469), 1},
+    {".rs_2469", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2469), 2},
     {".rs_2470", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2470), 2},
     {".rs_2471", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2471), 2},
     {".rs_2472", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2472), 2},
@@ -8866,14 +9525,14 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2477", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2477), 2},
     {".rs_2478", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2478), 2},
     {".rs_2479", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2479), 2},
-    {".rs_2480", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2480), 1},
+    {".rs_2480", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2480), 2},
     {".rs_2481", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2481), 2},
     {".rs_2482", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2482), 2},
     {".rs_2483", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2483), 2},
     {".rs_2484", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2484), 2},
     {".rs_2485", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2485), 2},
     {".rs_2486", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2486), 2},
-    {".rs_2487", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2487), 2},
+    {".rs_2487", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2487), 1},
     {".rs_2488", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2488), 2},
     {".rs_2489", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2489), 2},
     {".rs_2490", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2490), 2},
@@ -8883,7 +9542,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2494", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2494), 2},
     {".rs_2495", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2495), 2},
     {".rs_2496", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2496), 2},
-    {".rs_2497", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2497), 1},
+    {".rs_2497", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2497), 2},
     {".rs_2498", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2498), 2},
     {".rs_2499", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2499), 2},
     {".rs_2500", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2500), 2},
@@ -8896,11 +9555,11 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2507", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2507), 2},
     {".rs_2508", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2508), 2},
     {".rs_2509", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2509), 2},
-    {".rs_2510", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2510), 1},
+    {".rs_2510", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2510), 2},
     {".rs_2511", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2511), 2},
     {".rs_2512", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2512), 2},
     {".rs_2513", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2513), 2},
-    {".rs_2514", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2514), 2},
+    {".rs_2514", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2514), 1},
     {".rs_2515", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2515), 2},
     {".rs_2516", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2516), 2},
     {".rs_2517", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2517), 2},
@@ -8909,7 +9568,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2520", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2520), 2},
     {".rs_2521", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2521), 2},
     {".rs_2522", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2522), 2},
-    {".rs_2523", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2523), 1},
+    {".rs_2523", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2523), 2},
     {".rs_2524", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2524), 2},
     {".rs_2525", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2525), 2},
     {".rs_2526", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2526), 2},
@@ -8921,7 +9580,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2532", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2532), 2},
     {".rs_2533", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2533), 2},
     {".rs_2534", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2534), 2},
-    {".rs_2535", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2535), 1},
+    {".rs_2535", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2535), 2},
     {".rs_2536", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2536), 2},
     {".rs_2537", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2537), 2},
     {".rs_2538", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2538), 2},
@@ -8933,8 +9592,8 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2544", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2544), 2},
     {".rs_2545", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2545), 2},
     {".rs_2546", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2546), 2},
-    {".rs_2547", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2547), 1},
-    {".rs_2548", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2548), 2},
+    {".rs_2547", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2547), 2},
+    {".rs_2548", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2548), 1},
     {".rs_2549", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2549), 2},
     {".rs_2550", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2550), 2},
     {".rs_2551", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2551), 2},
@@ -8945,7 +9604,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2556", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2556), 2},
     {".rs_2557", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2557), 2},
     {".rs_2558", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2558), 2},
-    {".rs_2559", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2559), 1},
+    {".rs_2559", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2559), 2},
     {".rs_2560", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2560), 2},
     {".rs_2561", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2561), 2},
     {".rs_2562", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2562), 2},
@@ -8957,19 +9616,19 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2568", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2568), 2},
     {".rs_2569", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2569), 2},
     {".rs_2570", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2570), 2},
-    {".rs_2571", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2571), 1},
+    {".rs_2571", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2571), 2},
     {".rs_2572", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2572), 2},
     {".rs_2573", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2573), 2},
     {".rs_2574", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2574), 2},
     {".rs_2575", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2575), 2},
     {".rs_2576", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2576), 2},
-    {".rs_2577", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2577), 2},
+    {".rs_2577", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2577), 1},
     {".rs_2578", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2578), 2},
     {".rs_2579", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2579), 2},
     {".rs_2580", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2580), 2},
     {".rs_2581", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2581), 2},
     {".rs_2582", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2582), 2},
-    {".rs_2583", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2583), 1},
+    {".rs_2583", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2583), 2},
     {".rs_2584", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2584), 2},
     {".rs_2585", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2585), 2},
     {".rs_2586", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2586), 2},
@@ -8982,20 +9641,20 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2593", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2593), 2},
     {".rs_2594", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2594), 2},
     {".rs_2595", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2595), 2},
-    {".rs_2596", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2596), 1},
+    {".rs_2596", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2596), 2},
     {".rs_2597", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2597), 2},
     {".rs_2598", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2598), 2},
     {".rs_2599", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2599), 2},
     {".rs_2600", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2600), 2},
     {".rs_2601", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2601), 2},
     {".rs_2602", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2602), 2},
-    {".rs_2603", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2603), 2},
+    {".rs_2603", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2603), 1},
     {".rs_2604", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2604), 2},
     {".rs_2605", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2605), 2},
     {".rs_2606", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2606), 2},
     {".rs_2607", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2607), 2},
     {".rs_2608", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2608), 2},
-    {".rs_2609", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2609), 1},
+    {".rs_2609", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2609), 2},
     {".rs_2610", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2610), 2},
     {".rs_2611", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2611), 2},
     {".rs_2612", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2612), 2},
@@ -9007,15 +9666,15 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2618", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2618), 2},
     {".rs_2619", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2619), 2},
     {".rs_2620", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2620), 2},
-    {".rs_2621", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2621), 1},
-    {".rs_2622", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2622), 2},
+    {".rs_2621", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2621), 2},
+    {".rs_2622", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2622), 1},
     {".rs_2623", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2623), 2},
     {".rs_2624", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2624), 2},
     {".rs_2625", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2625), 2},
     {".rs_2626", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2626), 2},
     {".rs_2627", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2627), 2},
     {".rs_2628", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2628), 2},
-    {".rs_2629", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2629), 1},
+    {".rs_2629", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2629), 2},
     {".rs_2630", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2630), 2},
     {".rs_2631", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2631), 2},
     {".rs_2632", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2632), 2},
@@ -9027,18 +9686,18 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2638", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2638), 2},
     {".rs_2639", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2639), 2},
     {".rs_2640", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2640), 2},
-    {".rs_2641", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2641), 2},
+    {".rs_2641", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2641), 1},
     {".rs_2642", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2642), 2},
     {".rs_2643", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2643), 2},
     {".rs_2644", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2644), 2},
-    {".rs_2645", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2645), 1},
+    {".rs_2645", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2645), 2},
     {".rs_2646", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2646), 2},
     {".rs_2647", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2647), 2},
     {".rs_2648", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2648), 2},
     {".rs_2649", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2649), 2},
     {".rs_2650", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2650), 2},
     {".rs_2651", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2651), 2},
-    {".rs_2652", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2652), 2},
+    {".rs_2652", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2652), 1},
     {".rs_2653", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2653), 2},
     {".rs_2654", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2654), 2},
     {".rs_2655", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2655), 2},
@@ -9046,7 +9705,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2657", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2657), 2},
     {".rs_2658", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2658), 2},
     {".rs_2659", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2659), 2},
-    {".rs_2660", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2660), 1},
+    {".rs_2660", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2660), 2},
     {".rs_2661", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2661), 2},
     {".rs_2662", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2662), 2},
     {".rs_2663", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2663), 2},
@@ -9054,7 +9713,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2665", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2665), 2},
     {".rs_2666", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2666), 2},
     {".rs_2667", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2667), 2},
-    {".rs_2668", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2668), 2},
+    {".rs_2668", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2668), 1},
     {".rs_2669", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2669), 2},
     {".rs_2670", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2670), 2},
     {".rs_2671", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2671), 2},
@@ -9062,14 +9721,14 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2673", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2673), 2},
     {".rs_2674", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2674), 2},
     {".rs_2675", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2675), 2},
-    {".rs_2676", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2676), 1},
+    {".rs_2676", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2676), 2},
     {".rs_2677", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2677), 2},
     {".rs_2678", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2678), 2},
     {".rs_2679", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2679), 2},
     {".rs_2680", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2680), 2},
     {".rs_2681", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2681), 2},
     {".rs_2682", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2682), 2},
-    {".rs_2683", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2683), 2},
+    {".rs_2683", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2683), 1},
     {".rs_2684", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2684), 2},
     {".rs_2685", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2685), 2},
     {".rs_2686", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2686), 2},
@@ -9077,7 +9736,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2688", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2688), 2},
     {".rs_2689", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2689), 2},
     {".rs_2690", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2690), 2},
-    {".rs_2691", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2691), 1},
+    {".rs_2691", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2691), 2},
     {".rs_2692", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2692), 2},
     {".rs_2693", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2693), 2},
     {".rs_2694", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2694), 2},
@@ -9085,7 +9744,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2696", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2696), 2},
     {".rs_2697", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2697), 2},
     {".rs_2698", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2698), 2},
-    {".rs_2699", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2699), 2},
+    {".rs_2699", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2699), 1},
     {".rs_2700", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2700), 2},
     {".rs_2701", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2701), 2},
     {".rs_2702", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2702), 2},
@@ -9094,14 +9753,14 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2705", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2705), 2},
     {".rs_2706", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2706), 2},
     {".rs_2707", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2707), 2},
-    {".rs_2708", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2708), 1},
+    {".rs_2708", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2708), 2},
     {".rs_2709", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2709), 2},
     {".rs_2710", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2710), 2},
     {".rs_2711", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2711), 2},
     {".rs_2712", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2712), 2},
     {".rs_2713", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2713), 2},
     {".rs_2714", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2714), 2},
-    {".rs_2715", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2715), 2},
+    {".rs_2715", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2715), 1},
     {".rs_2716", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2716), 2},
     {".rs_2717", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2717), 2},
     {".rs_2718", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2718), 2},
@@ -9116,7 +9775,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2727", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2727), 2},
     {".rs_2728", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2728), 2},
     {".rs_2729", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2729), 2},
-    {".rs_2730", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2730), 1},
+    {".rs_2730", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2730), 2},
     {".rs_2731", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2731), 2},
     {".rs_2732", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2732), 2},
     {".rs_2733", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2733), 2},
@@ -9125,11 +9784,11 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2736", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2736), 2},
     {".rs_2737", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2737), 2},
     {".rs_2738", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2738), 2},
-    {".rs_2739", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2739), 2},
+    {".rs_2739", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2739), 1},
     {".rs_2740", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2740), 2},
     {".rs_2741", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2741), 2},
     {".rs_2742", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2742), 2},
-    {".rs_2743", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2743), 1},
+    {".rs_2743", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2743), 2},
     {".rs_2744", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2744), 2},
     {".rs_2745", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2745), 2},
     {".rs_2746", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2746), 2},
@@ -9147,7 +9806,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2758", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2758), 2},
     {".rs_2759", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2759), 2},
     {".rs_2760", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2760), 2},
-    {".rs_2761", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2761), 2},
+    {".rs_2761", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2761), 1},
     {".rs_2762", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2762), 2},
     {".rs_2763", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2763), 2},
     {".rs_2764", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2764), 2},
@@ -9162,7 +9821,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2773", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2773), 2},
     {".rs_2774", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2774), 2},
     {".rs_2775", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2775), 2},
-    {".rs_2776", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2776), 1},
+    {".rs_2776", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2776), 2},
     {".rs_2777", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2777), 2},
     {".rs_2778", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2778), 2},
     {".rs_2779", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2779), 2},
@@ -9170,7 +9829,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2781", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2781), 2},
     {".rs_2782", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2782), 2},
     {".rs_2783", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2783), 2},
-    {".rs_2784", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2784), 2},
+    {".rs_2784", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2784), 1},
     {".rs_2785", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2785), 2},
     {".rs_2786", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2786), 2},
     {".rs_2787", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2787), 2},
@@ -9183,7 +9842,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2794", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2794), 2},
     {".rs_2795", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2795), 2},
     {".rs_2796", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2796), 2},
-    {".rs_2797", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2797), 2},
+    {".rs_2797", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2797), 1},
     {".rs_2798", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2798), 2},
     {".rs_2799", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2799), 2},
     {".rs_2800", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2800), 2},
@@ -9195,7 +9854,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2806", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2806), 2},
     {".rs_2807", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2807), 2},
     {".rs_2808", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2808), 2},
-    {".rs_2809", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2809), 2},
+    {".rs_2809", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2809), 1},
     {".rs_2810", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2810), 2},
     {".rs_2811", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2811), 2},
     {".rs_2812", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2812), 2},
@@ -9206,7 +9865,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2817", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2817), 2},
     {".rs_2818", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2818), 2},
     {".rs_2819", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2819), 2},
-    {".rs_2820", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2820), 2},
+    {".rs_2820", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2820), 1},
     {".rs_2821", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2821), 2},
     {".rs_2822", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2822), 2},
     {".rs_2823", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2823), 2},
@@ -9223,7 +9882,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2834", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2834), 2},
     {".rs_2835", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2835), 2},
     {".rs_2836", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2836), 2},
-    {".rs_2837", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2837), 2},
+    {".rs_2837", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2837), 1},
     {".rs_2838", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2838), 2},
     {".rs_2839", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2839), 2},
     {".rs_2840", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2840), 2},
@@ -9236,20 +9895,20 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2847", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2847), 2},
     {".rs_2848", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2848), 2},
     {".rs_2849", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2849), 2},
-    {".rs_2850", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2850), 2},
+    {".rs_2850", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2850), 1},
     {".rs_2851", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2851), 2},
     {".rs_2852", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2852), 2},
     {".rs_2853", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2853), 2},
     {".rs_2854", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2854), 2},
     {".rs_2855", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2855), 2},
-    {".rs_2856", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2856), 1},
+    {".rs_2856", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2856), 2},
     {".rs_2857", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2857), 2},
     {".rs_2858", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2858), 2},
     {".rs_2859", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2859), 2},
     {".rs_2860", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2860), 2},
     {".rs_2861", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2861), 2},
     {".rs_2862", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2862), 2},
-    {".rs_2863", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2863), 2},
+    {".rs_2863", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2863), 1},
     {".rs_2864", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2864), 2},
     {".rs_2865", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2865), 2},
     {".rs_2866", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2866), 2},
@@ -9261,9 +9920,9 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2872", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2872), 2},
     {".rs_2873", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2873), 2},
     {".rs_2874", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2874), 2},
-    {".rs_2875", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2875), 2},
+    {".rs_2875", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2875), 1},
     {".rs_2876", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2876), 2},
-    {".rs_2877", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2877), 1},
+    {".rs_2877", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2877), 2},
     {".rs_2878", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2878), 2},
     {".rs_2879", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2879), 2},
     {".rs_2880", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2880), 2},
@@ -9273,7 +9932,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2884", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2884), 2},
     {".rs_2885", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2885), 2},
     {".rs_2886", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2886), 2},
-    {".rs_2887", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2887), 2},
+    {".rs_2887", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2887), 1},
     {".rs_2888", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2888), 2},
     {".rs_2889", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2889), 2},
     {".rs_2890", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2890), 2},
@@ -9297,7 +9956,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2908", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2908), 2},
     {".rs_2909", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2909), 2},
     {".rs_2910", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2910), 2},
-    {".rs_2911", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2911), 2},
+    {".rs_2911", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2911), 1},
     {".rs_2912", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2912), 2},
     {".rs_2913", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2913), 2},
     {".rs_2914", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2914), 2},
@@ -9306,11 +9965,11 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2917", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2917), 2},
     {".rs_2918", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2918), 2},
     {".rs_2919", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2919), 2},
-    {".rs_2920", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2920), 1},
+    {".rs_2920", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2920), 2},
     {".rs_2921", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2921), 2},
     {".rs_2922", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2922), 2},
-    {".rs_2923", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2923), 2},
-    {".rs_2924", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2924), 1},
+    {".rs_2923", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2923), 1},
+    {".rs_2924", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2924), 2},
     {".rs_2925", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2925), 2},
     {".rs_2926", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2926), 2},
     {".rs_2927", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2927), 2},
@@ -9321,8 +9980,8 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2932", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2932), 2},
     {".rs_2933", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2933), 2},
     {".rs_2934", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2934), 2},
-    {".rs_2935", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2935), 1},
-    {".rs_2936", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2936), 2},
+    {".rs_2935", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2935), 2},
+    {".rs_2936", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2936), 1},
     {".rs_2937", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2937), 2},
     {".rs_2938", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2938), 2},
     {".rs_2939", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2939), 2},
@@ -9335,7 +9994,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2946", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2946), 2},
     {".rs_2947", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2947), 2},
     {".rs_2948", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2948), 2},
-    {".rs_2949", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2949), 2},
+    {".rs_2949", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2949), 1},
     {".rs_2950", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2950), 2},
     {".rs_2951", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2951), 2},
     {".rs_2952", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2952), 2},
@@ -9347,7 +10006,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2958", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2958), 2},
     {".rs_2959", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2959), 2},
     {".rs_2960", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2960), 2},
-    {".rs_2961", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2961), 2},
+    {".rs_2961", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2961), 1},
     {".rs_2962", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2962), 2},
     {".rs_2963", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2963), 2},
     {".rs_2964", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2964), 2},
@@ -9355,23 +10014,23 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2966", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2966), 2},
     {".rs_2967", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2967), 2},
     {".rs_2968", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2968), 2},
-    {".rs_2969", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2969), 2},
+    {".rs_2969", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2969), 1},
     {".rs_2970", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2970), 2},
-    {".rs_2971", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2971), 1},
-    {".rs_2972", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2972), 1},
+    {".rs_2971", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2971), 2},
+    {".rs_2972", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2972), 2},
     {".rs_2973", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2973), 2},
-    {".rs_2974", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2974), 1},
+    {".rs_2974", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2974), 2},
     {".rs_2975", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2975), 2},
-    {".rs_2976", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2976), 1},
+    {".rs_2976", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2976), 2},
     {".rs_2977", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2977), 2},
-    {".rs_2978", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2978), 1},
+    {".rs_2978", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2978), 2},
     {".rs_2979", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2979), 2},
-    {".rs_2980", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2980), 1},
+    {".rs_2980", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2980), 2},
     {".rs_2981", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2981), 2},
-    {".rs_2982", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2982), 1},
+    {".rs_2982", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2982), 2},
     {".rs_2983", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2983), 2},
-    {".rs_2984", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2984), 1},
-    {".rs_2985", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2985), 2},
+    {".rs_2984", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2984), 2},
+    {".rs_2985", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2985), 1},
     {".rs_2986", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2986), 2},
     {".rs_2987", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2987), 2},
     {".rs_2988", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2988), 2},
@@ -9384,9 +10043,9 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_2995", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2995), 2},
     {".rs_2996", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2996), 2},
     {".rs_2997", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2997), 2},
-    {".rs_2998", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2998), 1},
+    {".rs_2998", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2998), 2},
     {".rs_2999", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_2999), 2},
-    {".rs_3000", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3000), 2},
+    {".rs_3000", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3000), 1},
     {".rs_3001", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3001), 2},
     {".rs_3002", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3002), 2},
     {".rs_3003", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3003), 2},
@@ -9402,22 +10061,22 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_3013", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3013), 2},
     {".rs_3014", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3014), 2},
     {".rs_3015", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3015), 2},
-    {".rs_3016", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3016), 2},
+    {".rs_3016", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3016), 1},
     {".rs_3017", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3017), 2},
     {".rs_3018", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3018), 2},
-    {".rs_3019", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3019), 1},
-    {".rs_3020", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3020), 1},
+    {".rs_3019", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3019), 2},
+    {".rs_3020", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3020), 2},
     {".rs_3021", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3021), 2},
-    {".rs_3022", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3022), 1},
+    {".rs_3022", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3022), 2},
     {".rs_3023", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3023), 2},
-    {".rs_3024", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3024), 1},
+    {".rs_3024", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3024), 2},
     {".rs_3025", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3025), 2},
     {".rs_3026", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3026), 2},
     {".rs_3027", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3027), 2},
     {".rs_3028", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3028), 2},
     {".rs_3029", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3029), 2},
     {".rs_3030", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3030), 2},
-    {".rs_3031", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3031), 2},
+    {".rs_3031", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3031), 1},
     {".rs_3032", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3032), 2},
     {".rs_3033", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3033), 2},
     {".rs_3034", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3034), 2},
@@ -9432,9 +10091,9 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_3043", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3043), 2},
     {".rs_3044", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3044), 2},
     {".rs_3045", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3045), 2},
-    {".rs_3046", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3046), 1},
+    {".rs_3046", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3046), 2},
     {".rs_3047", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3047), 2},
-    {".rs_3048", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3048), 2},
+    {".rs_3048", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3048), 1},
     {".rs_3049", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3049), 2},
     {".rs_3050", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3050), 2},
     {".rs_3051", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3051), 2},
@@ -9456,20 +10115,20 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_3067", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3067), 2},
     {".rs_3068", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3068), 2},
     {".rs_3069", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3069), 2},
-    {".rs_3070", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3070), 2},
+    {".rs_3070", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3070), 1},
     {".rs_3071", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3071), 2},
     {".rs_3072", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3072), 2},
     {".rs_3073", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3073), 2},
     {".rs_3074", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3074), 2},
     {".rs_3075", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3075), 2},
-    {".rs_3076", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3076), 1},
+    {".rs_3076", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3076), 2},
     {".rs_3077", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3077), 2},
     {".rs_3078", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3078), 2},
     {".rs_3079", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3079), 2},
     {".rs_3080", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3080), 2},
     {".rs_3081", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3081), 2},
     {".rs_3082", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3082), 2},
-    {".rs_3083", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3083), 2},
+    {".rs_3083", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3083), 1},
     {".rs_3084", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3084), 2},
     {".rs_3085", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3085), 2},
     {".rs_3086", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3086), 2},
@@ -9502,7 +10161,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_3113", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3113), 2},
     {".rs_3114", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3114), 2},
     {".rs_3115", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3115), 2},
-    {".rs_3116", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3116), 2},
+    {".rs_3116", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3116), 1},
     {".rs_3117", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3117), 2},
     {".rs_3118", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3118), 2},
     {".rs_3119", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3119), 2},
@@ -9517,7 +10176,7 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_3128", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3128), 2},
     {".rs_3129", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3129), 2},
     {".rs_3130", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3130), 2},
-    {".rs_3131", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3131), 1},
+    {".rs_3131", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3131), 2},
     {".rs_3132", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3132), 2},
     {".rs_3133", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3133), 2},
     {".rs_3134", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3134), 2},
@@ -9544,20 +10203,20 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_3155", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3155), 2},
     {".rs_3156", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3156), 2},
     {".rs_3157", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3157), 2},
-    {".rs_3158", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3158), 1},
-    {".rs_3159", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3159), 1},
+    {".rs_3158", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3158), 2},
+    {".rs_3159", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3159), 2},
     {".rs_3160", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3160), 2},
-    {".rs_3161", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3161), 1},
+    {".rs_3161", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3161), 2},
     {".rs_3162", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3162), 2},
-    {".rs_3163", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3163), 1},
+    {".rs_3163", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3163), 2},
     {".rs_3164", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3164), 2},
-    {".rs_3165", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3165), 1},
+    {".rs_3165", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3165), 2},
     {".rs_3166", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3166), 2},
-    {".rs_3167", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3167), 1},
+    {".rs_3167", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3167), 2},
     {".rs_3168", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3168), 2},
-    {".rs_3169", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3169), 1},
+    {".rs_3169", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3169), 2},
     {".rs_3170", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3170), 2},
-    {".rs_3171", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3171), 1},
+    {".rs_3171", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3171), 2},
     {".rs_3172", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3172), 2},
     {".rs_3173", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3173), 2},
     {".rs_3174", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3174), 2},
@@ -9582,11 +10241,11 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_3193", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3193), 2},
     {".rs_3194", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3194), 2},
     {".rs_3195", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3195), 2},
-    {".rs_3196", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3196), 2},
+    {".rs_3196", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3196), 1},
     {".rs_3197", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3197), 2},
     {".rs_3198", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3198), 2},
     {".rs_3199", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3199), 2},
-    {".rs_3200", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3200), 1},
+    {".rs_3200", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3200), 2},
     {".rs_3201", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3201), 2},
     {".rs_3202", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3202), 2},
     {".rs_3203", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3203), 2},
@@ -9603,9 +10262,9 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_3214", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3214), 2},
     {".rs_3215", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3215), 2},
     {".rs_3216", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3216), 2},
-    {".rs_3217", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3217), 2},
+    {".rs_3217", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3217), 1},
     {".rs_3218", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3218), 2},
-    {".rs_3219", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3219), 1},
+    {".rs_3219", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3219), 2},
     {".rs_3220", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3220), 2},
     {".rs_3221", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3221), 2},
     {".rs_3222", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3222), 2},
@@ -9625,9 +10284,349 @@ static const R_CallMethodDef rosetta_calls[] = {
     {".rs_3236", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3236), 2},
     {".rs_3237", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3237), 2},
     {".rs_3238", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3238), 2},
-    {".rs_3239", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3239), 2},
+    {".rs_3239", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3239), 1},
     {".rs_3240", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3240), 2},
-    {".rs_3241", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3241), 1},
+    {".rs_3241", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3241), 2},
+    {".rs_3242", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3242), 2},
+    {".rs_3243", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3243), 2},
+    {".rs_3244", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3244), 2},
+    {".rs_3245", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3245), 2},
+    {".rs_3246", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3246), 2},
+    {".rs_3247", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3247), 2},
+    {".rs_3248", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3248), 2},
+    {".rs_3249", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3249), 2},
+    {".rs_3250", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3250), 2},
+    {".rs_3251", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3251), 2},
+    {".rs_3252", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3252), 2},
+    {".rs_3253", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3253), 2},
+    {".rs_3254", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3254), 2},
+    {".rs_3255", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3255), 2},
+    {".rs_3256", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3256), 2},
+    {".rs_3257", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3257), 2},
+    {".rs_3258", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3258), 2},
+    {".rs_3259", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3259), 2},
+    {".rs_3260", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3260), 1},
+    {".rs_3261", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3261), 2},
+    {".rs_3262", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3262), 2},
+    {".rs_3263", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3263), 2},
+    {".rs_3264", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3264), 1},
+    {".rs_3265", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3265), 2},
+    {".rs_3266", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3266), 2},
+    {".rs_3267", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3267), 2},
+    {".rs_3268", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3268), 2},
+    {".rs_3269", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3269), 2},
+    {".rs_3270", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3270), 2},
+    {".rs_3271", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3271), 2},
+    {".rs_3272", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3272), 2},
+    {".rs_3273", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3273), 2},
+    {".rs_3274", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3274), 2},
+    {".rs_3275", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3275), 1},
+    {".rs_3276", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3276), 2},
+    {".rs_3277", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3277), 2},
+    {".rs_3278", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3278), 2},
+    {".rs_3279", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3279), 2},
+    {".rs_3280", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3280), 2},
+    {".rs_3281", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3281), 2},
+    {".rs_3282", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3282), 2},
+    {".rs_3283", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3283), 2},
+    {".rs_3284", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3284), 2},
+    {".rs_3285", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3285), 2},
+    {".rs_3286", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3286), 2},
+    {".rs_3287", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3287), 2},
+    {".rs_3288", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3288), 2},
+    {".rs_3289", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3289), 2},
+    {".rs_3290", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3290), 2},
+    {".rs_3291", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3291), 2},
+    {".rs_3292", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3292), 2},
+    {".rs_3293", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3293), 2},
+    {".rs_3294", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3294), 2},
+    {".rs_3295", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3295), 2},
+    {".rs_3296", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3296), 2},
+    {".rs_3297", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3297), 2},
+    {".rs_3298", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3298), 2},
+    {".rs_3299", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3299), 2},
+    {".rs_3300", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3300), 2},
+    {".rs_3301", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3301), 2},
+    {".rs_3302", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3302), 2},
+    {".rs_3303", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3303), 2},
+    {".rs_3304", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3304), 2},
+    {".rs_3305", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3305), 2},
+    {".rs_3306", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3306), 2},
+    {".rs_3307", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3307), 2},
+    {".rs_3308", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3308), 2},
+    {".rs_3309", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3309), 2},
+    {".rs_3310", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3310), 2},
+    {".rs_3311", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3311), 1},
+    {".rs_3312", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3312), 1},
+    {".rs_3313", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3313), 2},
+    {".rs_3314", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3314), 1},
+    {".rs_3315", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3315), 2},
+    {".rs_3316", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3316), 1},
+    {".rs_3317", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3317), 2},
+    {".rs_3318", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3318), 1},
+    {".rs_3319", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3319), 2},
+    {".rs_3320", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3320), 1},
+    {".rs_3321", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3321), 2},
+    {".rs_3322", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3322), 1},
+    {".rs_3323", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3323), 2},
+    {".rs_3324", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3324), 1},
+    {".rs_3325", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3325), 2},
+    {".rs_3326", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3326), 2},
+    {".rs_3327", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3327), 2},
+    {".rs_3328", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3328), 2},
+    {".rs_3329", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3329), 2},
+    {".rs_3330", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3330), 2},
+    {".rs_3331", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3331), 2},
+    {".rs_3332", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3332), 2},
+    {".rs_3333", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3333), 2},
+    {".rs_3334", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3334), 2},
+    {".rs_3335", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3335), 2},
+    {".rs_3336", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3336), 2},
+    {".rs_3337", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3337), 2},
+    {".rs_3338", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3338), 1},
+    {".rs_3339", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3339), 2},
+    {".rs_3340", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3340), 2},
+    {".rs_3341", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3341), 2},
+    {".rs_3342", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3342), 2},
+    {".rs_3343", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3343), 2},
+    {".rs_3344", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3344), 2},
+    {".rs_3345", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3345), 2},
+    {".rs_3346", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3346), 2},
+    {".rs_3347", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3347), 2},
+    {".rs_3348", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3348), 2},
+    {".rs_3349", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3349), 2},
+    {".rs_3350", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3350), 2},
+    {".rs_3351", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3351), 2},
+    {".rs_3352", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3352), 2},
+    {".rs_3353", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3353), 2},
+    {".rs_3354", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3354), 2},
+    {".rs_3355", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3355), 2},
+    {".rs_3356", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3356), 2},
+    {".rs_3357", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3357), 2},
+    {".rs_3358", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3358), 2},
+    {".rs_3359", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3359), 1},
+    {".rs_3360", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3360), 1},
+    {".rs_3361", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3361), 2},
+    {".rs_3362", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3362), 1},
+    {".rs_3363", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3363), 2},
+    {".rs_3364", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3364), 1},
+    {".rs_3365", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3365), 2},
+    {".rs_3366", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3366), 2},
+    {".rs_3367", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3367), 2},
+    {".rs_3368", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3368), 2},
+    {".rs_3369", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3369), 2},
+    {".rs_3370", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3370), 2},
+    {".rs_3371", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3371), 2},
+    {".rs_3372", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3372), 2},
+    {".rs_3373", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3373), 2},
+    {".rs_3374", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3374), 2},
+    {".rs_3375", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3375), 2},
+    {".rs_3376", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3376), 2},
+    {".rs_3377", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3377), 2},
+    {".rs_3378", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3378), 2},
+    {".rs_3379", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3379), 2},
+    {".rs_3380", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3380), 2},
+    {".rs_3381", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3381), 2},
+    {".rs_3382", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3382), 2},
+    {".rs_3383", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3383), 2},
+    {".rs_3384", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3384), 2},
+    {".rs_3385", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3385), 2},
+    {".rs_3386", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3386), 1},
+    {".rs_3387", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3387), 2},
+    {".rs_3388", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3388), 2},
+    {".rs_3389", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3389), 2},
+    {".rs_3390", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3390), 2},
+    {".rs_3391", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3391), 2},
+    {".rs_3392", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3392), 2},
+    {".rs_3393", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3393), 2},
+    {".rs_3394", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3394), 2},
+    {".rs_3395", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3395), 2},
+    {".rs_3396", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3396), 2},
+    {".rs_3397", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3397), 2},
+    {".rs_3398", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3398), 2},
+    {".rs_3399", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3399), 2},
+    {".rs_3400", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3400), 2},
+    {".rs_3401", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3401), 2},
+    {".rs_3402", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3402), 2},
+    {".rs_3403", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3403), 2},
+    {".rs_3404", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3404), 2},
+    {".rs_3405", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3405), 2},
+    {".rs_3406", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3406), 2},
+    {".rs_3407", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3407), 2},
+    {".rs_3408", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3408), 2},
+    {".rs_3409", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3409), 2},
+    {".rs_3410", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3410), 2},
+    {".rs_3411", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3411), 2},
+    {".rs_3412", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3412), 2},
+    {".rs_3413", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3413), 2},
+    {".rs_3414", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3414), 2},
+    {".rs_3415", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3415), 2},
+    {".rs_3416", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3416), 1},
+    {".rs_3417", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3417), 2},
+    {".rs_3418", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3418), 2},
+    {".rs_3419", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3419), 2},
+    {".rs_3420", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3420), 2},
+    {".rs_3421", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3421), 2},
+    {".rs_3422", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3422), 2},
+    {".rs_3423", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3423), 2},
+    {".rs_3424", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3424), 2},
+    {".rs_3425", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3425), 2},
+    {".rs_3426", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3426), 2},
+    {".rs_3427", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3427), 2},
+    {".rs_3428", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3428), 2},
+    {".rs_3429", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3429), 2},
+    {".rs_3430", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3430), 2},
+    {".rs_3431", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3431), 2},
+    {".rs_3432", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3432), 2},
+    {".rs_3433", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3433), 2},
+    {".rs_3434", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3434), 2},
+    {".rs_3435", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3435), 2},
+    {".rs_3436", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3436), 2},
+    {".rs_3437", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3437), 2},
+    {".rs_3438", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3438), 2},
+    {".rs_3439", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3439), 2},
+    {".rs_3440", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3440), 2},
+    {".rs_3441", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3441), 2},
+    {".rs_3442", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3442), 2},
+    {".rs_3443", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3443), 2},
+    {".rs_3444", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3444), 2},
+    {".rs_3445", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3445), 2},
+    {".rs_3446", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3446), 2},
+    {".rs_3447", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3447), 2},
+    {".rs_3448", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3448), 2},
+    {".rs_3449", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3449), 2},
+    {".rs_3450", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3450), 2},
+    {".rs_3451", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3451), 2},
+    {".rs_3452", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3452), 2},
+    {".rs_3453", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3453), 2},
+    {".rs_3454", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3454), 2},
+    {".rs_3455", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3455), 2},
+    {".rs_3456", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3456), 2},
+    {".rs_3457", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3457), 2},
+    {".rs_3458", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3458), 2},
+    {".rs_3459", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3459), 2},
+    {".rs_3460", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3460), 2},
+    {".rs_3461", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3461), 2},
+    {".rs_3462", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3462), 2},
+    {".rs_3463", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3463), 2},
+    {".rs_3464", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3464), 2},
+    {".rs_3465", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3465), 2},
+    {".rs_3466", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3466), 2},
+    {".rs_3467", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3467), 2},
+    {".rs_3468", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3468), 2},
+    {".rs_3469", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3469), 2},
+    {".rs_3470", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3470), 2},
+    {".rs_3471", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3471), 1},
+    {".rs_3472", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3472), 2},
+    {".rs_3473", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3473), 2},
+    {".rs_3474", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3474), 2},
+    {".rs_3475", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3475), 2},
+    {".rs_3476", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3476), 2},
+    {".rs_3477", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3477), 2},
+    {".rs_3478", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3478), 2},
+    {".rs_3479", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3479), 2},
+    {".rs_3480", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3480), 2},
+    {".rs_3481", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3481), 2},
+    {".rs_3482", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3482), 2},
+    {".rs_3483", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3483), 2},
+    {".rs_3484", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3484), 2},
+    {".rs_3485", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3485), 2},
+    {".rs_3486", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3486), 2},
+    {".rs_3487", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3487), 2},
+    {".rs_3488", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3488), 2},
+    {".rs_3489", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3489), 2},
+    {".rs_3490", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3490), 2},
+    {".rs_3491", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3491), 2},
+    {".rs_3492", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3492), 2},
+    {".rs_3493", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3493), 2},
+    {".rs_3494", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3494), 2},
+    {".rs_3495", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3495), 2},
+    {".rs_3496", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3496), 2},
+    {".rs_3497", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3497), 2},
+    {".rs_3498", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3498), 1},
+    {".rs_3499", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3499), 1},
+    {".rs_3500", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3500), 2},
+    {".rs_3501", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3501), 1},
+    {".rs_3502", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3502), 2},
+    {".rs_3503", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3503), 1},
+    {".rs_3504", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3504), 2},
+    {".rs_3505", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3505), 1},
+    {".rs_3506", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3506), 2},
+    {".rs_3507", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3507), 1},
+    {".rs_3508", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3508), 2},
+    {".rs_3509", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3509), 1},
+    {".rs_3510", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3510), 2},
+    {".rs_3511", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3511), 1},
+    {".rs_3512", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3512), 2},
+    {".rs_3513", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3513), 2},
+    {".rs_3514", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3514), 2},
+    {".rs_3515", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3515), 2},
+    {".rs_3516", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3516), 2},
+    {".rs_3517", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3517), 2},
+    {".rs_3518", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3518), 2},
+    {".rs_3519", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3519), 2},
+    {".rs_3520", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3520), 2},
+    {".rs_3521", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3521), 2},
+    {".rs_3522", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3522), 2},
+    {".rs_3523", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3523), 2},
+    {".rs_3524", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3524), 2},
+    {".rs_3525", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3525), 2},
+    {".rs_3526", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3526), 2},
+    {".rs_3527", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3527), 2},
+    {".rs_3528", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3528), 2},
+    {".rs_3529", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3529), 2},
+    {".rs_3530", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3530), 2},
+    {".rs_3531", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3531), 2},
+    {".rs_3532", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3532), 2},
+    {".rs_3533", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3533), 2},
+    {".rs_3534", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3534), 2},
+    {".rs_3535", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3535), 2},
+    {".rs_3536", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3536), 2},
+    {".rs_3537", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3537), 2},
+    {".rs_3538", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3538), 2},
+    {".rs_3539", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3539), 2},
+    {".rs_3540", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3540), 1},
+    {".rs_3541", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3541), 2},
+    {".rs_3542", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3542), 2},
+    {".rs_3543", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3543), 2},
+    {".rs_3544", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3544), 2},
+    {".rs_3545", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3545), 2},
+    {".rs_3546", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3546), 2},
+    {".rs_3547", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3547), 2},
+    {".rs_3548", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3548), 2},
+    {".rs_3549", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3549), 2},
+    {".rs_3550", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3550), 2},
+    {".rs_3551", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3551), 2},
+    {".rs_3552", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3552), 2},
+    {".rs_3553", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3553), 2},
+    {".rs_3554", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3554), 2},
+    {".rs_3555", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3555), 2},
+    {".rs_3556", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3556), 2},
+    {".rs_3557", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3557), 2},
+    {".rs_3558", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3558), 2},
+    {".rs_3559", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3559), 1},
+    {".rs_3560", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3560), 2},
+    {".rs_3561", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3561), 2},
+    {".rs_3562", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3562), 2},
+    {".rs_3563", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3563), 2},
+    {".rs_3564", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3564), 2},
+    {".rs_3565", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3565), 2},
+    {".rs_3566", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3566), 2},
+    {".rs_3567", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3567), 2},
+    {".rs_3568", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3568), 2},
+    {".rs_3569", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3569), 2},
+    {".rs_3570", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3570), 2},
+    {".rs_3571", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3571), 2},
+    {".rs_3572", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3572), 2},
+    {".rs_3573", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3573), 2},
+    {".rs_3574", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3574), 2},
+    {".rs_3575", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3575), 2},
+    {".rs_3576", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3576), 2},
+    {".rs_3577", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3577), 2},
+    {".rs_3578", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3578), 2},
+    {".rs_3579", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3579), 2},
+    {".rs_3580", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3580), 2},
+    {".rs_3581", reinterpret_cast<DL_FUNC>(&ROSETTA_R_MODULE::rosetta_r_3581), 1},
     {nullptr, nullptr, 0}};
 extern "C" void attribute_visible R_init_datamunger(DllInfo* dll) {
     using namespace ROSETTA_R_MODULE;
@@ -9660,20 +10659,30 @@ extern "C" void attribute_visible R_init_datamunger(DllInfo* dll) {
     rosetta_r::register_type<datamunge::optim::InequalityConstrainedFunction>("InequalityConstrainedFunction");
     rosetta_r::add_base<datamunge::optim::InequalityConstrainedFunction, datamunge::optim::DifferentiableFunction>();
     rosetta_r::register_type<datamunge::optim::ResidualFunction>("ResidualFunction");
+    rosetta_r::register_type<datamunge::bayes::NUTSOptions>("NUTSOptions");
+    rosetta_r::register_type<datamunge::bayes::NUTSResult>("NUTSResult");
+    rosetta_r::register_type<datamunge::bayes::NUTS>("NUTS");
+    rosetta_r::register_type<datamunge::Callback>("Callback");
+    rosetta_r::register_type<datamunge::graphics::RGB>("RGB");
+    rosetta_r::register_type<datamunge::graphics::DataSeries>("DataSeries");
+    rosetta_r::register_type<datamunge::graphics::ABLine>("ABLine");
+    rosetta_r::register_type<datamunge::graphics::LegendEntry>("LegendEntry");
+    rosetta_r::register_type<datamunge::graphics::Plot>("Plot");
+    rosetta_r::register_type<datamunge::graphics::RPlot>("RPlot");
+    rosetta_r::add_base<datamunge::graphics::RPlot, datamunge::graphics::Plot>();
+    rosetta_r::register_type<datamunge::graphics::RLayout>("RLayout");
     rosetta_r::register_type<datamunge::bayes::GibbsOptions>("GibbsOptions");
     rosetta_r::register_type<datamunge::bayes::GibbsResult>("GibbsResult");
     rosetta_r::register_type<datamunge::bayes::GibbsSampler>("GibbsSampler");
     rosetta_r::register_type<datamunge::bayes::HMCOptions>("HMCOptions");
     rosetta_r::register_type<datamunge::bayes::HMCResult>("HMCResult");
     rosetta_r::register_type<datamunge::bayes::HMC>("HMC");
+    rosetta_r::register_type<datamunge::bayes::HMCProposal>("HMCProposal");
     rosetta_r::register_type<datamunge::bayes::ImportanceSamplingOptions>("ImportanceSamplingOptions");
     rosetta_r::register_type<datamunge::bayes::ImportanceSamplingResult>("ImportanceSamplingResult");
     rosetta_r::register_type<datamunge::bayes::ImportanceSampling>("ImportanceSampling");
     rosetta_r::register_type<datamunge::bayes::MAPOptions>("MAPOptions");
     rosetta_r::register_type<datamunge::bayes::MAP>("MAP");
-    rosetta_r::register_type<datamunge::bayes::NUTSOptions>("NUTSOptions");
-    rosetta_r::register_type<datamunge::bayes::NUTSResult>("NUTSResult");
-    rosetta_r::register_type<datamunge::bayes::NUTS>("NUTS");
     rosetta_r::register_type<datamunge::bayes::RWMOptions>("RWMOptions");
     rosetta_r::register_type<datamunge::bayes::RWMResult>("RWMResult");
     rosetta_r::register_type<datamunge::bayes::RandomWalkMetropolis>("RandomWalkMetropolis");
@@ -9726,28 +10735,37 @@ extern "C" void attribute_visible R_init_datamunger(DllInfo* dll) {
     rosetta_r::register_type<datamunge::geometry::HullEvent>("HullEvent");
     rosetta_r::register_type<datamunge::geometry::ConvexHullAnalysis>("ConvexHullAnalysis");
     rosetta_r::register_type<datamunge::geometry::ConvexHullTrace>("ConvexHullTrace");
-    rosetta_r::register_type<datamunge::Callback>("Callback");
-    rosetta_r::register_type<datamunge::graphics::RGB>("RGB");
-    rosetta_r::register_type<datamunge::graphics::DataSeries>("DataSeries");
-    rosetta_r::register_type<datamunge::graphics::ABLine>("ABLine");
-    rosetta_r::register_type<datamunge::graphics::LegendEntry>("LegendEntry");
-    rosetta_r::register_type<datamunge::graphics::Plot>("Plot");
-    rosetta_r::register_type<datamunge::graphics::RPlot>("RPlot");
-    rosetta_r::add_base<datamunge::graphics::RPlot, datamunge::graphics::Plot>();
-    rosetta_r::register_type<datamunge::graphics::RLayout>("RLayout");
     rosetta_r::register_type<datamunge::geometry::DTWResult>("DTWResult");
     rosetta_r::register_type<datamunge::geometry::DTWWork>("DTWWork");
     rosetta_r::register_type<datamunge::geometry::DTWComputation>("DTWComputation");
     rosetta_r::register_type<datamunge::geometry::DTWTrace>("DTWTrace");
+    rosetta_r::register_type<datamunge::geometry::KDNearestProbe>("KDNearestProbe");
+    rosetta_r::register_type<datamunge::geometry::KDSearchWork>("KDSearchWork");
+    rosetta_r::register_type<datamunge::geometry::KDNearestTrace>("KDNearestTrace");
     rosetta_r::register_type<datamunge::geometry::KDTree2D>("KDTree2D");
     rosetta_r::register_type<datamunge::geometry::Circle>("Circle");
+    rosetta_r::register_type<datamunge::geometry::EnclosingCircleEvent>("EnclosingCircleEvent");
+    rosetta_r::register_type<datamunge::geometry::EnclosingCircleTrace>("EnclosingCircleTrace");
+    rosetta_r::register_type<datamunge::geometry::EnclosingCircleCheck>("EnclosingCircleCheck");
+    rosetta_r::register_type<datamunge::geometry::SegmentIntersectionRun>("SegmentIntersectionRun");
+    rosetta_r::register_type<datamunge::geometry::PolygonEarCandidate>("PolygonEarCandidate");
+    rosetta_r::register_type<datamunge::geometry::PolygonEarClip>("PolygonEarClip");
+    rosetta_r::register_type<datamunge::geometry::PolygonTriangulationOptions>("PolygonTriangulationOptions");
+    rosetta_r::register_type<datamunge::geometry::PolygonTriangulationRun>("PolygonTriangulationRun");
+    rosetta_r::register_type<datamunge::geometry::PolygonTriangulationTrace>("PolygonTriangulationTrace");
     rosetta_r::register_type<datamunge::geometry::DiameterResult>("DiameterResult");
-    rosetta_r::register_type<datamunge::geometry::MinimumBoundingRectangle>("MinimumBoundingRectangle");
+    rosetta_r::register_type<datamunge::geometry::DiameterOptions>("DiameterOptions");
+    rosetta_r::register_type<datamunge::geometry::CaliperEvent>("CaliperEvent");
+    rosetta_r::register_type<datamunge::geometry::DiameterRun>("DiameterRun");
     rosetta_r::register_type<datamunge::geometry::VoronoiDiagram>("VoronoiDiagram");
     rosetta_r::register_type<datamunge::LinalgMatrix>("LinalgMatrix");
     rosetta_r::register_type<datamunge::ode::RHS>("RHS");
     rosetta_r::register_type<datamunge::ode::ODEOptions>("ODEOptions");
+    rosetta_r::register_type<datamunge::ode::ODEExecutionLimits>("ODEExecutionLimits");
     rosetta_r::register_type<datamunge::ode::ODESolution>("ODESolution");
+    rosetta_r::register_type<datamunge::ode::ODEEvaluation>("ODEEvaluation");
+    rosetta_r::register_type<datamunge::ode::ODEAttempt>("ODEAttempt");
+    rosetta_r::register_type<datamunge::ode::ODETrace>("ODETrace");
     rosetta_r::register_type<datamunge::ode::ODESolver>("ODESolver");
     rosetta_r::register_type<datamunge::optim::ACOROptions>("ACOROptions");
     rosetta_r::register_type<datamunge::optim::ACOR>("ACOR");
@@ -9797,6 +10815,11 @@ extern "C" void attribute_visible R_init_datamunger(DllInfo* dll) {
     rosetta_r::register_type<datamunge::optim::HarmonySearch>("HarmonySearch");
     rosetta_r::register_type<datamunge::optim::InteriorPointOptions>("InteriorPointOptions");
     rosetta_r::register_type<datamunge::optim::InteriorPoint>("InteriorPoint");
+    rosetta_r::register_type<datamunge::optim::SurrogatePrediction>("SurrogatePrediction");
+    rosetta_r::register_type<datamunge::optim::GaussianJointPosterior>("GaussianJointPosterior");
+    rosetta_r::register_type<datamunge::optim::GaussianProcessSurrogateOptions>("GaussianProcessSurrogateOptions");
+    rosetta_r::register_type<datamunge::optim::RBFGaussianProcessSurrogate>("RBFGaussianProcessSurrogate");
+    rosetta_r::add_base<datamunge::optim::RBFGaussianProcessSurrogate, datamunge::optim::BayesianSurrogate>();
     rosetta_r::register_type<datamunge::optim::LBFGSOptions>("LBFGSOptions");
     rosetta_r::register_type<datamunge::optim::LBFGS>("LBFGS");
     rosetta_r::register_type<datamunge::optim::LevenbergMarquardtOptions>("LevenbergMarquardtOptions");
@@ -9819,10 +10842,6 @@ extern "C" void attribute_visible R_init_datamunger(DllInfo* dll) {
     rosetta_r::register_type<datamunge::optim::RandomizedBlockCoordinateDescent>("RandomizedBlockCoordinateDescent");
     rosetta_r::register_type<datamunge::optim::RMSPropOptions>("RMSPropOptions");
     rosetta_r::register_type<datamunge::optim::RMSProp>("RMSProp");
-    rosetta_r::register_type<datamunge::optim::SurrogatePrediction>("SurrogatePrediction");
-    rosetta_r::register_type<datamunge::optim::GaussianProcessSurrogateOptions>("GaussianProcessSurrogateOptions");
-    rosetta_r::register_type<datamunge::optim::RBFGaussianProcessSurrogate>("RBFGaussianProcessSurrogate");
-    rosetta_r::add_base<datamunge::optim::RBFGaussianProcessSurrogate, datamunge::optim::BayesianSurrogate>();
     rosetta_r::register_type<datamunge::optim::SGDOptions>("SGDOptions");
     rosetta_r::register_type<datamunge::optim::SGD>("SGD");
     rosetta_r::register_type<datamunge::optim::SimulatedAnnealingOptions>("SimulatedAnnealingOptions");
@@ -9837,13 +10856,18 @@ extern "C" void attribute_visible R_init_datamunger(DllInfo* dll) {
     rosetta_r::register_type<datamunge::optim::TrustRegionNewton>("TrustRegionNewton");
     rosetta_r::register_type<datamunge::optim::WhaleOptimizationOptions>("WhaleOptimizationOptions");
     rosetta_r::register_type<datamunge::optim::WhaleOptimization>("WhaleOptimization");
-    rosetta_r::register_type<datamunge::fda::BSplineBasis>("BSplineBasis");
     rosetta_r::register_type<datamunge::stats::HypothesisTestResult>("HypothesisTestResult");
+    rosetta_r::register_type<datamunge::fda::BSplineBasis>("BSplineBasis");
+    rosetta_r::register_type<datamunge::stats::GamesHowellComparison>("GamesHowellComparison");
+    rosetta_r::register_type<datamunge::stats::DunnComparison>("DunnComparison");
     rosetta_r::register_type<datamunge::stats::ARIMAOptions>("ARIMAOptions");
     rosetta_r::register_type<datamunge::stats::ARIMA>("ARIMA");
     rosetta_r::register_type<datamunge::stats::KendallTau>("KendallTau");
     rosetta_r::register_type<datamunge::stats::ExponentialSmoothingOptions>("ExponentialSmoothingOptions");
     rosetta_r::register_type<datamunge::stats::ExponentialSmoothing>("ExponentialSmoothing");
+    rosetta_r::register_type<datamunge::stats::ProportionDifferenceInterval>("ProportionDifferenceInterval");
+    rosetta_r::register_type<datamunge::stats::RiskRatioInterval>("RiskRatioInterval");
+    rosetta_r::register_type<datamunge::stats::PoissonRateInterval>("PoissonRateInterval");
     rosetta_r::register_type<datamunge::Bspline>("Bspline");
     rosetta_r::register_type<datamunge::BSplineRegression>("BSplineRegression");
     rosetta_r::register_type<datamunge::PSplineRegression>("PSplineRegression");
@@ -9911,21 +10935,25 @@ extern "C" void attribute_visible R_init_datamunger(DllInfo* dll) {
     rosetta_r::register_type<datamunge::dstruct::UndirectedGraph<std::string>>("UndirectedGraph");
     rosetta_r::register_type<datamunge::dstruct::WeightedGraph<std::string, double>>("WeightedGraph");
     rosetta_r::EnumTable<datamunge::algebra::MonomialOrder>::entries = {{"Lex", 0LL}, {"Grlex", 1LL}, {"Grevlex", 2LL}, };
+    rosetta_r::EnumTable<datamunge::graphics::DataSeries::Kind>::entries = {{"Scatter", 0LL}, {"Line", 1LL}, {"Bar", 2LL}, {"Box", 3LL}, {"Polygon", 4LL}, {"Text", 5LL}, {"Segment", 6LL}, };
     rosetta_r::EnumTable<datamunge::image::ImageMode>::entries = {{"Grayscale", 1LL}, {"GrayscaleAlpha", 2LL}, {"RGB", 3LL}, {"RGBA", 4LL}, };
     rosetta_r::EnumTable<datamunge::cv::StructuringElement>::entries = {{"Square", 0LL}, {"Cross", 1LL}, };
     rosetta_r::EnumTable<datamunge::image::ResampleFilter>::entries = {{"Nearest", 0LL}, {"Bilinear", 1LL}, };
     rosetta_r::EnumTable<datamunge::fem::BCType>::entries = {{"Dirichlet", 0LL}, {"Neumann", 1LL}, {"Robin", 2LL}, };
     rosetta_r::EnumTable<datamunge::geometry::HullPass>::entries = {{"lower", 0LL}, {"upper", 1LL}, };
     rosetta_r::EnumTable<datamunge::geometry::HullAction>::entries = {{"test", 0LL}, {"pop", 1LL}, {"push", 2LL}, };
-    rosetta_r::EnumTable<datamunge::graphics::DataSeries::Kind>::entries = {{"Scatter", 0LL}, {"Line", 1LL}, {"Bar", 2LL}, {"Box", 3LL}, {"Polygon", 4LL}, {"Text", 5LL}, {"Segment", 6LL}, };
     rosetta_r::EnumTable<datamunge::geometry::DTWPredecessor>::entries = {{"origin", 0LL}, {"diagonal", 1LL}, {"advance_a", 2LL}, {"advance_b", 3LL}, {"unrepresentable", 4LL}, };
+    rosetta_r::EnumTable<datamunge::geometry::KDProbeAction>::entries = {{"Visit", 0LL}, {"FarPlane", 1LL}, };
     rosetta_r::EnumTable<datamunge::geometry::Orientation>::entries = {{"Collinear", 0LL}, {"Clockwise", 1LL}, {"CounterClockwise", 2LL}, };
+    rosetta_r::EnumTable<datamunge::geometry::SegmentContact>::entries = {{"None", 0LL}, {"Point", 1LL}, {"Overlap", 2LL}, };
+    rosetta_r::EnumTable<datamunge::geometry::CaliperEventKind>::entries = {{"AreaAdvance", 0LL}, {"AreaStop", 1LL}, {"PairTest", 2LL}, };
     rosetta_r::EnumTable<datamunge::ode::StepMethod>::entries = {{"Euler", 0LL}, {"Midpoint", 1LL}, {"RK4", 2LL}, {"RK45", 3LL}, {"AdamsBashforth", 4LL}, {"AdamsMoulton", 5LL}, };
+    rosetta_r::EnumTable<datamunge::ode::ODEAttemptKind>::entries = {{"fixed_step", 0LL}, {"rk45_trial", 1LL}, {"rk4_startup", 2LL}, {"adams_bashforth", 3LL}, {"adams_pece", 4LL}, {"rk4_tail", 5LL}, };
     rosetta_r::EnumTable<datamunge::optim::Acquisition>::entries = {{"ExpectedImprovement", 0LL}, {"ProbabilityOfImprovement", 1LL}, {"LowerConfidenceBound", 2LL}, };
     rosetta_r::EnumTable<datamunge::stats::Alternative>::entries = {{"TwoSided", 0LL}, {"Less", 1LL}, {"Greater", 2LL}, };
+    rosetta_r::EnumTable<datamunge::stats::PAdjustMethod>::entries = {{"Bonferroni", 0LL}, {"Holm", 1LL}, {"Hochberg", 2LL}, {"Hommel", 3LL}, {"BH", 4LL}, {"BY", 5LL}, {"None", 6LL}, };
     rosetta_r::EnumTable<datamunge::stats::TrendType>::entries = {{"None", 0LL}, {"Additive", 1LL}, {"AdditiveDamped", 2LL}, };
     rosetta_r::EnumTable<datamunge::stats::SeasonalType>::entries = {{"None", 0LL}, {"Additive", 1LL}, {"Multiplicative", 2LL}, };
-    rosetta_r::EnumTable<datamunge::stats::PAdjustMethod>::entries = {{"Bonferroni", 0LL}, {"Holm", 1LL}, {"Hochberg", 2LL}, {"Hommel", 3LL}, {"BH", 4LL}, {"BY", 5LL}, {"None", 6LL}, };
     rosetta_r::EnumTable<datamunge::fda::SplineSolver>::entries = {{"Automatic", 0LL}, {"Cholesky", 1LL}, {"ConjugateGradient", 2LL}, };
     rosetta_r::EnumTable<datamunge::sim::Task>::entries = {{"InvertedPendulum", 0LL}, {"Hopper", 1LL}, };
     R_registerRoutines(dll, nullptr, rosetta_calls, nullptr, nullptr);

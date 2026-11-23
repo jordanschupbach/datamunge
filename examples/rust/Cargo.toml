@@ -1,0 +1,139 @@
+[package]
+name = "datamunge-rust-examples"
+version = "0.0.1"
+edition = "2021"
+publish = false
+autoexamples = false
+
+# The examples examples/rust/<name>.rs (just TARGET=<name> run-rust runs one: cargo run --example),
+# built against the Rosetta-generated crate (just prebuild-rust); it links libdatamunge_rust from
+# DATAMUNGE_RUST_LIB_DIR (just build-rust installs it into build/rust/prefix/lib).
+[lib]
+path = "lib.rs"
+
+[dependencies]
+datamunge = { path = "../../src/datamungerust/datamunge" }
+
+[[example]]
+name = "autodiff_ex"
+path = "autodiff_ex.rs"
+
+[[example]]
+name = "bspline_ex"
+path = "bspline_ex.rs"
+
+[[example]]
+name = "clustering_ex"
+path = "clustering_ex.rs"
+
+[[example]]
+name = "dataframe_ex"
+path = "dataframe_ex.rs"
+
+[[example]]
+name = "datamunge_ex"
+path = "datamunge_ex.rs"
+
+[[example]]
+name = "elastic_net_iris_ex"
+path = "elastic_net_iris_ex.rs"
+
+[[example]]
+name = "forest_iris_ex"
+path = "forest_iris_ex.rs"
+
+[[example]]
+name = "gaussian_process_regression_iris_ex"
+path = "gaussian_process_regression_iris_ex.rs"
+
+[[example]]
+name = "gbm_iris_ex"
+path = "gbm_iris_ex.rs"
+
+[[example]]
+name = "ggplot_ex"
+path = "ggplot_ex.rs"
+
+[[example]]
+name = "gis_ex"
+path = "gis_ex.rs"
+
+[[example]]
+name = "glm_iris_ex"
+path = "glm_iris_ex.rs"
+
+[[example]]
+name = "glmm_ex"
+path = "glmm_ex.rs"
+
+[[example]]
+name = "hypothesis_tests_ex"
+path = "hypothesis_tests_ex.rs"
+
+[[example]]
+name = "kernel_regression_iris_ex"
+path = "kernel_regression_iris_ex.rs"
+
+[[example]]
+name = "knn_iris_ex"
+path = "knn_iris_ex.rs"
+
+[[example]]
+name = "lda_iris_ex"
+path = "lda_iris_ex.rs"
+
+[[example]]
+name = "lm_ex"
+path = "lm_ex.rs"
+
+[[example]]
+name = "lmm_ex"
+path = "lmm_ex.rs"
+
+[[example]]
+name = "mds_ex"
+path = "mds_ex.rs"
+
+[[example]]
+name = "naive_bayes_penguins_ex"
+path = "naive_bayes_penguins_ex.rs"
+
+[[example]]
+name = "ode_ex"
+path = "ode_ex.rs"
+
+[[example]]
+name = "optim_advanced_ex"
+path = "optim_advanced_ex.rs"
+
+[[example]]
+name = "pca_ex"
+path = "pca_ex.rs"
+
+[[example]]
+name = "rplot_ex"
+path = "rplot_ex.rs"
+
+[[example]]
+name = "stl_ex"
+path = "stl_ex.rs"
+
+[[example]]
+name = "svm_iris_ex"
+path = "svm_iris_ex.rs"
+
+[[example]]
+name = "tensor_ex"
+path = "tensor_ex.rs"
+
+[[example]]
+name = "timeseries_ex"
+path = "timeseries_ex.rs"
+
+[[example]]
+name = "tree_iris_ex"
+path = "tree_iris_ex.rs"
+
+[[example]]
+name = "xgboost_iris_ex"
+path = "xgboost_iris_ex.rs"

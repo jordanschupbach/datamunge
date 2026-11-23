@@ -1,67 +1,95 @@
 <?php
 // CMD: just TARGET=clustering_ex run-php
+// Clustering iris: k-means, agglomerative (several linkages, dendrogram re-cut) and DBSCAN.
+declare(strict_types=1);
 
+require_once __DIR__ . '/../../src/datamungephp/php/datamunge.php';
 
-function svector($values) {
-    $out = new SVector(count($values));
-    foreach ($values as $i => $v) $out->set($i, $v);
-    return $out;
+use Datamunge\{AgglomerativeClustering, Dbscan, KMeans};
+use function Datamunge\Data\iris;
+
+/** A double the way C# prints it (shortest round-trip, e.g. 6, 0.1, 1E-05). */
+function cs(float $x): string
+{
+    if (is_nan($x)) {
+        return 'NaN';
+    }
+    if (is_infinite($x)) {
+        return $x > 0 ? '∞' : '-∞';
+    }
+    if ($x == 0.0) {
+        return fdiv(1.0, $x) < 0 ? '-0' : '0';
+    }
+    for ($p = 0; $p < 17; $p++) {
+        $s = sprintf("%.{$p}e", $x);
+        if ((float) $s === $x) {
+            break;
+        }
+    }
+    [$mant, $exp] = explode('e', $s);
+    $exp = (int) $exp;
+    $sign = $mant[0] === '-' ? '-' : '';
+    $digits = rtrim(str_replace(['-', '.'], '', $mant), '0');
+    if ($exp < -5 || $exp >= 15) {
+        $body = $digits[0] . (strlen($digits) > 1 ? '.' . substr($digits, 1) : '')
+            . 'E' . ($exp < 0 ? '-' : '+') . sprintf('%02d', abs($exp));
+    } elseif ($exp < 0) {
+        $body = '0.' . str_repeat('0', -$exp - 1) . $digits;
+    } elseif (strlen($digits) <= $exp + 1) {
+        $body = $digits . str_repeat('0', $exp + 1 - strlen($digits));
+    } else {
+        $body = substr($digits, 0, $exp + 1) . '.' . substr($digits, $exp + 1);
+    }
+    return $sign . $body;
 }
 
-function report_purity($cluster_labels, $species, $n_clusters) {
-    $votes = array();
-    for ($i = 0; $i < $cluster_labels->size(); $i++) {
-        $label = $cluster_labels->get($i);
+$iris = iris();
+$species = array_map(fn(int $i): string => $iris->stringAt('Species', $i), range(0, $iris->nrows() - 1));
+$featureColumns = ['Sepal.Length', 'Sepal.Width', 'Petal.Length', 'Petal.Width'];
+
+/**
+ * For each cluster, print its size and its majority species (negative labels are noise).
+ *
+ * @param list<int> $clusterLabels
+ * @param list<string> $species
+ */
+function reportPurity(array $clusterLabels, int $nClusters, array $species): void
+{
+    $votes = array_fill(0, $nClusters, []);
+    foreach (array_map(null, $clusterLabels, $species) as [$label, $sp]) {
         if ($label >= 0) {
-            $key = $label . "," . $species[$i];
-            $votes[$key] = ($votes[$key] ?? 0) + 1;
+            $votes[$label][$sp] = ($votes[$label][$sp] ?? 0) + 1;
         }
     }
-    for ($c = 0; $c < $n_clusters; $c++) {
-        $total = 0;
-        $best = 0;
-        $best_sp = "";
-        foreach ($votes as $key => $cnt) {
-            $parts = explode(",", $key, 2);
-            if ((int)$parts[0] === $c) {
-                $total += $cnt;
-                if ($cnt > $best) {
-                    $best = $cnt;
-                    $best_sp = $parts[1];
-                }
-            }
+    for ($c = 0; $c < $nClusters; $c++) {
+        $total = array_sum($votes[$c]);
+        if ($total === 0) {
+            continue;
         }
-        if ($total > 0) {
-            print("  cluster $c: $total points, majority $best_sp ($best/$total)\n");
-        }
+        // The first species with the most votes, as C#'s MaxBy picks it.
+        $best = max($votes[$c]);
+        $bestSpecies = array_search($best, $votes[$c], true);
+        echo "  cluster $c: $total points, majority $bestSpecies ($best/$total)\n";
     }
 }
 
-$iris = data_iris();
-$n = $iris->nrows();
-$species = array();
-for ($i = 0; $i < $n; $i++) $species[] = $iris->string_at("Species", $i);
-$features = svector(array("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width"));
+echo "=================== K-means (k=3) on iris ===================\n";
+$kmeans = new KMeans($iris, $featureColumns, 3);
+echo 'Inertia: ' . cs($kmeans->inertia()) . ", iterations (best run): {$kmeans->iterationsUsed()}\n";
+reportPurity($kmeans->labels(), 3, $species);
 
-print("=================== K-means (k=3) on iris ===================\n");
-$kmeans = new KMeans($iris, $features, 3);
-print("Inertia: " . $kmeans->inertia() . ", iterations (best run): " . $kmeans->iterations_used() . "\n");
-report_purity($kmeans->labels(), $species, 3);
-
-print("\n=================== Agglomerative clustering on iris ===================\n");
-foreach (array("ward", "complete", "average") as $linkage) {
-    $model = new AgglomerativeClustering($iris, $features, 3, $linkage);
-    print("--- linkage=$linkage ---\n");
-    report_purity($model->labels(), $species, 3);
+echo "\n=================== Agglomerative clustering on iris ===================\n";
+foreach (['ward', 'complete', 'average'] as $linkage) {
+    $model = new AgglomerativeClustering($iris, $featureColumns, 3, $linkage);
+    echo "--- linkage=$linkage ---\n";
+    reportPurity($model->labels(), 3, $species);
 }
 
-print("\n--- Re-cutting the ward dendrogram at k=2 without refitting ---\n");
-$ward_model = new AgglomerativeClustering($iris, $features, 3, "ward");
-report_purity($ward_model->cut(2), $species, 2);
+echo "\n--- Re-cutting the ward dendrogram at k=2 without refitting ---\n";
+$wardModel = new AgglomerativeClustering($iris, $featureColumns, 3, 'ward');
+reportPurity($wardModel->cut(2), 2, $species);
 
-print("\n=================== DBSCAN on iris ===================\n");
-$dbscan = new DBSCAN($iris, $features, 0.6, 5);
-print("Clusters found: " . $dbscan->n_clusters() . ", noise points: " . $dbscan->n_noise() . " (of " . $dbscan->observations() . ")\n");
-report_purity($dbscan->labels(), $species, $dbscan->n_clusters());
-
-?>
+echo "\n=================== DBSCAN on iris ===================\n";
+$dbscan = new Dbscan($iris, $featureColumns, 0.6, 5);
+echo "Clusters found: {$dbscan->nClusters()}, noise points: {$dbscan->nNoise()} (of {$dbscan->observations()})\n";
+reportPurity($dbscan->labels(), $dbscan->nClusters(), $species);

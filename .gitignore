@@ -32,13 +32,15 @@ _build
 .merlin
 bindings_tests/rust/target
 bindings/rust/target
-rustdatamunge/target
+/target
 datamunged/libdatamunged.a
 **/.null-ls*
 
-src/rustdatamunge/target
+src/datamungerust/datamunge/target
 src/datamungecsharp/bin
 src/datamungecsharp/obj
+src/datamungevb/bin
+src/datamungevb/obj
 tests/rust/target
 target
 
@@ -92,7 +94,7 @@ docs/mepml/**/figures/**/*.mp3
 
 # Compiled binding/test binaries (Ruby/Perl bundles, Perl blib, D and root test executables).
 *.bundle
-/src/perldatamunge/blib/
+/src/datamungeperl/blib/
 /examples/d/datamunged-example
 /tests/d/datamunged-tests
 /ggplot_tests
@@ -154,3 +156,8 @@ docs/mepml/**/figures/**/*.mp3
 
 # Local MEpML code chunk results.
 *.mep-cache/
+# Dart package resolution (dart pub get)
+.dart_tool/
+pubspec.lock
+# Haskell (GHC) interface files of programs compiled in place
+*.hi

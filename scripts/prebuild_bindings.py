@@ -8,7 +8,13 @@ src/datamungecobol/rosetta, JavaScript from src/datamungejs/rosetta, Fortran fro
 src/datamungefortran/rosetta, Ruby from src/datamungeruby/rosetta, Octave from
 src/datamungeoctave/rosetta, Tcl from src/datamungetcl/rosetta, Guile from
 src/datamungeguile/rosetta, Java from src/datamungejava/rosetta, Go from src/datamungego/rosetta,
-OCaml from src/datamungeocaml/rosetta, GNU APL from src/datamungeapl/rosetta."""
+OCaml from src/datamungeocaml/rosetta, GNU APL from src/datamungeapl/rosetta, Visual Basic from
+src/datamungevb/rosetta, Rust from src/datamungerust/rosetta, PHP from
+src/datamungephp/rosetta, Perl from src/datamungeperl/rosetta,
+Swift from src/datamungeswift/rosetta, Free Pascal from src/datamungepascal/rosetta,
+Dart from src/datamungedart/rosetta, Ada from src/datamungeada/rosetta,
+Objective-C from src/datamungeobjc/rosetta, SWI-Prolog from src/datamungeprolog/rosetta,
+Haskell from src/datamungehaskell/rosetta."""
 
 import argparse
 import os
@@ -43,6 +49,17 @@ JAVA_PARTS = 16
 GO_PARTS = 16
 OCAML_PARTS = 16
 APL_PARTS = 16
+VB_PARTS = 16
+RUST_PARTS = 16
+PHP_PARTS = 16
+PERL_PARTS = 16
+SWIFT_PARTS = 16
+PASCAL_PARTS = 16
+DART_PARTS = 16
+ADA_PARTS = 16
+OBJC_PARTS = 16
+PROLOG_PARTS = 16
+HASKELL_PARTS = 16
 
 
 def sync_directory(generated, destination, pattern):
@@ -63,7 +80,7 @@ def sync_directory(generated, destination, pattern):
 def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include",), r_interface=None, lua_meta=None,
                      lisp_dir=None, julia_dir=None, csharp_dir=None, cobol_dir=None, js_types=None,
                      fortran_dir=None, ruby_lib=None, octave_dir=None, tcl_dir=None, guile_dir=None, java_dir=None,
-                     go_dir=None, ocaml_dir=None, apl_dir=None):
+                     go_dir=None, ocaml_dir=None, apl_dir=None, generic=None):
     """Generate src/<stem>*.cpp with Rosetta: the Python extension `module`, with
     r_interface (a path) the R package `module` and its R6 classes at that path, or with
     lua_meta (a path) the Lua module `module` and its LuaCATS stub at that path, or with
@@ -85,7 +102,10 @@ def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include
     ocaml_dir (a directory) the C ABI library with its OCaml C stubs and the findlib package `module` in
     ocaml_dir (module.ml, module.mli with the odoc documentation, META), or with
     apl_dir (a directory) the GNU APL native function library libmodule_gnu_apl and the GNU APL script
-    apl_dir/module.apl (dm∆ functions whose ⍝ comments carry the documentation)."""
+    apl_dir/module.apl (dm∆ functions whose ⍝ comments carry the documentation), or with
+    generic a pair (arguments, outputs) for the languages added since: arguments(tmp) gives the
+    language options (writing under tmp), and each (source, destination, pattern) of outputs
+    synchronises tmp/source with destination as sync_directory does."""
     with tempfile.TemporaryDirectory(prefix=".rosetta-", dir=ROOT / "src") as tmp:
         generated = Path(tmp) / (stem + ".cpp")
         language = ["--language", "python"]
@@ -167,6 +187,8 @@ def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include
             # by the dev shells and the justfile), so the committed script holds no build paths.
             language = ["--language", "apl", "--apl-api", "full", "--apl-prefix", "dm", "--apl-library-dir", ".",
                         "--gnu-apl-output", str(Path(tmp) / "apl" / (module + ".apl"))]
+        if generic is not None:
+            language = generic[0](Path(tmp))
         subprocess.run(
             [
                 os.environ.get("ROSETTA", "rosetta"),
@@ -246,6 +268,9 @@ def generate_rosetta(header, policy, module, stem, parts, include_dirs=("include
         if apl_dir is not None:
             (ROOT / apl_dir).mkdir(parents=True, exist_ok=True)
             install_if_changed(Path(tmp) / "apl" / (module + ".apl"), ROOT / apl_dir / (module + ".apl"))
+        if generic is not None:
+            for source, destination, pattern in generic[1]:
+                sync_directory(Path(tmp) / source, ROOT / destination, pattern)
 
 
 def prebuild_python():
@@ -257,7 +282,7 @@ def prebuild_python():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("language", choices=["python", "r", "lua", "lisp", "julia", "csharp", "cobol", "javascript", "fortran", "ruby", "octave", "tcl", "guile", "java", "go", "ocaml", "apl"])
+    parser.add_argument("language", choices=["python", "r", "lua", "lisp", "julia", "csharp", "cobol", "javascript", "fortran", "ruby", "octave", "tcl", "guile", "java", "go", "ocaml", "apl", "vb", "rust", "php", "perl", "swift", "pascal", "dart", "ada", "objc", "prolog", "haskell"])
     args = parser.parse_args()
     if args.language == "python":
         prebuild_python()
@@ -306,6 +331,28 @@ def main():
         return
     if args.language == "apl":
         prebuild_apl()
+    if args.language == "vb":
+        prebuild_vb()
+    if args.language == "rust":
+        prebuild_rust()
+    if args.language == "php":
+        prebuild_php()
+    if args.language == "perl":
+        prebuild_perl()
+    if args.language == "swift":
+        prebuild_swift()
+    if args.language == "pascal":
+        prebuild_pascal()
+    if args.language == "dart":
+        prebuild_dart()
+    if args.language == "ada":
+        prebuild_ada()
+    if args.language == "objc":
+        prebuild_objc()
+    if args.language == "prolog":
+        prebuild_prolog()
+    if args.language == "haskell":
+        prebuild_haskell()
         return
     prebuild_r()
 
@@ -473,6 +520,132 @@ def prebuild_apl():
     bindings = Path("src/datamungeapl/rosetta")
     generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_apl_wrap", APL_PARTS,
                      apl_dir="src/datamungeapl/apl")
+
+
+def prebuild_vb():
+    """Generate src/datamunge_vb_wrap*.cpp (the native library datamunge_vb) and the Visual Basic
+    project src/datamungevb (Datamunge.vb, Datamunge.vbproj), whose XML doc comments carry the C++
+    documentation (IntelliSense, mep's VB server through MEP_VB_PATH)."""
+    bindings = Path("src/datamungevb/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_vb_wrap", VB_PARTS,
+                     generic=(lambda tmp: ["--language", "visual-basic", "--vb-namespace", "Datamunge",
+                                           "--vb-library", "datamunge_vb",
+                                           "--vb-output", str(tmp / "vb" / "Datamunge.vb"),
+                                           "--vb-project", str(tmp / "vb" / "Datamunge.vbproj")],
+                              [("vb", "src/datamungevb", "Datamunge.vb"), ("vb", "src/datamungevb", "Datamunge.vbproj")]))
+
+
+def prebuild_rust():
+    """Generate src/datamunge_rust_wrap*.cpp (the shared library libdatamunge_rust) and the Cargo crate
+    src/datamungerust/datamunge (Cargo.toml, build.rs, src/lib.rs with the rustdoc documentation,
+    src/rosetta.rs); the policy module datamunge::data is datamunge::data."""
+    bindings = Path("src/datamungerust/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_rust_wrap", RUST_PARTS,
+                     generic=(lambda tmp: ["--language", "rust", "--rust-crate", "datamunge",
+                                           "--rust-library", "datamunge_rust",
+                                           "--rust-output", str(tmp / "rust" / "datamunge")],
+                              [("rust/datamunge", "src/datamungerust/datamunge", "*")]))
+
+
+def prebuild_php():
+    """Generate src/datamunge_php_wrap*.cpp (the shared library libdatamunge_php) and the PHP file
+    src/datamungephp/php/datamunge.php (namespace Datamunge over PHP's FFI extension), whose PHPDoc
+    comments carry the C++ documentation."""
+    bindings = Path("src/datamungephp/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_php_wrap", PHP_PARTS,
+                     generic=(lambda tmp: ["--language", "php", "--php-namespace", "Datamunge",
+                                           "--php-library", "datamunge_php",
+                                           "--php-output", str(tmp / "php" / "datamunge.php")],
+                              [("php", "src/datamungephp/php", "*.php")]))
+
+
+def prebuild_perl():
+    """Generate src/datamunge_perl_wrap*.cpp (the shared library libdatamunge_perl, whose first part
+    carries the XS glue) and the module src/datamungeperl/lib/Datamunge.pm, documented in POD
+    (perldoc Datamunge, mep's Perl server through MEP_PERL_PATH)."""
+    bindings = Path("src/datamungeperl/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_perl_wrap", PERL_PARTS,
+                     generic=(lambda tmp: ["--language", "perl", "--perl-package", "Datamunge",
+                                           "--perl-library", "datamunge_perl",
+                                           "--perl-output", str(tmp / "perl" / "Datamunge.pm")],
+                              [("perl", "src/datamungeperl/lib", "*.pm")]))
+
+
+def prebuild_swift():
+    """Generate src/datamunge_swift_wrap*.cpp (the shared library libdatamunge_swift) and the Swift
+    package src/datamungeswift/Datamunge (Package.swift, Sources/Datamunge/{Datamunge,Rosetta}.swift
+    with the DocC documentation, and the C module Sources/CDatamunge)."""
+    bindings = Path("src/datamungeswift/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_swift_wrap", SWIFT_PARTS,
+                     generic=(lambda tmp: ["--language", "swift", "--swift-module", "Datamunge",
+                                           "--swift-library", "datamunge_swift",
+                                           "--swift-output", str(tmp / "swift" / "Datamunge")],
+                              [("swift/Datamunge", "src/datamungeswift/Datamunge", "*")]))
+
+
+def prebuild_pascal():
+    """Generate src/datamunge_pascal_wrap*.cpp (the shared library libdatamunge_pascal) and the Free
+    Pascal unit src/datamungepascal/datamunge.pas, whose XML doc comments carry the C++ documentation."""
+    bindings = Path("src/datamungepascal/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_pascal_wrap", PASCAL_PARTS,
+                     generic=(lambda tmp: ["--language", "pascal", "--pascal-unit", "datamunge",
+                                           "--pascal-library", "datamunge_pascal",
+                                           "--pascal-output", str(tmp / "pascal" / "datamunge.pas")],
+                              [("pascal", "src/datamungepascal/pascal", "*.pas")]))
+
+
+def prebuild_dart():
+    """Generate src/datamunge_dart_wrap*.cpp (the shared library libdatamunge_dart) and the Dart package
+    src/datamungedart/datamunge (pubspec.yaml, lib/datamunge.dart with the dartdoc documentation,
+    lib/src/rosetta.dart), loaded through dart:ffi."""
+    bindings = Path("src/datamungedart/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_dart_wrap", DART_PARTS,
+                     generic=(lambda tmp: ["--language", "dart", "--dart-package", "datamunge",
+                                           "--dart-library", "datamunge_dart",
+                                           "--dart-output", str(tmp / "dart" / "datamunge")],
+                              [("dart/datamunge", "src/datamungedart/datamunge", "*")]))
+
+
+def prebuild_ada():
+    """Generate src/datamunge_ada_wrap*.cpp (the shared library libdatamunge_ada) and the Ada package
+    src/datamungeada/ada (datamunge.ads with the GNATdoc documentation, datamunge.adb, datamunge.gpr)."""
+    bindings = Path("src/datamungeada/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_ada_wrap", ADA_PARTS,
+                     generic=(lambda tmp: ["--language", "ada", "--ada-package", "Datamunge",
+                                           "--ada-library", "datamunge_ada", "--ada-output", str(tmp / "ada")],
+                              [("ada", "src/datamungeada/ada", "datamunge.*")]))
+
+
+def prebuild_objc():
+    """Generate src/datamunge_objc_wrap*.cpp (the shared library libdatamunge_objc) and the Objective-C
+    classes src/datamungeobjc/objc (DM.h with the /// documentation, DM.m with the runtime)."""
+    bindings = Path("src/datamungeobjc/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_objc_wrap", OBJC_PARTS,
+                     generic=(lambda tmp: ["--language", "objective-c", "--objc-prefix", "DM",
+                                           "--objc-library", "datamunge_objc", "--objc-output", str(tmp / "objc")],
+                              [("objc", "src/datamungeobjc/objc", "DM.*")]))
+
+
+def prebuild_prolog():
+    """Generate src/datamunge_prolog_wrap*.cpp (the foreign library libdatamunge_prolog) and the SWI-Prolog
+    module src/datamungeprolog/prolog/datamunge.pl (predicates, PlDoc and the runtime)."""
+    bindings = Path("src/datamungeprolog/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_prolog_wrap", PROLOG_PARTS,
+                     generic=(lambda tmp: ["--language", "prolog", "--prolog-module", "datamunge",
+                                           "--prolog-library", "datamunge_prolog",
+                                           "--prolog-output", str(tmp / "prolog" / "datamunge.pl")],
+                              [("prolog", "src/datamungeprolog/prolog", "datamunge.pl")]))
+
+
+def prebuild_haskell():
+    """Generate src/datamunge_haskell_wrap*.cpp (the shared library libdatamunge_haskell) and the GHC modules
+    src/datamungehaskell/haskell/Datamunge.hs (Haddock documentation) and Datamunge/Rosetta.hs (the FFI runtime)."""
+    bindings = Path("src/datamungehaskell/rosetta")
+    generate_rosetta(bindings / "bindings.hpp", bindings / "policy.json", "datamunge", "datamunge_haskell_wrap", HASKELL_PARTS,
+                     generic=(lambda tmp: ["--language", "haskell", "--haskell-module", "Datamunge",
+                                           "--haskell-output", str(tmp / "haskell" / "Datamunge.hs")],
+                              [("haskell", "src/datamungehaskell/haskell", "Datamunge.hs"),
+                               ("haskell/Datamunge", "src/datamungehaskell/haskell/Datamunge", "*.hs")]))
 
 
 if __name__ == "__main__":

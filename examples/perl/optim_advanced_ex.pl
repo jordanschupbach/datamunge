@@ -1,151 +1,151 @@
 # CMD: just TARGET=optim_advanced_ex run-perl
-
+# Advanced datamunge optimizers (ProximalGradient, FISTA, LevenbergMarquardt, Newton, TrustRegionNewton,
+# AugmentedLagrangian, SQP, InteriorPoint, BayesianOptimization, RBFGaussianProcessSurrogate) from Perl.
+#
+# Every one of these optimizers takes an interface (ProximalFunction / HessianFunction /
+# EqualityConstrainedFunction / InequalityConstrainedFunction / ResidualFunction, or
+# ArbitraryFunction for BayesianOptimization) that the C++ library leaves abstract: callers
+# implement the objective. From Perl, subclass the interface class
+# (use parent -norequire, 'Datamunge::HessianFunction') and define its virtual methods; the
+# optimizer then calls the Perl methods. Coordinates are updated in place through an array
+# reference (the C++ parameter is a non-const std::vector<double>&).
 use strict;
 use warnings;
 
-use Datamunge;
+use Datamunge qw(:all);
 
-# ---- New optim function-type interfaces (ProximalFunction, HessianFunction,
-# ---- EqualityConstrainedFunction, InequalityConstrainedFunction, ResidualFunction,
-# ---- BayesianSurrogate), exercised the same way as the existing directors in optim_ex.pl:
-# director callback vector<double> PARAMETERS arrive as real DVector objects (index with
-# ->get($i), not ->[$i]); vector<double> RETURN values must be wrapped in a real
-# Datamunge::DVector->new([...]); vector<vector<double>> RETURN values must be wrapped in a
-# real Datamunge::DVectorVector, built by push()-ing either DVector objects or plain
-# arrayrefs (push() accepts a plain Perl arrayref directly for the inner vector<double> -- no
-# need to wrap each row in DVector->new first). ----
+$| = 1;    # flush each print so it interleaves with the C++ library's output
 
-sub dv_to_array {
-  my ($dv) = @_;
-  my @out;
-  for (my $i = 0; $i < $dv->size(); $i++) { push @out, $dv->get($i); }
-  return \@out;
+use List::Util qw(min);
+
+{
+    # Newton's objective f(x, y) = (x - 1)^2 + 10 (y + 2)^2 with exact gradient and Hessian.
+    package Quadratic;
+    use parent -norequire, 'Datamunge::HessianFunction';
+
+    sub evaluate { my ($self, $c) = @_; return ($c->[0] - 1)**2 + 10 * ($c->[1] + 2)**2 }
+    sub gradient { my ($self, $c) = @_; return [2 * ($c->[0] - 1), 20 * ($c->[1] + 2)] }
+    sub hessian { return [[2.0, 0.0], [0.0, 20.0]] }
+}
+{
+    # Residuals of y = a * exp(b t) against exact data from a = 2, b = 0.5.
+    package Exponential;
+    use parent -norequire, 'Datamunge::ResidualFunction';
+
+    sub new {
+        my ($class, $ts) = @_;
+        my $self = $class->SUPER::new();
+        $self->{ts} = $ts;
+        return $self;
+    }
+
+    sub residuals {
+        my ($self, $p) = @_;
+        return [map { $p->[0] * exp($p->[1] * $_) - 2 * exp(0.5 * $_) } @{ $self->{ts} }];
+    }
+
+    sub jacobian {
+        my ($self, $p) = @_;
+        return [map { [exp($p->[1] * $_), $p->[0] * $_ * exp($p->[1] * $_)] } @{ $self->{ts} }];
+    }
+}
+{
+    # Leaves gradient() and hessian() out.
+    package Incomplete;
+    use parent -norequire, 'Datamunge::HessianFunction';
+
+    sub evaluate { return 0.0 }
 }
 
-package QuadraticBowlHessian;
-# A simple 2-D quadratic bowl with a known minimum -- exercises HessianFunction, the new
-# interface Newton/TrustRegionNewton consume.
-our @ISA = ("Datamunge::HessianFunction");
-
-sub new {
-  my ($class, $target) = @_;
-  my $self = $class->SUPER::new();
-  $self->{target} = $target;
-  return $self;
+# An options object with the given fields set (the C++ structs have no keyword constructor).
+sub options {
+    my ($class, %fields) = @_;
+    my $options = $class->new();
+    $options->$_($fields{$_}) for sort keys %fields;
+    return $options;
 }
 
-sub evaluate {
-  my ($self, $coordinates) = @_;
-  my $dx = $coordinates->get(0) - $self->{target}[0];
-  my $dy = $coordinates->get(1) - $self->{target}[1];
-  return $dx * $dx + $dy * $dy;
+# C#'s object.ToString() for the bound classes: the class name.
+sub describe { my ($object) = @_; return (ref($object) =~ s/^.*:://r) . "()" }
+
+# C#'s "G<digits>" format.
+sub fmt_g { my ($x, $digits) = @_; return sprintf('%.*g', $digits, $x) =~ s/e/E/r }
+
+print "=================== RBFGaussianProcessSurrogate (concrete BayesianSurrogate) ===================\n";
+# Fit a 1D surrogate to a simple bowl y = (x-1)^2 sampled at a few points,
+# then check the acquisition function favors an unexplored region.
+{
+    my @xs = (0.0, 0.5, 1.0, 1.5, 2.0, 3.0);
+    my @ys = map { ($_ - 1) * ($_ - 1) } @xs;
+    my $surrogate = Datamunge::RbfGaussianProcessSurrogate->new(1.0, 1e-6);
+    $surrogate->fit([map { [$_] } @xs], \@ys);
+    my $incumbent = min(0.0, @ys);  # best observed value so far
+    print "incumbent (best observed y): ", fmt($incumbent), "\n";
+    printf "acquisition(x=%.2f) = %.6f\n", $_, $surrogate->acquisition([$_], $incumbent) for 0.25, 1.0, 2.5;
 }
 
-sub gradient {
-  my ($self, $coordinates) = @_;
-  my $dx = $coordinates->get(0) - $self->{target}[0];
-  my $dy = $coordinates->get(1) - $self->{target}[1];
-  return Datamunge::DVector->new([2.0 * $dx, 2.0 * $dy]);
+print "\n=================== Options structs + optimizer construction (all 10 new classes) ===================\n";
+# Every new Options struct and optimizer class constructs cleanly, proving
+# the binding for the whole batch is wired correctly.
+my $pg = Datamunge::ProximalGradient->new(options('Datamunge::ProximalGradientOptions', step_size => 0.05));
+print "ProximalGradient: ", describe($pg), "\n";
+my $fista = Datamunge::Fista->new(Datamunge::FistaOptions->new());
+print "FISTA: ", describe($fista), "\n";
+my $lm = Datamunge::LevenbergMarquardt->new(options('Datamunge::LevenbergMarquardtOptions', max_iterations => 200));
+print "LevenbergMarquardt: ", describe($lm), "\n";
+my $newton = Datamunge::Newton->new(Datamunge::NewtonOptions->new());
+print "Newton: ", describe($newton), "\n";
+my $trn = Datamunge::TrustRegionNewton->new(Datamunge::TrustRegionNewtonOptions->new());
+print "TrustRegionNewton: ", describe($trn), "\n";
+my $al = Datamunge::AugmentedLagrangian->new(Datamunge::AugmentedLagrangianOptions->new());
+print "AugmentedLagrangian: ", describe($al), "\n";
+my $sqp = Datamunge::Sqp->new(Datamunge::SqpOptions->new());
+print "SQP: ", describe($sqp), "\n";
+my $ip = Datamunge::InteriorPoint->new(Datamunge::InteriorPointOptions->new());
+print "InteriorPoint: ", describe($ip), "\n";
+my $bo = Datamunge::BayesianOptimization->new(options('Datamunge::BayesianOptimizationOptions', initial_samples => 8));
+print "BayesianOptimization: ", describe($bo), "\n";
+
+print "\n=================== Perl objectives (subclassing the C++ interfaces) ===================\n";
+# Newton's method on f(x, y) = (x - 1)^2 + 10 (y + 2)^2 with exact gradient and Hessian.
+{
+    my @start = (5.0, 5.0);
+    my $value = $newton->optimize(Quadratic->new(), \@start);
+    printf "Newton: f = %s at (%.6f, %.6f) (exact minimum 0 at (1, -2))\n", fmt_g($value, 6), @start;
 }
 
-sub hessian {
-  my ($self, $coordinates) = @_;
-  my $h = Datamunge::DVectorVector->new();
-  $h->push([2.0, 0.0]);
-  $h->push([0.0, 2.0]);
-  return $h;
+# Levenberg-Marquardt fitting y = a * exp(b t) to exact data from a = 2, b = 0.5.
+{
+    my @parameters = (1.0, 0.1);
+    my $sse = $lm->optimize(Exponential->new([0.0, 0.5, 1.0, 1.5, 2.0]), \@parameters);
+    printf "LevenbergMarquardt: residual = %s, a = %.6f, b = %.6f (exact: 2, 0.5)\n", fmt_g($sse, 3), @parameters;
 }
 
-package ExponentialDecayResidual;
-# A*exp(-k*t)+c curve-fit residuals -- exercises ResidualFunction, the standalone
-# (non-ArbitraryFunction) interface LevenbergMarquardt consumes.
-our @ISA = ("Datamunge::ResidualFunction");
-
-sub new {
-  my ($class, $t, $y) = @_;
-  my $self = $class->SUPER::new();
-  $self->{t} = $t;
-  $self->{y} = $y;
-  return $self;
+# An interface method a subclass leaves out dies when the optimizer calls it.
+{
+    my @origin = (0.0, 0.0);
+    my $ok = eval { $newton->optimize(Incomplete->new(), \@origin); 1 };
+    my $err = $@;
+    printf "missing gradient(): ok=%s, error mentions it: %s\n", $ok ? "True" : "False", (!$ok && "$err" =~ /gradient/) ? "True" : "False";
 }
 
-sub residuals {
-  my ($self, $coordinates) = @_;
-  my $A = $coordinates->get(0);
-  my $k = $coordinates->get(1);
-  my $c = $coordinates->get(2);
-  my @r;
-  for (my $i = 0; $i < scalar(@{$self->{t}}); $i++) {
-    my $ti = $self->{t}[$i];
-    my $model = $A * exp(-$k * $ti) + $c;
-    push @r, $model - $self->{y}[$i];
-  }
-  return Datamunge::DVector->new(\@r);
+# Formats a number like C#'s double.ToString(): shortest round-trip digits, E notation outside [1e-4, 1e15).
+sub fmt {
+    my ($x) = @_;
+    return 'NaN' if $x != $x;
+    return $x > 0 ? 'Infinity' : '-Infinity' if $x == 9**9**9 || $x == -9**9**9;
+    return '0' if $x == 0;
+    my $s;
+    for my $p (0 .. 16) { $s = sprintf('%.*e', $p, $x); last if $s == $x }
+    my ($m, $e) = $s =~ /^(-?[\d.]+)e([-+]\d+)$/;
+    $m =~ s/\.?0+$// if $m =~ /\./;
+    $e += 0;
+    return sprintf('%sE%s%02d', $m, $e < 0 ? '-' : '+', abs $e) if $e < -4 || $e >= 15;
+    my $neg = $m =~ s/^-//;
+    my $digits = $m =~ s/\.//r;
+    my $out;
+    if ($e < 0) { $out = '0.' . ('0' x (-$e - 1)) . $digits }
+    elsif (length($digits) > $e + 1) { $out = substr($digits, 0, $e + 1) . '.' . substr($digits, $e + 1) }
+    else { $out = $digits . ('0' x ($e + 1 - length $digits)) }
+    return ($neg ? '-' : '') . $out;
 }
-
-sub jacobian {
-  my ($self, $coordinates) = @_;
-  my $A = $coordinates->get(0);
-  my $k = $coordinates->get(1);
-  my $j = Datamunge::DVectorVector->new();
-  for (my $i = 0; $i < scalar(@{$self->{t}}); $i++) {
-    my $ti = $self->{t}[$i];
-    my $e = exp(-$k * $ti);
-    $j->push([$e, -$A * $ti * $e, 1.0]);
-  }
-  return $j;
-}
-
-package main;
-
-print "=================== HessianFunction: Newton on a 2-D quadratic bowl ===================\n";
-my @target = (3.0, -2.0);
-my $f = QuadraticBowlHessian->new(\@target);
-my $x = Datamunge::DVector->new([0.0, 0.0]);
-my $newton_options = Datamunge::NewtonOptions->new();
-$newton_options->swig_max_iterations_set(100);
-$newton_options->swig_tolerance_set(1e-10);
-my $value = Datamunge::Newton->new($newton_options)->optimize($f, $x);
-print "Newton: f=$value x=[" . join(",", @{dv_to_array($x)}) . "] (true minimum: f=0 at [3, -2])\n";
-
-print "\n=================== ResidualFunction: LevenbergMarquardt curve fit ===================\n";
-# Synthetic data generated from the known parameters A=5, k=0.7, c=1, noiseless -- LM should
-# recover them (near-)exactly from a nearby starting guess.
-my $A_true = 5.0;
-my $k_true = 0.7;
-my $c_true = 1.0;
-my @t = (0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0);
-my @y = map { $A_true * exp(-$k_true * $_) + $c_true } @t;
-
-my $residual_fn = ExponentialDecayResidual->new(\@t, \@y);
-my $params = Datamunge::DVector->new([1.0, 1.0, 0.0]);
-my $lm_options = Datamunge::LevenbergMarquardtOptions->new();
-$lm_options->swig_max_iterations_set(200);
-$lm_options->swig_tolerance_set(1e-10);
-$value = Datamunge::LevenbergMarquardt->new($lm_options)->optimize($residual_fn, $params);
-print "LevenbergMarquardt: sum_sq_residuals=$value params(A,k,c)=[" . join(",", @{dv_to_array($params)}) . "]\n";
-print "(true parameters: A=$A_true, k=$k_true, c=$c_true)\n";
-
-print "\n=================== BayesianOptimization with RBFGaussianProcessSurrogate ===================\n";
-package Bowl1D;
-our @ISA = ("Datamunge::ArbitraryFunction");
-
-sub evaluate {
-  my ($self, $x) = @_;
-  my $d = $x->get(0) - 1.75;
-  return $d * $d + 0.1;
-}
-
-package main;
-
-my $bo_f = Bowl1D->new();
-my $bo_x = Datamunge::DVector->new([0.0]);
-my @lower = (-5.0);
-my @upper = (5.0);
-my $bo_options = Datamunge::BayesianOptimizationOptions->new();
-$bo_options->swig_initial_samples_set(8);
-$bo_options->swig_max_iterations_set(40);
-$bo_options->swig_seed_set(42);
-my $surrogate = Datamunge::RBFGaussianProcessSurrogate->new(1.0, 1e-6);
-$value = Datamunge::BayesianOptimization->new($bo_options)->optimize($bo_f, $bo_x, \@lower, \@upper, $surrogate);
-print "BayesianOptimization: f=$value x=[" . join(",", @{dv_to_array($bo_x)}) . "] (true minimum: f=0.1 at [1.75])\n";

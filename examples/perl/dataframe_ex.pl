@@ -1,14 +1,16 @@
 # CMD: just TARGET=dataframe_ex run-perl
-
+# DataFrame basics: nulls, drop_duplicates, fill_null, select/sort, group-by, join and summaries.
 use strict;
 use warnings;
 
-use Datamunge;
+use Datamunge qw(:all);
+
+$| = 1;    # flush each print so it interleaves with the C++ library's output
 
 my $sales = Datamunge::DataFrame->new();
 $sales->add_string_column("region", ["west", "west", "east", "south", "south", "south"]);
 $sales->add_string_column("product", ["widget", "widget", "widget", "gizmo", "gizmo", "gizmo"]);
-$sales->add_numeric_column("sales", [10, 10, 14, 8, 0, 11], [1, 1, 1, 1, 0, 1]);
+$sales->add_numeric_column("sales", [10.0, 10.0, 14.0, 8.0, 0.0, 11.0], [1, 1, 1, 1, 0, 1]);
 $sales->add_string_column("quarter", ["Q1", "Q1", "Q1", "Q2", "Q2", ""], [1, 1, 1, 1, 1, 0]);
 
 print "raw data\n";
@@ -30,7 +32,7 @@ print $grouped->to_string(), "\n\n";
 
 my $targets = Datamunge::DataFrame->new();
 $targets->add_string_column("region", ["west", "east", "south"]);
-$targets->add_numeric_column("target", [18, 12, 25]);
+$targets->add_numeric_column("target", [18.0, 12.0, 25.0]);
 my $joined = $grouped->join($targets, "region", "region", "left");
 print "joined with targets\n";
 print $joined->to_string(), "\n\n";

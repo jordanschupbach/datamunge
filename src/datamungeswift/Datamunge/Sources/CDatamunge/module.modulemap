@@ -1,0 +1,5 @@
+module CDatamunge [system] {
+    header "datamunge.h"
+    link "datamunge_swift"
+    export *
+}

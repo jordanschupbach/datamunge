@@ -11,5 +11,3 @@
 **/*.min.js
 **/*.lock
 current_prompt.md
-src/perldatamunge/MYMETA.json
-src/perldatamunge/MYMETA.yml

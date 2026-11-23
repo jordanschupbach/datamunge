@@ -1,37 +1,42 @@
 <?php
 // CMD: just TARGET=elastic_net_iris_ex run-php
+// Ridge, Lasso and Elastic Net on iris, with coefficient-path and CV-curve figures.
+declare(strict_types=1);
 
+require_once __DIR__ . '/../../src/datamungephp/php/datamunge.php';
 
-$FORMULA = "Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width";
+use Datamunge\{ElasticNet, Lasso, Ridge};
+use function Datamunge\Data\iris;
 
-$iris = data_iris();
-print("iris: " . $iris->nrows() . " rows x " . $iris->ncols() . " cols\n");
-print("formula: $FORMULA\n\n");
+const FORMULA = 'Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Sepal.Length:Petal.Width';
 
-print("=================== Ridge ===================\n");
-$ridge = new Ridge($iris, $FORMULA);
-$ridge->print_summary();
+$iris = iris();
+echo "iris: {$iris->nrows()} rows x {$iris->ncols()} cols\n";
+echo 'formula: ' . FORMULA . "\n\n";
 
-print("\n=================== Lasso ===================\n");
-$lasso = new Lasso($iris, $FORMULA);
-$lasso->print_summary();
+echo "=================== Ridge ===================\n";
+$ridge = new Ridge($iris, FORMULA);
+$ridge->printSummary();
 
-print("\n================= Elastic Net =================\n");
-$elastic = new ElasticNet($iris, $FORMULA, 0.5);
-$elastic->print_summary();
+echo "\n=================== Lasso ===================\n";
+$lasso = new Lasso($iris, FORMULA);
+$lasso->printSummary();
 
-print("\nSaved figures showing how each model's coefficients respond to the regularization strength, and the cross-validation curve used to pick it:\n");
+echo "\n================= Elastic Net =================\n";
+// new ElasticNet(data, formula, alpha=0.5, lambda, nLambda, cvFolds, standardize, seed)
+$elastic = new ElasticNet($iris, FORMULA, 0.5);
+$elastic->printSummary();
 
-$ridge->plot_coefficient_path()->save("elastic_net_ridge_path.svg");
-$ridge->plot_cv_curve()->save("elastic_net_ridge_cv.svg");
-print("  ridge:       elastic_net_ridge_path.svg, elastic_net_ridge_cv.svg\n");
+echo "\nSaved figures showing how each model's coefficients respond to the regularization strength, "
+    . "and the cross-validation curve used to pick it:\n";
 
-$lasso->plot_coefficient_path()->save("elastic_net_lasso_path.svg");
-$lasso->plot_cv_curve()->save("elastic_net_lasso_cv.svg");
-print("  lasso:       elastic_net_lasso_path.svg, elastic_net_lasso_cv.svg\n");
-
-$elastic->plot_coefficient_path()->save("elastic_net_elasticnet_path.svg");
-$elastic->plot_cv_curve()->save("elastic_net_elasticnet_cv.svg");
-print("  elastic net: elastic_net_elasticnet_path.svg, elastic_net_elasticnet_cv.svg\n");
-
-?>
+$figures = [
+    [$ridge->plotCoefficientPath(), $ridge->plotCvCurve(), 'ridge', 'ridge:      '],
+    [$lasso->plotCoefficientPath(), $lasso->plotCvCurve(), 'lasso', 'lasso:      '],
+    [$elastic->plotCoefficientPath(), $elastic->plotCvCurve(), 'elasticnet', 'elastic net:'],
+];
+foreach ($figures as [$path, $cv, $name, $label]) {
+    $path->save("elastic_net_{$name}_path.svg");
+    $cv->save("elastic_net_{$name}_cv.svg");
+    echo "  $label elastic_net_{$name}_path.svg, elastic_net_{$name}_cv.svg\n";
+}

@@ -1,0 +1,8 @@
+name: datamunge_dart_examples
+description: Ports of datamunge's C# examples to the Rosetta-generated Dart binding (just TARGET=<stem> run-dart).
+publish_to: none
+environment:
+  sdk: ^3.3.0
+dependencies:
+  datamunge:
+    path: ../../src/datamungedart/datamunge

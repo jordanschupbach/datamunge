@@ -1,19 +1,21 @@
 # CMD: just TARGET=gaussian_process_regression_iris_ex run-perl
-
+# Gaussian process regression of Petal.Length on Petal.Width (iris), with confidence intervals.
 use strict;
 use warnings;
 
-use Datamunge;
+use Datamunge qw(:all);
 
-my $FORMULA = "Petal.Length ~ Petal.Width";
+$| = 1;    # flush each print so it interleaves with the C++ library's output
 
-my $iris = Datamunge::data_iris();
-print "iris: " . $iris->nrows() . " rows x " . $iris->ncols() . " cols\n";
-print "formula: $FORMULA\n\n";
+my $formula = "Petal.Length ~ Petal.Width";
+
+my $iris = Datamunge::Data::iris();
+print "iris: ", $iris->nrows(), " rows x ", $iris->ncols(), " cols\n";
+print "formula: $formula\n\n";
 
 # Both the length scale and the noise ratio are auto-selected by maximizing the exact log
 # marginal likelihood.
-my $model = Datamunge::GaussianProcessRegression->new($iris, $FORMULA);
+my $model = Datamunge::GaussianProcessRegression->new($iris, $formula);
 $model->print_summary();
 
 $model->plot_fit($iris)->save("gpr_iris_fit.svg");
@@ -27,6 +29,5 @@ my $query = Datamunge::DataFrame->new();
 $query->add_numeric_column("Petal.Width", [0.2, 1.3, 2.5, 10.0]);
 my $detail = $model->predict_frame($query, "confidence");
 print "\nPredictions with 95% confidence intervals:\n";
-print $detail->to_string(), "\n";
-print "(Petal.Width=10.0 is far outside the training range [0.1, 2.5] -- note how much wider its\n" .
-      " interval is than the in-range predictions.)\n";
+print "$detail\n";
+print "(Petal.Width=10.0 is far outside the training range [0.1, 2.5] -- note how much wider its\n interval is than the in-range predictions.)\n";

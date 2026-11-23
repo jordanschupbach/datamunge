@@ -1,19 +1,18 @@
 # CMD: just TARGET=gis_ex run-perl
-
+# ShapeLayer: write a tiny synthetic shapefile (.shp + .dbf) by hand, read it back and draw it as a map.
+# Real .shp/.dbf files are large binary bundles that don't belong in this repo, so this example
+# writes two "counties" (one plain square, one with a lake-shaped hole) using the same ESRI byte
+# layout Datamunge::ShapeLayer->read() expects, then reads them back through the public API.
+# Perl's pack() writes the binary layout ("l"/"L" = 32-bit int, "S" = 16-bit, "d" = double;
+# "<"/">" select little-/big-endian).
 use strict;
 use warnings;
 
+use Datamunge qw(:all);
+
+$| = 1;    # flush each print so it interleaves with the C++ library's output
+
 use List::Util qw(min max);
-
-use Datamunge;
-
-# Demonstrates Datamunge::ShapeLayer: reading a shapefile (.shp geometry + .dbf attributes)
-# and drawing it as a map. Real .shp/.dbf files are large binary bundles that don't belong in
-# this repo, so this example first writes a tiny synthetic shapefile by hand (two "counties":
-# one plain square, one with a lake-shaped hole) using the same ESRI byte layout
-# ShapeLayer.read() expects, then reads it back through the public API. Perl's pack() mirrors
-# Python's struct.pack for the binary layout ("l"/"L" = 32-bit int, "S" = 16-bit, "d" = double;
-# "<"/">" select little-/big-endian).
 
 sub polygon_record {
   my ($rings) = @_;
@@ -111,11 +110,12 @@ my $with_lake = [
 write_counties_shp($base . ".shp", [$with_lake, $plain]);
 write_counties_dbf($base . ".dbf", ["Lakeside", "Plainview"], ["48231", "19876"]);
 
-my $counties = Datamunge::ShapeLayer::read($base);
+my $counties = Datamunge::ShapeLayer->read($base);
 
 print "shapes = " . $counties->size() . ", shape_type = " . $counties->shape_type() . "\n";
 my $bounds = $counties->bounds();
-print "bounds = [" . join(", ", map { sprintf("%g", $_) } @$bounds) . "]\n";
+# Roughly C's %g: integral doubles print without a fractional part.
+print "bounds = [" . join(", ", map { $_ == int($_) ? int($_) : sprintf("%.6f", $_) } @$bounds) . "]\n";
 print "\n";
 
 my $attributes = $counties->attributes();
@@ -123,7 +123,7 @@ print "attributes\n";
 print $attributes->to_string(), "\n";
 print "\n";
 
-for (my $i = 0; $i < $counties->size(); $i++) {
+for my $i (0 .. $counties->size() - 1) {
   my $name = $attributes->string_at("NAME", $i);
   print "$name: " . $counties->num_parts($i) . " ring(s)\n";
 }

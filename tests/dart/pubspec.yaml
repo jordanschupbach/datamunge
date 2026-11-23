@@ -1,0 +1,8 @@
+name: datamunge_dart_tests
+description: Smoke tests of the Rosetta-generated Dart binding (just test-dart).
+publish_to: none
+environment:
+  sdk: ^3.3.0
+dependencies:
+  datamunge:
+    path: ../../src/datamungedart/datamunge

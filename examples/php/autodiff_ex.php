@@ -1,121 +1,162 @@
 <?php
 // CMD: just TARGET=autodiff_ex run-php
+// Automatic differentiation: forward mode (Dual), reverse mode (Tape/Var), Hessians (HyperDual).
+declare(strict_types=1);
 
+require_once __DIR__ . '/../../src/datamungephp/php/datamunge.php';
 
-// Note: SWIG's PHP backend renames the "Var" class to "c_Var" since "var" is a reserved PHP
-// keyword (confirmed via the "'var' is a PHP keyword, renaming to 'c_Var'" SWIG warning).
+use Datamunge\{Dual, HyperDual, Tape, Var_};
 
-function rosenbrock_dual($x0, $x1) {
+// Note: the C++ autodiff_ex.cpp additionally demonstrates the generic template drivers
+// (derivative/gradient_forward/gradient_reverse/jacobian_forward/hessian), which can't be
+// bound. This port demonstrates the same ideas with the bound named-method API.
+// Var_::index() is the Var's position in the adjoint vector Tape::backward returns. (The C++
+// class Var is Var_ in PHP, where `var` is a reserved word.)
+
+/** A double the way C# prints it (shortest round-trip, e.g. 6, 0.1, 1E-05). */
+function cs(float $x): string
+{
+    if (is_nan($x)) {
+        return 'NaN';
+    }
+    if (is_infinite($x)) {
+        return $x > 0 ? '∞' : '-∞';
+    }
+    if ($x == 0.0) {
+        return fdiv(1.0, $x) < 0 ? '-0' : '0';
+    }
+    for ($p = 0; $p < 17; $p++) {
+        $s = sprintf("%.{$p}e", $x);
+        if ((float) $s === $x) {
+            break;
+        }
+    }
+    [$mant, $exp] = explode('e', $s);
+    $exp = (int) $exp;
+    $sign = $mant[0] === '-' ? '-' : '';
+    $digits = rtrim(str_replace(['-', '.'], '', $mant), '0');
+    if ($exp < -5 || $exp >= 15) {
+        $body = $digits[0] . (strlen($digits) > 1 ? '.' . substr($digits, 1) : '')
+            . 'E' . ($exp < 0 ? '-' : '+') . sprintf('%02d', abs($exp));
+    } elseif ($exp < 0) {
+        $body = '0.' . str_repeat('0', -$exp - 1) . $digits;
+    } elseif (strlen($digits) <= $exp + 1) {
+        $body = $digits . str_repeat('0', $exp + 1 - strlen($digits));
+    } else {
+        $body = substr($digits, 0, $exp + 1) . '.' . substr($digits, $exp + 1);
+    }
+    return $sign . $body;
+}
+
+function rosenbrockDual(Dual $x0, Dual $x1): Dual
+{
     $a = (new Dual(1.0, 0.0))->subtract($x0);
     $b = $x1->subtract($x0->multiply($x0));
-    return $a->multiply($a)->add($b->multiply($b)->multiply_scalar(100.0));
+    return $a->multiply($a)->add($b->multiply($b)->multiplyScalar(100.0));
 }
 
-function rosenbrock_value($x0, $x1) {
-    $a = 1.0 - $x0;
-    $b = $x1 - $x0 * $x0;
-    return $a * $a + 100.0 * $b * $b;
+function rosenbrockValue(float $x0, float $x1): float
+{
+    return (1.0 - $x0) ** 2 + 100.0 * ($x1 - $x0 * $x0) ** 2;
 }
 
-function rosenbrock_hyperdual($x0, $x1) {
+// Build the Rosenbrock graph on tape; returns the output Var_.
+function rosenbrockVar(Tape $tape, Var_ $x0, Var_ $x1): Var_
+{
+    $a = (new Var_($tape, 1.0))->subtract($x0);
+    $b = $x1->subtract($x0->multiply($x0));
+    return $a->multiply($a)->add($b->multiply($b)->multiplyScalar(100.0));
+}
+
+function rosenbrockHyperDual(HyperDual $x0, HyperDual $x1): HyperDual
+{
     $a = (new HyperDual(1.0, 0.0, 0.0, 0.0))->subtract($x0);
     $b = $x1->subtract($x0->multiply($x0));
-    return $a->multiply($a)->add($b->multiply($b)->multiply_scalar(100.0));
+    return $a->multiply($a)->add($b->multiply($b)->multiplyScalar(100.0));
 }
 
-print("=================== Forward mode: scalar derivative ===================\n");
-$x0 = new Dual(2.0, 1.0);
-$f = $x0->multiply($x0)->multiply($x0)->subtract($x0->multiply_scalar(2.0));
-print("f(x) = x^3 - 2x, f'(2) = " . $f->derivative() . " (exact: 10)\n");
+/** @param list<float> $adjoints */
+function adjoint(array $adjoints, Var_ $v): float
+{
+    return $adjoints[$v->index()];
+}
 
-print("\n=================== Reverse mode: build a graph by hand ===================\n");
+echo "=================== Forward mode: scalar derivative ===================\n";
+$x0 = new Dual(2.0, 1.0);  // seed derivative = 1 to read df/dx directly
+$f = $x0->multiply($x0)->multiply($x0)->subtract($x0->multiplyScalar(2.0));  // x^3 - 2x
+echo "f(x) = x^3 - 2x, f'(2) = " . cs($f->derivative()) . " (exact: 10)\n";
+
+echo "\n=================== Reverse mode: build a graph by hand ===================\n";
 $tape = new Tape();
-$a = new c_Var($tape, 2.0);
-$b = new c_Var($tape, 3.0);
+$a = new Var_($tape, 2.0);
+$b = new Var_($tape, 3.0);
 $y = $a->multiply($b)->add($a->sin());
-print("y = a*b + sin(a) at a=2, b=3 -> y = " . $y->value() . "\n");
-$adjoint = $tape->backward($y);
-print("dy/da = " . $adjoint->get($a->index()) . " (exact: b + cos(a))\n");
-print("dy/db = " . $adjoint->get($b->index()) . " (exact: a)\n");
+echo 'y = a*b + sin(a) at a=2, b=3 -> y = ' . cs($y->value()) . "\n";
+$adjoints = $tape->backward($y);
+echo 'dy/da = ' . cs(adjoint($adjoints, $a)) . " (exact: b + cos(a))\n";
+echo 'dy/db = ' . cs(adjoint($adjoints, $b)) . " (exact: a)\n";
 
-print("\n=================== Forward vs reverse mode agree on the Rosenbrock function ===================\n");
-$px = 0.0;
-$py = 0.0;
+echo "\n=================== Forward vs reverse mode agree on the Rosenbrock function ===================\n";
+[$px, $py] = [0.0, 0.0];
+// Forward mode: one Dual pass per partial derivative, seeding the direction of interest.
+$gx = rosenbrockDual(new Dual($px, 1.0), new Dual($py, 0.0))->derivative();
+$gy = rosenbrockDual(new Dual($px, 0.0), new Dual($py, 1.0))->derivative();
+// Reverse mode: one Tape/Var_ pass computes every partial at once.
+$tape = new Tape();
+$vx = new Var_($tape, $px);
+$vy = new Var_($tape, $py);
+$grad = $tape->backward(rosenbrockVar($tape, $vx, $vy));
+echo 'f(0,0) = ' . cs(rosenbrockValue($px, $py)) . "\n";
+echo 'gradient (forward mode): [' . cs($gx) . ', ' . cs($gy) . "]\n";
+echo 'gradient (reverse mode): [' . cs(adjoint($grad, $vx)) . ', ' . cs(adjoint($grad, $vy)) . "]\n";
 
-$gx = rosenbrock_dual(new Dual($px, 1.0), new Dual($py, 0.0))->derivative();
-$gy = rosenbrock_dual(new Dual($px, 0.0), new Dual($py, 1.0))->derivative();
-
-$tape2 = new Tape();
-$vx = new c_Var($tape2, $px);
-$vy = new c_Var($tape2, $py);
-$va = (new c_Var($tape2, 1.0))->subtract($vx);
-$vb = $vy->subtract($vx->multiply($vx));
-$vf = $va->multiply($va)->add($vb->multiply($vb)->multiply_scalar(100.0));
-$grad_rev = $tape2->backward($vf);
-
-print("f(0,0) = " . rosenbrock_value($px, $py) . "\n");
-print("gradient (forward mode): [$gx, $gy]\n");
-print("gradient (reverse mode): [" . $grad_rev->get($vx->index()) . ", " . $grad_rev->get($vy->index()) . "]\n");
-
-print("\n=================== Jacobian of a vector-valued function ===================\n");
-$vx_val = 2.0;
-$vy_val = 3.0;
-
-$jac = array(array(0, 0), array(0, 0), array(0, 0));
-foreach (array(array(0, 1.0, 0.0), array(1, 0.0, 1.0)) as $c) {
-    list($col, $seed_x, $seed_y) = $c;
-    $ox = (new Dual($vx_val, $seed_x))->multiply(new Dual($vx_val, $seed_x));
-    $oy = (new Dual($vx_val, $seed_x))->multiply(new Dual($vy_val, $seed_y));
-    $oz = (new Dual($vy_val, $seed_y))->multiply(new Dual($vy_val, $seed_y))->multiply(new Dual($vy_val, $seed_y));
-    $jac[0][$col] = $ox->derivative();
-    $jac[1][$col] = $oy->derivative();
-    $jac[2][$col] = $oz->derivative();
+echo "\n=================== Jacobian of a vector-valued function ===================\n";
+// f(x,y) = [x^2, xy, y^3] at (2,3) -- one Dual pass per (output, input) pair.
+$vectorFn = fn(Dual $x, Dual $y): array => [$x->multiply($x), $x->multiply($y), $y->multiply($y)->multiply($y)];
+$jac = array_fill(0, 3, [0.0, 0.0]);
+foreach ([[0, 1.0, 0.0], [1, 0.0, 1.0]] as [$col, $sx, $sy]) {
+    $outputs = $vectorFn(new Dual(2.0, $sx), new Dual(3.0, $sy));
+    foreach ($outputs as $row => $output) {
+        $jac[$row][$col] = $output->derivative();
+    }
 }
-print("f(x,y) = [x^2, xy, y^3] at (2,3), Jacobian:\n");
+echo "f(x,y) = [x^2, xy, y^3] at (2,3), Jacobian:\n";
 for ($row = 0; $row < 3; $row++) {
-    print("  [" . $jac[$row][0] . ", " . $jac[$row][1] . "]\n");
+    echo '  [' . cs($jac[$row][0]) . ', ' . cs($jac[$row][1]) . "]\n";
 }
 
-print("\n=================== Hessian via second-order forward mode (HyperDual) ===================\n");
-$mx = 1.0;
-$my = 1.0;
-
-$seeds = array(array(1.0, 0.0), array(0.0, 1.0));
-$h = array(array(0, 0), array(0, 0));
+echo "\n=================== Hessian via second-order forward mode (HyperDual) ===================\n";
+// One HyperDual pass per (i, j) pair reads off d^2f/dxi dxj directly from eps1eps2.
+[$mx, $my] = [1.0, 1.0];  // the Rosenbrock function's minimum
+$seeds = [[1.0, 0.0], [0.0, 1.0]];
+$h = [[0.0, 0.0], [0.0, 0.0]];
 for ($i = 0; $i < 2; $i++) {
     for ($j = 0; $j < 2; $j++) {
-        $e1 = $seeds[$i];
-        $e2 = $seeds[$j];
-        $hx = new HyperDual($mx, $e1[0], $e2[0], 0.0);
-        $hy = new HyperDual($my, $e1[1], $e2[1], 0.0);
-        $h[$i][$j] = rosenbrock_hyperdual($hx, $hy)->eps1eps2();
+        [$e1, $e2] = [$seeds[$i], $seeds[$j]];
+        $h[$i][$j] = rosenbrockHyperDual(new HyperDual($mx, $e1[0], $e2[0], 0.0), new HyperDual($my, $e1[1], $e2[1], 0.0))
+            ->eps1eps2();
     }
 }
-print("Hessian of the Rosenbrock function at its minimum (1,1):\n");
-for ($row = 0; $row < 2; $row++) {
-    print("  [" . $h[$row][0] . ", " . $h[$row][1] . "]\n");
+echo "Hessian of the Rosenbrock function at its minimum (1,1):\n";
+for ($i = 0; $i < 2; $i++) {
+    echo '  [' . cs($h[$i][0]) . ', ' . cs($h[$i][1]) . "]\n";
 }
 
-print("\n=================== Gradient descent driven by reverse-mode gradients ===================\n");
-$point_x = -1.2;
-$point_y = 1.0;
-$learning_rate = 0.001;
-$n_steps = 2000;
-for ($step = 0; $step < $n_steps; $step++) {
-    $t = new Tape();
-    $vx2 = new c_Var($t, $point_x);
-    $vy2 = new c_Var($t, $point_y);
-    $va2 = (new c_Var($t, 1.0))->subtract($vx2);
-    $vb2 = $vy2->subtract($vx2->multiply($vx2));
-    $vf2 = $va2->multiply($va2)->add($vb2->multiply($vb2)->multiply_scalar(100.0));
-    $grad = $t->backward($vf2);
-    $loss = $vf2->value();
-    $point_x -= $learning_rate * $grad->get($vx2->index());
-    $point_y -= $learning_rate * $grad->get($vy2->index());
-    if ($step === 0 || $step === $n_steps - 1) {
-        print("step $step: loss = $loss, x = [$point_x, $point_y]\n");
+echo "\n=================== Gradient descent driven by reverse-mode gradients ===================\n";
+$point = [-1.2, 1.0];  // the classic Rosenbrock start
+const LEARNING_RATE = 0.001;
+const N_STEPS = 2000;
+for ($step = 0; $step < N_STEPS; $step++) {
+    $tape = new Tape();
+    $vx = new Var_($tape, $point[0]);
+    $vy = new Var_($tape, $point[1]);
+    $vf = rosenbrockVar($tape, $vx, $vy);
+    $grad = $tape->backward($vf);
+    $loss = $vf->value();
+    $point[0] -= LEARNING_RATE * adjoint($grad, $vx);
+    $point[1] -= LEARNING_RATE * adjoint($grad, $vy);
+    if ($step === 0 || $step === N_STEPS - 1) {
+        echo "step $step: loss = " . cs($loss) . ', x = [' . cs($point[0]) . ', ' . cs($point[1]) . "]\n";
     }
 }
-print("(true minimum is at [1, 1] with loss 0)\n");
-
-?>
+echo "(true minimum is at [1, 1] with loss 0)\n";

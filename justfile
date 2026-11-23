@@ -31,6 +31,35 @@ FORTRAN_LIBS := '-ldatamunge_fortran_mod -ldatamunge_fortran'
 # Runs Ruby with build/ruby/prefix/lib (just build-ruby) first on the load path: `require 'datamunge'`
 # loads datamunge.rb there, which require_relative's the extension datamunge/datamunge.so.
 RUBY := 'ruby -I "$(pwd)/build/ruby/prefix/lib"'
+# Cargo builds against build/rust/prefix/lib (just build-rust): the crate's build.rs adds
+# DATAMUNGE_RUST_LIB_DIR to the link search path, and the rpath lets the programs find libdatamunge_rust.
+# Compiles a Swift program against build/swift/prefix (just build-swift): `import Datamunge` finds the
+# module in lib/swift and its C module in share/swift/CDatamunge; the program links libDatamunge and
+# the Swift runtime with rpaths. Append the source and `-o <exe>`.
+SWIFTC := 'mkdir -p build/swift/bin && swift_root="${DATAMUNGE_SWIFT_ROOT:-$(dirname "$(dirname "$(command -v swiftc)")")}" && "$swift_root/bin/swiftc" -swift-version 5 -O -I "$(pwd)/build/swift/prefix/lib/swift" -I "$(pwd)/build/swift/prefix/share/swift/CDatamunge" -L "$(pwd)/build/swift/prefix/lib" -lDatamunge -L "$swift_root/lib" -Xlinker -rpath -Xlinker "$(pwd)/build/swift/prefix/lib" -Xlinker -rpath -Xlinker "$swift_root/lib"'
+# Compiles a Free Pascal program against build/pascal/prefix (just build-pascal): `uses datamunge` finds the
+# compiled unit in lib/fpc/datamunge, which links libdatamunge_pascal (rpath). Append the source; the
+# program goes to build/pascal/bin.
+FPC := 'mkdir -p build/pascal/bin build/pascal/obj && fpc -O2 -v0ew -l- -Fu"$(pwd)/build/pascal/prefix/lib/fpc/datamunge" -Fl"$(pwd)/build/pascal/prefix/lib" -k-rpath -k"$(pwd)/build/pascal/prefix/lib" -FUbuild/pascal/obj -FEbuild/pascal/bin'
+# Runs a Dart program of a package depending on the generated package (tests/dart, examples/dart): resolves
+# its dependencies offline first. The native library is DATAMUNGE_DART_LIBRARY (build/dart/prefix, the
+# dev shells' hook). Append the package directory and the program.
+DART_RUN := 'export DATAMUNGE_DART_LIBRARY="$(pwd)/build/dart/prefix/lib/libdatamunge_dart.so" && dart_run() { (cd "$1" && dart pub get --offline >/dev/null) && dart run "$2"; } && dart_run'
+# Builds an Ada program against build/ada/prefix (just build-ada): `with Datamunge` finds the compiled
+# package in lib/ada/datamunge (read-only .ali, never recompiled), which links libdatamunge_ada (rpath).
+# Append the source directory and the main source; the program goes to build/ada/bin.
+GNATMAKE := 'mkdir -p build/ada/bin build/ada/obj && ada_build() { prefix="$(pwd)/build/ada/prefix" && src="$(cd "$1" && pwd)" && main="$(basename "$2" .adb)" && (cd build/ada/obj && gnatmake -q -gnat2022 -aI"$prefix/lib/ada/datamunge" -aO"$prefix/lib/ada/datamunge" -aI"$src" "$src/$main.adb" -o "../bin/$main" -largs -L"$prefix/lib" -Wl,-rpath,"$prefix/lib"); } && ada_build'
+# Compiles an Objective-C program against build/objc/prefix (just build-objc): `#import "DM.h"` finds the
+# header in include/DM; the program links libDM (the classes), GNUstep Base and libobjc2. Append the source
+# and `-o <exe>`.
+OBJCC := 'mkdir -p build/objc/bin && objcc() { prefix="$(pwd)/build/objc/prefix" && clang -O2 -fobjc-arc -fobjc-arc-exceptions -fobjc-runtime=gnustep-2.0 -fblocks -Wall -I"$DATAMUNGE_GNUSTEP_BASE_ROOT/include" -I"$DATAMUNGE_LIBOBJC_ROOT/include" -I"$prefix/include/DM" "$@" -L"$prefix/lib" -lDM -L"$DATAMUNGE_GNUSTEP_BASE_LIB/lib" -L"$DATAMUNGE_LIBOBJC_ROOT/lib" -lgnustep-base -lobjc -lm -Wl,-rpath,"$prefix/lib"; } && objcc'
+# Runs a SWI-Prolog program with build/prolog/prefix/prolog on the library path (just build-prolog):
+# `:- use_module(library(datamunge))` loads the module, which loads ../lib/libdatamunge_prolog. Append the program.
+SWIPL := 'swipl -p library="$(pwd)/build/prolog/prefix/prolog"'
+# Compiles a Haskell program against the GHC package datamunge registered in build/haskell/prefix (just
+# build-haskell); it links libdatamunge_haskell (rpath). Append the source and `-o <exe>`.
+GHC := 'mkdir -p build/haskell/bin build/haskell/obj && ghc -v0 -O -threaded -Wall -package-db "$(pwd)/build/haskell/prefix/lib/haskell/package.db" -package datamunge -optl-Wl,-rpath,"$(pwd)/build/haskell/prefix/lib"'
+RUST_ENV := 'export DATAMUNGE_RUST_LIB_DIR="$(pwd)/build/rust/prefix/lib" RUSTFLAGS="-C link-arg=-Wl,-rpath,$(pwd)/build/rust/prefix/lib"'
 # Runs tclsh with build/tcl/prefix/lib (just build-tcl) on TCLLIBPATH (a Tcl list, so space-separated):
 # `package require datamunge` finds the package directory datamunge/ there (pkgIndex.tcl, datamunge.tcl
 # and the extension datamunge.so).
@@ -98,6 +127,12 @@ run-all: run-cpp run-csharp run-java run-go run-rust run-d run-python run-php ru
 run-csharp: build-csharp
   {{ NIX_DEVELOP }} .#csharp --command bash -c 'dotnet run examples/csharp/{{ TARGET }}.cs'
 
+# Visual Basic has no file-based apps: examples/vb/Example.vbproj builds the one example
+# examples/vb/TARGET.vb against the generated project src/datamungevb/Datamunge.vbproj, and the dev
+# shells point DATAMUNGE_VB_LIBRARY at the native library build-vb installs.
+run-vb: build-vb
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'dotnet run --project examples/vb/Example.vbproj --property:Example={{ TARGET }}'
+
 # Runs examples/java/<Target>.java (TARGET=dataframe_ex runs DataframeEx.java) as a single-file
 # source launch against build/java/prefix (Rosetta binding).
 run-java: build-java
@@ -114,8 +149,38 @@ run-go: build-go
 run-apl: build-apl
   {{ NIX_DEVELOP }} .#apl --command bash -c 'set -o pipefail; {{ APL_RUN }}; apl_run examples/apl/{{ TARGET }}.apl'
 
+# Each example is examples/rust/TARGET.rs, a Cargo example of the crate examples/rust built against the
+# Rosetta crate src/datamungerust/datamunge; RUST_ENV points it at libdatamunge_rust (just build-rust).
 run-rust: build-rust
-  {{ NIX_DEVELOP }} .#rust --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo run --manifest-path {{ BINDINGS_DIR }}/rustdatamunge/Cargo.toml --example {{ TARGET }}'
+  {{ NIX_DEVELOP }} .#rust --command bash -c '{{ RUST_ENV }} && cargo run --quiet --release --manifest-path examples/rust/Cargo.toml --example {{ TARGET }}'
+
+# Compiles examples/haskell/TARGET.hs with GHC into build/haskell/bin and runs it.
+run-haskell: build-haskell
+  {{ NIX_DEVELOP }} .#haskell --command bash -c '{{ GHC }} -outputdir build/haskell/obj/{{ TARGET }} examples/haskell/{{ TARGET }}.hs -o build/haskell/bin/{{ TARGET }} && build/haskell/bin/{{ TARGET }}'
+
+# Runs examples/prolog/TARGET.pl against build/prolog/prefix.
+run-prolog: build-prolog
+  {{ NIX_DEVELOP }} .#prolog --command bash -c '{{ SWIPL }} examples/prolog/{{ TARGET }}.pl'
+
+# Compiles examples/objc/TARGET.m with OBJCC into build/objc/bin and runs it.
+run-objc: build-objc
+  {{ NIX_DEVELOP }} .#objc --command bash -c '{{ OBJCC }} examples/objc/{{ TARGET }}.m -o build/objc/bin/{{ TARGET }} && build/objc/bin/{{ TARGET }}'
+
+# Builds examples/ada/TARGET.adb with GNATMAKE into build/ada/bin and runs it.
+run-ada: build-ada
+  {{ NIX_DEVELOP }} .#ada --command bash -c '{{ GNATMAKE }} examples/ada examples/ada/{{ TARGET }}.adb && build/ada/bin/{{ TARGET }}'
+
+# Runs examples/dart/TARGET.dart against build/dart/prefix.
+run-dart: build-dart
+  {{ NIX_DEVELOP }} .#dart --command bash -c '{{ DART_RUN }} examples/dart examples/dart/{{ TARGET }}.dart'
+
+# Compiles examples/pascal/TARGET.pas with FPC into build/pascal/bin and runs it.
+run-pascal: build-pascal
+  {{ NIX_DEVELOP }} .#pascal --command bash -c '{{ FPC }} examples/pascal/{{ TARGET }}.pas && build/pascal/bin/{{ TARGET }}'
+
+# Compiles examples/swift/TARGET.swift with SWIFTC into build/swift/bin and runs it.
+run-swift: build-swift
+  {{ NIX_DEVELOP }} .#swift --command bash -c '{{ SWIFTC }} examples/swift/{{ TARGET }}.swift -o build/swift/bin/{{ TARGET }} && build/swift/bin/{{ TARGET }}'
 
 run-d: build-d
   bash -c 'set -euo pipefail; \
@@ -131,11 +196,15 @@ run-d: build-d
 run-python: build-python
   {{ NIX_DEVELOP }} .#python --command bash -c 'env -u PYTHONPATH build/venv/pydatamunge-run/bin/python examples/python/{{ TARGET }}.py'
 
+# Each example requires the generated src/datamungephp/php/datamunge.php, which loads the library
+# build-php installs from DATAMUNGE_PHP_LIBRARY (set by the dev shells).
 run-php: build-php
-  {{ NIX_DEVELOP }} .#php --command bash -c 'php --php-ini .user.ini examples/php/{{ TARGET }}.php'
+  {{ NIX_DEVELOP }} .#php --command bash -c 'php examples/php/{{ TARGET }}.php'
 
+# Runs examples/perl/TARGET.pl with build/perl/prefix/lib/perl5 (just build-perl: Datamunge.pm and
+# auto/Datamunge/libdatamunge_perl.so) on PERL5LIB.
 run-perl: build-perl
-  {{ NIX_DEVELOP }} .#perl --command bash -c 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && perl examples/perl/{{ TARGET }}.pl'
+  {{ NIX_DEVELOP }} .#perl --command bash -c 'export PERL5LIB="$(pwd)/build/perl/prefix/lib/perl5${PERL5LIB:+:$PERL5LIB}" && perl examples/perl/{{ TARGET }}.pl'
 
 # Runs examples/tcl/TARGET.tcl from the repository root against build/tcl/prefix (Rosetta binding).
 run-tcl: build-tcl
@@ -210,6 +279,76 @@ run-all-csharp: build-csharp
     printf "\n########## csharp: %d passed, %d failed ##########\n" "$pass" "$fail"; \
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
 
+run-all-vb: build-vb
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/vb/*_ex.vb; do n="$(basename "$f" .vb)"; printf "\n========== %s ==========\n" "$n.vb"; \
+      if dotnet run --project examples/vb/Example.vbproj --property:Example="$n"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n.vb"; fi; done; \
+    printf "\n########## vb: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-rust: build-rust
+  {{ NIX_DEVELOP }} .#rust --command bash -c '{{ RUST_ENV }} && cargo build --quiet --release --manifest-path examples/rust/Cargo.toml --examples && pass=0; fail=0; failed=""; \
+    for f in examples/rust/*_ex.rs; do n="$(basename "$f" .rs)"; printf "\n========== %s ==========\n" "$n.rs"; \
+      if cargo run --quiet --release --manifest-path examples/rust/Cargo.toml --example "$n"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n.rs"; fi; done; \
+    printf "\n########## rust: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-haskell: build-haskell
+  {{ NIX_DEVELOP }} .#haskell --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/haskell/*_ex.hs; do n="$(basename "$f" .hs)"; printf "\n========== %s ==========\n" "$n.hs"; \
+      if {{ GHC }} -outputdir "build/haskell/obj/$n" "$f" -o "build/haskell/bin/$n" && build/haskell/bin/$n; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n.hs"; fi; done; \
+    printf "\n########## haskell: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-prolog: build-prolog
+  {{ NIX_DEVELOP }} .#prolog --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/prolog/*_ex.pl; do n="$(basename "$f" .pl)"; printf "\n========== %s ==========\n" "$n.pl"; \
+      if {{ SWIPL }} "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n.pl"; fi; done; \
+    printf "\n########## prolog: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-objc: build-objc
+  {{ NIX_DEVELOP }} .#objc --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/objc/*_ex.m; do n="$(basename "$f" .m)"; printf "\n========== %s ==========\n" "$n.m"; \
+      if {{ OBJCC }} "$f" -o build/objc/bin/$n && build/objc/bin/$n; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n.m"; fi; done; \
+    printf "\n########## objc: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-ada: build-ada
+  {{ NIX_DEVELOP }} .#ada --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/ada/*_ex.adb; do n="$(basename "$f" .adb)"; printf "\n========== %s ==========\n" "$n.adb"; \
+      if {{ GNATMAKE }} examples/ada "$f" && build/ada/bin/$n; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n.adb"; fi; done; \
+    printf "\n########## ada: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-dart: build-dart
+  {{ NIX_DEVELOP }} .#dart --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/dart/*_ex.dart; do n="$(basename "$f" .dart)"; printf "\n========== %s ==========\n" "$n.dart"; \
+      if {{ DART_RUN }} examples/dart "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n.dart"; fi; done; \
+    printf "\n########## dart: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-pascal: build-pascal
+  {{ NIX_DEVELOP }} .#pascal --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/pascal/*_ex.pas; do n="$(basename "$f" .pas)"; printf "\n========== %s ==========\n" "$n.pas"; \
+      if {{ FPC }} "$f" && "build/pascal/bin/$n"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n.pas"; fi; done; \
+    printf "\n########## pascal: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-php: build-php
+  {{ NIX_DEVELOP }} .#php --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/php/*_ex.php; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+      if php "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## php: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
+run-all-swift: build-swift
+  {{ NIX_DEVELOP }} .#swift --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/swift/*_ex.swift; do n="$(basename "$f" .swift)"; printf "\n========== %s ==========\n" "$n.swift"; \
+      if {{ SWIFTC }} "$f" -o "build/swift/bin/$n" && "build/swift/bin/$n"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n.swift"; fi; done; \
+    printf "\n########## swift: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
 run-all-julia: build-julia
   {{ NIX_DEVELOP }} .#julia --command bash -c 'export JULIA_LOAD_PATH="$(pwd)/build/julia/prefix/share/julia:@:@v#.#:@stdlib" && pass=0; fail=0; failed=""; \
     for f in examples/julia/*.jl; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
@@ -267,11 +406,9 @@ run-all-octave: build-octave
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
 
 run-all-perl: build-perl
-  {{ NIX_DEVELOP }} .#perl --command bash -c 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && \
-    export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && \
-    export DYLD_LIBRARY_PATH="$(pwd)/build:$DYLD_LIBRARY_PATH" && \
+  {{ NIX_DEVELOP }} .#perl --command bash -c 'export PERL5LIB="$(pwd)/build/perl/prefix/lib/perl5${PERL5LIB:+:$PERL5LIB}" && \
     pass=0; fail=0; failed=""; \
-    for f in examples/perl/*.pl; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+    for f in examples/perl/*_ex.pl; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
       if perl "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
     printf "\n########## perl: %d passed, %d failed ##########\n" "$pass" "$fail"; \
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
@@ -374,7 +511,7 @@ embed-plot-font:
 update-swig:
   nix flake update swig
 
-prebuild-swig: prebuild-python prebuild-javascript prebuild-r prebuild-perl prebuild-lua prebuild-d prebuild-octave prebuild-php
+prebuild-swig: prebuild-python prebuild-javascript prebuild-r prebuild-lua prebuild-d prebuild-octave
   @echo "SWIG wrappers regenerated (with Doxygen comments enabled)"
 
 prebuild-python:
@@ -390,6 +527,11 @@ prebuild-javascript:
 prebuild-csharp:
   {{ NIX_DEVELOP }} .#csharp --command python3 scripts/prebuild_bindings.py csharp
 
+# Visual Basic (Rosetta): src/datamunge_vb_wrap*.cpp (the native library datamunge_vb) and the project
+# src/datamungevb (Datamunge.vb, Datamunge.vbproj), whose XML doc comments carry the Doxygen documentation.
+prebuild-vb:
+  {{ NIX_DEVELOP }} .#csharp --command python3 scripts/prebuild_bindings.py vb
+
 # Fortran (Rosetta): src/datamunge_fortran_wrap*.cpp (the native library libdatamunge_fortran) and the
 # Fortran 2018 module source src/datamungefortran/datamunge.f90, whose FORD `!>` comments carry the
 # Doxygen documentation (mep's Fortran LSP reads them from this committed copy).
@@ -399,8 +541,10 @@ prebuild-fortran:
 prebuild-r:
   {{ NIX_DEVELOP }} .#r --command python3 scripts/prebuild_bindings.py r
 
+# Perl (Rosetta): src/datamunge_perl_wrap*.cpp (the library libdatamunge_perl with its XS glue) and the
+# module src/datamungeperl/lib/Datamunge.pm, whose POD carries the Doxygen documentation.
 prebuild-perl:
-  {{ NIX_DEVELOP }} .#cpp --command bash -c "mkdir -p {{ BINDINGS_DIR }}/perldatamunge/lib && swig -perl5 -c++ -Iinclude -o {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.cxx -oh {{ BINDINGS_DIR }}/perldatamunge/Datamunge_wrap.h -outdir {{ BINDINGS_DIR }}/perldatamunge/lib src/perldatamunge/swig/perldatamunge.i"
+  {{ NIX_DEVELOP }} .#perl --command python3 scripts/prebuild_bindings.py perl
 
 # Ruby (Rosetta): src/datamunge_ruby_wrap*.cpp (the MRI extension datamunge/datamunge.so) and
 # src/datamungeruby/lib/datamunge.rb, which loads it and whose YARD comments carry the Doxygen
@@ -465,8 +609,10 @@ prebuild-octave:
 prebuild-go:
   {{ NIX_DEVELOP }} .#go --command python3 scripts/prebuild_bindings.py go
 
+# PHP (Rosetta): src/datamunge_php_wrap*.cpp (the shared library libdatamunge_php) and
+# src/datamungephp/php/datamunge.php (namespace Datamunge over FFI), whose PHPDoc carries the Doxygen documentation.
 prebuild-php:
-  {{ NIX_DEVELOP }} .#cpp --command bash -c "cd ./include && swig -c++ -php7 -o ../src/datamunge_php_wrap.cpp -oh ../src/datamunge_php_wrap.h ../src/datamungePHP/swig/datamungePHP.i"
+  {{ NIX_DEVELOP }} .#php --command python3 scripts/prebuild_bindings.py php
 
 # Java (Rosetta): src/datamunge_java_wrap*.cpp (the JNI library libdatamunge_java) and the package
 # datamunge under src/datamungejava/java (one .java file per class); its Javadoc carries the C++
@@ -489,22 +635,53 @@ prebuild-apl:
 
 # }}} prebuild commands
 
-# {{{ rust (bindgen) commands
-
+# Rust (Rosetta): src/datamunge_rust_wrap*.cpp (the shared library libdatamunge_rust) and the Cargo crate
+# src/datamungerust/datamunge, whose rustdoc comments carry the Doxygen documentation.
 prebuild-rust:
-  {{ NIX_DEVELOP }} .#rust --command bash -c 'inc="$(pkg-config --variable=includedir datamunge)" && bindgen "$inc/datamunge/datamunge_c.h" --allowlist-function "datamunge_.*" --allowlist-type "datamunge_.*" --no-layout-tests --rustfmt-bindings -o {{ BINDINGS_DIR }}/rustdatamunge/src/bindings.rs'
+  {{ NIX_DEVELOP }} .#rust --command python3 scripts/prebuild_bindings.py rust
 
-# }}} rust (bindgen) commands
+# Haskell (Rosetta): src/datamunge_haskell_wrap*.cpp (the shared library libdatamunge_haskell) and the GHC modules
+# src/datamungehaskell/haskell (Datamunge.hs with the Haddock documentation, Datamunge/Rosetta.hs).
+prebuild-haskell:
+  {{ NIX_DEVELOP }} .#haskell --command python3 scripts/prebuild_bindings.py haskell
+
+# SWI-Prolog (Rosetta): src/datamunge_prolog_wrap*.cpp (the foreign library libdatamunge_prolog) and the module
+# src/datamungeprolog/prolog/datamunge.pl, whose PlDoc carries the Doxygen documentation.
+prebuild-prolog:
+  {{ NIX_DEVELOP }} .#prolog --command python3 scripts/prebuild_bindings.py prolog
+
+# Objective-C (Rosetta): src/datamunge_objc_wrap*.cpp (the shared library libdatamunge_objc) and the classes
+# src/datamungeobjc/objc (DM.h with the /// documentation, DM.m with the runtime).
+prebuild-objc:
+  {{ NIX_DEVELOP }} .#objc --command python3 scripts/prebuild_bindings.py objc
+
+# Ada (Rosetta): src/datamunge_ada_wrap*.cpp (the shared library libdatamunge_ada) and the package
+# src/datamungeada/ada (datamunge.ads with the GNATdoc documentation, .adb, .gpr).
+prebuild-ada:
+  {{ NIX_DEVELOP }} .#ada --command python3 scripts/prebuild_bindings.py ada
+
+# Dart (Rosetta): src/datamunge_dart_wrap*.cpp (the shared library libdatamunge_dart) and the package
+# src/datamungedart/datamunge (dart:ffi), whose dartdoc comments carry the Doxygen documentation.
+prebuild-dart:
+  {{ NIX_DEVELOP }} .#dart --command python3 scripts/prebuild_bindings.py dart
+
+# Free Pascal (Rosetta): src/datamunge_pascal_wrap*.cpp (the shared library libdatamunge_pascal) and the unit
+# src/datamungepascal/pascal/datamunge.pas, whose XML doc comments carry the Doxygen documentation.
+prebuild-pascal:
+  {{ NIX_DEVELOP }} .#pascal --command python3 scripts/prebuild_bindings.py pascal
+
+# Swift (Rosetta): src/datamunge_swift_wrap*.cpp (the shared library libdatamunge_swift) and the Swift
+# package src/datamungeswift/Datamunge, whose DocC comments carry the Doxygen documentation.
+prebuild-swift:
+  {{ NIX_DEVELOP }} .#swift --command python3 scripts/prebuild_bindings.py swift
 
 # {{{ build commands
 
+# Installs libdatamunge_php into build/php/prefix/lib (DATAMUNGE_PHP_LIBRARY in the dev shells).
 build-php: prebuild-php
-  rm -rf build/datamungePHP
-  {{ NIX_DEVELOP }} .#php --command bash -c 'cmake -S src/datamungePHP -B build/datamungePHP'
-  {{ NIX_DEVELOP }} .#php --command bash -c 'cmake --build build/datamungePHP -j{{ JOBS }} --verbose'
-  # Loaded through PHP_INI_SCAN_DIR (set by the default dev shell), so a plain `php script.php` has it.
-  mkdir -p build/php/conf.d
-  bash -c 'for f in build/datamungePHP/libdatamungePHP.*; do printf "extension=%s\n" "$(pwd)/$f" > build/php/conf.d/datamunge.ini; done'
+  {{ NIX_DEVELOP }} .#php --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungephp -B build/datamungephp -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#php --command bash -c 'cmake --build build/datamungephp -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#php --command bash -c 'rm -rf build/php/prefix && cmake --install build/datamungephp --prefix build/php/prefix >/dev/null'
 
 
 build: build-cpp
@@ -535,6 +712,14 @@ build-csharp: prebuild-csharp
   {{ NIX_DEVELOP }} .#csharp --command bash -c 'cmake --build build/datamungecsharp -j{{ JOBS }}'
   {{ NIX_DEVELOP }} .#csharp --command bash -c 'rm -rf build/csharp/prefix && cmake --install build/datamungecsharp --prefix build/csharp/prefix'
   {{ NIX_DEVELOP }} .#csharp --command bash -c 'dotnet build src/datamungecsharp/Datamunge.csproj -c Release -nologo -v q -o build/csharp/prefix/share/dotnet/Datamunge/bin'
+
+# Installs the native library and the project into build/vb/prefix/share/dotnet/DatamungeVB, and
+# builds Datamunge.dll (with Datamunge.xml) into its bin/.
+build-vb: prebuild-vb
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungevb -B build/datamungevb -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'cmake --build build/datamungevb -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'rm -rf build/vb/prefix && cmake --install build/datamungevb --prefix build/vb/prefix'
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'dotnet build src/datamungevb/Datamunge.vbproj -c Release -nologo -v q -o build/vb/prefix/share/dotnet/DatamungeVB/bin'
 
 
 
@@ -588,8 +773,11 @@ build-d: prebuild-d
       cd {{ BINDINGS_DIR }}/datamunged && dub build $compiler --build=release --force; \
     fi'
 
-build-perl: prebuild-perl build-cpp
-  {{ NIX_DEVELOP }} .#perl --command bash -c 'cd {{ BINDINGS_DIR }}/perldatamunge && rm -rf blib Makefile Makefile.old pm_to_blib MYMETA.* && perl Makefile.PL INSTALL_BASE="$(pwd)/../../build/perl" && make -j{{ JOBS }} && make install'
+# Installs Datamunge.pm and auto/Datamunge/libdatamunge_perl.so into build/perl/prefix/lib/perl5.
+build-perl: prebuild-perl
+  {{ NIX_DEVELOP }} .#perl --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungeperl -B build/datamungeperl -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#perl --command bash -c 'cmake --build build/datamungeperl -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#perl --command bash -c 'rm -rf build/perl/prefix && cmake --install build/datamungeperl --prefix build/perl/prefix >/dev/null'
 
 # Installs datamunge.rb and the extension datamunge/datamunge.so into build/ruby/prefix/lib: run with
 # RUBY (`ruby -I build/ruby/prefix/lib`) or the dev shells' RUBYLIB.
@@ -648,8 +836,58 @@ build-cobol: prebuild-cobol
 test-cobol: build-cobol
   {{ NIX_DEVELOP }} .#cobol --command bash -c 'mkdir -p build/cobol/bin && {{ COBC }} -o build/cobol/bin/test_datamunge tests/cobol/test_datamunge.cob && build/cobol/bin/test_datamunge'
 
-build-rust:
-  {{ NIX_DEVELOP }} .#rust --command bash -c 'cargo build --manifest-path {{ BINDINGS_DIR }}/rustdatamunge/Cargo.toml'
+# Installs libdatamunge_rust into build/rust/prefix/lib and the crate into build/rust/prefix/share/cargo/datamunge.
+build-rust: prebuild-rust
+  {{ NIX_DEVELOP }} .#rust --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungerust -B build/datamungerust -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#rust --command bash -c 'cmake --build build/datamungerust -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#rust --command bash -c 'rm -rf build/rust/prefix && cmake --install build/datamungerust --prefix build/rust/prefix >/dev/null'
+
+# Installs libdatamunge_haskell and the GHC package datamunge (datamunge.cabal; lib/haskell, registered in
+# lib/haskell/package.db) into build/haskell/prefix.
+build-haskell: prebuild-haskell
+  {{ NIX_DEVELOP }} .#haskell --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungehaskell -B build/datamungehaskell -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$(pwd)/build/haskell/prefix" -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#haskell --command bash -c 'cmake --build build/datamungehaskell -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#haskell --command bash -c 'cmake --install build/datamungehaskell >/dev/null'
+
+# Installs libdatamunge_prolog (lib) and the module (prolog/datamunge.pl) into build/prolog/prefix.
+build-prolog: prebuild-prolog
+  {{ NIX_DEVELOP }} .#prolog --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungeprolog -B build/datamungeprolog -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#prolog --command bash -c 'cmake --build build/datamungeprolog -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#prolog --command bash -c 'rm -rf build/prolog/prefix && cmake --install build/datamungeprolog --prefix build/prolog/prefix >/dev/null'
+
+# Installs libdatamunge_objc, the classes libDM (clang, ARC, GNUstep 2.0 runtime) and include/DM/DM.h into
+# build/objc/prefix.
+build-objc: prebuild-objc
+  {{ NIX_DEVELOP }} .#objc --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungeobjc -B build/datamungeobjc -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#objc --command bash -c 'cmake --build build/datamungeobjc -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#objc --command bash -c 'rm -rf build/objc/prefix && cmake --install build/datamungeobjc --prefix build/objc/prefix >/dev/null'
+
+# Installs libdatamunge_ada and the compiled package (lib/ada/datamunge: .ads, .adb, .gpr, .ali, .o; the
+# package takes about a minute to compile) into build/ada/prefix.
+build-ada: prebuild-ada
+  {{ NIX_DEVELOP }} .#ada --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungeada -B build/datamungeada -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#ada --command bash -c 'cmake --build build/datamungeada -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#ada --command bash -c 'rm -rf build/ada/prefix && cmake --install build/datamungeada --prefix build/ada/prefix >/dev/null'
+
+# Installs libdatamunge_dart and the package (share/dart/datamunge) into build/dart/prefix.
+build-dart: prebuild-dart
+  {{ NIX_DEVELOP }} .#dart --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungedart -B build/datamungedart -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#dart --command bash -c 'cmake --build build/datamungedart -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#dart --command bash -c 'rm -rf build/dart/prefix && cmake --install build/datamungedart --prefix build/dart/prefix >/dev/null'
+
+# Installs libdatamunge_pascal and the compiled unit (lib/fpc/datamunge: datamunge.ppu, .o, .pas) into
+# build/pascal/prefix.
+build-pascal: prebuild-pascal
+  {{ NIX_DEVELOP }} .#pascal --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungepascal -B build/datamungepascal -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#pascal --command bash -c 'cmake --build build/datamungepascal -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#pascal --command bash -c 'rm -rf build/pascal/prefix && cmake --install build/datamungepascal --prefix build/pascal/prefix >/dev/null'
+
+# Installs libdatamunge_swift, the Swift module (libDatamunge.so, lib/swift/Datamunge.swiftmodule) and
+# the C module share/swift/CDatamunge into build/swift/prefix.
+build-swift: prebuild-swift
+  {{ NIX_DEVELOP }} .#swift --command bash -c 'datamunge_prefix="$(pkg-config --variable=prefix datamunge)" && cmake -S src/datamungeswift -B build/datamungeswift -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=ON -U datamunge_DIR -DCMAKE_PREFIX_PATH="$datamunge_prefix${CMAKE_PREFIX_PATH:+;$CMAKE_PREFIX_PATH}"'
+  {{ NIX_DEVELOP }} .#swift --command bash -c 'cmake --build build/datamungeswift -j{{ JOBS }}'
+  {{ NIX_DEVELOP }} .#swift --command bash -c 'rm -rf build/swift/prefix && cmake --install build/datamungeswift --prefix build/swift/prefix >/dev/null'
 
 # Installs datamunge.scm, datamunge/ and libdatamunge_guile.so into
 # build/guile/prefix/share/guile/site/<version>, which GUILE (run-guile, test-guile, repl-guile) and
@@ -696,11 +934,12 @@ repl-python: build-python
 repl-r: build-r
   {{ NIX_DEVELOP }} .#r --command bash -c 'R_LIBS="$(pwd)/build/r/library" R'
 
+# php -a with the binding loaded (src/datamungephp/repl.php: the namespace Datamunge imported).
 repl-php: build-php
-  {{ NIX_DEVELOP }} .#php --command bash -c 'php -a --php-ini .user.ini'
+  {{ NIX_DEVELOP }} .#php --command bash -c 'php -d auto_prepend_file="$(pwd)/src/datamungephp/repl.php" -a'
 
 repl-perl: build-perl
-  {{ NIX_DEVELOP }} .#perl --command bash -c 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && perl -de 1'
+  {{ NIX_DEVELOP }} .#perl --command bash -c 'export PERL5LIB="$(pwd)/build/perl/prefix/lib/perl5${PERL5LIB:+:$PERL5LIB}" && perl -MDatamunge=:all -de 1'
 
 # dotnet-repl with Datamunge.dll referenced (`#r`) and `using Datamunge;` (mep's C# console: `#:project` in a file).
 repl-csharp: build-csharp
@@ -753,8 +992,10 @@ repl-apl: build-apl
 repl-guile: build-guile
   {{ NIX_DEVELOP }} .#guile --command bash -c '{{ GUILE }} -l src/datamungeguile/repl.scm'
 
-repl-rust:
-  {{ NIX_DEVELOP }} .#rust --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cd {{ BINDINGS_DIR }}/rustdatamunge && evcxr'
+# evcxr with build/rust/evcxr as its configuration directory: init.evcxr adds the crate as a dependency
+# and imports it (the first evaluation builds it).
+repl-rust: build-rust
+  {{ NIX_DEVELOP }} .#rust --command bash -c '{{ RUST_ENV }} && mkdir -p build/rust/evcxr && printf ":dep datamunge = { path = \"%s\" }\nuse datamunge::*;\n" "$(pwd)/src/datamungerust/datamunge" > build/rust/evcxr/init.evcxr && EVCXR_CONFIG_DIR="$(pwd)/build/rust/evcxr" evcxr'
 
 # octave-cli with the binding on the path: try `df = datamunge.DataFrame ()` or `help datamunge.seql`.
 repl-octave: build-octave
@@ -790,6 +1031,9 @@ test-r: build-r
 test-csharp: build-csharp
   {{ NIX_DEVELOP }} .#csharp --command bash -c 'dotnet run tests/csharp/test_datamunge.cs'
 
+test-vb: build-vb
+  {{ NIX_DEVELOP }} .#csharp --command bash -c 'dotnet run --project tests/vb/Test.vbproj'
+
 # Compiles tests/fortran/test_datamunge.f90 against build/fortran/prefix and runs it.
 test-fortran: build-fortran
   {{ NIX_DEVELOP }} .#fortran --command bash -c '{{ FORTRAN_FC }} tests/fortran/test_datamunge.f90 {{ FORTRAN_LIBS }} -o build/fortran/bin/test_datamunge && build/fortran/bin/test_datamunge'
@@ -799,17 +1043,46 @@ test-fortran: build-fortran
 test-java: build-java
   {{ NIX_DEVELOP }} .#java --command bash -c '{{ JAVA }} tests/java/TestDatamunge.java src/datamungejava/java'
 
-test-rust:
-  {{ NIX_DEVELOP }} .#rust --command bash -c 'export LD_LIBRARY_PATH="$(pkg-config --variable=libdir datamunge)${LD_LIBRARY_PATH:+:}$LD_LIBRARY_PATH" && cargo test --manifest-path tests/rust/Cargo.toml'
+test-rust: build-rust
+  {{ NIX_DEVELOP }} .#rust --command bash -c '{{ RUST_ENV }} && cargo test --offline --manifest-path tests/rust/Cargo.toml'
+
+test-haskell: build-haskell
+  {{ NIX_DEVELOP }} .#haskell --command bash -c '{{ GHC }} -outputdir build/haskell/obj/test_datamunge tests/haskell/test_datamunge.hs -o build/haskell/bin/test_datamunge && build/haskell/bin/test_datamunge'
+
+# GHCi with the GHC package datamunge.
+repl-haskell: build-haskell
+  {{ NIX_DEVELOP }} .#haskell --command bash -c 'ghci -package-db "$(pwd)/build/haskell/prefix/lib/haskell/package.db" -package datamunge -ghci-script <(echo "import Datamunge")'
+
+test-prolog: build-prolog
+  {{ NIX_DEVELOP }} .#prolog --command bash -c '{{ SWIPL }} tests/prolog/test_datamunge.pl'
+
+# SWI-Prolog toplevel with the module loaded.
+repl-prolog: build-prolog
+  {{ NIX_DEVELOP }} .#prolog --command bash -c '{{ SWIPL }} -g "use_module(library(datamunge))"'
+
+test-objc: build-objc
+  {{ NIX_DEVELOP }} .#objc --command bash -c '{{ OBJCC }} tests/objc/test_datamunge.m -o build/objc/bin/test_datamunge && build/objc/bin/test_datamunge'
+
+test-ada: build-ada
+  {{ NIX_DEVELOP }} .#ada --command bash -c '{{ GNATMAKE }} tests/ada test_datamunge.adb && build/ada/bin/test_datamunge'
+
+test-dart: build-dart
+  {{ NIX_DEVELOP }} .#dart --command bash -c '{{ DART_RUN }} tests/dart tests/dart/bin/test_datamunge.dart'
+
+test-pascal: build-pascal
+  {{ NIX_DEVELOP }} .#pascal --command bash -c '{{ FPC }} tests/pascal/test_datamunge.pas && build/pascal/bin/test_datamunge'
+
+test-swift: build-swift
+  {{ NIX_DEVELOP }} .#swift --command bash -c '{{ SWIFTC }} tests/swift/test_datamunge.swift -o build/swift/bin/test_datamunge && build/swift/bin/test_datamunge'
 
 test-php: build-php
-  {{ NIX_DEVELOP }} .#php --command bash -c 'php -d assert.exception=1 -d zend.assertions=1 --php-ini .user.ini tests/php/test_datamunge.php'
+  {{ NIX_DEVELOP }} .#php --command bash -c 'php tests/php/test_datamunge.php'
 
 test-lua: build-lua
   {{ NIX_DEVELOP }} .#lua --command bash -c 'lua tests/lua/test_datamunge.lua'
 
 test-perl: build-perl
-  {{ NIX_DEVELOP }} .#perl --command bash -c 'export PERL5LIB="$(pwd)/build/perl/lib/perl5:$PERL5LIB" && export LD_LIBRARY_PATH="$(pwd)/build:$LD_LIBRARY_PATH" && prove -l tests/perl'
+  {{ NIX_DEVELOP }} .#perl --command bash -c 'export PERL5LIB="$(pwd)/build/perl/prefix/lib/perl5${PERL5LIB:+:$PERL5LIB}" && prove tests/perl'
 
 # tests/tcl/test_datamunge.tcl against build/tcl/prefix; it reads the committed
 # src/datamungetcl/pkg/datamunge/datamunge.tcl for the documentation checks.

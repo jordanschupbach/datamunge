@@ -1,91 +1,73 @@
 # CMD: just TARGET=ode_ex run-perl
-
+# ODEs: built-in named systems, harmonic-oscillator energy check and a Lorenz phase plot.
 use strict;
 use warnings;
 
-use Datamunge;
+use Datamunge qw(:all);
 
-# NOTE: the Python ode example also demonstrates a live, user-supplied RHS by subclassing
-# datamunge.RHS (a SWIG director). RHS is director-enabled ONLY in the Python binding (a
-# virtual method returning std::vector<double> cannot be wrapped as a working director in the
-# other SWIG backends -- see rhs.hpp), so this Perl port uses the built-in named systems via
-# solve_builtin(), exactly as the Lua template does.
+$| = 1;    # flush each print so it interleaves with the C++ library's output
 
-# state_at() returns std::vector<double> by const reference, which the Perl binding wraps as a
-# blessed DVector object (indexed with ->get($i)/->size()) -- unlike a by-value vector<double>
-# return, which comes back as a plain Perl arrayref.
-sub state_to_array {
-  my ($st) = @_;
-  my @out;
-  for (my $i = 0; $i < $st->size(); $i++) { push @out, $st->get($i); }
-  return \@out;
+# C's %g: six significant digits, no padding.
+sub fmt_g { return sprintf('%.6g', $_[0]) }
+
+sub last_state { my ($sol) = @_; return $sol->state_at($sol->size() - 1) }
+
+# The time vector followed by the requested state components (0-based), one value per step.
+sub solution_series {
+    my ($sol, @components) = @_;
+    my @steps = 0 .. $sol->size() - 1;
+    my @states = map { $sol->state_at($_) } @steps;
+    return ([map { $sol->time_at($_) } @steps], map { my $c = $_; [map { $_->[$c] } @states] } @components);
 }
 
-sub last_state {
-  my ($sol) = @_;
-  return $sol->state_at($sol->size() - 1);
+sub rk4_solver {
+    my ($step) = @_;
+    my $options = Datamunge::OdeOptions->new();
+    $options->method(Datamunge::StepMethod::RK4);
+    $options->step_size($step);
+    return Datamunge::OdeSolver->new($options);
 }
+
+# NOTE: like the Lua version this example uses the built-in named systems via solve_builtin.
 
 print "=================== Every named built-in system (no director needed) ===================\n";
-my $solver = Datamunge::ODESolver->new();
-my @systems = (
-  ["exponential_decay", [1.0], [1.0]],
-  ["logistic_growth", [1.0, 1.0], [0.5]],
-  ["harmonic_oscillator", [1.0], [1.0, 0.0]],
-  ["van_der_pol", [1.0], [2.0, 0.0]],
-  ["lorenz", [10.0, 28.0, 8.0 / 3.0], [1.0, 1.0, 1.0]],
-);
-for my $s (@systems) {
-  my ($name, $params, $y0) = @$s;
-  my $sol = $solver->solve_builtin($name, $params, $y0, 0.0, 1.0);
-  my $final = state_to_array(last_state($sol));
-  my $parts = join(", ", map { sprintf("%g", $_) } @$final);
-  printf("%-22s steps=%-6d final state=[%s]\n", $name, $sol->swig_steps_taken_get(), $parts);
+{
+    my $solver = Datamunge::OdeSolver->new();
+    my @systems = (
+        ["exponential_decay", [1.0], [1.0]],
+        ["logistic_growth", [1.0, 1.0], [0.5]],
+        ["harmonic_oscillator", [1.0], [1.0, 0.0]],
+        ["van_der_pol", [1.0], [2.0, 0.0]],
+        ["lorenz", [10.0, 28.0, 8.0 / 3], [1.0, 1.0, 1.0]],
+    );
+    for my $system (@systems) {
+        my ($name, $parameters, $y0) = @$system;
+        my $sol = $solver->solve_builtin($name, $parameters, $y0, 0.0, 1.0);
+        printf "%-22s steps=%-6s final state=[%s]\n", $name, $sol->steps_taken, join(", ", map { fmt_g($_) } @{ last_state($sol) });
+    }
 }
 
 print "\n=================== Harmonic oscillator (energy conservation) ===================\n";
-my $options = Datamunge::ODEOptions->new();
-$options->swig_method_set($Datamunge::StepMethod_RK4);
-$options->swig_step_size_set(0.01);
-$solver = Datamunge::ODESolver->new($options);
-my $sol = $solver->solve_builtin("harmonic_oscillator", [1.0], [1.0, 0.0], 0.0, 20.0);
-my $final = last_state($sol);
-my ($x, $v) = ($final->get(0), $final->get(1));
-printf("x(20) = %.6f (cos(20) = %.6f)\n", $x, cos(20));
-printf("energy x^2+v^2 = %.6f (should stay near 1.0)\n", $x * $x + $v * $v);
-
-my (@t_series, @x_series, @v_series);
-for (my $i = 0; $i < $sol->size(); $i++) {
-  push @t_series, $sol->time_at($i);
-  my $st = $sol->state_at($i);
-  push @x_series, $st->get(0);
-  push @v_series, $st->get(1);
+{
+    my $sol = rk4_solver(0.01)->solve_builtin("harmonic_oscillator", [1.0], [1.0, 0.0], 0.0, 20.0);
+    my ($x, $v) = @{ last_state($sol) };
+    printf "x(20) = %.6f (cos(20) = %.6f)\n", $x, cos(20.0);
+    printf "energy x^2+v^2 = %.6f (should stay near 1.0)\n", $x * $x + $v * $v;
+    my ($ts, $xs, $vs) = solution_series($sol, 0, 1);
+    my $p = Datamunge::RPlot->plot($ts, $xs, "l", "x(t)");
+    $p->lines($ts, $vs, "v(t)");
+    $p->title("Harmonic Oscillator")->x_label("t")->y_label("state");
+    $p->save_svg("ode_harmonic_oscillator_perl.svg");
+    print "wrote ode_harmonic_oscillator_perl.svg\n";
 }
-my $plot = Datamunge::RPlot::plot(\@t_series, \@x_series, "l", "x(t)");
-$plot->lines(\@t_series, \@v_series, "v(t)");
-$plot->title("Harmonic Oscillator");
-$plot->x_label("t");
-$plot->y_label("state");
-$plot->save_svg("ode_harmonic_oscillator_perl.svg");
-print "wrote ode_harmonic_oscillator_perl.svg\n";
 
 print "\n=================== Lorenz attractor (phase plane) ===================\n";
-$options = Datamunge::ODEOptions->new();
-$options->swig_method_set($Datamunge::StepMethod_RK4);
-$options->swig_step_size_set(0.005);
-$solver = Datamunge::ODESolver->new($options);
-$sol = $solver->solve_builtin("lorenz", [10.0, 28.0, 8.0 / 3.0], [1.0, 1.0, 1.0], 0.0, 25.0);
-printf("steps_taken = %d\n", $sol->swig_steps_taken_get());
-
-my (@xs, @zs);
-for (my $i = 0; $i < $sol->size(); $i++) {
-  my $st = $sol->state_at($i);
-  push @xs, $st->get(0);
-  push @zs, $st->get(2);
+{
+    my $sol = rk4_solver(0.005)->solve_builtin("lorenz", [10.0, 28.0, 8.0 / 3], [1.0, 1.0, 1.0], 0.0, 25.0);
+    print "steps_taken = ", $sol->steps_taken, "\n";
+    my (undef, $xs, $zs) = solution_series($sol, 0, 2);
+    my $p = Datamunge::RPlot->plot($xs, $zs, "l", "trajectory");
+    $p->title("Lorenz Attractor (x-z phase plane)")->x_label("x")->y_label("z");
+    $p->save_svg("ode_lorenz_phase_plane_perl.svg");
+    print "wrote ode_lorenz_phase_plane_perl.svg\n";
 }
-$plot = Datamunge::RPlot::plot(\@xs, \@zs, "l", "trajectory");
-$plot->title("Lorenz Attractor (x-z phase plane)");
-$plot->x_label("x");
-$plot->y_label("z");
-$plot->save_svg("ode_lorenz_phase_plane_perl.svg");
-print "wrote ode_lorenz_phase_plane_perl.svg\n";

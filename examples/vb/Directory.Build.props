@@ -1,0 +1,9 @@
+<Project>
+  <!-- Each example gets its own build directory under build/vb (the examples share one project),
+       and nothing needs NuGet packages (nuget.config clears the sources). -->
+  <PropertyGroup>
+    <Example Condition="'$(Example)' == ''">dataframe_ex</Example>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)../../build/vb/examples/obj/$(Example)/</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)../../build/vb/examples/bin/$(Example)/</BaseOutputPath>
+  </PropertyGroup>
+</Project>

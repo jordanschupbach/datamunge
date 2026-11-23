@@ -1,0 +1,7 @@
+<Project>
+  <!-- Build outputs go under build/vb/tests, and nothing needs NuGet packages (nuget.config clears the sources). -->
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)../../build/vb/tests/obj/</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)../../build/vb/tests/bin/</BaseOutputPath>
+  </PropertyGroup>
+</Project>
