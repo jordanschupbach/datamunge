@@ -1,0 +1,87 @@
+//? Title: Inspect a partition with silhouette widths
+//? Exports: both
+//? Lang: en
+
+> Find an observation closer to a neighboring cluster
+
+For each observation, let \(a\) be its mean dissimilarity to the other
+members of its assigned cluster. Let \(b\) be its smallest mean
+dissimilarity to another cluster. The silhouette width is
+\((b-a)/\max(a,b)\). A singleton has width zero by convention.
+
+Six values on a line come with three supplied labels. One value is
+closer on average to a neighboring cluster than to the other members
+of its assigned cluster. The example keeps the original labels while
+computing observation widths and cluster means.
+
+```{cpp, id=silhouette-partition, file="figures/silhouette_widths.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/silhouette.hpp>
+
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <string>
+#include <vector>
+
+int main() {
+    namespace dm = datamunge;
+    const std::array x{0., 1., 5., 7., 8., 20.};
+    dm::linalg::DenseMatrix<double> distance(x.size(), x.size());
+    for (std::size_t i = 0; i < x.size(); ++i)
+        for (std::size_t j = 0; j < x.size(); ++j)
+            distance(i, j) = std::abs(x[i] - x[j]);
+    const auto fit = dm::stats::silhouette_analysis(distance, {10, 10, 10, 20, 20, 99});
+    std::println("The overall mean silhouette width is {:.3f}.\n", fit.mean_width);
+    std::println("| Cluster | Observations | Mean silhouette width |");
+    std::println("| ---: | ---: | ---: |");
+    for (const auto& c : fit.clusters)
+        std::println("| {} | {} | {:.3f} |", c.label, c.count, c.mean_width);
+    std::println("\nThe value 5 belongs to cluster {} and has nearest alternative cluster {}.",
+        fit.observations[2].cluster, fit.observations[2].neighbor);
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.line({0, 0}, {.4, 6.6}, "", {113, 120, 132}, 1.2);
+    std::vector<double> ticks;
+    std::vector<std::string> names;
+    for (std::size_t i = 0; i < x.size(); ++i) {
+        const auto& row = fit.observations[i];
+        const double position = x.size() - i;
+        ticks.push_back(position);
+        names.push_back(std::format("{} (cluster {})", x[i], row.cluster));
+        if (row.width == 0)
+            plot.points({0}, {position}, "", {91, 97, 107}, 4);
+        else
+            plot.horizontal_bars({position}, {row.width}, "",
+                row.width > 0 ? dm::graphics::RGBA{32, 96, 151} : dm::graphics::RGBA{178, 77, 46}, .62);
+    }
+    std::filesystem::create_directories("build");
+    plot.title("Silhouette widths for the supplied partition")
+        .x_label("Silhouette width").y_label("").y_ticks(ticks, names)
+        .x_limits(-1, 1).y_limits(.35, 6.65)
+        .size(740, 420).save_svg("build/silhouette_widths.svg");
+}
+```
+// result_begin: markdown
+The overall mean silhouette width is 0.401.
+
+| Cluster | Observations | Mean silhouette width |
+| ---: | ---: | ---: |
+| 10 | 3 | 0.257 |
+| 20 | 2 | 0.817 |
+| 99 | 1 | 0.000 |
+
+The value 5 belongs to cluster 10 and has nearest alternative cluster 20.
+\image(figures/silhouette_widths.svg)
+// result_end
+\caption(The value 5 has a negative width and the singleton at 20 has width zero.)
+\alttext(Values 0 and 1 have positive silhouette widths near 0.6. Value 5 has width minus 0.44. Values 7 and 8 have widths above 0.8. The singleton at 20 is marked at zero.)
+
+The negative width identifies the value 5 for closer inspection. Its
+mean distance to its assigned cluster is 4.5, and its mean distance
+to cluster 20 is 2.5. Cluster 20 has the largest mean width among
+the three assigned clusters.
+
+[Rousseeuw (1987)|https://doi.org/10.1016/0377-0427(87)90125-7]

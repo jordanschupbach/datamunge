@@ -4,11 +4,28 @@
 #include <datamunge/random/distributions.hpp>
 #include <datamunge/stats/chi_squared_test.hpp>
 #include <datamunge/stats/detail/test_common.hpp>
+#include <limits>
+#include <numeric>
 #include <stdexcept>
+#include <utility>
 
 namespace datamunge::stats {
 
-HypothesisTestResult chi_squared_goodness_of_fit(
+/// @brief Input checks for tests of fixed category probabilities.
+namespace {
+
+/// @brief Checked category probabilities and total observation count.
+struct GoodnessOfFitData {
+  std::vector<double> probabilities; ///< Category probabilities, uniform if omitted.
+  double total;                      ///< Sum of counts.
+};
+
+/// @brief Validates a vector of counts and corresponding categorical null probabilities.
+/// @param observed Finite nonnegative category counts with positive total.
+/// @param expected_probabilities Positive probabilities, or empty for uniform.
+/// @return Owned checked probabilities and sum of the counts.
+/// @throws std::invalid_argument Incorrect category counts or invalid probabilities.
+GoodnessOfFitData check_goodness_of_fit(
     const std::vector<double>& observed,
     const std::vector<double>& expected_probabilities) {
   if (observed.size() < 2)
@@ -40,6 +57,15 @@ HypothesisTestResult chi_squared_goodness_of_fit(
 
   if (!(total > 0) || !std::isfinite(total))
     throw std::invalid_argument("chi_squared: positive finite total required");
+  return {std::move(probabilities), total};
+}
+
+} // namespace
+
+HypothesisTestResult chi_squared_goodness_of_fit(
+    const std::vector<double>& observed,
+    const std::vector<double>& expected_probabilities) {
+  const auto [probabilities, total] = check_goodness_of_fit(observed, expected_probabilities);
   double statistic = 0.0;
   for (std::size_t i = 0; i < observed.size(); ++i) {
     const double expected = total * probabilities[i];
@@ -53,6 +79,57 @@ HypothesisTestResult chi_squared_goodness_of_fit(
   result.parameter1 = df;
   result.p_value    = detail::chi_squared_test_survival(statistic, df);
   result.method     = "Chi-squared test for given probabilities";
+  return result;
+}
+
+HypothesisTestResult power_divergence_test(
+    const std::vector<double>& observed, const std::vector<double>& expected_probabilities,
+    double power, std::size_t estimated_parameters) {
+  const auto data = check_goodness_of_fit(observed, expected_probabilities);
+  const auto& probabilities = data.probabilities;
+  const auto categories = observed.size();
+  if (!std::isfinite(power) || estimated_parameters >= categories - 1)
+    throw std::invalid_argument("power_divergence_test: invalid power or degrees of freedom");
+  const long double sum = std::accumulate(probabilities.begin(), probabilities.end(), 0.0L);
+  const long double count = std::accumulate(observed.begin(), observed.end(), 0.0L);
+  // Swapping observed and expected maps lambda to -1-lambda and avoids
+  // dividing by a small value near the reverse likelihood-ratio limit.
+  const bool reverse = power < -.5;
+  const long double lambda = reverse ? -1 - static_cast<long double>(power) : power;
+  long double divergence = 0;
+  for (std::size_t i = 0; i < categories; ++i) {
+    const auto expected = count * (probabilities[i] / sum);
+    const long double x = reverse ? expected : observed[i];
+    const long double y = reverse ? observed[i] : expected;
+    if (x == 0) {
+      divergence += y;
+      continue;
+    }
+    if (y == 0 && lambda >= 0) {
+      divergence = std::numeric_limits<long double>::infinity();
+      break;
+    }
+    const auto difference = x - y;
+    const auto relative = y == 0 ? std::numeric_limits<long double>::infinity() : difference / y;
+    // The sum of the linear residuals is zero. Subtract them term by term,
+    // evaluating the Taylor remainder directly near equality.
+    if (std::abs(relative) < 1e-3L && std::abs(lambda * relative) < 1e-3L) {
+      long double term = .5L, series = term;
+      for (int order = 3; order <= 7; ++order) {
+        term *= ((lambda - (order - 2)) * relative) / order;
+        series += term;
+      }
+      divergence += ((difference * relative) * (lambda + 1)) * series;
+    } else {
+      const auto log_ratio = y == 0 ? relative : std::log(x / y);
+      divergence += x * (lambda == 0 ? log_ratio : std::expm1(lambda * log_ratio) / lambda) - difference;
+    }
+  }
+  HypothesisTestResult result;
+  result.statistic = static_cast<double>(std::max(0.0L, 2 * (divergence / (lambda + 1))));
+  result.parameter1 = static_cast<double>(categories - 1 - estimated_parameters);
+  result.p_value = detail::chi_squared_test_survival(result.statistic, result.parameter1);
+  result.method = "Cressie-Read power-divergence test";
   return result;
 }
 

@@ -1,0 +1,77 @@
+//? Title: Find density modes with mean shift
+//? Exports: both
+//? Lang: en
+
+> See how bandwidth changes the recovered modes
+
+Mean shift starts a trajectory at each observation. Each step moves
+to the average of the observations weighted by their Gaussian kernels
+at the current position. Nearby converged endpoints share a label.
+
+Seven synthetic observations lie in two groups. The same observations
+are fit with a bandwidth of 0.42 and a bandwidth of 4. The narrow
+kernels preserve two modes. The wider kernels overlap enough to give a
+single mode to all seven starting points.
+
+```{cpp, id=mean-shift-bandwidth, file="figures/mean_shift_modes.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/kernel_density.hpp>
+#include <datamunge/stats/mean_shift.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <string>
+#include <vector>
+
+int main() {
+    namespace dm = datamunge;
+    const std::vector<double> observations{-2.85, -2.33, -2.10, -1.95, .70, 1.30, 1.65};
+    const dm::linalg::DenseMatrix<double> x(observations.size(), 1, observations);
+    std::vector<double> grid(181);
+    for (std::size_t i = 0; i < grid.size(); ++i)
+        grid[i] = -5.5 + .05 * i;
+
+    auto plot = dm::graphics::RPlot::create();
+    std::println("| Bandwidth | Mode | Density at mode | Observations assigned |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    const auto show = [&](double h, const char* label, dm::graphics::RGBA color) {
+        const auto fit = dm::stats::fit_mean_shift(x, h);
+        const dm::stats::GaussianKernelDensity kde(observations, h);
+        std::vector<double> curve, mode, height;
+        for (const auto t : grid)
+            curve.push_back(kde.density(t));
+        for (std::size_t i = 0; i < fit.modes.rows(); ++i) {
+            mode.push_back(fit.modes(i, 0));
+            height.push_back(std::exp(fit.log_density[i]));
+            std::println("| {:.2f} | {:.3f} | {:.3f} | {} |", h, mode.back(), height.back(),
+                std::ranges::count(fit.labels, i));
+        }
+        plot.line(grid, curve, label, color, 2.6).points(mode, height, "", color, 5.1);
+    };
+    show(.42, "Bandwidth 0.42", {28, 91, 149});
+    show(4, "Bandwidth 4.00", {165, 71, 42});
+    plot.points(observations, std::vector<double>(observations.size(), 0), "Observations", {94, 99, 107}, 3.2);
+    std::filesystem::create_directories("build");
+    plot.title("Gaussian density and recovered modes")
+        .x_label("Observation value").y_label("Density")
+        .y_limits(-.022, .50).size(740, 420).save_svg("build/mean_shift_modes.svg");
+}
+```
+// result_begin: markdown
+| Bandwidth | Mode | Density at mode | Observations assigned |
+| ---: | ---: | ---: | ---: |
+| 0.42 | -2.207 | 0.416 | 4 |
+| 0.42 | 1.335 | 0.281 | 3 |
+| 4.00 | -0.858 | 0.090 | 7 |
+\image(figures/mean_shift_modes.svg)
+// result_end
+\caption(Dots on the curves mark the fitted modes. Dots on the horizontal axis mark the observations.)
+\alttext(The narrow-bandwidth curve peaks near minus 2.21 and plus 1.34. The broad-bandwidth curve has one shallower peak near minus 0.86.)
+
+With bandwidth 0.42, the mode near −2.21 attracts four observations,
+and the mode near 1.34 attracts three. With bandwidth 4, all
+observations reach the mode near −0.86.
+
+[Carreira-Perpiñán (2007)|https://doi.org/10.1109/TPAMI.2007.1057]

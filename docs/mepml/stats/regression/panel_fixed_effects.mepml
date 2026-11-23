@@ -1,0 +1,84 @@
+//? Title: Fit two-way fixed effects to an unbalanced panel
+//? Exports: both
+//? Lang: en
+
+> Absorb site and period effects with clustered inference
+
+Ten sites report energy use, a control setting, and an occupancy index.
+One cohort reports in periods 1–4 and the other reports in periods 7–10.
+Some site-period cells are missing, and some have two measurements.
+The model estimates a common slope for each predictor while allowing
+each site and each period its own intercept.
+
+```{cpp, id=panel-fixed-effects, file="figures/panel_period_effects.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/panel_fixed_effects.hpp>
+#include <cmath>
+#include <filesystem>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    using stats::PanelClustering;
+    std::vector<std::int64_t> site, period;
+    std::vector<double> energy, predictors;
+    for (int s = 1; s <= 10; ++s) {
+        for (int v = 1; v <= 4; ++v) {
+            if ((s + 2*v) % 5 == 0)
+                continue;
+            const int replicates = (s + v) % 3 == 0 ? 2 : 1;
+            for (int r = 0; r < replicates; ++r) {
+                const auto setting = std::sin(.63*s*v + .8*r) + .25*v - .2*s;
+                const auto occupancy = std::cos(.47*s + 1.4*v - r) + .1*s*v;
+                predictors.insert(predictors.end(), {setting,occupancy});
+                energy.push_back(4 + .85*setting - 1.3*occupancy + .9*std::sin(s) + .5*v*v +
+                    (.2 + .11*s)*std::cos(s*v + 2*r) + .27*std::sin(2*s - v + 3*r));
+                site.push_back(s);
+                period.push_back(v + (s <= 5 ? 0 : 6));
+            }
+        }
+    }
+
+    const linalg::DenseMatrix<double> design(energy.size(),2,predictors);
+    std::println("| Clustering | Setting slope | Cluster SE | Reference df | Two-sided p |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (const auto mode : {PanelClustering::Unit, PanelClustering::Time, PanelClustering::UnitAndTime}) {
+        const auto fit = stats::fit_two_way_fixed_effects(design,energy,site,period,{.clustering=mode});
+        const auto test = fit.test_contrast({1,0});
+        const auto name = mode == PanelClustering::Unit ? "Site" :
+            mode == PanelClustering::Time ? "Period" : "Site and period";
+        std::println("| {} | {:.3f} | {:.3f} | {} | {:.4f} |", name, test.estimate,
+            test.standard_error,test.df,test.p_value);
+        if (mode == PanelClustering::UnitAndTime) {
+            std::filesystem::create_directories("build");
+            auto plot = graphics::RPlot::create();
+            plot.line({1,2,3,4},std::vector<double>(fit.time_effects.begin(),fit.time_effects.begin()+4),
+                      "First cohort",graphics::RGBA{26,96,155},2.8)
+                .line({7,8,9,10},std::vector<double>(fit.time_effects.begin()+4,fit.time_effects.end()),
+                      "Second cohort",graphics::RGBA{166,77,30},2.8)
+                .title("Estimated period effects by reporting window")
+                .x_ticks({1,2,3,4,7,8,9,10},{"1","2","3","4","7","8","9","10"})
+                .x_label("Period").y_label("Effect relative to the first period")
+                .y_limits(-.5,10.3).size(740,420).save_svg("build/panel_period_effects.svg");
+        }
+    }
+}
+```
+// result_begin: markdown
+| Clustering | Setting slope | Cluster SE | Reference df | Two-sided p |
+| --- | ---: | ---: | ---: | ---: |
+| Site | 0.576 | 0.246 | 9 | 0.0439 |
+| Period | 0.576 | 0.271 | 7 | 0.0711 |
+| Site and period | 0.576 | 0.287 | 7 | 0.0848 |
+\image(figures/panel_period_effects.svg)
+// result_end
+\caption(Each reporting window has its own period-effect baseline.)
+\alttext(The estimated effect rises from zero at period 1 to about 8.6 at period 4. The other cohort starts at zero in period 7 and rises to about 8.9 at period 10.)
+
+The fitted setting slope is the same in all three rows because the
+clustering choice only changes inference. Two-way clustering combines
+the site and period covariances and subtracts the contribution from the
+site-period intersections. The two reporting windows have no sites or
+periods in common, so each window has its own zero for the period effects.
+
+[Gaure, OLS with multiple high dimensional category variables|https://doi.org/10.1016/j.csda.2013.03.024] · [Cameron, Gelbach, and Miller, Robust Inference With Multiway Clustering|https://doi.org/10.1198/jbes.2010.07136]

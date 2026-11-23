@@ -1,0 +1,31 @@
+//? Title: Test for an ordered trend across groups
+//? Exports: both
+//? Lang: en
+
+> Compare readings at three ordered settings
+
+Three independent groups supply readings at low, medium, and high
+settings. The increasing alternative was specified before comparing
+them. For every pair from different settings, the Jonckheere–Terpstra
+statistic awards a point when the higher setting has the higher reading
+and half a point for a tie. This example uses a normal reference that
+accounts for the group sizes and ties among the pooled readings.
+
+```{cpp, id=ordered-group-trend, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/nonparametric.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<std::vector<double>> readings{{0, 1, 1}, {1, 2, 3, 4}, {2, 4, 5}};
+    const auto test = jonckheere_terpstra_test(readings, Alternative::Greater);
+    std::println("The higher setting earns {:g} points across {:.0f} pairs, "
+                 "or {:.1f}% of the possible points. The increasing-trend p-value is {:.4f}.",
+                 test.statistic, test.parameter2, 100 * test.estimate1, test.p_value);
+}
+```
+// result_begin: markdown
+The higher setting earns 29 points across 33 pairs, or 87.9% of the possible points. The increasing-trend p-value is 0.0073.
+// result_end
+
+[Jonckheere’s ordered-alternative test|https://doi.org/10.1093/biomet/41.1-2.133]

@@ -1,0 +1,93 @@
+//? Title: Test a multivariate mean change with Hotelling T-squared
+//? Exports: both
+//? Lang: en
+
+> Test two paired outcomes jointly
+
+Fourteen instruments record two performance scores under a baseline
+setting and a revised setting. In this synthetic example, changes in
+the two scores tend to move together across instruments. The paired
+Hotelling test uses the mean vector and the covariance of the
+within-instrument changes to test whether both mean changes are zero.
+
+```{cpp, id=paired-hotelling, file="figures/hotelling_mean_ellipse.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/linalg/cholesky.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/stats/hotelling_test.hpp>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    constexpr std::size_t n = 14;
+    linalg::DenseMatrix<double> before(n,2), after(n,2), covariance(2,2);
+    std::vector<double> common;
+    double average = 0;
+    for (std::size_t row = 0; row < n; ++row) {
+        const double i = row+1;
+        common.push_back(.78*std::sin(i)+.45*std::cos(2*i));
+        average += common.back()/n;
+    }
+    for (std::size_t row = 0; row < n; ++row) {
+        const double i = row+1;
+        before(row,0) = 8+.4*std::cos(i);
+        before(row,1) = 9+.7*std::sin(.4*i);
+        after(row,0) = before(row,0)-.22+common[row]-average+.10*std::sin(2.7*i);
+        after(row,1) = before(row,1)+.18+common[row]-average+.11*std::cos(2.3*i);
+    }
+
+    const auto test = stats::hotelling_t2_paired(after,before);
+    const auto& mean = test.mean_difference;
+    std::println("| Mean change A | Mean change B | T² | F ({}, {}) | p-value |",
+        test.df_numerator,test.df_denominator);
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    std::println("| {:.3f} | {:.3f} | {:.2f} | {:.2f} | {:.3g} |", mean[0],mean[1],
+        test.t_squared,test.f_statistic,test.p_value);
+
+    for (std::size_t row = 0; row < n; ++row)
+        for (std::size_t a = 0; a < 2; ++a)
+            for (std::size_t b = 0; b < 2; ++b)
+                covariance(a,b) += (after(row,a)-before(row,a)-mean[a]) *
+                    (after(row,b)-before(row,b)-mean[b])/(n-1);
+    const auto lower = linalg::cholesky(covariance).L;
+    const auto cutoff = 2.0*(n-1)/(n*test.df_denominator) *
+        random::f_quantile(.95,test.df_numerator,test.df_denominator);
+    std::vector<double> ellipse_a, ellipse_b;
+    for (int i = 0; i <= 160; ++i) {
+        const auto angle = 2*std::numbers::pi*i/160;
+        const auto point = lower * std::vector<double>{std::cos(angle),std::sin(angle)};
+        ellipse_a.push_back(mean[0]+std::sqrt(cutoff)*point[0]);
+        ellipse_b.push_back(mean[1]+std::sqrt(cutoff)*point[1]);
+    }
+
+    std::filesystem::create_directories("build");
+    auto plot = graphics::RPlot::create();
+    const graphics::RGBA blue{27,86,151}, rust{158,71,39}, grid{183,192,201};
+    plot.abline_h(0,grid).abline_v(0,grid)
+        .line(ellipse_a,ellipse_b,"",blue,2.5)
+        .points({mean[0]},{mean[1]},blue,4)
+        .points({0},{0},rust,5)
+        .title("Joint confidence region for mean changes")
+        .x_label("Mean change in score A").y_label("Mean change in score B")
+        .x_limits(-.8,.55).y_limits(-.4,.8).size(710,500)
+        .save_svg("build/hotelling_mean_ellipse.svg");
+}
+```
+// result_begin: markdown
+| Mean change A | Mean change B | T² | F (2, 12) | p-value |
+| ---: | ---: | ---: | ---: | ---: |
+| -0.220 | 0.180 | 202.14 | 93.29 | 4.87e-08 |
+\image(figures/hotelling_mean_ellipse.svg)
+// result_end
+\caption(The blue ellipse bounds the 95% joint confidence region. The blue dot is the estimated mean and the rust dot is zero change.)
+\alttext(A narrow ellipse tilts upward around the mean change of minus 0.22 in score A and 0.18 in score B. The origin lies below and to the right of the ellipse.)
+
+The tilted confidence ellipse follows the direction of shared
+variation. Each axis projection spans zero. The origin lies outside
+the joint region, giving evidence that the mean change vector differs
+from zero.
+
+[Hotelling, The Generalization of Student's Ratio|https://doi.org/10.1214/aoms/1177732979]

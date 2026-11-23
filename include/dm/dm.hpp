@@ -12,6 +12,11 @@
 
 #include <datamunge/datamunge.hpp>
 #include <datamunge/random/sampling_analysis.hpp>
+#include <datamunge/random/poisson_binomial.hpp>
+#include <datamunge/random/count_distributions.hpp>
+#include <datamunge/random/simplex.hpp>
+#include <datamunge/random/matrix_distributions.hpp>
+#include <datamunge/random/noncentral_distributions.hpp>
 #include <datamunge/algorithms/algorithms.hpp>
 #include <datamunge/algorithms/learned_index.hpp>
 #include <datamunge/datasets/datasets.hpp>

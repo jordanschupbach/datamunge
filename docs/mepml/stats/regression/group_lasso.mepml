@@ -1,0 +1,72 @@
+//? Title: Select groups and individual slopes along a regularization path
+//? Exports: both
+//? Lang: en
+
+> Compare group and within-group selection
+
+Four predictors belong to two groups. Each group contains a strong
+predictor and a weaker one. Group lasso penalizes each group's
+Euclidean norm. Sparse group lasso adds an absolute-value penalty
+on each slope, so it can retain a group and set a weak slope to zero.
+
+```{cpp, id=group-lasso-path, file="figures/group_lasso_path.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/group_lasso.hpp>
+#include <filesystem>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge;
+    linalg::DenseMatrix<double> x(8, 4);
+    std::vector<double> y(8);
+    for (std::size_t i = 0; i < y.size(); ++i) {
+        for (std::size_t j = 0; j < 3; ++j)
+            x(i, j) = i & (1u << j) ? 1 : -1;
+        x(i, 3) = x(i, 0) * x(i, 1);
+        y[i] = 10 + 2.6*x(i, 0) + .25*x(i, 1) + 1.2*x(i, 2) + .08*x(i, 3);
+    }
+    stats::GroupLassoOptions options{.lambdas = {1.8, 1, .65, .3, .15}};
+    const auto group = stats::group_lasso_path(x, y, {10,10,20,20}, options);
+    options.alpha = .55;
+    const auto sparse = stats::group_lasso_path(x, y, {10,10,20,20}, options);
+    std::vector<double> penalty, weak_group, weak_sparse;
+    std::println("| Penalty | Groups with group lasso | Groups with sparse group lasso |");
+    std::println("| ---: | ---: | ---: |");
+    for (std::size_t i = 0; i < group.size(); ++i) {
+        if (!group[i].converged || !sparse[i].converged)
+            throw std::runtime_error("Expected both regularization paths to converge");
+        std::println("| {:.2f} | {} | {} |", group[i].lambda, group[i].active_groups.size(),
+                     sparse[i].active_groups.size());
+        penalty.push_back(group[i].lambda);
+        weak_group.push_back(group[i].coefficients[1]);
+        weak_sparse.push_back(sparse[i].coefficients[1]);
+    }
+    std::filesystem::create_directories("build");
+    graphics::RPlot::create()
+        .line(penalty, weak_group, "Group lasso", {29, 78, 216}, 2.5)
+        .line(penalty, weak_sparse, "Sparse group lasso", {180, 83, 9}, 2.5)
+        .title("A weak slope in a retained group")
+        .x_label("Penalty strength").y_label("Slope for predictor 2")
+        .size(740, 420).save_svg("build/group_lasso_path.svg");
+}
+```
+// result_begin: markdown
+| Penalty | Groups with group lasso | Groups with sparse group lasso |
+| ---: | ---: | ---: |
+| 1.80 | 1 | 1 |
+| 1.00 | 1 | 2 |
+| 0.65 | 2 | 2 |
+| 0.30 | 2 | 2 |
+| 0.15 | 2 | 2 |
+\image(figures/group_lasso_path.svg)
+// result_end
+\caption(Sparse group lasso drops the weak slope at a lower penalty strength.)
+\alttext(Both fitted slopes shrink as the penalty rises. The sparse group lasso line reaches zero by 0.65, while the group lasso line stays positive through 1.8.)
+
+At penalty 0.65, both fits retain the first group. The group-lasso fit
+keeps a small slope for its weaker predictor. The sparse group-lasso
+fit sets that slope to zero.
+
+[Yuan and Lin, Model Selection and Estimation in Regression with Grouped Variables|https://doi.org/10.1111/j.1467-9868.2005.00532.x]
+[Simon et al., A Sparse-Group Lasso|https://doi.org/10.1080/10618600.2012.681250]

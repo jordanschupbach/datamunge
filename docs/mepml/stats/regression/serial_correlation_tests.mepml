@@ -1,0 +1,71 @@
+//? Title: Test serial correlation in linear-model residuals
+//? Exports: both
+//? Lang: en
+
+> Detect serial dependence after fitting a trend
+
+The example adds persistent Gaussian errors to a linear trend, fits the
+trend, then examines the residuals in observation order. Durbin–Watson
+compares successive residual differences with residual variation. Positive
+correlation tends to make successive residuals closer together. Its
+Monte Carlo reference simulates independent Gaussian errors in the
+residual space of the fitted design.
+
+Breusch–Godfrey adds lagged residuals to the fitted design and tests them
+jointly. This example requests two lags and reports both the asymptotic
+LM test and the approximate F test.
+
+```{cpp, id=serial-correlation-tests, file="figures/serial_correlation_residuals.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/lm.hpp>
+#include <filesystem>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    constexpr std::size_t count = 40;
+    random::SplitMix64 innovations(42), calibration(731);
+    Mat<> predictors(count, 1);
+    std::vector<double> time, response;
+    double state = 0;
+    for (std::size_t i = 0; i < count; ++i) {
+        state = .85 * state + innovations.normal();
+        const double tick = static_cast<double>(i);
+        time.push_back(tick);
+        response.push_back(2 + .3 * tick + state);
+        predictors(i, 0) = tick;
+    }
+    const stats::LM fit(response, predictors);
+    const auto dw = fit.durbin_watson(calibration, 9999, stats::Alternative::Greater);
+    const auto bg = fit.breusch_godfrey(2);
+    const auto f = fit.breusch_godfrey(2, true);
+    std::println("| Test | Statistic | p-value |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| Durbin–Watson, positive correlation | {:.4f} | {:.3g} |", dw.statistic, dw.p_value);
+    std::println("| Breusch–Godfrey LM, two lags | {:.4f} | {:.3g} |", bg.statistic, bg.p_value);
+    std::println("| Breusch–Godfrey F, two lags | {:.4f} | {:.3g} |", f.statistic, f.p_value);
+
+    std::filesystem::create_directories("build");
+    graphics::RPlot::create().line(time, fit.residuals(), "", {29, 78, 216}, 2.5)
+        .abline_h(0, {100, 116, 139}, 1)
+        .title("Residuals after fitting the trend").x_label("Observation").y_label("Residual")
+        .size(740, 410).save_svg("build/serial_correlation_residuals.svg");
+}
+```
+// result_begin: markdown
+| Test | Statistic | p-value |
+| --- | ---: | ---: |
+| Durbin–Watson, positive correlation | 0.3271 | 0.0001 |
+| Breusch–Godfrey LM, two lags | 27.0240 | 1.35e-06 |
+| Breusch–Godfrey F, two lags | 37.4872 | 1.58e-09 |
+\image(figures/serial_correlation_residuals.svg)
+// result_end
+\caption(Adjacent residuals stay on the same side of zero for several observations at a time.)
+\alttext(A line chart shows long stretches of positive or negative residuals after a trend is fitted.)
+
+The simulation uses the plus-one tail correction. With 9,999 null draws,
+the smallest possible one-sided p-value is 0.0001.
+
+[Durbin and Watson (1950)|https://doi.org/10.1093/biomet/37.3-4.409] ·
+[Breusch (1978)|https://doi.org/10.1111/j.1467-8454.1978.tb00635.x] ·
+[Godfrey (1978)|https://doi.org/10.2307/1913829]

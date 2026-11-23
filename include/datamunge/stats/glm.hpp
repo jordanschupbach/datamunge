@@ -1,7 +1,7 @@
 #pragma once
 
 /// @file glm.hpp
-/// @brief Formula-based canonical-link GLMs, IRLS traces and mean-response inference.
+/// @brief Formula-based GLMs, IRLS traces and mean-response inference.
 
 #include <cstddef>
 #include <datamunge/dstruct/dataframe.hpp>
@@ -15,17 +15,30 @@
 
 namespace datamunge::stats {
 
-/// @brief Response family and fixed default link; alternative links are not implemented.
+/// @brief Response family determining the variance and default link.
 /// @see GLM
 enum class GLMFamily {
   Gaussian, ///< Continuous response, identity link and constant variance.
-  Binomial, ///< Exactly zero/one response, logit link and variance mu*(1-mu).
+  Binomial, ///< Bernoulli or grouped counts, default logit link and variance mu*(1-mu).
   Poisson,  ///< Nonnegative response, log link and variance mu; fractional values fit a quasi-count
             ///< model.
   Gamma     ///< Strictly positive response, inverse link and variance mu*mu.
 };
 
-/// @brief Controls canonical-link IRLS; defaults follow R's glm.control().
+/// @brief Link used for a binomial mean.
+/// @par Example
+/// @code
+/// const auto link = dm::stats::GLMBinomialLink::Probit;
+/// std::println("{}", link == dm::stats::GLMBinomialLink::Probit); // true
+/// @endcode
+/// @see GLMOptions
+enum class GLMBinomialLink {
+  Logit,  ///< Log odds of success.
+  Probit, ///< Standard-normal quantile of the success probability.
+  Cloglog ///< Log of the negative log of the failure probability.
+};
+
+/// @brief Controls IRLS; defaults follow R's glm.control().
 /// @par Example
 /// @code
 /// dm::stats::GLMOptions opt;
@@ -34,11 +47,13 @@ enum class GLMFamily {
 /// @endcode
 /// @see GLM
 struct GLMOptions {
-  GLMFamily family{GLMFamily::Gaussian}; ///< Response family and its fixed link.
+  GLMFamily family{GLMFamily::Gaussian}; ///< Response family determining the variance and default link.
   std::optional<std::string>
       weights_column; ///< Positive finite prior weights; null weights in retained rows are errors.
   std::size_t max_iter{25}; ///< Positive upper bound on accepted IRLS updates.
   double      tol{1e-8};    ///< Positive finite relative-deviance tolerance.
+  std::optional<std::string> trials_column{}; ///< Binomial only. Formula response is a success count when set.
+  GLMBinomialLink binomial_link{GLMBinomialLink::Logit}; ///< Link selection for a binomial fit.
 };
 
 /// @brief Prediction output: means alone or pointwise confidence limits for the mean.
@@ -65,13 +80,20 @@ struct GLMPrediction {
   std::vector<double> upper;  ///< Ordered response-scale upper limits, empty for None.
 };
 
-/// @brief Maximum-likelihood canonical-link regression by iteratively reweighted least squares.
+/// @brief Maximum-likelihood regression by iteratively reweighted least squares.
 ///
 /// Formula-null rows are omitted jointly; all retained design/response values and
-/// prior weights must be finite. Requires n > p > 0 and full column rank. Categorical
-/// responses are not auto-encoded. Binomial responses must be exactly zero or one;
+/// prior weights must be finite. Requires n > p > 0 and full column rank,
+/// allowing n = p for grouped binomial data. Categorical responses are
+/// not auto-encoded. A binomial response is zero or one by default.
+/// With GLMOptions::trials_column, the response is an integer number of
+/// successes between zero and the row's integer trial count. Zero-trial
+/// rows are omitted. Case weights multiply the full grouped likelihood.
+/// Fitted means remain individual success probabilities. Prediction frames
+/// need the formula's predictors. The trials column is only used in the
+/// prediction design when it appears as a formula predictor.
 /// fractional nonnegative Poisson responses permit fitting but have no count-likelihood AIC.
-/// Fractional binomial prior weights use a power likelihood, not R's rounded-trial AIC.
+/// Fractional Bernoulli prior weights use a power likelihood, not R's rounded-trial AIC.
 /// Read converged() and boundary() before using inference: deviance convergence alone
 /// does not establish existence of a finite MLE, especially under logistic separation.
 /// A finite last iterate is retained at max_iter; invalid/rank-deficient steps throw.
@@ -91,6 +113,7 @@ struct GLMPrediction {
 /// - J. A. Nelder and R. W. M. Wedderburn (1972), Generalized Linear Models,
 ///   JRSS A 135(3), 370-384. https://doi.org/10.2307/2344614
 /// - R Core Team, glm: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/glm.html
+/// - R Core Team, family: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/family.html
 /// - A. Albert and J. A. Anderson (1984), On the existence of maximum likelihood
 ///   estimates in logistic regression models. https://doi.org/10.1093/biomet/71.1.1
 /// @see GLMOptions, LM
@@ -123,9 +146,20 @@ class GLM {
   /// @brief Original formula text.
   /// @return Original formula text.
   [[nodiscard]] const std::string& formula_text() const { return formula_.text(); }
-  /// @brief Selected family and fixed link.
-  /// @return Selected family and fixed link.
+  /// @brief Selected response family.
+  /// @return The response family, which determines the default link.
   [[nodiscard]] GLMFamily family() const { return options_.family; }
+
+  /// @brief Returns the selected binomial link or the inactive Logit default for other families.
+  /// @par Example
+  /// @code
+  /// dm::dstruct::DataFrame data;
+  /// data.add_column("y", std::vector<double>{0, 1, 1, 0});
+  /// const dm::stats::GLM fit(data, "y ~ 1", {.family = dm::stats::GLMFamily::Binomial,
+  ///     .binomial_link = dm::stats::GLMBinomialLink::Cloglog});
+  /// std::println("{}", fit.binomial_link() == dm::stats::GLMBinomialLink::Cloglog); // true
+  /// @endcode
+  [[nodiscard]] GLMBinomialLink binomial_link() const { return options_.binomial_link; }
   /// @brief Whether the expanded design contains an intercept.
   /// @return Whether the expanded design contains an intercept.
   [[nodiscard]] bool has_intercept() const { return design_.has_intercept; }
@@ -192,8 +226,9 @@ class GLM {
   /// @brief R-family AIC including the dispersion parameter when estimated; NaN for fractional
   /// Poisson responses.
   /// @return R-family AIC including the dispersion parameter when estimated; NaN for fractional
-  /// Poisson responses. Fractional binomial weights use a Bernoulli power likelihood rather than
-  /// rounded R trials. Gamma follows R's family convention using deviance/sum(weights)
+  /// Poisson responses. Grouped binomial AIC includes each row's binomial coefficient.
+  /// Fractional Bernoulli weights use a power likelihood without rounding trials.
+  /// Gamma follows R's family convention using deviance/sum(weights)
   /// inside its density, an approximation to a fully maximized shape likelihood; the
   /// Pearson dispersion used for coefficient inference is a separate estimate.
   [[nodiscard]] double aic() const { return aic_; }
@@ -290,7 +325,7 @@ class GLM {
   /// @return False for other families; a heuristic warning, not a formal separation test.
   [[nodiscard]] bool boundary() const { return boundary_; }
   /// @brief Original zero-based row indices of retained training rows.
-  /// @return Borrowed indices aligned to fitted_values() and all residuals.
+  /// @return Borrowed indices aligned to fitted_values() and all residuals, excluding zero-trial groups.
   [[nodiscard]] const std::vector<std::size_t>& kept_rows() const { return fitted_rows_; }
 
   /// @brief Returns one row per accepted IRLS update and its coefficient vector.
@@ -307,7 +342,8 @@ class GLM {
 
   /// @brief Reconstructs inputs to a particular IRLS update without refitting.
   /// @param iteration Zero-based accepted update index; zero means initialized per-row means.
-  /// @return Owned row/response/mu/eta/weight/z columns; weight includes prior weights.
+  /// @return Owned row/response/mu/eta/weight/z columns. Grouped binomial response is the
+  /// success proportion, and its working weight includes the trial count and any case weight.
   /// @throws std::out_of_range If iteration >= iterations().
   /// @par Example
   /// @code
@@ -354,7 +390,8 @@ class GLM {
   [[nodiscard]] dstruct::DataFrame model_summary() const;
 
   /// @brief Scores binary predictions on an external response-bearing frame.
-  /// @param data Binomial response and predictors; joint formula-null rows are omitted.
+  /// @param data Individual zero/one responses and predictors, including for models fitted to
+  /// grouped binomial counts. Joint formula-null rows are omitted.
   /// @param threshold Finite classification threshold strictly between zero and one; p>=threshold
   /// predicts one.
   /// @return One owned row: n/accuracy/brier/log_loss; unweighted even for a weighted fit.

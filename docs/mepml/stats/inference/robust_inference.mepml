@@ -1,0 +1,95 @@
+//? Title: Robust comparisons and moment tests for normality
+//? Subtitle: Trimmed means, rank dominance and distribution shape in C++
+//? Exports: both
+//? Lang: en
+
+> Compare independent groups
+
+These two samples contain ties and values far from the bulk of the group.
+Yuen's test compares the centers after trimming 20 percent from each end.
+Brunner–Munzel asks whether a value from the first group has a 50 percent
+chance of beating a value from the second, with half credit for ties.
+Cliff's delta expresses that same probability on a scale from minus one to
+one. Positive differences and effects favor the first sample.
+
+```{cpp, id=compare-robustly, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/robust_tests.hpp>
+#include <print>
+#include <vector>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<double> first{1, 2, 2, 3, 3, 4, 4, 5, 8, 9, 60};
+    const std::vector<double> second{-100, -2, 0, 0, 1, 2, 3, 3, 4, 5, 6, 9, 15};
+    const auto yuen = yuen_test(first, second);
+    const auto bm = brunner_munzel_test(first, second);
+    const auto delta = cliffs_delta(first, second);
+
+    std::println("| Method | Estimate | 95% confidence interval | p-value |");
+    std::println("| --- | ---: | --- | ---: |");
+    std::println("| Yuen trimmed mean difference | {:.3f} | [{:.3f}, {:.3f}] | {:.3f} |",
+                 yuen.estimate1 - yuen.estimate2, yuen.conf_int_lower,
+                 yuen.conf_int_upper, yuen.p_value);
+    std::println("| Brunner–Munzel probability of superiority | {:.3f} | | {:.3f} |",
+                 bm.estimate1, bm.p_value);
+    if (const auto& bounds = delta.confidence_interval)
+        std::println("| Cliff's delta | {:.3f} | [{:.3f}, {:.3f}] | |",
+                     delta.estimate, bounds->first, bounds->second);
+}
+```
+// result_begin: markdown
+| Method | Estimate | 95% confidence interval | p-value |
+| --- | ---: | --- | ---: |
+| Yuen trimmed mean difference | 1.476 | [-1.915, 4.867] | 0.363 |
+| Brunner–Munzel probability of superiority | 0.640 | | 0.242 |
+| Cliff's delta | 0.280 | [-0.205, 0.764] | |
+// result_end
+
+The estimated difference and dominance both favor the first group. The two
+confidence intervals include zero. The Brunner–Munzel probability of about
+0.64 and Cliff's delta of about 0.28 describe the same ordering effect.
+
+> Inspect departures from normality
+
+The next sample has a long right tail. D'Agostino–Pearson transforms the
+sample skewness and kurtosis before combining their squared scores.
+Jarque–Bera weights the squared raw moment coefficients by sample size.
+The component columns show how much each moment contributes to the
+omnibus statistic under each method's calibration.
+
+```{cpp, id=inspect-normality, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/normality_tests.hpp>
+#include <print>
+#include <vector>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<double> sample{
+        1, 1, 1, 1, 1, 2, 2, 3, 4, 5, 5, 6, 8, 13, 21, 34, 55, 89, 144, 233
+    };
+    const auto dp = dagostino_pearson_test(sample);
+    const auto jb = jarque_bera_test(sample);
+
+    std::println("| Test | Skewness | Kurtosis | Total | Asymptotic p-value |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    std::println("| D'Agostino–Pearson | {:.2f} | {:.2f} | {:.2f} | {:.3g} |",
+                 dp.skewness_contribution, dp.kurtosis_contribution, dp.statistic, dp.p_value);
+    std::println("| Jarque–Bera | {:.2f} | {:.2f} | {:.2f} | {:.3g} |",
+                 jb.skewness_contribution, jb.kurtosis_contribution, jb.statistic, jb.p_value);
+}
+```
+// result_begin: markdown
+| Test | Skewness | Kurtosis | Total | Asymptotic p-value |
+| --- | ---: | ---: | ---: | ---: |
+| D'Agostino–Pearson | 15.88 | 10.48 | 26.35 | 1.89e-06 |
+| Jarque–Bera | 19.04 | 19.89 | 38.93 | 3.51e-09 |
+// result_end
+
+Both tests indicate a departure from normality. The chi-square calibration
+is asymptotic, especially for Jarque–Bera with a sample this small.
+
+[Source for Yuen's test|https://doi.org/10.1093/biomet/61.1.165] ·
+[Source for Brunner–Munzel|https://onlinelibrary.wiley.com/doi/abs/10.1002/%28SICI%291521-4036%28200001%2942%3A1%3C17%3A%3AAID-BIMJ17%3E3.0.CO%3B2-U] ·
+[Source for Cliff's delta|https://doi.org/10.1037/0033-2909.114.3.494] ·
+[Source for D'Agostino–Pearson|https://doi.org/10.1080/00031305.1990.10475751] ·
+[Source for Jarque–Bera|https://doi.org/10.2307/1403192]

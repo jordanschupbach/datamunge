@@ -36,6 +36,34 @@ TEST(Nonparametric, QuadrantUsesFisherMarginsAndOmitsMedianPairs) {
     EXPECT_THROW(sp::quadrant_test({1, 1, 1}, {1, 2, 3}), std::invalid_argument);
 }
 
+TEST(Nonparametric, JonckheereTerpstraUsesOrderedPairsAndTieAdjustedVariance) {
+    const std::vector<std::vector<double>> groups{{0, 1, 1}, {1, 2, 3, 4}, {2, 4, 5}};
+    const auto increasing = sp::jonckheere_terpstra_test(groups);
+    EXPECT_EQ(increasing.alternative, sp::Alternative::Greater);
+    EXPECT_DOUBLE_EQ(increasing.statistic, 29);
+    EXPECT_DOUBLE_EQ(increasing.parameter1, 10);
+    EXPECT_DOUBLE_EQ(increasing.parameter2, 33);
+    EXPECT_DOUBLE_EQ(increasing.estimate1, 29. / 33);
+    EXPECT_NEAR(increasing.p_value, .0072779658261081376, 1e-15);
+    const auto decreasing = sp::jonckheere_terpstra_test({groups[2], groups[1], groups[0]}, sp::Alternative::Less);
+    EXPECT_DOUBLE_EQ(decreasing.statistic, 4);
+    EXPECT_DOUBLE_EQ(decreasing.p_value, increasing.p_value);
+    EXPECT_DOUBLE_EQ(sp::jonckheere_terpstra_test(groups, sp::Alternative::TwoSided).p_value,
+                     2 * increasing.p_value);
+}
+
+TEST(Nonparametric, JonckheereTerpstraHandlesExactAndConstantReferences) {
+    const auto exact = sp::jonckheere_terpstra_test({{0}, {1}, {2}, {3}});
+    EXPECT_DOUBLE_EQ(exact.statistic, 6);
+    EXPECT_DOUBLE_EQ(exact.p_value, 1. / 24);
+    const auto zero = sp::jonckheere_terpstra_test({{2, 2}, {2}, {2, 2}});
+    EXPECT_DOUBLE_EQ(zero.statistic, 4);
+    EXPECT_DOUBLE_EQ(zero.estimate1, .5);
+    EXPECT_DOUBLE_EQ(zero.p_value, 1);
+    EXPECT_THROW(sp::jonckheere_terpstra_test({{1, 2}}), std::invalid_argument);
+    EXPECT_THROW(sp::jonckheere_terpstra_test({{1}, {}}), std::invalid_argument);
+}
+
 TEST(Nonparametric, SignAndPairedWilcoxonUseDifferenceDirection) {
     const auto sign = sp::paired_sign_test({4, 4, 5, 7, 4}, {3, 4, 4, 3, 3});
     EXPECT_DOUBLE_EQ(sign.parameter1, 4);

@@ -1,0 +1,99 @@
+//? Title: Fit a dynamic panel with Arellano–Bond difference GMM
+//? Exports: both
+//? Lang: en
+
+> Instrument the lagged outcome with earlier levels
+
+A synthetic panel follows 140 sites over nine periods. Each site's
+current outcome depends on its previous outcome, a persistent site
+effect, and a new shock. Some sites miss period 4. First differences
+remove the site effect. Because the differenced lagged outcome shares
+a shock with the differenced error, the model uses observed outcome
+levels from two to four periods earlier as instruments.
+
+```{cpp, id=arellano-bond, file="figures/arellano_bond_residual_tests.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/arellano_bond.hpp>
+#include <cmath>
+#include <cstdint>
+#include <filesystem>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    std::uint32_t state = 73297;
+    const auto shock = [&] {
+        state = 1664525u * state + 1013904223u;
+        return std::ldexp(static_cast<double>(state), -32) - .5;
+    };
+    std::vector<double> levels;
+    std::vector<std::int64_t> site, period;
+    for (int s = 1; s <= 140; ++s) {
+        const auto effect = .24 * std::cos(.3*s);
+        auto level = effect / .35;
+        for (int t = 0; t < 9; ++t) {
+            const auto first_shock = shock();
+            level = .65*level + effect + first_shock + shock();
+            if (t == 4 && s % 11 == 0)
+                continue;
+            levels.push_back(level);
+            site.push_back(s);
+            period.push_back(t);
+        }
+    }
+
+    const auto one = stats::fit_arellano_bond(levels,site,period,{.maximum_lag=4});
+    const auto two = stats::fit_arellano_bond(levels,site,period,
+        {.step=stats::ArellanoBondStep::Two,.maximum_lag=4});
+    std::println("| Estimate | Lagged-outcome coefficient | Robust SE | Instruments |");
+    std::println("| --- | ---: | ---: | ---: |");
+    const auto show = [](const char* name, const stats::ArellanoBondFit& fit) {
+        std::println("| {} | {:.3f} | {:.3f} | {} |", name,fit.coefficients.at(0),
+            std::sqrt(fit.covariance(0,0)),fit.instrument_rank);
+    };
+    show("One step",one);
+    show("Two steps",two);
+
+    std::println("\n| Residual lag | Pairs | z | p-value |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    std::vector<double> lag, z;
+    for (const auto& test : one.serial_correlation) {
+        lag.push_back(test.lag);
+        z.push_back(test.statistic);
+        std::println("| {} | {} | {:.2f} | {:.3g} |", test.lag,test.pairs,test.statistic,test.p_value);
+    }
+
+    std::filesystem::create_directories("build");
+    auto plot = graphics::RPlot::create();
+    plot.points(lag,z,graphics::RGBA{26,89,154},6)
+        .abline_h(-1.96,graphics::RGBA{164,83,38},1.7)
+        .abline_h(1.96,graphics::RGBA{164,83,38},1.7)
+        .title("Serial correlation in differenced residuals")
+        .x_label("Residual lag in periods").x_ticks({1,2},{"1","2"}).x_limits(.5,2.5)
+        .y_label("Arellano–Bond z statistic").y_limits(-12,3).size(720,420)
+        .save_svg("build/arellano_bond_residual_tests.svg");
+}
+```
+// result_begin: markdown
+| Estimate | Lagged-outcome coefficient | Robust SE | Instruments |
+| --- | ---: | ---: | ---: |
+| One step | 0.633 | 0.073 | 3 |
+| Two steps | 0.631 | 0.074 | 3 |
+
+| Residual lag | Pairs | z | p-value |
+| ---: | ---: | ---: | ---: |
+| 1 | 792 | -7.18 | 7.02e-13 |
+| 2 | 640 | -0.25 | 0.8 |
+\image(figures/arellano_bond_residual_tests.svg)
+// result_end
+\caption(The horizontal lines mark the two-sided 5% normal reference cutoffs.)
+\alttext(The lag-one z statistic is minus 7.18, below the lower cutoff of minus 1.96. The lag-two statistic is minus 0.25, between the cutoffs.)
+
+The first-step residuals are negatively correlated at lag one because
+successive differences share a shock with opposite signs. At lag two, the
+differences no longer share that shock. The lag-two test helps assess the
+assumption that earlier levels are valid instruments. The second-step
+standard error includes the Windmeijer correction for the estimated
+weight matrix.
+
+[Arellano and Bond (1991)|https://doi.org/10.2307/2297968] · [Windmeijer (2005)|https://doi.org/10.1016/j.jeconom.2004.02.005]

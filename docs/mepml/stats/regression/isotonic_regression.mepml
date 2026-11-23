@@ -1,0 +1,66 @@
+//? Title: Fit an increasing rate with weighted steps
+//? Exports: both
+//? Lang: en
+
+> Pool observations that would reverse the fitted order
+
+An experiment reports success rates for batches at different settings.
+The fitted rate should increase with the setting. Each batch is
+weighted by the number of trials, so tied settings and adjacent
+settings that violate the order are averaged with those weights.
+
+```{cpp, id=isotonic-success-rate, file="figures/isotonic_success_rate.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/isotonic_regression.hpp>
+#include <filesystem>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    const std::vector<double> setting{1,2,2,3,4,5,6};
+    const std::vector<double> rate{.20,.25,.20,.75,.50,.80,.70};
+    const auto fit = stats::fit_isotonic(setting, rate,
+        {.weights = {5,12,5,12,8,10,10}});
+    std::vector<double> step_x, step_y;
+    std::println("| First setting | Last setting | Fitted rate |");
+    std::println("| ---: | ---: | ---: |");
+    for (const auto& block : fit.blocks()) {
+        std::println("| {:.0f} | {:.0f} | {:.3f} |", block.first_x, block.last_x, block.level);
+        if (!step_y.empty()) {
+            step_x.push_back(block.first_x);
+            step_y.push_back(step_y.back());
+        }
+        step_x.push_back(block.first_x);
+        step_y.push_back(block.level);
+    }
+    step_x.push_back(setting.back());
+    step_y.push_back(fit.predict(setting.back()));
+    std::println("\nAt an intermediate setting of 4.5, the fitted rate is {:.3f}.", fit.predict(4.5));
+
+    std::filesystem::create_directories("build");
+    graphics::RPlot::create()
+        .line(step_x, step_y, "Monotone fit", {29, 78, 216}, 2.5)
+        .points(setting, rate, "Batch rates", {180, 83, 9}, 5)
+        .title("Weighted isotonic fit").x_label("Setting").y_label("Success rate")
+        .y_limits(0, 1).size(740, 420).save_svg("build/isotonic_success_rate.svg");
+}
+```
+// result_begin: markdown
+| First setting | Last setting | Fitted rate |
+| ---: | ---: | ---: |
+| 1 | 1 | 0.200 |
+| 2 | 2 | 0.235 |
+| 3 | 4 | 0.650 |
+| 5 | 6 | 0.750 |
+
+At an intermediate setting of 4.5, the fitted rate is 0.650.
+\image(figures/isotonic_success_rate.svg)
+// result_end
+\caption(The weighted fit pools the two batches at setting 2 and the adjacent settings 3–4 and 5–6.)
+\alttext(Seven observed rates surround four increasing fitted plateaus. The plateau between settings 3 and 5 is at 0.65.)
+
+The step stays constant until the first observed setting of the next
+pooled block. Beyond the observed range, the fit holds the nearest
+endpoint level.
+
+[Ayer et al., An Empirical Distribution Function for Sampling with Incomplete Information|https://doi.org/10.1214/aoms/1177728423]

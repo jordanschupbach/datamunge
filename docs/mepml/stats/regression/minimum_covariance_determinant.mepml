@@ -1,0 +1,76 @@
+//? Title: Estimate robust scatter with the minimum covariance determinant
+//? Exports: both
+//? Lang: en
+
+> Find a stable center and rescore outliers
+
+Nine synthetic observations record two process measurements. Two lie far
+from the main cloud. The minimum covariance determinant selects a subset
+of six rows by minimizing the determinant of their covariance. The
+reweighting step keeps rows whose squared Mahalanobis distances from that
+raw fit are within its chi-square cutoff. It then recomputes the location,
+covariance, and distances.
+
+```{cpp, id=robust-distances, file="figures/mcd_robust_distances.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/minimum_covariance_determinant.hpp>
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    const linalg::DenseMatrix<double> x(9,2,{
+        -.2,.1, .1,-.4, .4,.3, -.45,-.2, .2,.08, .05,.25, .55,-.2, 6,-5, -8,4});
+    const auto fit = stats::minimum_covariance_determinant(x,{.support_size=6});
+    std::println("| Row | Raw squared distance | Retained | Reweighted squared distance |");
+    std::println("| ---: | ---: | --- | ---: |");
+    std::vector<double> rows, raw_rows, weighted_rows, raw, weighted;
+    std::vector<std::string> tick_labels;
+    for (std::size_t row = 0; row < x.rows(); ++row) {
+        const bool retained = std::ranges::binary_search(fit.reweighted_rows,row);
+        std::println("| {} | {:.3f} | {} | {:.3f} |",row+1,fit.raw_squared_distances[row],
+            retained ? "Yes" : "No",fit.squared_distances[row]);
+        const double index = row+1;
+        rows.push_back(index);
+        raw_rows.push_back(index-.12);
+        weighted_rows.push_back(index+.12);
+        raw.push_back(std::log10(1+fit.raw_squared_distances[row]));
+        weighted.push_back(std::log10(1+fit.squared_distances[row]));
+        tick_labels.push_back(std::to_string(row+1));
+    }
+
+    std::filesystem::create_directories("build");
+    auto plot = graphics::RPlot::create();
+    plot.abline_h(std::log10(1+fit.reweight_cutoff),graphics::RGBA{114,124,138},1.5)
+        .points(raw_rows,raw,"Raw fit",graphics::RGBA{27,85,146},4.5)
+        .points(weighted_rows,weighted,"Reweighted fit",graphics::RGBA{164,74,38},4.5)
+        .title("Robust distances before and after reweighting")
+        .x_label("Observation row").y_label("log10(1 + squared distance)")
+        .x_ticks(rows,tick_labels).y_limits(-.06,3.66).size(740,430)
+        .save_svg("build/mcd_robust_distances.svg");
+}
+```
+// result_begin: markdown
+| Row | Raw squared distance | Retained | Reweighted squared distance |
+| ---: | ---: | --- | ---: |
+| 1 | 1.131 | Yes | 1.097 |
+| 2 | 1.456 | Yes | 2.419 |
+| 3 | 1.063 | Yes | 2.073 |
+| 4 | 3.759 | Yes | 2.953 |
+| 5 | 0.030 | Yes | 0.202 |
+| 6 | 0.471 | Yes | 1.126 |
+| 7 | 1.258 | Yes | 2.806 |
+| 8 | 396.140 | No | 818.495 |
+| 9 | 576.885 | No | 972.734 |
+\image(figures/mcd_robust_distances.svg)
+// result_end
+\caption(The horizontal line is the reweighting cutoff applied to the raw-fit distances.)
+\alttext(Rows 1 through 7 have small distances in both fits. Rows 8 and 9 lie well above the raw cutoff and have the largest reweighted distances.)
+
+Row 4 sits outside the original six-row subset and falls within the
+cutoff. Reweighting includes it in the final estimate. Rows 8 and 9
+stay out of the fit and have much larger distances.
+
+[Rousseeuw and Van Driessen, A Fast Algorithm for the Minimum Covariance Determinant Estimator|https://doi.org/10.1080/00401706.1999.10485670]

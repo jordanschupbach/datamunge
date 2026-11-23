@@ -1,0 +1,118 @@
+//? Title: Estimate linear-model uncertainty from fitted scores
+//? Exports: both
+//? Lang: en
+
+> Compare HC0 through HC3
+
+Each fit has one score contribution per observation. HC0 forms its
+covariance from the squared score contributions. HC1 applies a residual
+degrees-of-freedom factor. HC2 and HC3 give more weight to the contributions
+from high-leverage observations.
+
+```{cpp, id=hc-covariance, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/lm.hpp>
+#include <cmath>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    using stats::HcCovariance;
+    dstruct::DataFrame data;
+    data.add_column("x", std::vector<double>{-2, -1, 0, 1, 3, 4, 6, 8});
+    data.add_column("y", std::vector<double>{3, 2, 0, 4, 7, 4, 9, 12});
+    data.add_column("w", std::vector<double>{1, 2, .5, 1, 3, 1.25, 2, 1});
+    const stats::LM model(data, "y ~ x", {.weights_column = "w"});
+    std::println("| Covariance | Slope standard error |");
+    std::println("| --- | ---: |");
+    const auto row = [&](const char* name, HcCovariance estimator) {
+        std::println("| {} | {:.4f} |", name, std::sqrt(model.heteroscedastic_covariance(estimator)(1, 1)));
+    };
+    row("HC0", HcCovariance::HC0);
+    row("HC1", HcCovariance::HC1);
+    row("HC2", HcCovariance::HC2);
+    row("HC3", HcCovariance::HC3);
+}
+```
+// result_begin: markdown
+| Covariance | Slope standard error |
+| --- | ---: |
+| HC0 | 0.1136 |
+| HC1 | 0.1311 |
+| HC2 | 0.1322 |
+| HC3 | 0.1551 |
+// result_end
+
+[MacKinnon and White (1985)|https://doi.org/10.1016/0304-4076(85)90158-7]
+
+> Include lagged score products
+
+Newey–West adds cross-products between scores at nearby positions in the
+fitted series. Bartlett weights decrease with lag. The zero-lag result
+here equals HC0.
+
+```{cpp, id=newey-west-covariance, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/lm.hpp>
+#include <cmath>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    const stats::LM model({3, 4, 6, 9, 11, 12, 12, 13, 16, 19},
+        Mat<>{{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}});
+    std::println("| Maximum lag | Slope standard error |");
+    std::println("| ---: | ---: |");
+    for (std::size_t lag : {0, 1, 2, 3})
+        std::println("| {} | {:.4f} |", lag, std::sqrt(model.newey_west_covariance(lag)(1, 1)));
+}
+```
+// result_begin: markdown
+| Maximum lag | Slope standard error |
+| ---: | ---: |
+| 0 | 0.0876 |
+| 1 | 0.0934 |
+| 2 | 0.0827 |
+| 3 | 0.0747 |
+// result_end
+
+[Newey and West (1987)|https://doi.org/10.2307/1913610]
+
+> Combine cluster dimensions by inclusion and exclusion
+
+For two cluster dimensions, add the two one-way components and subtract
+the component for their intersection. Here three sites cross two periods.
+The returned labels and counts show which joint groups enter the sum.
+
+```{cpp, id=clustered-covariance, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/lm.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    const stats::LM model({3, 2, 0, 4, 7, 4, 9, 12},
+        Mat<>{{-2}, {-1}, {0}, {1}, {3}, {4}, {6}, {8}});
+    const std::vector<std::int64_t> site{2, 2, 2, 3, 3, 4, 4, 4};
+    const std::vector<std::int64_t> period{8, 8, 9, 8, 9, 8, 9, 9};
+    const auto fit = model.cluster_robust_covariance({site, period}, true);
+    std::println("| Site | Period | Fitted rows |");
+    std::println("| ---: | ---: | ---: |");
+    const auto& joint = fit.components.back();
+    for (const auto& group : joint.groups)
+        std::println("| {} | {} | {} |", group.labels[0], group.labels[1], group.observations);
+    std::println("\nThe joint component multiplier is {:.3f}. The slope variance is {:.5f}.",
+                 joint.multiplier, fit.covariance(1, 1));
+}
+```
+// result_begin: markdown
+| Site | Period | Fitted rows |
+| ---: | ---: | ---: |
+| 2 | 8 | 2 |
+| 2 | 9 | 1 |
+| 3 | 8 | 1 |
+| 3 | 9 | 1 |
+| 4 | 8 | 1 |
+| 4 | 9 | 2 |
+
+The joint component multiplier is -1.400. The slope variance is 0.11133.
+// result_end
+
+[Cameron, Gelbach and Miller (2011)|https://doi.org/10.1198/jbes.2010.07136]

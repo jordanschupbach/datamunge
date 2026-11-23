@@ -1,0 +1,85 @@
+//? Title: Test fixed effects with small-sample degrees of freedom
+//? Exports: both
+//? Lang: en
+
+> Compare Satterthwaite and Kenward–Roger tests
+
+Participants respond to overlapping sets of items, so the model
+includes crossed random intercepts. After fitting by REML, test whether
+the fixed slope equals 1. A second hypothesis tests whether the
+intercept and slope jointly equal 2 and 1.
+
+Satterthwaite uses the estimated uncertainty of the contrast variance
+to compute denominator degrees of freedom. Kenward–Roger also adjusts
+the fixed-effect covariance. For the joint hypothesis it applies a
+scale factor to the Wald F statistic.
+
+```{cpp, id=mixed-model-small-sample-tests, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/mixed_model_inference.hpp>
+#include <cmath>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge;
+    const double person[]{-1.4,.8,-.6,1.65,1.35,-1.8,.75};
+    const double item[]{.9,-1.2,.25,.68,-.63};
+    std::vector<double> fixed_values, response;
+    std::vector<std::size_t> participant, question;
+    for (int a = 0; a < 7; ++a)
+        for (int b = 0; b < 5; ++b) {
+            if ((2*a+b) % 7 == 4)
+                continue;
+            const auto x = ((2*a-b+9) % 9) / 4. - 1;
+            fixed_values.insert(fixed_values.end(), {1, x});
+            response.push_back(2 + 1.4*x + person[a] + item[b] + .46*std::cos(3*a+2*b));
+            participant.push_back(a);
+            question.push_back(b);
+        }
+    const auto n = response.size();
+    const linalg::DenseMatrix<double> x(n, 2, fixed_values);
+    std::vector<linalg::DenseMatrix<double>> z{linalg::DenseMatrix<double>(n,7),
+                                               linalg::DenseMatrix<double>(n,5)};
+    for (std::size_t i = 0; i < n; ++i) {
+        z[0](i, participant[i]) = 1;
+        z[1](i, question[i]) = 1;
+    }
+    const auto fit = stats::fit_variance_components(x, response, z);
+    if (fit.status != stats::VarianceComponentsStatus::Converged)
+        throw std::runtime_error("Expected an interior REML fit");
+
+    const linalg::DenseMatrix<double> slope(1, 2, {0,1});
+    const auto joint = linalg::DenseMatrix<double>::identity(2);
+    const auto sat = stats::MixedModelDF::Satterthwaite;
+    const auto kr = stats::MixedModelDF::KenwardRoger;
+    std::vector<double> slope_se;
+    std::println("| Hypothesis | Method | Denominator df | F scale | F | p-value |");
+    std::println("| --- | --- | ---: | ---: | ---: | ---: |");
+    for (const auto method : {sat,kr}) {
+        const auto single = stats::mixed_model_contrast_test(fit,x,response,z,slope,method,{1});
+        const auto both = stats::mixed_model_contrast_test(fit,x,response,z,joint,method,{2,1});
+        const auto label = method == sat ? "Satterthwaite" : "Kenward–Roger";
+        for (const auto& [hypothesis, test] : {std::pair{"Slope", single}, std::pair{"Joint", both}})
+            std::println("| {} | {} | {:.3f} | {:.3f} | {:.3f} | {:.5f} |", hypothesis, label,
+                         test.denominator_df, test.scale, test.statistic, test.p_value);
+        slope_se.push_back(std::sqrt(single.covariance(1,1)));
+    }
+    std::println("\nThe slope standard error is {:.4f} with Satterthwaite and {:.4f} with Kenward–Roger.",
+                 slope_se[0], slope_se[1]);
+}
+```
+// result_begin: markdown
+| Hypothesis | Method | Denominator df | F scale | F | p-value |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Slope | Satterthwaite | 18.418 | 1.000 | 10.060 | 0.00517 |
+| Joint | Satterthwaite | 12.427 | 1.000 | 5.047 | 0.02487 |
+| Slope | Kenward–Roger | 18.467 | 1.000 | 9.937 | 0.00538 |
+| Joint | Kenward–Roger | 16.204 | 0.961 | 4.791 | 0.02318 |
+
+The slope standard error is 0.1216 with Satterthwaite and 0.1224 with Kenward–Roger.
+// result_end
+
+The joint test uses two numerator degrees of freedom. Its denominator
+degrees of freedom account for estimating the variance components.
+
+[Kenward and Roger, Small Sample Inference for Fixed Effects from Restricted Maximum Likelihood|https://doi.org/10.2307/2533558]

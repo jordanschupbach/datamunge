@@ -1,0 +1,102 @@
+//? Title: Binomial, hypergeometric and gamma quantiles
+//? Exports: both
+//? Lang: en
+
+A discrete quantile is the first integer at which the cumulative probability
+reaches the target. The binomial models independent trials. The
+hypergeometric models draws without replacement, so its smallest possible
+count can be positive.
+
+The gamma law has a continuous positive support. Supplying the upper-tail
+probability directly permits targets too small to recover by subtracting a
+lower-tail probability from one.
+
+```{cpp, id=distribution-quantiles, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/random/distributions.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::random;
+    std::println("| Count distribution | Cumulative probability | Quantile |");
+    std::println("| --- | ---: | ---: |");
+    for (const auto level : {.5, .95}) {
+        std::println("| Binomial, 10 trials | {:.2f} | {} |", level, binomial_quantile(level, 10, .3));
+        std::println("| Hypergeometric, 5 draws | {:.2f} | {} |",
+                     level, hypergeometric_quantile(level, 20, 7, 5));
+    }
+    const auto quantile = gamma_quantile(1e-100, 3, 2, false);
+    std::println("\nGamma with shape 3 and scale 2 has upper-tail quantile {:.6f}. "
+                 "The probability above this point is {:.2e}.",
+                 quantile, gamma_cdf(quantile, 3, 2, false));
+}
+```
+// result_begin: markdown
+| Count distribution | Cumulative probability | Quantile |
+| --- | ---: | ---: |
+| Binomial, 10 trials | 0.50 | 3 |
+| Hypergeometric, 5 draws | 0.50 | 2 |
+| Binomial, 10 trials | 0.95 | 5 |
+| Hypergeometric, 5 draws | 0.95 | 3 |
+
+Gamma with shape 3 and scale 2 has upper-tail quantile 481.078890. The probability above this point is 1.00e-100.
+// result_end
+
+> Count successes with unequal probabilities
+
+The Poisson-binomial distribution keeps a separate probability for each
+independent Bernoulli trial. Convolving the trial probabilities also handles
+deterministic trials. In this example one success is certain.
+
+```{cpp, id=poisson-binomial, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/random/poisson_binomial.hpp>
+#include <print>
+
+int main() {
+    const datamunge::random::PoissonBinomial count({1, .1, .4, .9});
+    std::println("| Successes | Probability |");
+    std::println("| ---: | ---: |");
+    for (unsigned k = 1; k <= 4; ++k)
+        std::println("| {} | {:.3f} |", k, count.pmf(k));
+    std::println("\nThe 95th percentile is {} successes.", count.quantile(.95));
+}
+```
+// result_begin: markdown
+| Successes | Probability |
+| ---: | ---: |
+| 1 | 0.054 |
+| 2 | 0.528 |
+| 3 | 0.382 |
+| 4 | 0.036 |
+
+The 95th percentile is 3 successes.
+// result_end
+
+> Allow extra variation in the count
+
+The negative binomial allows a count variance greater than its mean. Its
+precision parameter controls the size of the extra variance. The beta-binomial
+keeps the count within the trial range and gives each set of trials a shared
+success probability drawn from a beta distribution.
+
+```{cpp, id=overdispersed-counts, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/random/count_distributions.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::random;
+    std::println("| Distribution | Count | Mass | Upper tail | 90th percentile |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    std::println("| Negative binomial, mean 7.3 and precision 2.5 | 8 | {:.4f} | {:.4f} | {} |",
+                 negative_binomial_pmf(8, 7.3, 2.5), negative_binomial_cdf(8, 7.3, 2.5, false),
+                 negative_binomial_quantile(.90, 7.3, 2.5));
+    std::println("| Beta-binomial, 27 trials and shapes 0.3 and 2.5 | 6 | {:.4f} | {:.4f} | {} |",
+                 beta_binomial_pmf(6, 27, .3, 2.5), beta_binomial_cdf(6, 27, .3, 2.5, false),
+                 beta_binomial_quantile(.90, 27, .3, 2.5));
+}
+```
+// result_begin: markdown
+| Distribution | Count | Mass | Upper tail | 90th percentile |
+| --- | ---: | ---: | ---: | ---: |
+| Negative binomial, mean 7.3 and precision 2.5 | 8 | 0.0659 | 0.3345 | 14 |
+| Beta-binomial, 27 trials and shapes 0.3 and 2.5 | 6 | 0.0300 | 0.1618 | 9 |
+// result_end

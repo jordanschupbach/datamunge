@@ -1,0 +1,66 @@
+//? Title: Reweight a linear fit with Huber and Tukey bisquare loss
+//? Exports: both
+//? Lang: en
+
+> Compare the weights assigned to an outlier
+
+The two fits start from ordinary least squares. Each step estimates scale
+from the median absolute residual, calculates weights, and refits the
+line. Huber gives large residuals a decreasing positive weight. Tukey
+bisquare gives observations beyond its cutoff zero weight.
+
+The last observation has both the largest predictor and a much larger
+response than the rest. The table shows its final weight and how much
+the estimated slope changes.
+
+```{cpp, id=robust-regression, file="figures/robust_regression_weights.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/lm.hpp>
+#include <datamunge/stats/robust_regression.hpp>
+#include <filesystem>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    const std::vector<double> x{0, 1, 2, 3, 4, 5, 6, 7, 8, 11};
+    const std::vector<double> y{2.1, 3.3, 5.5, 6.2, 8.4, 9.3, 11.5, 12.4, 13.6, 38};
+    linalg::DenseMatrix<double> design(x.size(), 2, 1);
+    Mat<> predictors(x.size(), 1);
+    for (std::size_t i = 0; i < x.size(); ++i) {
+        design(i, 1) = x[i];
+        predictors(i, 0) = x[i];
+    }
+    const stats::LM ordinary(y, predictors);
+    const auto huber = stats::robust_regression(design, y);
+    const auto tukey = stats::robust_regression(design, y, {.loss = stats::RobustRegressionLoss::TukeyBisquare});
+    std::println("| Fit | Slope | Residual scale | Outlier weight | Converged |");
+    std::println("| --- | ---: | ---: | ---: | --- |");
+    std::println("| Least squares | {:.3f} | | 1.000 | |", ordinary.coefficients()[1]);
+    const auto show = [](const char* label, const stats::RobustRegressionResult& result) {
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {} |", label, result.coefficients[1],
+                     result.scale, result.weights.back(), result.status == stats::RobustRegressionStatus::Converged);
+    };
+    show("Huber", huber);
+    show("Tukey bisquare", tukey);
+
+    std::filesystem::create_directories("build");
+    graphics::RPlot::create().line(x, huber.weights, "Huber", {29, 78, 216}, 3)
+        .line(x, tukey.weights, "Tukey bisquare", {194, 65, 12}, 2)
+        .x_limits(-0.5, 15).y_limits(-0.05, 1.1)
+        .title("Final regression weights").x_label("Predictor").y_label("Weight")
+        .size(760, 430).save_svg("build/robust_regression_weights.svg");
+}
+```
+// result_begin: markdown
+| Fit | Slope | Residual scale | Outlier weight | Converged |
+| --- | ---: | ---: | ---: | --- |
+| Least squares | 2.663 | | 1.000 | |
+| Huber | 1.561 | 0.545 | 0.039 | true |
+| Tukey bisquare | 1.472 | 0.498 | 0.000 | true |
+\image(figures/robust_regression_weights.svg)
+// result_end
+\caption(Final weights for the two fits on the same observations.)
+\alttext(Huber weights are one over most of the predictor range. The two weight curves fall toward zero on the right. Huber gives the rightmost observation a small weight, and Tukey gives it zero.)
+
+[Huber (1973)|https://doi.org/10.1214/aos/1176342503] ·
+[Beaton and Tukey (1974)|https://doi.org/10.1080/00401706.1974.10489171]

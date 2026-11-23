@@ -1,0 +1,89 @@
+//? Title: Find stable density clusters with HDBSCAN
+//? Exports: both
+//? Lang: en
+
+> Track persistent clusters and leave isolated points as noise
+
+The synthetic sample contains two groups of six points. The left group
+is tighter than the right group, and three points sit far from both
+groups. HDBSCAN can select branches that persist over different
+density ranges. This example uses a minimum cluster size of three and
+counts the point itself when finding its third-neighbor core distance.
+
+Each mutual-reachability edge is weighted by the largest of the
+Euclidean distance and the two endpoint core distances. The minimum
+spanning tree determines the single-linkage hierarchy for those
+weights. Condensation drops child branches smaller than the minimum
+cluster size. Excess of mass compares the stability of a retained
+branch with the combined stability of its retained descendants.
+
+```{cpp, id=hdbscan-persistent-groups, file="figures/hdbscan_reachability_tree.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/hdbscan.hpp>
+
+#include <array>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <vector>
+
+int main() {
+    namespace dm = datamunge;
+    const dm::linalg::DenseMatrix<double> points(15, 2, {
+        -3.03, .01, -3.10, -.10, -2.92, .04, -3.12, .03, -2.96, -.08, -3.02, .13,
+         2.72, .16,  3.23, -.21,  3.18, .31,  2.83, -.28,  2.94, .23,  3.22, .05,
+         0., 5.3,   -8., -3.,   10., 2.,
+    });
+    const auto fit = dm::stats::fit_hdbscan(points, {.min_cluster_size = 3});
+    std::println("| Cluster | Members at birth | Birth density | Stability |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    std::int64_t label = 0;
+    for (const auto& c : fit.clusters)
+        if (c.selected)
+            std::println("| {} | {} | {:.3f} | {:.3f} |", label++, c.birth_size,
+                c.birth_lambda, c.stability);
+
+    auto plot = dm::graphics::RPlot::create();
+    for (const auto& edge : fit.minimum_spanning_tree)
+        plot.line({points(edge.first, 0), points(edge.second, 0)},
+            {points(edge.first, 1), points(edge.second, 1)}, "", {143, 156, 169}, 1.4);
+    const std::array<dm::graphics::RGBA, 3> colors{{{29, 94, 150}, {175, 72, 43}, {87, 91, 100}}};
+    std::size_t noise = 0;
+    for (std::int64_t group = -1; group < label; ++group) {
+        std::vector<double> x, y;
+        for (std::size_t i = 0; i < points.rows(); ++i)
+            if (fit.labels[i] == group) {
+                x.push_back(points(i, 0));
+                y.push_back(points(i, 1));
+            }
+        if (group == -1)
+            noise = x.size();
+        plot.points(x, y, group < 0 ? "Noise" : std::format("Cluster {}", group),
+            colors[group < 0 ? 2 : static_cast<std::size_t>(group)], group < 0 ? 5 : 4);
+    }
+    std::println("\n{} points have the noise label `-1`.", noise);
+    std::filesystem::create_directories("build");
+    plot.title("Selected density clusters and noise")
+        .x_label("First coordinate").y_label("Second coordinate")
+        .x_limits(-9.2, 11.2).y_limits(-3.8, 6.2)
+        .size(740, 420).save_svg("build/hdbscan_reachability_tree.svg");
+}
+```
+// result_begin: markdown
+| Cluster | Members at birth | Birth density | Stability |
+| ---: | ---: | ---: | ---: |
+| 0 | 6 | 0.177 | 45.292 |
+| 1 | 6 | 0.177 | 17.213 |
+
+3 points have the noise label `-1`.
+\image(figures/hdbscan_reachability_tree.svg)
+// result_end
+\caption(Points are colored by their fitted labels. Gray lines trace the mutual-reachability minimum spanning tree.)
+\alttext(Two dense groups near horizontal coordinates minus three and plus three are selected as separate clusters. Three distant points with gray markers are labeled noise.)
+
+Both selected groups are born at the same split density. The tighter
+left group persists to higher density thresholds and has greater
+stability. The three isolated points leave the hierarchy before
+either selected cluster is born and receive the noise label.
+
+[Campello, Moulavi, Zimek, and Sander (2015)|https://doi.org/10.1145/2733381]

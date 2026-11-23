@@ -1,0 +1,64 @@
+//? Title: Compare joint distributions with energy distance
+//? Exports: both
+//? Lang: en
+
+> Compare two groups with the same marginal values
+
+Both groups have the same values on each coordinate. Group A pairs
+the coordinates with the same sign, and group B pairs them with
+opposite signs. The energy test uses distances in the two-dimensional
+space, so it can detect a difference in how the coordinates vary together.
+
+The exact reference assigns eight of the sixteen pooled points to
+the first group in every possible way. The simulation samples the
+same assignments and applies a plus-one correction to the tail count.
+
+```{cpp, id=pooled-label-energy, results="markdown", file="figures/energy_distance_groups.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+    using namespace dm::stats;
+    const std::vector<double> x{-3.4, -3.2, -3, -2.8, 2.8, 3, 3.2, 3.4};
+    std::vector<double> opposite;
+    dm::linalg::DenseMatrix<double> first(x.size(), 2), second(x.size(), 2);
+    for (std::size_t i = 0; i < x.size(); ++i) {
+        opposite.push_back(-x[i]);
+        first(i, 0) = second(i, 0) = x[i];
+        first(i, 1) = x[i];
+        second(i, 1) = opposite.back();
+    }
+    const auto exact = energy_distance_test_exact(first, second);
+    dm::random::SplitMix64 rng(42);
+    const auto simulated = energy_distance_test(first, second, 9999, rng);
+    std::println("The empirical energy distance is {:.3f}.", exact.estimate1);
+    std::println("");
+    std::println("| Reference | Assignments | Upper-tail assignments | p-value |");
+    std::println("| --- | ---: | ---: | ---: |");
+    std::println("| Exact | {:.0f} | {:.0f} | {:.4f} |",
+                 exact.parameter1, exact.parameter2, exact.p_value);
+    std::println("| Simulated | {:.0f} | {:.0f} | {:.4f} |",
+                 simulated.parameter1, simulated.parameter2, simulated.p_value);
+
+    std::filesystem::create_directories("build");
+    dm::graphics::RPlot::create()
+        .points(x, x, "Group A", {37, 99, 235}, 4)
+        .points(x, opposite, "Group B", {180, 83, 9}, 4)
+        .x_limits(-4.5, 4.5).y_limits(-4.5, 4.5)
+        .x_label("First coordinate").y_label("Second coordinate")
+        .title("Shared marginal values with different pairings")
+        .save_svg("build/energy_distance_groups.svg");
+}
+```
+// result_begin: markdown
+The empirical energy distance is 3.294.
+
+| Reference | Assignments | Upper-tail assignments | p-value |
+| --- | ---: | ---: | ---: |
+| Exact | 12870 | 406 | 0.0315 |
+| Simulated | 9999 | 313 | 0.0314 |
+\image(figures/energy_distance_groups.svg)
+// result_end
+\caption(Group A pairs coordinates of the same sign. Group B pairs coordinates of opposite signs.)
+\alttext(Blue points cluster in the lower left and upper right. Orange points cluster in the upper left and lower right.)
+
+[Székely and Rizzo|https://doi.org/10.1016/j.jspi.2013.03.018]

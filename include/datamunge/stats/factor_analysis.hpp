@@ -10,6 +10,55 @@
 #include <string>
 #include <vector>
 namespace datamunge::stats {
+/// @brief Pattern, structure and factor correlations from rotating orthogonal loadings.
+struct ObliqueRotation {
+  linalg::DenseMatrix<double> pattern; ///< Rotated loading coefficients P.
+  linalg::DenseMatrix<double> structure; ///< Model-implied covariances between measurements and unit-variance factors, P times Phi.
+  linalg::DenseMatrix<double> factor_correlation; ///< Symmetric latent correlation matrix Phi.
+  bool converged{}; ///< True if the iterative rotation stage met its convergence tolerance.
+};
+
+/// @brief Fits direct oblimin by projected gradient descent on unit factor axes.
+/// Starts from the better objective of the unchanged and Kaiser-varimax loadings.
+/// @param loadings Finite full-column-rank orthogonal-model loadings, with rows for measurements.
+/// @param gamma Finite oblimin parameter; zero selects quartimin and 0.5 selects biquartimin.
+/// @param max_iter Positive maximum number of varimax sweeps and, separately, projected updates.
+/// @param tolerance Finite positive absolute tangent-gradient tolerance after scaling loadings
+/// by the largest absolute input entry.
+/// @return Rotated matrices preserving the input common covariance, including the last feasible
+/// iterate if the update limit is reached or the line search cannot make progress.
+/// @throws std::invalid_argument For invalid inputs, controls or nonrepresentable output.
+/// @throws std::runtime_error If the input rank decomposition fails.
+/// @par Example
+/// @code
+/// const dm::linalg::DenseMatrix<double> A(3,2,{.8,.1,.2,.7,.7,.2});
+/// const auto rotated = dm::stats::oblimin(A);
+/// std::println("{}", rotated.pattern.rows()); // 3
+/// @endcode
+/// @par Reference
+/// Jennrich (2002), https://doi.org/10.1007/BF02294706
+[[nodiscard]] ObliqueRotation oblimin(const linalg::DenseMatrix<double>& loadings,
+    double gamma = 0, std::size_t max_iter = 1000, double tolerance = 1e-7);
+
+/// @brief Fits promax with a signed-power target after Kaiser-normalized varimax.
+/// @param loadings Finite full-column-rank orthogonal-model loadings, with rows for measurements.
+/// @param power Finite exponent greater than one for the signed-power target.
+/// @param max_iter Positive maximum number of varimax sweeps.
+/// @param tolerance Finite positive absolute change tolerance on the normalized varimax objective.
+/// @return Rotated matrices preserving the input common covariance.
+/// @throws std::invalid_argument For invalid inputs, controls or nonrepresentable output.
+/// @throws std::runtime_error If the least-squares target cannot give distinct factor axes.
+/// @par Example
+/// @code
+/// const dm::linalg::DenseMatrix<double> A(4,2,{.8,.1,.7,.2,.2,.7,.1,.8});
+/// const auto rotated = dm::stats::promax(A);
+/// std::println("{:.0f}", rotated.factor_correlation(0,0)); // 1
+/// @endcode
+/// @par Reference
+/// Hendrickson and White (1964), https://doi.org/10.1111/j.2044-8317.1964.tb00244.x
+[[nodiscard]] ObliqueRotation promax(const linalg::DenseMatrix<double>& loadings,
+    double power = 4, std::size_t max_iter = 1000, double tolerance = 1e-7);
+
 /// @brief Controls iterative principal-axis factoring (PAF), not maximum likelihood.
 /// Both extraction and optional pairwise varimax use max_iter/tol. Extraction's
 /// absolute tolerance is in fitted variance units; rotation uses its normalized objective.

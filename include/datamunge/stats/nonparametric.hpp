@@ -34,6 +34,31 @@ HypothesisTestResult kendall_correlation_test(const std::vector<double>& x,
                                               const std::vector<double>& y,
                                               Alternative alternative = Alternative::TwoSided);
 
+/// @brief Tests whether observations tend to increase or decrease across ordered independent groups.
+///
+/// Each comparison between groups awards one point if the later group's
+/// observation is larger and half a point for a tie. Uses the equivalent
+/// Kendall score reference, with a tie-adjusted normal approximation and
+/// no continuity correction. The reference is exact for up to 50 untied
+/// observations when all groups are singletons. A constant pooled sample
+/// has an upper, lower, or two-sided p-value of one.
+/// @param groups At least two nonempty finite samples in increasing hypothesized order.
+/// @param alternative Greater (increasing, default), Less (decreasing), or TwoSided.
+/// @return Jonckheere–Terpstra statistic, total observations in parameter1,
+/// between-group pair count in parameter2, win fraction in estimate1, and p-value.
+/// @throws std::invalid_argument Invalid groups or alternative.
+/// @par Example
+/// @code
+/// const auto test = dm::stats::jonckheere_terpstra_test({{1, 2}, {3, 4}, {5, 6}});
+/// std::print("{}\n", test.statistic); // 12
+/// @endcode
+/// @par References
+/// - A. R. Jonckheere (1954), https://doi.org/10.1093/biomet/41.1-2.133
+/// - Variance with ties, https://doi.org/10.1080/03610920601041556
+/// @see kendall_correlation_test()
+HypothesisTestResult jonckheere_terpstra_test(const std::vector<std::vector<double>>& groups,
+                                              Alternative alternative = Alternative::Greater);
+
 /// @brief Tests association in the four quadrants defined by the sample medians.
 ///
 /// Drops pairs on either median line. Requires nonempty row and column margins

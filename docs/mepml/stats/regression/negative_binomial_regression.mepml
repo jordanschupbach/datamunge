@@ -1,0 +1,83 @@
+//? Title: Model overdispersed counts with different exposures
+//? Exports: both
+//? Lang: en
+
+> Fit event counts with an exposure offset
+
+Two groups have event counts recorded over different exposures. The
+log exposure enters the linear predictor with coefficient one, so the
+group coefficient compares event rates per unit of exposure. The
+negative binomial model estimates an extra variance term of
+$\alpha\mu^2$ in addition to the mean $\mu$.
+
+```{cpp, id=nb-exposure, file="figures/negative_binomial_exposure.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/negative_binomial_regression.hpp>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge;
+    const std::vector<double> exposure{1,.6,2,1.5,1,.7,1.1,2, 1,.8,.7,1.2,1.3,2,.9,2};
+    const std::vector<std::size_t> counts{0,3,5,0,1,6,2,8, 0,1,11,4,2,22,1,13};
+    std::vector<double> offset;
+    linalg::DenseMatrix<double> design(counts.size(), 2, 1);
+    for (std::size_t i = 0; i < counts.size(); ++i) {
+        offset.push_back(std::log(exposure[i]));
+        design(i, 1) = i >= 8;
+    }
+    const auto fit = stats::negative_binomial_regression(design, counts, {
+        .offset = offset, .weights = {1,1.2,1,.8,1,1.3,1,1, 1,1.1,1,1.2,.7,1,1,1.4},
+    });
+    if (fit.status != stats::NegativeBinomialRegressionStatus::Converged)
+        throw std::runtime_error("Expected an interior negative binomial fit");
+
+    std::println("| Group B to A rate ratio | NB2 dispersion | Joint SE of dispersion |");
+    std::println("| ---: | ---: | ---: |");
+    std::println("| {:.3f} | {:.3f} | {:.3f} |", std::exp(fit.coefficients[1]), fit.dispersion,
+                 std::sqrt(fit.covariance(2, 2)));
+    const auto mean = fit.predict(linalg::DenseMatrix<double>(3, 2, {1,0, 1,1, 1,1}),
+                                  {0, 0, std::log(2.0)});
+    std::println("\n| Group | Exposure | Fitted mean count |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| A | 1 | {:.3f} |", mean[0]);
+    std::println("| B | 1 | {:.3f} |", mean[1]);
+    std::println("| B | 2 | {:.3f} |", mean[2]);
+
+    const std::vector<double> range{.5, 2.0};
+    const std::vector<double> xa(exposure.begin(), exposure.begin() + 8);
+    const std::vector<double> xb(exposure.begin() + 8, exposure.end());
+    const std::vector<double> ya(counts.begin(), counts.begin() + 8);
+    const std::vector<double> yb(counts.begin() + 8, counts.end());
+    std::filesystem::create_directories("build");
+    graphics::RPlot::create()
+        .line(range, {.5 * mean[0], 2 * mean[0]}, "Fitted A", {29, 78, 216}, 2.5)
+        .line(range, {.5 * mean[1], 2 * mean[1]}, "Fitted B", {180, 83, 9}, 2.5)
+        .points(xa, ya, "Observed A", {29, 78, 216}, 5)
+        .points(xb, yb, "Observed B", {180, 83, 9}, 5)
+        .title("Count means at different exposures").x_label("Exposure").y_label("Event count")
+        .size(740, 420).save_svg("build/negative_binomial_exposure.svg");
+}
+```
+// result_begin: markdown
+| Group B to A rate ratio | NB2 dispersion | Joint SE of dispersion |
+| ---: | ---: | ---: |
+| 1.715 | 0.806 | 0.399 |
+
+| Group | Exposure | Fitted mean count |
+| --- | ---: | ---: |
+| A | 1 | 3.019 |
+| B | 1 | 5.177 |
+| B | 2 | 10.353 |
+\image(figures/negative_binomial_exposure.svg)
+// result_end
+\caption(Within a group, doubling exposure doubles the expected count.)
+\alttext(Observed counts scatter widely around two rising lines. Group B's fitted line is steeper than group A's.)
+
+The dispersion search refits the mean coefficients at each candidate
+dispersion. It also evaluates the Poisson limit, where the extra
+variance is zero.
+
+[MASS negative binomial regression reference|https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/glm.nb.html]

@@ -1,0 +1,94 @@
+//? Title: Find the dominant modes of variation in curves
+//? Exports: both
+//? Lang: en
+
+> Extract weighted eigenfunctions and subject scores
+
+Six synthetic response curves are measured at the same nine times. The
+measurements are closer together near the ends of the time interval.
+Trapezoidal weights account for the time interval represented by each
+grid point when fitting the eigenfunctions and projecting the curves.
+
+The example varies the height of a central peak and the difference
+between early and late responses. Functional PCA centers the curves,
+estimates the two leading eigenfunctions, and projects each subject onto
+them. Each eigenvalue is the sample variance of its subject scores.
+
+```{cpp, id=weighted-functional-pca, file="figures/functional_pca_modes.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/fda/functional_pca.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <vector>
+
+int main() {
+    namespace dm = datamunge;
+    const std::vector<double> time{0, .5, 1.25, 2.5, 4, 5.5, 6.75, 7.5, 8};
+    const std::array peak{-2., 2., -1., 1., 0., 0.};
+    const std::array trend{-.5, -.5, .75, .75, -.25, -.25};
+    dm::linalg::DenseMatrix<double> curves(peak.size(), time.size());
+    for (std::size_t i = 0; i < curves.rows(); ++i)
+        for (std::size_t j = 0; j < curves.cols(); ++j) {
+            const double bump = (time[j] - 4) / 2.25;
+            curves(i, j) = 4 + (3 + peak[i]) * std::exp(-bump * bump)
+                + trend[i] * (time[j] - 4) / 4;
+        }
+    const auto fit = dm::fda::functional_pca(time, curves, 2);
+
+    std::println("| Component | Score variance | Integrated variance explained |");
+    std::println("| ---: | ---: | ---: |");
+    for (std::size_t k = 0; k < fit.eigenvalues.size(); ++k)
+        std::println("| {} | {:.3f} | {:.1f}% |", k + 1, fit.eigenvalues[k],
+            100 * fit.explained_fraction[k]);
+    std::println("\n| Subject | Score on component 1 | Score on component 2 |");
+    std::println("| ---: | ---: | ---: |");
+    for (std::size_t i = 0; i < curves.rows(); ++i) {
+        const auto first = fit.scores(i, 0);
+        std::println("| {} | {:.3f} | {:.3f} |", i + 1,
+            std::abs(first) < .0005 ? 0.0 : first, fit.scores(i, 1));
+    }
+
+    auto plot = dm::graphics::RPlot::create();
+    const std::array colors{dm::graphics::RGBA{24, 92, 150}, dm::graphics::RGBA{170, 74, 39}};
+    const std::array labels{"Component 1", "Component 2"};
+    for (std::size_t k = 0; k < labels.size(); ++k) {
+        std::vector<double> mode(time.size());
+        for (std::size_t j = 0; j < time.size(); ++j)
+            mode[j] = fit.eigenfunctions(j, k);
+        plot.line(time, mode, labels[k], colors[k], 2.5)
+            .points(time, mode, "", colors[k], 3);
+    }
+    std::filesystem::create_directories("build");
+    plot.title("Two modes of curve variation")
+        .x_label("Time").y_label("Eigenfunction value")
+        .y_limits(-.72, .86).size(740, 420).save_svg("build/functional_pca_modes.svg");
+}
+```
+// result_begin: markdown
+| Component | Score variance | Integrated variance explained |
+| ---: | ---: | ---: |
+| 1 | 5.484 | 84.9% |
+| 2 | 0.976 | 15.1% |
+
+| Subject | Score on component 1 | Score on component 2 |
+| ---: | ---: | ---: |
+| 1 | -3.312 | -0.835 |
+| 2 | 3.312 | -0.835 |
+| 3 | -1.656 | 1.253 |
+| 4 | 1.656 | 1.253 |
+| 5 | 0.000 | -0.418 |
+| 6 | 0.000 | -0.418 |
+\image(figures/functional_pca_modes.svg)
+// result_end
+\caption(The first component changes the central peak. The second contrasts the start and end of the interval.)
+\alttext(Component 1 is positive with its largest value at the center. Component 2 slopes across zero from one end of the interval to the other.)
+
+The first mode captures most of the integrated variation. Subjects 1
+and 2 have opposite first scores because the peak is respectively below
+and above the mean peak. They have the same score on the second mode
+because their early-to-late trend is the same.
+
+[Ramsay and Silverman (2005), chapter 8|https://doi.org/10.1007/b98888]

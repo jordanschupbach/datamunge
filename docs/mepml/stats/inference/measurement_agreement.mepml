@@ -1,0 +1,102 @@
+//? Title: Agreement of paired measurements and categorical ratings
+//? Exports: both
+//? Lang: en
+
+> Compare paired measurements
+
+Two instruments measured the same eight items. Bland–Altman analysis
+expresses disagreement in measurement units. The horizontal lines mark
+the mean difference and the estimated limits for individual differences.
+The table gives a separate confidence interval for each line. Lin's
+concordance summarizes agreement with the identity line as one coefficient.
+
+```{cpp, id=paired-agreement, results="markdown", file="figures/bland_altman_measurements.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numeric>
+
+int main() {
+    using namespace dm::stats;
+    const std::vector<double> x{1, 2, 4, 7, 8, 11, 15, 18};
+    const std::vector<double> y{1.4, 2.3, 3.7, 6.1, 8.9, 11.7, 15.3, 20.1};
+    const auto ba = bland_altman(x, y);
+    const auto lin = lin_concordance(x, y);
+    const auto show = [](const char* name, double estimate, const auto& interval) {
+        std::println("| {} | {:.3f} | [{:.3f}, {:.3f}] |", name, estimate, interval.first, interval.second);
+    };
+    std::println("| Quantity | Estimate | 95% confidence interval |");
+    std::println("| --- | ---: | --- |");
+    show("Mean difference", ba.bias, ba.bias_interval);
+    show("Lower agreement limit", ba.limits.first, ba.lower_interval);
+    show("Upper agreement limit", ba.limits.second, ba.upper_interval);
+    show("Lin concordance", lin.concordance, lin.interval);
+
+    std::vector<double> average, difference;
+    for (std::size_t i = 0; i < x.size(); ++i) {
+        average.push_back(std::midpoint(x[i], y[i]));
+        difference.push_back(x[i] - y[i]);
+    }
+    std::filesystem::create_directories("build");
+    auto plot = dm::graphics::RPlot::create();
+    plot.points(average, difference, "Paired differences", {37, 99, 235}, 5)
+        .abline_h(ba.bias, {63, 63, 63}, 2)
+        .abline_h(ba.limits.first, {180, 83, 9})
+        .abline_h(ba.limits.second, {180, 83, 9})
+        .y_limits(-2.8, 2)
+        .title("Agreement between paired instruments")
+        .x_label("Mean of the two measurements").y_label("First minus second")
+        .save_svg("build/bland_altman_measurements.svg");
+}
+```
+// result_begin: markdown
+| Quantity | Estimate | 95% confidence interval |
+| --- | ---: | --- |
+| Mean difference | -0.438 | [-1.173, 0.298] |
+| Lower agreement limit | -2.162 | [-3.477, -0.847] |
+| Upper agreement limit | 1.287 | [-0.028, 2.602] |
+| Lin concordance | 0.988 | [0.973, 0.995] |
+\image(figures/bland_altman_measurements.svg)
+// result_end
+\caption(The dark line is mean bias. The orange lines mark the lower and upper limits of agreement.)
+\alttext(Eight paired differences plotted against their means, with the bias near minus 0.44 and agreement limits near minus 2.16 and 1.29.)
+
+> Compare ratings with and without ordinal weights
+
+The paired table has three ordered categories. Cohen's kappa with linear
+or quadratic weights counts disagreements between adjacent categories as
+less severe than disagreements across the whole scale. Fleiss' kappa
+uses a separate table of five items rated by four judges, with one row
+of category counts per item.
+
+```{cpp, id=categorical-agreement, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/agreement.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<std::vector<std::size_t>> paired{{12, 3, 1}, {2, 8, 3}, {0, 4, 9}};
+    const std::vector<std::vector<std::size_t>> panels{{4, 0, 0}, {1, 3, 0}, {0, 2, 2}, {0, 0, 4}, {2, 1, 1}};
+    const auto show = [](const char* label, const KappaAgreement& fit) {
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} |",
+                     label, fit.observed_agreement, fit.expected_agreement, fit.kappa);
+    };
+    std::println("| Method | Observed agreement | Expected agreement | Kappa |");
+    std::println("| --- | ---: | ---: | ---: |");
+    show("Unweighted Cohen", cohen_kappa(paired));
+    show("Linear Cohen", cohen_kappa(paired, KappaWeights::Linear));
+    show("Quadratic Cohen", cohen_kappa(paired, KappaWeights::Quadratic));
+    show("Fleiss", fleiss_kappa(panels));
+}
+```
+// result_begin: markdown
+| Method | Observed agreement | Expected agreement | Kappa |
+| --- | ---: | ---: | ---: |
+| Unweighted Cohen | 0.690 | 0.333 | 0.536 |
+| Linear Cohen | 0.833 | 0.556 | 0.625 |
+| Quadratic Cohen | 0.905 | 0.668 | 0.714 |
+| Fleiss | 0.600 | 0.335 | 0.398 |
+// result_end
+
+[Bland–Altman|https://pubmed.ncbi.nlm.nih.gov/2868172/] ·
+[Lin concordance|https://doi.org/10.2307/2532051] ·
+[Cohen's weighted kappa|https://doi.org/10.1037/h0026256] ·
+[Fleiss' kappa|https://doi.org/10.1037/h0031619]

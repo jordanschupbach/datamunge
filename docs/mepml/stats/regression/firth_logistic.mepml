@@ -1,0 +1,64 @@
+//? Title: Fit a logistic model under complete separation
+//? Exports: both
+//? Lang: en
+
+> Estimate a finite effect under complete separation
+
+Six trials in group A all fail, and five trials in group B all
+succeed. An ordinary logistic likelihood can increase indefinitely
+in the direction of a larger group difference. Firth's adjustment
+adds half the log determinant of the Fisher information to the
+log likelihood, giving a finite fitted effect and probabilities for
+both groups.
+
+The design has an intercept and an indicator for group B.
+The success counts are supplied directly with the trial counts.
+
+```{cpp, id=firth-separated-groups, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/firth_logistic.hpp>
+#include <cmath>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using datamunge::linalg::DenseMatrix;
+    using datamunge::stats::ProfileEndpointStatus;
+    const DenseMatrix<double> design(2, 2, {1, 0, 1, 1});
+    const auto fit = datamunge::stats::firth_logistic(design, {0, 5}, {.trials = {6, 5}});
+    const auto probability = fit.predict(design);
+    std::println("| Group | Observed successes | Fitted success probability |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| A | 0 / 6 | {:.4f} |", probability[0]);
+    std::println("| B | 5 / 5 | {:.4f} |", probability[1]);
+
+    const auto& effect = fit.intervals[1];
+    if (effect.lower.status != ProfileEndpointStatus::Crossing ||
+        effect.upper.status != ProfileEndpointStatus::Crossing)
+        throw std::runtime_error("Expected two penalized likelihood-ratio limits");
+    std::println("\n| Group B versus A | Estimate | 95% penalized profile interval |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| Log odds ratio | {:.3f} | [{:.3f}, {:.3f}] |",
+                 fit.coefficients[1], effect.lower.value, effect.upper.value);
+    std::println("| Odds ratio | {:.1f} | [{:.2f}, {:.0f}] |", std::exp(fit.coefficients[1]),
+                 std::exp(effect.lower.value), std::exp(effect.upper.value));
+}
+```
+// result_begin: markdown
+| Group | Observed successes | Fitted success probability |
+| --- | ---: | ---: |
+| A | 0 / 6 | 0.0714 |
+| B | 5 / 5 | 0.9167 |
+
+| Group B versus A | Estimate | 95% penalized profile interval |
+| --- | ---: | ---: |
+| Log odds ratio | 4.963 | [1.712, 10.767] |
+| Odds ratio | 143.0 | [5.54, 47439] |
+// result_end
+
+The interval fixes the group coefficient at each candidate value and
+refits the intercept while retaining the full model's information
+penalty. Exponentiating the two log-odds limits gives the interval for
+the odds ratio. Its width reflects the limited number of trials.
+
+[Firth (1993)|https://doi.org/10.1093/biomet/80.1.27] ·
+[Heinze and Schemper (2002)|https://doi.org/10.1002/sim.1047]

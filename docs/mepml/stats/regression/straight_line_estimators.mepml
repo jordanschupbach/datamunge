@@ -1,0 +1,106 @@
+//? Title: Fit straight lines with outliers and measurement error
+//? Exports: both
+//? Lang: en
+
+> Compare median-based lines with a high-leverage outlier
+
+Theil–Sen takes the median of all slopes between pairs with different
+predictors. The repeated-median method first finds a median slope through
+each observation. It then takes the median of those slopes. Both examples
+set the intercept to the median residual after subtracting the slope term.
+
+The observation with the largest predictor has an unusually high response.
+Compare its effect on the least-squares fit and both median-based fits.
+
+```{cpp, id=robust-lines, file="figures/robust_line_fits.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/line_regression.hpp>
+#include <datamunge/stats/lm.hpp>
+#include <filesystem>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    const std::vector<double> x{0, 1, 2, 3, 4, 5, 6, 7, 8, 11};
+    const std::vector<double> y{2.1, 3.3, 5.5, 6.2, 8.4, 9.3, 11.5, 12.4, 13.6, 38};
+    Mat<> design(x.size(), 1);
+    for (std::size_t i = 0; i < x.size(); ++i)
+        design(i, 0) = x[i];
+    const stats::LM ordinary(y, design);
+    const stats::LineCoefficients least_squares{ordinary.coefficients()[0], ordinary.coefficients()[1]};
+    const auto theil = stats::theil_sen_regression(x, y);
+    const auto repeated = stats::repeated_median_regression(x, y);
+    std::println("| Fit | Intercept | Slope |");
+    std::println("| --- | ---: | ---: |");
+    const auto row = [](const char* name, stats::LineCoefficients fit) {
+        std::println("| {} | {:.3f} | {:.3f} |", name, fit.intercept, fit.slope);
+    };
+    row("Least squares", least_squares);
+    row("Theil–Sen", theil);
+    row("Repeated median", repeated);
+
+    const std::vector<double> bounds{x.front(), x.back()};
+    auto chart = graphics::RPlot::create().points(x, y, "Observations", {51, 65, 85}, 6);
+    const auto draw = [&](const char* label, stats::LineCoefficients fit, graphics::RGB color, double width) {
+        chart.line(bounds, {fit.intercept, fit.intercept + bounds.back() * fit.slope}, label, color, width);
+    };
+    draw("Least squares", least_squares, {194, 65, 12}, 2);
+    draw("Theil-Sen", theil, {29, 78, 216}, 4);
+    draw("Repeated median", repeated, {15, 118, 110}, 1.5);
+    std::filesystem::create_directories("build");
+    chart.title("Fits with one high-leverage observation").x_label("Predictor").y_label("Response")
+        .x_limits(-0.5, 16).size(760, 430).save_svg("build/robust_line_fits.svg");
+}
+```
+// result_begin: markdown
+| Fit | Intercept | Slope |
+| --- | ---: | ---: |
+| Least squares | -1.485 | 2.663 |
+| Theil–Sen | 1.942 | 1.517 |
+| Repeated median | 1.971 | 1.508 |
+\image(figures/robust_line_fits.svg)
+// result_end
+\caption(The two median-based lines track the main group of observations.)
+\alttext(A scatterplot has nine points close to a line and a high outlier at the right. Least squares tilts toward the outlier. Theil–Sen and repeated-median lines nearly coincide below that point.)
+
+[Sen (1968)|https://doi.org/10.1080/01621459.1968.10480934] ·
+[Siegel (1982)|https://doi.org/10.1093/biomet/69.1.242]
+
+> Fit paired measurements with a known error ratio
+
+Deming regression fits a line when both axes have measurement error. The
+ratio here is response error variance divided by predictor error variance.
+A ratio of one gives an orthogonal least-squares fit. All three lines
+pass through the same measurement means.
+
+```{cpp, id=deming-ratios, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/line_regression.hpp>
+#include <print>
+
+int main() {
+    using datamunge::stats::deming_regression;
+    const std::vector<double> x{0, 1, 2, 3, 4, 7, 9};
+    const std::vector<double> y{3, 2, 4, 5, 7, 6, 12};
+    std::println("| Response-to-predictor error variance | Intercept | Slope |");
+    std::println("| ---: | ---: | ---: |");
+    for (double ratio : {0.25, 1.0, 4.0}) {
+        const auto fit = deming_regression(x, y, ratio);
+        std::println("| {:.2f} | {:.3f} | {:.3f} |", ratio,
+                     fit.coefficients->intercept, fit.coefficients->slope);
+    }
+    const auto vertical = deming_regression({2, 2, 2}, {1, 2, 3});
+    std::println("\nThe vertical fit is x = {:.0f}, with direction ({:.0f}, {:.0f}).",
+                 vertical.center_x, vertical.direction_x, vertical.direction_y);
+}
+```
+// result_begin: markdown
+| Response-to-predictor error variance | Intercept | Slope |
+| ---: | ---: | ---: |
+| 0.25 | 1.533 | 1.087 |
+| 1.00 | 1.783 | 1.020 |
+| 4.00 | 2.024 | 0.955 |
+
+The vertical fit is x = 2, with direction (0, 1).
+// result_end
+
+[Linnet (1998)|https://doi.org/10.1093/clinchem/44.5.1024]

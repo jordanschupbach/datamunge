@@ -1,14 +1,20 @@
 #pragma once
 
+/// @file distributions.hpp
+/// @brief Numerical densities, cumulative probabilities and quantiles for probability laws.
+
 #include <algorithm>
 #include <cmath>
 #include <cstddef>
 #include <limits>
+#include <numeric>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 namespace datamunge::random {
 
+/// @brief Internal numerical kernels and probability parameter checks.
 namespace detail {
 
 inline constexpr double pi = 3.14159265358979323846;
@@ -91,37 +97,42 @@ inline double log_beta(double a, double b) {
   return std::lgamma(a) + std::lgamma(b) - std::lgamma(a + b);
 }
 
-// Continued-fraction expansion (Numerical Recipes' betacf) used by
-// regularized_incomplete_beta for the region x < (a+1)/(a+b+2).
-inline double incomplete_beta_cf(double a, double b, double x) {
-  constexpr int    max_iterations = 200;
-  constexpr double epsilon        = 3.0e-16;
-  constexpr double tiny           = 1.0e-300;
+/// @brief Evaluates the incomplete-beta continued fraction on its lower-tail branch.
+/// @tparam Real Floating-point working type.
+/// @param a First positive beta shape.
+/// @param b Second positive beta shape.
+/// @param x Argument below (a+1)/(a+b+2).
+/// @param max_iterations Iteration limit, default 200.
+/// @return Continued fraction before multiplying by the beta prefactor over a.
+template <typename Real>
+inline Real incomplete_beta_cf(Real a, Real b, Real x, int max_iterations = 200) {
+  const auto epsilon = 2 * std::numeric_limits<Real>::epsilon();
+  const auto tiny = 16 * std::numeric_limits<Real>::min();
 
-  const double qab = a + b;
-  const double qap = a + 1.0;
-  const double qam = a - 1.0;
+  const Real qab = a + b;
+  const Real qap = a + 1.0;
+  const Real qam = a - 1.0;
 
-  double c = 1.0;
-  double d = 1.0 - qab * x / qap;
+  Real c = 1.0;
+  Real d = 1 - (qab / qap) * x;
   if (std::abs(d) < tiny) d = tiny;
   d = 1.0 / d;
-  double h = d;
+  Real h = d;
 
   for (int m = 1; m <= max_iterations; ++m) {
-    const double m2 = 2.0 * m;
+    const Real m2 = 2.0 * m;
 
-    double aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+    Real aa = (m / (a + m2)) * ((b - m) / (qam + m2)) * x;
     d = 1.0 + aa * d; if (std::abs(d) < tiny) d = tiny;
     c = 1.0 + aa / c; if (std::abs(c) < tiny) c = tiny;
     d = 1.0 / d;
     h *= d * c;
 
-    aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+    aa = -((a + m) / (a + m2)) * ((qab + m) / (qap + m2)) * x;
     d = 1.0 + aa * d; if (std::abs(d) < tiny) d = tiny;
     c = 1.0 + aa / c; if (std::abs(c) < tiny) c = tiny;
     d = 1.0 / d;
-    const double delta = d * c;
+    const Real delta = d * c;
     h *= delta;
 
     if (std::abs(delta - 1.0) < epsilon) break;
@@ -159,10 +170,14 @@ inline double invert_monotonic_cdf(double p, CdfFn cdf, double lo, double hi) {
   return 0.5 * (lo + hi);
 }
 
-// Series expansion (Numerical Recipes' gser) for the regularized lower incomplete gamma
-// function P(a, x), valid/fast-converging for x < a + 1.
+/// @brief Series expansion for the regularized lower incomplete gamma function.
+/// @param a Positive shape.
+/// @param x Nonnegative argument below a + 1.
+/// @return Lower probability P(a,x).
 inline double incomplete_gamma_series(double a, double x) {
-  constexpr int    max_iterations = 200;
+  /// @brief Iteration ceiling with margin for large shape parameters.
+  constexpr int    max_iterations = 10000;
+  /// @brief Relative convergence threshold.
   constexpr double epsilon        = 3.0e-16;
 
   if (x <= 0.0) return 0.0;
@@ -178,11 +193,16 @@ inline double incomplete_gamma_series(double a, double x) {
   return sum * std::exp(-x + a * std::log(x) - std::lgamma(a));
 }
 
-// Continued-fraction expansion (Numerical Recipes' gcf) for the regularized upper
-// incomplete gamma function Q(a, x) = 1 - P(a, x), valid/fast-converging for x >= a + 1.
+/// @brief Continued-fraction expansion for the regularized upper incomplete gamma function.
+/// @param a Positive shape.
+/// @param x Positive argument, normally at least a + 1.
+/// @return Upper probability Q(a,x).
 inline double incomplete_gamma_cf(double a, double x) {
-  constexpr int    max_iterations = 200;
+  /// @brief Iteration ceiling with margin for large shape parameters.
+  constexpr int    max_iterations = 10000;
+  /// @brief Relative convergence threshold.
   constexpr double epsilon        = 3.0e-16;
+  /// @brief Floor for nonzero continued-fraction denominators.
   constexpr double tiny           = 1.0e-300;
 
   double b = x + 1.0 - a;
@@ -648,6 +668,188 @@ inline double chi_squared_quantile(double p, double df) {
       p, [df](double x) { return chi_squared_cdf(x, df); }, 1e-6, std::max(df, 1.0));
 }
 
+namespace detail {
+
+/// @brief Validates the positive finite parameters of a gamma distribution.
+/// @param shape Gamma shape.
+/// @param scale Gamma scale.
+/// @throws std::invalid_argument Nonpositive or nonfinite shape or scale.
+inline void check_gamma_parameters(double shape, double scale) {
+  if (!(shape > 0 && scale > 0) || !std::isfinite(shape) || !std::isfinite(scale))
+    throw std::invalid_argument("gamma distribution: shape and scale must be positive and finite");
+}
+
+/// @brief Evaluates the gamma saddle-point divergence d - log(1 + d).
+/// @param d Scaled displacement from the gamma mean.
+/// @return Nonnegative divergence, or infinity at the lower boundary.
+inline long double gamma_divergence(long double d) {
+  if (std::abs(d) < 1e-3L)
+    return d * d * (.5L + d * (-1.0L / 3 + d * (.25L + d * (-.2L + d * (1.0L / 6 - d / 7)))));
+  return d - std::log1p(d);
+}
+
+/// @brief Evaluates both gamma tails using series, continued fractions, or the leading uniform expansion.
+/// @param scaled Positive scale-one variate, possibly infinite.
+/// @param shape Positive finite gamma shape.
+/// @param lower_tail Selects lower (true) or upper (false) probability.
+/// @return Requested probability.
+inline double gamma_probability(long double scaled, double shape, bool lower_tail) {
+  if (scaled == 0 || std::isinf(scaled))
+    return (scaled > 0) == lower_tail ? 1 : 0;
+  if (shape >= 1e6) {
+    const auto d = (scaled - shape) / shape;
+    const auto deviance = gamma_divergence(d) * shape;
+    const auto z = std::copysign(std::sqrt(deviance), d);
+    const auto c0 = std::abs(d) < 1e-3L
+        ? -1.0L / 3 + d * (1.0L / 12 - d * 23.0L / 540)
+        : 1 / d - std::copysign(std::sqrt(shape / (2 * deviance)), d);
+    const auto correction = std::exp(-deviance) * c0 / std::sqrt(2 * pi * static_cast<long double>(shape));
+    const auto tail = lower_tail ? .5L * std::erfc(-z) - correction : .5L * std::erfc(z) + correction;
+    return static_cast<double>(std::clamp(tail, 0.0L, 1.0L));
+  }
+  if (shape < 1 && scaled <= 1) {
+    // DLMF 8.7.3. Form the upper tail without subtracting a lower probability
+    // that can round to one when the shape is small.
+    const long double a = shape;
+    const auto log_gamma = a < 1e-5L
+        ? a * (-0.5772156649015328606L + a * (.8224670334241132182L - a * .4006856343865314285L))
+        : std::lgamma(1 + a);
+    const auto exponent = a * std::log(scaled) - log_gamma;
+    long double term = 1, sum = 0;
+    for (int k = 1; k <= 32; ++k) {
+      term *= -scaled / k;
+      sum += term / (a + k);
+    }
+    const auto factor = a * sum;
+    const auto tail = lower_tail ? std::exp(exponent) * (1 + factor)
+                                 : -std::expm1(exponent) - std::exp(exponent) * factor;
+    return static_cast<double>(std::clamp(tail, 0.0L, 1.0L));
+  }
+  if (scaled > std::numeric_limits<double>::max())
+    return lower_tail ? 1 : 0;
+  const auto x = static_cast<double>(scaled);
+  if (x >= shape + 1 || shape < 1) {
+    const auto upper = incomplete_gamma_cf(shape, x);
+    return std::clamp(lower_tail ? 1 - upper : upper, 0.0, 1.0);
+  }
+  const auto lower = incomplete_gamma_series(shape, x);
+  return std::clamp(lower_tail ? lower : 1 - lower, 0.0, 1.0);
+}
+
+} // namespace detail
+
+/// @brief Evaluates the shape/scale gamma density, like R's dgamma().
+/// @param x Point at which to evaluate the density.
+/// @param shape Positive finite shape.
+/// @param scale Positive finite scale, default 1.
+/// @return Density, including the limiting value at zero.
+/// @throws std::invalid_argument Invalid parameters or NaN observation.
+/// @par Example
+/// @code
+/// std::print("{:.4f}\n", dm::random::gamma_pdf(2, 1, 2)); // 0.1839
+/// @endcode
+/// @par References
+/// - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/GammaDist.html
+/// @see gamma_cdf()
+inline double gamma_pdf(double x, double shape, double scale = 1.0) {
+  detail::check_gamma_parameters(shape, scale);
+  if (std::isnan(x))
+    throw std::invalid_argument("gamma_pdf: x cannot be NaN");
+  if (x < 0 || std::isinf(x))
+    return 0;
+  if (x == 0)
+    return shape < 1 ? std::numeric_limits<double>::infinity() : (shape == 1 ? 1 / scale : 0);
+  const long double a = shape;
+  const auto scaled = static_cast<long double>(x) / scale;
+  if (std::isinf(scaled))
+    return 0;
+  const auto logarithm = a >= 1e6
+      ? .5L * std::log(a / (2 * detail::pi)) - std::log(static_cast<long double>(x)) -
+            a * detail::gamma_divergence((scaled - a) / a) - 1 / (12 * a)
+      : (a - 1) * (std::log(static_cast<long double>(x)) - std::log(static_cast<long double>(scale))) -
+            scaled - std::lgamma(a) - std::log(static_cast<long double>(scale));
+  return static_cast<double>(std::exp(logarithm));
+}
+
+/// @brief Evaluates the lower or upper gamma tail, like R's pgamma().
+///
+/// Uses the incomplete gamma series and continued fraction, with a uniform
+/// asymptotic expansion for large shape. Computes a small upper tail directly.
+/// @param x Query value, including signed infinities.
+/// @param shape Positive finite shape.
+/// @param scale Positive finite scale, default 1.
+/// @param lower_tail True for P(X <= x), false for P(X > x), default true.
+/// @return Probability in [0, 1].
+/// @throws std::invalid_argument Invalid parameters or NaN query.
+/// @par Example
+/// @code
+/// std::print("{:.4f}\n", dm::random::gamma_cdf(2, 1, 2, false)); // 0.3679
+/// @endcode
+/// @par References
+/// - https://dlmf.nist.gov/8.7
+/// - https://dlmf.nist.gov/8.12
+/// @see gamma_quantile()
+inline double gamma_cdf(double x, double shape, double scale = 1.0, bool lower_tail = true) {
+  detail::check_gamma_parameters(shape, scale);
+  if (std::isnan(x))
+    throw std::invalid_argument("gamma_cdf: x cannot be NaN");
+  if (x <= 0)
+    return lower_tail ? 0 : 1;
+  return detail::gamma_probability(static_cast<long double>(x) / scale, shape, lower_tail);
+}
+
+/// @brief Inverts the shape/scale gamma CDF, like R's qgamma().
+///
+/// Bisects on the log scale using the supplied tail, so upper-tail probabilities
+/// need not be subtracted from one. Returns infinity above double range and zero
+/// for a quantile strictly below the smallest positive double.
+/// @param probability Tail probability in [0, 1].
+/// @param shape Positive finite shape.
+/// @param scale Positive finite scale, default 1.
+/// @param lower_tail True for lower-tail probability, false for upper, default true.
+/// @return Nonnegative quantile, with the natural zero and infinity endpoints.
+/// @throws std::invalid_argument Invalid probability or parameters.
+/// @par Example
+/// @code
+/// std::print("{:.4f}\n", dm::random::gamma_quantile(.5, 1, 2)); // 1.3863
+/// @endcode
+/// @par References
+/// - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/GammaDist.html
+/// @see gamma_cdf()
+inline double gamma_quantile(double probability, double shape, double scale = 1.0,
+                             bool lower_tail = true) {
+  detail::check_gamma_parameters(shape, scale);
+  detail::require_probability(probability, "gamma_quantile");
+  if (probability == 0 || probability == 1)
+    return (probability > 0) == lower_tail ? std::numeric_limits<double>::infinity() : 0;
+  if (probability > .5) {
+    probability = 1 - probability;
+    lower_tail = !lower_tail;
+  }
+  const long double scale_log = std::log(static_cast<long double>(scale));
+  const auto minimum = std::numeric_limits<double>::denorm_min();
+  const auto maximum = std::numeric_limits<double>::max();
+  auto lo = std::log(static_cast<long double>(minimum));
+  auto hi = std::log(static_cast<long double>(maximum));
+  /// @brief Checks whether the CDF at a log-scale variate has reached the target.
+  const auto reaches = [=](long double log_x) {
+    const auto tail = detail::gamma_probability(std::exp(log_x - scale_log), shape, lower_tail);
+    return lower_tail ? tail >= probability : tail <= probability;
+  };
+  if (!reaches(hi))
+    return std::numeric_limits<double>::infinity();
+  if (reaches(lo))
+    return gamma_cdf(minimum, shape, scale, lower_tail) == probability ? minimum : 0;
+  for (int i = 0; i < 80; ++i) {
+    const auto mid = std::midpoint(lo, hi);
+    if (reaches(mid))
+      hi = mid;
+    else
+      lo = mid;
+  }
+  return static_cast<double>(std::min(std::exp(hi), static_cast<long double>(maximum)));
+}
+
 inline double binomial_pdf(std::size_t k, std::size_t n, double p) {
   detail::require_probability(p, "binomial_pdf");
   if (k > n) return 0.0;
@@ -665,6 +867,78 @@ inline double binomial_cdf(std::size_t k, std::size_t n, double p) {
   double sum = 0.0;
   for (std::size_t i = 0; i <= k; ++i) sum += binomial_pdf(i, n, p);
   return std::min(1.0, sum);
+}
+
+/// @brief Inverts the binomial CDF, like R's qbinom().
+///
+/// Returns the smallest count whose CDF reaches the requested probability. Uses binary
+/// search with a beta tail, or a probability recurrence when the success probability
+/// is too small for its complement to be represented accurately.
+/// @param probability Cumulative probability in [0, 1].
+/// @param n Number of Bernoulli trials, including zero.
+/// @param p Probability of success per trial in [0, 1].
+/// @return Count in the support. At probabilities zero and one, returns the support extremes.
+/// @throws std::invalid_argument Invalid probability or success probability.
+/// @par Example
+/// @code
+/// std::print("{}\n", dm::random::binomial_quantile(.5, 10, .3)); // 3
+/// @endcode
+/// @par References
+/// - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Binomial.html
+/// @see binomial_cdf()
+inline std::size_t binomial_quantile(double probability, std::size_t n, double p) {
+  detail::require_probability(probability, "binomial_quantile");
+  detail::require_probability(p, "binomial_quantile");
+  if (p == 0 || p == 1)
+    return p == 0 ? 0 : n;
+  if (probability == 0 || probability == 1)
+    return probability == 0 ? 0 : n;
+  if (1 - p == 1) {
+    // In this regime the mean is at most about 1024 for 64-bit counts.
+    // Accumulate the lower tail directly when 1 - p cannot encode the failure probability.
+    const auto log_odds = std::log(static_cast<long double>(p)) - std::log1p(-static_cast<long double>(p));
+    auto log_mass = static_cast<long double>(n) * std::log1p(-static_cast<long double>(p));
+    long double cumulative = std::exp(log_mass);
+    const auto mean = static_cast<long double>(n) * p;
+    const auto upper_target = 1 - static_cast<long double>(probability);
+    for (std::size_t k = 0; k < n; ++k) {
+      if (probability <= .5 && static_cast<double>(cumulative) >= probability)
+        return k;
+      log_mass += std::log(static_cast<long double>(n - k)) -
+                  std::log(static_cast<long double>(k) + 1) + log_odds;
+      const auto next_mass = std::exp(log_mass);
+      cumulative += next_mass;
+      if (probability > .5 && k >= std::floor(mean)) {
+        long double tail = next_mass, mass = next_mass;
+        for (auto j = k + 1; j < n && tail <= upper_target; ++j) {
+          mass *= ((n - j) * static_cast<long double>(p)) /
+                  ((static_cast<long double>(j) + 1) * (1 - static_cast<long double>(p)));
+          const auto increased_tail = tail + mass;
+          if (increased_tail == tail)
+            break;
+          tail = increased_tail;
+        }
+        if (tail <= upper_target)
+          return k;
+      }
+    }
+    return n;
+  }
+  std::size_t lo = 0, hi = n;
+  while (lo < hi) {
+    const auto k = std::midpoint(lo, hi);
+    const auto a = static_cast<double>(n - k);
+    const auto b = static_cast<double>(k) + 1;
+    // Evaluate the target tail directly, especially for quantiles near zero or one.
+    const bool reaches = probability > .5
+        ? detail::regularized_incomplete_beta(b, a, p) <= 1 - probability
+        : detail::regularized_incomplete_beta(a, b, 1 - p) >= probability;
+    if (reaches)
+      hi = k;
+    else
+      lo = k + 1;
+  }
+  return lo;
 }
 
 // Hypergeometric distribution: drawing n items without replacement from a population of
@@ -687,6 +961,97 @@ inline double hypergeometric_cdf(std::size_t k, std::size_t population, std::siz
   double sum = 0.0;
   for (std::size_t i = lo; i <= k; ++i) sum += hypergeometric_pdf(i, population, successes_in_population, n);
   return std::min(1.0, sum);
+}
+
+/// @brief Inverts the hypergeometric CDF, like R's qhyper().
+///
+/// Enumerates representable relative masses outward from the mode before accumulating
+/// the selected tail. This avoids seeding the recurrence with an underflowed tail mass.
+/// @param probability Cumulative probability in [0, 1].
+/// @param population Population size.
+/// @param successes_in_population Number of successes, at most population.
+/// @param n Number drawn without replacement, at most population.
+/// @return The smallest count reaching the requested CDF, with endpoints on the finite support.
+/// @throws std::invalid_argument Invalid probability or population counts.
+/// @par Example
+/// @code
+/// std::print("{}\n", dm::random::hypergeometric_quantile(.5, 20, 7, 5)); // 2
+/// @endcode
+/// @par References
+/// - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Hypergeometric.html
+/// @see hypergeometric_cdf()
+inline std::size_t hypergeometric_quantile(double probability, std::size_t population,
+                                           std::size_t successes_in_population, std::size_t n) {
+  detail::require_probability(probability, "hypergeometric_quantile");
+  if (successes_in_population > population || n > population)
+    throw std::invalid_argument("hypergeometric_quantile: invalid population counts");
+  const auto successes = successes_in_population;
+  const auto failures = population - successes;
+  const auto lower = n > failures ? n - failures : 0;
+  const auto upper = std::min(n, successes);
+  if (probability == 0 || lower == upper)
+    return lower;
+  if (probability == 1)
+    return upper;
+
+  const auto mode_rank = ((static_cast<long double>(n) + 1) *
+      (static_cast<long double>(successes) + 1)) / (static_cast<long double>(population) + 2);
+  const auto mode = mode_rank >= static_cast<long double>(upper) ? upper :
+      std::max(lower, static_cast<std::size_t>(mode_rank));
+  std::vector<long double> below, above;
+  long double total = 1;
+  long double mass = 1;
+  for (auto k = mode; k > lower; --k) {
+    mass *= (static_cast<long double>(k) * (failures - (n - k))) /
+            ((static_cast<long double>(successes - k) + 1) * (static_cast<long double>(n - k) + 1));
+    if (mass == 0)
+      break;
+    total += mass;
+    below.push_back(mass);
+  }
+  mass = 1;
+  for (auto k = mode; k < upper; ++k) {
+    mass *= (static_cast<long double>(successes - k) * (n - k)) /
+            ((static_cast<long double>(k) + 1) * (static_cast<long double>(failures - (n - k)) + 1));
+    if (mass == 0)
+      break;
+    total += mass;
+    above.push_back(mass);
+  }
+
+  // Select from the requested end of the support to avoid canceling a tiny tail.
+  long double cumulative = 0;
+  if (probability <= .5) {
+    for (std::size_t i = below.size(); i > 0; --i) {
+      cumulative += below[i - 1];
+      if (static_cast<double>(cumulative / total) >= probability)
+        return mode - i;
+    }
+    cumulative += 1;
+    if (static_cast<double>(cumulative / total) >= probability)
+      return mode;
+    for (std::size_t i = 0; i < above.size(); ++i) {
+      cumulative += above[i];
+      if (static_cast<double>(cumulative / total) >= probability)
+        return mode + i + 1;
+    }
+    return upper;
+  }
+
+  for (std::size_t i = above.size(); i > 0; --i) {
+    cumulative += above[i - 1];
+    if (static_cast<double>(1 - cumulative / total) < probability)
+      return mode + i;
+  }
+  cumulative += 1;
+  if (static_cast<double>(1 - cumulative / total) < probability)
+    return mode;
+  for (std::size_t i = 0; i < below.size(); ++i) {
+    cumulative += below[i];
+    if (static_cast<double>(1 - cumulative / total) < probability)
+      return mode - i - 1;
+  }
+  return lower;
 }
 
 } // namespace datamunge::random

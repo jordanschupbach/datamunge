@@ -1,0 +1,118 @@
+//? Title: Test goodness of fit with empirical distribution functions
+//? Exports: both
+//? Lang: en
+
+> Choose the Anderson–Darling reference
+
+The first sample contains fractions to compare with a uniform distribution
+on [0, 1]. Because that distribution is fixed in advance, simulated uniform
+probabilities give the reference. The second sample contains measurements
+on an unknown normal scale. Its reference fits the mean and sample standard
+deviation anew in every simulated normal sample.
+
+```{cpp, id=anderson-darling-references, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/edf_tests.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<double> fractions{.05, .11, .12, .19, .22, .44, .46, .61, .86};
+    const std::vector<double> measurements{-3.2, -1.1, -.6, -.15, 0, .1, .4, 1.4, 4.7};
+    datamunge::random::SplitMix64 rng(73);
+    const auto specified = anderson_darling_test(fractions, [](double x) { return x; }, 4095, rng);
+    const auto fitted = anderson_darling_normal_test(measurements, 4095, rng);
+    std::println("| Reference | Anderson–Darling statistic | Simulated p-value |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| Specified uniform | {:.3f} | {:.3f} |", specified.statistic, specified.p_value);
+    std::println("| Fitted normal | {:.3f} | {:.3f} |", fitted.statistic, fitted.p_value);
+    std::println("");
+    std::println("The fitted normal mean is {:.3f} and its sample standard deviation is {:.3f}.",
+                 fitted.estimate1, fitted.estimate2);
+}
+```
+// result_begin: markdown
+| Reference | Anderson–Darling statistic | Simulated p-value |
+| --- | ---: | ---: |
+| Specified uniform | 1.594 | 0.158 |
+| Fitted normal | 0.520 | 0.142 |
+
+The fitted normal mean is 0.172 and its sample standard deviation is 2.115.
+// result_end
+
+> Compare squared CDF differences with Cramér–von Mises
+
+Cramér–von Mises integrates squared CDF differences. The one-sample
+test compares the fractions with the specified uniform distribution.
+The two-sample test compares independent groups at the pooled observed
+values, with each tied value weighted by its multiplicity. For these small
+groups the program enumerates all 35 assignments at the observed sizes.
+
+```{cpp, id=cramer-von-mises-references, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/edf_tests.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<double> fractions{.05, .11, .12, .19, .22, .44, .46, .61, .86};
+    datamunge::random::SplitMix64 rng(73);
+    const auto specified = cramer_von_mises_test(fractions, [](double x) { return x; }, 4095, rng);
+    const auto pooled = cramer_von_mises_test_two_sample_exact({0, 1, 1}, {1, 2, 2, 4});
+    std::println("| Reference | Cramér–von Mises statistic | p-value |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| Simulated specified uniform | {:.3f} | {:.3f} |", specified.statistic, specified.p_value);
+    std::println("| Exact pooled labels | {:.3f} | {:.3f} |", pooled.statistic, pooled.p_value);
+    std::println("");
+    std::println("{:.0f} of the {:.0f} pooled assignments have statistics at least as large as observed.",
+                 pooled.parameter2, pooled.parameter1);
+}
+```
+// result_begin: markdown
+| Reference | Cramér–von Mises statistic | p-value |
+| --- | ---: | ---: |
+| Simulated specified uniform | 0.310 | 0.119 |
+| Exact pooled labels | 0.471 | 0.114 |
+
+4 of the 35 pooled assignments have statistics at least as large as observed.
+// result_end
+
+> Compare three samples with tied values
+
+Three independent groups record scores on an integer scale. At a tied
+score, the midrank statistic uses the midpoint of each empirical CDF
+jump. Under the common-distribution null, the seven observations can
+be reassigned to groups of sizes three, two, and two. Both references
+keep those sizes fixed.
+
+```{cpp, id=midrank-multisample-reference, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/edf_tests.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<std::vector<double>> groups{{0, 1, 1}, {1, 2}, {2, 3}};
+    const auto exact = anderson_darling_k_sample_test_exact(groups);
+    datamunge::random::SplitMix64 rng(7);
+    const auto sampled = anderson_darling_k_sample_test(groups, 4095, rng);
+    std::println("The observed midrank statistic is {:.3f}.", exact.statistic);
+    std::println("");
+    std::println("| Reference | Assignments | Upper-tail assignments | p-value |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (const auto& [label, result] : {std::pair{"Exact", exact}, std::pair{"Simulated", sampled}}) {
+        std::println("| {} | {:.0f} | {:.0f} | {:.3f} |",
+                     label, result.parameter1, result.parameter2, result.p_value);
+    }
+}
+```
+// result_begin: markdown
+The observed midrank statistic is 3.497.
+
+| Reference | Assignments | Upper-tail assignments | p-value |
+| --- | ---: | ---: | ---: |
+| Exact | 210 | 30 | 0.143 |
+| Simulated | 4095 | 582 | 0.142 |
+// result_end
+
+[Anderson and Darling|https://doi.org/10.1080/01621459.1954.10501232] ·
+[Stephens on fitted distributions|https://doi.org/10.1080/01621459.1974.10480196] ·
+[Anderson’s two-sample criterion|https://doi.org/10.1214/aoms/1177704477] ·
+[Scholz and Stephens’ midrank statistic|https://doi.org/10.1080/01621459.1987.10478517]

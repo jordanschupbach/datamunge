@@ -1,0 +1,70 @@
+//? Title: Test marginal terms in an unbalanced linear model
+//? Exports: both
+//? Lang: en
+
+> Compare Type II and Type III term tests
+
+Three methods are run under cool and warm conditions, with unequal
+replication and known relative precision. The linear model includes
+the interaction between method and batch condition.
+
+The Type II test for method adjusts for batch condition and leaves the
+interaction out of both models being compared. The Type III test with
+sum coding compares method means averaged equally over the two batch
+conditions. With treatment coding, the Type III method test compares
+methods at the reference condition, Cool. All tests use the residual
+mean square from the same full model.
+
+```{cpp, id=marginal-anova, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/lm.hpp>
+#include <print>
+
+int main() {
+    using datamunge::dstruct::DataFrame;
+    using datamunge::stats::FactorContrast;
+    using datamunge::stats::LM;
+    using datamunge::stats::MarginalAnovaType;
+
+    DataFrame data;
+    data.add_column("method", std::vector<std::string>{
+        "A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "C", "C", "C", "C", "C"});
+    data.add_column("batch", std::vector<std::string>{
+        "Cool", "Cool", "Cool", "Warm", "Warm", "Cool", "Cool", "Warm",
+        "Warm", "Warm", "Cool", "Cool", "Warm", "Warm", "Warm"});
+    data.add_column("yield", std::vector<double>{8, 9, 10, 12, 13, 12, 14, 21, 22, 24, 13, 15, 12, 14, 14});
+    data.add_column("precision", std::vector<double>{1, 2, 1, 1, 3, 2, 1, 1, 2, 1, 1, 2, 2, 1, 3});
+
+    const LM sum(data, "yield ~ method * batch", {
+        .weights_column = "precision",
+        .contrasts = {{"method", FactorContrast::Sum}, {"batch", FactorContrast::Sum}},
+    });
+    const LM treatment(data, "yield ~ method * batch", {.weights_column = "precision"});
+    const auto type_ii = sum.marginal_anova(MarginalAnovaType::II);
+    const auto type_iii = sum.marginal_anova(MarginalAnovaType::III);
+    const auto reference = treatment.marginal_anova(MarginalAnovaType::III);
+
+    std::println("| Term | Numerator df | Type II F | Type III F, sum | Type III F, treatment |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (std::size_t i = 0; i + 1 < type_ii.size(); ++i)
+        std::println("| {} | {} | {:.3f} | {:.3f} | {:.3f} |", type_ii[i].term,
+                     type_ii[i].degrees_of_freedom, type_ii[i].f_value,
+                     type_iii[i].f_value, reference[i].f_value);
+    std::println("\nThe full model has {} residual degrees of freedom.", type_ii.back().degrees_of_freedom);
+}
+```
+// result_begin: markdown
+| Term | Numerator df | Type II F | Type III F, sum | Type III F, treatment |
+| --- | ---: | ---: | ---: | ---: |
+| method | 2 | 46.910 | 39.648 | 13.071 |
+| batch | 1 | 41.689 | 47.594 | 13.933 |
+| method:batch | 2 | 25.616 | 25.616 | 25.616 |
+
+The full model has 9 residual degrees of freedom.
+// result_end
+
+The interaction has no containing term in this model, so all three
+columns test the same interaction. The main-effect tests answer
+different questions because the effect of one factor depends on the
+level of the other.
+
+[Fox and Weisberg, car Anova reference|https://cran.r-project.org/web/packages/car/refman/car.html#Anova]

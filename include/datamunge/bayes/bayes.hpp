@@ -11,6 +11,7 @@
 #include <datamunge/bayes/diagnostics.hpp>
 #include <datamunge/bayes/discrete_network.hpp>
 #include <datamunge/bayes/distributions.hpp>
+#include <datamunge/bayes/evidence.hpp>
 #include <datamunge/bayes/gibbs.hpp>
 #include <datamunge/bayes/grid_posterior.hpp>
 #include <datamunge/bayes/hmc.hpp>
@@ -21,3 +22,4 @@
 #include <datamunge/bayes/nuts.hpp>
 #include <datamunge/bayes/normal_models.hpp>
 #include <datamunge/bayes/rwm.hpp>
+#include <datamunge/bayes/slice_sampling.hpp>

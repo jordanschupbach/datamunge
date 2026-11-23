@@ -32,6 +32,30 @@ HypothesisTestResult chi_squared_goodness_of_fit(
     const std::vector<double>& observed,
     const std::vector<double>& expected_probabilities = {});
 
+/// @brief Cressie–Read power-divergence goodness-of-fit test for specified probabilities.
+///
+/// Power 1 gives Pearson's statistic, 0 the likelihood-ratio G statistic,
+/// and -1 its reverse. A zero observed count is treated by continuity and
+/// yields an infinite divergence when power is at most -1.
+/// Uses an asymptotic chi-square reference.
+/// @param observed At least two finite nonnegative counts with positive finite total.
+/// @param expected_probabilities Positive finite probabilities summing to one, or empty for uniform.
+/// @param power Finite divergence power, default 0.
+/// @param estimated_parameters Degrees of freedom to subtract from k-1, default zero.
+/// @return Divergence statistic, degrees of freedom and upper-tail p-value.
+/// @throws std::invalid_argument Invalid counts, probabilities, power or degrees of freedom.
+/// @par Example
+/// @code
+/// const auto fit = dm::stats::power_divergence_test({25, 15}, {.5, .5}, 1);
+/// std::print("{:.1f}\n", fit.statistic); // 2.5
+/// @endcode
+/// @par References
+/// - https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.power_divergence.html
+/// @see chi_squared_goodness_of_fit()
+HypothesisTestResult power_divergence_test(const std::vector<double>& observed,
+                                          const std::vector<double>& expected_probabilities = {},
+                                          double power = 0, std::size_t estimated_parameters = 0);
+
 /// @brief Pearson chi-square test for a contingency table, like R chisq.test().
 ///
 /// Expected counts are row_sum*column_sum/total; df=(rows-1)(columns-1). The asymptotic reference

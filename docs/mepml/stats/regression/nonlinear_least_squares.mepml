@@ -1,0 +1,82 @@
+//? Title: Fit an exponential decay curve and profile its decay rate
+//? Exports: both
+//? Lang: en
+
+> Fit and profile an exponential decay
+
+Eight measurements follow a decaying signal. A callback defines the
+mean at the observation times as $a\exp(-kt)$, where $a$ is the initial
+amplitude and $k$ is the decay rate. The weights express the relative
+precision of the observations. The solver estimates the two parameters
+and approximates their covariance using the Jacobian at the fit.
+
+To put an interval on $k$, the solver fixes $k$ at each candidate
+value, refits $a$, and profiles out the Gaussian residual variance.
+The amplitude interval uses the same procedure with the rate refitted.
+
+```{cpp, id=nonlinear-decay, file="figures/nonlinear_least_squares_decay.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/nonlinear_least_squares.hpp>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge;
+    const std::vector<double> time{0, .5, 1, 2, 3, 4, 6, 8};
+    const std::vector<double> signal{4.05, 3.39, 2.89, 2.07, 1.61, 1.19, .71, .46};
+    const auto curve = [&](const std::vector<double>& parameters) {
+        std::vector<double> predictions;
+        for (double t : time)
+            predictions.push_back(parameters[0] * std::exp(-parameters[1] * t));
+        return predictions;
+    };
+    const auto fit = stats::nonlinear_least_squares(signal, {3, .2}, curve, {
+        .weights = {1, 2, 1, 1, 2, 3, 1, 2},
+        .profiles = {{0, {.lower_bound = 0, .initial_step = .05}},
+                     {1, {.lower_bound = 0, .initial_step = .01}}},
+    });
+    std::println("| Parameter | Estimate | Linearized SE | 95% profile interval |");
+    std::println("| --- | ---: | ---: | ---: |");
+    const auto print_row = [&](const char* label, std::size_t i) {
+        const auto& interval = fit.intervals[i];
+        if (interval.lower.status != stats::ProfileEndpointStatus::Crossing ||
+            interval.upper.status != stats::ProfileEndpointStatus::Crossing)
+            throw std::runtime_error("Expected two finite contour crossings");
+        std::println("| {} | {:.4f} | {:.4f} | [{:.4f}, {:.4f}] |", label,
+                     fit.parameters[i], std::sqrt(fit.covariance(i, i)), interval.lower.value, interval.upper.value);
+    };
+    print_row("Initial amplitude", 0);
+    print_row("Decay rate", 1);
+
+    std::vector<double> times, fitted;
+    for (std::size_t i = 0; i <= 160; ++i) {
+        const double t = static_cast<double>(i) / 20;
+        times.push_back(t);
+        fitted.push_back(fit.parameters[0] * std::exp(-fit.parameters[1] * t));
+    }
+    std::filesystem::create_directories("build");
+    graphics::RPlot::create()
+        .line(times, fitted, "Fitted curve", {29, 78, 216}, 2.5)
+        .points(time, signal, "Observations", {51, 65, 85}, 6)
+        .title("Weighted nonlinear least squares")
+        .x_label("Time").y_label("Signal")
+        .size(740, 420).save_svg("build/nonlinear_least_squares_decay.svg");
+}
+```
+// result_begin: markdown
+| Parameter | Estimate | Linearized SE | 95% profile interval |
+| --- | ---: | ---: | ---: |
+| Initial amplitude | 3.9528 | 0.0556 | [3.8453, 4.0610] |
+| Decay rate | 0.2986 | 0.0083 | [0.2828, 0.3151] |
+\image(figures/nonlinear_least_squares_decay.svg)
+// result_end
+\caption(The fitted exponential curve follows the observed decline in signal.)
+\alttext(Eight points descend from about 4 to 0.5. The fitted blue exponential curve passes close to the observations.)
+
+The standard errors use a local linear approximation to the mean function.
+The profile intervals use the nonlinear mean function for every refit.
+
+[R nonlinear least squares reference|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/nls.html] ·
+[Venzon and Moolgavkar (1988)|https://doi.org/10.2307/2347496]

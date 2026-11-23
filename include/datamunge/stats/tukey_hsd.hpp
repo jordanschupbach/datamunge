@@ -18,13 +18,14 @@ namespace datamunge::stats {
 /// P(Q <= q) for the range of @p nmeans independent standard normals divided by an independent
 /// sqrt(chi-square(df) / df). Uses the Gauss-Legendre quadrature of Copenhaver and Holland
 /// (1988) as in R's ptukey.c (nranges = 1), accurate to roughly 1e-8; df > 25000 uses the
-/// infinite-df limit. Pure function, no shared state.
-/// @param q Quantile; q <= 0 gives 0 and +infinity gives 1.
+/// infinite-df limit. With df below 2 the quadrature uses a log-scale integration
+/// variable. Pure function, no shared state.
+/// @param q Quantile; q <= 0 gives lower-tail probability 0 and +infinity gives 1.
 /// @param nmeans Number of means k, at least 2.
-/// @param df Error degrees of freedom, at least 2.
+/// @param df Error degrees of freedom, at least 1.
 /// @param lower_tail True (default) returns P(Q <= q); false returns P(Q > q).
 /// @return Probability in [0, 1].
-/// @throws std::invalid_argument nmeans < 2, df < 2 or NaN @p q.
+/// @throws std::invalid_argument nmeans < 2, df < 1, NaN degrees of freedom or NaN @p q.
 /// @par Example
 /// @code
 /// std::print("{:.4f}\n", dm::stats::studentized_range_cdf(3.5, 3, 20));   // 0.9441
@@ -43,9 +44,9 @@ double studentized_range_cdf(double q, std::size_t nmeans, double df, bool lower
 /// Inverts studentized_range_cdf() by bracketing and bisection to about 1e-9 in q.
 /// @param p Lower-tail probability strictly in (0, 1).
 /// @param nmeans Number of means k, at least 2.
-/// @param df Error degrees of freedom, at least 2.
+/// @param df Error degrees of freedom, at least 1.
 /// @return q with P(Q <= q) = p.
-/// @throws std::invalid_argument @p p outside (0, 1), nmeans < 2 or df < 2.
+/// @throws std::invalid_argument Invalid inputs or failure to bracket the quantile.
 /// @par Example
 /// @code
 /// std::print("{:.3f}\n", dm::stats::studentized_range_quantile(0.95, 3, 20));   // 3.578

@@ -1,0 +1,46 @@
+//? Title: Cohen’s d and Hedges’ g with noncentral t intervals
+//? Exports: both
+//? Lang: en
+
+> Choose the standard deviation for the design
+
+In the one-sample example, the reference mean is 15 and the standardizer
+is the sample SD. The paired example forms a difference for each matched
+row and uses the SD of those differences. The independent-groups
+example pools its two sample variances by their residual degrees of freedom.
+
+Cohen’s d divides the mean contrast by the chosen SD. Hedges’ g applies
+a small-sample bias correction. Both estimates target the population
+contrast standardized by its population SD. The interval comes from
+inverting the two tails of the noncentral t distribution for that target.
+
+```{cpp, id=standardized-mean-differences, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/standardized_effects.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const auto single = one_sample_standardized_mean_difference({13, 17, 21, 19, 16, 22}, 15);
+    const auto paired = paired_standardized_mean_difference({10, 13, 11, 16, 14}, {9, 11, 8, 14, 13});
+    const auto pooled = pooled_standardized_mean_difference({13, 17, 21, 19, 16, 22}, {11, 16, 17, 15, 12});
+    std::println("| Standardization | Observed SD | Cohen’s d | Hedges’ g | 95% interval |");
+    std::println("| --- | ---: | ---: | ---: | --- |");
+    const auto show = [](const char* label, const StandardizedMeanDifference& fit) {
+        const auto [lower, upper] = fit.confidence_interval;
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | [{:.3f}, {:.3f}] |",
+                     label, fit.standardizer, fit.cohen_d, *fit.hedges_g, lower, upper);
+    };
+    show("One-sample SD", single);
+    show("Paired-difference SD", paired);
+    show("Pooled independent-sample SD", pooled);
+}
+```
+// result_begin: markdown
+| Standardization | Observed SD | Cohen’s d | Hedges’ g | 95% interval |
+| --- | ---: | ---: | ---: | --- |
+| One-sample SD | 3.347 | 0.896 | 0.754 | [-0.098, 1.833] |
+| Paired-difference SD | 0.837 | 2.151 | 1.717 | [0.451, 3.806] |
+| Pooled independent-sample SD | 3.033 | 1.253 | 1.145 | [-0.092, 2.542] |
+// result_end
+
+[Hedges’ bias adjustment|https://doi.org/10.3102/10769986006002107]

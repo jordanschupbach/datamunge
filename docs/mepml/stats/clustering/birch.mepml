@@ -1,0 +1,101 @@
+//? Title: Cluster streaming observations with BIRCH
+//? Exports: both
+//? Lang: en
+
+> Compress batches into cluster features
+
+A sequence of six batches contains 33 two-dimensional observations.
+Each batch is concentrated near a different center. BIRCH routes new
+rows through a tree of cluster features, each storing a count, centroid
+and root mean squared radius. A leaf can absorb a row when its resulting
+radius is at most 0.10. Nodes split when they exceed three entries.
+
+The global fit clusters the resulting leaf summaries in two groups.
+Ward's merge criterion uses the number of observations summarized by
+each leaf. A new observation takes the global label of its nearest
+leaf centroid.
+
+```{cpp, id=birch-streaming-summaries, file="figures/birch_leaf_summaries.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/birch.hpp>
+
+#include <array>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <vector>
+
+int main() {
+    namespace dm = datamunge;
+    using dm::linalg::DenseMatrix;
+    const DenseMatrix<double> centers(6, 2, {
+        -3, 0, -2.9, .7, -1.8, .2, .9, .2, 2.2, 0, 2.9, .6,
+    });
+    const std::array<std::size_t, 6> counts{7, 2, 9, 1, 6, 8};
+    dm::stats::Birch tree(2, {.threshold = .10, .branching_factor = 3});
+    std::vector<double> coordinates;
+    for (std::size_t i = 0; i < centers.rows(); ++i) {
+        DenseMatrix<double> batch(counts[i], 2);
+        for (std::size_t j = 0; j < counts[i]; ++j) {
+            const auto offset = .018 * (static_cast<double>(j) - (counts[i] - 1) / 2.0);
+            batch(j, 0) = centers(i, 0) + offset;
+            batch(j, 1) = centers(i, 1) - .6 * offset;
+        }
+        tree.partial_fit(batch);
+        coordinates.insert(coordinates.end(), batch.data().begin(), batch.data().end());
+    }
+    const auto partition = tree.cluster_leaves(2);
+    std::println("The tree stores {} leaf summaries for {} observations across {} levels.\n",
+        partition.leaves.size(), tree.observations(), tree.height());
+    std::println("| Global cluster | Observations | Centroid x | Centroid y |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    for (std::size_t i = 0; i < partition.clusters.size(); ++i) {
+        const auto& cluster = partition.clusters[i];
+        std::println("| {} | {} | {:.3f} | {:.3f} |", i, cluster.count,
+            cluster.centroid[0], cluster.centroid[1]);
+    }
+
+    // The report keeps the raw coordinates so it can show them alongside the summaries.
+    const DenseMatrix<double> points(tree.observations(), 2, coordinates);
+    const auto labels = partition.predict(points);
+    const std::array<dm::graphics::RGBA, 2> colors{{{28, 94, 150}, {175, 72, 43}}};
+    auto plot = dm::graphics::RPlot::create();
+    for (std::size_t group = 0; group < partition.clusters.size(); ++group) {
+        std::vector<double> x, y;
+        for (std::size_t i = 0; i < labels.size(); ++i)
+            if (labels[i] == group) {
+                x.push_back(points(i, 0));
+                y.push_back(points(i, 1));
+            }
+        plot.points(x, y, std::format("Cluster {}", group), colors[group], 3.2);
+    }
+    std::vector<double> leaf_x, leaf_y;
+    for (const auto& leaf : partition.leaves) {
+        leaf_x.push_back(leaf.centroid[0]);
+        leaf_y.push_back(leaf.centroid[1]);
+    }
+    plot.points(leaf_x, leaf_y, "Leaf centroids", {48, 51, 59}, 4.1);
+    std::filesystem::create_directories("build");
+    plot.title("Streaming observations and BIRCH leaf centroids")
+        .x_label("First coordinate").y_label("Second coordinate")
+        .x_limits(-3.6, 3.5).y_limits(-.19, 1.02)
+        .size(740, 420).save_svg("build/birch_leaf_summaries.svg");
+}
+```
+// result_begin: markdown
+The tree stores 6 leaf summaries for 33 observations across 2 levels.
+
+| Global cluster | Observations | Centroid x | Centroid y |
+| ---: | ---: | ---: | ---: |
+| 0 | 18 | -2.389 | 0.178 |
+| 1 | 15 | 2.487 | 0.333 |
+\image(figures/birch_leaf_summaries.svg)
+// result_end
+\caption(The six leaf centroids represent small groups of points. The colors show the two global clusters.)
+\alttext(Six centroid markers summarize the batches. The three groups to the left form one global cluster and the three groups to the right form the other.)
+
+The batch counts add to 18 in the left cluster and 15 in the right
+cluster. The global centroids reflect those counts. The fitted tree
+contains the summaries needed for clustering and prediction.
+
+[Zhang, Ramakrishnan, and Livny (1996)|https://doi.org/10.1145/233269.233324]

@@ -1,0 +1,106 @@
+//? Title: Select a Gaussian mixture by BIC
+//? Exports: both
+//? Lang: en
+
+> Compare component counts and covariance structures
+
+Two synthetic groups have the same tilted spread and different centers.
+Fit mixtures with one, two, and three components. A tied model shares one
+covariance across all components. Diagonal models fit separate feature
+variances within each component. Full models fit a separate covariance
+matrix for each component.
+
+BIC adds a penalty of \(p\log(n)\) to negative twice the log likelihood,
+where \(p\) counts the free mixing weights, means, and covariance
+coefficients. Lower values are preferred. The covariance eigenvalue
+floor is expressed in the units of the example and applies to every
+candidate.
+
+```{cpp, id=gaussian-mixture-bic, file="figures/gaussian_mixture_bic.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/nn/gaussian_mixture.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <vector>
+
+int main() {
+    namespace dm = datamunge;
+    namespace ml = dm::nn::ml;
+    const std::array quantiles{-1.3829941271, -.6744897502, -.2104283942,
+        .2104283942, .6744897502, 1.3829941271};
+    std::vector<double> values;
+    for (const int sign : {-1, 1})
+        for (const double v : quantiles)
+            for (const double u : quantiles) {
+                values.push_back(4 * sign + .86 * u);
+                values.push_back(sign + .65 * u + .38 * v);
+            }
+
+    const auto x = dm::nn::from_vector(values, {72, 2});
+    const auto fit = ml::select_gaussian_mixture(x, {1, 2, 3},
+        {.starts = 8, .max_iterations = 500, .relative_tolerance = 1e-10,
+         .covariance_floor = .03, .seed = 79});
+    const auto& best = fit.candidates[fit.best_index];
+    const std::array labels{"Tied", "Diagonal", "Full"};
+    const auto model_label = [&](ml::GaussianMixtureCovariance kind) {
+        return labels[static_cast<std::size_t>(kind)];
+    };
+    std::println("Selected model has {} components and {} covariance (BIC {:.2f}).\n",
+        best.components, model_label(best.covariance), best.bic);
+    std::println("| Components | Covariance | Parameters | Log likelihood | BIC | Converged |");
+    std::println("| ---: | --- | ---: | ---: | ---: | --- |");
+
+    std::array<std::vector<double>, 3> count, delta;
+    for (const auto& model : fit.candidates) {
+        std::println("| {} | {} | {} | {:.2f} | {:.2f} | {} |", model.components,
+            model_label(model.covariance), model.parameters, model.log_likelihood, model.bic,
+            model.converged ? "Yes" : "No");
+        if (std::isfinite(model.bic)) {
+            const auto index = static_cast<std::size_t>(model.covariance);
+            count[index].push_back(model.components);
+            delta[index].push_back(model.bic - best.bic);
+        }
+    }
+    const std::array<dm::graphics::RGBA, 3> colors{{{27,88,145},{167,70,43},{65,114,80}}};
+    std::filesystem::create_directories("build");
+    auto plot = dm::graphics::RPlot::create();
+    // Draw tied last so the shared one-component point is visible.
+    for (const auto i : {2, 1, 0})
+        plot.line(count[i], delta[i], labels[i], colors[i], 2.5)
+            .points(count[i], delta[i], "", colors[i], 4);
+    plot.title("BIC relative to the selected mixture")
+        .x_label("Number of components").y_label("BIC above minimum")
+        .x_ticks({1, 2, 3}, {"1", "2", "3"})
+        .x_limits(.8, 3.2).size(740, 420).save_svg("build/gaussian_mixture_bic.svg");
+}
+```
+// result_begin: markdown
+Selected model has 2 components and Tied covariance (BIC 350.21).
+
+| Components | Covariance | Parameters | Log likelihood | BIC | Converged |
+| ---: | --- | ---: | ---: | ---: | --- |
+| 1 | Tied | 5 | -257.34 | 536.07 | Yes |
+| 1 | Diagonal | 4 | -318.97 | 655.05 | Yes |
+| 1 | Full | 5 | -257.34 | 536.07 | Yes |
+| 2 | Tied | 8 | -158.00 | 350.21 | Yes |
+| 2 | Diagonal | 9 | -207.23 | 452.95 | Yes |
+| 2 | Full | 11 | -158.00 | 363.04 | Yes |
+| 3 | Tied | 11 | -158.00 | 363.04 | No |
+| 3 | Diagonal | 14 | -192.25 | 444.38 | Yes |
+| 3 | Full | 17 | -154.62 | 381.95 | Yes |
+\image(figures/gaussian_mixture_bic.svg)
+// result_end
+\caption(The lowest BIC is for two components with a shared covariance.)
+\alttext(BIC drops between one and two components for all covariance structures. The tied model at two components reaches the minimum, with the full model slightly above it and the diagonal model much higher.)
+
+The tied and full models with two components reach the same log
+likelihood to reported precision. Sharing the covariance saves three
+parameters here. The diagonal model uses a different variance in each
+group but loses fit because the two features vary together within each
+group. The three-component tied fit returned a finite score before
+meeting the convergence criterion.
+
+[Scrucca et al. (2016)|https://journal.r-project.org/articles/RJ-2016-021/]

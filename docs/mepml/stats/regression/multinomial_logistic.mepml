@@ -1,0 +1,80 @@
+//? Title: Estimate class probabilities with a common baseline
+//? Exports: both
+//? Lang: en
+
+> Fit two sets of log odds against a baseline class
+
+Eight predictor combinations each have observed counts in three
+classes. The fit models the log odds of classes B and C relative to
+class A. The two coefficient rows are estimated jointly, and the
+softmax maps their logits to three probabilities that sum to one.
+
+```{cpp, id=multinomial-log-odds, file="figures/multinomial_logistic_probabilities.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/multinomial_logistic.hpp>
+#include <array>
+#include <filesystem>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge;
+    using linalg::DenseMatrix;
+    const DenseMatrix<double> design(8, 3, {
+        1, 0, 0, 1, .2, .6, 1, .3, .2, 1, .45, .9,
+        1, .6, .55, 1, .8, 1, 1, .9, .15, 1, 1, .7,
+    });
+    const DenseMatrix<double> counts(8, 3, {8,2,1, 7,5,2, 6,4,3, 4,5,2, 4,6,6, 3,8,5, 2,5,9, 2,6,11});
+    const auto fit = stats::multinomial_logistic(design, counts, {.weights = {1,2,.6,1,1.4,.75,1.3,1.2}});
+    if (fit.status != stats::MultinomialLogisticStatus::Converged)
+        throw std::runtime_error("Expected a converged fit");
+    const std::array classes{"A", "B", "C"};
+    std::println("| Log odds | Intercept | x coefficient | z coefficient |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (std::size_t j = 0; j < fit.coefficients.rows(); ++j)
+        std::println("| {} versus A | {:.3f} | {:.3f} | {:.3f} |", classes[j + 1],
+                     fit.coefficients(j, 0), fit.coefficients(j, 1), fit.coefficients(j, 2));
+    std::println("\nThe covariance between the two x coefficients is {:.4f}.", fit.covariance(1, 4));
+
+    const auto prediction = fit.predict(DenseMatrix<double>(1, 3, {1, .55, .4}));
+    std::println("\n| Probability at x = 0.55, z = 0.4 | A | B | C |");
+    std::println("| --- | ---: | ---: | ---: |");
+    std::println("| Fitted | {:.4f} | {:.4f} | {:.4f} |", prediction(0, 0), prediction(0, 1), prediction(0, 2));
+
+    DenseMatrix<double> grid(101, 3, 1);
+    std::vector<double> x(grid.rows());
+    for (std::size_t i = 0; i < grid.rows(); ++i) {
+        grid(i, 1) = x[i] = static_cast<double>(i) / 100;
+        grid(i, 2) = .4;
+    }
+    const auto p = fit.predict(grid);
+    std::filesystem::create_directories("build");
+    graphics::RPlot::create()
+        .line(x, p.col(0), "Class A", {51, 65, 85}, 2.5)
+        .line(x, p.col(1), "Class B", {29, 78, 216}, 2.5)
+        .line(x, p.col(2), "Class C", {180, 83, 9}, 2.5)
+        .title("Class probabilities at z = 0.4").x_label("Predictor x").y_label("Probability")
+        .ylim(0, 1).size(740, 420).save_svg("build/multinomial_logistic_probabilities.svg");
+}
+```
+// result_begin: markdown
+| Log odds | Intercept | x coefficient | z coefficient |
+| --- | ---: | ---: | ---: |
+| B versus A | -1.161 | 2.042 | 0.566 |
+| C versus A | -1.870 | 3.842 | -0.381 |
+
+The covariance between the two x coefficients is 0.3499.
+
+| Probability at x = 0.55, z = 0.4 | A | B | C |
+| --- | ---: | ---: | ---: |
+| Fitted | 0.3027 | 0.3658 | 0.3315 |
+\image(figures/multinomial_logistic_probabilities.svg)
+// result_end
+\caption(With z fixed, the most probable class changes from A to B and then to C as x increases.)
+\alttext(The Class A curve declines, Class B peaks in the middle, and Class C rises. The three curves cross as the predictor increases.)
+
+The joint covariance includes off-diagonal blocks for coefficients from
+different classes. Those terms matter when forming contrasts, such as the
+difference between the x slopes for classes C and B.
+
+[R multinomial regression reference|https://stat.ethz.ch/R-manual/R-devel/library/nnet/html/multinom.html]

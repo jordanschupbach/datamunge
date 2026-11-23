@@ -1,0 +1,76 @@
+//? Title: Noncentral distribution tails for power and inference
+//? Exports: both
+//? Lang: en
+
+> Find a rejection cutoff and solve for power
+
+In an upper-tail test, the central law sets the rejection cutoff.
+The noncentral law gives the probability of exceeding that cutoff under
+an alternative. The inverse calculation finds the noncentrality that
+would give a target power at the same cutoff. Mapping that parameter
+to an effect size depends on the study design.
+
+```{cpp, id=noncentral-power-and-cutoffs, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/random/noncentral_distributions.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::random;
+    constexpr double alpha = .05, target = .8;
+    const double chi_cutoff = noncentral_chi_square_quantile(alpha, 4, 0, false);
+    const double f_cutoff = noncentral_f_quantile(alpha, 4, 20, 0, false);
+    const double chi_power = noncentral_chi_square_cdf(chi_cutoff, 4, 10, false);
+    const double f_power = noncentral_f_cdf(f_cutoff, 4, 20, 10, false);
+    const double chi_target = noncentral_chi_square_noncentrality(target, chi_cutoff, 4, false);
+    const double f_target = noncentral_f_noncentrality(target, f_cutoff, 4, 20, false);
+    std::println("| Law | 5% cutoff | Power at noncentrality 10 | Noncentrality for 80% power |");
+    std::println("| --- | ---: | ---: | ---: |");
+    std::println("| Chi-square, 4 df | {:.3f} | {:.3f} | {:.3f} |", chi_cutoff, chi_power, chi_target);
+    std::println("| F, 4 and 20 df | {:.3f} | {:.3f} | {:.3f} |", f_cutoff, f_power, f_target);
+}
+```
+// result_begin: markdown
+| Law | 5% cutoff | Power at noncentrality 10 | Noncentrality for 80% power |
+| --- | ---: | ---: | ---: |
+| Chi-square, 4 df | 9.488 | 0.716 | 11.935 |
+| F, 4 and 20 df | 2.866 | 0.601 | 15.094 |
+// result_end
+
+> Invert a noncentral t reference
+
+For 20 observations, the one-sample t statistic has 19 degrees of freedom.
+Its noncentrality equals the population standardized mean difference
+times the square root of 20. The program computes upper-tail power at
+a standardized difference of 0.5. For an observed t statistic of 2.5,
+it then finds the noncentralities where the observed value lies in each
+2.5% tail and converts those endpoints to the original effect scale.
+
+```{cpp, id=noncentral-t-power-and-interval, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/random/noncentral_distributions.hpp>
+#include <cmath>
+#include <print>
+
+int main() {
+    using namespace datamunge::random;
+    constexpr double n = 20, df = n - 1, observed_t = 2.5;
+    const auto root_n = std::sqrt(n);
+    const auto cutoff = noncentral_t_quantile(.05, df, 0, false);
+    const auto power = noncentral_t_cdf(cutoff, df, .5 * root_n, false);
+    const auto lower = noncentral_t_noncentrality(.025, observed_t, df, false) / root_n;
+    const auto upper = noncentral_t_noncentrality(.025, observed_t, df, true) / root_n;
+    std::println("The 5% upper-tail cutoff is {:.3f}, giving power {:.3f} at a standardized difference of 0.5.",
+                 cutoff, power);
+    std::println("");
+    std::println("For t = 2.5, the 95% interval on the standardized difference is [{:.3f}, {:.3f}].",
+                 lower, upper);
+}
+```
+// result_begin: markdown
+The 5% upper-tail cutoff is 1.729, giving power 0.695 at a standardized difference of 0.5.
+
+For t = 2.5, the 95% interval on the standardized difference is [0.080, 1.025].
+// result_end
+
+[R chi-square reference|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Chisquare.html] ·
+[R F reference|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Fdist.html] ·
+[R t reference|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/TDist.html]

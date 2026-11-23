@@ -1,0 +1,68 @@
+//? Title: Confidence intervals for proportions and event rates
+//? Exports: both
+//? Lang: en
+
+Newcombe's interval combines two Wilson score intervals to estimate a
+difference of proportions. A Poisson event rate uses exposure instead of a
+fixed number of trials. Its exact interval inverts Poisson tails. For the
+ratio of two rates, conditioning on the total event count gives a binomial
+problem whose interval can be transformed back to the rate ratio.
+
+```{cpp, id=count-intervals, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/proportion_test.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const auto difference = newcombe_difference_interval(2, 11, 8, 17);
+    const auto rate = poisson_rate_interval(10, 22);
+    const auto ratio = poisson_rate_ratio_interval(10, 22, 5, 35);
+    std::println("| Quantity | Estimate | 95% lower | 95% upper |");
+    std::println("| --- | ---: | ---: | ---: |");
+    std::println("| Proportion difference, 2/11 minus 8/17 | {:.3f} | {:.3f} | {:.3f} |",
+                 difference.difference, difference.lower, difference.upper);
+    std::println("| Rate, 10 events in 22 exposure units | {:.3f} | {:.3f} | {:.3f} |",
+                 *rate.estimate, rate.lower, rate.upper);
+    std::println("| Rate ratio, (10/22) divided by (5/35) | {:.3f} | {:.3f} | {:.3f} |",
+                 *ratio.estimate, ratio.lower, ratio.upper);
+}
+```
+// result_begin: markdown
+| Quantity | Estimate | 95% lower | 95% upper |
+| --- | ---: | ---: | ---: |
+| Proportion difference, 2/11 minus 8/17 | -0.289 | -0.544 | 0.073 |
+| Rate, 10 events in 22 exposure units | 0.455 | 0.218 | 0.836 |
+| Rate ratio, (10/22) divided by (5/35) | 3.182 | 0.991 | 11.864 |
+// result_end
+
+> Estimate a ratio of two binomial risks
+
+The score interval fits the two risks under each proposed ratio and keeps
+the ratios that pass the two-sided score test. A zero numerator count
+gives a lower bound of zero. With zero events in both groups, the data
+leave the risk ratio unrestricted.
+
+```{cpp, id=binomial-risk-ratio, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/proportion_test.hpp>
+#include <print>
+
+int main() {
+    using datamunge::stats::risk_ratio_score_interval;
+    const auto observed = risk_ratio_score_interval(2, 11, 8, 17);
+    const auto zero = risk_ratio_score_interval(0, 20, 4, 20);
+    std::println("| First risk / second risk | Estimate | 95% lower | 95% upper |");
+    std::println("| --- | ---: | ---: | ---: |");
+    std::println("| (2/11) / (8/17) | {:.3f} | {:.3f} | {:.3f} |",
+                 *observed.estimate, observed.lower, observed.upper);
+    std::println("| (0/20) / (4/20) | {:.3f} | {:.3f} | {:.3f} |",
+                 *zero.estimate, zero.lower, zero.upper);
+}
+```
+// result_begin: markdown
+| First risk / second risk | Estimate | 95% lower | 95% upper |
+| --- | ---: | ---: | ---: |
+| (2/11) / (8/17) | 0.386 | 0.102 | 1.229 |
+| (0/20) / (4/20) | 0.000 | 0.000 | 0.870 |
+// result_end
+
+[Koopman’s score interval|https://doi.org/10.2307/2531405]

@@ -1,0 +1,50 @@
+//? Title: Compare ROC areas with DeLong inference
+//? Exports: both
+//? Lang: en
+
+> Compare two ROC areas on shared observations
+
+Two classifiers assign scores to the same observations. A label of 1
+marks a case, and larger scores indicate stronger evidence for that
+class. The AUC gives the chance that a randomly chosen case outranks
+a randomly chosen control, with half credit for ties.
+
+The paired comparison uses the covariance between the two AUC estimates.
+In this example it is positive, which reduces the standard error of the
+difference. The 95% interval spans zero even though classifier A has the
+larger observed AUC.
+
+```{cpp, id=paired-roc-areas, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/delong.hpp>
+#include <cmath>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<int> truth{0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0};
+    const std::vector<double> first{2, 7, 3, 1, 5, 6, 4, 3, 6, 5, 4};
+    const std::vector<double> second{3, 7, 2, 4, 5, 6, 1, 2, 6, 5, 1};
+    const auto fit = delong_auc_covariance(truth, {first, second});
+    const auto test = delong_auc_test(truth, first, second);
+
+    std::println("| Classifier | AUC | Standard error |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| A | {:.3f} | {:.3f} |", fit.areas[0], std::sqrt(fit.covariance(0, 0)));
+    std::println("| B | {:.3f} | {:.3f} |", fit.areas[1], std::sqrt(fit.covariance(1, 1)));
+    std::println("");
+    std::println("The estimated covariance is {:.4f}. The AUC difference is {:.3f} "
+                 "(95% CI [{:.3f}, {:.3f}], two-sided p = {:.3f}).",
+                 fit.covariance(0, 1), test.estimate1 - test.estimate2,
+                 test.conf_int_lower, test.conf_int_upper, test.p_value);
+}
+```
+// result_begin: markdown
+| Classifier | AUC | Standard error |
+| --- | ---: | ---: |
+| A | 0.733 | 0.159 |
+| B | 0.600 | 0.201 |
+
+The estimated covariance is 0.0231. The AUC difference is 0.133 (95% CI [-0.138, 0.405], two-sided p = 0.336).
+// result_end
+
+[DeLong, DeLong and Clarke-Pearson|https://doi.org/10.2307/2531595]

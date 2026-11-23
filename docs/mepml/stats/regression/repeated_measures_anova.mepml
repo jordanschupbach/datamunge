@@ -1,0 +1,75 @@
+//? Title: Test a repeated-measures effect when sphericity is doubtful
+//? Exports: both
+//? Lang: en
+
+> Compare the Greenhouse–Geisser and Huynh–Feldt corrections
+
+Eighteen participants complete the same task at four sessions in this
+synthetic example. Repeated-measures ANOVA tests whether the four
+session means differ. Sphericity requires all pairwise session differences
+to have the same variance across participants. The spread of the later
+scores suggests that this assumption may be doubtful.
+
+```{cpp, id=repeated-anova, file="figures/repeated_anova_scores.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/repeated_measures_anova.hpp>
+#include <cmath>
+#include <filesystem>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    linalg::DenseMatrix<double> scores(18,4);
+    const std::vector<double> session{1,2,3,4};
+    std::vector<double> mean(session.size());
+    auto plot = graphics::RPlot::create();
+    for (std::size_t row = 0; row < scores.rows(); ++row) {
+        const double id = row + 1;
+        const auto pace = std::sin(id*.22), baseline = std::sin(id*.41);
+        const double group = id <= 9 ? -1 : 1;
+        const std::vector<double> values{
+            5 + .9*pace + .42*std::cos(2*id),
+            6 + .8*pace + .31*std::cos(3*id) + .33*baseline,
+            6 + .7*pace + 1.3*std::cos(.9*id) + .6*group + .41*baseline,
+            7 + .6*pace + 2.1*std::cos(.73*id) + .8*group + .25*baseline};
+        for (std::size_t j = 0; j < session.size(); ++j) {
+            scores(row,j) = values[j];
+            mean[j] += values[j] / scores.rows();
+        }
+        plot.line(session, values, "", graphics::RGBA{120,135,153,80}, 1.1);
+    }
+    const auto test = stats::repeated_measures_anova(scores);
+    std::println("| Reference distribution | F | Epsilon | Numerator df | Denominator df | p-value |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    const auto show = [&](const char* name, const stats::RepeatedMeasuresFTest& reference) {
+        std::println("| {} | {:.3f} | {:.3f} | {:.2f} | {:.2f} | {:.3g} |", name, test.f_statistic,
+            reference.epsilon, reference.df_numerator, reference.df_denominator, reference.p_value);
+    };
+    show("Uncorrected", test.uncorrected);
+    show("Greenhouse–Geisser", test.greenhouse_geisser);
+    show("Huynh–Feldt", test.huynh_feldt.value());
+
+    std::filesystem::create_directories("build");
+    plot.line(session, mean, "", graphics::RGBA{16,80,146}, 3)
+        .title("Task scores across four sessions").x_label("Session").y_label("Task score")
+        .x_ticks(session, {"1","2","3","4"}).size(720,420).save_svg("build/repeated_anova_scores.svg");
+}
+```
+// result_begin: markdown
+| Reference distribution | F | Epsilon | Numerator df | Denominator df | p-value |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Uncorrected | 11.232 | 1.000 | 3.00 | 51.00 | 9.04e-06 |
+| Greenhouse–Geisser | 11.232 | 0.539 | 1.62 | 27.50 | 0.000572 |
+| Huynh–Feldt | 11.232 | 0.588 | 1.76 | 29.97 | 0.000368 |
+\image(figures/repeated_anova_scores.svg)
+// result_end
+\caption(Thin lines show individual participants. The thick blue line shows the session mean.)
+\alttext(Eighteen score trajectories cross over four sessions. Scores range from about 4 to 7 in session 1 and from about 5 to 10 in session 4. The mean rises from about 5.4 to 7.4.)
+
+Both corrections multiply the numerator and denominator degrees of
+freedom by an estimate of epsilon from the residual contrasts. The F
+statistic stays the same. Here, both estimates are below one, and each
+corrected p-value is larger than the uncorrected value. Both corrected
+tests still give evidence that at least one session mean differs.
+
+[Greenhouse and Geisser (1959)|https://doi.org/10.1007/BF02289823] · [Huynh and Feldt (1976)|https://doi.org/10.3102/10769986001001069]

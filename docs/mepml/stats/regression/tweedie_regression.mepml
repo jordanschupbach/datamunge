@@ -1,0 +1,65 @@
+//? Title: Profile the variance power for costs with exact zeros
+//? Exports: both
+//? Lang: en
+
+> Fit zero and positive costs in one likelihood
+
+Some shifts incur no repair cost. The other shifts have positive costs,
+measured here in hundreds of dollars. A compound Poisson–gamma model
+assigns a probability to an exact zero and a density to positive
+amounts. Its variance is $\phi\mu^p$, where $\mu$ is the predicted
+mean cost, $\phi$ is dispersion, and $p$ is the variance power.
+
+```{cpp, id=tweedie-repair-cost, file="figures/tweedie_repair_cost.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/tweedie_regression.hpp>
+#include <filesystem>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge;
+    const std::vector<double> cost{
+        .16,3.62,0,0,2.79,0,0,1.08,2.34,3.15,0,.62,
+        4.09,2.20,8.78,4.85,3.40,0,.72,.22,9.21,.04,9.78,2.96};
+    linalg::DenseMatrix<double> design(cost.size(), 2, 1);
+    for (std::size_t i = 0; i < cost.size(); ++i)
+        design(i, 1) = i >= cost.size() / 2;
+    const auto fit = stats::tweedie_regression(design, cost,
+        {.minimum_power = 1.1, .maximum_power = 1.85});
+    if (fit.status != stats::TweedieRegressionStatus::Converged)
+        throw std::runtime_error("Expected an interior Tweedie fit");
+
+    const auto mean = fit.predict(linalg::DenseMatrix<double>(2, 2, {1,0, 1,1}));
+    std::println("| Expected cost A | Expected cost B | Dispersion | Power |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    std::println("| {:.2f} | {:.2f} | {:.3f} | {:.3f} |", mean[0], mean[1], fit.dispersion, fit.power);
+
+    std::vector<double> power, relative_log_likelihood;
+    for (const auto& point : fit.profile) {
+        power.push_back(point.power);
+        relative_log_likelihood.push_back(point.log_likelihood - fit.log_likelihood);
+    }
+    std::filesystem::create_directories("build");
+    graphics::RPlot::create()
+        .line(power, relative_log_likelihood, "Profile", {29, 78, 216}, 2.5)
+        .points({fit.power}, {0}, "Maximum", {180, 83, 9}, 6)
+        .title("Variance power and the log likelihood")
+        .x_label("Variance power").y_label("Log likelihood relative to maximum")
+        .size(740, 420).save_svg("build/tweedie_repair_cost.svg");
+}
+```
+// result_begin: markdown
+| Expected cost A | Expected cost B | Dispersion | Power |
+| ---: | ---: | ---: | ---: |
+| 1.15 | 3.85 | 2.059 | 1.525 |
+\image(figures/tweedie_repair_cost.svg)
+// result_end
+\caption(The profile peaks at a variance power of about 1.53.)
+\alttext(The log likelihood rises steeply near power 1.1, peaks at 1.53, and then declines toward 1.85.)
+
+Each point on the profile refits the mean coefficients and dispersion
+at that power. The dot marks the highest fitted likelihood. The mean
+costs include the shifts with zero cost.
+
+[Dunn and Smyth, Series evaluation of Tweedie exponential dispersion model densities|https://doi.org/10.1007/s11222-005-4070-y]

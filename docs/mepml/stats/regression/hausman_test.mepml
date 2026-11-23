@@ -1,0 +1,86 @@
+//? Title: Compare fixed and random effects with a Hausman test
+//? Exports: both
+//? Lang: en
+
+> Test the shared slope from two panel models
+
+Twelve sites are measured four times. In this synthetic example,
+the control setting partly depends on a site characteristic that
+also affects the outcome. The fixed-effects model gives every site
+its own intercept. The random-effects model uses a random site
+intercept and also estimates a coefficient for the site layout,
+which is constant over time. The test compares the setting slope
+estimated by both models.
+
+```{cpp, id=hausman-panel-models, file="figures/hausman_slopes.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/gls.hpp>
+#include <datamunge/stats/hausman_test.hpp>
+#include <cmath>
+#include <filesystem>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    constexpr std::size_t sites = 12, periods = 4, n = sites * periods;
+    linalg::DenseMatrix<double> fixed(n,sites+1), random(n,3,1), marginal(n,n);
+    std::vector<double> y(n);
+    std::vector<std::string> fixed_terms{"setting"};
+    for (std::size_t u = 0; u < sites; ++u) {
+        const double site = u + 1;
+        fixed_terms.push_back("site_" + std::to_string(u+1));
+        const auto characteristic = std::sin(.8*site), layout = std::cos(.45*site);
+        for (std::size_t v = 0; v < periods; ++v) {
+            const double t = v + 1;
+            const auto row = u*periods+v;
+            const auto setting = 1.5*characteristic + .25*std::sin(site*t) + .15*t;
+            fixed(row,0) = random(row,2) = setting;
+            fixed(row,u+1) = 1;
+            random(row,1) = layout;
+            y[row] = 3 + .85*setting + .5*layout + 1.2*characteristic +
+                .35*std::cos(site+2*t) + .2*std::sin(2*site-t);
+            for (std::size_t k = 0; k < periods; ++k)
+                marginal(row,u*periods+k) = .64;
+            marginal(row,row) += .16;
+        }
+    }
+    const auto fe = stats::generalized_least_squares(fixed,y,.16 * linalg::DenseMatrix<double>::identity(n));
+    const auto re = stats::generalized_least_squares(random,y,marginal);
+    const auto test = stats::hausman_test({fixed_terms,fe.coefficients,fe.covariance},
+        {{"intercept","layout","setting"},re.coefficients,re.covariance});
+
+    const double first = fe.coefficients[0], second = re.coefficients[2];
+    const double first_se = std::sqrt(fe.covariance(0,0)), second_se = std::sqrt(re.covariance(2,2));
+    std::println("| Shared term | Fixed-effects slope | Random-effects slope | Chi-square | df | p-value |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {} | {:.4f} |", test.terms.at(0),
+        first, second, test.statistic, test.df, test.p_value);
+
+    std::filesystem::create_directories("build");
+    auto plot = graphics::RPlot::create();
+    const graphics::RGBA blue{23,84,146};
+    plot.error_bars({1,2},{first-first_se,second-second_se},{first+first_se,second+second_se},.12,blue,2.2)
+        .points({1,2},{first,second},blue,5)
+        .title("Setting slope by panel model").x_label("").y_label("Estimated slope")
+        .x_ticks({1,2},{"Fixed effects","Random effects"}).x_limits(.45,2.55)
+        .y_limits(.2,1.35).size(680,410).save_svg("build/hausman_slopes.svg");
+}
+```
+// result_begin: markdown
+| Shared term | Fixed-effects slope | Random-effects slope | Chi-square | df | p-value |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| setting | 0.579 | 1.048 | 7.289 | 1 | 0.0069 |
+\image(figures/hausman_slopes.svg)
+// result_end
+\caption(Each point is a fitted setting slope with one model standard error on either side.)
+\alttext(The fixed-effects slope is 0.58 with a standard error of 0.26. The random-effects slope is 1.05 with a standard error of 0.19.)
+
+The example supplies the error variance and the random site variance
+so the two covariance estimates use the same error model. Under the
+null that the random effects are uncorrelated with the predictors,
+the efficient random-effects estimator has smaller sampling covariance.
+The difference of the two slope estimates is then standardized using
+the difference of their sampling variances. The small p-value is
+consistent with the dependence built into this example.
+
+[Hausman, Specification Tests in Econometrics|https://doi.org/10.2307/1913827]

@@ -1,0 +1,94 @@
+//? Title: Check which predictors lasso selects across subsamples
+//? Exports: both
+//? Lang: en
+
+> Compare variable-selection frequencies across penalties
+
+Stability selection refits a variable selector on repeated subsamples.
+The example uses the same sampled rows at all six penalties in each
+draw. For each predictor and penalty the estimated frequency is the
+fraction of draws in which lasso returns a nonzero coefficient.
+
+The synthetic response depends on the first two of four predictors.
+A predictor enters the stable set when its maximum frequency across
+the supplied grid is at least 0.8.
+
+```{cpp, id=stability-selection-lasso, file="figures/stability_selection_path.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/elastic_net.hpp>
+#include <datamunge/stats/stability_selection.hpp>
+
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <string>
+#include <vector>
+
+int main() {
+    namespace dm = datamunge;
+    const std::array<std::string, 4> names{"X1", "X2", "X3", "X4"};
+    dm::linalg::DenseMatrix<double> x(64, names.size());
+    std::vector<double> y(x.rows());
+    for (std::size_t i = 0; i < x.rows(); ++i) {
+        const double t = i + 1;
+        x(i, 0) = std::sin(.71 * t);
+        x(i, 1) = std::cos(.38 * t);
+        x(i, 2) = std::sin(1.47 * t);
+        x(i, 3) = std::cos(1.18 * t);
+        y[i] = 1.8 * x(i, 0) - .95 * x(i, 1) + .4 * std::sin(2.36 * t);
+    }
+    const dm::stats::StabilitySelector lasso = [&](const auto& rows, const auto& response, double lambda) {
+        dm::dstruct::DataFrame frame;
+        frame.add_column("y", response);
+        for (std::size_t j = 0; j < rows.cols(); ++j) {
+            std::vector<double> column(rows.rows());
+            for (std::size_t i = 0; i < rows.rows(); ++i)
+                column[i] = rows(i, j);
+            frame.add_column(names[j], column);
+        }
+        const dm::stats::Lasso fit(frame, "y ~ X1 + X2 + X3 + X4", {.lambda = lambda});
+        std::vector<std::size_t> selected;
+        for (std::size_t j = 0; j < fit.coefficients().size(); ++j)
+            if (fit.coefficients()[j] != 0)
+                selected.push_back(j);
+        return selected;
+    };
+    const auto fit = dm::stats::stability_selection(x, y, {.08, .15, .40, .75, 1.10, 1.45},
+        lasso, {.subsamples = 60, .selection_threshold = .8, .seed = 41});
+
+    std::println("| Predictor | Maximum selection frequency |");
+    std::println("| --- | ---: |");
+    for (std::size_t j = 0; j < names.size(); ++j)
+        std::println("| {} | {:.3f} |", names[j], fit.maximum_frequency[j]);
+    std::print("\nStable set");
+    for (const auto j : fit.stable_features)
+        std::print(" {}", names[j]);
+    std::println(".");
+
+    auto plot = dm::graphics::RPlot::create();
+    const std::array<dm::graphics::RGBA, 4> colors{
+        dm::graphics::RGBA{26, 90, 147}, {176, 72, 43}, {60, 116, 76}, {116, 89, 140}};
+    plot.line({.06, 1.47}, {.8, .8}, "", {120, 124, 132}, 1.2);
+    for (std::size_t j = 0; j < names.size(); ++j) {
+        std::vector<double> path(fit.levels.size());
+        for (std::size_t k = 0; k < path.size(); ++k)
+            path[k] = fit.frequencies(k, j);
+        plot.line(fit.levels, path, names[j], colors[j], 2.4)
+            .points(fit.levels, path, "", colors[j], 3);
+    }
+    plot.title("Lasso selection frequency by penalty")
+        .x_label("Penalty").y_label("Selection frequency")
+        .y_limits(-.04, 1.24).size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/stability_selection_path.svg");
+}
+```
+\caption(The horizontal line marks the 0.8 threshold applied to each predictor's maximum frequency.)
+\alttext(The first two predictors reach the threshold. The remaining predictors have lower selection frequencies across the penalty grid.)
+
+The stable set contains both predictors used to generate the response.
+The stronger penalties reduce the selection frequencies, especially for
+the weaker of the two signals.
+
+[Meinshausen and Bühlmann (2010)|https://doi.org/10.1111/j.1467-9868.2010.00740.x]

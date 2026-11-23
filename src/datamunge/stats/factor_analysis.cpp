@@ -1,14 +1,17 @@
 /// @file factor_analysis.cpp
-/// @brief Principal-axis extraction, orthogonal rotation and inspectable covariance checks.
+/// @brief Principal-axis extraction, orthogonal and oblique rotation, and covariance checks.
 #include <algorithm>
 #include <cmath>
 #include <datamunge/linalg/eigen.hpp>
+#include <datamunge/linalg/lu.hpp>
+#include <datamunge/linalg/svd.hpp>
 #include <datamunge/stats/factor_analysis.hpp>
 #include <iomanip>
 #include <iostream>
 #include <limits>
 #include <numbers>
 #include <numeric>
+#include <optional>
 #include <random>
 #include <set>
 #include <sstream>
@@ -113,13 +116,16 @@ std::size_t heywood_count(
 /// @param L Owned loading matrix changed in place; a single column is unchanged.
 /// @param max_iter Maximum pair sweeps.
 /// @param tol Absolute change tolerance on the normalized varimax objective.
+/// @param axes Optional identity matrix to accumulate the orthogonal column transform.
+/// @return True if the objective met tolerance or there is only one factor.
 /// @throws std::invalid_argument Unrepresentable row norm or rotated loading.
 /// @see FactorAnalysisOptions
-void varimax(linalg::DenseMatrix<double>& L, std::size_t max_iter, double tol) {
+bool varimax(linalg::DenseMatrix<double>& L, std::size_t max_iter, double tol,
+    linalg::DenseMatrix<long double>* axes = nullptr) {
   const std::size_t p = L.rows();
   const std::size_t k = L.cols();
   if (k < 2)
-    return;
+    return true;
 
   // Kaiser normalization: scale each row to unit length so high- and low-communality variables
   // influence the rotation equally, then restore afterward.
@@ -135,6 +141,7 @@ void varimax(linalg::DenseMatrix<double>& L, std::size_t max_iter, double tol) {
   }
 
   double prev_crit = 0.0;
+  bool converged = false;
   for (std::size_t iter = 0; iter < max_iter; ++iter) {
     for (std::size_t a = 0; a < k; ++a) {
       for (std::size_t b = a + 1; b < k; ++b) {
@@ -159,6 +166,12 @@ void varimax(linalg::DenseMatrix<double>& L, std::size_t max_iter, double tol) {
           L(j, a) = c * x + s * y;
           L(j, b) = -s * x + c * y;
         }
+        if (axes)
+          for (std::size_t j = 0; j < k; ++j) {
+            const auto x = (*axes)(j,a), y = (*axes)(j,b);
+            (*axes)(j,a) = c*x+s*y;
+            (*axes)(j,b) = -s*x+c*y;
+          }
       }
     }
 
@@ -172,17 +185,252 @@ void varimax(linalg::DenseMatrix<double>& L, std::size_t max_iter, double tol) {
       }
       crit += s2 - s1 * s1 / static_cast<double>(p);
     }
-    if (iter > 0 && std::abs(crit - prev_crit) < tol)
+    if (iter > 0 && std::abs(crit - prev_crit) < tol) {
+      converged = true;
       break;
+    }
     prev_crit = crit;
   }
 
   for (std::size_t j = 0; j < p; ++j)
     for (std::size_t c = 0; c < k; ++c)
       L(j, c) = finite_fa(static_cast<long double>(L(j, c)) * norm[j]);
+  return converged;
+}
+
+/// @brief Extended-precision matrix for rotation and line search.
+using RotationMatrix = linalg::DenseMatrix<long double>;
+
+/// @brief Scales loadings to unit maximum magnitude and validates the rotation controls.
+std::pair<RotationMatrix,double> rotation_input(
+    const linalg::DenseMatrix<double>& input, std::size_t max_iter, double tolerance) {
+  if (input.cols() == 0 || input.rows() < input.cols() || max_iter == 0 ||
+      !(tolerance > 0) || !std::isfinite(tolerance))
+    throw std::invalid_argument("oblique rotation: invalid dimensions or controls");
+  double scale = 0;
+  for (const double value : input.data()) {
+    if (!std::isfinite(value))
+      throw std::invalid_argument("oblique rotation: loadings must be finite");
+    scale = std::max(scale,std::abs(value));
+  }
+  if (scale == 0)
+    throw std::invalid_argument("oblique rotation: loadings must have full column rank");
+  RotationMatrix scaled(input.rows(),input.cols());
+  std::ranges::transform(input.data(),scaled.data().begin(),
+      [scale](double value) { return static_cast<long double>(value)/scale; });
+  return {std::move(scaled),scale};
+}
+
+/// @brief Checks full numerical column rank and supplies the factorization for target fits.
+linalg::SVDDecomposition<long double> rotation_svd(const RotationMatrix& loadings) {
+  auto fit = linalg::svd(loadings);
+  if (!fit.converged)
+    throw std::runtime_error("oblique rotation: loading rank factorization failed");
+  if (fit.rank(loadings.rows()*std::numeric_limits<double>::epsilon()) != loadings.cols())
+    throw std::invalid_argument("oblique rotation: loadings must have full column rank");
+  return fit;
+}
+
+/// @brief Converts axes to unit length, retaining the direction of each column.
+void normalize_axes(RotationMatrix& axes) {
+  for (std::size_t j = 0; j < axes.cols(); ++j) {
+    long double length = 0;
+    for (std::size_t i = 0; i < axes.rows(); ++i)
+      length = std::hypot(length,axes(i,j));
+    for (std::size_t i = 0; i < axes.rows(); ++i)
+      axes(i,j) /= length;
+  }
+}
+
+/// @brief Inverts a rotation without using axes indistinguishable in double precision.
+std::optional<RotationMatrix> inverse_transpose(const RotationMatrix& rotation) {
+  const auto factor = linalg::lu(rotation.transpose());
+  if (factor.singular)
+    return std::nullopt;
+  auto inverse = factor.inverse();
+  long double matrix_norm = 0, inverse_norm = 0;
+  for (std::size_t i = 0; i < rotation.data().size(); ++i) {
+    matrix_norm = std::max(matrix_norm,std::abs(rotation.data()[i]));
+    const long double value = std::abs(inverse.data()[i]);
+    if (!std::isfinite(value))
+      return std::nullopt;
+    inverse_norm = std::max(inverse_norm,value);
+  }
+  if (matrix_norm*inverse_norm*rotation.rows() > 1/std::sqrt(std::numeric_limits<double>::epsilon()))
+    return std::nullopt;
+  return inverse;
+}
+
+/// @brief Reports pattern and structure in original units and a unit-diagonal correlation.
+ObliqueRotation rotation_result(const RotationMatrix& pattern, const RotationMatrix& axes,
+    double scale, bool converged) {
+  const auto phi = axes.transpose()*axes;
+  const auto structure = pattern*phi;
+  const auto k = phi.rows();
+  ObliqueRotation result{linalg::DenseMatrix<double>(pattern.rows(),k),
+      linalg::DenseMatrix<double>(pattern.rows(),k),linalg::DenseMatrix<double>::identity(k),
+      converged};
+  for (std::size_t i = 0; i < k; ++i)
+    for (std::size_t j = 0; j < i; ++j)
+      result.factor_correlation(i,j) = result.factor_correlation(j,i) = finite_fa(phi(i,j));
+  for (std::size_t i = 0; i < pattern.rows(); ++i)
+    for (std::size_t j = 0; j < k; ++j) {
+      result.pattern(i,j) = finite_fa(pattern(i,j)*scale);
+      result.structure(i,j) = finite_fa(structure(i,j)*scale);
+    }
+  return result;
+}
+
+/// @brief Direct oblimin criterion and derivative with respect to the pattern.
+std::pair<long double,RotationMatrix> oblimin_criterion(
+    const RotationMatrix& pattern, long double gamma) {
+  const auto p = pattern.rows(), k = pattern.cols();
+  std::vector<long double> row_squares(p), col_squares(k);
+  for (std::size_t i = 0; i < p; ++i)
+    for (std::size_t j = 0; j < k; ++j) {
+      const auto square = pattern(i,j)*pattern(i,j);
+      row_squares[i] += square;
+      col_squares[j] += square;
+    }
+  const auto total = std::accumulate(col_squares.begin(),col_squares.end(),0.0L);
+  RotationMatrix gradient(p,k);
+  long double value = 0;
+  for (std::size_t i = 0; i < p; ++i)
+    for (std::size_t j = 0; j < k; ++j) {
+      const auto loading = pattern(i,j);
+      const auto weight = row_squares[i]-loading*loading-gamma*(total-col_squares[j])/p;
+      gradient(i,j) = loading*weight;
+      value += loading*gradient(i,j);
+    }
+  return {value/4,std::move(gradient)};
+}
+
+/// @brief Returns the axis gradient projected onto unit-column tangent planes and its squared norm.
+std::pair<RotationMatrix,long double> projected_gradient(const RotationMatrix& axes,
+    const RotationMatrix& inverse, const RotationMatrix& pattern, const RotationMatrix& derivative) {
+  auto gradient = (inverse*(derivative.transpose()*pattern))*-1.0L;
+  long double squared_norm = 0;
+  for (std::size_t j = 0; j < axes.cols(); ++j) {
+    long double radial = 0;
+    for (std::size_t i = 0; i < axes.rows(); ++i)
+      radial += axes(i,j)*gradient(i,j);
+    for (std::size_t i = 0; i < axes.rows(); ++i) {
+      auto& component = gradient(i,j);
+      component -= radial*axes(i,j);
+      squared_norm += component*component;
+    }
+  }
+  return {std::move(gradient),squared_norm};
 }
 
 } // namespace
+
+ObliqueRotation oblimin(const linalg::DenseMatrix<double>& loadings,
+    double gamma, std::size_t max_iter, double tolerance) {
+  if (!std::isfinite(gamma))
+    throw std::invalid_argument("oblimin: gamma must be finite");
+  const auto [scaled,scale] = rotation_input(loadings,max_iter,tolerance);
+  if (scaled.cols() == 1)
+    return {loadings,loadings,linalg::DenseMatrix<double>::identity(1),true};
+  (void)rotation_svd(scaled);
+  auto axes = RotationMatrix::identity(scaled.cols());
+  auto inverse = axes;
+  auto pattern = scaled;
+  auto [value,derivative] = oblimin_criterion(pattern,gamma);
+  // An orthogonal simple-structure start can escape stationary points caused by symmetric input.
+  linalg::DenseMatrix<double> orthogonal(scaled.rows(),scaled.cols());
+  std::ranges::copy(scaled.data(),orthogonal.data().begin());
+  auto alternate_axes = axes;
+  varimax(orthogonal,max_iter,tolerance,&alternate_axes);
+  normalize_axes(alternate_axes);
+  if (auto alternate_inverse = inverse_transpose(alternate_axes)) {
+    auto alternate_pattern = scaled*(*alternate_inverse);
+    auto alternative = oblimin_criterion(alternate_pattern,gamma);
+    if (alternative.first < value) {
+      axes = std::move(alternate_axes);
+      inverse = std::move(*alternate_inverse);
+      pattern = std::move(alternate_pattern);
+      value = alternative.first;
+      derivative = std::move(alternative.second);
+    }
+  }
+  long double step = 1;
+  for (std::size_t iteration = 0; ; ++iteration) {
+    const auto [gradient,squared_norm] = projected_gradient(axes,inverse,pattern,derivative);
+    if (std::sqrt(squared_norm) <= tolerance)
+      return rotation_result(pattern,axes,scale,true);
+    if (iteration == max_iter || !std::isfinite(squared_norm))
+      break;
+    step = std::min(2*step,16.0L);
+    bool accepted = false;
+    for (int trial = 0; trial < 50; ++trial, step *= .5L) {
+      auto candidate = axes-gradient*step;
+      normalize_axes(candidate);
+      auto candidate_inverse = inverse_transpose(candidate);
+      if (!candidate_inverse)
+        continue;
+      auto candidate_pattern = scaled*(*candidate_inverse);
+      auto [candidate_value,candidate_derivative] = oblimin_criterion(candidate_pattern,gamma);
+      const auto decrease = value-candidate_value;
+      const auto required_decrease = .5L*step*squared_norm;
+      if (!(decrease >= required_decrease && decrease > 0)) {
+        // Close to a stationary point, objective subtraction can lose the improvement.
+        const auto rounding = 32*std::numeric_limits<long double>::epsilon()*std::max(1.0L,std::abs(value));
+        if (!(std::abs(decrease) <= rounding && required_decrease <= rounding) ||
+            !(projected_gradient(candidate,*candidate_inverse,candidate_pattern,candidate_derivative).second < squared_norm))
+          continue;
+      }
+      axes = std::move(candidate);
+      inverse = std::move(*candidate_inverse);
+      pattern = std::move(candidate_pattern);
+      value = candidate_value;
+      derivative = std::move(candidate_derivative);
+      accepted = true;
+      break;
+    }
+    if (!accepted)
+      break;
+  }
+  return rotation_result(pattern,axes,scale,false);
+}
+
+ObliqueRotation promax(const linalg::DenseMatrix<double>& loadings,
+    double power, std::size_t max_iter, double tolerance) {
+  if (!(power > 1) || !std::isfinite(power))
+    throw std::invalid_argument("promax: power must be finite and greater than one");
+  auto [scaled,scale] = rotation_input(loadings,max_iter,tolerance);
+  if (scaled.cols() == 1)
+    return {loadings,loadings,linalg::DenseMatrix<double>::identity(1),true};
+  linalg::DenseMatrix<double> orthogonal(scaled.rows(),scaled.cols());
+  std::ranges::copy(scaled.data(),orthogonal.data().begin());
+  const bool converged = varimax(orthogonal,max_iter,tolerance);
+  std::ranges::copy(orthogonal.data(),scaled.data().begin());
+  const auto fit = rotation_svd(scaled);
+  const auto p = scaled.rows(), k = scaled.cols();
+  RotationMatrix transform(k,k);
+  std::vector<long double> target(p);
+  for (std::size_t j = 0; j < k; ++j) {
+    long double largest = 0;
+    for (std::size_t i = 0; i < p; ++i)
+      largest = std::max(largest,std::abs(scaled(i,j)));
+    for (std::size_t i = 0; i < p; ++i) {
+      const auto value = scaled(i,j);
+      // Column-wise target scale disappears when the oblique axes are standardized.
+      target[i] = std::copysign(std::pow(std::abs(value)/largest,power),value);
+    }
+    const auto weights = fit.solve(target);
+    for (std::size_t i = 0; i < k; ++i)
+      transform(i,j) = weights[i];
+  }
+  auto axes = inverse_transpose(transform);
+  if (!axes)
+    throw std::runtime_error("promax: the target gives numerically singular axes");
+  normalize_axes(*axes);
+  const auto inverse = inverse_transpose(*axes);
+  if (!inverse)
+    throw std::runtime_error("promax: standardized axes are numerically singular");
+  return rotation_result(scaled*(*inverse),*axes,scale,converged);
+}
 
 FactorAnalysis::FactorAnalysis(
     const dstruct::DataFrame&       data,

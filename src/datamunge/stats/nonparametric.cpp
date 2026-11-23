@@ -170,6 +170,39 @@ HypothesisTestResult kendall_correlation_test(const std::vector<double>& x, cons
     return result;
 }
 
+HypothesisTestResult jonckheere_terpstra_test(const std::vector<std::vector<double>>& groups,
+                                              Alternative alternative) {
+    detail::check_alternative(alternative);
+    const auto pooled = pooled_sample(groups);
+    std::vector<double> order;
+    order.reserve(pooled.size());
+    long double between_pairs = 0;
+    for (std::size_t i = 0; i < groups.size(); ++i) {
+        between_pairs += static_cast<long double>(order.size()) * groups[i].size();
+        order.insert(order.end(), groups[i].size(), static_cast<double>(i));
+    }
+
+    HypothesisTestResult result;
+    result.alternative = alternative;
+    result.method = "Jonckheere–Terpstra ordered-groups test";
+    result.parameter1 = static_cast<double>(pooled.size());
+    result.parameter2 = static_cast<double>(between_pairs);
+    const bool constant = std::ranges::all_of(pooled, [first = pooled.front()](double x) { return x == first; });
+    if (constant) {
+        result.p_value = 1;
+        result.statistic = static_cast<double>(between_pairs / 2);
+        result.estimate1 = .5;
+        return result;
+    }
+
+    const auto kendall = kendall_correlation_test(order, pooled, alternative);
+    const auto wins = (between_pairs + kendall.statistic) / 2;
+    result.statistic = static_cast<double>(wins);
+    result.estimate1 = static_cast<double>(wins / between_pairs);
+    result.p_value = kendall.p_value;
+    return result;
+}
+
 HypothesisTestResult quadrant_test(const std::vector<double>& x, const std::vector<double>& y,
                                    Alternative alternative) {
     detail::check_sample(x, 2);

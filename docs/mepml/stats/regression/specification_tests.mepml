@@ -1,0 +1,108 @@
+//? Title: Check variance and functional form in a linear model
+//? Exports: both
+//? Lang: en
+
+> Test whether variance changes with a predictor
+
+Breusch–Pagan fits an auxiliary regression of squared residuals on the
+specified variance predictors. The Gaussian statistic uses the residual
+variance to scale the explained sum of squares. The studentized version
+uses the auxiliary R-squared. White's test includes squares and pairwise
+products of the variance predictors.
+
+These residuals have a U-shaped spread. A linear variance predictor has
+little power against this pattern. Its square captures the wider spread
+at both ends.
+
+```{cpp, id=variance-specification, file="figures/variance_specification.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/lm.hpp>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    constexpr std::array disturbance{0.0, 0.1, -0.2, 0.5, -0.8, 1.2, -2.0};
+    linalg::DenseMatrix<double> variance_predictors(13, 1);
+    Mat<> design(13, 1);
+    std::vector<double> x, y;
+    for (int i = -6; i <= 6; ++i) {
+        const auto row = static_cast<std::size_t>(i + 6);
+        x.push_back(i);
+        y.push_back(1.5 + 0.8 * i + disturbance[std::abs(i)]);
+        variance_predictors(row, 0) = design(row, 0) = i;
+    }
+    const stats::LM fit(y, design);
+    std::println("| Test | Statistic | Degrees of freedom | p-value |");
+    std::println("| --- | ---: | ---: | ---: |");
+    const auto show = [](const auto& test) {
+        std::println("| {} | {:.4f} | {:.0f} | {:.4f} |", test.method, test.statistic, test.parameter1, test.p_value);
+    };
+    show(fit.breusch_pagan(variance_predictors, false));
+    show(fit.breusch_pagan(variance_predictors));
+    show(fit.white_heteroscedasticity(variance_predictors));
+
+    std::vector<double> squared;
+    for (const double e : fit.residuals())
+        squared.push_back(e * e);
+    std::filesystem::create_directories("build");
+    graphics::RPlot::create().points(x, squared, "", {29, 78, 216}, 6)
+        .title("Squared residuals by predictor").x_label("Predictor").y_label("Squared residual")
+        .size(740, 410).save_svg("build/variance_specification.svg");
+}
+```
+// result_begin: markdown
+| Test | Statistic | Degrees of freedom | p-value |
+| --- | ---: | ---: | ---: |
+| Gaussian Breusch-Pagan test | 0.0000 | 1 | 1.0000 |
+| Studentized Breusch-Pagan test | 0.0000 | 1 | 1.0000 |
+| White heteroscedasticity test | 11.7798 | 2 | 0.0028 |
+\image(figures/variance_specification.svg)
+// result_end
+\caption(The squared residuals are largest at both ends of the predictor range.)
+\alttext(Thirteen squared residuals form a symmetric U shape, with the largest values at minus six and six.)
+
+[Breusch and Pagan (1979)|https://doi.org/10.2307/1911963] ·
+[Koenker (1981)|https://doi.org/10.1016/0304-4076(81)90062-2] ·
+[White (1980)|https://doi.org/10.2307/1912934]
+
+> Test added powers of the fitted response
+
+RESET augments the original model with selected powers of its fitted
+values. The partial F test compares the original fit with the augmented
+fit. The example generates a curved response and first fits a straight line.
+
+```{cpp, id=reset-powers, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/lm.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    const Mat<> design{{-4}, {-3}, {-2}, {-1}, {0}, {1}, {2}, {3}, {4}};
+    std::vector<double> y;
+    const std::vector<double> noise{-.2, .3, -.1, .5, -.4, -.1, .2, -.2, .1};
+    for (std::size_t i = 0; i < noise.size(); ++i) {
+        const double x = design(i, 0);
+        y.push_back(1 + x + 0.65 * x * x + noise[i]);
+    }
+    const stats::LM fit(y, design);
+    std::println("| Powers | F | Numerator df | Denominator df | p-value |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    const auto show = [&](const char* label, const std::vector<unsigned>& powers) {
+        const auto test = fit.ramsey_reset(powers);
+        std::println("| {} | {:.3f} | {:.0f} | {:.0f} | {:.3g} |",
+                     label, test.statistic, test.parameter1, test.parameter2, test.p_value);
+    };
+    show("2", {2});
+    show("2 and 3", {2, 3});
+}
+```
+// result_begin: markdown
+| Powers | F | Numerator df | Denominator df | p-value |
+| --- | ---: | ---: | ---: | ---: |
+| 2 | 1201.161 | 1 | 6 | 3.84e-08 |
+| 2 and 3 | 577.158 | 2 | 5 | 1.22e-06 |
+// result_end
+
+[Ramsey (1969)|https://doi.org/10.1111/j.2517-6161.1969.tb00796.x]

@@ -196,10 +196,75 @@ add_executable(run_plot_color_tests cpp/plot_tests.cpp cpp/plot_compose_tests.cp
 target_link_libraries(run_plot_color_tests datamunge::datamunge GTest::gtest_main)
 set_target_properties(run_plot_color_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
 gtest_discover_tests(run_plot_color_tests TEST_PREFIX "plot-colors.")
-add_executable(run_bootstrap_tests cpp/stats_bootstrap_summary_tests.cpp cpp/stats_resampling_tests.cpp)
+add_executable(run_bootstrap_tests cpp/stats_bootstrap_summary_tests.cpp cpp/stats_resampling_tests.cpp
+  cpp/stats_bootstrap_designs_tests.cpp cpp/stats_discovery_inference_tests.cpp
+  cpp/stats_restricted_randomization_tests.cpp)
 target_link_libraries(run_bootstrap_tests datamunge::datamunge GTest::gtest_main)
 set_target_properties(run_bootstrap_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
 gtest_discover_tests(run_bootstrap_tests TEST_PREFIX "bootstrap.")
+
+add_executable(run_conformal_tests cpp/stats_conformal_tests.cpp cpp/stats_conformal_calibration_tests.cpp)
+target_link_libraries(run_conformal_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_conformal_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_conformal_tests TEST_PREFIX "conformal.")
+
+add_executable(run_stats_group_comparison_tests cpp/stats_group_comparison_tests.cpp
+  cpp/stats_robust_summary_tests.cpp cpp/stats_sample_moments_tests.cpp
+  cpp/stats_robust_inference_tests.cpp cpp/stats_kernel_density_tests.cpp cpp/stats_agreement_tests.cpp
+  cpp/stats_anova_measures_tests.cpp cpp/stats_table_symmetry_tests.cpp cpp/stats_delong_tests.cpp
+  cpp/random_simplex_tests.cpp cpp/random_matrix_distribution_tests.cpp cpp/stats_power_transform_tests.cpp
+  cpp/stats_energy_tests.cpp cpp/stats_nonparametric_tests.cpp cpp/stats_edf_tests.cpp
+  cpp/random_noncentral_tests.cpp cpp/stats_power_tests.cpp cpp/stats_standardized_effects_tests.cpp
+  cpp/stats_line_regression_tests.cpp cpp/stats_lm_covariance_tests.cpp
+  cpp/stats_robust_regression_tests.cpp cpp/stats_lm_specification_tests.cpp cpp/stats_gls_tests.cpp
+  cpp/stats_lm_marginal_means_tests.cpp cpp/stats_lm_marginal_anova_tests.cpp
+  cpp/stats_profile_likelihood_tests.cpp cpp/stats_nonlinear_least_squares_tests.cpp
+  cpp/stats_segmented_regression_tests.cpp cpp/stats_glm_binomial_tests.cpp
+  cpp/stats_firth_logistic_tests.cpp cpp/stats_conditional_logistic_tests.cpp
+  cpp/stats_multinomial_logistic_tests.cpp cpp/stats_ordinal_regression_tests.cpp
+  cpp/stats_negative_binomial_regression_tests.cpp cpp/stats_zero_augmented_count_tests.cpp
+  cpp/stats_beta_regression_tests.cpp cpp/stats_tweedie_regression_tests.cpp cpp/stats_gam_tests.cpp
+  cpp/stats_isotonic_regression_tests.cpp cpp/stats_group_lasso_tests.cpp cpp/stats_fused_lasso_tests.cpp
+  cpp/stats_variance_components_tests.cpp cpp/stats_likelihood_glmm_tests.cpp cpp/stats_mixed_model_inference_tests.cpp
+  cpp/stats_gee_tests.cpp
+  cpp/stats_mmrm_tests.cpp
+  cpp/stats_repeated_measures_anova_tests.cpp
+  cpp/stats_panel_fixed_effects_tests.cpp
+  cpp/stats_hausman_tests.cpp
+  cpp/stats_arellano_bond_tests.cpp
+  cpp/stats_hotelling_tests.cpp
+  cpp/stats_manova_tests.cpp
+  cpp/stats_canonical_correlation_tests.cpp
+  cpp/stats_simpls_tests.cpp
+  cpp/stats_regularized_discriminant_tests.cpp
+  cpp/stats_covariance_shrinkage_tests.cpp
+  cpp/stats_minimum_covariance_determinant_tests.cpp
+  cpp/stats_graphical_lasso_tests.cpp
+  cpp/stats_multivariate_normality_tests.cpp
+  cpp/stats_cfa_tests.cpp
+  cpp/stats_oblique_rotation_tests.cpp
+  cpp/stats_latent_class_tests.cpp
+  cpp/stats_gaussian_mixture_selection_tests.cpp
+  cpp/stats_functional_pca_tests.cpp
+  cpp/stats_scalar_on_function_tests.cpp
+  cpp/stats_spectral_clustering_tests.cpp
+  cpp/stats_hdbscan_tests.cpp
+  cpp/stats_mean_shift_tests.cpp
+  cpp/stats_birch_tests.cpp
+  cpp/stats_silhouette_tests.cpp
+  cpp/stats_gap_statistic_tests.cpp
+  cpp/stats_consensus_clustering_tests.cpp
+  cpp/stats_nested_cross_validation_tests.cpp
+  cpp/stats_stability_selection_tests.cpp)
+target_link_libraries(run_stats_group_comparison_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_group_comparison_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_group_comparison_tests TEST_PREFIX "group-comparison.")
+
+add_executable(run_bayes_predictive_tests cpp/bayes_predictive_tests.cpp cpp/bayes_slice_sampling_tests.cpp
+  cpp/bayes_evidence_tests.cpp)
+target_link_libraries(run_bayes_predictive_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_bayes_predictive_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_bayes_predictive_tests TEST_PREFIX "bayes-predictive.")
 
 add_executable(run_vector_expression_tests cpp/vector_expression_tests.cpp cpp/vector_tests.cpp)
 target_link_libraries(run_vector_expression_tests datamunge::datamunge GTest::gtest_main)
@@ -240,6 +305,9 @@ list(REMOVE_ITEM cpp_sources
   ${CMAKE_CURRENT_SOURCE_DIR}/cpp/tex_tests.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/cpp/cpp23_format_tests.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/cpp/filesystem_tests.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/cpp/stats_group_comparison_tests.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/cpp/stats_robust_summary_tests.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/cpp/stats_sample_moments_tests.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/cpp/vector_expression_tests.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/cpp/bspline_design_tests.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/cpp/matrix_api_tests.cpp)

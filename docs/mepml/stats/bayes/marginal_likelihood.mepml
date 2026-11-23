@@ -1,0 +1,126 @@
+//? Title: Estimate Gaussian model evidence by two routes
+//? Exports: both
+//? Lang: en
+
+> Compare proposals using bridge sampling
+
+A parameter has a standard normal prior. We observe 2 with Gaussian
+measurement noise of variance 1. The posterior mean is 1 and its variance
+is 0.5. Integrating the parameter gives a normal observation density with
+mean 0 and variance 2, so the exact log evidence is available.
+
+Bridge sampling evaluates the joint and the normalized proposal on both
+posterior and proposal draws. The two proposals below have the same
+variance but different centers. The overlap estimate and effective weight
+counts help show how many draws contribute to the bridge.
+
+```{cpp, id=normal-bridge, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/bayes/evidence.hpp>
+#include <datamunge/random/random.hpp>
+#include <cmath>
+#include <numbers>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    constexpr std::size_t count = 24000;
+    random::SplitMix64 rng(372);
+    const auto log_normal = [](double x, double mean, double variance) {
+        const double residual = x - mean;
+        return -0.5 * (std::log(2 * std::numbers::pi * variance) + residual * residual / variance);
+    };
+    std::vector<double> posterior_draws;
+    for (std::size_t i = 0; i < count; ++i)
+        posterior_draws.push_back(1 + rng.normal() / std::numbers::sqrt2);
+    const auto evaluate = [&](double x, double center) {
+        return bayes::BridgeLogDensities{log_normal(x, 0, 1) + log_normal(2, x, 1),
+                                       log_normal(x, center, 1.21)};
+    };
+    const auto show = [&](const char* label, double center) {
+        std::vector<bayes::BridgeLogDensities> posterior, proposal;
+        for (double draw : posterior_draws) {
+            posterior.push_back(evaluate(draw, center));
+            proposal.push_back(evaluate(center + 1.1 * rng.normal(), center));
+        }
+        const auto fit = bayes::bridge_sampling(posterior, proposal);
+        std::println("| {} | {:.4f} | {:.3f} | {:.0f} | {:.0f} | {} |", label, fit.log_evidence,
+                     fit.overlap, fit.posterior_weight_ess, fit.proposal_weight_ess, fit.converged);
+    };
+    std::println("Exact log evidence {:.4f}.\n", log_normal(2, 0, 2));
+    std::println("| Proposal | Log evidence | Overlap | Posterior weight ESS | Proposal weight ESS | Converged |");
+    std::println("| --- | ---: | ---: | ---: | ---: | --- |");
+    show("Center 0.7", 0.7);
+    show("Center 4", 4);
+}
+```
+// result_begin: markdown
+Exact log evidence -2.2655.
+
+| Proposal | Log evidence | Overlap | Posterior weight ESS | Proposal weight ESS | Converged |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Center 0.7 | -2.2646 | 0.904 | 22894 | 20652 | true |
+| Center 4 | -2.2896 | 0.141 | 4428 | 2752 | true |
+// result_end
+
+The shifted proposal places less mass near the posterior. Its fixed-point
+iteration can converge even with much smaller effective weight counts.
+
+[Meng and Wong (1996), equation 4.1|https://www3.stat.sinica.edu.tw/statistica/j6n4/j6n43/j6n43.htm]
+
+> Integrate along the power-posterior ladder
+
+The power posterior at inverse temperature t raises the likelihood to t.
+At t = 0 it is the prior, and at t = 1 it is the posterior. Integrating
+the expected original log likelihood across these temperatures yields the
+log evidence. Its derivative with respect to t is the variance of the
+original log likelihood.
+
+This Gaussian model gives the two moments directly at each temperature.
+Using exact moments lets the example isolate quadrature error. For
+sampled power posteriors, the library can compute the moments from the
+log-likelihood draws.
+
+```{cpp, id=normal-power-ladder, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/bayes/evidence.hpp>
+#include <cmath>
+#include <numbers>
+#include <print>
+
+int main() {
+    using namespace datamunge::bayes;
+    const double log_normal_constant = std::log(2 * std::numbers::pi);
+    const double exact = -0.5 * (std::log(4 * std::numbers::pi) + 2);
+    std::println("Exact log evidence {:.7f}.\n", exact);
+    std::println("| Intervals | Trapezoidal | Corrected | Correction magnitude | Corrected absolute error |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    for (int intervals : {2, 4, 8, 16}) {
+        std::vector<PowerPosteriorRung> ladder;
+        for (int i = 0; i <= intervals; ++i) {
+            const double temperature = static_cast<double>(i) / intervals;
+            const double variance = 1 / (1 + temperature);
+            const double residual_squared = 4 * variance * variance;
+            ladder.push_back({temperature, -0.5 * (log_normal_constant + variance + residual_squared),
+                              0.5 * variance * variance + residual_squared * variance});
+        }
+        const auto fit = thermodynamic_integration(ladder);
+        std::println("| {} | {:.7f} | {:.7f} | {:.7f} | {:.7f} |", intervals, fit.trapezoidal,
+                     fit.log_evidence, fit.discretization_error, std::abs(fit.log_evidence - exact));
+    }
+}
+```
+// result_begin: markdown
+Exact log evidence -2.2655121.
+
+| Intervals | Trapezoidal | Corrected | Correction magnitude | Corrected absolute error |
+| ---: | ---: | ---: | ---: | ---: |
+| 2 | -2.3425496 | -2.2618205 | 0.0807292 | 0.0036916 |
+| 4 | -2.2854380 | -2.2652557 | 0.0201823 | 0.0002564 |
+| 8 | -2.2705412 | -2.2654956 | 0.0050456 | 0.0000165 |
+| 16 | -2.2667725 | -2.2655111 | 0.0012614 | 0.0000010 |
+// result_end
+
+The correction estimates the ordinary trapezoidal discretization error.
+The last column measures the error remaining in the corrected estimate
+for this model.
+
+[Friel, Hurn and Wyse (2014), section 2.1|https://arxiv.org/abs/1209.3198]

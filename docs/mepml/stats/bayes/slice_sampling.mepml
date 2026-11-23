@@ -1,0 +1,130 @@
+//? Title: Slice sampling for a scalar and a Gaussian latent block
+//? Exports: both
+//? Lang: en
+
+> Sample a scalar density by expanding and shrinking its bracket
+
+A scalar slice update draws a level below the current density. It steps out
+from a randomly positioned interval, then tries points inside the bracket.
+Each rejected point replaces the endpoint on its side of the current draw.
+
+```{cpp, id=slice-interval, file="figures/slice_interval.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/diagram.hpp>
+#include <filesystem>
+
+int main() {
+    using namespace datamunge::graphics;
+    Diagram diagram(58, 800);
+    const DiagramStroke bracket{.color = {37, 99, 235}, .width = 3};
+    const DiagramStroke mark{.color = {71, 85, 105}, .dashed = true};
+    const auto show = [&](double y, double left, double right, const char* label) {
+        diagram.path({{left, y + .15}, {left, y}, {right, y}, {right, y + .15}}, bracket)
+               .text({-3.5, y}, label);
+    };
+    show(2.5, -.6, .9, "Initial interval");
+    show(1.5, -2.1, 2.4, "After stepping out");
+    show(.5, -2.1, 1.2, "After rejection");
+    diagram.path({{0, 0}, {0, 2.8}}, mark)
+           .text({0, -.25}, "Current draw")
+           .text({1.45, .87}, "Rejected point", 14, {185, 28, 28});
+    std::filesystem::create_directories("build");
+    diagram.save_svg("build/slice_interval.svg");
+}
+```
+// result_begin:
+// \image(figures/slice_interval.svg)
+// result_end
+\caption(An illustrative bracket update. The rejected point becomes the new right endpoint.)
+\alttext(Three intervals share the same current draw. The second extends the first on both sides. The third moves the right endpoint inward to the rejected point and keeps the left endpoint.)
+
+This run targets a Gaussian with mean 1.5 and variance 4. The initial
+bracket is narrower than the target's standard deviation.
+
+```{cpp, id=scalar-slice-moments, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/bayes/slice_sampling.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    random::SplitMix64 rng(81);
+    constexpr int draws = 18000;
+    const auto log_density = [](double x) {
+        const double z = (x - 1.5) / 2;
+        return -0.5 * z * z;
+    };
+    double state = 0, sum = 0, second = 0;
+    for (int i = -200; i < draws; ++i) {
+        state = bayes::univariate_slice_step(log_density, state, rng, {.width = .25, .max_intervals = 32});
+        if (i >= 0) {
+            sum += state / draws;
+            second += state * state / draws;
+        }
+    }
+    std::println("| Moment | Estimate | Exact |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| Mean | {:.3f} | 1.500 |", sum);
+    std::println("| Variance | {:.3f} | 4.000 |", second - sum * sum);
+}
+```
+// result_begin: markdown
+| Moment | Estimate | Exact |
+| --- | ---: | ---: |
+| Mean | 1.472 | 1.500 |
+| Variance | 4.059 | 4.000 |
+// result_end
+
+[Neal (2003), Slice Sampling|https://doi.org/10.1214/aos/1056562461]
+
+> Update two correlated Gaussian latent variables
+
+An elliptical update rotates the centered latent state toward a fresh draw
+from its Gaussian prior. The sampler factors the covariance once. Each
+transition uses the log likelihood to accept a point on the ellipse or
+shrink the angular bracket.
+
+Here the prior means are 1 and −1, and the prior covariance between
+coordinates is 0.8. We observe their sum with independent Gaussian noise
+of variance 0.5. The Gaussian conditioning formula gives the exact
+posterior moments in the last column.
+
+```{cpp, id=elliptical-slice-moments, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/bayes/slice_sampling.hpp>
+#include <array>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    const bayes::EllipticalSliceSampler sampler({1, -1}, linalg::DenseMatrix<double>(2, 2, {2, .8, .8, 1.5}));
+    const auto log_likelihood = [](const auto& state) {
+        const double residual = state[0] + state[1] - 1.2;
+        return -residual * residual;
+    };
+    random::SplitMix64 rng(314);
+    constexpr int draws = 26000;
+    std::vector<double> state{1, -1};
+    std::array<double, 2> means{};
+    double cross = 0;
+    for (int i = -200; i < draws; ++i) {
+        state = sampler.step(log_likelihood, state, rng);
+        if (i >= 0) {
+            means[0] += state[0] / draws;
+            means[1] += state[1] / draws;
+            cross += state[0] * state[1] / draws;
+        }
+    }
+    std::println("| Moment | Estimate | Exact |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| First mean | {:.3f} | 1.600 |", means[0]);
+    std::println("| Second mean | {:.3f} | -0.507 |", means[1]);
+    std::println("| Covariance | {:.3f} | -0.350 |", cross - means[0] * means[1]);
+}
+```
+// result_begin: markdown
+| Moment | Estimate | Exact |
+| --- | ---: | ---: |
+| First mean | 1.604 | 1.600 |
+| Second mean | -0.513 | -0.507 |
+| Covariance | -0.338 | -0.350 |
+// result_end
+
+[Murray, Adams and MacKay (2010), Elliptical Slice Sampling|https://proceedings.mlr.press/v9/murray10a.html]

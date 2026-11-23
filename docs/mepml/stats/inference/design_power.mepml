@@ -1,0 +1,168 @@
+//? Title: Prospective power for t tests and one-way ANOVA
+//? Exports: both
+//? Lang: en
+
+> Find integer sample sizes for t tests
+
+The one-sample effect uses the population SD. The paired effect uses
+the SD of the within-pair differences, and the independent-sample
+effect uses the groups' common population SD. All three designs use a
+5% level and target 80% power. For each design, the reported count is
+the smallest admissible integer count that reaches the target.
+
+```{cpp, id=t-test-designs, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/power.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const auto one = one_sample_t_test_sample_size(.5, .8);
+    const auto pairs = paired_t_test_sample_size(-.5, .8, .05, Alternative::Less);
+    const auto [first, second] = pooled_t_test_sample_size(.6, .8, {2, 3});
+    std::println("| Design | Rejection region | Standardized effect | Size | Power |");
+    std::println("| --- | --- | ---: | --- | ---: |");
+    std::println("| One sample | Both tails | 0.5 | {} observations | {:.3f} |",
+                 one, one_sample_t_test_power(one, .5));
+    std::println("| Paired | Lower tail | -0.5 | {} pairs | {:.3f} |",
+                 pairs, paired_t_test_power(pairs, -.5, .05, Alternative::Less));
+    std::println("| Independent with pooled SD | Both tails | 0.6 | {} and {} observations | {:.3f} |",
+                 first, second, pooled_t_test_power(first, second, .6));
+}
+```
+// result_begin: markdown
+| Design | Rejection region | Standardized effect | Size | Power |
+| --- | --- | ---: | --- | ---: |
+| One sample | Both tails | 0.5 | 34 observations | 0.808 |
+| Paired | Lower tail | -0.5 | 27 pairs | 0.812 |
+| Independent with pooled SD | Both tails | 0.6 | 38 and 57 observations | 0.809 |
+// result_end
+
+> Compare allocations for one-way ANOVA
+
+The group means are 10, 11, and 14, with a common variance of 16.
+The two allocations both use 55 observations. Each allocation weights
+the group means differently when computing the alternative
+noncentrality, even though the degrees of freedom stay the same.
+
+```{cpp, id=one-way-anova-designs, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/power.hpp>
+#include <print>
+
+int main() {
+    using datamunge::stats::one_way_anova_power;
+    const std::vector<double> means{10, 11, 14};
+    std::println("| Group sizes | Power at the 5% level |");
+    std::println("| --- | ---: |");
+    std::println("| 18, 18, 19 | {:.3f} |", one_way_anova_power(means, {18, 18, 19}, 16));
+    std::println("| 10, 18, 27 | {:.3f} |", one_way_anova_power(means, {10, 18, 27}, 16));
+}
+```
+// result_begin: markdown
+| Group sizes | Power at the 5% level |
+| --- | ---: |
+| 18, 18, 19 | 0.795 |
+| 10, 18, 27 | 0.795 |
+// result_end
+
+> Plan an unequal allocation for two proportions
+
+The null risks are 0.35 and 0.25, so the null difference is already
+0.10. Under the alternative the first risk rises to 0.50 and the second
+stays at 0.25. The normal approximation uses the supplied null risks for
+the rejection threshold and the alternative risks for power.
+
+```{cpp, id=two-proportion-allocation, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/power.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::pair null_risks{.35, .25}, alternative_risks{.50, .25};
+    const auto [first, second] = two_proportion_sample_size(null_risks, alternative_risks, .8, {2, 3});
+    std::println("| First group | Second group | Two-sided power |");
+    std::println("| ---: | ---: | ---: |");
+    std::println("| {} | {} | {:.3f} |", first - 2, second - 3,
+                 two_proportion_power(first - 2, second - 3, null_risks, alternative_risks));
+    std::println("| {} | {} | {:.3f} |", first, second,
+                 two_proportion_power(first, second, null_risks, alternative_risks));
+}
+```
+// result_begin: markdown
+| First group | Second group | Two-sided power |
+| ---: | ---: | ---: |
+| 124 | 186 | 0.796 |
+| 126 | 189 | 0.802 |
+// result_end
+
+> Compare proportional-hazards event requirements
+
+For a target hazard ratio of 0.75, the Schoenfeld formula uses the log
+hazard ratio and the allocation fraction to estimate the required
+observed events. Both calculations target 80% power at a two-sided
+5% level. Converting events to enrollment would also require assumptions
+about event incidence and follow-up.
+
+```{cpp, id=schoenfeld-event-requirements, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/power.hpp>
+#include <print>
+
+int main() {
+    using datamunge::stats::schoenfeld_event_count;
+    std::println("| First-group allocation | Required observed events |");
+    std::println("| ---: | ---: |");
+    for (const auto fraction : {.5, .4}) {
+        std::println("| {:.0f}% | {} |", fraction * 100, schoenfeld_event_count(.75, fraction, .8));
+    }
+}
+```
+// result_begin: markdown
+| First-group allocation | Required observed events |
+| ---: | ---: |
+| 50% | 380 |
+| 40% | 396 |
+// result_end
+
+> Compare cluster size patterns at fixed enrollment
+
+Each arm has six clusters and 120 individuals. The second arm stays
+fixed. The first arm uses either six clusters of size 20 or a mixture
+of smaller and larger clusters. At the same intracluster correlation,
+the larger clusters account for more pairs of correlated observations.
+The effective sizes below are the independent sample sizes that would
+give the same variances for the individual-weighted means.
+
+```{cpp, id=unequal-cluster-power, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/power.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<std::size_t> second{18, 20, 22, 18, 20, 22};
+    constexpr double rho = .05;
+    std::println("| First arm | First-arm design effect | First-arm effective size | Mean power | Proportion power |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    const auto show = [&](const char* label, const std::vector<std::size_t>& first) {
+        const auto means = cluster_randomized_mean_power(first, second, rho, .5);
+        const auto proportions = cluster_randomized_proportion_power(first, second, rho, {.35, .25}, {.50, .25});
+        std::println("| {} | {:.3f} | {:.1f} | {:.3f} | {:.3f} |", label, means.first.design_effect,
+                     means.first.effective_sample_size, means.power, proportions.power);
+    };
+    show("Six equal clusters", {20, 20, 20, 20, 20, 20});
+    show("Sizes 5, 10, 15, 25, 30, 35", {5, 10, 15, 25, 30, 35});
+}
+```
+// result_begin: markdown
+| First arm | First-arm design effect | First-arm effective size | Mean power | Proportion power |
+| --- | ---: | ---: | ---: | ---: |
+| Six equal clusters | 1.950 | 61.5 | 0.791 | 0.448 |
+| Sizes 5, 10, 15, 25, 30, 35 | 2.242 | 53.5 | 0.762 | 0.421 |
+// result_end
+
+Mean power uses a standardized difference of 0.5. Proportion power uses
+the null and alternative risks from the two-proportion example.
+
+[R t-test power reference|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/power.t.test.html] ·
+[R one-way ANOVA power reference|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/power.anova.test.html] ·
+[Farrington and Manning|https://doi.org/10.1002/sim.4780091208] ·
+[Schoenfeld|https://pubmed.ncbi.nlm.nih.gov/6354290/] ·
+[Eldridge, Ashby and Kerry|https://doi.org/10.1093/ije/dyl129]

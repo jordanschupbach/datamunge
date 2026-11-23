@@ -1,0 +1,76 @@
+//? Title: Paired categorical tables and stratified odds ratios
+//? Exports: both
+//? Lang: en
+
+> Compare paired margins and transitions
+
+Rows record the initial category for each person and columns record
+the follow-up category. Stuart–Maxwell tests whether the total number
+of people in each category changed. Bowker tests whether each
+transition is as common as its reverse. In this example the marginal
+totals are identical, with nine people moving along each step of
+the cycle A to B to C to A.
+
+```{cpp, id=paired-table-tests, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/table_symmetry.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<std::vector<std::size_t>> counts{{2, 9, 0}, {0, 2, 9}, {9, 0, 2}};
+    std::println("| Test | Chi-square | Degrees of freedom | p-value |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (const auto& result : {stuart_maxwell_test(counts), bowker_test(counts)}) {
+        std::println("| {} | {:.3f} | {:.0f} | {:.4g} |", result.method,
+                     result.statistic, result.parameter1, result.p_value);
+    }
+}
+```
+// result_begin: markdown
+| Test | Chi-square | Degrees of freedom | p-value |
+| --- | ---: | ---: | ---: |
+| Stuart–Maxwell marginal homogeneity test | 0.000 | 2 | 1 |
+| Bowker symmetry test | 27.000 | 3 | 5.887e-06 |
+// result_end
+
+> Check a common odds ratio across strata
+
+Four independent clinics compare event rates in two groups. Each row of
+the input lists events and nonevents in the first group, then events and
+nonevents in the second group. Breslow–Day compares the observed counts
+with the counts fitted at a common Mantel–Haenszel odds ratio. Tarone's
+adjustment accounts for estimating that odds ratio from the same strata.
+
+```{cpp, id=common-odds-ratio, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/table_symmetry.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<std::array<std::size_t, 4>> clinics{
+        {8, 2, 4, 6}, {5, 3, 2, 6}, {13, 2, 3, 17}, {0, 9, 4, 8}
+    };
+    const auto adjusted = breslow_day_test(clinics);
+    const auto raw = breslow_day_test(clinics, false);
+    std::println("The fitted common odds ratio is {:.3f}.", adjusted.estimate1);
+    std::println("");
+    std::println("| Test | Chi-square | Degrees of freedom | p-value |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (const auto& result : {raw, adjusted}) {
+        std::println("| {} | {:.3f} | {:.0f} | {:.4g} |", result.method,
+                     result.statistic, result.parameter1, result.p_value);
+    }
+}
+```
+// result_begin: markdown
+The fitted common odds ratio is 3.980.
+
+| Test | Chi-square | Degrees of freedom | p-value |
+| --- | ---: | ---: | ---: |
+| Breslow–Day test | 17.048 | 3 | 0.000691 |
+| Tarone-adjusted Breslow–Day test | 16.769 | 3 | 0.0007883 |
+// result_end
+
+[Stuart|https://doi.org/10.1093/biomet/42.3-4.412] ·
+[Bowker|https://doi.org/10.1080/01621459.1948.10483284] ·
+[Tarone|https://doi.org/10.1093/biomet/72.1.91]

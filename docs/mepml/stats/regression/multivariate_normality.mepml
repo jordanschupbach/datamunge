@@ -1,0 +1,66 @@
+//? Title: Test multivariate normality with Mardia and Henze–Zirkler
+//? Exports: both
+//? Lang: en
+
+> Compare three diagnostics for Gaussianity
+
+Twelve synthetic observations each have three measurements. The final
+observation is displaced along several coordinates. Mardia's tests
+measure multivariate skewness and kurtosis separately. Henze–Zirkler
+compares whitened observations to a Gaussian reference using pairwise
+distances.
+
+```{cpp, id=multivariate-normality, file="figures/multivariate_normality_tests.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/multivariate_normality.hpp>
+#include <cmath>
+#include <filesystem>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    linalg::DenseMatrix<double> measurements(12,3);
+    for (std::size_t row = 0; row < measurements.rows(); ++row) {
+        const double i = row+1;
+        measurements(row,0) = std::sin(.3*i)+.2*std::cos(2*i);
+        measurements(row,1) = std::cos(.4*i)+.15*std::sin(i);
+        measurements(row,2) = std::sin(.9*i)+.12*i;
+    }
+    measurements(11,0) += 2;
+    measurements(11,1) -= 1;
+    measurements(11,2) += 3;
+    const auto mardia = stats::mardia_test(measurements);
+    const auto hz = stats::henze_zirkler_test(measurements);
+    std::println("| Test | Reference statistic | p-value |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| Mardia skewness | {:.3f} | {:.3f} |",mardia.skewness_chi_squared,mardia.skewness_p_value);
+    std::println("| Mardia kurtosis | {:.3f} | {:.3f} |",mardia.kurtosis_z,mardia.kurtosis_p_value);
+    std::println("| Henze–Zirkler | {:.3f} | {:.3f} |",hz.statistic,hz.p_value);
+
+    std::filesystem::create_directories("build");
+    auto plot = graphics::RPlot::create();
+    plot.bars({1,2,3},{mardia.skewness_p_value,mardia.kurtosis_p_value,hz.p_value},
+              "",graphics::RGBA{30,86,147},.56)
+        .abline_h(.05,graphics::RGBA{166,73,33},1.8)
+        .title("Multivariate normality tests").x_label("").y_label("Approximate p-value")
+        .x_ticks({1,2,3},{"Mardia skewness","Mardia kurtosis","Henze–Zirkler"})
+        .y_limits(0,.6).size(720,420).save_svg("build/multivariate_normality_tests.svg");
+}
+```
+// result_begin: markdown
+| Test | Reference statistic | p-value |
+| --- | ---: | ---: |
+| Mardia skewness | 15.837 | 0.104 |
+| Mardia kurtosis | -0.663 | 0.507 |
+| Henze–Zirkler | 0.853 | 0.019 |
+\image(figures/multivariate_normality_tests.svg)
+// result_end
+\caption(The orange line marks p = 0.05 for each individual test.)
+\alttext(The bars show p-values of 0.104 for Mardia skewness, 0.507 for Mardia kurtosis, and 0.019 for Henze–Zirkler. Only the Henze–Zirkler bar falls below the reference line.)
+
+Henze–Zirkler yields the smallest p-value in this example. The two
+Mardia tests target individual moments, while Henze–Zirkler can respond
+to other departures from Gaussianity. All three reference probabilities
+are approximate.
+
+[Mardia (1970)|https://doi.org/10.1093/biomet/57.3.519] · [Henze and Zirkler (1990)|https://doi.org/10.1080/03610929008830400]

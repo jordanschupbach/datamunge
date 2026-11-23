@@ -1,0 +1,86 @@
+//? Title: Fit repeated measures with incomplete follow-up
+//? Exports: both
+//? Lang: en
+
+> Estimate visit means with an unstructured covariance
+
+Participants have a baseline symptom score and two follow-up visits.
+In this example, participants with the highest baseline scores skip the
+last visit. Each participant contributes the portion of the Gaussian
+likelihood corresponding to their observed visits. Restricted maximum
+likelihood estimates a separate variance for each visit and a covariance
+for each visit pair.
+
+```{cpp, id=incomplete-follow-up, file="figures/mmrm_visit_means.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/mmrm.hpp>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge;
+    const std::vector<double> weeks{0,4,8};
+    std::vector<double> scores;
+    std::vector<std::size_t> participant, visit;
+    std::array<double,3> totals{};
+    std::array<std::size_t,3> counts{};
+    for (int id = 1; id <= 28; ++id) {
+        std::array<double,3> outcome{};
+        for (int v = 0; v < 3; ++v)
+            outcome[v] = 7 - .75*v + (1 + .15*v)*std::sin(.81*id) +
+                .27*std::sin(2*id + 3*v) + .32*std::cos(3*id - 2*v);
+        for (int v = 0; v < 3; ++v) {
+            if (v == 2 && outcome[0] > 7.3)
+                continue;
+            scores.push_back(outcome[v]);
+            participant.push_back(id);
+            visit.push_back(v);
+            totals[v] += outcome[v];
+            ++counts[v];
+        }
+    }
+
+    const auto fit = stats::fit_mmrm(scores, participant, visit);
+    if (fit.status != stats::MMRMStatus::Converged)
+        throw std::runtime_error("Expected the repeated-measures likelihood to converge");
+    std::vector<double> observed;
+    std::println("| Week | Observed scores | Observed mean | Fitted mean | Model SE |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    for (std::size_t v = 0; v < weeks.size(); ++v) {
+        observed.push_back(totals[v] / counts[v]);
+        std::println("| {:.0f} | {} | {:.3f} | {:.3f} | {:.3f} |", weeks[v], counts[v], observed[v],
+                     fit.coefficients[v], std::sqrt(fit.covariance(v,v)));
+    }
+
+    std::filesystem::create_directories("build");
+    auto plot = graphics::RPlot::create();
+    plot.line(weeks, observed, "Observed mean", graphics::RGBA{150,65,35}, 3)
+        .line(weeks, fit.coefficients, "Repeated-measures mean", graphics::RGBA{29,78,150}, 3)
+        .title("Symptom scores under incomplete follow-up")
+        .x_label("Weeks since baseline").y_label("Mean symptom score")
+        .size(730,420).save_svg("build/mmrm_visit_means.svg");
+}
+```
+// result_begin: markdown
+| Week | Observed scores | Observed mean | Fitted mean | Model SE |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 28 | 7.051 | 7.051 | 0.148 |
+| 4 | 28 | 6.332 | 6.332 | 0.163 |
+| 8 | 15 | 4.928 | 5.625 | 0.208 |
+\image(figures/mmrm_visit_means.svg)
+// result_end
+\caption(The fitted mean is 0.70 points above the observed mean at week 8.)
+\alttext(Two lines overlap at 7.05 at baseline and 6.33 at week 4. At week 8 the observed mean is 4.93 and the fitted mean is 5.63.)
+
+When everyone is observed, the two estimates coincide in this visit-means
+model at baseline and week 4. At week 8, the likelihood uses the estimated
+within-participant association between earlier and later scores, so the
+fitted mean can differ from the mean of the scores still observed.
+Inference from this likelihood relies on the Gaussian model and on
+missingness being ignorable given the observed data. The reported model
+standard errors use the fitted covariance.
+
+[Jennrich and Schluchter, Unbalanced Repeated-Measures Models with Structured Covariance Matrices|https://doi.org/10.2307/2530695]

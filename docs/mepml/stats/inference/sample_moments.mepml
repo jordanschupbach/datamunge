@@ -1,0 +1,116 @@
+//? Title: Weighted covariance and standardized sample moments
+//? Exports: both
+//? Lang: en
+
+Weights can express the relative influence of a row, or the number of
+times that row appears in a sample. Both interpretations give the same
+weighted mean. The sample covariance uses a different divisor in each case.
+Frequency weights reproduce a sample with explicitly repeated rows.
+
+```{cpp, id=sample-moments, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/sample_moments.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const datamunge::linalg::DenseMatrix<double> x(2, 2, {1, 2, 3, 6});
+    const auto analytic = weighted_sample_moments(x, {2, 1});
+    const auto frequency = weighted_sample_moments(x, {2, 1}, SampleWeightType::Frequency);
+    std::println("| Weight type | Mean of column 1 | Covariance of columns 1 and 2 |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| Analytic | {:.3f} | {:.3f} |", analytic.mean[0], analytic.covariance(0, 1));
+    std::println("| Frequency | {:.3f} | {:.3f} |", frequency.mean[0], frequency.covariance(0, 1));
+
+    const auto raw = sample_shape({1, 2, 3, 10});
+    const auto corrected = sample_shape({1, 2, 3, 10}, true);
+    std::println("\n| Method | Skewness | Excess kurtosis |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| Sample moment coefficients | {:.3f} | {:.3f} |", raw.skewness, raw.excess_kurtosis);
+    std::println("| Finite-sample corrections | {:.3f} | {:.3f} |",
+                 corrected.skewness, corrected.excess_kurtosis);
+}
+```
+// result_begin: markdown
+| Weight type | Mean of column 1 | Covariance of columns 1 and 2 |
+| --- | ---: | ---: |
+| Analytic | 1.667 | 4.000 |
+| Frequency | 1.667 | 2.667 |
+
+| Method | Skewness | Excess kurtosis |
+| --- | ---: | ---: |
+| Sample moment coefficients | 1.018 | -0.770 |
+| Finite-sample corrections | 1.764 | 3.228 |
+// result_end
+
+Skewness measures asymmetry. Excess kurtosis compares the standardized
+fourth moment with the normal distribution's value of three. With only four
+observations, the finite-sample correction can substantially change the estimate.
+
+> Summarize spread and concentration
+
+The second L-moment is half the mean absolute difference over distinct
+pairs. The Lorenz curve instead accumulates weighted value from smallest to
+largest, and its Gini coefficient summarizes the gap from equal shares.
+
+```{cpp, id=spread-and-concentration, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/sample_moments.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const auto moments = sample_l_moments({2, 4, 9, 15, 63});
+    std::println("| L-location | L-scale | L-skewness | L-kurtosis |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    std::println("| {:.2f} | {:.2f} | {:.2f} | {:.2f} |\n",
+                 moments.location, moments.scale, *moments.skewness, *moments.kurtosis);
+
+    const auto curve = lorenz_curve({1, 3}, {3, 1});
+    std::println("The smallest {:.0f}% of the weight accounts for {:.0f}% of the value. Gini = {:.2f}.",
+                 100 * curve.population_share[1], 100 * curve.value_share[1], curve.gini);
+}
+```
+// result_begin: markdown
+| L-location | L-scale | L-skewness | L-kurtosis |
+| ---: | ---: | ---: | ---: |
+| 18.60 | 13.30 | 0.70 | 0.59 |
+
+The smallest 75% of the weight accounts for 50% of the value. Gini = 0.25.
+// result_end
+
+> Propagate uncertainty through a transformation
+
+The covariance of derived estimates depends on their joint derivatives.
+For the sum and difference of two fitted parameters, the derivative rows
+are `[1, 1]` and `[1, -1]`. Their covariance can be nonzero even when all
+derivatives are fixed.
+
+A ratio needs particular care when the denominator is uncertain. Fieller's
+method tests each possible ratio and can return two unbounded intervals.
+
+```{cpp, id=transformed-uncertainty, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/sample_moments.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const auto cov = delta_method_covariance({2, 2, {1, 1, 1, -1}}, {2, 2, {1, .5, .5, 2}});
+    std::println("| | Sum | Difference |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| Sum | {:.0f} | {:.0f} |", cov(0, 0), cov(0, 1));
+    std::println("| Difference | {:.0f} | {:.0f} |", cov(1, 0), cov(1, 1));
+
+    const auto intervals = fieller_confidence_set(2, 0, 0, 1, 0, 1);
+    std::println("\nWith a denominator estimate of zero and critical value 1, the ratio set is "
+                 "[{:.0f}, {:.0f}] together with [{:.0f}, {:.0f}].",
+                 intervals[0].first, intervals[0].second,
+                 intervals[1].first, intervals[1].second);
+}
+```
+// result_begin: markdown
+| | Sum | Difference |
+| --- | ---: | ---: |
+| Sum | 4 | -1 |
+| Difference | -1 | 2 |
+
+With a denominator estimate of zero and critical value 1, the ratio set is [-inf, -2] together with [2, inf].
+// result_end

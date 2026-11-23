@@ -1,0 +1,77 @@
+//? Title: Choose SIMPLS components using held-out predictions
+//? Exports: both
+//? Lang: en
+
+> Select components for two-response regression
+
+Five readings predict two quality scores for each of 28 synthetic
+production runs. The first two readings share a signal. SIMPLS forms
+scores from the predictors using their covariance with both responses.
+The example holds out each supplied fold in turn and selects the
+component count with the lowest pooled prediction error.
+
+```{cpp, id=simpls-held-out, file="figures/simpls_held_out_error.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/simpls.hpp>
+#include <cmath>
+#include <filesystem>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    linalg::DenseMatrix<double> predictors(28,5), quality(28,2);
+    std::vector<std::int64_t> fold;
+    for (std::size_t row = 0; row < predictors.rows(); ++row) {
+        const int i = static_cast<int>(row)+1;
+        const auto a = std::sin(.33*i), b = std::cos(.27*i);
+        predictors(row,0) = a+.35*std::cos(1.9*i);
+        predictors(row,1) = 2.8*a+.25*std::sin(1.53*i);
+        predictors(row,2) = b+.3*std::sin(1.27*i);
+        predictors(row,3) = .57*std::cos(2.3*i);
+        predictors(row,4) = .63*std::sin(2.37*i);
+        quality(row,0) = 4+1.2*a-.7*b+.48*std::cos(2.07*i);
+        quality(row,1) = 2-.7*a+1.05*b+.42*std::sin(2.04*i);
+        fold.push_back(i <= 7 ? -3 : (i > 26 ? 5 : i%4));
+    }
+
+    const auto cv = stats::cross_validate_simpls(predictors,quality,fold,5);
+    std::vector<double> count;
+    std::println("| Components | Held-out mean squared error |");
+    std::println("| ---: | ---: |");
+    for (std::size_t k = 0; k < cv.mean_squared_error.size(); ++k) {
+        std::println("| {} | {:.4f} |",k,cv.mean_squared_error[k]);
+        count.push_back(k);
+    }
+
+    const auto best = cv.selected_components;
+    std::filesystem::create_directories("build");
+    auto plot = graphics::RPlot::create();
+    plot.line(count,cv.mean_squared_error,"",graphics::RGBA{24,86,149},2.5)
+        .points({count[best]},{cv.mean_squared_error[best]},graphics::RGBA{167,72,35},6)
+        .title("Held-out prediction error by component count")
+        .x_label("SIMPLS components").y_label("Mean squared error")
+        .x_ticks(count,{"0","1","2","3","4","5"}).size(700,420)
+        .save_svg("build/simpls_held_out_error.svg");
+}
+```
+// result_begin: markdown
+| Components | Held-out mean squared error |
+| ---: | ---: |
+| 0 | 0.4245 |
+| 1 | 0.3286 |
+| 2 | 0.1681 |
+| 3 | 0.1931 |
+| 4 | 0.1990 |
+| 5 | 0.2029 |
+\image(figures/simpls_held_out_error.svg)
+// result_end
+\caption(The dot marks the two-component model, which has the lowest held-out error.)
+\alttext(The held-out mean squared error falls from 0.425 with zero components to 0.168 with two components, then rises to 0.203 with five.)
+
+The zero-component model predicts the training mean of each response.
+Components one and two improve held-out predictions. The error rises
+with further components, so the returned model fits two components
+using all 28 runs. Each fold computes its centering and weights from
+its training runs.
+
+[de Jong, SIMPLS: An alternative approach to partial least squares regression|https://doi.org/10.1016/0169-7439(93)85002-X]

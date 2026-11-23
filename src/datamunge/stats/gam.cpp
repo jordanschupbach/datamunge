@@ -1,5 +1,5 @@
 /// @file gam.cpp
-/// @brief Fixed-penalty additive fitting with centered P-splines and optional group intercepts.
+/// @brief Fixed-penalty additive fitting with centered univariate and tensor P-splines.
 
 #include <datamunge/stats/gam.hpp>
 
@@ -176,6 +176,28 @@ std::vector<double> AdditiveModel::term_row(const Term& term, double x) {
     return result;
 }
 
+std::vector<double> AdditiveModel::tensor_row(const TensorTerm& term,
+    const std::vector<const std::vector<double>*>& columns, std::size_t row) {
+    std::vector<double> result(term.centers.size(), 1);
+    for (std::size_t j = 0; j < term.margins.size(); ++j) {
+        const auto values = term_row(term.margins[j], (*columns[j])[row]);
+        for (std::size_t k = 0; k < result.size(); ++k)
+            result[k] *= values[(k / term.strides[j]) % values.size()];
+    }
+    for (std::size_t k = 0; k < result.size(); ++k)
+        result[k] -= term.centers[k];
+    return result;
+}
+
+std::vector<const std::vector<double>*> AdditiveModel::tensor_columns(const TensorTerm& term,
+    const std::vector<std::vector<double>>& predictors) {
+    std::vector<const std::vector<double>*> result;
+    result.reserve(term.predictors.size());
+    for (const auto j : term.predictors)
+        result.push_back(&predictors[j]);
+    return result;
+}
+
 AdditiveModel::AdditiveModel(const std::vector<double>& y, const std::vector<std::vector<double>>& predictors,
                              const std::vector<std::string>& groups, double group_penalty, const GAMOptions& options)
     : family_(options.family) {
@@ -218,6 +240,38 @@ AdditiveModel::AdditiveModel(const std::vector<double>& y, const std::vector<std
         fixed = next;
     }
 
+    for (const auto& spec : options.tensor_smooths) {
+        if (spec.margins.size() < 2 || spec.margins.size() > predictors.size())
+            throw std::invalid_argument("GAM: a tensor requires at least two distinct predictors");
+        TensorTerm term{{}, {}, std::vector<std::size_t>(spec.margins.size(), 1), {}, fixed};
+        std::size_t width = 1;
+        for (const auto& margin : spec.margins) {
+            if (margin.predictor >= terms_.size() || margin.basis_size < 4 ||
+                !std::isfinite(margin.lambda) || margin.lambda < 0 ||
+                std::ranges::find(term.predictors, margin.predictor) != term.predictors.end())
+                throw std::invalid_argument("GAM: invalid tensor predictor, cubic basis size or penalty");
+            const auto reduced = margin.basis_size - 1;
+            if (reduced > (capacity - fixed) / width)
+                throw std::invalid_argument("GAM: tensor design width exceeds storage capacity");
+            width *= reduced;
+            const auto next = fixed + width;
+            if (next > capacity / next || y.size() > capacity / next)
+                throw std::invalid_argument("GAM: tensor design or penalty exceeds storage capacity");
+            const auto& axis = terms_[margin.predictor];
+            term.predictors.push_back(margin.predictor);
+            term.margins.push_back({fda::BSplineBasis::open_uniform(3, margin.basis_size, axis.lower, axis.upper),
+                                    true, std::vector<double>(reduced), axis.lower, axis.upper, 0});
+        }
+        for (const auto& other : tensor_terms_)
+            if (std::ranges::is_permutation(other.predictors, term.predictors))
+                throw std::invalid_argument("GAM: duplicate tensor interaction");
+        for (std::size_t j = spec.margins.size() - 1; j > 0; --j)
+            term.strides[j - 1] = term.strides[j] * term.margins[j].centers.size();
+        term.centers.resize(width);
+        tensor_terms_.push_back(std::move(term));
+        fixed += width;
+    }
+
     if (group_levels_.size() > std::numeric_limits<std::size_t>::max() - fixed)
         throw std::invalid_argument("GAM: design width overflows");
     const auto p = fixed + group_levels_.size();
@@ -255,6 +309,64 @@ AdditiveModel::AdditiveModel(const std::vector<double>& y, const std::vector<std
             for (std::size_t k = 0; k < width; ++k)
                 for (std::size_t l = 0; l < width; ++l)
                     penalty(term.offset + k, term.offset + l) = lambda * full(k, l);
+        }
+    }
+    for (std::size_t t = 0; t < tensor_terms_.size(); ++t) {
+        auto& term = tensor_terms_[t];
+        const auto columns = tensor_columns(term, predictors);
+        const auto width = term.centers.size();
+        std::vector<linalg::DenseMatrix<double>> differences, metrics;
+        for (std::size_t j = 0; j < term.margins.size(); ++j) {
+            auto& margin = term.margins[j];
+            const auto reduced = margin.centers.size();
+            std::vector<long double> sums(reduced);
+            for (const auto x : *columns[j]) {
+                const auto row = term_row(margin, x);
+                for (std::size_t k = 0; k < reduced; ++k)
+                    sums[k] += row[k];
+            }
+            for (std::size_t k = 0; k < reduced; ++k)
+                margin.centers[k] = static_cast<double>(sums[k] / y.size());
+
+            // With B the full basis and m the retained column means, the
+            // centered basis is B*T for T = [I;0] - 1*m'. Second differences
+            // kill constants, while the identity penalty factor becomes T'*T.
+            differences.push_back(fda::pspline_penalty_matrix(reduced + 1, 2));
+            auto& metric = metrics.emplace_back(reduced, reduced);
+            for (std::size_t k = 0; k < reduced; ++k)
+                for (std::size_t l = 0; l < reduced; ++l) {
+                    const auto mk = margin.centers[k], ml = margin.centers[l];
+                    metric(k, l) = (k == l ? 1. : 0.) - mk - ml + (reduced + 1) * mk * ml;
+                }
+        }
+
+        std::vector<long double> sums(width);
+        for (std::size_t i = 0; i < y.size(); ++i) {
+            const auto row = tensor_row(term, columns, i);
+            for (std::size_t j = 0; j < width; ++j) {
+                design(i, term.offset + j) = row[j];
+                sums[j] += row[j];
+            }
+        }
+        for (std::size_t j = 0; j < width; ++j) {
+            term.centers[j] = static_cast<double>(sums[j] / y.size());
+            for (std::size_t i = 0; i < y.size(); ++i)
+                design(i, term.offset + j) -= term.centers[j];
+            for (std::size_t k = 0; k <= j; ++k) {
+                long double entry = 0, metric_product = 1;
+                // Sum the Kronecker product for every penalized margin.
+                for (std::size_t axis = 0; axis < term.margins.size(); ++axis) {
+                    const auto reduced = term.margins[axis].centers.size();
+                    const auto a = (j / term.strides[axis]) % reduced;
+                    const auto b = (k / term.strides[axis]) % reduced;
+                    const auto metric = metrics[axis](a, b);
+                    const long double lambda = options.tensor_smooths[t].margins[axis].lambda;
+                    entry = entry * metric + metric_product * lambda * differences[axis](a, b);
+                    metric_product *= metric;
+                }
+                penalty(term.offset + j, term.offset + k) = penalty(term.offset + k, term.offset + j) =
+                    static_cast<double>(entry);
+            }
         }
     }
     coefficients_.assign(p, 0);
@@ -303,6 +415,34 @@ std::vector<double> AdditiveModel::smooth(std::size_t term, const std::vector<do
     return result;
 }
 
+std::vector<double> AdditiveModel::tensor_contribution(const TensorTerm& term,
+    const std::vector<const std::vector<double>*>& columns) const {
+    std::vector<double> result(columns.front()->size());
+    for (std::size_t i = 0; i < result.size(); ++i) {
+        const auto row = tensor_row(term, columns, i);
+        long double contribution = 0;
+        for (std::size_t j = 0; j < row.size(); ++j)
+            contribution += static_cast<long double>(row[j]) * coefficients_[term.offset + j];
+        result[i] = static_cast<double>(contribution);
+        if (!std::isfinite(result[i]))
+            throw std::runtime_error("GAM: tensor contribution overflows");
+    }
+    return result;
+}
+
+std::vector<double> AdditiveModel::tensor_smooth(std::size_t tensor,
+    const std::vector<std::vector<double>>& coordinates) const {
+    if (tensor >= tensor_terms_.size())
+        throw std::invalid_argument("GAM: invalid tensor index");
+    const auto& term = tensor_terms_[tensor];
+    row_count(coordinates, term.margins.size());
+    std::vector<const std::vector<double>*> columns;
+    columns.reserve(coordinates.size());
+    for (const auto& column : coordinates)
+        columns.push_back(&column);
+    return tensor_contribution(term, columns);
+}
+
 std::vector<double> AdditiveModel::predict(const std::vector<std::vector<double>>& predictors,
                                           const std::vector<std::string>& groups) const {
     const auto n = row_count(predictors, terms_.size());
@@ -311,6 +451,10 @@ std::vector<double> AdditiveModel::predict(const std::vector<std::vector<double>
     std::vector<long double> eta(n, intercept());
     for (std::size_t j = 0; j < terms_.size(); ++j) {
         const auto component = smooth(j, predictors[j]);
+        for (std::size_t i = 0; i < n; ++i) eta[i] += component[i];
+    }
+    for (const auto& term : tensor_terms_) {
+        const auto component = tensor_contribution(term, tensor_columns(term, predictors));
         for (std::size_t i = 0; i < n; ++i) eta[i] += component[i];
     }
     const auto fixed = coefficients_.size() - group_levels_.size();

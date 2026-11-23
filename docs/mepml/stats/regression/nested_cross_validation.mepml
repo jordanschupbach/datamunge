@@ -1,0 +1,93 @@
+//? Title: Tune polynomial degree inside each outer training fold
+//? Exports: both
+//? Lang: en
+
+> Generate predictions from models tuned without their test rows
+
+Nested cross-validation chooses a model setting inside each outer
+training fold. After selection, it refits the chosen setting on that
+entire training fold and predicts the outer test rows. Each reported
+prediction comes from a fit that excluded its row from both tuning and
+training.
+
+This example fits polynomials of degree one, three, and seven to 40
+synthetic observations. The inner and outer evaluations both use
+squared error.
+
+```{cpp, id=nested-cv-polynomial, file="figures/nested_cv_predictions.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/linalg/least_squares.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/nested_cross_validation.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <vector>
+
+int main() {
+    namespace dm = datamunge;
+    using dm::linalg::DenseMatrix;
+    std::vector<double> time(40), observed(40);
+    for (std::size_t i = 0; i < time.size(); ++i) {
+        time[i] = -1 + 2.0 * i / (time.size() - 1);
+        observed[i] = std::sin(3 * time[i]) + .12 * std::cos(2.4 * i);
+    }
+    const auto design = [](const auto& rows, std::size_t degree) {
+        DenseMatrix<double> basis(rows.rows(), degree + 1);
+        for (std::size_t i = 0; i < rows.rows(); ++i) {
+            basis(i, 0) = 1;
+            for (std::size_t j = 1; j <= degree; ++j)
+                basis(i, j) = basis(i, j - 1) * rows(i, 0);
+        }
+        return basis;
+    };
+    std::vector<dm::stats::NestedCandidate> candidates;
+    for (const std::size_t degree : {1, 3, 7})
+        candidates.push_back({std::format("Degree {}", degree),
+            [design, degree](const auto& train, const auto& response, const auto& query) {
+                const auto fit = dm::linalg::least_squares(design(train, degree), response);
+                return design(query, degree) * fit.coefficients;
+            }});
+    const DenseMatrix<double> x(time.size(), 1, time);
+    const auto result = dm::stats::nested_cross_validate(x, observed, candidates,
+        {.outer_folds = 5, .inner_folds = 4, .seed = 137});
+    std::println("The pooled outer mean squared error is {:.4f}.\n", result.mean_loss);
+    std::println("| Outer fold | Held-out rows | Selected setting | Outer mean squared error |");
+    std::println("| ---: | ---: | --- | ---: |");
+    for (std::size_t i = 0; i < result.folds.size(); ++i) {
+        const auto& fold = result.folds[i];
+        std::println("| {} | {} | {} | {:.4f} |",
+            i + 1, fold.test_rows.size(), fold.selected_name, fold.test_loss);
+    }
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.points(time, observed, "Observed response", {125, 133, 145}, 3.2)
+        .points(time, result.predictions, "Outer-fold prediction", {29, 94, 153}, 3.6)
+        .title("Predictions from the outer test folds")
+        .x_label("Predictor").y_label("Response")
+        .y_limits(-1.30, 1.68).size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/nested_cv_predictions.svg");
+}
+```
+// result_begin: markdown
+The pooled outer mean squared error is 0.0180.
+
+| Outer fold | Held-out rows | Selected setting | Outer mean squared error |
+| ---: | ---: | --- | ---: |
+| 1 | 8 | Degree 7 | 0.0233 |
+| 2 | 8 | Degree 7 | 0.0140 |
+| 3 | 8 | Degree 7 | 0.0089 |
+| 4 | 8 | Degree 3 | 0.0330 |
+| 5 | 8 | Degree 3 | 0.0108 |
+\image(figures/nested_cv_predictions.svg)
+// result_end
+\caption(Each blue point is an outer held-out prediction. The gray points show observed outcomes.)
+\alttext(The outer-fold predictions follow the curved pattern of the observed outcomes.)
+
+The pooled error averages over individual observations. The fold
+table records the setting used to predict each group of held-out
+rows.
+
+[Varma and Simon (2006)|https://doi.org/10.1186/1471-2105-7-91]

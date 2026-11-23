@@ -1,0 +1,37 @@
+//? Title: Power divergence and trend in proportions
+//? Exports: both
+//? Lang: en
+
+The Cressie–Read family compares observed category counts with specified
+expected counts. Changing its power recovers the familiar Pearson or
+likelihood-ratio statistic. When categories are ordered, Cochran–Armitage
+instead tests a directional association with supplied category scores.
+
+```{cpp, id=categorical-tests, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/chi_squared_test.hpp>
+#include <datamunge/stats/proportion_test.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    std::println("| Power | Statistic | p-value |");
+    std::println("| ---: | ---: | ---: |");
+    for (const double power : {1., 0., -1.}) {
+        const auto fit = power_divergence_test({25, 15}, {.5, .5}, power);
+        std::println("| {:.0f} | {:.4f} | {:.4f} |", power, fit.statistic, fit.p_value);
+    }
+    const auto trend = cochran_armitage_test(
+        {2, 5, 8}, {10, 10, 10}, {0, 1, 2}, Alternative::Greater);
+    std::println("\nFor observed proportions 0.2, 0.5, and 0.8, the trend test gives "
+                 "z = {:.3f} and one-sided p = {:.5f}.", trend.statistic, trend.p_value);
+}
+```
+// result_begin: markdown
+| Power | Statistic | p-value |
+| ---: | ---: | ---: |
+| 1 | 2.5000 | 0.1138 |
+| 0 | 2.5267 | 0.1119 |
+| -1 | 2.5815 | 0.1081 |
+
+For observed proportions 0.2, 0.5, and 0.8, the trend test gives z = 2.683 and one-sided p = 0.00365.
+// result_end

@@ -1,0 +1,367 @@
+//? Title: Statistical methods remaining in datamunge
+//? Subtitle: A C++ implementation backlog
+//? Exports: both
+//? Lang: en
+
+Each checkbox describes a statistical result a caller should be able to obtain. The inventory covers widely used methods and selected specialist fields. Related variants share a checkbox when they can be implemented and checked together. The three stages suggest an implementation order. For example, noncentral distribution tails support power calculations, and cluster-resampling routines support inference for longitudinal studies.
+
+\toc
+
+> Starting point
+
+This inventory uses repository revision `2b265edc`. The comparison uses public C++ headers, native implementations, focused C++ tests and worked reports. A checkbox records the capability still sought at that revision. Where a formula already appears inside a plot, diagnostic, training loss or worked example, the entry specifies the additional statistical output.
+
+The earlier `plans/stat_tests.md` lists 30 tests that already have native examples, including the exact multinomial, Barnard, Boschloo and Lilliefors procedures. Pairwise t tests, Tukey–Kramer comparisons and several p-value adjustments also have native tests. These are starting points for the new comparisons below. [Classical test inventory|../docs/mepml/stats/inference/stat_test_inventory.mepml] · [Group comparison fixtures|../tests/cpp/stats_group_comparison_tests.cpp]
+
+Welch one-way ANOVA and Games–Howell comparisons share the same group summaries. The two-group fixture checks that the Welch F statistic equals the squared Welch t statistic. Three-group fixtures check Games–Howell against R and SciPy, including pairs with fewer than two degrees of freedom. [Worked example|../docs/mepml/stats/inference/welch_games_howell.mepml] · [Group comparison tests|../tests/cpp/stats_group_comparison_tests.cpp]
+
+> Stage 1. Sample summaries and inference
+
+>> Descriptive and robust estimation
+
+Type 7 quantiles already appear in plots and bootstrap summaries. Quantile regression has a weighted order-statistic helper. These give direct comparison cases for a sample-summary API. [Plot implementation|../src/datamunge/plot.cpp] · [Quantile regression implementation|../src/datamunge/stats/quantile_regression.cpp]
+
+- [x] Hyndman–Fan sample quantiles — support types 1 through 9, including their distinct conventions at jumps and endpoints. [Worked example|../docs/mepml/stats/inference/robust_summaries.mepml]
+- [x] Weighted empirical quantiles — invert cumulative weight at requested probabilities, with defined handling of ties and zero weights. [Worked example|../docs/mepml/stats/inference/robust_summaries.mepml]
+- [x] Weighted sample moments — estimate means, variances and covariance matrices with separate denominator conventions for frequency and analytic weights. [Worked example|../docs/mepml/stats/inference/sample_moments.mepml]
+- [x] Harrell–Davis quantiles — estimate a quantile from beta-weighted order statistics. [Worked example|../docs/mepml/stats/inference/robust_summaries.mepml]
+- [x] Trimmed and Winsorized means — return the estimate and Winsorized variance for a specified trimming fraction. [Worked example|../docs/mepml/stats/inference/robust_summaries.mepml]
+- [x] Median absolute deviation — offer raw scale and normal-consistent scale around a supplied or estimated center. [Worked example|../docs/mepml/stats/inference/robust_summaries.mepml]
+- [x] Rousseeuw–Croux Qn and Sn — estimate robust scale from pairwise distances with finite-sample corrections. [Worked example|../docs/mepml/stats/inference/robust_summaries.mepml#compare-robust-measures-of-spread]
+- [x] Huber location and scale — fit iteratively and expose the tuning constant, scale estimate and convergence. [Worked example|../docs/mepml/stats/inference/robust_summaries.mepml#compare-robust-measures-of-spread]
+- [ ] Hodges–Lehmann location and shift — compute Walsh-average and two-sample pairwise-difference estimates with rank-based intervals.
+- [x] Skewness and excess kurtosis — provide both moment coefficients and their finite-sample bias corrections. [Worked example|../docs/mepml/stats/inference/sample_moments.mepml]
+- [x] L-moments and L-moment ratios — estimate location, scale, L-skewness and L-kurtosis from ordered observations. [Worked example|../docs/mepml/stats/inference/sample_moments.mepml#summarize-spread-and-concentration]
+- [x] Lorenz curve and Gini coefficient — return cumulative shares and inequality for weighted nonnegative observations. [Worked example|../docs/mepml/stats/inference/sample_moments.mepml#summarize-spread-and-concentration]
+
+>> Probability laws and density estimation
+
+Build on the distributions in the random module, including central t and F, beta, Weibull, Pareto and Gumbel. The plotting layer already draws a Gaussian kernel density. [Distribution functions|../include/datamunge/random/distributions.hpp] · [Density layer|../include/datamunge/plot/plot.hpp] · [SciPy statistical functions|https://docs.scipy.org/doc/scipy/reference/stats.html]
+
+- [x] Binomial and hypergeometric quantiles — complete the existing mass and CDF pairs with the smallest integer attaining the requested probability. [Worked example|../docs/mepml/stats/inference/distribution_quantiles.mepml]
+- [x] Gamma distribution tails and quantiles — expose shape/scale and stable upper-tail evaluation using the existing incomplete-gamma machinery. [Worked example|../docs/mepml/stats/inference/distribution_quantiles.mepml]
+- [x] Negative binomial distribution — extend the Bayesian module’s mean/precision log mass with cumulative tails and integer quantiles. [Worked example|../docs/mepml/stats/inference/distribution_quantiles.mepml#allow-extra-variation-in-the-count]
+- [x] Beta-binomial distribution — compute overdispersed count probabilities, tails and quantiles. [Worked example|../docs/mepml/stats/inference/distribution_quantiles.mepml#allow-extra-variation-in-the-count]
+- [x] Poisson-binomial distribution — compute the count law for independent Bernoulli trials with unequal probabilities. [Worked example|../docs/mepml/stats/inference/distribution_quantiles.mepml#count-successes-with-unequal-probabilities]
+- [x] Noncentral t distribution — evaluate tails and invert them for power calculations and standardized effects. [Worked example|../docs/mepml/stats/distributions/noncentral_tails.mepml#invert-a-noncentral-t-reference]
+- [x] Noncentral F and chi-square distributions — evaluate tail probabilities and solve for quantiles and noncentrality. [Worked example|../docs/mepml/stats/distributions/noncentral_tails.mepml]
+- [ ] Multivariate normal rectangle probabilities — estimate probabilities under correlated bounds and return integration error.
+- [x] Dirichlet and Dirichlet-multinomial laws — evaluate simplex log density and compound count mass and draw reproducible samples. [Worked example|../docs/mepml/stats/distributions/dirichlet_laws.mepml]
+- [x] Wishart and inverse-Wishart laws — provide matrix log densities and sampling with positive-definiteness checks. [Worked example|../docs/mepml/stats/distributions/wishart_laws.mepml]
+- [x] Numerical kernel density estimate — evaluate the estimate at arbitrary points and integrate over intervals independently of plotting. [Worked example|../docs/mepml/stats/estimators/gaussian_kernel_density.mepml#evaluate-density-and-interval-mass]
+- [x] Sheather–Jones and cross-validated bandwidths — choose a univariate KDE bandwidth from the observations. [Worked example|../docs/mepml/stats/estimators/gaussian_kernel_density.mepml#select-a-bandwidth]
+- [x] Boundary-corrected density estimation — fit beta kernels on a bounded interval or reflected kernels at a known boundary. [Worked example|../docs/mepml/stats/estimators/gaussian_kernel_density.mepml#evaluate-density-and-interval-mass]
+- [x] Empirical CDF confidence bands — return a numerical step function with simultaneous Dvoretzky–Kiefer–Wolfowitz bounds. [Worked example|../docs/mepml/stats/inference/robust_summaries.mepml#enclose-the-whole-cdf]
+
+>> Likelihood, intervals and transformations
+
+- [ ] General maximum likelihood estimation — fit a supplied per-observation log likelihood with parameter constraints and return observed information and score contributions.
+- [x] Profile likelihood intervals — refit nuisance parameters at fixed values of the estimand and invert the likelihood-ratio statistic. [Worked example|../docs/mepml/stats/inference/profile_likelihood.mepml#invert-the-likelihood-ratio-for-a-poisson-rate-ratio]
+- [ ] Wald, score and likelihood-ratio tests — compare regular nested models or test specified parameter restrictions, reporting the rank of the restrictions.
+- [x] Multivariate delta method — propagate a fitted covariance through a vector of derived quantities and return their joint covariance. [Worked example|../docs/mepml/stats/inference/sample_moments.mepml#propagate-uncertainty-through-a-transformation]
+- [x] Fieller confidence sets — obtain an interval or an unbounded set for a ratio of correlated estimates when its denominator is uncertain. [Worked example|../docs/mepml/stats/inference/sample_moments.mepml#propagate-uncertainty-through-a-transformation]
+- [x] Empirical likelihood for a mean — compute observation weights under the hypothesized mean and invert the likelihood-ratio test. [Worked example|../docs/mepml/stats/inference/empirical_likelihood_mean.mepml]
+- [x] Exact quantile intervals — choose order-statistic endpoints using binomial coverage for a continuous population quantile. [Worked example|../docs/mepml/stats/inference/robust_summaries.mepml#put-an-interval-on-the-population-median]
+- [ ] Statistical tolerance limits — cover a specified population fraction at a specified confidence level using normal theory or order statistics.
+- [x] Box–Cox and Yeo–Johnson transforms — estimate the transformation parameter by profile likelihood and return an invertible fitted transformation. [Worked example|../docs/mepml/stats/inference/power_transforms.mepml]
+
+>> Group comparisons and goodness of fit
+
+- [x] Welch one-way ANOVA — test equal means across independent groups with unequal variances and return the approximate denominator degrees of freedom. [Worked example|../docs/mepml/stats/inference/welch_games_howell.mepml]
+- [x] Games–Howell comparisons — return simultaneous pairwise mean-difference intervals and adjusted p-values with pair-specific variances. [Worked example|../docs/mepml/stats/inference/welch_games_howell.mepml]
+- [ ] Dunnett comparisons — compare several treatments with a shared control using their joint reference distribution.
+- [x] Dunn comparisons — compare pooled mean ranks after Kruskal–Wallis with tie correction and the existing multiplicity options. [Worked example|../docs/mepml/stats/inference/welch_games_howell.mepml#compare-pooled-ranks-with-dunn-s-test]
+- [x] Jonckheere–Terpstra test — test an ordered alternative across independent groups with a tie-aware reference. [Worked example|../docs/mepml/stats/inference/ordered_groups.mepml]
+- [x] Brunner–Munzel test — estimate a relative effect and test stochastic equality when group spreads differ. [Worked example|../docs/mepml/stats/inference/robust_inference.mepml#compare-independent-groups]
+- [x] Yuen test — compare independent trimmed means using Winsorized variances. [Worked example|../docs/mepml/stats/inference/robust_inference.mepml#compare-independent-groups]
+- [x] Levene and Brown–Forsythe scale tests — compare absolute deviations about the group means or medians. [Worked example|../docs/mepml/stats/inference/welch_games_howell.mepml#compare-the-group-spreads]
+- [x] Bartlett and Fligner–Killeen tests — offer parametric and rank-based tests of scale homogeneity across several groups. [Worked example|../docs/mepml/stats/inference/welch_games_howell.mepml#compare-the-group-spreads]
+- [x] Anderson–Darling goodness of fit — calibrate against a specified continuous law and separately against a normal law with fitted parameters. [Worked example|../docs/mepml/stats/inference/empirical_distribution_tests.mepml#choose-the-anderson-darling-reference]
+- [x] Cramér–von Mises tests — implement one-sample specified-CDF and two-independent-sample statistics and calibrations. [Worked example|../docs/mepml/stats/inference/empirical_distribution_tests.mepml#compare-squared-cdf-differences-with-cram-r-von-mises]
+- [x] Anderson–Darling k-sample test — compare several empirical distributions with a midrank version for ties. [Worked example|../docs/mepml/stats/inference/empirical_distribution_tests.mepml#compare-three-samples-with-tied-values]
+- [x] D’Agostino–Pearson and Jarque–Bera tests — report the skewness and kurtosis contributions to each normality test. [Worked example|../docs/mepml/stats/inference/robust_inference.mepml#inspect-departures-from-normality]
+- [ ] Hartigan dip test — test unimodality using a calibrated dip statistic.
+- [x] Energy-distance test — compare multivariate distributions with a pooled-label permutation reference. [Worked example|../docs/mepml/stats/inference/energy_distance.mepml]
+
+>> Effects, agreement and categorical outcomes
+
+The one-proportion tests already report Wilson and Clopper–Pearson intervals. The two-proportion score test reports a Wald-style difference interval. The stratified Mantel–Haenszel test already estimates a common odds ratio. [Proportion intervals|../include/datamunge/stats/proportion_test.hpp] · [Stratified tables|../include/datamunge/stats/classical_tests.hpp]
+
+- [x] Cohen d and Hedges g — estimate standardized mean differences and noncentral-t intervals, recording the standardization used. [Worked example|../docs/mepml/stats/inference/standardized_effects.mepml]
+- [x] Cliff’s delta — rescale the existing Mann–Whitney probability of superiority to signed dominance and add a tie-aware uncertainty interval. [Worked example|../docs/mepml/stats/inference/robust_inference.mepml#compare-independent-groups]
+- [x] Eta squared and omega squared — report overall and partial ANOVA effect sizes from term and residual sums of squares. [Worked example|../docs/mepml/stats/inference/anova_measures.mepml#compare-overall-and-partial-effect-sizes]
+- [x] Newcombe score interval — estimate the difference of two independent proportions using separate Wilson limits. [Worked example|../docs/mepml/stats/inference/count_intervals.mepml]
+- [x] Risk-ratio score interval — invert a constrained two-binomial score test, including samples with zero events. [Worked example|../docs/mepml/stats/inference/count_intervals.mepml#estimate-a-ratio-of-two-binomial-risks]
+- [x] Poisson rate inference — give exact event-rate intervals for one exposure and conditional intervals for a two-rate ratio. [Worked example|../docs/mepml/stats/inference/count_intervals.mepml]
+- [x] Cressie–Read power divergence — support a user-selected divergence, including the likelihood-ratio G test and its limiting cases. [Worked example|../docs/mepml/stats/inference/categorical_tests.mepml]
+- [x] Cochran–Armitage trend test — test a linear trend in proportions across ordered categories with supplied scores. [Worked example|../docs/mepml/stats/inference/categorical_tests.mepml]
+- [x] Breslow–Day test — assess odds-ratio homogeneity across strata with the Tarone adjustment. [Worked example|../docs/mepml/stats/inference/table_symmetry.mepml#check-a-common-odds-ratio-across-strata]
+- [x] Stuart–Maxwell and Bowker tests — test marginal homogeneity and symmetry, respectively, in a square paired table. [Worked example|../docs/mepml/stats/inference/table_symmetry.mepml#compare-paired-margins-and-transitions]
+- [x] Cohen and Fleiss kappa — assess agreement of two raters or several raters and support ordinal weights for Cohen kappa. [Worked example|../docs/mepml/stats/inference/measurement_agreement.mepml#compare-ratings-with-and-without-ordinal-weights]
+- [x] Intraclass correlation — report explicitly chosen one-way or two-way, consistency or agreement, single or average-measure ICCs. [Worked example|../docs/mepml/stats/inference/anova_measures.mepml#choose-the-intraclass-correlation-that-matches-the-rating-design]
+- [x] Bland–Altman analysis — estimate paired bias and limits of agreement with uncertainty for each limit. [Worked example|../docs/mepml/stats/inference/measurement_agreement.mepml#compare-paired-measurements]
+- [x] Lin concordance correlation — estimate agreement on the original measurement scale with an interval. [Worked example|../docs/mepml/stats/inference/measurement_agreement.mepml#compare-paired-measurements]
+- [x] DeLong inference — estimate AUC covariance and compare two correlated ROC curves on the same cases and controls. [Worked example|../docs/mepml/stats/inference/roc_auc_comparison.mepml]
+
+>> Resampling, multiplicity and prediction intervals
+
+Ordinary bootstrap, percentile, basic, BCa and studentized intervals, delete-d jackknife, permutation tests, split conformal prediction, BH/BY, Westfall–Young and Romano–Wolf already have native entry points. The following entries change the sampling unit, calibration or error criterion. [Bootstrap|../include/datamunge/stats/bootstrap.hpp] · [Multiplicity|../include/datamunge/stats/p_adjust.hpp] · [Conformal prediction|../include/datamunge/stats/conformal.hpp]
+
+- [x] Stratified bootstrap — resample whole rows within strata, retaining the observed stratum sizes. [Worked example|../docs/mepml/stats/resampling/bootstrap_designs.mepml#keep-strata-and-clusters-intact]
+- [x] Cluster bootstrap — sample clusters with replacement and preserve all observations belonging to each sampled cluster. [Worked example|../docs/mepml/stats/resampling/bootstrap_designs.mepml#keep-strata-and-clusters-intact]
+- [x] Moving-block and circular block bootstrap — resample fixed-length runs for dependent observations. [Worked example|../docs/mepml/stats/resampling/bootstrap_designs.mepml#draw-blocks-from-an-ordered-series]
+- [x] Stationary bootstrap — resample geometrically distributed run lengths with circular restarts. [Worked example|../docs/mepml/stats/resampling/bootstrap_designs.mepml#draw-blocks-from-an-ordered-series]
+- [x] Wild bootstrap — perturb regression residuals with Rademacher or Mammen weights for heteroscedastic inference. [Worked example|../docs/mepml/stats/resampling/bootstrap_designs.mepml#simulate-and-refit-under-a-regression-null]
+- [x] Parametric bootstrap — simulate from the fitted null, refit on each simulation and return calibrated tail probabilities. [Worked example|../docs/mepml/stats/resampling/bootstrap_designs.mepml#simulate-and-refit-under-a-regression-null]
+- [x] Balanced bootstrap — generate replicate indices with equal total appearances of every observation across replicates. [Worked example|../docs/mepml/stats/resampling/bootstrap_designs.mepml#balance-appearances-across-replicates]
+- [x] Freedman–Lane permutation — permute reduced-model residuals to test a term while retaining nuisance covariates. [Worked example|../docs/mepml/stats/inference/discovery_and_residual_permutation.mepml#permute-residuals-while-retaining-nuisance-effects]
+- [x] Restricted randomization inference — enumerate or sample assignments within matched pairs and blocks and invert tests for a constant effect. [Worked example|../docs/mepml/stats/resampling/restricted_randomization.mepml]
+- [x] Storey q-values — estimate the null proportion and report monotone q-values with sensitivity to the tuning threshold. [Worked example|../docs/mepml/stats/inference/discovery_and_residual_permutation.mepml#check-sensitivity-to-the-storey-threshold]
+- [x] Simultaneous true-discovery bounds — use closed testing with Simes local tests to bound the number of true discoveries in any selected subset. [Worked example|../docs/mepml/stats/inference/discovery_and_residual_permutation.mepml#bound-discoveries-in-a-selected-subset]
+- [x] Jackknife+ and CV+ — use held-out residuals and their corresponding refitted predictors to form predictive intervals. [Worked example|../docs/mepml/stats/inference/conformal_calibration.mepml#pair-each-residual-with-its-own-refit]
+- [x] Weighted conformal prediction — use likelihood-ratio weights and the test-point mass to calibrate under covariate shift. [Worked example|../docs/mepml/stats/inference/conformal_calibration.mepml#include-a-test-covariate-s-likelihood-ratio]
+
+>> Design, power and sequential experiments
+
+The binomial rejection and operating-characteristic tables provide a finite-sample reference for discrete designs. Noncentral distributions above support several of the continuous-outcome designs. [Binomial operating characteristics|../include/datamunge/stats/hypothesis_diagnostics.hpp]
+
+- [x] t-test power and sample size — invert noncentral t power for one-sample, paired and pooled two-sample designs. [Worked example|../docs/mepml/stats/inference/design_power.mepml#find-integer-sample-sizes-for-t-tests]
+- [x] One-way ANOVA power — derive noncentral F power from group means, common variance and allocation. [Worked example|../docs/mepml/stats/inference/design_power.mepml#compare-allocations-for-one-way-anova]
+- [x] Two-proportion power — solve for sample size with unequal allocation and specified null and alternative proportions. [Worked example|../docs/mepml/stats/inference/design_power.mepml#plan-an-unequal-allocation-for-two-proportions]
+- [ ] Equivalence and noninferiority — implement two one-sided tests for means and a one-sided margin test for risk differences, with corresponding intervals.
+- [x] Schoenfeld event requirement — translate a target hazard ratio, allocation, power and significance level into a required event count. [Worked example|../docs/mepml/stats/inference/design_power.mepml#compare-proportional-hazards-event-requirements]
+- [x] Cluster-randomized design power — incorporate intracluster correlation and unequal cluster sizes into design effects. [Worked example|../docs/mepml/stats/inference/design_power.mepml#compare-cluster-size-patterns-at-fixed-enrollment]
+- [ ] Factorial and fractional factorial designs — generate run matrices, defining relations and alias sets for two-level experiments.
+- [ ] Response-surface designs — generate central composite and Box–Behnken runs and estimate stationary points of a fitted quadratic.
+- [ ] D-optimal design — select runs from a candidate set by exchange and return design efficiency and estimability.
+- [ ] Group-sequential boundaries — compute efficacy boundaries and crossing probabilities for specified information looks and alpha spending.
+- [x] Sequential probability ratio test — accumulate a simple-versus-simple log likelihood ratio and return the two stopping boundaries. [Worked example|../docs/mepml/stats/inference/sequential_inference.mepml]
+- [x] Confidence sequences for bounded means — produce time-uniform intervals from a specified betting or mixture construction. [Worked example|../docs/mepml/stats/inference/sequential_inference.mepml]
+
+> Stage 2. Models for structured data
+
+>> Linear models, contrasts and diagnostics
+
+LM already fits ordinary and weighted least squares, supplies influence diagnostics, and tests sequential terms and nested models. Extend those fits using the design, residuals and coefficient covariance. [LM contract|../include/datamunge/stats/lm.hpp] · [R stats reference|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/00Index.html]
+
+- [x] Type II and III ANOVA — test estimable marginal term hypotheses under explicit contrast coding in unbalanced designs. [Worked example|../docs/mepml/stats/regression/marginal_anova.mepml#compare-type-ii-and-type-iii-term-tests]
+- [x] Estimated marginal means — average model predictions on a reference grid and report contrasts with covariance and simultaneous intervals. [Worked example|../docs/mepml/stats/regression/estimated_marginal_means.mepml#compare-methods-at-a-common-batch-mix]
+- [x] Heteroscedasticity-consistent covariance — add HC0 through HC3 for LM coefficients, including leverage corrections. [Worked example|../docs/mepml/stats/regression/sandwich_covariance.mepml#compare-hc0-through-hc3]
+- [x] Cluster-robust covariance — compute one-way and multiway sandwich estimates and identify clusters contributing to each component. [Worked example|../docs/mepml/stats/regression/sandwich_covariance.mepml#combine-cluster-dimensions-by-inclusion-and-exclusion]
+- [x] Newey–West covariance — estimate regression uncertainty from ordered score contributions with a specified lag window. [Worked example|../docs/mepml/stats/regression/sandwich_covariance.mepml#include-lagged-score-products]
+- [x] Generalized least squares — fit with a supplied residual covariance and estimate structured AR(1) or compound-symmetric covariance by likelihood. [Worked example|../docs/mepml/stats/regression/generalized_least_squares.mepml#fit-with-a-supplied-residual-covariance]
+- [x] Huber and Tukey bisquare regression — fit robust coefficients, scale and observation weights with convergence diagnostics. [Worked example|../docs/mepml/stats/regression/robust_regression.mepml#compare-the-weights-assigned-to-an-outlier]
+- [x] Theil–Sen and repeated-median regression — estimate an outlier-resistant slope and intercept for a single predictor. [Worked example|../docs/mepml/stats/regression/straight_line_estimators.mepml#compare-median-based-lines-with-a-high-leverage-outlier]
+- [x] Deming regression — estimate a line under measurement error in both variables with a known error-variance ratio. [Worked example|../docs/mepml/stats/regression/straight_line_estimators.mepml#fit-paired-measurements-with-a-known-error-ratio]
+- [x] Breusch–Pagan and White tests — detect heteroscedasticity using auxiliary regressions on specified variance predictors. [Worked example|../docs/mepml/stats/regression/specification_tests.mepml#test-whether-variance-changes-with-a-predictor]
+- [x] Durbin–Watson and Breusch–Godfrey tests — assess residual serial correlation with calibration appropriate to the fitted design. [Worked example|../docs/mepml/stats/regression/serial_correlation_tests.mepml#detect-serial-dependence-after-fitting-a-trend]
+- [x] Ramsey RESET — test additional powers of the fitted response for evidence of functional-form misspecification. [Worked example|../docs/mepml/stats/regression/specification_tests.mepml#test-added-powers-of-the-fitted-response]
+- [x] Nonlinear least squares inference — fit a user-specified mean curve and return parameter covariance and profile intervals. [Worked example|../docs/mepml/stats/regression/nonlinear_least_squares.mepml#fit-and-profile-an-exponential-decay]
+- [x] Segmented regression — estimate unknown breakpoints and continuous piecewise-linear slopes with breakpoint uncertainty. [Worked example|../docs/mepml/stats/regression/segmented_regression.mepml#fit-a-continuous-line-with-two-breakpoints]
+
+>> Generalized responses, smoothing and regularization
+
+The statistical GLM fits Gaussian, binomial-logit, Poisson and inverse-link gamma models. Some count likelihoods also exist as tensor losses or Bayesian examples. The count items below call for fitted likelihood models and coefficient inference. [GLM|../include/datamunge/stats/glm.hpp] · [Tensor likelihoods|../include/datamunge/nn/glm.hpp] · [Bayesian count example|../docs/mepml/bayes/glm/negative_binomial.mepml] · [Model reference|https://www.statsmodels.org/stable/api.html]
+
+- [x] Grouped binomial GLM — accept successes and trials per row and match the corresponding expanded Bernoulli fit. [Worked example|../docs/mepml/stats/regression/binomial_glm.mepml#fit-success-and-trial-counts-directly]
+- [x] Binary probit and complementary log-log regression — fit alternative links with inverse-link predictions and coefficient covariance. [Worked example|../docs/mepml/stats/regression/binomial_glm.mepml#compare-probit-and-complementary-log-log-probabilities]
+- [x] Firth logistic regression — fit the bias-reduced likelihood and return profile penalized-likelihood intervals under separation. [Worked example|../docs/mepml/stats/regression/firth_logistic.mepml#estimate-a-finite-effect-under-complete-separation]
+- [x] Conditional logistic regression — condition on case totals within matched strata and support multiple cases per stratum. [Worked example|../docs/mepml/stats/regression/conditional_logistic.mepml#condition-on-the-case-count-in-each-matched-set]
+- [x] Multinomial logistic regression — fit baseline-category coefficients with predicted class probabilities and joint covariance. [Worked example|../docs/mepml/stats/regression/multinomial_logistic.mepml#fit-two-sets-of-log-odds-against-a-baseline-class]
+- [x] Ordinal regression — fit a proportional-odds cumulative link with ordered cutpoints and assess the parallel-slopes restriction. [Worked example|../docs/mepml/stats/regression/ordinal_regression.mepml#fit-ordered-cutpoints-and-test-parallel-slopes]
+- [x] Negative binomial regression — estimate dispersion jointly with log-mean coefficients and support exposure offsets. [Worked example|../docs/mepml/stats/regression/negative_binomial_regression.mepml#fit-event-counts-with-an-exposure-offset]
+- [x] Zero-inflated count regression — fit separate structural-zero and Poisson or negative-binomial count components. [Worked example|../docs/mepml/stats/regression/zero_augmented_counts.mepml#separate-structural-zeros-from-count-zeros]
+- [x] Hurdle count regression — fit a zero-versus-positive model and a zero-truncated count likelihood. [Worked example|../docs/mepml/stats/regression/zero_augmented_counts.mepml#fit-a-zero-hurdle-and-a-truncated-count-process]
+- [x] Beta regression — fit separate mean and precision predictors to continuous proportions inside the unit interval. [Worked example|../docs/mepml/stats/regression/beta_regression.mepml#fit-separate-mean-and-precision-predictors]
+- [x] Tweedie regression — fit a compound Poisson–gamma response and profile the variance power between one and two. [Worked example|../docs/mepml/stats/regression/tweedie_regression.mepml#fit-zero-and-positive-costs-in-one-likelihood]
+- [x] Generalized additive models with tensor-product smooths — fit anisotropic interactions with a separate penalty for each margin. [Worked example|../docs/mepml/stats/regression/tensor_gam.mepml#fit-a-tensor-interaction-with-two-penalties]
+- [x] Isotonic regression — produce a weighted monotone least-squares fit and a step predictor using pooled adjacent violators. [Worked example|../docs/mepml/stats/regression/isotonic_regression.mepml#pool-observations-that-would-reverse-the-fitted-order]
+- [x] Group lasso and sparse group lasso — fit grouped coefficients and expose selected groups along a regularization path. [Worked example|../docs/mepml/stats/regression/group_lasso.mepml#compare-group-and-within-group-selection]
+- [x] Fused lasso — estimate ordered coefficients with penalized adjacent differences and return the constant segments. [Worked example|../docs/mepml/stats/regression/fused_lasso.mepml#fuse-neighboring-regression-coefficients]
+
+>> Multilevel, longitudinal and panel models
+
+The native LMM and GLMM handle random intercepts and slopes. The GLMM uses penalized quasi-likelihood with a single grouping term. [LMM|../include/datamunge/stats/lmm.hpp] · [GLMM|../include/datamunge/stats/glmm.hpp]
+
+- [x] Crossed and nested random effects — estimate multiple variance-component blocks such as participant and item in the same fit. [Worked example|../docs/mepml/stats/regression/crossed_nested_effects.mepml#fit-a-variance-for-each-random-effect-block]
+- [x] Likelihood-based GLMM — integrate random effects by Laplace approximation and adaptive Gauss–Hermite quadrature for a single random intercept. [Worked example|../docs/mepml/stats/regression/likelihood_glmm.mepml#compare-laplace-and-adaptive-gauss-hermite-fits]
+- [x] Satterthwaite and Kenward–Roger inference — estimate denominator degrees of freedom and, for Kenward–Roger, adjust fixed-effect covariance. [Worked example|../docs/mepml/stats/regression/mixed_model_inference.mepml#compare-satterthwaite-and-kenward-roger-tests]
+- [x] Generalized estimating equations — fit marginal models with independence, exchangeable and AR(1) working correlation and sandwich uncertainty. [Worked example|../docs/mepml/stats/regression/gee.mepml#compare-working-correlations-and-sandwich-uncertainty]
+- [x] Mixed models for repeated measures — estimate visit-specific means and an unstructured within-subject covariance under incomplete follow-up. [Worked example|../docs/mepml/stats/regression/mmrm.mepml#estimate-visit-means-with-an-unstructured-covariance]
+- [x] Repeated-measures ANOVA — test within-subject effects with Greenhouse–Geisser and Huynh–Feldt corrections. [Worked example|../docs/mepml/stats/regression/repeated_measures_anova.mepml#compare-the-greenhouse-geisser-and-huynh-feldt-corrections]
+- [x] Two-way fixed-effects panel regression — absorb unit and time effects and provide cluster-aware inference. [Worked example|../docs/mepml/stats/regression/panel_fixed_effects.mepml#absorb-site-and-period-effects-with-clustered-inference]
+- [x] Hausman specification test — compare fixed- and random-effects coefficients on their common estimable subspace. [Worked example|../docs/mepml/stats/regression/hausman_test.mepml#test-the-shared-slope-from-two-panel-models]
+- [x] Arellano–Bond difference GMM — instrument differenced dynamic panels with eligible lagged levels and report serial correlation tests. [Worked example|../docs/mepml/stats/regression/arellano_bond.mepml#instrument-the-lagged-outcome-with-earlier-levels]
+
+>> Multivariate, latent-variable and functional methods
+
+PCA, FastICA, principal-axis factor analysis with varimax and LDA already exist. A full-covariance Gaussian mixture EM step also exists in the tensor library. [Factor analysis|../include/datamunge/stats/factor_analysis.hpp] · [Gaussian mixture step|../include/datamunge/nn/gaussian_mixture.hpp]
+
+- [x] Hotelling mean tests — return one-sample, paired and two-independent-sample T-squared statistics with F reference distributions. [Worked example|../docs/mepml/stats/regression/hotelling_test.mepml#test-two-paired-outcomes-jointly]
+- [x] Multivariate ANOVA — form hypothesis and error matrices and report Pillai, Wilks, Hotelling–Lawley and Roy criteria. [Worked example|../docs/mepml/stats/regression/manova.mepml#compare-groups-on-two-outcomes-together]
+- [x] Canonical correlation analysis — estimate paired linear combinations, canonical correlations, loadings and sequential tests. [Worked example|../docs/mepml/stats/regression/canonical_correlation.mepml#find-paired-scores-that-move-together]
+- [x] Partial least squares regression — implement SIMPLS for one or more responses and select components on held-out rows. [Worked example|../docs/mepml/stats/regression/simpls.mepml#select-components-for-two-response-regression]
+- [x] Quadratic and regularized discriminant analysis — estimate class-specific covariances with controlled pooling and shrinkage. [Worked example|../docs/mepml/stats/classification/regularized_discriminant.mepml#see-how-covariance-regularization-changes-class-probabilities]
+- [x] Ledoit–Wolf and oracle-approximating shrinkage — estimate covariance and shrinkage intensity in high dimensions. [Worked example|../docs/mepml/stats/regression/covariance_shrinkage.mepml#lift-the-smallest-covariance-eigenvalues]
+- [x] Minimum covariance determinant — return robust multivariate location, scatter and reweighted distances. [Worked example|../docs/mepml/stats/regression/minimum_covariance_determinant.mepml#find-a-stable-center-and-rescore-outliers]
+- [x] Graphical lasso — estimate a sparse precision matrix and expose conditional-dependence edges. [Worked example|../docs/mepml/stats/regression/graphical_lasso.mepml#read-a-graph-from-sparse-precision]
+- [x] Mardia and Henze–Zirkler tests — assess multivariate normality with dimension-aware calibration. [Worked example|../docs/mepml/stats/regression/multivariate_normality.mepml#compare-three-diagnostics-for-gaussianity]
+- [x] Confirmatory factor analysis — estimate specified loading and residual structures by covariance fitting with explicit identification constraints. [Worked example|../docs/mepml/stats/regression/confirmatory_factor_analysis.mepml#fit-a-specified-loading-pattern]
+- [x] Oblique factor rotation — add oblimin and promax, returning pattern, structure and factor-correlation matrices. [Worked example|../docs/mepml/stats/regression/oblique_factor_rotation.mepml#compare-pattern-and-structure-after-oblique-rotation]
+- [x] Latent class analysis — fit finite mixtures of categorical indicators and report class probabilities and item-response probabilities. [Worked example|../docs/mepml/stats/clustering/latent_class_analysis.mepml#estimate-class-proportions-and-item-probabilities]
+- [x] Gaussian mixture model selection — compare tied, diagonal and full covariance fits by BIC across component counts, reusing the EM implementation. [Worked example|../docs/mepml/stats/clustering/gaussian_mixture_selection.mepml#compare-component-counts-and-covariance-structures]
+- [x] Functional PCA — estimate covariance eigenfunctions and subject scores from curves on a common grid. [Worked example|../docs/mepml/stats/regression/functional_pca.mepml#extract-weighted-eigenfunctions-and-subject-scores]
+- [x] Scalar-on-function regression — estimate a smooth coefficient function with a roughness penalty using the native spline bases. [Worked example|../docs/mepml/stats/regression/scalar_on_function.mepml#learn-which-parts-of-a-curve-predict-the-response]
+
+>> Clustering, model selection and validation
+
+DBSCAN, OPTICS, k-medoids, hierarchical clustering and partition agreement already have native implementations. The graph and clustering modules provide distances and neighborhoods for several of these extensions. [Algorithm inventory|../list-of-algorithms.txt] · [Clustering diagnostics|../include/datamunge/stats/clustering_diagnostics.hpp]
+
+- [x] Spectral clustering — partition rows of a graph Laplacian embedding and expose the eigenvalues and cluster assignments. [Worked example|../docs/mepml/stats/clustering/spectral_clustering.mepml#find-two-communities-joined-by-a-weak-edge]
+- [x] HDBSCAN — construct a mutual-reachability hierarchy, condense it by minimum cluster size and select stable clusters with explicit noise labels. [Worked example|../docs/mepml/stats/clustering/hdbscan.mepml#track-persistent-clusters-and-leave-isolated-points-as-noise]
+- [x] Mean-shift clustering — locate density modes from a specified bandwidth and assign observations to their modes. [Worked example|../docs/mepml/stats/clustering/mean_shift.mepml#see-how-bandwidth-changes-the-recovered-modes]
+- [x] BIRCH — maintain a clustering-feature tree for streaming observations and cluster the resulting leaf summaries. [Worked example|../docs/mepml/stats/clustering/birch.mepml#compress-batches-into-cluster-features]
+- [x] Silhouette analysis — report per-observation and per-cluster separation from a dissimilarity matrix, including singleton conventions. [Worked example|../docs/mepml/stats/clustering/silhouette.mepml#find-an-observation-closer-to-a-neighboring-cluster]
+- [x] Gap statistic — select cluster count by comparing within-cluster dispersion with simulated reference datasets. [Worked example|../docs/mepml/stats/clustering/gap_statistic.mepml#compare-observed-dispersion-with-a-uniform-reference]
+- [x] Consensus clustering — estimate co-assignment probabilities across subsamples and retain pairwise observation counts. [Worked example|../docs/mepml/stats/clustering/consensus_clustering.mepml#measure-co-assignment-across-repeated-subsamples]
+- [x] Nested cross-validation — tune a statistical model within each outer training fold and return held-out predictions with the selected settings. [Worked example|../docs/mepml/stats/regression/nested_cross_validation.mepml#generate-predictions-from-models-tuned-without-their-test-rows]
+- [ ] Stability selection — estimate variable-selection frequencies over subsamples at specified regularization levels.
+- [ ] Model-X knockoffs — generate Gaussian knockoff predictors and select variables using paired importance statistics at a target false discovery rate.
+
+>> Time series, forecasting and changes in regime
+
+Seasonal ARIMA already fits by conditional sum of squares. Exponential smoothing, ACF/PACF, Ljung–Box, Kalman filtering and Rauch–Tung–Striebel smoothing are also present. [ARIMA|../include/datamunge/stats/arima.hpp] · [Time-series tests|../include/datamunge/stats/time_series.hpp] · [Kalman smoother|../include/datamunge/filter/kalman_filter.hpp]
+
+- [ ] Exact Gaussian ARIMA likelihood — estimate parameters from state-space innovations and integrate over missing observations.
+- [ ] Dynamic regression with ARIMA errors — fit exogenous coefficients together with seasonal error parameters and forecast from future regressors.
+- [ ] Augmented Dickey–Fuller and Phillips–Perron tests — test a unit root under specified deterministic terms and report appropriate critical values.
+- [ ] KPSS test — test level or trend stationarity with a long-run variance estimate.
+- [ ] STL decomposition — return seasonal, trend and remainder components with optional robust seasonal smoothing.
+- [ ] Vector autoregression — fit lag matrices, select order, check stability and forecast with multivariate innovation covariance.
+- [ ] Granger predictability tests — test blocks of lagged coefficients conditional on the other series.
+- [ ] Johansen cointegration and VECM — estimate cointegration rank, long-run relations and short-run adjustment.
+- [ ] ARCH-LM and GARCH fitting — test squared-residual dependence and fit a stationary conditional-variance model with forecasts.
+- [ ] Structural time-series estimation — fit level, trend and seasonal disturbance variances from the state-space likelihood.
+- [ ] Welch and multitaper spectral estimates — report spectral density on a frequency grid with uncertainty determined by segments or tapers.
+- [ ] Lomb–Scargle periodogram — estimate periodic power from irregular observations with a floating mean and frequency-search calibration.
+- [ ] PELT changepoint detection — return penalized optimal segment boundaries for specified change-in-mean or change-in-variance costs.
+- [ ] Markov-switching regression — estimate regime transition probabilities and regime-specific regression and variance parameters.
+- [ ] Diebold–Mariano forecast comparison — test differential predictive loss with overlapping forecast horizons.
+
+>> Survival, event history and competing risks
+
+The existing right-censored API returns Kaplan–Meier estimates with Greenwood errors, Prentice scores and Cox fits with Efron or Breslow ties. Several items below share a start/stop risk-set representation with an event type and subject identifier. [Survival API|../include/datamunge/stats/survival.hpp] · [Native reference fixtures|../tests/cpp/stats_classical_tests.cpp] · [R survival reference|https://stat.ethz.ch/R-manual/R-devel/library/survival/html/00Index.html]
+
+- [ ] Nelson–Aalen estimation — return cumulative hazard increments, variance and interval estimates at event times.
+- [ ] Log-rank and Fleming–Harrington tests — accumulate weighted observed-minus-expected events over pooled risk sets for two or more groups.
+- [ ] Restricted mean survival time — integrate survival to a fixed horizon and estimate a between-group difference with uncertainty.
+- [ ] Delayed entry and time-varying Cox covariates — handle start/stop records with entry, exit and event ordering at tied times.
+- [ ] Stratified Cox regression — estimate separate baseline hazards with shared coefficients and within-stratum risk sets.
+- [ ] Proportional hazards diagnostics — return scaled Schoenfeld residuals and term-specific and global time-trend tests.
+- [ ] Accelerated failure time regression — fit Weibull, log-normal and log-logistic survival models with censoring and time-ratio intervals.
+- [ ] Turnbull estimator — estimate a survival distribution from interval-censored records and show the intervals supporting its probability mass.
+- [ ] Aalen–Johansen estimator — estimate state-transition probabilities and competing-risk cumulative incidence.
+- [ ] Gray test — compare cause-specific cumulative incidence across groups in the presence of competing events.
+- [ ] Fine–Gray regression — fit a proportional subdistribution hazard and predict cumulative incidence for a cause.
+- [ ] Andersen–Gill recurrent-event regression — retain subject event histories and use subject-clustered uncertainty.
+- [ ] Inverse-censoring-weighted validation — estimate time-dependent AUC and integrated Brier score over a supported evaluation horizon.
+
+> Stage 3. Population inference and specialist methods
+
+>> Survey sampling and missing data
+
+Survey methods need inclusion probabilities, strata, primary sampling units and population totals as appropriate to the design. These have different roles from the precision weights in LM. [Survey estimators and designs|https://search.r-project.org/CRAN/refmans/survey/html/00Index.html]
+
+- [ ] Horvitz–Thompson and Hájek estimation — estimate population totals and means with unequal inclusion probabilities.
+- [ ] Sen–Yates–Grundy variance — estimate fixed-size sampling variance from first- and second-order inclusion probabilities.
+- [ ] Taylor linearization — estimate variances for stratified multistage means, ratios and domain estimates with finite-population corrections.
+- [ ] Replicate-weight variance — support balanced repeated replication, Fay BRR and delete-one-primary-unit jackknife with design-specific scaling.
+- [ ] Survey calibration and raking — adjust weights to known totals or margins and report residual imbalance.
+- [ ] Probability-proportional-to-size sampling — generate fixed-size samples with declared first-order inclusion probabilities.
+- [ ] Rao–Scott tests — adjust contingency-table tests for the survey design.
+- [ ] Survey-weighted GLM — fit population regression estimating equations with design-based standard errors.
+- [ ] Little MCAR test — compare pattern-specific means with their fitted expectations under a multivariate normal missing-data model.
+- [ ] EM for incomplete multivariate normal data — estimate mean and covariance from observed-data likelihood across missingness patterns.
+- [ ] Multiple imputation by chained equations — generate completed datasets using conditional fits, including predictive mean matching for numeric fields.
+- [ ] Rubin pooling rules — combine estimates and covariance matrices and report finite-sample degrees of freedom and fraction of missing information.
+- [ ] Pattern-mixture sensitivity analysis — shift imputed outcomes by pattern and locate tipping points across declared departures from missing at random.
+
+>> Causal inference and econometrics
+
+The causal module already estimates binary-treatment g-computation, IPW and AIPW, two-period differences in differences and instrumental effects by two-stage least squares. The items here address different designs or extend the estimator and its uncertainty. [Native causal effects|../include/datamunge/causal/effects.hpp] · [Causal fixtures|../tests/cpp/causal_inference_tests.cpp]
+
+- [ ] Propensity score matching — match within a caliper with explicit replacement rules and report balance and the matched estimand.
+- [ ] Entropy balancing — estimate minimum-divergence weights satisfying target covariate moment constraints.
+- [ ] Cross-fitted AIPW — use out-of-fold nuisance predictions and return influence-function standard errors for the average treatment effect.
+- [ ] Targeted maximum likelihood estimation — update initial outcome predictions using the propensity score and return a targeted effect and interval.
+- [ ] Marginal structural models — accumulate stabilized treatment and censoring weights over longitudinal histories.
+- [ ] Staggered-adoption differences in differences — estimate cohort-by-time effects using eligible comparison cohorts and aggregate by event time.
+- [ ] Regression discontinuity — fit local polynomials on each side of a cutoff with robust bias-corrected inference for sharp and fuzzy designs.
+- [ ] Synthetic control — estimate simplex-constrained donor weights and assess post-treatment gaps with placebo assignments.
+- [ ] Weak-instrument-robust inference — invert Anderson–Rubin tests for structural coefficients and allow unbounded confidence sets.
+- [ ] Generalized method of moments — fit one- and two-step moment-condition models with sandwich covariance and an overidentification test.
+- [ ] Mediation by g-computation — estimate natural direct and indirect effects under explicit mediator and outcome assumptions.
+- [ ] Rosenbaum sensitivity bounds — bound matched-study inference as the allowed hidden treatment-assignment odds ratio varies.
+
+>> Bayesian computation and posterior assessment
+
+Build on the existing Gibbs, random-walk Metropolis, HMC, NUTS, importance sampling, INLA and nested sampling implementations. The diagnostics API already has split R-hat, effective sample size and energy BFMI. [Bayesian sampling|../include/datamunge/bayes/bayes.hpp] · [Chain diagnostics|../include/datamunge/bayes/diagnostics.hpp]
+
+- [x] Rank-normalized folded R-hat — check between-chain location and scale discrepancies after splitting and rank normalization. [Worked example|../docs/mepml/stats/bayes/rank_chain_diagnostics.mepml]
+- [x] Bulk and tail effective sample size — report rank-based central and quantile-specific sampling efficiency. [Worked example|../docs/mepml/stats/bayes/rank_chain_diagnostics.mepml]
+- [ ] Pareto-smoothed importance sampling leave-one-out — estimate pointwise predictive accuracy and report Pareto shape diagnostics.
+- [x] Widely applicable information criterion — compute pointwise log predictive density and the effective parameter penalty from a draw-by-observation log-likelihood matrix. [Worked example|../docs/mepml/stats/bayes/waic.mepml]
+- [x] Bridge sampling — estimate marginal likelihood from posterior and proposal draws with overlap diagnostics. [Worked example|../docs/mepml/stats/bayes/marginal_likelihood.mepml#compare-proposals-using-bridge-sampling]
+- [x] Thermodynamic integration — integrate expected log likelihood over a temperature ladder and estimate discretization error. [Worked example|../docs/mepml/stats/bayes/marginal_likelihood.mepml#integrate-along-the-power-posterior-ladder]
+- [x] Univariate slice sampling — step out and shrink a bracket for a user-supplied scalar log density. [Worked example|../docs/mepml/stats/bayes/slice_sampling.mepml#sample-a-scalar-density-by-expanding-and-shrinking-its-bracket]
+- [x] Elliptical slice sampling — update a latent Gaussian block using its prior covariance and a likelihood callback. [Worked example|../docs/mepml/stats/bayes/slice_sampling.mepml#update-two-correlated-gaussian-latent-variables]
+- [ ] Sequential Monte Carlo samplers — move particles along a tempered posterior sequence and estimate the normalizing constant.
+- [ ] Automatic differentiation variational inference — fit mean-field and full-rank Gaussian approximations to transformed continuous parameters.
+- [ ] Simulation-based calibration — simulate parameters and observations from a generative model and report posterior-rank diagnostics over refits.
+- [x] Bayesian bootstrap — use Dirichlet observation weights to obtain posterior draws of a sample functional. [Worked example|../docs/mepml/stats/resampling/bayesian_bootstrap.mepml]
+
+>> Spatial, directional and point-process statistics
+
+- [ ] Global Moran I and Geary C — test spatial autocorrelation from a supplied weights matrix and permutation convention.
+- [ ] Local Moran and Getis–Ord statistics — estimate location-specific association and calibrate conditional randomizations.
+- [ ] Empirical variogram — estimate isotropic and directional semivariance by lag, retaining pair counts.
+- [ ] Variogram model fitting — estimate nugget, range and sill for spherical, exponential and Matérn models.
+- [ ] Ordinary and universal kriging — solve the variogram or covariance system with mean constraints and return prediction variance.
+- [ ] Spatial lag and spatial error regression — estimate spatial dependence and covariate effects using a weights matrix.
+- [ ] Ripley K and pair correlation — estimate point-pattern interaction in a bounded observation window with edge correction.
+- [ ] Inhomogeneous Poisson point-process regression — fit log intensity with observation-window quadrature and predict expected counts.
+- [ ] Hawkes process estimation — fit a self-exciting temporal point process and assess time-rescaled event residuals.
+- [ ] Circular summaries — estimate mean direction, resultant length, circular dispersion and an interval for mean direction.
+- [ ] Rayleigh and Kuiper tests — assess directional uniformity with calibration for the chosen null and sample size.
+- [ ] von Mises fitting — estimate concentration and mean direction by likelihood with diagnostics for a vanishing resultant.
+
+>> Evidence synthesis, measurement and reliability
+
+- [ ] Common-effect meta-analysis — pool study estimates by inverse variance and return weights and a confidence interval.
+- [ ] Random-effects meta-analysis — estimate between-study variance by REML, Paule–Mandel or DerSimonian–Laird and give a prediction interval.
+- [ ] Hartung–Knapp inference — adjust uncertainty in the pooled estimate using residual heterogeneity and finite study degrees of freedom.
+- [ ] Meta-regression — estimate moderator effects, residual heterogeneity and influence of individual studies.
+- [ ] Egger regression — assess small-study effects with a specified standard-error predictor and study weighting.
+- [ ] Network meta-analysis — combine direct and indirect treatment comparisons accounting for correlated contrasts in multi-arm studies.
+- [ ] Generalizability theory — partition crossed measurement variance and predict reliability under a changed number of raters or occasions.
+- [ ] Cronbach alpha and McDonald omega — estimate internal consistency and model-based reliability, with uncertainty.
+- [ ] Rasch and two-parameter item-response models — estimate item difficulty and discrimination on an identified latent scale.
+- [ ] Graded response model — fit ordered item thresholds and produce category response curves and test information.
+- [ ] Gage repeatability and reproducibility — decompose variation in a crossed parts-by-operators study.
+- [ ] Process capability indices — estimate Cp, Cpk, Pp and Ppk with specified tolerance limits and within- or overall-process variance.
+- [ ] Acceptance sampling by attributes — choose sample size and acceptance count from producer and consumer risk targets.
+
+>> Dependence, extremes and compositional data
+
+- [ ] Partial and semipartial correlations — estimate adjusted association and its uncertainty from covariates or a covariance matrix.
+- [ ] Distance correlation — estimate distance covariance and correlation with a permutation independence test.
+- [ ] Hilbert–Schmidt independence criterion — compare paired observations using centered kernel matrices and permutation calibration.
+- [ ] Tetrachoric and polychoric correlations — estimate latent Gaussian association from binary or ordinal contingency tables.
+- [ ] Gaussian and Student t copulas — fit dependence to pseudo-observations, simulate joint ranks and report tail dependence.
+- [ ] Generalized extreme value fitting — fit block maxima by likelihood, including the Gumbel limit, and estimate return levels.
+- [ ] Generalized Pareto fitting — fit threshold exceedances and report threshold sensitivity and return levels at a specified exposure rate.
+- [ ] Hill and Pickands tail-index estimation — estimate heavy-tail shape across upper-order-statistic cutoffs.
+- [ ] Extremal index estimation — estimate clustering of extremes from inter-exceedance times.
+- [ ] Compositional log-ratio analysis — implement centered, additive and isometric log-ratio coordinates and Aitchison distance, with explicit zero handling.
+- [ ] Dirichlet regression — estimate covariate effects on simplex-valued responses with a mean/precision parameterization.
+- [ ] Permutational MANOVA and dispersion tests — partition a distance matrix by model terms and test differences in within-group dispersion separately.

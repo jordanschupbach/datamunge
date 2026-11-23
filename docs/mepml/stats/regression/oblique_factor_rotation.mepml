@@ -1,0 +1,96 @@
+//? Title: Rotate loadings to correlated factors
+//? Exports: both
+//? Lang: en
+
+> Compare pattern and structure after oblique rotation
+
+Six synthetic measurements have orthogonal-model loadings on two factors.
+Oblimin reduces overlap between squared loadings, with quartimin as its
+default criterion. Promax first applies varimax and then fits a
+signed-power target that emphasizes larger loadings.
+
+Both methods return a pattern matrix \(P\) of loading coefficients, the
+factor correlation matrix \(\Phi\), and the structure matrix
+\(S=P\Phi\). For standardized measurements, the structure entries are
+the correlations between each measurement and each factor. An indicator
+can have a small pattern coefficient on the second factor and still
+correlate with it through the first factor.
+
+```{cpp, id=oblique-pattern-and-structure, file="figures/oblique_rotation.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/stats/factor_analysis.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    namespace dm = datamunge;
+    const dm::linalg::DenseMatrix<double> input(6, 2, {
+        .78, .21,
+        .68, .30,
+        .73, .26,
+        .32, .74,
+        .25, .81,
+        .36, .62,
+    });
+    const auto quartimin = dm::stats::oblimin(input);
+    const auto promax = dm::stats::promax(input);
+    if (!quartimin.converged || !promax.converged)
+        throw std::runtime_error("Expected both rotations to converge");
+
+    const auto common = input * input.transpose();
+    std::println("| Rotation | Factor correlation | A1 pattern on Factor 2 | A1 structure on Factor 2 | Maximum change in common covariance |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    const auto report = [&](const char* name, const dm::stats::ObliqueRotation& fit) {
+        const auto difference = fit.structure * fit.pattern.transpose() - common;
+        double max_deviation = 0;
+        for (const double entry : difference.data())
+            max_deviation = std::max(max_deviation, std::abs(entry));
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.1e} |", name,
+            fit.factor_correlation(0, 1), fit.pattern(0, 1), fit.structure(0, 1),
+            max_deviation);
+    };
+    report("Oblimin (quartimin)", quartimin);
+    report("Promax (power 4)", promax);
+
+    dm::graphics::Diagram diagram(57, 750);
+    dm::graphics::DiagramNodeStyle latent;
+    latent.circle = true;
+    latent.width = latent.height = 1.5;
+    latent.fill = {224, 239, 252};
+    dm::graphics::DiagramNodeStyle indicator;
+    indicator.width = 1.35;
+    indicator.height = .7;
+    diagram.node("F1", {2, 3.2}, "Factor 1", latent)
+        .node("F2", {8.4, 3.2}, "Factor 2", latent)
+        .link("F1", "F2", std::format("{:.2f}", quartimin.factor_correlation(0, 1)));
+    for (std::size_t i = 0; i < input.rows(); ++i) {
+        const std::size_t factor = i / 3;
+        const auto name = std::format("{}{}", factor == 0 ? 'A' : 'B', i % 3 + 1);
+        diagram.node(name, {2.0 * (i % 3) + 6.4 * factor, 0}, name, indicator)
+            .edge(factor == 0 ? "F1" : "F2", name, std::format("{:.2f}", quartimin.pattern(i, factor)));
+    }
+    std::filesystem::create_directories("build");
+    diagram.save_svg("build/oblique_rotation.svg");
+}
+```
+// result_begin: markdown
+| Rotation | Factor correlation | A1 pattern on Factor 2 | A1 structure on Factor 2 | Maximum change in common covariance |
+| --- | ---: | ---: | ---: | ---: |
+| Oblimin (quartimin) | 0.624 | -0.053 | 0.471 | 1.1e-16 |
+| Promax (power 4) | 0.658 | -0.081 | 0.485 | 1.7e-16 |
+\image(figures/oblique_rotation.svg)
+// result_end
+\caption(Quartimin solution. The connection between factors shows their correlation. Arrows show the six primary pattern coefficients.)
+\alttext(Factor 1 points to A1, A2, and A3. Factor 2 points to B1, B2, and B3. A horizontal line between the factors shows their positive correlation.)
+
+In this example, both methods give A1 a small secondary pattern
+coefficient and a larger secondary structure coefficient. The common
+covariance remains \(P\Phi P^\top\) for either rotation, equal within
+roundoff to the common covariance before rotation.
+
+[Jennrich (2002)|https://www.cambridge.org/core/journals/psychometrika/article/abs/simple-general-method-for-oblique-rotation/4159E602B694E2FB13D66E565AF73011] · [Hendrickson and White (1964)|https://doi.org/10.1111/j.2044-8317.1964.tb00244.x]

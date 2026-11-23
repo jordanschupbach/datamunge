@@ -1,0 +1,99 @@
+//? Title: Multiplicity and nuisance-adjusted inference
+//? Exports: both
+//? Lang: en
+
+> Check sensitivity to the Storey threshold
+
+Storey's method estimates the null fraction from the large p-values.
+Changing the threshold changes which values enter that estimate. The
+table compares two thresholds with the Benjamini–Hochberg baseline.
+Each row keeps the hypotheses in their original order.
+
+```{cpp, id=storey-sensitivity, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/discovery_bounds.hpp>
+#include <print>
+
+int main() {
+    const std::vector<double> p{.002, .015, .016, .055, .19, .7, .9};
+    const auto fits = datamunge::stats::storey_qvalues(p, {0, .25, .5});
+    std::println("| Threshold | Estimated null fraction | q for p = .002 | q for p = .016 |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    for (const auto& row : fits)
+        std::println("| {:.2f} | {:.3f} | {:.4f} | {:.4f} |", row.threshold,
+                     row.null_fraction, row.q_values[0], row.q_values[2]);
+}
+```
+// result_begin: markdown
+| Threshold | Estimated null fraction | q for p = .002 | q for p = .016 |
+| ---: | ---: | ---: | ---: |
+| 0.00 | 1.000 | 0.0140 | 0.0373 |
+| 0.25 | 0.571 | 0.0080 | 0.0213 |
+| 0.50 | 0.857 | 0.0120 | 0.0320 |
+// result_end
+
+> Bound discoveries in a selected subset
+
+One closed Simes analysis allows several overlapping subset queries at the
+same confidence level. Under the Simes inequality the lower bounds hold
+simultaneously, including for subsets chosen after looking at the p-values.
+The confidence level applies to the whole family of queries.
+
+```{cpp, id=simes-sets, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/discovery_bounds.hpp>
+#include <print>
+
+int main() {
+    const datamunge::stats::SimesDiscoveryBounds family({.002, .015, .016, .055, .19, .7, .9}, .05);
+    std::println("| Subset of hypothesis indices | 95% simultaneous lower bound |");
+    std::println("| --- | ---: |");
+    std::println("| 0, 1, 2 | {} |", family.lower_bound({0, 1, 2}));
+    std::println("| 1, 2, 3, 4 | {} |", family.lower_bound({1, 2, 3, 4}));
+    std::println("| 0, 1, 2, 3, 4, 5, 6 | {} |", family.lower_bound({0, 1, 2, 3, 4, 5, 6}));
+}
+```
+// result_begin: markdown
+| Subset of hypothesis indices | 95% simultaneous lower bound |
+| --- | ---: |
+| 0, 1, 2 | 2 |
+| 1, 2, 3, 4 | 1 |
+| 0, 1, 2, 3, 4, 5, 6 | 2 |
+// result_end
+
+> Permute residuals while retaining nuisance effects
+
+The regression example tests a binary treatment after adjusting for a
+continuous baseline measurement and an intercept. Freedman–Lane holds the
+baseline fit fixed and permutes residuals from that fit. The partial F
+statistic is recomputed on each reconstructed response. This calibration
+assumes exchangeable errors and uses a reproducible Monte Carlo stream.
+The nuisance fit generally makes the permutation calibration approximate.
+
+```{cpp, id=freedman-lane, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/freedman_lane.hpp>
+#include <print>
+
+int main() {
+    using Matrix = datamunge::linalg::DenseMatrix<double>;
+    const auto nuisance = Matrix::from_columns({
+        std::vector<double>(10, 1),
+        {2, 4, 2, 6, 4, 3, 8, 7, 5, 6}
+    });
+    const Matrix treatment(10, 1, {0, 1, 0, 1, 0, 0, 1, 1, 0, 1});
+    const std::vector<double> response{3.1, 9.0, 3.5, 10.2, 5.4, 4.2, 13.1, 10.3, 5.7, 10.7};
+    datamunge::random::SplitMix64 rng(42);
+    const auto fit = datamunge::stats::freedman_lane_test(response, nuisance, treatment, 999, rng);
+    std::println("| Partial F | Numerator df | Denominator df | Permutation p-value |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    std::println("| {:.3f} | {:.0f} | {:.0f} | {:.3f} |",
+                 fit.statistic, fit.parameter1, fit.parameter2, fit.p_value);
+}
+```
+// result_begin: markdown
+| Partial F | Numerator df | Denominator df | Permutation p-value |
+| ---: | ---: | ---: | ---: |
+| 41.238 | 1 | 7 | 0.002 |
+// result_end
+
+[Storey's q-values|https://doi.org/10.1111/1467-9868.00346] ·
+[Closed Simes bounds|https://doi.org/10.1093/biomet/asz041] ·
+[Freedman–Lane|https://doi.org/10.1080/07350015.1983.10509354]

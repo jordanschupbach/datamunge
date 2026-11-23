@@ -1,0 +1,108 @@
+//? Title: Predict a scalar outcome from a curve
+//? Exports: both
+//? Lang: en
+
+> Learn which parts of a curve predict the response
+
+The predictor is a time course and the outcome is a single measurement
+per subject. The model adds an intercept to the integral of the curve
+times a coefficient function \(\beta(t)\). A large positive coefficient
+means that a higher curve value in that region raises the fitted
+outcome, with the rest of the curve held fixed.
+
+The fit represents \(\beta(t)\) with cubic B-splines. Trapezoidal
+quadrature gives the predictors for the regression. A squared
+second-difference penalty on the spline coefficients controls roughness.
+The example compares two fixed penalty strengths on synthetic data
+with a known coefficient and a separate set of prediction curves.
+
+```{cpp, id=scalar-on-function, file="figures/scalar_on_function_coefficient.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/fda/scalar_on_function.hpp>
+#include <datamunge/plot/plot.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <vector>
+
+int main() {
+    namespace dm = datamunge;
+    using dm::linalg::DenseMatrix;
+    const auto coefficient = [](double t) { return .9 - .32 * (t - 2) * (t - 2); };
+
+    constexpr std::size_t samples = 25;
+    constexpr double width = 4.0 / (samples - 1);
+    std::vector<double> time(samples);
+    for (std::size_t j = 0; j < samples; ++j)
+        time[j] = j * width;
+    const auto make_data = [&](std::size_t first, DenseMatrix<double>& curves) {
+        std::vector<double> y(curves.rows());
+        for (std::size_t row = 0; row < curves.rows(); ++row) {
+            const double subject = first + row;
+            y[row] = 1.1 + .12 * std::sin(.97 * subject);
+            for (std::size_t j = 0; j < samples; ++j) {
+                const auto t = time[j];
+                const auto value = std::sin(.71 * subject + .48 * t)
+                    + .32 * std::cos(.29 * subject * t + .17 * subject)
+                    + .33 * std::sin((.3 + .04 * subject) * t + .41 * subject);
+                curves(row, j) = value;
+                const double weight = j == 0 || j + 1 == samples ? width / 2 : width;
+                y[row] += weight * value * coefficient(t);
+            }
+        }
+        return y;
+    };
+
+    DenseMatrix<double> train(30, samples), test(12, samples);
+    const auto y_train = make_data(1, train);
+    const auto y_test = make_data(31, test);
+    const auto basis = dm::fda::BSplineBasis::open_uniform(3, 7, 0, 4);
+    const auto weak = dm::fda::fit_scalar_on_function(time, train, y_train, basis, {.001, 2});
+    const auto strong = dm::fda::fit_scalar_on_function(time, train, y_train, basis, {.15, 2});
+
+    const auto rmse = [](const std::vector<double>& observed, const std::vector<double>& predicted) {
+        double error = 0;
+        for (std::size_t i = 0; i < observed.size(); ++i) {
+            const auto difference = observed[i] - predicted[i];
+            error += difference * difference;
+        }
+        return std::sqrt(error / observed.size());
+    };
+    std::println("| Penalty | Training RMSE | Held-out RMSE | Coefficient roughness |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    std::println("| 0.001 | {:.3f} | {:.3f} | {:.3f} |",
+        rmse(y_train, weak.fitted), rmse(y_test, weak.predict(test)), weak.roughness);
+    std::println("| 0.150 | {:.3f} | {:.3f} | {:.3f} |",
+        rmse(y_train, strong.fitted), rmse(y_test, strong.predict(test)), strong.roughness);
+
+    std::vector<double> draw(81), truth(81);
+    for (std::size_t i = 0; i < draw.size(); ++i) {
+        draw[i] = i * .05;
+        truth[i] = coefficient(draw[i]);
+    }
+    std::filesystem::create_directories("build");
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(draw, weak.coefficient_function(draw), "Penalty 0.001", {169, 70, 40}, 2.4)
+        .line(draw, strong.coefficient_function(draw), "Penalty 0.150", {28, 94, 153}, 2.4)
+        .line(draw, truth, "Generating coefficient", {73, 101, 79}, 2.1)
+        .title("Estimated coefficient functions")
+        .x_label("Time").y_label("Coefficient")
+        .size(740, 420).save_svg("build/scalar_on_function_coefficient.svg");
+}
+```
+// result_begin: markdown
+| Penalty | Training RMSE | Held-out RMSE | Coefficient roughness |
+| ---: | ---: | ---: | ---: |
+| 0.001 | 0.072 | 0.121 | 9.506 |
+| 0.150 | 0.086 | 0.095 | 0.477 |
+\image(figures/scalar_on_function_coefficient.svg)
+// result_end
+\caption(The more strongly penalized fit trades training fit for a smoother coefficient function.)
+\alttext(The fitted and generating coefficient functions are plotted across time. The fit with the larger penalty is smoother.)
+
+The roughness column gives the squared second differences before
+multiplication by the penalty strength. The held-out predictions
+apply the same estimated coefficient and quadrature rule to new
+curves.
+
+[Marx and Eilers (1999)|https://doi.org/10.1080/00401706.1999.10485591]

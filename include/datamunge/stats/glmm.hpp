@@ -17,8 +17,8 @@ namespace datamunge::stats {
 
 /// @brief Conditional response distribution with dispersion fixed at one.
 enum class GLMMFamily {
-  Binomial, ///< Exactly zero/one observations with the logit link.
-  Poisson   ///< Nonnegative integer counts with the log link; no exposure offset is fitted.
+  Binomial, ///< Binomial counts with the logit link. The PQL GLMM class accepts single trials.
+  Poisson   ///< Nonnegative integer counts with the log link.
 };
 
 /// @brief PQL relinearization and bounded covariance-search controls.

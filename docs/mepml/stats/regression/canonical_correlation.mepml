@@ -1,0 +1,68 @@
+//? Title: Relate two sets of measurements with canonical correlation
+//? Exports: both
+//? Lang: en
+
+> Find paired scores that move together
+
+Each of 24 synthetic machine runs supplies three vibration readings
+and two response readings. Canonical correlation finds a weighted sum
+of each set, with weights chosen so the two sums have the highest
+possible correlation. The second pair uses score directions uncorrelated
+with the first pair within each set.
+
+```{cpp, id=paired-canonical-scores, file="figures/canonical_score_pairs.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/canonical_correlation.hpp>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    linalg::DenseMatrix<double> vibration(24,3), response(24,2);
+    for (std::size_t row = 0; row < vibration.rows(); ++row) {
+        const double i = row + 1;
+        const auto u = std::sin(.3*i), v = std::cos(.61*i);
+        vibration(row,0) = 1+u+.4*std::cos(1.1*i);
+        vibration(row,1) = 3+.7*v+.5*std::sin(1.23*i);
+        vibration(row,2) = 8+.5*u-.3*v+.6*std::cos(2.2*i);
+        response(row,0) = 5+.8*u-.4*v+.25*std::cos(2.1*i);
+        response(row,1) = 2+.75*v+.43*std::sin(1.9*i);
+    }
+
+    const auto fit = stats::canonical_correlation(vibration,response);
+    std::println("| First remaining pair | Correlation of that pair | Wilks' lambda | df | p-value |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    for (const auto& test : fit.sequential_tests)
+        std::println("| {} | {:.3f} | {:.4f} | {} | {:.3g} |",test.first_component,
+            fit.correlations.at(test.first_component-1),test.wilks_lambda,test.df,test.p_value);
+
+    std::filesystem::create_directories("build");
+    auto plot = graphics::RPlot::create();
+    const std::array colors{graphics::RGBA{25,87,150,.78},graphics::RGBA{168,78,37,.78}};
+    for (std::size_t k = 0; k < fit.correlations.size(); ++k)
+        plot.points(fit.x_scores.col(k),fit.y_scores.col(k),"Pair "+std::to_string(k+1),colors[k],4.4);
+    plot.abline(0,1,graphics::RGBA{166,177,188},1.4)
+        .title("Paired vibration and response scores")
+        .x_label("Vibration score").y_label("Response score")
+        .x_limits(-2.4,2.4).y_limits(-2.65,2.8).size(710,460)
+        .save_svg("build/canonical_score_pairs.svg");
+}
+```
+// result_begin: markdown
+| First remaining pair | Correlation of that pair | Wilks' lambda | df | p-value |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.938 | 0.0704 | 6 | 1.13e-09 |
+| 2 | 0.644 | 0.5855 | 2 | 0.00473 |
+\image(figures/canonical_score_pairs.svg)
+// result_end
+\caption(The diagonal shows equal scores. The first pair follows it more closely.)
+\alttext(Two clouds of paired scores trend upward. Pair 1 clusters along the diagonal with correlation 0.94. Pair 2 is more dispersed with correlation 0.64.)
+
+The first Wilks test uses both pairs. The second tests the correlation
+remaining after the first pair. The loadings returned by the fit measure
+how strongly each original variable correlates with its own set's
+canonical scores.
+
+[Hotelling, Relations Between Two Sets of Variates|https://doi.org/10.1093/biomet/28.3-4.321] · [Bartlett, The Statistical Significance of Canonical Correlations|https://doi.org/10.1093/biomet/32.1.29]

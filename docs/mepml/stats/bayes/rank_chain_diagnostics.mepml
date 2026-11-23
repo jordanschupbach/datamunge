@@ -1,0 +1,74 @@
+//? Title: Check chain agreement and sampling efficiency
+//? Exports: both
+//? Lang: en
+
+> Distinguish chain disagreement from slow sampling
+
+Rank-normalized split R-hat compares the location of the chains. Ranking
+absolute deviations from the pooled median gives the folded version, which
+can detect scale differences even when the chains have similar centers.
+The reported R-hat is the larger of the two components.
+
+Bulk effective sample size (ESS) estimates sampling efficiency for the
+rank-normalized draws. The lower and upper ESS use indicators for the
+pooled 5th and 95th percentiles. The smaller tail ESS identifies the less
+efficient tail in the two-quantile summary.
+
+```{cpp, id=rank-chain-diagnostics, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/bayes/diagnostics.hpp>
+#include <datamunge/random/random.hpp>
+#include <cmath>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    random::SplitMix64 rng(42);
+    constexpr std::size_t draws = 512;
+    constexpr double persistence = 0.95;
+    const double innovation_scale = std::sqrt(1 - persistence * persistence);
+    std::vector<std::vector<double>> independent(4), autocorrelated(4);
+    for (std::size_t chain = 0; chain < independent.size(); ++chain) {
+        double state = rng.normal();
+        for (std::size_t draw = 0; draw < draws; ++draw) {
+            const double innovation = rng.normal();
+            state = persistence * state + innovation_scale * innovation;
+            independent[chain].push_back(innovation);
+            autocorrelated[chain].push_back(state);
+        }
+    }
+    auto shifted = independent;
+    auto wider = independent;
+    for (auto& draw : shifted.back())
+        draw += 2;
+    for (auto& draw : wider.back())
+        draw *= 4;
+
+    const auto show = [](const char* label, const auto& chains) {
+        const auto rhat = bayes::rank_normalized_rhat(chains);
+        const auto ess = bayes::bulk_tail_effective_sample_size(chains);
+        std::println("| {} | {:.3f} | {:.3f} | {:.0f} | {:.0f} | {:.0f} |", label,
+                     rhat.rank_normalized, rhat.folded, ess.bulk, ess.lower_tail, ess.upper_tail);
+    };
+    std::println("| Chains | Rank R-hat | Folded R-hat | Bulk ESS | Lower ESS | Upper ESS |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    show("Independent standard normals", independent);
+    show("One chain shifted", shifted);
+    show("One chain wider", wider);
+    show("Autocorrelated standard normals", autocorrelated);
+}
+```
+// result_begin: markdown
+| Chains | Rank R-hat | Folded R-hat | Bulk ESS | Lower ESS | Upper ESS |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Independent standard normals | 1.000 | 1.002 | 2095 | 2205 | 2081 |
+| One chain shifted | 1.323 | 1.100 | 10 | 1973 | 27 |
+| One chain wider | 1.000 | 1.199 | 2056 | 35 | 27 |
+| Autocorrelated standard normals | 1.066 | 1.004 | 50 | 147 | 236 |
+// result_end
+
+The shifted chain mainly raises rank R-hat. The wider chain mainly raises
+folded R-hat and lowers tail ESS. Autocorrelation lowers ESS even though
+each chain has the same marginal distribution. ESS can exceed the 2,048
+retained draws when the estimated autocorrelation time is below one.
+
+[Vehtari et al. (2021), Rank-normalization, folding, and localization|https://doi.org/10.1214/20-BA1221]

@@ -2,6 +2,7 @@
 /// @brief Studentized range distribution (after R's ptukey.c) and Tukey's HSD.
 #include <algorithm>
 #include <cmath>
+#include <datamunge/random/distributions.hpp>
 #include <datamunge/stats/detail/test_common.hpp>
 #include <datamunge/stats/tukey_hsd.hpp>
 #include <format>
@@ -68,13 +69,13 @@ double range_probability(double w, double cc) {
   return std::min(pr_w, 1.0);
 }
 
-/// @brief Rejects fewer than two means or two degrees of freedom.
+/// @brief Rejects fewer than two means or less than one degree of freedom.
 /// @param nmeans Number of means.
 /// @param df Error degrees of freedom.
 /// @throws std::invalid_argument Out-of-domain parameters.
 void check_range_parameters(std::size_t nmeans, double df) {
   if (nmeans < 2) throw std::invalid_argument("studentized range: nmeans must be at least 2");
-  if (!(df >= 2)) throw std::invalid_argument("studentized range: df must be at least 2");
+  if (!(df >= 1)) throw std::invalid_argument("studentized range: df must be at least 1");
 }
 
 } // namespace
@@ -87,6 +88,10 @@ double studentized_range_cdf(double q, std::size_t nmeans, double df, bool lower
   if (!std::isfinite(q)) return tail(1);
   const double cc = static_cast<double>(nmeans);
   if (df > 25000) return tail(range_probability(q, cc));
+  if (nmeans == 2) {
+    const double upper = 2 * random::student_t_cdf(-q / std::numbers::sqrt2, df);
+    return lower_tail ? 1 - upper : upper;
+  }
 
   // Integrate wprob(q * sqrt(s/2)) against the chi density of s over (0, inf), in blocks of
   // width ulen with 16-point Gauss-Legendre, as R's ptukey.c does.
@@ -105,6 +110,21 @@ double studentized_range_cdf(double q, std::size_t nmeans, double df, bool lower
   const double f2lf = f2 * std::log(df) - df * std::numbers::ln2 - std::lgamma(f2) + std::log(ulen);
   const double f21 = f2 - 1, ff4 = df * 0.25;
   double       ans = 0;
+  if (df < 2) {
+    // Integrate in log(u) to remove the integrable singularity at zero. For
+    // 1 <= df < 2 the truncated chi-square mass is negligible at both ends.
+    for (int block = -80; block < 5; ++block) {
+      for (int j = 0; j < ihalfq; ++j) {
+        for (const double sign : {-1.0, 1.0}) {
+          const double log_u = block + 0.5 * (1 + sign * xlegq[j]);
+          const double u = std::exp(log_u);
+          const double density = std::exp(f2lf + f2 * log_u - u * ff4);
+          ans += 0.5 * alegq[j] * density * tail(range_probability(q * std::sqrt(u * 0.5), cc));
+        }
+      }
+    }
+    return std::clamp(ans, 0.0, 1.0);
+  }
   for (int i = 1; i <= 50; ++i) {
     double       otsum = 0;
     const double twa1  = (2 * i - 1) * ulen;

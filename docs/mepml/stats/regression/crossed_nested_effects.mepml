@@ -1,0 +1,96 @@
+//? Title: Estimate crossed and nested random effects
+//? Exports: both
+//? Lang: en
+
+> Crossed and nested group structure
+
+In a crossed design, several participants can respond to the same
+item. A response can then share a participant effect with one set of
+rows and an item effect with another. In a nested design, each plot
+belongs to one site. A plot label that repeats at another site
+identifies a different plot.
+
+```{cpp, id=crossed-and-nested, file="figures/crossed_nested_groups.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/diagram.hpp>
+#include <filesystem>
+
+int main() {
+    using namespace datamunge::graphics;
+    const DiagramNodeStyle upper{.width=2.65, .height=.8, .font_size=18, .padding=9,
+                                .fill={219,234,254}, .border={37,99,235}};
+    const DiagramNodeStyle lower{.width=2.45, .height=.8, .font_size=18, .padding=9,
+                                .fill={254,243,199}, .border={180,83,9}};
+    std::filesystem::create_directories("build");
+    Diagram(49, 980)
+        .label({1.6, 3.2}, "Crossed", 23)
+        .label({11.5, 3.2}, "Nested", 23)
+        .node("a", {0,2}, "Person A", upper).node("b", {3.2,2}, "Person B", upper)
+        .node("i", {0,0}, "Item 1", lower).node("j", {3.2,0}, "Item 2", lower)
+        .link("a", "i").link("a", "j").link("b", "i").link("b", "j")
+        .node("s1", {8.5,2}, "Site A", upper).node("s2", {14.5,2}, "Site B", upper)
+        .node("a1", {7,0}, "A / Plot 1", lower).node("a2", {10,0}, "A / Plot 2", lower)
+        .node("b1", {13,0}, "B / Plot 1", lower).node("b2", {16,0}, "B / Plot 2", lower)
+        .edge("s1", "a1").edge("s1", "a2").edge("s2", "b1").edge("s2", "b2")
+        .save_svg("build/crossed_nested_groups.svg");
+}
+```
+// result_begin: markdown
+\image(figures/crossed_nested_groups.svg)
+// result_end
+\caption(Crossed items can be shared across participants. Each nested plot has a single parent site.)
+\alttext(Both people are linked to both items in the crossed design. In the nested design, each site points to its own two plots.)
+
+> Fit a variance for each random-effect block
+
+The two fits use the same fixed design and each has two random
+intercepts. The crossed fit indexes the second block by item. The
+nested fit indexes it by the site and plot together. The solver
+estimates a variance for each block and a residual variance by REML.
+
+```{cpp, id=multiple-variance-blocks, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/variance_components.hpp>
+#include <cmath>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge;
+    const double first_effect[]{-1.1, .2, -.6, 1.5};
+    const double item_effect[]{.8, -.7, -.1};
+    const double plot_effect[]{.3,-.6,.4, .2,.8,-.7, -.9,.4,.3, .7,-.4,-.2};
+    std::println("| Design | First block variance | Second block variance | Residual variance |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (const bool nested : {false,true}) {
+        linalg::DenseMatrix<double> fixed(24, 2, 1);
+        linalg::DenseMatrix<double> first(24, 4), second(24, nested ? 12 : 3);
+        std::vector<double> y;
+        for (int a = 0; a < 4; ++a)
+            for (int b = 0; b < 3; ++b)
+                for (const double t : {-1.,1.}) {
+                    const auto row = y.size();
+                    fixed(row, 1) = t;
+                    first(row, a) = 1;
+                    second(row, nested ? 3*a + b : b) = 1;
+                    const auto effect = nested ? plot_effect[3*a + b] : item_effect[b];
+                    y.push_back(2 + .7*t + first_effect[a] + effect + .24*std::cos(3*a + 2*b + t));
+                }
+        const auto fit = stats::fit_variance_components(fixed, y, {first,second});
+        if (fit.status != stats::VarianceComponentsStatus::Converged)
+            throw std::runtime_error("Expected an interior variance-component fit");
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} |", nested ? "Nested" : "Crossed",
+                     fit.variances[0], fit.variances[1], fit.residual_variance);
+    }
+}
+```
+// result_begin: markdown
+| Design | First block variance | Second block variance | Residual variance |
+| --- | ---: | ---: | ---: |
+| Crossed | 1.283 | 0.572 | 0.039 |
+| Nested | 1.218 | 0.357 | 0.041 |
+// result_end
+
+For conditional predictions, supply new rows of the random designs
+in the same block and column order. An all-zero row gives a new group
+the population-average random effect.
+
+[Bates et al., Fitting Linear Mixed-Effects Models Using lme4|https://doi.org/10.18637/jss.v067.i01]

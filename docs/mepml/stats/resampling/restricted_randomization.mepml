@@ -1,0 +1,94 @@
+//? Title: Randomization inference within pairs and blocks
+//? Exports: both
+//? Lang: en
+
+> Enumerate the assignments in matched pairs
+
+Each pair has one treated and one control observation. The reference
+contains all 32 independent allocations. For a proposed constant
+additive effect, the test subtracts that effect from the responses of the
+observed treated units, then compares the absolute mean contrast across
+the allowed allocations. Tied statistics count toward the two-sided
+p-value.
+
+```{cpp, id=matched-pair-inversion, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/restricted_randomization.hpp>
+#include <print>
+
+int main() {
+    using datamunge::stats::RestrictedRandomization;
+    const RestrictedRandomization fit(
+        {8, 6, 10, 5, 6, 3, 12, 8, 9, 3},
+        {true, false, true, false, true, false, true, false, true, false},
+        {1, 1, 2, 2, 3, 3, 4, 4, 5, 5});
+    const auto point = fit.test();
+    const auto interval = fit.confidence_interval(.9);
+    std::println("Observed effect {:.1f} from {:.0f} allowed assignments.",
+                 point.estimate1, point.parameter1);
+    std::println("The 90% interval is [{:.2f}, {:.2f}].\n", interval.first, interval.second);
+    std::println("| Null effect | Exact p-value |");
+    std::println("| ---: | ---: |");
+    for (const auto effect : {0.0, interval.first, point.estimate1, interval.second, 8.0})
+        std::println("| {:.2f} | {:.4f} |", effect, fit.test(effect).p_value);
+}
+```
+// result_begin: markdown
+Observed effect 4.0 from 32 allowed assignments.
+The 90% interval is [2.00, 6.00].
+
+| Null effect | Exact p-value |
+| ---: | ---: |
+| 0.00 | 0.0625 |
+| 2.00 | 0.1250 |
+| 4.00 | 1.0000 |
+| 6.00 | 0.1250 |
+| 8.00 | 0.0625 |
+// result_end
+
+The interval contains the effects with p-values above the significance
+level. Each possible allocation contributes a closed range of null effects
+where its statistic is as extreme as the observed one. Computing these
+ranges gives the inversion endpoints directly.
+
+> Sample assignments within unequal blocks
+
+The next design has one treated observation in a block of three and two
+treated observations in a block of four. The observed contrast weights
+the two block mean differences by their sizes. For larger designs a
+Monte Carlo sample of the assignments can replace enumeration. The same
+draws are reused at every hypothesized effect, and the simulated p-value
+includes the observed allocation through the plus-one correction.
+
+```{cpp, id=sample-block-assignments, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/restricted_randomization.hpp>
+#include <print>
+
+int main() {
+    using datamunge::stats::RestrictedRandomization;
+    const std::vector<double> outcomes{2, 11, 3, 4, -1, 5, 9};
+    const std::vector<bool> treated{true, true, false, false, false, true, false};
+    const std::vector<std::size_t> blocks{7, 8, 7, 8, 7, 8, 8};
+    datamunge::random::SplitMix64 rng(42);
+    const RestrictedRandomization exact(outcomes, treated, blocks);
+    const RestrictedRandomization simulated(outcomes, treated, blocks, 1999, rng);
+    const auto print_row = [](const char* label, const RestrictedRandomization& fit) {
+        const auto test = fit.test(0);
+        const auto interval = fit.confidence_interval(.8);
+        std::println("| {} | {:.0f} | {:.3f} | [{:.2f}, {:.2f}] |", label, test.parameter1,
+                     test.p_value, interval.first, interval.second);
+    };
+    std::println("| Reference | Allocations evaluated | p for zero effect | 80% interval |");
+    std::println("| --- | ---: | ---: | ---: |");
+    print_row("Enumerated", exact);
+    print_row("Sampled", simulated);
+}
+```
+// result_begin: markdown
+| Reference | Allocations evaluated | p for zero effect | 80% interval |
+| --- | ---: | ---: | ---: |
+| Enumerated | 18 | 0.611 | [-4.00, 7.00] |
+| Sampled | 1999 | 0.642 | [-4.00, 7.00] |
+// result_end
+
+[Inversion of sharp randomization tests|https://doi.org/10.1093/biomet/88.1.219] ·
+[Randomization inference in matched designs|https://academic.oup.com/jrsssb/article/86/5/1312/7642824]

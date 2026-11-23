@@ -1,0 +1,124 @@
+//? Title: Prediction intervals from refits and covariate weights
+//? Exports: both
+//? Lang: en
+
+> Pair each residual with its own refit
+
+Jackknife+ fits the regression once for each left-out row. CV+ fits it once
+for each of three folds here. Each left-out residual adds two candidate
+endpoints around the prediction made by its own fitted model. The two
+finite-sample ranks then determine the interval. Both methods use the
+same observations and target points. Alpha sets the rank in each tail.
+
+```{cpp, id=refit-intervals, results="markdown", file="figures/conformal_refit_intervals.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+    using namespace dm::stats;
+    std::vector<double> x{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+    std::vector<double> y{1.3, 1.9, 2.4, 2.6, 3.7, 3.9, 4.0, 4.8, 5.9, 5.1, 7.6, 6.8};
+    std::vector<double> targets;
+    for (int j = -4; j <= 48; ++j)
+        targets.push_back(j / 4.0);
+
+    dm::Mat<> target_matrix(targets.size(), 1);
+    for (std::size_t i = 0; i < targets.size(); ++i)
+        target_matrix(i, 0) = targets[i];
+
+    const auto refit = [&](const auto& training, const auto& held_out) {
+        dm::Mat<> train_matrix(training.size(), 1), held_matrix(held_out.size(), 1);
+        std::vector<double> train_y;
+        for (std::size_t i = 0; i < training.size(); ++i) {
+            train_matrix(i, 0) = x[training[i]];
+            train_y.push_back(y[training[i]]);
+        }
+        for (std::size_t i = 0; i < held_out.size(); ++i)
+            held_matrix(i, 0) = x[held_out[i]];
+        const LM fit(train_y, train_matrix);
+        return ConformalFoldPredictions{fit.predict(held_matrix), fit.predict(target_matrix)};
+    };
+
+    std::vector<std::size_t> folds(x.size());
+    for (std::size_t i = 0; i < folds.size(); ++i)
+        folds[i] = i % 3;
+    const auto jk = jackknife_plus_intervals(y, refit, .2);
+    const auto cv = cv_plus_intervals(y, folds, refit, .2);
+
+    std::println("| Target x | Jackknife+ interval | CV+ interval |");
+    std::println("| ---: | ---: | ---: |");
+    for (const std::size_t j : {0, 26, 52})
+        std::println("| {:.1f} | [{:.2f}, {:.2f}] | [{:.2f}, {:.2f}] |", targets[j],
+                     jk[j].first, jk[j].second, cv[j].first, cv[j].second);
+
+    std::vector<double> jk_lo, jk_hi, cv_lo, cv_hi;
+    for (std::size_t j = 0; j < targets.size(); ++j) {
+        jk_lo.push_back(jk[j].first);
+        jk_hi.push_back(jk[j].second);
+        cv_lo.push_back(cv[j].first);
+        cv_hi.push_back(cv[j].second);
+    }
+    std::filesystem::create_directories("build");
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(targets, jk_lo, "Jackknife+", {37, 99, 235}, 2)
+        .line(targets, jk_hi, "", {37, 99, 235}, 2)
+        .line(targets, cv_lo, "Three-fold CV+", {180, 83, 9}, 2)
+        .line(targets, cv_hi, "", {180, 83, 9}, 2)
+        .points(x, y, "Observations", {65, 65, 65}, 3)
+        .title("Prediction intervals from held-out refits")
+        .x_label("Predictor").y_label("Response")
+        .save_svg("build/conformal_refit_intervals.svg");
+}
+```
+// result_begin: markdown
+| Target x | Jackknife+ interval | CV+ interval |
+| ---: | ---: | ---: |
+| -1.0 | [-0.43, 1.76] | [-0.40, 1.95] |
+| 5.5 | [3.16, 5.35] | [3.17, 5.40] |
+| 12.0 | [6.76, 8.57] | [6.75, 8.58] |
+\image(figures/conformal_refit_intervals.svg)
+// result_end
+\caption(Both endpoints use the predictions and residuals from the same sequence of refits.)
+\alttext(Two pairs of increasing curves enclose the observations. The intervals differ because the fits exclude either one row or one fold.)
+
+> Include a test covariate's likelihood ratio
+
+Suppose the source probability of the high-variability group is one quarter
+and the target probability is three quarters. The likelihood ratios,
+rescaled together, are one for the low group and nine for the high group.
+The response distribution within each group stays the same between source
+and target. The test-point weight contributes at positive infinity and
+can make the required threshold unbounded.
+
+```{cpp, id=weighted-intervals, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/conformal_calibration.hpp>
+#include <print>
+
+int main() {
+    using datamunge::stats::WeightedConformalCalibration;
+    const std::vector<double> scores{.2, .3, .4, .5, .6, .7, .9, 1.1, 1.5, 2.7, 3.2, 4.0};
+    const WeightedConformalCalibration ordinary(scores, std::vector<double>(scores.size(), 1));
+    const WeightedConformalCalibration shifted(scores, {1, 1, 1, 1, 1, 1, 1, 1, 1, 9, 9, 9});
+    constexpr double predicted = 10;
+    const auto print_interval = [&](const char* mode, double radius) {
+        std::println("| {} | {:.1f} | [{:.1f}, {:.1f}] |",
+                     mode, radius, predicted - radius, predicted + radius);
+    };
+    std::println("| Calibration | Residual threshold | Prediction interval |");
+    std::println("| --- | ---: | ---: |");
+    print_interval("Equal weights, alpha 0.30", ordinary.threshold(1, .30));
+    print_interval("Low group, alpha 0.30", shifted.threshold(1, .30));
+    print_interval("High group, alpha 0.30", shifted.threshold(9, .30));
+    print_interval("High group, alpha 0.10", shifted.threshold(9, .10));
+}
+```
+// result_begin: markdown
+| Calibration | Residual threshold | Prediction interval |
+| --- | ---: | ---: |
+| Equal weights, alpha 0.30 | 2.7 | [7.3, 12.7] |
+| Low group, alpha 0.30 | 3.2 | [6.8, 13.2] |
+| High group, alpha 0.30 | 4.0 | [6.0, 14.0] |
+| High group, alpha 0.10 | inf | [-inf, inf] |
+// result_end
+
+[Jackknife+ and CV+|https://doi.org/10.1214/20-AOS1965] ·
+[Weighted conformal prediction|https://arxiv.org/abs/1904.06019]

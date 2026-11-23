@@ -1,0 +1,78 @@
+//? Title: Estimate conditional dependence with graphical lasso
+//? Exports: both
+//? Lang: en
+
+> Read a graph from sparse precision
+
+The example starts with a covariance matrix for five synthetic
+measurements. Graphical lasso estimates a positive-definite precision
+matrix and penalizes its off-diagonal entries. A nonzero off-diagonal
+entry draws an edge. Its signed partial correlation measures the
+association between the two variables after accounting for the others.
+
+```{cpp, id=graphical-lasso-edges, file="figures/graphical_lasso_edges.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/stats/graphical_lasso.hpp>
+#include <array>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge;
+    const linalg::DenseMatrix<double> covariance(5,5,{
+        .7564, .2937, .0117,-.0743, 0,
+        .2937, .6365,-.2400, .0631, .09,
+        .0117,-.2400, .8422, .2591, 0,
+       -.0743, .0631, .2591, .6865,-.11,
+        0,     .09,   0,    -.11,  2.50});
+    const auto fit = stats::graphical_lasso(covariance,.13);
+    if (!fit.converged)
+        throw std::runtime_error("Expected convergence for the worked covariance");
+
+    const std::array<std::string,5> name{"A","B","C","D","E"};
+    graphics::Diagram diagram(58,760);
+    graphics::DiagramNodeStyle node;
+    node.circle = true;
+    node.width = node.height = .9;
+    node.font_size = 22;
+    node.fill = {232,242,251};
+    node.border = {43,72,101};
+    diagram.text({5.2,1.42},"Conditional-dependence graph",23);
+    for (std::size_t i = 0; i < name.size(); ++i)
+        diagram.node(name[i],{2.6*i,0},name[i],node);
+
+    std::println("| Edge | Partial correlation |");
+    std::println("| --- | ---: |");
+    for (const auto& edge : fit.edges) {
+        const auto value = edge.partial_correlation;
+        const auto& first = name[edge.first];
+        const auto& second = name[edge.second];
+        graphics::DiagramStroke stroke;
+        stroke.color = value > 0 ? graphics::RGB{28,83,143} : graphics::RGB{161,65,37};
+        stroke.width = 2.8;
+        diagram.link(first,second,std::format("{:+.2f}",value),stroke);
+        std::println("| {}–{} | {:+.3f} |",first,second,value);
+    }
+    std::filesystem::create_directories("build");
+    diagram.save_svg("build/graphical_lasso_edges.svg");
+}
+```
+// result_begin: markdown
+| Edge | Partial correlation |
+| --- | ---: |
+| A–B | +0.233 |
+| B–C | -0.144 |
+| C–D | +0.168 |
+\image(figures/graphical_lasso_edges.svg)
+// result_end
+\caption(Edge labels are signed partial correlations.)
+\alttext(A, B, C, and D form a chain. A to B is positive 0.23, B to C is negative 0.14, and C to D is positive 0.17. E has no edges.)
+
+The fitted graph is a chain through A, B, C, and D. E has small
+marginal covariances with B and D, and the fitted precision gives E
+no edges at this penalty. The B–C edge has a negative partial
+correlation.
+
+[Friedman, Hastie, and Tibshirani (2008)|https://doi.org/10.1093/biostatistics/kxm045] · [Mazumder and Hastie (2012)|https://www.jmlr.org/papers/v13/mazumder12a.html]

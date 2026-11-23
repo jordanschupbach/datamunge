@@ -1,0 +1,56 @@
+//? Title: Dirichlet probabilities and overdispersed counts
+//? Exports: both
+//? Lang: en
+
+> Let category probabilities vary between batches
+
+Each batch contains 20 items classified into three categories. The
+Dirichlet shapes 0.5, 1.5 and 3 give mean category probabilities 0.1,
+0.3 and 0.6. The Dirichlet–multinomial draws a fresh probability vector
+for each batch and allocates that batch's items using those probabilities.
+
+For the first category, the compound model predicts a count variance of
+7.5. With a fixed probability of 0.1, the binomial variance would be 1.8.
+The seeded simulation estimates the larger variance from repeated batches.
+
+```{cpp, id=dirichlet-batch-counts, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/random/simplex.hpp>
+#include <cmath>
+#include <print>
+
+int main() {
+    using namespace datamunge::random;
+    const std::vector<double> shapes{0.5, 1.5, 3};
+    SplitMix64 rng(2026);
+    const auto probabilities = dirichlet_sample(rng, shapes);
+    std::println("One batch's probabilities are {:.3f}, {:.3f} and {:.3f}. "
+                 "Their log density is {:.3f}.",
+                 probabilities[0], probabilities[1], probabilities[2],
+                 dirichlet_log_pdf(probabilities, shapes));
+    std::println("");
+    std::println("The probability of counts (2, 6, 12) is {:.4f}.",
+                 std::exp(dirichlet_multinomial_log_pmf({2, 6, 12}, shapes)));
+
+    constexpr int batches = 12000;
+    double total = 0, squares = 0;
+    for (int batch = 0; batch < batches; ++batch) {
+        const double first = dirichlet_multinomial_sample(rng, 20, shapes).front();
+        total += first;
+        squares += first * first;
+    }
+    const double mean = total / batches;
+    std::println("");
+    std::println("The first-category count averages {:.2f} with variance {:.2f}.",
+                 mean, squares / batches - mean * mean);
+}
+```
+// result_begin: markdown
+One batch's probabilities are 0.018, 0.232 and 0.750. Their log density is 2.733.
+
+The probability of counts (2, 6, 12) is 0.0094.
+
+The first-category count averages 1.99 with variance 7.45.
+// result_end
+
+[Dirichlet density|https://mc-stan.org/docs/functions-reference/simplex_distributions.html] ·
+[Dirichlet–multinomial probability|https://mc-stan.org/docs/functions-reference/multivariate_discrete_distributions.html#dirichlet-multinomial-distribution]

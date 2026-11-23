@@ -1,0 +1,81 @@
+//? Title: Fit ordered categories and test a common slope
+//? Exports: both
+//? Lang: en
+
+> Fit ordered cutpoints and test parallel slopes
+
+The responses are low, middle, and high. The model puts two cutpoints
+on the cumulative log-odds scale and uses one slope for both
+cumulative comparisons. A positive slope shifts probability toward
+the higher categories. Each row represents one category at one
+predictor setting, and its case weight is the observed count.
+
+```{cpp, id=ordinal-parallel-slopes, file="figures/ordinal_regression_probabilities.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/ordinal_regression.hpp>
+#include <filesystem>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge;
+    const std::vector<double> counts{20,70,10, 20,60,20, 20,45,35, 20,30,50, 20,17,63, 20,8,72};
+    linalg::DenseMatrix<double> x(counts.size(), 1);
+    std::vector<std::int64_t> outcome;
+    for (std::size_t i = 0; i < counts.size(); ++i) {
+        x(i, 0) = static_cast<double>(i / 3);
+        outcome.push_back(static_cast<std::int64_t>(i % 3));
+    }
+    const auto fit = stats::ordinal_regression(x, outcome, {.weights = counts});
+    if (fit.status != stats::OrdinalRegressionStatus::Converged || !fit.parallel_slopes)
+        throw std::runtime_error("Expected a converged ordinal fit and a score test");
+    const auto test = *fit.parallel_slopes;
+    std::println("| Lower cutpoint | Upper cutpoint | Common slope |");
+    std::println("| ---: | ---: | ---: |");
+    std::println("| {:.4f} | {:.4f} | {:.4f} |", fit.cutpoints[0], fit.cutpoints[1], fit.coefficients[0]);
+    std::println("\n| Parallel-slopes score statistic | df | p-value |");
+    std::println("| ---: | ---: | ---: |");
+    std::println("| {:.3f} | {} | {:.3g} |", test.statistic, test.degrees_of_freedom, test.p_value);
+
+    linalg::DenseMatrix<double> grid(101, 1);
+    for (std::size_t i = 0; i < grid.rows(); ++i)
+        grid(i, 0) = static_cast<double>(i) / 20;
+    const auto p = fit.predict(grid);
+    std::vector<double> settings{0,1,2,3,4,5}, observed_low, observed_high;
+    for (std::size_t i = 0; i < settings.size(); ++i) {
+        observed_low.push_back(counts[3 * i] / 100);
+        observed_high.push_back(counts[3 * i + 2] / 100);
+    }
+    std::filesystem::create_directories("build");
+    graphics::RPlot::create()
+        .line(grid.col(0), p.col(0), "Fitted low", {29, 78, 216}, 2.5)
+        .points(settings, observed_low, "Observed low", {29, 78, 216}, 5)
+        .line(grid.col(0), p.col(2), "Fitted high", {180, 83, 9}, 2.5)
+        .points(settings, observed_high, "Observed high", {180, 83, 9}, 5)
+        .title("Fitted and observed category probabilities")
+        .x_label("Predictor").y_label("Probability").ylim(0, 1)
+        .size(740, 420).save_svg("build/ordinal_regression_probabilities.svg");
+}
+```
+// result_begin: markdown
+| Lower cutpoint | Upper cutpoint | Common slope |
+| ---: | ---: | ---: |
+| -0.6276 | 1.2524 | 0.3845 |
+
+| Parallel-slopes score statistic | df | p-value |
+| ---: | ---: | ---: |
+| 96.298 | 1 | 9.88e-23 |
+\image(figures/ordinal_regression_probabilities.svg)
+// result_end
+\caption(The observed low-category proportion stays flat as the high-category proportion rises.)
+\alttext(The fitted low-category curve falls, while all six observed low proportions sit at 0.2. Fitted and observed high proportions generally rise.)
+
+The score test checks the effect of allowing a different slope at
+each cutpoint. It uses the fitted common-slope model to compute its
+reference statistic. Here the observed proportion in the low category
+stays at 0.2, while the high share increases from 0.10 to 0.72. The
+common-slope restriction fits these two changes poorly.
+
+[McCullagh (1980)|https://doi.org/10.1111/j.2517-6161.1980.tb01109.x] ·
+[Peterson and Harrell (1990)|https://academic.oup.com/jrsssc/article/39/2/205/6985569] ·
+[R proportional-odds reference|https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/polr.html]

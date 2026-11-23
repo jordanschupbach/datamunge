@@ -1,0 +1,85 @@
+//? Title: Stabilize covariance with Ledoit–Wolf and oracle shrinkage
+//? Exports: both
+//? Lang: en
+
+> Lift the smallest covariance eigenvalues
+
+Six synthetic production runs each record twelve channels. After
+centering the channels, the sample covariance has rank at most five.
+Ledoit–Wolf and oracle-approximating shrinkage (OAS) both mix that
+covariance with a diagonal matrix whose entries equal the average
+channel variance. They estimate different weights for that mixture.
+
+```{cpp, id=shrinkage-eigenvalues, file="figures/shrunk_covariance_eigenvalues.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/linalg/eigen.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/covariance_shrinkage.hpp>
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    linalg::DenseMatrix<double> x(6,12);
+    for (std::size_t row = 0; row < x.rows(); ++row)
+        for (std::size_t col = 0; col < x.cols(); ++col) {
+            const double i = row+1, j = col+1;
+            x(row,col) = 1.6*std::sin(.82*i)*(1+.05*j)+.33*std::cos(.47*i*j)+.9*j;
+        }
+
+    const auto lw = stats::ledoit_wolf_covariance(x);
+    const auto oas = stats::oracle_approximating_covariance(x);
+    auto centered = x;
+    for (std::size_t i = 0; i < x.rows(); ++i)
+        for (std::size_t j = 0; j < x.cols(); ++j)
+            centered(i,j) -= lw.location[j];
+    const auto sample = (1.0/x.rows())*(centered.transpose()*centered);
+    const auto raw_values = linalg::symmetric_eigen(sample).eigenvalues;
+    const auto lw_values = linalg::symmetric_eigen(lw.covariance).eigenvalues;
+    const auto oas_values = linalg::symmetric_eigen(oas.covariance).eigenvalues;
+    std::println("| Covariance | Shrinkage | Smallest eigenvalue | Largest eigenvalue |");
+    std::println("| --- | ---: | ---: | ---: |");
+    const auto summarize = [](const char* label, double intensity, const std::vector<double>& spectrum) {
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} |",label,intensity,
+            std::max(0.0,spectrum.back()),spectrum.front());
+    };
+    summarize("Empirical",0,raw_values);
+    summarize("Ledoit–Wolf",lw.shrinkage,lw_values);
+    summarize("OAS",oas.shrinkage,oas_values);
+
+    std::filesystem::create_directories("build");
+    auto plot = graphics::RPlot::create();
+    const auto show_tail = [&](const std::vector<double>& values,const char* label,graphics::RGBA color) {
+        std::vector<double> rank, tail;
+        for (std::size_t j = 0; j < 8; ++j) {
+            rank.push_back(j+1);
+            tail.push_back(std::max(0.0,values[values.size()-1-j]));
+        }
+        plot.line(rank,tail,label,color,2.5);
+    };
+    show_tail(raw_values,"Empirical",graphics::RGBA{80,93,111});
+    show_tail(lw_values,"Ledoit–Wolf",graphics::RGBA{25,88,148});
+    show_tail(oas_values,"OAS",graphics::RGBA{164,73,38});
+    plot.title("Smallest eight covariance eigenvalues")
+        .x_label("Rank from smallest").y_label("Eigenvalue")
+        .x_ticks({1,2,3,4,5,6,7,8},{"1","2","3","4","5","6","7","8"})
+        .y_limits(-.035,1.22).size(740,420).save_svg("build/shrunk_covariance_eigenvalues.svg");
+}
+```
+// result_begin: markdown
+| Covariance | Shrinkage | Smallest eigenvalue | Largest eigenvalue |
+| --- | ---: | ---: | ---: |
+| Empirical | 0.000 | 0.000 | 32.272 |
+| Ledoit–Wolf | 0.072 | 0.197 | 30.138 |
+| OAS | 0.298 | 0.814 | 23.459 |
+\image(figures/shrunk_covariance_eigenvalues.svg)
+// result_end
+\caption(Both methods lift the seven zero eigenvalues of the empirical covariance.)
+\alttext(The seven lowest eigenvalues are zero in the empirical covariance, about 0.197 with Ledoit–Wolf, and about 0.814 with OAS. Each curve rises slightly at the eighth eigenvalue.)
+
+Both methods preserve the total variance. They raise the smallest
+eigenvalues and reduce the largest one, with a larger adjustment from
+OAS for these data.
+
+[Ledoit and Wolf (2004)|https://doi.org/10.1016/S0047-259X(03)00096-4] · [Chen, Wiesel, Eldar, and Hero (2010)|https://doi.org/10.1109/TSP.2010.2053029]

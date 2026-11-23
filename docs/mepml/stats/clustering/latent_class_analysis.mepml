@@ -1,0 +1,123 @@
+//? Title: Fit a latent class model to categorical responses
+//? Exports: both
+//? Lang: en
+
+> Estimate class proportions and item probabilities
+
+A four-item synthetic questionnaire has three binary items and one item
+with three response categories. The example creates integer frequencies
+from two latent classes. Within each class the items are independent, with
+different response probabilities. The fit receives the response rows
+with their categories coded from zero.
+
+Expectation maximization alternates between computing the class
+probabilities for each row and re-estimating the population proportions and
+item distributions from those probabilities. Repeated answer patterns
+contribute in proportion to their observed frequencies. The diagram shows
+the local independence model used by the fit.
+
+```{cpp, id=latent-class-questionnaire, file="figures/latent_class_structure.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/stats/latent_class_analysis.hpp>
+
+#include <array>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <stdexcept>
+#include <utility>
+#include <vector>
+
+int main() {
+    namespace dm = datamunge;
+    const std::vector<std::size_t> levels{2, 2, 2, 3};
+    // Integer category weights, each item row sums to five within a class.
+    const std::array<std::array<int, 3>, 4> a{{{4, 1, 0}, {3, 2, 0}, {4, 1, 0}, {3, 1, 1}}};
+    const std::array<std::array<int, 3>, 4> b{{{1, 4, 0}, {1, 4, 0}, {1, 4, 0}, {1, 1, 3}}};
+    std::vector<std::int32_t> values;
+    for (std::size_t pattern = 0; pattern < 24; ++pattern) {
+        auto code = pattern;
+        std::array<std::int32_t, 4> row{};
+        int from_a = 3, from_b = 2;
+        for (std::size_t j = 0; j < row.size(); ++j) {
+            const auto category = code % levels[j];
+            code /= levels[j];
+            row[j] = static_cast<std::int32_t>(category);
+            from_a *= a[j][category];
+            from_b *= b[j][category];
+        }
+        for (int repeat = 0; repeat < from_a + from_b; ++repeat)
+            values.insert(values.end(), row.begin(), row.end());
+    }
+    const auto informative = values.size() / levels.size();
+    values.insert(values.end(), levels.size(), -1);
+    const dm::linalg::DenseMatrix<std::int32_t> responses(
+        informative + 1, levels.size(), std::move(values));
+    const auto fit = dm::stats::fit_latent_class_analysis(responses, levels);
+    if (!fit.converged)
+        throw std::runtime_error("Expected convergence for this questionnaire");
+
+    std::println("Class 1 proportion {:.3f}. Class 2 proportion {:.3f}. Log likelihood {:.3f}.\n",
+        fit.class_probabilities[0], fit.class_probabilities[1], fit.log_likelihood);
+    std::println("| Item | Response category | P(response given class 1) | P(response given class 2) |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (std::size_t j = 0; j < levels.size(); ++j)
+        for (std::size_t c = 0; c < levels[j]; ++c)
+            std::println("| {} | {} | {:.3f} | {:.3f} |", "ABCD"[j], c,
+                fit.item_probabilities[j](0, c), fit.item_probabilities[j](1, c));
+
+    std::println("\n| Response pattern | P(class 1 given the pattern) |");
+    std::println("| --- | ---: |");
+    std::println("| (0, 0, 0, 0) | {:.4f} |", fit.posterior(0, 0));
+    std::println("| (1, 1, 1, 2) | {:.4f} |", fit.posterior(informative - 1, 0));
+    std::println("| All missing | {:.4f} |", fit.posterior(informative, 0));
+
+    dm::graphics::Diagram diagram(59, 740);
+    dm::graphics::DiagramNodeStyle latent;
+    latent.circle = true;
+    latent.width = latent.height = 1.6;
+    latent.fill = {224, 239, 252};
+    dm::graphics::DiagramNodeStyle item;
+    item.width = 2.0;
+    item.height = 1.05;
+    diagram.node("class", {4.35, 3.25}, "Latent\nclass", latent);
+    for (std::size_t j = 0; j < levels.size(); ++j) {
+        const auto id = std::format("Item {}", "ABCD"[j]);
+        diagram.node(id, {2.9 * j, 0}, std::format("{}\n{} levels", id, levels[j]), item)
+            .edge("class", id);
+    }
+    std::filesystem::create_directories("build");
+    diagram.save_svg("build/latent_class_structure.svg");
+}
+```
+// result_begin: markdown
+Class 1 proportion 0.600. Class 2 proportion 0.400. Log likelihood -9205.457.
+
+| Item | Response category | P(response given class 1) | P(response given class 2) |
+| --- | ---: | ---: | ---: |
+| A | 0 | 0.800 | 0.200 |
+| A | 1 | 0.200 | 0.800 |
+| B | 0 | 0.600 | 0.200 |
+| B | 1 | 0.400 | 0.800 |
+| C | 0 | 0.800 | 0.200 |
+| C | 1 | 0.200 | 0.800 |
+| D | 0 | 0.600 | 0.200 |
+| D | 1 | 0.200 | 0.200 |
+| D | 2 | 0.200 | 0.600 |
+
+| Response pattern | P(class 1 given the pattern) |
+| --- | ---: |
+| (0, 0, 0, 0) | 0.9954 |
+| (1, 1, 1, 2) | 0.0154 |
+| All missing | 0.5999 |
+\image(figures/latent_class_structure.svg)
+// result_end
+\caption(The latent class determines the response distribution for each item.)
+\alttext(A latent class node points to four questionnaire item nodes. Items A, B, and C have two response levels and item D has three.)
+
+The estimated classes have proportions close to 60% and 40%. The two
+complete patterns in the table strongly favor different classes. With every item
+missing, the row's posterior is the population proportions because
+the answer pattern provides no evidence about class membership.
+
+[Linzer and Lewis (2011)|https://www.jstatsoft.org/article/view/v042i10]

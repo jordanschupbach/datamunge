@@ -1,0 +1,101 @@
+//? Title: Gaussian kernel density and boundary reflection
+//? Subtitle: Evaluate a density, integrate its mass and choose a bandwidth in C++
+//? Exports: both
+//? Lang: en
+
+> Evaluate density and interval mass
+
+A Gaussian kernel density replaces each observation with a normal curve of
+standard deviation equal to the bandwidth, then averages the curves. These
+observations have a known lower limit of zero. The ordinary estimate leaks
+some mass across that limit. Reflecting every kernel across zero adds that
+mass back on the allowed side.
+
+```{cpp, id=density-and-reflection, results="markdown", file="figures/gaussian_kernel_density.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <limits>
+
+int main() {
+    using namespace dm::stats;
+    const std::vector<double> sample{.01, .04, .09, .18, .25, .31, .48, .57,
+                                     .81, 1.08, 1.47, 2.13, 2.61, 3.58};
+    const auto h = kde_sheather_jones_bandwidth(sample);
+    const GaussianKernelDensity ordinary(sample, h);
+    const GaussianKernelDensity reflected(sample, h, KdeBoundary{0});
+    const auto inf = std::numeric_limits<double>::infinity();
+
+    std::println("| Estimate | Density at 0 | Mass below 0 | Mass from 0 to 0.5 |");
+    std::println("| --- | ---: | ---: | ---: |");
+    std::println("| Ordinary | {:.3f} | {:.3f} | {:.3f} |",
+                 ordinary.density(0), ordinary.probability(-inf, 0), ordinary.probability(0, .5));
+    std::println("| Reflected | {:.3f} | {:.3f} | {:.3f} |",
+                 reflected.density(0), reflected.probability(-inf, 0), reflected.probability(0, .5));
+
+    std::vector<double> grid, ordinary_curve, positive_grid, reflected_curve;
+    for (int i = -90; i <= 390; ++i) {
+        const auto point = i / 100.0;
+        grid.push_back(point);
+        ordinary_curve.push_back(ordinary.density(point));
+        if (i >= 0) {
+            positive_grid.push_back(point);
+            reflected_curve.push_back(reflected.density(point));
+        }
+    }
+    std::filesystem::create_directories("build");
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(grid, ordinary_curve, "Ordinary", {37, 99, 235}, 2)
+        .line(positive_grid, reflected_curve, "Reflected at zero", {180, 83, 9}, 2)
+        .abline_v(0, {120, 120, 120})
+        .title("Kernel density near the lower boundary")
+        .x_label("Observation").y_label("Estimated density")
+        .save_svg("build/gaussian_kernel_density.svg");
+}
+```
+// result_begin: markdown
+| Estimate | Density at 0 | Mass below 0 | Mass from 0 to 0.5 |
+| --- | ---: | ---: | ---: |
+| Ordinary | 0.467 | 0.168 | 0.268 |
+| Reflected | 0.933 | 0.000 | 0.412 |
+\image(figures/gaussian_kernel_density.svg)
+// result_end
+\caption(The reflected curve starts at the support boundary and integrates to one over the nonnegative half-line.)
+\alttext(The reflected density rises to about 0.93 at the boundary. The ordinary density is about 0.47 there and extends below zero.)
+
+> Select a bandwidth
+
+Sheather–Jones direct plug-in estimates how quickly the density changes
+using two Gaussian derivative pilots. Least-squares cross-validation
+uses each observation as a held-out point and searches for a bandwidth
+that reduces estimated integrated squared error. Here the cross-validation
+minimum lies inside the supplied search interval.
+
+```{cpp, id=bandwidth-selection, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/kernel_density.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<double> sample{.01, .04, .09, .18, .25, .31, .48, .57,
+                                     .81, 1.08, 1.47, 2.13, 2.61, 3.58};
+    const auto sj = kde_sheather_jones_bandwidth(sample);
+    const auto cv = kde_lscv_bandwidth(sample, std::pair{.05, 1.5});
+    std::println("| Selector | Bandwidth |");
+    std::println("| --- | ---: |");
+    std::println("| Sheather–Jones direct plug-in | {:.4f} |", sj);
+    std::println("| Least-squares cross-validation | {:.4f} |", cv.bandwidth);
+    std::println("\nThe cross-validation score is {:.4f}. The selected bandwidth is {} the search interval.",
+                 cv.objective, cv.at_boundary ? "at an endpoint of" : "inside");
+}
+```
+// result_begin: markdown
+| Selector | Bandwidth |
+| --- | ---: |
+| Sheather–Jones direct plug-in | 0.3871 |
+| Least-squares cross-validation | 0.3561 |
+
+The cross-validation score is -0.3264. The selected bandwidth is inside the search interval.
+// result_end
+
+[Reflection|https://doi.org/10.1080/03610928508828965] ·
+[Sheather–Jones|https://doi.org/10.1111/j.2517-6161.1991.tb01857.x] ·
+[Least-squares cross-validation|https://doi.org/10.1093/biomet/71.2.353]

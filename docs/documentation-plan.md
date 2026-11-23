@@ -9,6 +9,711 @@ symbol without reading its implementation.
 
 ## Completion checklist
 
+- 2026-11-22 — Added nested cross-validation with shared inner folds,
+  fold-local refits, and predictions in original observation order.
+  A traced fixture verified outer-row isolation and row-weighted loss.
+  All 665 selected native tests passed. Doxygen covered all 30 scoped
+  definitions, clangd displayed the fit, and all five public examples ran.
+  The MePML report ran and exported to HTML and Org with a native plot.
+  [Nested cross-validation](mepml/stats/regression/nested_cross_validation.mepml)
+
+- 2026-11-22 — Added the gap statistic with uniform reference boxes and
+  adjacent one-standard-error selection, and consensus clustering with
+  pairwise co-sampling and co-assignment counts. The gap estimate chose
+  the same count as R's clusGap, and independent counting reproduced
+  every consensus matrix entry. All 662 selected native tests passed.
+  Doxygen covered all 65 scoped definitions, clangd displayed both APIs,
+  and all nine public examples ran. Both MePML reports ran and exported
+  to HTML and Org with native plots.
+  [Gap statistic](mepml/stats/clustering/gap_statistic.mepml) ·
+  [Consensus clustering](mepml/stats/clustering/consensus_clustering.mepml)
+
+- 2026-11-22 — Added silhouette analysis with observation and cluster
+  widths, nearest alternative clusters, and zero-width singletons.
+  Results matched R's cluster package, and all 656 selected native
+  tests passed. Doxygen covered all 19 scoped definitions, clangd
+  displayed the fit, and all four public examples ran. The MePML
+  report ran and exported to HTML and Org with a native silhouette plot.
+  [Silhouette analysis](mepml/stats/clustering/silhouette.mepml)
+
+- 2026-11-22 — Added incremental BIRCH with balanced cluster-feature
+  splits, atomic batch insertion and count-weighted Ward clustering of
+  leaf summaries. Weighted centroids, radii and assignments matched
+  independent R calculations. All 653 selected native tests passed.
+  Doxygen covered all 55 scoped definitions, clangd displayed the Ward
+  contract, and all nine public examples ran. The MePML report ran and
+  exported to HTML and Org with a native plot of the leaf centroids.
+  [BIRCH](mepml/stats/clustering/birch.mepml)
+
+- 2026-11-22 — Added Gaussian mean-shift clustering with endpoint merging,
+  basin labels, and a curvature check for stationary non-maxima. Modes and
+  normalized densities matched direct R maximization. All 649 selected
+  native tests passed. Doxygen covered all 33 scoped definitions, clangd
+  displayed the fit, and all three public examples ran. The MePML report
+  ran and exported to HTML and Org with a native density plot.
+  [Mean-shift clustering](mepml/stats/clustering/mean_shift.mepml)
+
+- 2026-11-22 — Added HDBSCAN with exact mutual reachability, tied-level
+  condensation, excess-of-mass selection, and explicit noise labels.
+  Core distances, spanning-tree weights, and stability matched R
+  calculations, and flat partitions matched R dbscan across 20 further
+  fixtures. All 646 selected native tests passed. Doxygen covered all
+  42 scoped definitions, clangd displayed the fit, and all six public
+  examples ran. The MePML report ran and exported to HTML and Org with
+  a native plot of the fitted clusters and the spanning tree.
+  [HDBSCAN](mepml/stats/clustering/hdbscan.mepml)
+
+- 2026-11-22 — Added spectral clustering for weighted affinities and
+  Euclidean nearest-neighbor graphs. The Laplacian eigenvalues, embedding
+  inner products, and weak-bridge partition matched an independent R
+  calculation. All 642 selected native tests passed. Doxygen covered all
+  17 scoped definitions, clangd displayed both entry points, and all
+  three public examples ran. The MePML report ran and exported to HTML
+  and Org with a native graph diagram.
+  [Spectral clustering](mepml/stats/clustering/spectral_clustering.mepml)
+
+- 2026-11-22 — Added common-grid functional PCA and scalar-on-function
+  regression with a spline coefficient difference penalty. Eigenvalues,
+  subject scores, and penalized coefficients matched independent R
+  calculations. All 639 selected native tests passed. Doxygen covered all
+  36 scoped definitions, clangd displayed both fitting contracts, and all
+  six public examples ran. Both MePML reports ran and exported to HTML
+  and Org with native plots.
+  [Functional PCA](mepml/stats/regression/functional_pca.mepml) ·
+  [Scalar-on-function regression](mepml/stats/regression/scalar_on_function.mepml)
+
+- 2026-11-22 — Added BIC comparison across component counts and tied,
+  diagonal, and full Gaussian mixture covariances using the existing EM
+  implementation. The one- and two-component scores matched mclust.
+  All 633 selected native tests and two existing EM tests passed.
+  Doxygen covered all 59 scoped definitions, clangd displayed the
+  selector, and all nine public examples ran. The MePML BIC report
+  ran and exported to HTML and Org with a native score plot.
+  [Gaussian mixture model selection](mepml/stats/clustering/gaussian_mixture_selection.mepml)
+
+- 2026-11-22 — Added categorical latent class analysis with multistart EM,
+  missing-response marginalization, and posterior class probabilities.
+  A polytomous fit matched poLCA, and all 630 selected native tests passed.
+  Doxygen covered all 41 scoped definitions, clangd displayed the fit,
+  and all three public examples ran. The MePML questionnaire example ran
+  and exported to HTML and Org with a native local independence diagram.
+  [Latent class analysis](mepml/stats/clustering/latent_class_analysis.mepml)
+
+- 2026-11-22 — Added direct oblimin and promax with pattern, structure,
+  and factor-correlation matrices. Quartimin and biquartimin matched
+  GPArotation, promax matched R, and both preserved common covariance.
+  All 627 selected native tests and the 14 principal-axis tests passed.
+  Doxygen covered all 81 scoped definitions, clangd displayed both
+  routines, and both public examples ran. The MePML report ran and
+  exported to HTML and Org with a native factor diagram.
+  [Oblique factor rotation](mepml/stats/regression/oblique_factor_rotation.mepml)
+
+- 2026-11-22 — Added Gaussian confirmatory factor analysis with fixed
+  and free loading and covariance entries and local identification checks.
+  The one-factor fit matched independent R calculations, and a two-factor
+  fixture recovered known parameters. All 623 selected native tests passed.
+  Doxygen covered all 56 scoped definitions, clangd displayed the fit, and
+  all six public examples ran. The MePML report ran and exported to HTML
+  and Org with a diagram of the fitted loadings.
+  [Confirmatory factor analysis](mepml/stats/regression/confirmatory_factor_analysis.mepml)
+
+- 2026-11-22 — Added Mardia skewness and kurtosis tests and the
+  Henze–Zirkler test for multivariate normality. Reference parameters and
+  p-values matched independent R calculations for small and larger
+  samples. All 620 selected native tests passed. Doxygen covered all
+  24 scoped definitions, clangd displayed both tests, and all four
+  public examples ran. The MePML report ran and exported to HTML and Org.
+  [Multivariate normality](mepml/stats/regression/multivariate_normality.mepml)
+
+- 2026-11-22 — Added graphical lasso with covariance or observation
+  inputs, exact component screening, and signed partial correlations.
+  The solver recovered a known sparse optimum and passed the subgradient
+  checks. All 617 selected native tests passed. Doxygen covered all 63
+  scoped definitions, clangd displayed both fit methods, and all five
+  public examples ran. The MePML report ran and exported to HTML and Org
+  with a native conditional-dependence diagram.
+  [Graphical lasso](mepml/stats/regression/graphical_lasso.mepml)
+
+- 2026-11-22 — Added minimum covariance determinant estimation with
+  exact subset enumeration for small searches, seeded concentration steps,
+  and Gaussian-consistent reweighting. The selected support, covariance,
+  and distances matched exhaustive R calculations, and 612 selected
+  native tests passed. Doxygen covered all 55 scoped definitions, clangd
+  showed the fit, and all three public examples ran. The MePML report
+  ran and exported to HTML and Org with a robust-distance plot.
+  [Minimum covariance determinant](mepml/stats/regression/minimum_covariance_determinant.mepml)
+
+- 2026-11-22 — Added Ledoit–Wolf and oracle-approximating covariance
+  shrinkage with estimated or known zero means. Shrinkage weights
+  and covariance entries matched independent R calculations, including
+  a sample with more variables than observations. All 607 selected
+  native tests passed. Doxygen covered all 24 scoped definitions, clangd
+  showed both estimators, and all three public examples ran. The MePML
+  report ran and exported to HTML and Org.
+  [Covariance shrinkage](mepml/stats/regression/covariance_shrinkage.mepml)
+
+- 2026-11-22 — Added quadratic and regularized discriminant analysis
+  with class priors, pooled scatter, spherical shrinkage, and Gaussian
+  posterior probabilities. Covariances and posteriors matched independent
+  R calculations. All 603 selected native tests passed. Doxygen covered
+  all 42 scoped definitions, clangd displayed both fit functions and
+  prediction, and all seven public examples ran. The MePML report ran
+  and exported to HTML and Org.
+  [Quadratic and regularized discriminant analysis](mepml/stats/classification/regularized_discriminant.mepml)
+
+- 2026-11-22 — Added SIMPLS regression for one or more responses,
+  with fold-local centering and scaling and component selection by pooled
+  held-out prediction error. Coefficients, predictions, and validation
+  errors matched R. All 598 selected native tests passed. Doxygen covered
+  all 44 scoped definitions, clangd showed the five public methods, and all
+  eight examples ran. The MePML report ran and exported to HTML and Org.
+  [SIMPLS regression](mepml/stats/regression/simpls.mepml)
+
+- 2026-11-22 — Added canonical correlation analysis with paired
+  unit-variance scores, original-scale coefficients, loadings, and
+  sequential Wilks tests using Bartlett's approximation. All quantities
+  matched R, and 594 selected native tests passed. Doxygen covered all
+  44 scoped definitions, clangd showed the API, and all three public
+  examples ran. The MePML report ran and exported to HTML and Org.
+  [Canonical correlation analysis](mepml/stats/regression/canonical_correlation.mepml)
+
+- 2026-11-22 — Added one-way and nested-model MANOVA with hypothesis
+  and error cross-products and Pillai, Wilks, Hotelling–Lawley, and
+  Roy criteria. Both designs matched R. The single-effect case also
+  matched Hotelling's mean test. All 590 selected native tests passed.
+  Doxygen covered all 54 scoped definitions, clangd showed both
+  entry points, and all five public examples ran. The MePML report ran
+  and exported to HTML and Org with a group-score plot.
+  [Multivariate ANOVA](mepml/stats/regression/manova.mepml)
+
+- 2026-11-22 — Added one-sample, paired, and pooled independent-sample
+  Hotelling mean tests. Statistics and F tails matched independent R
+  calculations, including a pooled covariance estimated from two
+  individually singular samples. All 586 selected native tests passed.
+  Doxygen covered all 21 scoped definitions, clangd displayed all three
+  tests, and all four public examples ran. The MePML report ran and
+  exported to HTML and Org with a native confidence ellipse.
+  [Hotelling mean tests](mepml/stats/regression/hotelling_test.mepml)
+
+- 2026-11-22 — Added Arellano–Bond one- and two-step difference GMM
+  with lagged-level instruments, separate regressor timing assumptions,
+  Windmeijer covariance, Hansen's overidentification test, and residual
+  serial correlation tests. Estimates and diagnostics matched independent
+  dense R equations on unbalanced panels. All 582 selected native tests
+  passed. Doxygen covered all 87 scoped definitions, clangd displayed
+  both fit overloads, and all eight public examples ran. The MePML
+  report ran and exported to HTML and Org.
+  [Arellano–Bond difference GMM](mepml/stats/regression/arellano_bond.mepml)
+
+- 2026-11-22 — Added the Hausman specification test for shared
+  fixed- and random-effects coefficients. The statistic uses the
+  numerical rank of the covariance difference and reports the
+  coefficient differences in the discarded directions. Both the
+  matrix and the panel examples matched independent R calculations.
+  All 578 selected native tests passed. Doxygen covered all 25 scoped
+  definitions, clangd displayed the test, and all three public
+  examples ran. The MePML report ran and exported to HTML and Org.
+  [Hausman specification test](mepml/stats/regression/hausman_test.mepml)
+
+- 2026-11-22 — Added matrix-free two-way fixed-effects panel regression
+  with unit, period, and two-way clustered covariance. Repeated cells
+  and disconnected components matched explicit R dummy-variable fits,
+  and a 220-unit sparse panel recovered its known slope. All 574
+  selected native tests passed. Doxygen covered all 69 scoped
+  definitions, clangd displayed the fit and contrast methods, and all
+  six public examples ran. The MePML report ran and exported to HTML
+  and Org with a native period-effect plot.
+  [Two-way fixed-effects panel regression](mepml/stats/regression/panel_fixed_effects.mepml)
+
+- 2026-11-22 — Added repeated-measures ANOVA with Greenhouse–Geisser
+  and Huynh–Feldt corrections for omnibus tests and within-subject
+  contrast spaces under nested subject-level models. The omnibus and
+  adjusted interaction tests matched R. All 571 selected native tests
+  passed. Doxygen covered all 25 scoped definitions, clangd showed
+  both overloads, and all four public examples ran. The MePML report
+  ran and exported to HTML and Org with a native score plot.
+  [Repeated-measures ANOVA](mepml/stats/regression/repeated_measures_anova.mepml)
+
+- 2026-11-22 — Added mixed models for repeated measures with a separate
+  covariance for each visit pair, ML and REML, and incomplete follow-up.
+  The native fit matched an independent R likelihood, and 24 complete
+  fits matched analytic multivariate normal estimates. All 567 selected
+  native tests passed. Doxygen covered all 104 scoped definitions, clangd
+  displayed both fit overloads and prediction, and all six public
+  examples ran. The MePML report ran and exported to HTML and Org.
+  [Repeated measures with incomplete follow-up](mepml/stats/regression/mmrm.mepml)
+
+- 2026-11-22 — Added generalized estimating equations for Gaussian,
+  binomial, Poisson and Gamma marginal means, including independence,
+  exchangeable and gap-aware AR(1) correlation. Model-based and
+  cluster-sandwich covariance matched independent dense R equations.
+  Across 36 additional fits, checked quantities agreed within 3.1e-9.
+  All 563 selected native tests passed. Doxygen covered all 69 scoped
+  definitions, both public methods appeared in clangd hover, and all
+  seven public examples ran. The MePML comparison ran and exported to
+  HTML and Org with a native correlation plot.
+  [Generalized estimating equations](mepml/stats/regression/gee.mepml)
+
+- 2026-11-22 — Added Satterthwaite and Kenward–Roger inference for
+  REML variance-component models, including joint hypotheses,
+  adjusted fixed-effect covariance and scaled F tests. Matched
+  independent R calculations for single and joint hypotheses and
+  19 additional joint tests. Denominator degrees of freedom differed
+  by at most 1.8e-6 in those additional fits. All 560 selected native
+  tests passed. Doxygen covered all 79 scoped definitions, clangd
+  returned both checked contracts, and all three public examples ran.
+  The worked comparison ran and exported to HTML and Org.
+  [Mixed-model inference](mepml/stats/regression/mixed_model_inference.mepml)
+
+- 2026-11-22 — Added likelihood-based binomial and Poisson GLMMs
+  for a Gaussian random intercept, with Laplace and adaptive
+  Gauss–Hermite integration. Checked both methods against independent
+  R calculations and 20 additional numerical-integral fits. Across
+  those 20 fits, log likelihoods agreed within 2.9e-14 and estimated
+  standard deviations within 2.7e-8. All 558 selected native tests passed.
+  Doxygen covered all 167 scoped definitions, both new public contracts
+  appeared in clangd hover, and all five new public examples ran.
+  The worked report exported to HTML and Org with a native plot.
+  [Likelihood-based GLMM](mepml/stats/regression/likelihood_glmm.mepml)
+
+- 2026-11-22 — Added Gaussian ML and REML for multiple independent
+  random-effect blocks, including crossed intercepts, nested intercepts,
+  and random slopes. Compared estimated variances, fixed effects, and
+  conditional modes with R. Across 36 additional cases, variances
+  agreed within 5e-7 and likelihoods within 2.1e-11. All 555 selected
+  native tests passed, including the count regressions that share the
+  extracted BFGS update. Doxygen covered all 91 scoped definitions,
+  both public contracts appeared in clangd hover, and all five public
+  examples ran. The worked report exported to HTML and Org with a
+  native group-structure diagram.
+  [Crossed and nested random effects](mepml/stats/regression/crossed_nested_effects.mepml)
+
+- 2026-11-22 — Added weighted Gaussian fused lasso with separate slope
+  and difference penalties, exact constant runs, and stationarity
+  diagnostics. Compared the result against a weighted R construction,
+  64 exhaustive signed-segment fits, and 96 independent dual
+  certificates. Rechecked 324 group-lasso fits after sharing the
+  weighted proximal solver. All 551 selected native tests passed.
+  Doxygen covered all 69 scoped definitions, both public contracts
+  appeared in clangd hover, and all five public examples ran. The
+  worked report exported to HTML and Org with a native segment plot.
+  [Fused lasso](mepml/stats/regression/fused_lasso.mepml)
+
+- 2026-11-22 — Added weighted Gaussian group and sparse group lasso
+  paths with independent group penalties, coefficient-level sparsity,
+  and explicit stationarity diagnostics. Verified exact orthogonal
+  fits and an independently constructed weighted optimum, and
+  reconstructed the stationarity conditions for 324 additional fits.
+  All 548 selected native tests passed. Doxygen covered all 50 scoped
+  definitions, both public method contracts appeared in clangd hover,
+  and all four public examples ran. The path comparison ran and
+  exported to HTML and Org with a native plot.
+  [Group lasso and sparse group lasso](mepml/stats/regression/group_lasso.mepml)
+
+- 2026-11-22 — Added centered tensor-product GAM interactions with
+  independent P-spline penalties for each margin, and weighted isotonic
+  regression with right-continuous step prediction. Tensor predictions
+  matched independently assembled R Kronecker fits for Gaussian and
+  Poisson responses. Isotonic fits matched exhaustive weighted
+  partitions on 64 cases across both monotonicity directions. All 545
+  selected native tests passed. Doxygen covered all 107 scoped definitions,
+  four public method contracts appeared in clangd hover, and all 17
+  public examples ran. Both reports exported to HTML and Org with native
+  plots.
+  [Tensor-product GAM](mepml/stats/regression/tensor_gam.mepml) ·
+  [Isotonic regression](mepml/stats/regression/isotonic_regression.mepml)
+
+- 2026-11-22 — Added log-link compound Poisson–gamma Tweedie
+  regression with a power profile, exposure offsets, and joint observed
+  covariance. The weighted joint optimum and 24 fixed-power fits
+  matched independently summed R likelihoods within 1e-10. All 534
+  selected native tests passed. Doxygen covered all 60 scoped
+  definitions, both public method contracts appeared in clangd hover,
+  and all six public examples ran. The worked example exported to HTML
+  and Org with a native likelihood profile plot.
+  [Tweedie regression](mepml/stats/regression/tweedie_regression.mepml)
+
+- 2026-11-22 — Added beta regression with separate logit mean and log
+  precision predictors, case weights, and inverse Fisher information.
+  Across 72 independently fitted weighted R cases, coefficients agreed
+  within 6.1e-9 and likelihoods within 2.3e-13. All 530 selected native
+  tests passed. Doxygen covered all 58 scoped definitions, both public
+  method contracts appeared in clangd hover, and all six public examples
+  ran. The worked example ran and exported to HTML and Org.
+  [Beta regression](mepml/stats/regression/beta_regression.mepml)
+
+- 2026-11-22 — Added zero-inflated and hurdle regression for Poisson and
+  NB2 counts with separate predictor designs and observed-information
+  covariance. All four weighted likelihoods matched independent R
+  optimizations within 1e-10. All 527 selected native tests passed.
+  Doxygen covered all 102 scoped definitions, clangd returned all three
+  public method contracts, and all nine public examples ran. Both worked
+  examples ran and exported to HTML and Org.
+  [Zero-inflated and hurdle counts](mepml/stats/regression/zero_augmented_counts.mepml)
+
+- 2026-11-22 — Added NB2 regression with exposure offsets, profiled
+  dispersion, the exact Poisson limit, and joint covariance at an
+  interior optimum. Doxygen covered all 89 scoped definitions, both
+  public contracts appeared in clangd hover, and all five public
+  examples ran. The MePML report exported to HTML and Org with a
+  native exposure plot. Across 60 weighted R fits, dispersion and
+  coefficients agreed within 3.5e-8 and likelihoods within 1.5e-13.
+  All 524 selected native tests passed.
+  [Negative binomial regression](mepml/stats/regression/negative_binomial_regression.mepml)
+
+- 2026-11-22 — Added proportional-odds ordinal logistic regression
+  with ordered thresholds and a joint parallel-slopes score test.
+  Doxygen covered all 71 scoped definitions, both public contracts
+  appeared in clangd hover, and all six public examples ran. The
+  report exported to HTML and Org with a native probability plot.
+  Across 60 R designs, log likelihoods and score statistics agreed
+  within 4.6e-13 and 1.7e-7 respectively. All 521 selected native
+  tests passed.
+  [Ordinal regression](mepml/stats/regression/ordinal_regression.mepml)
+
+- 2026-11-22 — Added multinomial logistic regression for labels and
+  grouped counts with a selectable baseline, joint covariance, and
+  class probability predictions. Doxygen covered all 78 scoped
+  definitions, clangd returned the three public contracts, and all
+  six public examples ran. Both multinomial and conditional logistic
+  reports exported to HTML and Org after the shared Newton refactor.
+  Across 60 weighted designs, coefficients, covariance, log likelihood
+  and predictions agreed with R within 5.1e-6. All 517 selected native
+  tests passed.
+  [Multinomial logistic regression](mepml/stats/regression/multinomial_logistic.mepml)
+
+- 2026-11-22 — Added exact conditional logistic regression with multiple
+  cases per stratum, conditional covariance, and case probabilities.
+  Doxygen covered all 49 scoped definitions, clangd returned the public
+  contract, and all four public examples ran. The matched-set MePML report
+  exported to HTML and Org. Across 100 designs, likelihoods agreed with
+  R's exact `clogit()` within 7.2e-15, and probabilities agreed with
+  enumeration within 6.1e-10. All 513 selected native tests passed.
+  [Conditional logistic regression](mepml/stats/regression/conditional_logistic.mepml)
+
+- 2026-11-22 — Added Firth logistic regression for binary and grouped
+  outcomes with penalized profile intervals. Doxygen covered all 49
+  scoped definitions, both contracts appeared in clangd hover, and the
+  four public examples ran. The MePML report exported to HTML and Org.
+  Estimates and limits matched closed-form and independent R results.
+  Across 80 additional R fits, penalized log likelihoods agreed within
+  9e-13. All 509 selected native tests passed.
+  [Firth logistic regression](mepml/stats/regression/firth_logistic.mepml)
+
+- 2026-11-22 — Added grouped binomial GLMs and probit and complementary
+  log-log links for binomial fits. All 139 scoped definitions passed
+  Doxygen, the new field and accessor appeared in clangd hover, and both
+  public examples ran. The MePML report exported with its native plot.
+  Grouped estimates and covariance matched expanded Bernoulli fits.
+  Count likelihood and alternative-link inference matched R. All 505
+  selected native tests and 29 existing GLM and GAM tests passed.
+  [Binomial GLMs](mepml/stats/regression/binomial_glm.mepml)
+
+- 2026-11-22 — Added continuous segmented regression with one or more
+  estimated breakpoints and likelihood-ratio intervals. All 50 scoped
+  definitions passed Doxygen, the public contract appeared in clangd
+  hover, and all three public examples ran. The MePML report exported to
+  HTML and Org with its native plot. Estimates and interval limits agreed
+  with R, with a maximum residual sum-of-squares difference of
+  1.8e-14 across 100 additional one-breakpoint datasets. All 500 selected
+  native tests passed.
+  [Segmented regression](mepml/stats/regression/segmented_regression.mepml)
+
+- 2026-11-22 — Added weighted nonlinear least squares, linearized
+  parameter covariance, and likelihood-ratio intervals with nuisance
+  refits. All 44 scoped definitions passed Doxygen, the public
+  contract appeared in clangd hover, and all four public examples ran.
+  The MePML report exported to HTML and Org with its native fit plot.
+  Fit, covariance and both parameter intervals agreed with independent
+  R calculations. All 496 selected native tests passed, including the
+  statistics, matrix, B-spline, and sparse linear-model allocation tests.
+  [Nonlinear least squares](mepml/stats/regression/nonlinear_least_squares.mepml)
+
+- 2026-11-22 — Added scalar profile-likelihood intervals with domain
+  boundaries and numerical search statuses. All 25 scoped definitions
+  passed Doxygen. The public contract appeared in clangd hover, the
+  five public examples ran, and the report exported to HTML and Org
+  with its native profile plot. The asymmetric endpoints matched an
+  independent R calculation, and all 203 scoped native tests passed.
+  [Profile likelihood](mepml/stats/inference/profile_likelihood.mepml)
+
+- 2026-11-22 — Added Type II and III term tests and optional sum coding
+  for LM factors. Doxygen covered all 152 definitions in the scoped LM
+  header and marginal ANOVA implementation, plus the changed formula
+  symbols. Both public method contracts appeared in clangd hover, all
+  four public examples ran, and the report exported to HTML and Org.
+  Weighted nested fits in R agreed for both codings, and all 200 scoped
+  native tests passed.
+  [Marginal ANOVA](mepml/stats/regression/marginal_anova.mepml)
+
+- 2026-11-22 — Added weighted reference-grid marginal means and linear
+  contrasts for LM, with joint covariance and simultaneous intervals.
+  Doxygen covered all 168 scoped definitions, the public method contract
+  appeared in clangd hover, all five public examples ran, and the report
+  produced HTML and Org exports. A weighted interaction fit agreed with R,
+  and all 197 scoped native tests passed.
+  [Estimated marginal means](mepml/stats/regression/estimated_marginal_means.mepml)
+
+- 2026-11-22 — Added generalized least squares for supplied covariances
+  and profile maximum-likelihood fits for AR(1) and compound symmetry.
+  All 43 scoped definitions passed the Doxygen audit. Both contracts
+  appeared in clangd hover, all six public examples ran, and the report
+  produced HTML and Org exports. Dense covariance calculations in R
+  agreed with the native fits, and all 194 scoped native tests passed.
+  [Generalized least squares](mepml/stats/regression/generalized_least_squares.mepml)
+
+- 2026-11-22 — Added conditional Gaussian Durbin–Watson and Breusch–Godfrey
+  LM and F tests. Doxygen covered all 158 scoped definitions, and clangd
+  returned both public contracts. The public examples and worked report
+  ran, including the residual plot. Statistics agreed with R on 100
+  weighted designs, independent Durbin–Watson simulations agreed within
+  0.0082 on 20 designs, and all 190 scoped native tests passed.
+  [Serial-correlation tests](mepml/stats/regression/serial_correlation_tests.mepml)
+
+- 2026-11-22 — Added Gaussian and studentized Breusch–Pagan, White, and
+  Ramsey RESET tests. Doxygen covered all 151 scoped definitions, and
+  clangd returned all three public method contracts. The three public
+  examples and both worked blocks ran, with HTML and Org exports.
+  Four variants agreed with independent R calculations on 100 weighted
+  designs, and all 187 scoped native tests passed.
+  [Linear-model specification tests](mepml/stats/regression/specification_tests.mepml)
+
+- 2026-11-22 — Added Huber and Tukey bisquare regression with scale,
+  observation weights and stopping diagnostics. Doxygen covered all
+  33 scoped definitions, and clangd returned the public contract.
+  Five public examples and the worked report ran, including its native
+  weight plot. Both fits agreed with weighted R QR iterations on 100
+  contaminated datasets, and all 182 scoped native tests passed.
+  [Robust regression](mepml/stats/regression/robust_regression.mepml)
+
+- 2026-11-22 — Added HC0–HC3, Bartlett Newey–West, and one-way and
+  multiway clustered covariance for fitted linear models. Doxygen
+  covered all 144 scoped definitions, and clangd returned the three
+  public method contracts. Seven public examples and all three worked
+  programs ran. Independent R calculations matched 100 weighted designs,
+  and all 178 scoped native tests passed.
+  [Linear-model sandwich covariance](mepml/stats/regression/sandwich_covariance.mepml)
+
+- 2026-11-22 — Added Theil–Sen, repeated-median, and Deming regression.
+  Doxygen covered all 21 scoped definitions, and clangd returned the three
+  public contracts. Five public examples and both worked programs ran,
+  including the native fit plot. The results agreed with independent R
+  calculations on 100 datasets, and all 173 scoped native tests passed.
+  [Straight-line estimators](mepml/stats/regression/straight_line_estimators.mepml)
+
+- 2026-11-22 — Added optimal bridge sampling with overlap diagnostics
+  and variance-corrected thermodynamic integration. Doxygen covered all
+  37 scoped definitions, and clangd returned both public contracts.
+  Seven public examples and both worked programs ran, and the report
+  exported to HTML and Org. The bridge results agreed with 100 R roots,
+  and all 167 scoped native tests passed.
+  [Marginal likelihood](mepml/stats/bayes/marginal_likelihood.mepml)
+
+- 2026-11-22 — Added scalar stepping-out and elliptical Gaussian slice
+  updates. Doxygen covered all 18 scoped definitions, and clangd returned
+  both update contracts. Five public examples and all three report blocks
+  ran, including the native bracket diagram. The report exported to HTML
+  and Org, and all 161 scoped native tests passed.
+  [Slice sampling](mepml/stats/bayes/slice_sampling.mepml)
+
+- 2026-11-22 — Added rank-normalized and folded R-hat and effective sample
+  sizes for the bulk and both tails. Doxygen covered all 59 scoped
+  definitions, and clangd returned both public contracts. The four public
+  examples and worked chain comparison ran, and the report exported to HTML
+  and Org. Independent R calculations agreed across 100 chain designs,
+  and all 157 scoped native tests passed.
+  [Chain agreement and sampling efficiency](mepml/stats/bayes/rank_chain_diagnostics.mepml)
+
+- 2026-11-22 — Added variance-based WAIC and pointwise predictive scores.
+  Doxygen covered all 42 scoped definitions. The three public examples
+  and the worked comparison ran, the report exported to HTML and Org,
+  and clangd returned the public contract. Independent R calculations
+  matched the pointwise and aggregate scores for 100 matrices. All 153
+  scoped native tests passed.
+  [Predictive model comparison](mepml/stats/bayes/waic.mepml)
+
+- 2026-11-22 — Added Bayesian bootstrap draws for scalar functionals of
+  Dirichlet observation weights. Doxygen covered all 21 scoped definitions.
+  The public example and worked mean and median program ran, and the report
+  exported to HTML and Org. All 150 scoped native tests passed.
+  [Bayesian bootstrap](mepml/stats/resampling/bayesian_bootstrap.mepml)
+
+- 2026-11-22 — Added cluster-randomized power for continuous and binary
+  outcomes using the planned cluster sizes in each arm. Doxygen covered all
+  44 scoped definitions. The five public examples and all five worked
+  programs ran, and the report exported to HTML and Org. An independent
+  block covariance calculation verified 100 unequal-size designs.
+  [Cluster-randomized design power](mepml/stats/inference/design_power.mepml#compare-cluster-size-patterns-at-fixed-enrollment)
+
+- 2026-11-22 — Added fixed-null two-proportion power and integer
+  allocation search, plus Schoenfeld event counts. Doxygen covered
+  all 32 scoped definitions. The three new public examples and all
+  four worked programs ran, and the report exported to HTML and Org.
+  [Design power](mepml/stats/inference/design_power.mepml)
+
+- 2026-11-22 — Added Cohen’s d and bias-adjusted Hedges’ g with
+  noncentral t intervals for one-sample, paired, and pooled designs.
+  Doxygen covered all 24 scoped definitions. The five public examples
+  and worked program ran, and the report exported to HTML and Org.
+  [Standardized effects](mepml/stats/inference/standardized_effects.mepml)
+
+- 2026-11-22 — Added prospective t-test power and integer sample-size
+  inversion for one-sample, paired, and pooled designs, plus fixed-effects
+  ANOVA power for unequal allocations. Doxygen covered all 16 scoped
+  definitions. All seven public examples and both worked programs ran,
+  and the report exported to HTML and Org.
+  [Design power](mepml/stats/inference/design_power.mepml)
+
+- 2026-11-22 — Added direct noncentral t tails, signed quantiles,
+  and noncentrality inversion. Doxygen covered all 46 scoped
+  definitions. The three new public examples and the worked program
+  ran, and the report exported to HTML and Org.
+  [Noncentral t](mepml/stats/distributions/noncentral_tails.mepml#invert-a-noncentral-t-reference)
+
+- 2026-11-22 — Added noncentral chi-square and F tails, quantiles, and
+  noncentrality inversion. Doxygen covered all 57 scoped definitions.
+  All six public examples and the worked power program ran. The report
+  exported to HTML and Org.
+  [Noncentral tails](mepml/stats/distributions/noncentral_tails.mepml)
+
+- 2026-11-22 — Added the midrank k-sample Anderson–Darling test with
+  exact and simulated pooled-label references. Doxygen covered all
+  45 scoped definitions. Both new public examples ran, and the expanded
+  report exported to HTML and Org.
+  [Midrank comparison](mepml/stats/inference/empirical_distribution_tests.mepml#compare-three-samples-with-tied-values)
+
+- 2026-11-22 — Added Anderson–Darling with specified and fitted-normal
+  references, plus one- and two-sample Cramér–von Mises tests. Doxygen
+  covered all 54 scoped definitions. All five public examples and
+  both worked programs ran, and the report exported to HTML and Org.
+  [Empirical distribution tests](mepml/stats/inference/empirical_distribution_tests.mepml)
+
+- 2026-11-22 — Added the Jonckheere–Terpstra ordered-groups test with
+  tie adjustment. Doxygen covered all 25 scoped nonparametric
+  definitions. The public example and the worked program ran, and the
+  report exported to HTML and Org.
+  [Ordered group comparisons](mepml/stats/inference/ordered_groups.mepml)
+
+- 2026-11-22 — Added the two-sample energy test with exact and
+  simulated pooled-label references. Doxygen covered all 25 scoped
+  definitions. Both public examples ran, and the report exported its
+  plot to HTML and Org.
+  [Energy distance](mepml/stats/inference/energy_distance.mepml)
+
+- 2026-11-22 — Added Gaussian profile-likelihood fitting and inversion
+  for Box–Cox and Yeo–Johnson transforms. Doxygen covered all 22 scoped
+  definitions. All six public examples ran, and the report exported its
+  plot to HTML and Org.
+  [Power transformations](mepml/stats/inference/power_transforms.mepml)
+
+- 2026-11-22 — Added log probabilities and seeded sampling for Dirichlet,
+  Dirichlet–multinomial, Wishart, and inverse-Wishart laws. Doxygen
+  covered all 62 scoped definitions. All eight public examples ran,
+  and both reports exported to HTML and Org.
+  [Dirichlet laws](mepml/stats/distributions/dirichlet_laws.mepml) ·
+  [Wishart laws](mepml/stats/distributions/wishart_laws.mepml)
+
+- 2026-11-22 — Added DeLong AUC covariance and a paired AUC comparison,
+  plus the constrained binomial risk-ratio score interval. Doxygen
+  covered all 14 DeLong and 35 proportion-test definitions. The five
+  added public examples ran, and both reports exported to HTML and Org.
+  [ROC area comparison](mepml/stats/inference/roc_auc_comparison.mepml) ·
+  [Count intervals](mepml/stats/inference/count_intervals.mepml)
+
+- 2026-11-22 — Added Breslow–Day with optional Tarone adjustment,
+  Stuart–Maxwell marginal homogeneity, and Bowker symmetry. Doxygen
+  covered all 13 scoped definitions. The three public examples and both
+  worked programs ran, and the report exported to HTML and Org.
+  [Paired tables and stratified odds ratios](mepml/stats/inference/table_symmetry.mepml)
+
+- 2026-11-22 — Added overall and partial eta and omega squared and
+  ANOVA-based intraclass correlation. Doxygen covered all 28 scoped
+  definitions. All seven public examples and both worked programs ran.
+  [ANOVA measures](mepml/stats/inference/anova_measures.mepml)
+
+- 2026-11-22 — Added Cohen and Fleiss kappa, Bland–Altman limits with
+  individual confidence intervals, and Lin concordance. Doxygen covered
+  all 29 scoped definitions. All eight public examples ran. The worked
+  report ran both programs and exported the Bland–Altman plot.
+  [Measurement and rating agreement](mepml/stats/inference/measurement_agreement.mepml)
+
+- 2026-11-22 — Added within-block exact and simulated randomization tests
+  and confidence intervals obtained by inverting the constant-effect
+  tests. Doxygen covered all 22 scoped definitions. All five public
+  examples ran, and both worked programs exported to HTML and Org.
+  [Restricted randomization](mepml/stats/resampling/restricted_randomization.mepml)
+
+- 2026-11-22 — Added batched jackknife+ and CV+ intervals and weighted
+  split-conformal calibration. Doxygen covered all 20 scoped definitions.
+  All seven public examples ran, and the worked report exported both
+  examples and the native interval plot to HTML and Org.
+  [Conformal calibration](mepml/stats/inference/conformal_calibration.mepml)
+
+- 2026-11-22 — Added fixed-threshold Storey q-values, closed Simes discovery
+  bounds and the Freedman–Lane residual permutation test. Doxygen covered
+  all 24 scoped definitions. All six public examples and the three worked
+  programs ran, and the report exported to HTML and Org.
+  [Multiplicity and nuisance-adjusted inference](mepml/stats/inference/discovery_and_residual_permutation.mepml)
+
+- 2026-11-22 — Added stratified, cluster, moving-block, circular, stationary
+  and balanced bootstrap draws, plus fitted-null parametric and wild
+  calibration. Doxygen covered all 20 scoped definitions, and all nine
+  public examples ran. The worked report exported to HTML and Org.
+  [Bootstrap designs](mepml/stats/resampling/bootstrap_designs.mepml)
+
+- 2026-11-22 — Added Gaussian kernel density, half-line reflection,
+  Sheather–Jones direct plug-in and least-squares cross-validation.
+  Doxygen covered all 27 scoped definitions, and all eight public examples
+  ran. The worked report ran both programs and exported the native density
+  plot to HTML and Org.
+  [Kernel density](mepml/stats/estimators/gaussian_kernel_density.mepml)
+
+- 2026-11-22 — Added Yuen's test, Brunner–Munzel, Cliff's delta, and
+  D'Agostino–Pearson and Jarque–Bera moment tests. The scoped audit covered
+  all 29 definitions. All seven public examples ran, and the worked
+  report ran both programs and exported to HTML and Org.
+  [Robust comparisons and normality](mepml/stats/inference/robust_inference.mepml)
+
+- 2026-11-22 — Added negative binomial and beta-binomial mass, cumulative
+  tails and quantiles. Doxygen covered all 26 definitions in the new header
+  and source. All six public examples and the worked report ran.
+  [Overdispersed counts](mepml/stats/inference/distribution_quantiles.mepml#allow-extra-variation-in-the-count)
+
+- 2026-11-21 — Added empirical likelihood for a mean, Fieller sets, delta
+  covariance, the sequential probability ratio test, bounded-mean confidence
+  sequences and Dunn's comparisons. All scoped definitions passed the audit,
+  and the native examples ran and exported to HTML and Org.
+  [Empirical likelihood](mepml/stats/inference/empirical_likelihood_mean.mepml) ·
+  [Transformed uncertainty](mepml/stats/inference/sample_moments.mepml#propagate-uncertainty-through-a-transformation) ·
+  [Sequential inference](mepml/stats/inference/sequential_inference.mepml) ·
+  [Group comparisons](mepml/stats/inference/welch_games_howell.mepml)
+
+- 2026-11-21 — Added count and gamma quantiles, Poisson-binomial probabilities,
+  empirical CDF bands, Qn, Sn, Huber location and scale, Newcombe and Poisson
+  intervals, power divergence and Cochran–Armitage. The scoped audit verified
+  the new and changed definitions. The distribution header still has 69
+  existing undocumented definitions. The native examples ran and exported to
+  HTML and Org.
+  [Distributions](mepml/stats/inference/distribution_quantiles.mepml) ·
+  [Robust summaries](mepml/stats/inference/robust_summaries.mepml) ·
+  [Count intervals](mepml/stats/inference/count_intervals.mepml) ·
+  [Categorical tests](mepml/stats/inference/categorical_tests.mepml)
+
+- 2026-11-21 — Added sample L-moments, weighted Lorenz curves and Gini
+  coefficients, and exact binomial-based quantile intervals. The scoped audit
+  covered all 52 definitions in the two affected header and source pairs.
+  The native examples ran and exported to HTML and Org.
+  [Sample moments](mepml/stats/inference/sample_moments.mepml) ·
+  [Robust summaries](mepml/stats/inference/robust_summaries.mepml)
+
+- 2026-11-21 — Added unequal-variance group comparisons, variance tests,
+  robust summaries, sample quantiles and weighted moments. The scoped audit
+  covered all 92 definitions in the four affected header and source pairs.
+  The native examples ran and exported to HTML and Org.
+  [Group comparisons](mepml/stats/inference/welch_games_howell.mepml) ·
+  [Robust summaries](mepml/stats/inference/robust_summaries.mepml) ·
+  [Sample moments](mepml/stats/inference/sample_moments.mepml)
+
 - 2026-11-21 — Completed the native [stochastic search inventory](stochastic-search-plan.md).
   The new public examples cover continuous search, typed neighborhoods,
   adaptive populations, Pareto and program search, simulation and fidelity

@@ -1,0 +1,86 @@
+//? Title: Fit a linear model by generalized least squares
+//? Exports: both
+//? Lang: en
+
+> Fit with a supplied residual covariance
+
+The same instrument yields two measurements of a common level. Its
+calibration gives the first measurement a variance of 1, the second a
+variance of 3, and their covariance as 0.5. Generalized least squares
+uses those quantities to estimate the level and its uncertainty. The
+design has one column of ones because the level is the only coefficient.
+
+```{cpp, id=known-gls, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/gls.hpp>
+#include <cmath>
+#include <print>
+
+int main() {
+    using datamunge::linalg::DenseMatrix;
+    const DenseMatrix<double> design(2, 1, 1);
+    const DenseMatrix<double> residual_covariance(2, 2, {1, .5, .5, 3});
+    const auto fit = datamunge::stats::generalized_least_squares(design, {1, 3}, residual_covariance);
+    std::println("| Estimated level | Standard error |");
+    std::println("| ---: | ---: |");
+    std::println("| {:.3f} | {:.3f} |", fit.coefficients[0], std::sqrt(fit.covariance(0, 0)));
+}
+```
+// result_begin: markdown
+| Estimated level | Standard error |
+| ---: | ---: |
+| 1.333 | 0.957 |
+// result_end
+
+The first reading has the smaller variance and receives more weight.
+The standard error uses the covariance supplied by calibration.
+
+> Estimate correlation within independent blocks
+
+Three instruments each yield four consecutive readings from a linear
+trend. The fit estimates the trend coefficients, the marginal residual
+variance, and the within-instrument correlation by maximum likelihood.
+AR(1) assigns correlation $\rho^k$ to readings $k$ time steps apart.
+Compound symmetry assigns $\rho$ to every pair from the same instrument.
+The groups identify instruments, and the row order within each group
+defines the AR(1) time steps.
+
+```{cpp, id=structured-gls, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/gls.hpp>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge::stats;
+    datamunge::linalg::DenseMatrix<double> design(12, 2, 1);
+    for (std::size_t i = 0; i < design.rows(); ++i)
+        design(i, 1) = static_cast<double>(i % 4);
+    const std::vector<double> readings{4, 5.2, 7.4, 7.7, 4.1, 6.8, 6.9, 8.6, 1.4, 2.2, 4.6, 6.2};
+    const StructuredGlsOptions options{.groups = {10, 10, 10, 10, 20, 20, 20, 20, 30, 30, 30, 30}};
+    const auto ar = structured_gls(design, readings, GlsCorrelation::AR1, options);
+    const auto cs = structured_gls(design, readings, GlsCorrelation::CompoundSymmetry, options);
+    if (!ar.converged || !cs.converged || ar.at_boundary || cs.at_boundary)
+        throw std::runtime_error("Expected two interior likelihood fits");
+
+    std::println("| Residual correlation model | Slope | Correlation | Marginal variance | Log likelihood |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    const auto print = [](const char* name, const StructuredGlsResult& result) {
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", name,
+                     result.fit.coefficients[1], result.correlation, result.residual_variance,
+                     result.fit.log_likelihood);
+    };
+    print("AR(1)", ar);
+    print("Compound symmetry", cs);
+}
+```
+// result_begin: markdown
+| Residual correlation model | Slope | Correlation | Marginal variance | Log likelihood |
+| --- | ---: | ---: | ---: | ---: |
+| AR(1) | 1.445 | 0.781 | 1.641 | -15.763 |
+| Compound symmetry | 1.457 | 0.851 | 1.926 | -14.289 |
+// result_end
+
+Compound symmetry gives the higher likelihood for these readings.
+Both fits estimate a positive correlation and give similar slopes.
+
+[Pinheiro and Bates (2000)|https://doi.org/10.1007/b98882] ·
+[R nlme reference|https://stat.ethz.ch/R-manual/R-devel/library/nlme/html/gls.html]

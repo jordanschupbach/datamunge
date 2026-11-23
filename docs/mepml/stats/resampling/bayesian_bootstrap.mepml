@@ -1,0 +1,55 @@
+//? Title: Bayesian bootstrap for a mean and median
+//? Exports: both
+//? Lang: en
+
+> Draw a posterior distribution for each statistic
+
+Each Bayesian bootstrap draw assigns the observed rows a random vector of
+probability weights from a Dirichlet distribution with all parameters equal
+to one. Repeated values have separate row weights that add at the same
+point in the empirical distribution. The code evaluates two functionals of
+that distribution, the weighted mean and the inverse-CDF median.
+
+```{cpp, id=bayesian-bootstrap, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/bootstrap_designs.hpp>
+#include <datamunge/stats/robust_summary.hpp>
+#include <numeric>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<double> sample{2, 3, 3, 8, 13};
+    constexpr std::size_t draws = 12000;
+    datamunge::random::SplitMix64 mean_rng(42), median_rng(42);
+
+    const auto means = bayesian_bootstrap(sample.size(), draws, [&](const auto& weights) {
+        return std::inner_product(weights.begin(), weights.end(), sample.begin(), 0.0);
+    }, mean_rng);
+    const auto medians = bayesian_bootstrap(sample.size(), draws, [&](const auto& weights) {
+        return weighted_empirical_quantiles(sample, weights, {.5}).front();
+    }, median_rng);
+
+    std::println("| Statistic | Posterior average | 2.5th percentile | 97.5th percentile |");
+    std::println("| --- | ---: | ---: | ---: |");
+    const auto summarize = [](const char* statistic, const std::vector<double>& posterior) {
+        const auto limits = sample_quantiles(posterior, {.025, .975}, 1);
+        const double average = std::accumulate(posterior.begin(), posterior.end(), 0.0)
+                             / static_cast<double>(posterior.size());
+        std::println("| {} | {:.2f} | {:.2f} | {:.2f} |", statistic, average, limits[0], limits[1]);
+    };
+    summarize("Mean", means);
+    summarize("Median", medians);
+}
+```
+// result_begin: markdown
+| Statistic | Posterior average | 2.5th percentile | 97.5th percentile |
+| --- | ---: | ---: | ---: |
+| Mean | 5.80 | 3.13 | 9.58 |
+| Median | 4.83 | 2.00 | 13.00 |
+// result_end
+
+The generators start from the same seed, so both functionals see the same
+weight vectors. The percentiles estimate equal-tailed posterior bounds.
+The posterior median draws are discrete and can only take observed values.
+
+[Rubin (1981), The Bayesian Bootstrap|https://doi.org/10.1214/aos/1176345338].

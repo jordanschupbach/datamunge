@@ -1,0 +1,70 @@
+//? Title: Fit and invert power transformations
+//? Exports: both
+//? Lang: en
+
+> Fit a power and recover the original scale
+
+The Box–Cox example uses strictly positive observations with a long
+right tail. The Yeo–Johnson example includes zero and negative values.
+Both fits maximize the Gaussian profile likelihood, including the
+Jacobian, over the default search interval from −5 to 5.
+
+Use the fitted transform on subsequent observations and its inverse
+to recover the original units. The table reports the change in sample
+skewness and one round trip per fit.
+
+```{cpp, id=fitted-power-transforms, results="markdown", file="figures/fitted_power_transforms.svg", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <cmath>
+
+int main() {
+    using namespace dm::stats;
+    const std::vector<double> positive{1.3, 1.6, 1.8, 2.7, 4.5, 7.1, 19.5, 45.2};
+    const std::vector<double> signed_values{-12, -7.5, -3, -1.1, 0, .2, .5, 3, 6, 20};
+    const auto box = fit_box_cox(positive);
+    const auto yj = fit_yeo_johnson(signed_values);
+
+    std::println("| Transform | Fitted power | Raw skewness | Transformed skewness | Raw → transformed → restored |");
+    std::println("| --- | ---: | ---: | ---: | --- |");
+    const auto report = [](const char* label, const auto& values, const FittedPowerTransform& fit) {
+        std::vector<double> transformed;
+        for (double x : values)
+            transformed.push_back(fit.apply(x));
+        const auto y = transformed.back();
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.2f} → {:.2f} → {:.2f} |",
+                     label, fit.lambda, sample_shape(values).skewness,
+                     sample_shape(transformed).skewness, values.back(), y, fit.inverse(y));
+    };
+    report("Box–Cox", positive, box);
+    report("Yeo–Johnson", signed_values, yj);
+
+    auto plot = dm::graphics::RPlot::create();
+    const auto curve = [&](const auto& values, const FittedPowerTransform& fit,
+                           const char* label, dm::graphics::RGBA color) {
+        std::vector<double> x, y;
+        for (int i = 0; i <= 100; ++i) {
+            x.push_back(std::lerp(values.front(), values.back(), i / 100.));
+            y.push_back(fit.apply(x.back()));
+        }
+        plot.lines(x, y, label, color);
+    };
+    curve(positive, box, "Box–Cox", {37, 99, 235});
+    curve(signed_values, yj, "Yeo–Johnson", {180, 83, 9});
+    std::filesystem::create_directories("build");
+    plot.title("Fitted power transformations")
+        .x_label("Original value").y_label("Transformed value")
+        .save_svg("build/fitted_power_transforms.svg");
+}
+```
+// result_begin: markdown
+| Transform | Fitted power | Raw skewness | Transformed skewness | Raw → transformed → restored |
+| --- | ---: | ---: | ---: | --- |
+| Box–Cox | -0.407 | 1.707 | 0.234 | 45.20 → 1.94 → 45.20 |
+| Yeo–Johnson | 0.868 | 0.925 | 0.036 | 20.00 → 15.03 → 20.00 |
+\image(figures/fitted_power_transforms.svg)
+// result_end
+\caption(Both mappings preserve order. The fitted Box–Cox curve compresses the long positive tail.)
+\alttext(Two increasing curves. Box–Cox flattens as the positive input increases. Yeo–Johnson extends across negative inputs and zero.)
+
+[Box and Cox|https://doi.org/10.1111/j.2517-6161.1964.tb00553.x] ·
+[Yeo and Johnson|https://doi.org/10.1093/biomet/87.4.954]

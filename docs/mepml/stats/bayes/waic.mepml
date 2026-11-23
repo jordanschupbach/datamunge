@@ -1,0 +1,72 @@
+//? Title: Compare pooled and group-specific probabilities with WAIC
+//? Exports: both
+//? Lang: en
+
+> Score the same observations under two posterior models
+
+Two groups have six binary outcomes each. The pooled model assigns one
+success probability to both groups. The group-specific model assigns one
+probability to each group. With uniform beta priors, the posterior shapes
+are one plus the success and failure counts for each probability.
+
+Each matrix row holds the log likelihood of every outcome at one posterior
+draw. WAIC computes the log of the mean likelihood separately for each
+outcome and subtracts the sample variance of its log likelihoods. A lower
+deviance-scale WAIC indicates higher estimated predictive accuracy.
+
+```{cpp, id=pooling-waic, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/bayes/diagnostics.hpp>
+#include <datamunge/random/simplex.hpp>
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    constexpr std::array outcomes{1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0};
+    constexpr std::size_t draws = 12000;
+    random::SplitMix64 rng(42);
+    const auto log_likelihood = [&](double first, double second) {
+        std::vector<double> row;
+        for (std::size_t i = 0; i < outcomes.size(); ++i) {
+            const double probability = i < 6 ? first : second;
+            row.push_back(outcomes[i] ? std::log(probability) : std::log1p(-probability));
+        }
+        return row;
+    };
+
+    std::vector<std::vector<double>> pooled, by_group;
+    for (std::size_t s = 0; s < draws; ++s) {
+        const double common = random::dirichlet_sample(rng, {7, 7}).front();
+        const double first = random::dirichlet_sample(rng, {6, 2}).front();
+        const double second = random::dirichlet_sample(rng, {2, 6}).front();
+        pooled.push_back(log_likelihood(common, common));
+        by_group.push_back(log_likelihood(first, second));
+    }
+
+    const auto print_score = [](const char* model, const bayes::WaicResult& score) {
+        const auto flagged = std::ranges::count_if(score.pointwise, [](const auto& point) {
+            return point.effective_parameters > 0.4;
+        });
+        std::println("| {} | {:.2f} | {:.2f} | {:.2f} | {} |", model,
+                     score.log_predictive_density, score.effective_parameters, score.waic, flagged);
+    };
+    std::println("| Model | Log predictive density | Effective parameters | WAIC | Variance above 0.4 |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    print_score("Pooled", bayes::waic(pooled));
+    print_score("By group", bayes::waic(by_group));
+}
+```
+// result_begin: markdown
+| Model | Log predictive density | Effective parameters | WAIC | Variance above 0.4 |
+| --- | ---: | ---: | ---: | ---: |
+| Pooled | -8.32 | 0.96 | 18.56 | 0 |
+| By group | -5.64 | 1.49 | 14.27 | 2 |
+// result_end
+
+The group-specific model has the lower estimated WAIC. The uncommon
+outcome in each group exceeds the 0.4 variance threshold, so its estimated
+predictive advantage warrants closer examination.
+
+[Vehtari, Gelman and Gabry (2017), section 2.2|https://doi.org/10.1007/s11222-016-9696-4]

@@ -1,0 +1,101 @@
+//? Title: Fit a confirmatory factor model
+//? Exports: both
+//? Lang: en
+
+> Fit a specified loading pattern
+
+Five synthetic measurements share one latent factor. Fix its variance to
+one to set the scale. The model estimates all five loadings and each
+measurement's residual variance. Fix the off-diagonal residual covariances
+to zero to express the assumption that the factor accounts for all
+covariation between measurements.
+
+The example perturbs three entries of a covariance matrix to illustrate
+imperfect fit. Gaussian maximum likelihood chooses the model-implied
+covariance \(\Lambda\Phi\Lambda^\top+\Psi\). The observed covariance has
+15 distinct entries and 10 fitted parameters, leaving 5 degrees of freedom.
+
+```{cpp, id=cfa-loading-pattern, file="figures/cfa_loadings.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/stats/confirmatory_factor_analysis.hpp>
+
+#include <array>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    namespace dm = datamunge;
+    using dm::linalg::DenseMatrix;
+    using Mask = DenseMatrix<std::uint8_t>;
+
+    const DenseMatrix<double> signal(5, 1, {.75, .62, .83, .51, .67});
+    auto observed = signal * signal.transpose();
+    const std::array noise{.50, .42, .30, .66, .55};
+    for (std::size_t i = 0; i < noise.size(); ++i)
+        observed(i, i) += noise[i];
+    observed(0, 1) = observed(1, 0) += .13;
+    observed(2, 3) = observed(3, 2) -= .08;
+    observed(3, 4) = observed(4, 3) += .07;
+
+    const dm::stats::CFASpecification model{
+        {DenseMatrix<double>(5, 1, .55), Mask(5, 1, 1)},
+        {DenseMatrix<double>(1, 1, 1), {}},
+        {.6 * DenseMatrix<double>::identity(5), Mask::identity(5)}};
+    const auto fit = dm::stats::fit_confirmatory_factor_analysis(observed, model);
+    if (fit.status != dm::stats::CFAStatus::Converged)
+        throw std::runtime_error("Expected convergence for the example covariance");
+
+    dm::graphics::Diagram diagram(55, 760);
+    dm::graphics::DiagramNodeStyle latent;
+    latent.circle = true;
+    latent.width = latent.height = 1.5;
+    latent.fill = {224, 239, 252};
+    dm::graphics::DiagramNodeStyle indicator;
+    indicator.width = 1.65;
+    indicator.height = .7;
+    diagram.node("factor", {5, 3.7}, "Factor\nVar = 1", latent);
+
+    // Orient the factor so the first loading is positive for display.
+    const double orientation = fit.loadings(0, 0) < 0 ? -1 : 1;
+    std::println("| Measurement | Loading | Residual variance |");
+    std::println("| --- | ---: | ---: |");
+    for (std::size_t i = 0; i < noise.size(); ++i) {
+        const auto id = std::format("X{}", i + 1);
+        const double loading = orientation * fit.loadings(i, 0);
+        diagram.node(id, {2.5 * i, 0}, id, indicator)
+            .edge("factor", id, std::format("{:.2f}", loading));
+        std::println("| {} | {:.3f} | {:.3f} |", id, loading, fit.residual_covariance(i, i));
+    }
+    std::println("\nThe discrepancy per observation is {:.5f} with {} degrees of freedom.",
+        fit.discrepancy, fit.degrees_of_freedom);
+    std::println("\nThe observed X1–X2 covariance is {:.3f} and the fitted covariance is {:.3f}.",
+        observed(0, 1), fit.implied_covariance(0, 1));
+    std::filesystem::create_directories("build");
+    diagram.save_svg("build/cfa_loadings.svg");
+}
+```
+// result_begin: markdown
+| Measurement | Loading | Residual variance |
+| --- | ---: | ---: |
+| X1 | 0.820 | 0.390 |
+| X2 | 0.683 | 0.337 |
+| X3 | 0.768 | 0.398 |
+| X4 | 0.483 | 0.687 |
+| X5 | 0.661 | 0.562 |
+
+The discrepancy per observation is 0.06073 with 5 degrees of freedom.
+
+The observed X1–X2 covariance is 0.595 and the fitted covariance is 0.560.
+\image(figures/cfa_loadings.svg)
+// result_end
+\caption(Arrows show the fitted loadings from the common factor to the five measurements.)
+\alttext(A factor with variance one points to X1 through X5, with loadings 0.82, 0.68, 0.77, 0.48, and 0.66.)
+
+The positive X1–X2 covariance residual shows where the single-factor
+model underestimates the observed association. Reversing the signs of
+all five loadings gives the same implied covariance, so the displayed
+factor is oriented to make the X1 loading positive.
+
+[Jöreskog (1969)|https://doi.org/10.1007/BF02289343]

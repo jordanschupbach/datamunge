@@ -1,5 +1,5 @@
 /// @file glm.cpp
-/// @brief Canonical-link IRLS, finite-domain guards and GLM diagnostic tables.
+/// @brief IRLS, grouped binomial fitting, finite-domain guards and GLM diagnostic tables.
 #include <algorithm>
 #include <cmath>
 #include <datamunge/linalg/qr.hpp>
@@ -8,8 +8,10 @@
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <numbers>
 #include <sstream>
 #include <stdexcept>
+#include <utility>
 
 #include "glm_family.hpp"
 
@@ -114,14 +116,19 @@ const char* family_name(GLMFamily f) {
   return "unknown";
 }
 
-/// @brief Printable fixed-link name.
+/// @brief Printable name of the selected link.
 /// @param f Response family.
+/// @param binomial Link for the binomial family.
 /// @return Static link-name string.
-const char* link_name(GLMFamily f) {
+const char* link_name(GLMFamily f, GLMBinomialLink binomial) {
   switch (f) {
     case GLMFamily::Gaussian:
       return "identity";
     case GLMFamily::Binomial:
+      if (binomial == GLMBinomialLink::Probit)
+        return "probit";
+      if (binomial == GLMBinomialLink::Cloglog)
+        return "cloglog";
       return "logit";
     case GLMFamily::Poisson:
       return "log";
@@ -141,13 +148,54 @@ double glm_initial_mu(GLMFamily f, double y, double prior_weight) {
     case GLMFamily::Gaussian:
       return y;
     case GLMFamily::Binomial:
-      return (prior_weight * y + 0.5) / (prior_weight + 1.0);
+      return std::clamp((prior_weight * y + 0.5) / (prior_weight + 1.0),
+                        std::numeric_limits<double>::epsilon(), 1 - std::numeric_limits<double>::epsilon());
     case GLMFamily::Poisson:
       return y + 0.1;
     case GLMFamily::Gamma:
       return y;
   }
   return y;
+}
+
+/// @brief Returns d eta/d mu for IRLS while retaining the original derivative for default links.
+double working_derivative(const GLMOptions& options, double eta, double mu) {
+  if (options.family == GLMFamily::Binomial && options.binomial_link != GLMBinomialLink::Logit)
+    return 1.0 / detail::glm_mean_derivative(options.family, eta, mu, options.binomial_link);
+  return detail::glm_link_derivative(options.family, mu);
+}
+
+/// @brief Grouped likelihood inputs before computing trial proportions and precision weights.
+struct GroupedBinomialRow {
+  double successes; ///< Count of positive trials.
+  double trials;    ///< Total number of trials in the retained row.
+  double weight;    ///< Multiplicative weight on the complete grouped contribution.
+};
+
+/// @brief Difference between log factorial and the leading Stirling approximation.
+long double stirling_error(long double count) {
+  if (count < 16)
+    return std::lgamma(count + 1) - ((count + .5L) * std::log(count) - count +
+                                   .5L * std::log(2 * std::numbers::pi_v<long double>));
+  const auto inv = 1 / count;
+  const auto x = inv * inv;
+  return inv * (1 / 12.0L + x * (-1 / 360.0L + x * (1 / 1260.0L +
+                x * (-1 / 1680.0L + x * (1 / 1188.0L - x * 691 / 360360.0L)))));
+}
+
+/// @brief Evaluates a grouped count log probability using the saturated log mass and deviance.
+/// @par References
+/// - Loader (2002), https://www.r-project.org/doc/reports/CLoader-dbinom-2002.pdf
+long double grouped_binomial_log_mass(const GroupedBinomialRow& row, long double probability) {
+  const long double trials = row.trials, successes = row.successes, failures = trials - successes;
+  if (successes == 0)
+    return trials * std::log1p(-probability);
+  if (failures == 0)
+    return trials * std::log(probability);
+  const auto saturated = stirling_error(trials) - stirling_error(successes) - stirling_error(failures)
+      - .5L * (std::log(2 * std::numbers::pi_v<long double>) + std::log(successes) + std::log(failures) - std::log(trials));
+  return saturated - detail::binomial_deviance_part(successes, trials * probability)
+                   - detail::binomial_deviance_part(failures, trials * (1 - probability));
 }
 
 /// @brief Determines whether dispersion is fixed at one.
@@ -241,37 +289,83 @@ void GLM::fit(const dstruct::DataFrame& data, GLMOptions options) {
   }
   if (options_.max_iter == 0)
     throw std::invalid_argument("GLM: max_iter must be at least 1");
+  if (options_.binomial_link != GLMBinomialLink::Logit && options_.binomial_link != GLMBinomialLink::Probit &&
+      options_.binomial_link != GLMBinomialLink::Cloglog)
+    throw std::invalid_argument("GLM: unknown binomial link");
+  const bool grouped = options_.trials_column.has_value();
+  if (options_.family != GLMFamily::Binomial && (grouped || options_.binomial_link != GLMBinomialLink::Logit))
+    throw std::invalid_argument("GLM: trial counts and alternate binomial links require the binomial family");
+  if (grouped && !data.has_column(*options_.trials_column))
+    throw std::invalid_argument("GLM: trials column not found: " + *options_.trials_column);
+  if (options_.weights_column && !data.has_column(*options_.weights_column))
+    throw std::invalid_argument("GLM: weights column not found: " + *options_.weights_column);
 
-  design_               = formula_.resolve(data);
-  const auto        raw = design_.build_matrix(data, /*require_response=*/true);
-  const std::size_t n   = raw.X.rows();
-  const std::size_t p   = raw.X.cols();
-
-  if (p == 0 || n <= p)
-    throw std::invalid_argument("GLM: requires n > p > 0");
-  for (std::size_t i = 0; i < n; ++i)
-    for (std::size_t j = 0; j < p; ++j)
-      if (!std::isfinite(raw.X(i, j)))
-        throw std::invalid_argument("GLM: design values must be finite");
-  fitted_rows_   = raw.used_row_indices;
-  design_matrix_ = raw.X;
-  response_      = raw.y;
-  for (const double y : response_)
-    detail::glm_validate_response(options_.family, y);
-
-  prior_weights_.clear();
-  if (options_.weights_column) {
-    if (!data.has_column(*options_.weights_column))
-      throw std::invalid_argument("GLM: weights column not found: " + *options_.weights_column);
-    prior_weights_.reserve(raw.used_row_indices.size());
-    for (const auto row : raw.used_row_indices) {
-      const auto w = data.optional_double_at(*options_.weights_column, row);
-      if (!w)
-        throw std::invalid_argument("GLM: weights column has a null value in a fitted row");
-      if (!(*w > 0.0) || !std::isfinite(*w))
-        throw std::invalid_argument("GLM: weights must be strictly positive");
-      prior_weights_.push_back(*w);
+  std::optional<dstruct::DataFrame> nonempty_groups;
+  std::vector<std::size_t> group_rows;
+  if (grouped) {
+    const auto& response_name = formula_.response_name();
+    if (!data.has_column(response_name) ||
+        data.column_type(response_name) != dstruct::DataFrame::ColumnType::Numeric)
+      throw std::invalid_argument("GLM: grouped success counts require a numeric response column");
+    for (std::size_t row = 0; row < data.nrows(); ++row) {
+      const auto trials = data.optional_double_at(*options_.trials_column, row);
+      if (trials && *trials == 0) {
+        const auto successes = data.optional_double_at(response_name, row);
+        if (successes && *successes != 0)
+          throw std::invalid_argument("GLM: zero trials require zero successes");
+      } else {
+        group_rows.push_back(row);
+      }
     }
+    // Empty groups have no rows in the equivalent trial data and must not define factor levels.
+    if (group_rows.size() != data.nrows())
+      nonempty_groups.emplace(data.take_rows(group_rows));
+  }
+  const auto& fit_data = nonempty_groups ? *nonempty_groups : data;
+  design_ = formula_.resolve(fit_data);
+  auto raw = design_.build_matrix(fit_data, /*require_response=*/true);
+  const auto n = raw.X.rows(), p = raw.X.cols();
+  if (p == 0 || n < p || (!grouped && n == p))
+    throw std::invalid_argument("GLM: insufficient observations for the number of coefficients");
+  for (double value : raw.X.data())
+    if (!std::isfinite(value))
+      throw std::invalid_argument("GLM: design values must be finite");
+  design_matrix_ = std::move(raw.X);
+
+  std::vector<GroupedBinomialRow> grouped_counts;
+  fitted_rows_.clear();
+  response_.clear();
+  prior_weights_.clear();
+  for (std::size_t i = 0; i < n; ++i) {
+    const auto fit_row = raw.used_row_indices[i];
+    const auto row = nonempty_groups ? group_rows[fit_row] : fit_row;
+    const auto y = raw.y[i];
+    double trials = 1;
+    if (grouped) {
+      const auto count = data.optional_double_at(*options_.trials_column, row);
+      if (!count || !std::isfinite(*count) || *count <= 0 || *count != std::floor(*count) ||
+          !std::isfinite(y) || y < 0 || y > *count || y != std::floor(y))
+        throw std::invalid_argument("GLM: grouped counts must be integers with 0 <= successes <= trials");
+      trials = *count;
+    } else {
+      detail::glm_validate_response(options_.family, y);
+    }
+    double weight = 1;
+    if (options_.weights_column) {
+      const auto w = data.optional_double_at(*options_.weights_column, row);
+      if (!w || !(*w > 0.0) || !std::isfinite(*w))
+        throw std::invalid_argument("GLM: fitted row weights must be finite and strictly positive");
+      weight = *w;
+    }
+    const auto prior_weight = weight * trials;
+    if (!(prior_weight > 0) || !std::isfinite(prior_weight))
+      throw std::invalid_argument("GLM: effective trial weight must be finite and positive");
+    if (grouped)
+      grouped_counts.push_back({y, trials, weight});
+    if (grouped || options_.weights_column)
+      prior_weights_.push_back(prior_weight);
+    response_.push_back(y / trials);
+    fitted_rows_.push_back(row);
   }
   /// @brief Retrieves a retained-row prior weight without allocating unit weights.
   auto prior_weight_at = [&](std::size_t i) {
@@ -281,7 +375,7 @@ void GLM::fit(const dstruct::DataFrame& data, GLMOptions options) {
   std::vector<double> mu(n), eta(n);
   for (std::size_t i = 0; i < n; ++i) {
     mu[i]  = glm_initial_mu(options_.family, response_[i], prior_weight_at(i));
-    eta[i] = detail::glm_link(options_.family, mu[i]);
+    eta[i] = detail::glm_link(options_.family, mu[i], options_.binomial_link);
   }
 
   std::vector<double> beta(p, 0.0);
@@ -299,7 +393,7 @@ void GLM::fit(const dstruct::DataFrame& data, GLMOptions options) {
   for (std::size_t iter = 0; iter < options_.max_iter; ++iter) {
     std::vector<double> z(n), w(n);
     for (std::size_t i = 0; i < n; ++i) {
-      const double gprime = detail::glm_link_derivative(options_.family, mu[i]);
+      const double gprime = working_derivative(options_, eta[i], mu[i]);
       z[i]                = eta[i] + (response_[i] - mu[i]) * gprime;
       const double v      = detail::glm_variance(options_.family, mu[i]);
       w[i]                = prior_weight_at(i) / (gprime * gprime * v);
@@ -329,7 +423,7 @@ void GLM::fit(const dstruct::DataFrame& data, GLMOptions options) {
         for (std::size_t j = 0; j < p; ++j)
           v += design_matrix_(i, j) * beta[j];
         new_eta[i] = v;
-        new_mu[i]  = detail::glm_inverse_link(options_.family, v);
+        new_mu[i]  = detail::glm_inverse_link(options_.family, v, options_.binomial_link);
         valid      = valid && std::isfinite(v) && std::isfinite(new_mu[i]) &&
                 (options_.family == GLMFamily::Gaussian || new_mu[i] > 0.0) &&
                 (options_.family != GLMFamily::Gamma || v > 0.0);
@@ -359,7 +453,7 @@ void GLM::fit(const dstruct::DataFrame& data, GLMOptions options) {
   // Information and leverage must use the weights at the returned coefficients,
   // including when max_iter is reached, rather than the preceding working state.
   for (std::size_t i = 0; i < n; ++i) {
-    const double gp = detail::glm_link_derivative(options_.family, mu[i]);
+    const double gp = working_derivative(options_, eta[i], mu[i]);
     final_w[i]      = prior_weight_at(i) / (gp * gp * detail::glm_variance(options_.family, mu[i]));
     if (!(final_w[i] > 0.0) || !std::isfinite(final_w[i]))
       throw std::runtime_error("GLM: nonfinite or zero final working weight");
@@ -381,8 +475,8 @@ void GLM::fit(const dstruct::DataFrame& data, GLMOptions options) {
       wsum += prior_weight_at(i);
       ysum += prior_weight_at(i) * response_[i];
     }
-    const double y_bar =
-        design_.has_intercept ? ysum / wsum : detail::glm_inverse_link(options_.family, 0.0);
+    const double y_bar = design_.has_intercept ? ysum / wsum
+        : detail::glm_inverse_link(options_.family, 0.0, options_.binomial_link);
     null_deviance_ = 0.0;
     for (std::size_t i = 0; i < n; ++i)
       null_deviance_ +=
@@ -452,11 +546,17 @@ void GLM::fit(const dstruct::DataFrame& data, GLMOptions options) {
         deviance_residuals_[i] / std::sqrt(dispersion_ * std::max(1e-12, 1.0 - leverage_[i]));
   }
 
-  std::vector<double> weight_vec(n);
-  for (std::size_t i = 0; i < n; ++i)
-    weight_vec[i] = prior_weight_at(i);
-  aic_ = glm_aic_contribution(options_.family, response_, weight_vec, mu, deviance_) +
-         2.0 * static_cast<double>(p);
+  if (grouped) {
+    long double log_likelihood = 0;
+    for (std::size_t i = 0; i < n; ++i)
+      log_likelihood += grouped_counts[i].weight * grouped_binomial_log_mass(grouped_counts[i], mu[i]);
+    aic_ = static_cast<double>(2 * (p - log_likelihood));
+  } else {
+    std::vector<double> weight_vec(n);
+    for (std::size_t i = 0; i < n; ++i)
+      weight_vec[i] = prior_weight_at(i);
+    aic_ = glm_aic_contribution(options_.family, response_, weight_vec, mu, deviance_) + 2.0 * static_cast<double>(p);
+  }
 }
 
 std::vector<GLM::Interval> GLM::confidence_intervals(double level) const {
@@ -478,7 +578,7 @@ std::vector<GLM::Interval> GLM::confidence_intervals(double level) const {
 std::string GLM::summary() const {
   std::ostringstream out;
   out << "Call:\nglm(formula = " << formula_.text() << ", family = " << family_name(options_.family)
-      << "(link = \"" << link_name(options_.family) << "\"))\n\n";
+      << "(link = \"" << link_name(options_.family, options_.binomial_link) << "\"))\n\n";
 
   std::vector<double> sorted_resid = deviance_residuals_;
   std::sort(sorted_resid.begin(), sorted_resid.end());
@@ -560,7 +660,7 @@ GLMPrediction GLM::predict(
     if (!std::isfinite(s) || (options_.family == GLMFamily::Gamma && s <= 0.0))
       throw std::invalid_argument("GLM: query outside the finite link domain");
     compact_eta[i] = s;
-    compact_fit[i] = detail::glm_inverse_link(options_.family, s);
+    compact_fit[i] = detail::glm_inverse_link(options_.family, s, options_.binomial_link);
     if (!std::isfinite(compact_fit[i]))
       throw std::invalid_argument("GLM: query mean overflow");
   }
@@ -596,28 +696,11 @@ GLMPrediction GLM::predict(
     // Response-scale SE via the delta method; the interval itself is
     // computed by back-transforming the link-scale bounds so it always
     // respects the family's natural range (e.g. binomial stays in [0, 1]).
-    double dmu_deta;
-    switch (options_.family) {
-      case GLMFamily::Gaussian:
-        dmu_deta = 1.0;
-        break;
-      case GLMFamily::Binomial: {
-        const double p = compact_fit[i];
-        dmu_deta       = p * (1.0 - p);
-        break;
-      }
-      case GLMFamily::Poisson:
-        dmu_deta = compact_fit[i];
-        break;
-      case GLMFamily::Gamma:
-        dmu_deta = -compact_fit[i] * compact_fit[i];
-        break;
-      default:
-        dmu_deta = 1.0;
-    }
+    const double dmu_deta = detail::glm_mean_derivative(
+        options_.family, compact_eta[i], compact_fit[i], options_.binomial_link);
     compact_se[i] = std::fabs(dmu_deta) * se_eta;
-    compact_lo[i] = detail::glm_inverse_link(options_.family, lo_eta);
-    compact_hi[i] = detail::glm_inverse_link(options_.family, hi_eta);
+    compact_lo[i] = detail::glm_inverse_link(options_.family, lo_eta, options_.binomial_link);
+    compact_hi[i] = detail::glm_inverse_link(options_.family, hi_eta, options_.binomial_link);
     if (options_.family == GLMFamily::Gamma) {
       compact_lo[i] = 1.0 / hi_eta;
       compact_hi[i] = lo_eta > 0.0 ? 1.0 / lo_eta : std::numeric_limits<double>::infinity();
@@ -675,14 +758,14 @@ dstruct::DataFrame GLM::working_data(std::size_t iteration) const {
     const double prior = prior_weights_.empty() ? 1.0 : prior_weights_[i];
     if (iteration == 0) {
       mu[i]  = glm_initial_mu(options_.family, response_[i], prior);
-      eta[i] = detail::glm_link(options_.family, mu[i]);
+      eta[i] = detail::glm_link(options_.family, mu[i], options_.binomial_link);
     } else {
       eta[i] = 0.0;
       for (std::size_t j = 0; j < rank(); ++j)
         eta[i] += design_matrix_(i, j) * iteration_coefficients_[iteration - 1][j];
-      mu[i] = detail::glm_inverse_link(options_.family, eta[i]);
+      mu[i] = detail::glm_inverse_link(options_.family, eta[i], options_.binomial_link);
     }
-    const double gp = detail::glm_link_derivative(options_.family, mu[i]);
+    const double gp = working_derivative(options_, eta[i], mu[i]);
     w[i]            = prior / (gp * gp * detail::glm_variance(options_.family, mu[i]));
     z[i]            = eta[i] + (response_[i] - mu[i]) * gp;
   }
@@ -737,7 +820,7 @@ dstruct::DataFrame GLM::training_details() const {
 dstruct::DataFrame GLM::model_summary() const {
   dstruct::DataFrame out;
   out.add_column("family", std::vector<std::string>{family_name(family())});
-  out.add_column("link", std::vector<std::string>{link_name(family())});
+  out.add_column("link", std::vector<std::string>{link_name(family(), options_.binomial_link)});
   out.add_column("n", std::vector<double>{static_cast<double>(observations_)});
   out.add_column("p", std::vector<double>{static_cast<double>(rank())});
   out.add_column("df", std::vector<double>{static_cast<double>(degrees_of_freedom_)});

@@ -6,8 +6,8 @@
 ///        diagnostics and R's four diagnostic plots.
 ///
 /// The model is \f$y = X\beta + \varepsilon\f$ with \f$\varepsilon\sim N(0,\sigma^2 W^{-1})\f$,
-/// where the formula builds the design matrix \f$X\f$ (factor columns become treatment-coded
-/// dummies) and \f$W\f$ is the identity unless a weights column is given. The estimate is
+/// where the formula builds the design matrix \f$X\f$ (factor columns use treatment coding by
+/// default) and \f$W\f$ is the identity unless a weights column is given. The estimate is
 /// \f$\hat\beta=(X^\top WX)^{-1}X^\top Wy\f$; every other quantity (standard errors, t and F
 /// tests, intervals, leverage, Cook's distance) follows R's `summary.lm`, `anova.lm`,
 /// `predict.lm` and `influence.measures`, so results can be checked against R directly.
@@ -22,12 +22,20 @@
 #include <datamunge/linalg/regression.hpp>
 #include <datamunge/plot/plot.hpp>
 #include <datamunge/stats/formula.hpp>
+#include <datamunge/stats/hypothesis_test_result.hpp>
+#include <datamunge/stats/marginal_means.hpp>
 
 #include <cstddef>
+#include <cstdint>
 #include <iosfwd>
 #include <optional>
 #include <string>
+#include <unordered_map>
 #include <vector>
+
+namespace datamunge::random {
+class RandomGenerator;
+}
 
 namespace datamunge::stats {
 
@@ -36,6 +44,7 @@ struct LmOptions {
     /// Name of a numeric column of strictly positive case weights; set it for weighted least
     /// squares (R's `weights =`). Unset (the default) fits ordinary least squares.
     std::optional<std::string> weights_column;
+    std::unordered_map<std::string, FactorContrast> contrasts{}; ///< Coding by categorical predictor name.
 };
 
 /// @brief Which interval LM::predict() adds around each fitted value, like R's
@@ -56,16 +65,28 @@ struct LmPrediction {
     std::vector<double> upper;  ///< Upper interval bound (empty for PredictionInterval::None).
 };
 
-/// @brief One row of a sequential (type I) ANOVA table from LM::anova().
+/// @brief One row of an ANOVA table from LM::anova() or LM::marginal_anova().
 ///
 /// The final row is "Residuals", whose f_value and p_value are 0 (R prints them as blank).
 struct AnovaRow {
     std::string term;                  ///< Term label, or "Residuals".
-    std::size_t degrees_of_freedom{0}; ///< Columns the term adds (residual df on the last row).
-    double      sum_sq{0.0};           ///< Reduction in residual sum of squares when the term is added.
+    std::size_t degrees_of_freedom{0}; ///< Number of tested coefficients (residual df on the last row).
+    double      sum_sq{0.0};           ///< Sum of squares for the term test (RSS on the last row).
     double      mean_sq{0.0};          ///< sum_sq / degrees_of_freedom.
     double      f_value{0.0};          ///< mean_sq / \f$\hat\sigma^2\f$ of the full model.
     double      p_value{0.0};          ///< Upper tail of the F distribution at f_value.
+};
+
+/// @brief Adjustments for marginal tests of linear-model terms.
+/// @par Example
+/// @code
+/// const auto type = dm::stats::MarginalAnovaType::III;
+/// std::println("{}", type == dm::stats::MarginalAnovaType::III); // true
+/// @endcode
+/// @see LM::marginal_anova()
+enum class MarginalAnovaType {
+    II,  ///< Adjust for terms that do not contain the tested term.
+    III, ///< Adjust for all other terms under the fitted coding.
 };
 
 /// @brief Result of the nested-model F-test `anova(reduced, full)`, like the two-row table of
@@ -79,6 +100,60 @@ struct NestedAnova {
     double      sum_sq{0};      ///< reduced_rss - full_rss.
     double      f_value{0};     ///< (sum_sq / df) / (full_rss / full_df).
     double      p_value{0};     ///< Upper tail of \f$F_{df,\,full\_df}\f$ at f_value.
+};
+
+/// @brief Residual scaling for heteroscedasticity-consistent LM covariance.
+/// @par Example
+/// @code
+/// const auto type = dm::stats::HcCovariance::HC3;
+/// std::println("{}", type == dm::stats::HcCovariance::HC3); // true
+/// @endcode
+/// @par References
+/// - MacKinnon and White (1985), https://doi.org/10.1016/0304-4076(85)90158-7
+/// @see LM::heteroscedastic_covariance()
+enum class HcCovariance {
+    HC0, ///< Squared residuals with no degrees-of-freedom correction.
+    HC1, ///< HC0 multiplied by n / (n - p).
+    HC2, ///< Squared residuals divided by one minus leverage.
+    HC3, ///< Squared residuals divided by the square of one minus leverage.
+};
+
+/// @brief An observed group contributing to a clustered covariance component.
+/// @par Example
+/// @code
+/// const dm::stats::ClusterCovarianceGroup group{{10, 4}, 2};
+/// std::println("{}", group.observations); // 2
+/// @endcode
+/// @see ClusterCovarianceComponent
+struct ClusterCovarianceGroup {
+    std::vector<std::int64_t> labels; ///< Observed cluster labels in component dimension order.
+    std::size_t observations;        ///< Fitted rows in this group.
+};
+
+/// @brief One subset term in the multiway inclusion-exclusion sum.
+/// @par Example
+/// @code
+/// const dm::stats::ClusterCovarianceComponent joint{{0, 1}, {{{10, 4}, 2}}, -1};
+/// std::println("{}", joint.multiplier); // -1
+/// @endcode
+/// @see ClusterCovarianceGroup, LM::cluster_robust_covariance()
+struct ClusterCovarianceComponent {
+    std::vector<std::size_t> dimensions;       ///< Zero-based indices of the selected cluster dimensions.
+    std::vector<ClusterCovarianceGroup> groups; ///< Observed joint clusters, in lexicographic label order.
+    double multiplier;                         ///< Inclusion-exclusion sign times the applicable finite-sample factor.
+};
+
+/// @brief Coefficient covariance and the observed components of its clustered sum.
+/// @par Example
+/// @code
+/// const dm::stats::LM model({0, 1, 0}, dm::Mat<>{{0}, {1}, {2}});
+/// const auto fit = model.cluster_robust_covariance({{10, 10, 11}});
+/// std::println("{}", fit.covariance.rows()); // 2
+/// @endcode
+/// @see LM::cluster_robust_covariance()
+struct ClusterCovarianceResult {
+    linalg::DenseMatrix<double> covariance;            ///< Covariance in model coefficient order.
+    std::vector<ClusterCovarianceComponent> components; ///< Subsets in ascending dimension bit-mask order.
 };
 
 /// @brief An R-`lm()`-style linear model fit by ordinary or weighted least squares from a
@@ -215,7 +290,7 @@ class LM {
     /// @return One estimate per design column.
     [[nodiscard]] const std::vector<double>& coefficients() const { return coefficients_; }
     /// @brief Coefficient names as R prints them: `"(Intercept)"`, numeric column names, and
-    ///        `column` + `level` for each non-baseline factor level (e.g. `"speciesGentoo"`).
+    ///        `column` + `level` for each factor contrast column (e.g. `"speciesGentoo"`).
     /// @return One name per coefficient.
     [[nodiscard]] const std::vector<std::string>& coefficient_names() const { return design_.coefficient_names; }
     /// @brief Fitted values \f$\hat y = X\hat\beta\f$, one per fitted row.
@@ -237,6 +312,173 @@ class LM {
     ///        (R's `vcov()`).
     /// @return The \f$p\times p\f$ covariance matrix.
     [[nodiscard]] const linalg::DenseMatrix<double>& covariance() const { return covariance_; }
+
+    /// @brief Computes an HC0, HC1, HC2 or HC3 covariance from the fitted regression scores.
+    /// Uses weighted scores and weighted leverage when the fit has case weights.
+    /// @param estimator The residual and leverage correction, default HC3.
+    /// @return Symmetric covariance in coefficient order.
+    /// @throws std::invalid_argument Invalid estimator.
+    /// @throws std::domain_error HC2 or HC3 encounter leverage numerically equal to one.
+    /// @throws std::overflow_error A covariance entry exceeds finite double range.
+    /// @par Example
+    /// @code
+    /// const dm::stats::LM model({0, 1, 0}, dm::Mat<>{{0}, {1}, {2}});
+    /// std::println("{:.6f}", model.heteroscedastic_covariance(dm::stats::HcCovariance::HC0)(1, 1)); // 0.055556
+    /// @endcode
+    /// @par References
+    /// - MacKinnon and White (1985), https://doi.org/10.1016/0304-4076(85)90158-7
+    /// @see newey_west_covariance(), cluster_robust_covariance()
+    [[nodiscard]] linalg::DenseMatrix<double> heteroscedastic_covariance(
+        HcCovariance estimator = HcCovariance::HC3) const;
+
+    /// @brief Computes Newey–West coefficient covariance with Bartlett lag weights.
+    /// Scores follow fitted-row order. Formula fits omit dropped rows before
+    /// counting lags. A maximum lag of zero yields HC0 or HC1, depending on adjustment.
+    /// @param max_lag Largest included lag, strictly less than the number of fitted rows.
+    /// @param adjust_degrees_of_freedom Multiply by n / (n - p) when true.
+    /// @return Symmetric covariance in coefficient order.
+    /// @throws std::invalid_argument Lag exceeds the available fitted row pairs.
+    /// @throws std::overflow_error A covariance entry exceeds finite double range.
+    /// @par Example
+    /// @code
+    /// const dm::stats::LM model({0, 1, 0}, dm::Mat<>{{0}, {1}, {2}});
+    /// std::println("{:.6f}", model.newey_west_covariance(1)(1, 1)); // 0.055556
+    /// @endcode
+    /// @par References
+    /// - Newey and West (1987), https://doi.org/10.2307/1913610
+    /// @see heteroscedastic_covariance()
+    [[nodiscard]] linalg::DenseMatrix<double> newey_west_covariance(
+        std::size_t max_lag, bool adjust_degrees_of_freedom = false) const;
+
+    /// @brief Computes a one-way or multiway clustered sandwich covariance.
+    /// Sums fitted scores within the observed joint cluster of each nonempty
+    /// subset of dimensions. Odd-sized subsets add their component and even-sized
+    /// subsets subtract it. The resulting multiway matrix can be indefinite.
+    /// @param labels One vector per clustering dimension, each in fitted_rows() order.
+    /// @param finite_sample_adjustment Apply G/(G-1) times (n-1)/(n-p) separately
+    /// to each subset with G observed groups.
+    /// @return Covariance and the labels and counts contributing to every subset term.
+    /// @throws std::invalid_argument Empty dimensions or a label vector of the wrong length.
+    /// @throws std::domain_error An adjusted component has fewer than two observed groups.
+    /// @throws std::length_error The number of subsets exceeds the index range.
+    /// @throws std::overflow_error A covariance entry exceeds finite double range.
+    /// @par Example
+    /// @code
+    /// const dm::stats::LM model({0, 1, 0}, dm::Mat<>{{0}, {1}, {2}});
+    /// std::println("{}", model.cluster_robust_covariance({{10, 10, 11}}).components.front().groups.size()); // 2
+    /// @endcode
+    /// @par References
+    /// - Cameron, Gelbach and Miller (2011), https://doi.org/10.1198/jbes.2010.07136
+    /// @see ClusterCovarianceResult, heteroscedastic_covariance()
+    [[nodiscard]] ClusterCovarianceResult cluster_robust_covariance(
+        const std::vector<std::vector<std::int64_t>>& labels, bool finite_sample_adjustment = false) const;
+
+    /// @brief Tests variance dependence on supplied predictors by Breusch–Pagan regression.
+    /// Regresses squared residuals on an intercept and the supplied predictors. For WLS,
+    /// residuals are multiplied by the square root of their case weights before squaring.
+    /// @param variance_predictors Finite matrix with rows in fitted_rows() order. The intercept is automatic.
+    /// @param studentized Use Koenker's n times R-squared statistic when true, the default.
+    /// Otherwise use the Gaussian Breusch–Pagan LM statistic.
+    /// @return Chi-square statistic and upper-tail p-value, parameter1 equal to the numerical
+    /// predictor rank after removing the intercept, and estimate1 equal to the auxiliary R-squared.
+    /// @throws std::invalid_argument Invalid predictor matrix.
+    /// @throws std::domain_error The residual or auxiliary fit gives undefined inference.
+    /// @par Example
+    /// @code
+    /// const dm::stats::LM fit({0, 2, 1, 5, 4}, dm::Mat<>{{0}, {1}, {2}, {3}, {4}});
+    /// std::println("{}", fit.breusch_pagan(dm::linalg::DenseMatrix<double>(5, 1, {0, 1, 2, 3, 4})).parameter1); // 1
+    /// @endcode
+    /// @par References
+    /// - Breusch and Pagan (1979), https://doi.org/10.2307/1911963
+    /// - Koenker (1981), https://doi.org/10.1016/0304-4076(81)90062-2
+    /// @see white_heteroscedasticity(), heteroscedastic_covariance()
+    [[nodiscard]] HypothesisTestResult breusch_pagan(
+        const linalg::DenseMatrix<double>& variance_predictors, bool studentized = true) const;
+
+    /// @brief Tests variance dependence on predictors, squares and pairwise products.
+    /// Regresses squared working residuals on an intercept and the expanded predictor
+    /// set. Numerical rank determines the degrees of freedom, including with indicator columns.
+    /// @param variance_predictors Finite matrix with rows in fitted_rows() order. The intercept is automatic.
+    /// @return n times auxiliary R-squared and its chi-square upper-tail p-value, with
+    /// parameter1 equal to the numerical predictor rank and estimate1 the auxiliary R-squared.
+    /// @throws std::invalid_argument Invalid predictor matrix.
+    /// @throws std::domain_error The residual or auxiliary fit gives undefined inference.
+    /// @throws std::length_error The number of auxiliary columns exceeds the index range.
+    /// @par Example
+    /// @code
+    /// const dm::stats::LM fit({0, 2, 1, 5, 4}, dm::Mat<>{{0}, {1}, {2}, {3}, {4}});
+    /// std::println("{}", fit.white_heteroscedasticity(dm::linalg::DenseMatrix<double>(5, 1, {0, 1, 2, 3, 4})).parameter1); // 2
+    /// @endcode
+    /// @par References
+    /// - White (1980), https://doi.org/10.2307/1912934
+    /// @see breusch_pagan()
+    [[nodiscard]] HypothesisTestResult white_heteroscedasticity(
+        const linalg::DenseMatrix<double>& variance_predictors) const;
+
+    /// @brief Tests powers of the fitted values by the Ramsey RESET partial F statistic.
+    /// Retains case weights and tests additional estimable columns jointly.
+    /// @param powers Distinct powers of at least two. The default tests powers two and three.
+    /// @return F statistic and upper-tail p-value, with numerator and denominator degrees of
+    /// freedom in parameter1 and parameter2.
+    /// @throws std::invalid_argument Invalid powers.
+    /// @throws std::domain_error The residual or augmented design gives undefined inference.
+    /// @throws std::length_error The augmented column count exceeds the index range.
+    /// @par Example
+    /// @code
+    /// const dm::stats::LM fit({0, 2, 1, 5, 4}, dm::Mat<>{{0}, {1}, {2}, {3}, {4}});
+    /// std::println("{}", fit.ramsey_reset({2}).parameter2); // 2
+    /// @endcode
+    /// @par References
+    /// - Ramsey (1969), https://doi.org/10.1111/j.2517-6161.1969.tb00796.x
+    /// @see breusch_pagan(), white_heteroscedasticity()
+    [[nodiscard]] HypothesisTestResult ramsey_reset(const std::vector<unsigned>& powers = {2, 3}) const;
+
+    /// @brief Tests lag-one residual correlation using a design-conditional Durbin–Watson null.
+    /// Simulates independent Gaussian errors in the residual space of the fitted
+    /// design. For WLS, both observed and simulated residuals are in weighted coordinates.
+    /// Successive fitted rows define neighbors, with omitted rows skipped.
+    /// @param rng Caller-owned random generator advanced by the null draws.
+    /// @param simulations Positive number of null draws, default 9999.
+    /// @param alternative Greater for positive correlation, Less for negative correlation,
+    /// or TwoSided for twice the smaller tail capped at one.
+    /// @return Durbin–Watson ratio and Monte Carlo p-value, using inclusive tails and
+    /// the plus-one correction. Parameter1 is the number of null draws.
+    /// @throws std::invalid_argument Invalid simulation count or alternative.
+    /// @throws std::domain_error The observed statistic or numerical residual space is undefined.
+    /// @par Example
+    /// @code
+    /// dm::random::SplitMix64 rng(3);
+    /// const dm::stats::LM fit({1, 0, 0}, dm::Mat<>(3, 0));
+    /// std::println("{:.1f}", fit.durbin_watson(rng, 99).statistic); // 1.5
+    /// @endcode
+    /// @par References
+    /// - Durbin and Watson (1950), https://doi.org/10.1093/biomet/37.3-4.409
+    /// @see breusch_godfrey()
+    [[nodiscard]] HypothesisTestResult durbin_watson(random::RandomGenerator& rng, std::size_t simulations = 9999,
+                                                    Alternative alternative = Alternative::TwoSided) const;
+
+    /// @brief Tests lagged residuals jointly by a Breusch–Godfrey auxiliary regression.
+    /// Augments the fitted design with lags of the working residual. Entries before
+    /// the first fitted row use zero. WLS uses weighted design and residual coordinates.
+    /// @param lags Positive maximum lag, less than the number of fitted rows.
+    /// @param use_f Use the approximate partial F reference when true. The default uses
+    /// the asymptotic chi-square LM reference.
+    /// @return Statistic and upper-tail p-value. Parameter1 is the number of estimable
+    /// lag terms, parameter2 is the denominator df for the F form, and estimate1 is
+    /// the auxiliary proportion of residual sum of squares explained.
+    /// @throws std::invalid_argument Invalid lag count.
+    /// @throws std::domain_error The residuals are numerically zero or the auxiliary fit has undefined inference.
+    /// @throws std::length_error The augmented matrix size exceeds the index range.
+    /// @par Example
+    /// @code
+    /// const dm::stats::LM fit({1, 0, 1, 2, 4}, dm::Mat<>{{0}, {1}, {2}, {3}, {4}});
+    /// std::println("{}", fit.breusch_godfrey().parameter1); // 1
+    /// @endcode
+    /// @par References
+    /// - Breusch (1978), https://doi.org/10.1111/j.1467-8454.1978.tb00635.x
+    /// - Godfrey (1978), https://doi.org/10.2307/1913829
+    /// @see durbin_watson()
+    [[nodiscard]] HypothesisTestResult breusch_godfrey(std::size_t lags = 1, bool use_f = false) const;
 
     /// @brief Coefficient of determination \f$R^2=1-\mathrm{RSS}/\mathrm{TSS}\f$ (weighted for
     ///        WLS; TSS about 0 for a model without intercept, as in R).
@@ -423,6 +665,30 @@ class LM {
     /// @see anova_frame(), anova(const LM&, const LM&)
     [[nodiscard]] std::vector<AnovaRow> anova() const;
 
+    /// @brief Tests Type II or Type III linear-model terms with the full fit's residual mean square.
+    ///
+    /// Type II compares submodels with and without a term after dropping any
+    /// higher-order terms that contain all its factors. Type III tests the
+    /// term's coefficients jointly after adjustment for every other term.
+    /// With a full factorial model, sum coding gives equal-level marginal
+    /// hypotheses, while treatment coding tests main effects at reference
+    /// levels. Tests use the fitted rows and case weights.
+    /// @param type Type II or Type III.
+    /// @return One row per formula term, then the residual row. Models with no terms return an empty table.
+    /// @throws std::invalid_argument Unknown ANOVA type.
+    /// @throws std::runtime_error Numerical loss of estimability of the hypothesis.
+    /// @throws std::overflow_error A term sum of squares exceeds finite double range.
+    /// @par Example
+    /// @code
+    /// const dm::stats::LM fit({1, 2, 5, 6}, dm::Mat<>{{0}, {1}, {2}, {3}});
+    /// const auto table = fit.marginal_anova(dm::stats::MarginalAnovaType::III);
+    /// std::println("{:.1f}", table.front().sum_sq); // 16.2
+    /// @endcode
+    /// @par References
+    /// - Fox and Weisberg, An R Companion to Applied Regression. https://cran.r-project.org/web/packages/car/refman/car.html
+    /// @see anova(), LmOptions
+    [[nodiscard]] std::vector<AnovaRow> marginal_anova(MarginalAnovaType type) const;
+
     /// @brief anova() as a DataFrame with columns `term`, `df`, `sum_sq`, `mean_sq`, `f_value`,
     ///        `p_value`; the Residuals row has null `f_value` and `p_value`, as R prints it.
     ///
@@ -486,6 +752,36 @@ class LM {
     ///
     /// @see predict(const dstruct::DataFrame&, PredictionInterval, double), predict_frame()
     [[nodiscard]] std::vector<double> predict(const dstruct::DataFrame& newdata) const;
+
+    /// @brief Averages fitted predictions over an explicit reference grid and estimates linear contrasts.
+    ///
+    /// Grid rows use the fitted formula's factor levels and transformations.
+    /// Means average the resulting model rows with weights normalized within
+    /// each group. The reported covariance propagates coefficient uncertainty.
+    /// Student t intervals use the fitted residual degrees of freedom, with
+    /// Bonferroni adjustment applied to the means and contrasts as two families.
+    /// @param grid Nonempty frame with all predictors required for prediction and no missing model rows.
+    /// @param options Row labels and weights, optional contrast matrix, and interval settings.
+    /// @return Weighted means in first-appearance group order and contrasts in matrix row order.
+    /// @throws std::invalid_argument Invalid grid, options, weights or contrast matrix.
+    /// @throws std::runtime_error The grid has a factor level absent from the fit.
+    /// @throws std::overflow_error An estimate or interval exceeds finite double range.
+    /// @par Example
+    /// @code
+    /// dm::dstruct::DataFrame data, grid;
+    /// data.add_column("y", std::vector<double>{1, 2, 5, 6});
+    /// data.add_column("x", std::vector<double>{0, 1, 2, 3});
+    /// grid.add_column("x", std::vector<double>{0, 3});
+    /// const dm::stats::MarginalMeansOptions options{.groups = {"low", "high"},
+    ///     .contrasts = dm::linalg::DenseMatrix<double>(1, 2, {-1, 1})};
+    /// const auto result = dm::stats::LM(data, "y ~ x").estimated_marginal_means(grid, options);
+    /// std::println("{:.1f}", result.contrasts.estimates.front().estimate); // 5.4
+    /// @endcode
+    /// @par References
+    /// - Lenth, emmeans reference manual: https://cran.r-project.org/web/packages/emmeans/refman/emmeans.html
+    /// @see predict()
+    [[nodiscard]] MarginalMeansResult estimated_marginal_means(
+        const dstruct::DataFrame& grid, const MarginalMeansOptions& options = {}) const;
 
     /// @brief Predict a matrix-fitted model from dense predictor columns in training order.
     /// Adds the fitted intercept automatically, without expecting it in newdata.
@@ -692,6 +988,20 @@ class LM {
     /// @brief Fills leverage_, standardized_residuals_, studentized_residuals_ and cooks_distance_.
     /// Visits stored CSR row entries for sparse models; dense models use their weighted design grid.
     void compute_diagnostics();
+    /// @brief Builds each fitted row's coefficient-space score with the requested leverage scaling.
+    /// @param estimator HC2 or HC3 for leverage scaling, or HC0 or HC1 for raw scores.
+    /// @return Matrix of scores with rows in fitted-row order and columns in coefficient order.
+    [[nodiscard]] std::vector<std::vector<long double>> sandwich_scores(HcCovariance estimator) const;
+    /// @brief Returns weighted residuals scaled to maximum absolute magnitude one.
+    /// @return One value per fitted row.
+    /// @throws std::domain_error The model has numerically zero residual variation.
+    [[nodiscard]] std::vector<long double> scaled_working_residuals() const;
+    /// @brief Copies the weighted fit design and reserves zero columns for auxiliary terms.
+    /// @param additional_columns Number of zero columns appended after the fitted design.
+    /// @return Dense working-precision design in fitted row and column order.
+    /// @throws std::length_error The augmented matrix size exceeds the index range.
+    [[nodiscard]] linalg::DenseMatrix<long double> augmented_working_design(
+        std::size_t additional_columns = 0) const;
     /// @brief Throws if @p newdata has a factor level not seen in fitting.
     /// @param newdata  Rows about to be predicted.
     void validate_categorical_levels(const dstruct::DataFrame& newdata) const;

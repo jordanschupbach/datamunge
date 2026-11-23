@@ -6,12 +6,25 @@
 
 #include <cstddef>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <unordered_map>
 #include <vector>
 
 namespace datamunge::stats {
+
+/// @brief Categorical coding for a formula factor with levels in lexical order.
+/// @par Example
+/// @code
+/// const auto coding = dm::stats::FactorContrast::Sum;
+/// std::println("{}", coding == dm::stats::FactorContrast::Sum); // true
+/// @endcode
+/// @see LmOptions
+enum class FactorContrast {
+    Treatment, ///< The first level is the reference and has an all-zero code.
+    Sum,       ///< The last level receives minus one in every contrast column.
+};
 
 // ---- Arithmetic expression AST used for I(...) terms ----
 
@@ -43,6 +56,7 @@ struct ResolvedColumn {
     std::size_t                  bspline_component{0};
     std::vector<ResolvedColumn>  interaction_parts; // Interaction
     std::shared_ptr<ExprNode>    expression;        // Expression
+    std::optional<std::string>  negative_level; ///< Last level of a sum-coded categorical column.
 
     // Returns false (row should be dropped) if a required value is null.
     bool evaluate(const dstruct::DataFrame& data, std::size_t row, double& out) const;
@@ -51,6 +65,7 @@ struct ResolvedColumn {
 struct TermGroup {
     std::string              label;
     std::vector<std::size_t> column_indices; // indices into DesignInfo::columns / coefficient_names (excluding intercept)
+    std::vector<std::string> factors; ///< Sorted constituent formula expressions for term containment.
 };
 
 struct DesignMatrixData {
@@ -145,7 +160,27 @@ class Formula {
     [[nodiscard]] DesignInfo resolve(const dstruct::DataFrame& data, ResponseKind response_kind = ResponseKind::Numeric,
                                      bool force_no_intercept = false) const;
 
+    /// @brief Resolves a numerical-response formula with explicit coding for selected factors.
+    /// @param data Frame containing the formula's response and predictors.
+    /// @param contrasts Factor name to coding. Unlisted factors use treatment coding.
+    /// @return Resolved design and term metadata used for fitting and prediction.
+    /// @throws std::invalid_argument Invalid formula data, contrast method, or contrast factor.
+    /// @par Example
+    /// @code
+    /// dm::dstruct::DataFrame data;
+    /// data.add_column("y", std::vector<double>{1, 2});
+    /// data.add_column("g", std::vector<std::string>{"A", "B"});
+    /// const auto design = dm::stats::Formula("y ~ g").resolve_with_contrasts(data, {{"g", dm::stats::FactorContrast::Sum}});
+    /// std::println("{:.0f}", design.build_matrix(data, true).X(1, 1)); // -1
+    /// @endcode
+    [[nodiscard]] DesignInfo resolve_with_contrasts(const dstruct::DataFrame& data,
+        const std::unordered_map<std::string, FactorContrast>& contrasts) const;
+
  private:
+    /// @brief Shared formula resolution for numerical and categorical responses.
+    [[nodiscard]] DesignInfo resolve_impl(const dstruct::DataFrame& data, ResponseKind response_kind,
+        bool force_no_intercept, const std::unordered_map<std::string, FactorContrast>& contrasts) const;
+
     struct RawTerm {
         std::string factors; // ':'-joined factor text, still unresolved
     };

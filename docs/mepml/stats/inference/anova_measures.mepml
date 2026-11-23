@@ -1,0 +1,81 @@
+//? Title: Effect sizes and reliability from ANOVA
+//? Exports: both
+//? Lang: en
+
+> Compare overall and partial effect sizes
+
+The sequential ANOVA table comes from a linear model of tooth length.
+Overall eta squared compares a term with corrected total variation.
+Partial eta squared uses the term plus the full-model residual variation.
+Omega squared adjusts the numerator for residual noise and adds one
+residual mean square to the denominator. The input term sums of squares
+follow the order used in the fitted model.
+
+```{cpp, id=anova-effect-sizes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numeric>
+
+int main() {
+    const dm::stats::LM model(dm::formula("len ~ dose + supp"), dm::datasets::tooth_growth());
+    const auto table = model.anova();
+    const auto& residual = table.back();
+    const auto total = std::accumulate(table.begin(), table.end(), 0.0,
+        [](double sum, const auto& row) { return sum + row.sum_sq; });
+    std::println("| Term | Eta squared | Partial eta squared | Omega squared | Partial omega squared |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (std::size_t i = 0; i + 1 < table.size(); ++i) {
+        const auto& term = table[i];
+        const auto fit = dm::stats::anova_effect_sizes(term.sum_sq, residual.sum_sq, total,
+                                                       term.degrees_of_freedom, residual.degrees_of_freedom);
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", term.term,
+                     fit.eta_squared, fit.partial_eta_squared, fit.omega_squared, fit.partial_omega_squared);
+    }
+}
+```
+// result_begin: markdown
+| Term | Eta squared | Partial eta squared | Omega squared | Partial omega squared |
+| --- | ---: | ---: | ---: | ---: |
+| dose | 0.644 | 0.685 | 0.636 | 0.676 |
+| supp | 0.059 | 0.167 | 0.054 | 0.150 |
+// result_end
+
+> Choose the intraclass correlation that matches the rating design
+
+Five targets were rated by three raters. The two-way model uses the
+identity of each rater across rows. Consistency adjusts for a rater's
+systematic offset, while absolute agreement retains it. The reported
+unit can be one rating or the average of three. The example shows the
+one-way estimate for comparison with a design that pools rater variation
+into the errors within each target.
+
+```{cpp, id=intraclass-correlation, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/anova_measures.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const datamunge::linalg::DenseMatrix<double> scores(5, 3, {
+        4, 6, 7, 6, 8, 9, 7, 9, 9, 12, 14, 15, 13, 15, 18
+    });
+    const auto show = [&](const char* label, IccModel model, IccDefinition definition) {
+        const auto single = intraclass_correlation(scores, model, definition, IccUnit::Single);
+        const auto average = intraclass_correlation(scores, model, definition, IccUnit::Average);
+        std::println("| {} | {:.3f} | {:.3f} |", label, single.estimate, average.estimate);
+    };
+    std::println("| Model and definition | Single rating | Mean of three ratings |");
+    std::println("| --- | ---: | ---: |");
+    show("One-way random, absolute agreement", IccModel::OneWayRandom, IccDefinition::AbsoluteAgreement);
+    show("Two-way random, absolute agreement", IccModel::TwoWayRandom, IccDefinition::AbsoluteAgreement);
+    show("Two-way mixed, consistency", IccModel::TwoWayMixed, IccDefinition::Consistency);
+}
+```
+// result_begin: markdown
+| Model and definition | Single rating | Mean of three ratings |
+| --- | ---: | ---: |
+| One-way random, absolute agreement | 0.847 | 0.943 |
+| Two-way random, absolute agreement | 0.853 | 0.946 |
+| Two-way mixed, consistency | 0.977 | 0.992 |
+// result_end
+
+[ANOVA effect sizes|https://doi.org/10.3389/fpsyg.2013.00863] ·
+[Intraclass correlation models|https://doi.org/10.1037/1082-989X.1.1.30]

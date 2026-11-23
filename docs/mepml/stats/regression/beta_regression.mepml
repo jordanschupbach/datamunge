@@ -1,0 +1,58 @@
+//? Title: Fit continuous proportions with variable precision
+//? Exports: both
+//? Lang: en
+
+> Fit separate mean and precision predictors
+
+These measurements record the fraction of light transmitted by a film
+at four temperatures. The mean predictor uses centered temperature,
+and the precision predictor uses the manufacturing process. The
+response must lie inside the open unit interval. With mean $\mu$ and
+precision $\phi$, the fitted beta variance is
+$\mu(1-\mu)/(1+\phi)$.
+
+```{cpp, id=beta-transmission, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/beta_regression.hpp>
+#include <cmath>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge;
+    const std::vector<double> response{.12,.26,.20,.31, .42,.34,.47,.40,
+                                       .55,.51,.70,.64, .71,.79,.76,.88};
+    const double temperature[]{-1, -.4, .4, 1};
+    linalg::DenseMatrix<double> mean_design(response.size(), 2, 1);
+    linalg::DenseMatrix<double> precision_design(response.size(), 2, 1);
+    for (std::size_t i = 0; i < response.size(); ++i) {
+        mean_design(i, 1) = temperature[i / 4];
+        precision_design(i, 1) = i % 4 >= 2;
+    }
+    const auto fit = stats::beta_regression(mean_design, precision_design, response);
+    if (fit.status != stats::BetaRegressionStatus::Converged)
+        throw std::runtime_error("Expected convergence for the film measurements");
+
+    const linalg::DenseMatrix<double> centered(2, 2, {1,0, 1,0});
+    const linalg::DenseMatrix<double> process(2, 2, {1,0, 1,1});
+    const auto prediction = fit.predict(centered, process);
+    std::println("| Process | Mean transmission | Precision | Standard deviation |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (std::size_t i = 0; i < 2; ++i) {
+        const auto mu = prediction.mean[i], phi = prediction.precision[i];
+        std::println("| {} | {:.3f} | {:.2f} | {:.3f} |", i == 0 ? "A" : "B", mu, phi,
+                     std::sqrt(mu * (1 - mu) / (1 + phi)));
+    }
+}
+```
+// result_begin: markdown
+| Process | Mean transmission | Precision | Standard deviation |
+| --- | ---: | ---: | ---: |
+| A | 0.518 | 31.96 | 0.087 |
+| B | 0.518 | 55.75 | 0.066 |
+// result_end
+
+At the same temperature, the predicted mean is the same for both
+processes. Process B's larger fitted precision gives it a smaller
+standard deviation.
+
+[Cribari-Neto and Zeileis, Beta Regression in R|https://doi.org/10.18637/jss.v034.i02]

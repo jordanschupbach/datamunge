@@ -1,0 +1,94 @@
+//? Title: Model zero-inflated and hurdle counts
+//? Exports: both
+//? Lang: en
+
+> Separate structural zeros from count zeros
+
+Two sites record equipment alerts. The model lets the probability that
+a monitor is inactive vary by site. Active monitors share a Poisson
+rate and can also record zero alerts. If $\pi$ is the inactive
+probability and $f_0$ is the count distribution's zero mass, the
+observed zero probability is $\pi+(1-\pi)f_0$.
+
+```{cpp, id=zero-inflated-alerts, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/zero_augmented_count.hpp>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge;
+    const std::vector<std::size_t> counts{0,0,2,3,4,5,6,7, 0,0,0,0,0,3,4,5};
+    const linalg::DenseMatrix<double> count_design(counts.size(), 1, 1);
+    linalg::DenseMatrix<double> zero_design(counts.size(), 2, 1);
+    for (std::size_t i = 0; i < counts.size(); ++i)
+        zero_design(i, 1) = i >= 8;
+    const auto fit = stats::zero_inflated_count_regression(count_design, zero_design, counts);
+    if (fit.status != stats::ZeroAugmentedCountStatus::Converged)
+        throw std::runtime_error("Expected an interior zero-inflated fit");
+
+    std::println("| Site | Inactive probability | Observed zero probability | Expected alerts |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (const std::size_t i : {0, 8})
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} |", i == 0 ? "A" : "B",
+                     fit.fitted.zero_component_probability[i],
+                     fit.fitted.zero_probability[i], fit.fitted.mean[i]);
+}
+```
+// result_begin: markdown
+| Site | Inactive probability | Observed zero probability | Expected alerts |
+| --- | ---: | ---: | ---: |
+| A | 0.239 | 0.250 | 3.250 |
+| B | 0.620 | 0.625 | 1.625 |
+// result_end
+
+Both sites have the same predicted alert rate when active. The higher
+estimated chance of inactivity at site B lowers its overall alert mean.
+Set the count family to `NegativeBinomial` to estimate NB2 dispersion
+when active counts have extra variation.
+
+> Fit a zero hurdle and a truncated count process
+
+A survey records how many visits a customer made in a month. The hurdle
+models whether a customer made any visits. Among customers with a visit,
+a zero-truncated negative binomial models how many visits they made.
+The model estimates the probability of zero visits with a logistic
+predictor. If $\mu$ is the ordinary count mean and $f_0$ its zero mass,
+the mean among customers with a visit is $\mu/(1-f_0)$.
+
+```{cpp, id=hurdle-visits, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/zero_augmented_count.hpp>
+#include <cmath>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge;
+    const std::vector<std::size_t> visits{0,0,0,0,1,2,3,5,7,9,15,20};
+    const linalg::DenseMatrix<double> intercept(visits.size(), 1, 1);
+    const auto fit = stats::hurdle_count_regression(intercept, intercept, visits,
+        {.family = stats::ZeroAugmentedCountFamily::NegativeBinomial});
+    if (fit.status != stats::ZeroAugmentedCountStatus::Converged)
+        throw std::runtime_error("Expected an interior hurdle fit");
+    const linalg::DenseMatrix<double> new_intercept(2, 1, 1);
+    const auto pred = fit.predict(new_intercept, new_intercept, {0, std::log(2.)});
+
+    std::println("| Exposure | Zero probability | Mean given a visit | Overall visit mean |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    for (std::size_t i = 0; i < 2; ++i) {
+        const auto conditional = pred.mean[i] / (1 - pred.zero_probability[i]);
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} |", i + 1,
+                     pred.zero_probability[i], conditional, pred.mean[i]);
+    }
+}
+```
+// result_begin: markdown
+| Exposure | Zero probability | Mean given a visit | Overall visit mean |
+| ---: | ---: | ---: | ---: |
+| 1 | 0.333 | 7.750 | 5.167 |
+| 2 | 0.333 | 14.610 | 9.740 |
+// result_end
+
+The second prediction doubles the exposure in the positive-count model.
+The hurdle probability stays fixed because its predictor is the same.
+
+[Regression Models for Count Data in R|https://www.jstatsoft.org/article/view/v027i08]

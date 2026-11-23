@@ -1,0 +1,91 @@
+//? Title: Split a weighted graph with spectral clustering
+//? Exports: both
+//? Lang: en
+
+> Find two communities joined by a weak edge
+
+The graph has six vertices. A, B, and C have strong connections to
+each other, as do D, E, and F. A small positive affinity joins C and
+D, so all six vertices are in one connected component.
+
+Spectral clustering uses the two smallest eigenvectors of the symmetric
+normalized Laplacian. It scales each row of the resulting embedding to
+length one, then clusters those rows by k-means. The diagram colors the
+original vertices by their fitted labels.
+
+```{cpp, id=spectral-weak-bridge, file="figures/spectral_weak_bridge.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/diagram.hpp>
+#include <datamunge/stats/spectral_clustering.hpp>
+
+#include <array>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <string>
+
+int main() {
+    namespace dm = datamunge;
+    const dm::linalg::DenseMatrix<double> weights(6, 6, {
+         0,  1, .9,  0,   0,  0,
+         1,  0, .8,  0,   0,  0,
+        .9, .8,  0,.08,   0,  0,
+         0,  0,.08,  0, 1.1, .9,
+         0,  0,  0,1.1,   0, .7,
+         0,  0,  0, .9,  .7,  0,
+    });
+    const auto fit = dm::stats::fit_spectral_clustering(weights, {.n_clusters = 2, .seed = 121});
+    std::println("Connected components {}. Selected eigenvalues {:.5f} and {:.5f}.\n",
+        fit.connected_components, fit.eigenvalues[0], fit.eigenvalues[1]);
+    std::println("| Vertex | Cluster | Embedding coordinate 1 | Embedding coordinate 2 |");
+    std::println("| --- | ---: | ---: | ---: |");
+
+    const std::array<dm::graphics::DiagramPoint, 6> positions{{
+        {0, 1.5}, {0, -1.5}, {3, 0}, {7, 0}, {10, 1.5}, {10, -1.5},
+    }};
+    const std::array<std::string, 6> names{"A", "B", "C", "D", "E", "F"};
+    const std::array<dm::graphics::RGB, 2> colors{{{223, 239, 253}, {252, 232, 216}}};
+    dm::graphics::Diagram diagram(55, 740);
+    dm::graphics::DiagramNodeStyle node;
+    node.circle = true;
+    node.width = node.height = 1;
+    for (std::size_t i = 0; i < names.size(); ++i) {
+        node.fill = colors[fit.labels[i]];
+        diagram.node(names[i], positions[i], names[i], node);
+        std::println("| {} | {} | {:.3f} | {:.3f} |", names[i], fit.labels[i] + 1,
+            fit.embedding(i, 0), fit.embedding(i, 1));
+    }
+    for (std::size_t i = 0; i < names.size(); ++i)
+        for (std::size_t j = i + 1; j < names.size(); ++j)
+            if (weights(i, j) > 0) {
+                const bool across = fit.labels[i] != fit.labels[j];
+                dm::graphics::DiagramStroke line;
+                line.dashed = across;
+                line.width = across ? 1.8 : 2.5;
+                diagram.link(names[i], names[j], std::format("{:.2f}", weights(i, j)), line);
+            }
+    std::filesystem::create_directories("build");
+    diagram.save_svg("build/spectral_weak_bridge.svg");
+}
+```
+// result_begin: markdown
+Connected components 1. Selected eigenvalues 0.00000 and 0.02814.
+
+| Vertex | Cluster | Embedding coordinate 1 | Embedding coordinate 2 |
+| --- | ---: | ---: | ---: |
+| A | 1 | 0.700 | 0.714 |
+| B | 1 | 0.700 | 0.714 |
+| C | 1 | 0.722 | 0.692 |
+| D | 2 | 0.718 | -0.696 |
+| E | 2 | 0.701 | -0.713 |
+| F | 2 | 0.700 | -0.714 |
+\image(figures/spectral_weak_bridge.svg)
+// result_end
+\caption(Vertex colors show the fitted partition. Edge labels show the original affinity weights.)
+\alttext(A, B, and C form one triangle and have the same fitted label. D, E, and F form a second triangle with the other label. A dashed edge with weight 0.08 joins C and D.)
+
+The connected graph has one zero eigenvalue. The next eigenvalue
+is about 0.02814, and the second coordinate changes sign across the weak
+bridge. The cluster assignments split that bridge and keep each triangle
+together.
+
+[Ng, Jordan, and Weiss (2001)|https://papers.nips.cc/paper/2092-on-spectral-clustering-analysis-and-an-algorithm]

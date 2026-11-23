@@ -163,7 +163,7 @@ LM::LM(const std::vector<double>& y, const SpMat<>& predictors, bool intercept,
 
 void LM::fit(const dstruct::DataFrame& data, LmOptions options) {
     options_       = options;
-    design_        = formula_.resolve(data);
+    design_        = formula_.resolve_with_contrasts(data, options_.contrasts);
     auto raw_design = design_.build_matrix(data, /*require_response=*/true);
 
     if (options_.weights_column) {

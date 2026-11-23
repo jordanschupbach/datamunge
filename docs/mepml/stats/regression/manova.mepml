@@ -1,0 +1,88 @@
+//? Title: Compare several group means with MANOVA
+//? Exports: both
+//? Lang: en
+
+> Compare groups on two outcomes together
+
+Three settings are tested on independent greenhouse trays. Each tray
+produces two scores, yield and growth. MANOVA compares the group mean
+vectors. The hypothesis matrix measures separation among the group means,
+and the error matrix measures variation around those means. The four
+criteria summarize the same generalized roots of the hypothesis matrix
+relative to the error matrix.
+
+```{cpp, id=one-way-manova, file="figures/manova_group_scores.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/manova.hpp>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <numeric>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    linalg::DenseMatrix<double> response(18,2);
+    std::vector<std::int64_t> groups;
+    std::array<std::vector<double>,3> yield, growth;
+    for (std::size_t row = 0; row < response.rows(); ++row) {
+        const double i = row + 1;
+        const std::size_t group = row < 5 ? 0 : (row < 11 ? 1 : 2);
+        const auto variation = std::sin(.37*i);
+        response(row,0) = 3+group+.45*variation+.4*std::cos(1.8*i);
+        response(row,1) = 6+.5*group-.5*variation+.55*std::sin(1.4*i);
+        groups.push_back(group);
+        yield[group].push_back(response(row,0));
+        growth[group].push_back(response(row,1));
+    }
+
+    const auto result = stats::one_way_manova(response,groups);
+    std::println("| Criterion | Value | F | Numerator df | Denominator df | p-value |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    const auto show = [](const char* name, const stats::MANOVACriterion& criterion) {
+        const auto& f = criterion.reference.value();
+        std::println("| {} | {:.4f} | {:.3f} | {:.2f} | {:.2f} | {:.3g} |", name, criterion.statistic,
+            f.statistic,f.df_numerator,f.df_denominator,f.p_value);
+    };
+    show("Pillai",result.pillai);
+    show("Wilks",result.wilks);
+    show("Hotelling–Lawley",result.hotelling_lawley);
+    show("Roy",result.roy);
+
+    auto plot = graphics::RPlot::create();
+    const std::array colors{graphics::RGBA{23,85,146},graphics::RGBA{161,75,37},graphics::RGBA{31,117,99}};
+    for (std::size_t group = 0; group < colors.size(); ++group) {
+        const auto mean = [](const std::vector<double>& values) {
+            return std::accumulate(values.begin(),values.end(),0.0)/values.size();
+        };
+        auto light = colors[group];
+        light.alpha = .55;
+        plot.points(yield[group],growth[group],light,4)
+            .points({mean(yield[group])},{mean(growth[group])},
+                "Setting " + std::to_string(group+1),colors[group],7);
+    }
+    std::filesystem::create_directories("build");
+    plot.title("Yield and growth across three settings")
+        .x_label("Yield score").y_label("Growth score").y_limits(4.75,8.65)
+        .size(720,450).save_svg("build/manova_group_scores.svg");
+}
+```
+// result_begin: markdown
+| Criterion | Value | F | Numerator df | Denominator df | p-value |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Pillai | 0.8924 | 6.042 | 4.00 | 30.00 | 0.00109 |
+| Wilks | 0.1152 | 13.626 | 4.00 | 28.00 | 2.76e-06 |
+| Hotelling–Lawley | 7.6164 | 24.753 | 4.00 | 26.00 | 1.54e-08 |
+| Roy | 7.6078 | 57.059 | 2.00 | 15.00 | 9.73e-08 |
+\image(figures/manova_group_scores.svg)
+// result_end
+\caption(Small points show individual trays. The larger point of each color shows its setting's mean vector.)
+\alttext(The three group means rise from left to right. Setting 1 has the lowest yield and growth means, and Setting 3 has the highest.)
+
+A large root means the group means are spread out along an outcome
+combination with relatively little within-group variation. All four
+criteria give evidence that the mean vectors differ in this example.
+Their F reference distributions use different approximations, with
+Roy's F serving as an upper bound for a multi-root effect.
+
+[Pillai, Some New Test Criteria in Multivariate Analysis|https://doi.org/10.1214/aoms/1177728599]

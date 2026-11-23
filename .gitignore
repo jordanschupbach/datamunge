@@ -59,6 +59,9 @@ examples/mepml/figures/
 docs/mepml/build/
 docs/mepml/**/build/
 plans/
+!/plans/
+/plans/*
+!/plans/statistics-methods.mepml
 /output/
 
 # Large raw benchmark archives; compact history summaries remain versionable.

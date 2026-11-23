@@ -272,8 +272,9 @@ std::vector<ResolvedColumn> cartesian_combine(const std::vector<std::vector<Reso
     return out;
 }
 
+/// @brief Expands one formula factor into its coded predictor columns.
 std::vector<ResolvedColumn> resolve_factor(const std::string& factor_text, const DataFrame& data,
-                                           DesignInfo& info) {
+    DesignInfo& info, const std::unordered_map<std::string, FactorContrast>& contrasts) {
     const auto open = factor_text.find('(');
     if (open != std::string::npos && !factor_text.empty() && factor_text.back() == ')') {
         const std::string fname = trim(factor_text.substr(0, open));
@@ -431,12 +432,16 @@ std::vector<ResolvedColumn> resolve_factor(const std::string& factor_text, const
 
     std::vector<ResolvedColumn> out;
     out.reserve(levels.size() - 1);
-    for (std::size_t i = 1; i < levels.size(); ++i) {
+    const auto coding = contrasts.find(colname);
+    const bool sum = coding != contrasts.end() && coding->second == FactorContrast::Sum;
+    for (std::size_t i = 0; i < levels.size() - 1; ++i) {
         ResolvedColumn col;
         col.kind          = ResolvedColumnKind::CategoricalDummy;
         col.source_column = colname;
-        col.level          = levels[i];
-        col.name           = colname + levels[i];
+        col.level          = levels[sum ? i : i + 1];
+        col.name           = colname + col.level;
+        if (sum)
+            col.negative_level = levels.back();
         out.push_back(std::move(col));
     }
     return out;
@@ -472,7 +477,7 @@ bool ResolvedColumn::evaluate(const dstruct::DataFrame& data, std::size_t row, d
         case ResolvedColumnKind::CategoricalDummy: {
             const auto value = data.optional_string_at(source_column, row);
             if (!value) return false;
-            out = (*value == level) ? 1.0 : 0.0;
+            out = (*value == level) ? 1.0 : (negative_level && *value == *negative_level ? -1.0 : 0.0);
             return true;
         }
         case ResolvedColumnKind::Function: {
@@ -691,6 +696,16 @@ void Formula::parse() {
 }
 
 DesignInfo Formula::resolve(const dstruct::DataFrame& data, ResponseKind response_kind, bool force_no_intercept) const {
+    return resolve_impl(data, response_kind, force_no_intercept, {});
+}
+
+DesignInfo Formula::resolve_with_contrasts(const dstruct::DataFrame& data,
+                            const std::unordered_map<std::string, FactorContrast>& contrasts) const {
+    return resolve_impl(data, ResponseKind::Numeric, false, contrasts);
+}
+
+DesignInfo Formula::resolve_impl(const dstruct::DataFrame& data, ResponseKind response_kind,
+    bool force_no_intercept, const std::unordered_map<std::string, FactorContrast>& contrasts) const {
     if (!data.has_column(response_name_))
         throw std::invalid_argument("Formula: response column not found: " + response_name_);
     const auto actual_kind = data.column_type(response_name_);
@@ -725,11 +740,13 @@ DesignInfo Formula::resolve(const dstruct::DataFrame& data, ResponseKind respons
         std::vector<std::vector<ResolvedColumn>> factor_choices;
         factor_choices.reserve(factor_strings.size());
         for (const auto& factor_text : factor_strings) {
-            factor_choices.push_back(resolve_factor(factor_text, data, info));
+            factor_choices.push_back(resolve_factor(factor_text, data, info, contrasts));
         }
 
         TermGroup group;
         group.label = term_text;
+        group.factors = factor_strings;
+        std::ranges::sort(group.factors);
         for (auto& col : cartesian_combine(factor_choices)) {
             group.column_indices.push_back(info.columns.size());
             info.coefficient_names.push_back(col.name);
@@ -738,6 +755,10 @@ DesignInfo Formula::resolve(const dstruct::DataFrame& data, ResponseKind respons
         info.term_groups.push_back(std::move(group));
     }
 
+    for (const auto& [name, coding] : contrasts)
+        if (!info.categorical_levels.contains(name) ||
+            (coding != FactorContrast::Treatment && coding != FactorContrast::Sum))
+            throw std::invalid_argument("Formula: invalid contrast for categorical predictor " + name);
     return info;
 }
 

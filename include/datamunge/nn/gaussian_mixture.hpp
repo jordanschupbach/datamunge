@@ -1,5 +1,5 @@
 // datamunge::nn port of tflow_examples src/common/ml/gaussian_mixture.h.
-// Full-covariance Gaussian-mixture EM with float64 nn operations.
+// Gaussian-mixture EM with float64 nn operations.
 // E step: batched Cholesky solves, log determinants and log-sum-exp. M step:
 // responsibility-weighted means/covariances and normalized mixture masses.
 // Clamp covariance eigenvalues to a positive floor (constrained covariance
@@ -9,18 +9,29 @@
 #pragma once
 
 /// @file gaussian_mixture.hpp
-/// @brief Full-covariance Gaussian-mixture expectation-maximization.
+/// @brief Gaussian-mixture expectation maximization and selection by BIC.
 
 #include <cmath>
+#include <cstddef>
+#include <cstdint>
 #include <datamunge/nn/autograd.hpp>
 #include <datamunge/nn/linalg.hpp>
 #include <datamunge/nn/ops.hpp>
+#include <limits>
 #include <stdexcept>
+#include <vector>
 
 namespace datamunge::nn::ml {
 namespace nn = datamunge::nn;
 
-/// @brief Owned tensor handles for full-covariance mixture parameters.
+/// @brief Covariance constraint applied in the Gaussian mixture M step.
+enum class GaussianMixtureCovariance {
+  Tied,      ///< One shared unrestricted covariance.
+  Diagonal, ///< A different diagonal covariance per component.
+  Full      ///< A different unrestricted covariance per component.
+};
+
+/// @brief Owned tensor handles for Gaussian mixture parameters.
 ///
 /// Float64 weights [K], means [K,D] and positive-definite covariances [K,D,D].
 /// Handles may alias caller tensors; Step does not mutate them.
@@ -54,12 +65,13 @@ struct GaussianMixtureStep {
   double               log_likelihood = 0; ///< Sum of log_density at the input state.
 };
 
-/// @brief Small-data full-covariance Gaussian-mixture EM with an eigenvalue floor.
+/// @brief Small-data Gaussian-mixture EM with an eigenvalue floor.
 ///
 /// Uses Cholesky densities, log-sum-exp responsibilities and responsibility-weighted
 /// MLE updates. Covariance eigenvalues are clamped, not ridge-shifted. Step
-/// materialises [N,K,D,D], so memory is O(NKD²); covariance decomposition costs O(KD³).
-/// This is an EM step API, not automatic initialization or global optimization.
+/// materialises [N,K,D,D] for unrestricted covariances. The diagonal update
+/// uses [N,K,D].
+/// @see select_gaussian_mixture()
 ///
 /// @par Example
 /// @code
@@ -79,7 +91,8 @@ class GaussianMixture {
   /// @param components Positive K.
   /// @param dimensions Positive D.
   /// @param covariance_floor Positive finite minimum covariance eigenvalue, default 1e-4.
-  /// @throws std::invalid_argument On invalid dimensions/floor.
+  /// @param covariance Covariance constraint used by the M step, full by default.
+  /// @throws std::invalid_argument On invalid dimensions, floor or constraint.
   ///
   /// @par Example
   /// @code
@@ -87,10 +100,15 @@ class GaussianMixture {
   /// const m::GaussianMixture model(2,1,.001);
   /// @endcode
   /// @see Step()
-  GaussianMixture(int components, int dimensions, double covariance_floor = 1e-4)
-      : k_(components), d_(dimensions), floor_(covariance_floor) {
+  GaussianMixture(int components, int dimensions, double covariance_floor = 1e-4,
+      GaussianMixtureCovariance covariance = GaussianMixtureCovariance::Full)
+      : k_(components), d_(dimensions), floor_(covariance_floor), covariance_(covariance) {
     if (k_ <= 0 || d_ <= 0 || !std::isfinite(covariance_floor) || covariance_floor <= 0)
       throw std::invalid_argument("positive GMM dimensions and covariance floor required");
+    if (covariance_ != GaussianMixtureCovariance::Tied &&
+        covariance_ != GaussianMixtureCovariance::Diagonal &&
+        covariance_ != GaussianMixtureCovariance::Full)
+      throw std::invalid_argument("unknown GMM covariance constraint");
   }
 
   /// @brief Evaluate current likelihood/responsibilities and construct one constrained M step.
@@ -99,7 +117,7 @@ class GaussianMixture {
   /// belongs to state, not next. Collapsed components cause failure; callers may restart.
   /// @param x Nonempty Float64 [N,D] data, finite by caller precondition.
   /// @param state Matching Float64 state, positive weights summing to one and positive-definite
-  /// covariances.
+  /// covariances. For EM within one model, initialize its covariances to match the constraint.
   /// @return Current responsibilities [N,K], log density [N], their sum, and next parameters.
   /// @throws std::invalid_argument On bad shapes/weights; std::runtime_error on failed
   /// factorisation or effective count below 1e-8.
@@ -143,19 +161,29 @@ class GaussianMixture {
     out.log_density      = nn::reshape(log_normalizer, {-1});
     out.log_likelihood   = nn::sum(out.log_density, {0}).item();
     const auto counts    = nn::sum(out.responsibilities, {0});
-    const auto safe      = nn::maximum(counts, nn::scalar_like(1e-100, counts));
-    out.next.weights     = counts / nn::sum(counts, {0});
-    out.next.means = nn::matmul(out.responsibilities, x, true, false) / nn::expand_dims(safe, 1);
-    const auto centered   = nn::expand_dims(x, 1) - nn::expand_dims(out.next.means, 0);
-    const auto outer      = nn::expand_dims(centered, 3) * nn::expand_dims(centered, 2);
-    const auto weighted   = outer * nn::expand_dims(nn::expand_dims(out.responsibilities, 2), 3);
-    const auto covariance = nn::sum(weighted, {0}) / nn::reshape(safe, {k_, 1, 1});
-    const auto eigen      = nn::self_adjoint_eig(covariance);
-    const auto clipped    = nn::maximum(eigen.e, nn::scalar_like(floor_, eigen.e));
-    out.next.covariances  = nn::matmul(eigen.v * nn::expand_dims(clipped, 1), eigen.v, false, true);
     for (double c : counts.to_vector<double>())
       if (!std::isfinite(c) || c < 1e-8)
         throw std::runtime_error("GMM component collapsed; restart with different initialization");
+    const auto total = nn::sum(counts, {0});
+    out.next.weights = counts / total;
+    out.next.means = nn::matmul(out.responsibilities, x, true, false) / nn::expand_dims(counts, 1);
+    const auto centered   = nn::expand_dims(x, 1) - nn::expand_dims(out.next.means, 0);
+    const auto weights = nn::expand_dims(out.responsibilities, 2);
+    if (covariance_ == GaussianMixtureCovariance::Diagonal) {
+      const auto variance = nn::sum(nn::square(centered) * weights, {0}) / nn::expand_dims(counts, 1);
+      out.next.covariances = nn::matrix_diag(nn::maximum(variance, nn::scalar_like(floor_, variance)));
+      return out;
+    }
+    const auto outer      = nn::expand_dims(centered, 3) * nn::expand_dims(centered, 2);
+    const auto scatter    = nn::sum(outer * nn::expand_dims(weights, 3), {0});
+    const bool tied = covariance_ == GaussianMixtureCovariance::Tied;
+    const auto covariance = tied ? nn::sum(scatter, {0}, true) / total
+                                 : scatter / nn::reshape(counts, {k_, 1, 1});
+    const auto eigen      = nn::self_adjoint_eig(covariance);
+    const auto clipped    = nn::maximum(eigen.e, nn::scalar_like(floor_, eigen.e));
+    out.next.covariances  = nn::matmul(eigen.v * nn::expand_dims(clipped, 1), eigen.v, false, true);
+    if (tied)
+      out.next.covariances = nn::repeat(out.next.covariances, k_, 0);
     return out;
   }
 
@@ -163,6 +191,73 @@ class GaussianMixture {
   std::int64_t k_;     ///< Fixed component count.
   std::int64_t d_;     ///< Fixed observation width.
   double       floor_; ///< Positive minimum updated covariance eigenvalue.
+  GaussianMixtureCovariance covariance_; ///< Covariance structure applied at each M step.
 };
+
+/// @brief Multistart controls shared by each model in a Gaussian mixture comparison.
+/// @par Example
+/// @code
+/// const dm::nn::ml::GaussianMixtureSelectionOptions options{.starts=4, .seed=7};
+/// std::println("{}", options.starts); // 4
+/// @endcode
+struct GaussianMixtureSelectionOptions {
+  std::size_t starts{8}; ///< Number of attempts per model with more than one component.
+  std::size_t max_iterations{250}; ///< Maximum accepted EM updates per start.
+  double relative_tolerance{1e-8}; ///< Stop when improvement is below this fraction of one plus the absolute log likelihood.
+  double covariance_floor{1e-4}; ///< Minimum covariance eigenvalue in observation units.
+  std::uint64_t seed{1}; ///< Local random seed for model initialization.
+};
+
+/// @brief Fit and score summary for one covariance structure and component count.
+/// @par Example
+/// @code
+/// const dm::nn::ml::GaussianMixtureCandidate unfinished;
+/// std::println("{}", std::isfinite(unfinished.bic)); // false
+/// @endcode
+struct GaussianMixtureCandidate {
+  int components{}; ///< Fitted number of components.
+  GaussianMixtureCovariance covariance{}; ///< Within-component covariance constraint.
+  std::size_t parameters{}; ///< Number of free weights, means and covariance coefficients.
+  double log_likelihood{-std::numeric_limits<double>::infinity()}; ///< Observed-data log likelihood at the best start.
+  double bic{std::numeric_limits<double>::infinity()}; ///< Lower-is-better BIC, positive infinity when every start fails.
+  bool converged{}; ///< Whether the best start met the tolerance.
+};
+
+/// @brief Candidate table and winning Gaussian mixture with matching posterior probabilities.
+/// @par Example
+/// @code
+/// namespace n=dm::nn; namespace m=n::ml;
+/// const auto x=n::tensor({-3,-2,-1,1,2,3},{6,1},n::DType::Float64);
+/// const m::GaussianMixtureSelection fit=m::select_gaussian_mixture(x,{1});
+/// std::println("{}", fit.candidates[fit.best_index].components); // 1
+/// @endcode
+struct GaussianMixtureSelection {
+  std::vector<GaussianMixtureCandidate> candidates; ///< Scores in requested count order, tied, diagonal, then full.
+  std::size_t best_index{}; ///< Index of the smallest finite BIC, using the first model for ties.
+  GaussianMixtureState model; ///< Winning weights, means and covariance matrices.
+  nn::Tensor responsibilities; ///< Model posterior probabilities for the input rows.
+};
+
+/// @brief Selects a Gaussian mixture by BIC over component counts and covariance structures.
+/// Uses the best finite likelihood from seeded starts for each candidate.
+/// Finite iteration-limited fits are scored and identified by their convergence flag.
+/// @param x Finite CPU Float64 [N,D] observations.
+/// @param component_counts Distinct component counts from one through N.
+/// @param options Shared fitting controls, including the covariance eigenvalue floor.
+/// @return Candidate table and selected fit minimizing -2 log likelihood plus parameter count times log(N).
+/// @throws std::invalid_argument For invalid observations, component counts or options.
+/// @throws std::length_error If the covariance or EM workspace dimensions exceed storage capacity.
+/// @throws std::runtime_error If no candidate produces a finite score.
+/// @par Example
+/// @code
+/// namespace n=dm::nn; namespace m=n::ml;
+/// const auto x=n::tensor({-3,-2,-1,1,2,3},{6,1},n::DType::Float64);
+/// const auto fit=m::select_gaussian_mixture(x,{1,2});
+/// std::println("{}", fit.candidates.size()); // 6
+/// @endcode
+/// @par References
+/// Scrucca et al. (2016), https://journal.r-project.org/articles/RJ-2016-021/
+[[nodiscard]] GaussianMixtureSelection select_gaussian_mixture(const nn::Tensor& x,
+    const std::vector<int>& component_counts, const GaussianMixtureSelectionOptions& options = {});
 
 } // namespace datamunge::nn::ml

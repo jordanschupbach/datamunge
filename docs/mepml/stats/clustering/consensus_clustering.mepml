@@ -1,0 +1,86 @@
+//? Title: Check how often observations cluster together
+//? Exports: both
+//? Lang: en
+
+> Measure co-assignment across repeated subsamples
+
+Nine observations lie in two compact groups with one observation
+between them. The example draws 80 subsamples of seven rows without
+replacement and fits two clusters to each draw.
+
+For each pair, the estimate divides the number of times both rows
+received the same label by the number of draws containing both rows.
+Cluster labels can switch between draws, and the calculation only
+uses whether each pair shares a label within a draw.
+
+```{cpp, id=consensus-clustering-pairs, file="figures/consensus_coassignment.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/consensus_clustering.hpp>
+
+#include <array>
+#include <filesystem>
+#include <format>
+#include <numeric>
+#include <print>
+#include <string>
+#include <utility>
+#include <vector>
+
+int main() {
+    namespace dm = datamunge;
+    const dm::linalg::DenseMatrix<double> x(9, 1, {-3.2, -3., -2.8, -2.5, -.05, 2.4, 2.7, 2.85, 3.2});
+    const auto fit = dm::stats::consensus_clustering(x,
+        {.subsamples = 80, .sample_fraction = .8, .seed = 41}, {.n_init = 9, .seed = 7});
+
+    std::println("| Pair | Co-sampled | Co-assigned | Conditional estimate |");
+    std::println("| --- | ---: | ---: | ---: |");
+    const std::array pairs{std::pair{0u, 1u}, std::pair{0u, 4u},
+                           std::pair{4u, 5u}, std::pair{0u, 5u}};
+    for (const auto& [i, j] : pairs)
+        std::println("| {} and {} | {} | {} | {:.2f} |",
+            "ABCDEFGHI"[i], "ABCDEFGHI"[j], fit.co_sampled(i, j), fit.co_assigned(i, j),
+            fit.probability(i, j));
+
+    std::vector<double> axis(x.rows());
+    std::iota(axis.begin(), axis.end(), 1);
+    const std::vector<std::string> names{"A", "B", "C", "D", "E", "F", "G", "H", "I"};
+    std::vector<std::vector<double>> values;
+    for (std::size_t i = 0; i < x.rows(); ++i)
+        values.push_back(fit.probability.row(i));
+    auto plot = dm::graphics::RPlot::create();
+    const std::vector<dm::graphics::RGBA> palette{
+        {240, 246, 252}, {202, 223, 241}, {140, 183, 220}, {66, 126, 178}, {26, 77, 124},
+    };
+    plot.image(axis, axis, values, palette, 0, 1);
+    for (std::size_t i = 0; i < x.rows(); ++i)
+        for (std::size_t j = 0; j < x.rows(); ++j) {
+            const auto p = fit.probability(i, j);
+            const auto ink = p > .65 ? dm::graphics::RGB{255, 255, 255}
+                                     : dm::graphics::RGB{30, 41, 53};
+            plot.text(i + 1, j + 1, std::format("{:.2f}", p), ink, 12);
+        }
+    plot.title("Conditional co-assignment across subsamples")
+        .x_label("Observation").y_label("Observation")
+        .x_ticks(axis, names).y_ticks(axis, names)
+        .x_limits(.5, 9.5).y_limits(.5, 9.5).size(650, 560);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/consensus_coassignment.svg");
+}
+```
+// result_begin: markdown
+| Pair | Co-sampled | Co-assigned | Conditional estimate |
+| --- | ---: | ---: | ---: |
+| A and B | 51 | 51 | 1.00 |
+| A and E | 57 | 30 | 0.53 |
+| E and F | 47 | 22 | 0.47 |
+| A and F | 53 | 0 | 0.00 |
+\image(figures/consensus_coassignment.svg)
+// result_end
+\caption(Dark cells indicate frequent co-assignment when both observations were sampled.)
+\alttext(The pairs within A through D and within F through I have values one. Pairs across the two groups have values zero. E has intermediate values with both groups.)
+
+The two outer groups stay together across draws. Observation E can join
+either group, and its conditional estimates with the two sides use
+different numbers of draws.
+
+[Monti, Tamayo, Mesirov, and Golub (2003)|https://doi.org/10.1023/A:1023949509487]

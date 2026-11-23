@@ -1,0 +1,85 @@
+//? Title: Choose a cluster count using the gap statistic
+//? Exports: both
+//? Lang: en
+
+> Compare observed dispersion with a uniform reference
+
+K-means can reduce within-cluster dispersion by adding clusters. The gap
+statistic compares this reduction with the one obtained from data drawn
+uniformly from an observed bounding box. This example aligns the box
+with the principal axes and uses squared Euclidean dispersion.
+
+The 48 synthetic observations form two separated groups. For each
+candidate count, the gap is the mean simulated log dispersion minus
+the observed log dispersion. The selection rule takes the first
+count whose gap is at least the next gap minus the next simulation
+error.
+
+```{cpp, id=gap-statistic-reference-box, file="figures/gap_statistic_curve.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/gap_statistic.hpp>
+
+#include <filesystem>
+#include <print>
+#include <utility>
+#include <vector>
+
+int main() {
+    namespace dm = datamunge;
+    std::vector<double> values;
+    for (const int group : {-1, 1})
+        for (const double v : {-.3, -.1, .1, .3})
+            for (const double u : {-.5, -.3, -.1, .1, .3, .5}) {
+                values.push_back(4 * group + u);
+                values.push_back(group + .45 * u + v);
+            }
+    const dm::linalg::DenseMatrix<double> x(48, 2, std::move(values));
+    const auto fit = dm::stats::gap_statistic(x,
+        {.max_clusters = 4, .reference_samples = 80, .seed = 114}, {.n_init = 9, .seed = 27});
+
+    std::println("The rule selects {} clusters.\n", fit.selected_clusters);
+    std::println("| Clusters | Observed log dispersion | Reference mean log dispersion | Gap | Simulation error |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    std::vector<double> counts, gap, lower, upper;
+    for (const auto& row : fit.entries) {
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |",
+            row.clusters, row.log_dispersion, row.reference_mean_log_dispersion,
+            row.gap, row.simulation_error);
+        counts.push_back(row.clusters);
+        gap.push_back(row.gap);
+        lower.push_back(row.gap - row.simulation_error);
+        upper.push_back(row.gap + row.simulation_error);
+    }
+    const auto chosen = fit.selected_clusters - 1;
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(counts, gap, "", {29, 95, 154}, 2.6)
+        .error_bars(counts, lower, upper, .12, {29, 95, 154}, 1.6)
+        .points(counts, gap, "", {29, 95, 154}, 4)
+        .points({counts[chosen]}, {gap[chosen]}, "Selected count", {176, 74, 44}, 6)
+        .title("Gap statistic across candidate counts")
+        .x_label("Number of clusters").y_label("Gap")
+        .x_ticks({1, 2, 3, 4}, {"1", "2", "3", "4"})
+        .x_limits(.75, 4.25).y_limits(-1.22, 2.88).size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/gap_statistic_curve.svg");
+}
+```
+// result_begin: markdown
+The rule selects 2 clusters.
+
+| Clusters | Observed log dispersion | Reference mean log dispersion | Gap | Simulation error |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 6.716 | 5.874 | -0.842 | 0.132 |
+| 2 | 2.212 | 4.482 | 2.270 | 0.132 |
+| 3 | 1.864 | 3.620 | 1.756 | 0.139 |
+| 4 | 1.327 | 3.034 | 1.708 | 0.136 |
+\image(figures/gap_statistic_curve.svg)
+// result_end
+\caption(Bars extend one simulation error above and below each gap. The orange point marks the selected count.)
+\alttext(The gap rises from below zero at one cluster to a peak at two. The gaps for three and four clusters are lower. Two clusters are selected.)
+
+The sharp improvement from one to two clusters is much larger than
+the improvement seen in the uniform samples. The subsequent counts
+give smaller gaps, so the rule stops at two.
+
+[Tibshirani, Walther, and Hastie (2001)|https://doi.org/10.1111/1467-9868.00293]

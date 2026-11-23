@@ -1,0 +1,145 @@
+//? Title: Fit grouped binomial data and compare binomial links
+//? Exports: both
+//? Lang: en
+
+> Fit success and trial counts directly
+
+Each row records the number of successes at a predictor value and the
+total number of trials. Set the formula response to the success count
+and name the trial-count column in the options. The optional case weight
+applies to every trial in that row. The example expands the same counts
+into individual outcomes to check the grouped fit.
+
+```{cpp, id=grouped-binomial, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/glm.hpp>
+#include <print>
+
+int main() {
+    using datamunge::dstruct::DataFrame;
+    using datamunge::stats::GLM;
+    using datamunge::stats::GLMFamily;
+
+    const std::vector<double> x{-2, -1, -.5, 0, 1, 2, 3};
+    const std::vector<double> successes{0, 3, 7, 0, 12, 15, 5};
+    const std::vector<double> trials{8, 11, 12, 0, 19, 18, 5};
+    const std::vector<double> weights{1, .5, 1.4, 1, 1.25, .7, 1.5};
+    DataFrame groups, individual, query;
+    groups.add_column("x", x);
+    groups.add_column("success", successes);
+    groups.add_column("trials", trials);
+    groups.add_column("weight", weights);
+    query.add_column("x", std::vector<double>{.75});
+
+    std::vector<double> trial_x, trial_success, trial_weight;
+    for (std::size_t i = 0; i < x.size(); ++i)
+        for (int j = 0; j < trials[i]; ++j) {
+            trial_x.push_back(x[i]);
+            trial_success.push_back(j < successes[i] ? 1 : 0);
+            trial_weight.push_back(weights[i]);
+        }
+    individual.add_column("x", trial_x);
+    individual.add_column("success", trial_success);
+    individual.add_column("weight", trial_weight);
+
+    const GLM grouped(groups, "success ~ x", {
+        .family = GLMFamily::Binomial, .weights_column = "weight", .trials_column = "trials",
+    });
+    const GLM expanded(individual, "success ~ x", {
+        .family = GLMFamily::Binomial, .weights_column = "weight",
+    });
+    std::println("| Fit | Rows used | Slope | Slope SE | Probability at x = 0.75 |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    const auto print = [&](const char* label, const GLM& fit) {
+        std::println("| {} | {} | {:.4f} | {:.4f} | {:.4f} |", label, fit.observations(),
+                     fit.coefficients()[1], fit.standard_errors()[1], fit.predict(query)[0]);
+    };
+    print("Grouped", grouped);
+    print("Individual trials", expanded);
+    std::println("\nThe grouped-count AIC is {:.4f}.", grouped.aic());
+}
+```
+// result_begin: markdown
+| Fit | Rows used | Slope | Slope SE | Probability at x = 0.75 |
+| --- | ---: | ---: | ---: | ---: |
+| Grouped | 6 | 0.8768 | 0.2226 | 0.6657 |
+| Individual trials | 73 | 0.8768 | 0.2226 | 0.6657 |
+
+The grouped-count AIC is 22.3712.
+// result_end
+
+The row with zero trials contributes no likelihood and is omitted.
+Both fits describe an individual trial's success probability. The
+grouped AIC uses the probability of the observed count, which includes
+the number of ways to arrange the successes among the trials.
+
+> Compare probit and complementary log-log probabilities
+
+The probit link gives the success probability as the standard normal
+CDF of the linear predictor. The complementary log-log link gives
+$1-\exp(-\exp(\eta))$. It approaches zero and one at different rates.
+The example fits both to the same set of individual outcomes and
+back-transforms the link-scale confidence limits at a query point.
+
+```{cpp, id=alternate-binomial-links, file="figures/binomial_links.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/glm.hpp>
+#include <array>
+#include <filesystem>
+#include <print>
+
+int main() {
+    using namespace datamunge;
+    using namespace datamunge::stats;
+    const std::array observed_x{-2., -1.2, -.4, .3, .9, 1.7};
+    const std::array success_counts{1, 1, 2, 3, 4, 5};
+    std::vector<double> x, outcome, proportions, curve_x;
+    for (std::size_t j = 0; j < observed_x.size(); ++j) {
+        proportions.push_back(success_counts[j] / 5.0);
+        for (int k = 0; k < 5; ++k) {
+            x.push_back(observed_x[j]);
+            outcome.push_back(k < success_counts[j] ? 1 : 0);
+        }
+    }
+    for (std::size_t i = 0; i <= 120; ++i)
+        curve_x.push_back(-2.5 + i * .04);
+    dstruct::DataFrame data, query, curve;
+    data.add_column("x", x);
+    data.add_column("y", outcome);
+    query.add_column("x", std::vector<double>{.65});
+    curve.add_column("x", curve_x);
+
+    const GLM probit(data, "y ~ x", {
+        .family = GLMFamily::Binomial, .binomial_link = GLMBinomialLink::Probit,
+    });
+    const GLM cloglog(data, "y ~ x", {
+        .family = GLMFamily::Binomial, .binomial_link = GLMBinomialLink::Cloglog,
+    });
+    std::println("| Link | Slope | Probability at x = 0.65 | 95% mean interval |");
+    std::println("| --- | ---: | ---: | ---: |");
+    const auto print = [&](const char* label, const GLM& fit) {
+        const auto prediction = fit.predict(query, GLMPredictionInterval::Confidence);
+        std::println("| {} | {:.3f} | {:.3f} | [{:.3f}, {:.3f}] |", label, fit.coefficients()[1],
+                     prediction.fit[0], prediction.lower[0], prediction.upper[0]);
+    };
+    print("Probit", probit);
+    print("Complementary log-log", cloglog);
+
+    std::filesystem::create_directories("build");
+    graphics::RPlot::create().title("Two binomial links").x_label("Predictor").y_label("Success probability")
+        .line(curve_x, probit.predict(curve), "Probit", {29, 78, 216}, 2.5)
+        .line(curve_x, cloglog.predict(curve), "Complementary log-log", {180, 83, 9}, 2.5)
+        .points(std::vector<double>(observed_x.begin(), observed_x.end()), proportions,
+                "Observed proportions", {51, 65, 85}, 6)
+        .ylim(0, 1).size(740, 420).save_svg("build/binomial_links.svg");
+}
+```
+// result_begin: markdown
+| Link | Slope | Probability at x = 0.65 | 95% mean interval |
+| --- | ---: | ---: | ---: |
+| Probit | 0.730 | 0.755 | [0.517, 0.909] |
+| Complementary log-log | 0.894 | 0.753 | [0.534, 0.923] |
+\image(figures/binomial_links.svg)
+// result_end
+\caption(The two curves give similar probabilities near the query point and different shapes toward the ends of the predictor range.)
+\alttext(Blue and orange curves both rise across six observed proportions. The orange curve bends toward one sooner than the blue curve.)
+
+[R family links and grouped responses|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/family.html]

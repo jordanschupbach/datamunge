@@ -1,0 +1,47 @@
+//? Title: Wishart and inverse-Wishart covariance matrices
+//? Exports: both
+//? Lang: en
+
+> Draw positive-definite matrices on a specified scale
+
+The scale matrix has diagonal entries 2 and 1 and an off-diagonal
+entry of 0.4. With 9.5 degrees of freedom in dimension 2, the Wishart
+mean is 9.5 times the scale. The inverse-Wishart mean is the scale
+divided by 6.5. Both laws allow fractional degrees of freedom.
+
+The program compares the simulated diagonal means to those values.
+It also evaluates the two log densities at the same positive-definite
+matrix.
+
+```{cpp, id=wishart-covariance-draws, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/random/matrix_distributions.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::random;
+    using Matrix = datamunge::linalg::DenseMatrix<double>;
+    const Matrix scale(2, 2, {2, .4, .4, 1}), point(2, 2, {5, 1, 1, 3});
+    constexpr double df = 9.5;
+    constexpr int repetitions = 10000;
+    SplitMix64 rng(42);
+    double ordinary = 0, inverse = 0;
+    for (int i = 0; i < repetitions; ++i) {
+        ordinary += wishart_sample(rng, df, scale)(0, 0);
+        inverse += inverse_wishart_sample(rng, df, scale)(0, 0);
+    }
+    std::println("| Law | Expected first diagonal | Simulated first diagonal | Log density at point |");
+    std::println("| --- | ---: | ---: | ---: |");
+    std::println("| Wishart | {:.3f} | {:.3f} | {:.3f} |",
+                 df * scale(0, 0), ordinary / repetitions, wishart_log_pdf(point, df, scale));
+    std::println("| Inverse-Wishart | {:.3f} | {:.3f} | {:.3f} |",
+                 scale(0, 0) / (df - 3), inverse / repetitions, inverse_wishart_log_pdf(point, df, scale));
+}
+```
+// result_begin: markdown
+| Law | Expected first diagonal | Simulated first diagonal | Log density at point |
+| --- | ---: | ---: | ---: |
+| Wishart | 19.000 | 18.867 | -9.171 |
+| Inverse-Wishart | 0.308 | 0.309 | -26.042 |
+// result_end
+
+[Wishart and inverse-Wishart densities|https://mc-stan.org/docs/functions-reference/covariance_matrix_distributions.html]

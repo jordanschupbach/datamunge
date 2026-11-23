@@ -1,0 +1,169 @@
+//? Title: Robust summaries and sample quantiles
+//? Exports: both
+//? Lang: en
+
+A single large observation can pull the arithmetic mean and inflate the
+sample standard deviation. The trimmed mean removes an equal number of
+observations from each end. The Winsorized summaries replace those
+observations with the nearest retained endpoints. The median absolute
+deviation measures spread around the sample median.
+
+> Summarize a sample with one large observation
+
+```{cpp, id=robust-univariate, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/robust_summary.hpp>
+#include <numeric>
+#include <print>
+#include <vector>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<double> sample{0, 1, 2, 3, 4, 100};
+    const auto summary = trimmed_summary(sample, .2);
+    std::println("| Summary | Value |");
+    std::println("| --- | ---: |");
+    std::println("| Arithmetic mean | {:.2f} |", std::accumulate(sample.begin(), sample.end(), 0.0) / sample.size());
+    std::println("| Trimmed mean | {:.2f} |", summary.trimmed_mean);
+    std::println("| Winsorized variance | {:.2f} |", summary.winsorized_variance);
+    std::println("| Raw MAD | {:.2f} |", median_absolute_deviation(sample, {}, 1));
+}
+```
+// result_begin: markdown
+| Summary | Value |
+| --- | ---: |
+| Arithmetic mean | 18.33 |
+| Trimmed mean | 2.50 |
+| Winsorized variance | 1.90 |
+| Raw MAD | 1.50 |
+// result_end
+
+Trimming 20% of six observations removes one value per tail. Winsorizing
+changes the sample to `1, 1, 2, 3, 4, 4`. Its squared deviations about 2.5
+sum to 9.5, giving a sample variance of 1.9. The raw MAD is 1.5, the median
+of the six absolute deviations about 2.5.
+
+> Compare quartile conventions
+
+An empirical quantile selects a value from the ordered sample. A convention
+that interpolates can give a value between observations. With survey-style
+weights, the inverse empirical CDF uses cumulative mass in place of rank.
+
+```{cpp, id=sample-quantiles, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/robust_summary.hpp>
+#include <print>
+#include <vector>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<double> values{0, 10, 20, 40};
+    const std::vector<double> probs{.25, .5, .75};
+    std::println("| Method | First quartile | Median | Third quartile |");
+    std::println("| --- | ---: | ---: | ---: |");
+    const auto print_row = [](const char* method, const std::vector<double>& q) {
+        std::println("| {} | {:.2f} | {:.2f} | {:.2f} |", method, q[0], q[1], q[2]);
+    };
+    print_row("Type 1 (empirical)", sample_quantiles(values, probs, 1));
+    print_row("Type 7 (linear interpolation)", sample_quantiles(values, probs));
+    print_row("Weighted empirical", weighted_empirical_quantiles(values, {1, 1, 4, 2}, probs));
+    print_row("Harrell–Davis", harrell_davis_quantiles(values, probs));
+}
+```
+// result_begin: markdown
+| Method | First quartile | Median | Third quartile |
+| --- | ---: | ---: | ---: |
+| Type 1 (empirical) | 0.00 | 10.00 | 20.00 |
+| Type 7 (linear interpolation) | 7.50 | 15.00 | 25.00 |
+| Weighted empirical | 10.00 | 20.00 | 20.00 |
+| Harrell–Davis | 5.51 | 16.27 | 30.27 |
+// result_end
+
+The value 20 carries half the weighted mass. The cumulative weight first
+reaches both 50% and 75% at that value.
+Harrell–Davis uses contributions from every order statistic. Its weights
+come from a beta distribution centered at the requested probability.
+
+> Put an interval on the population median
+
+For independent draws from a continuous distribution, the count below the
+population median follows a binomial distribution with probability one-half.
+This gives an interval whose endpoints are sample order statistics. Its
+coverage can exceed the requested level because the endpoint ranks are integers.
+
+```{cpp, id=exact-quantile-interval, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/robust_summary.hpp>
+#include <print>
+
+int main() {
+    const auto interval = datamunge::stats::exact_quantile_interval({0, 1, 2, 3, 4, 100}, .5);
+    std::println("Median interval [{:.0f}, {:.0f}] uses ranks {} and {} and has {:.3f}% coverage.",
+                 interval.lower, interval.upper, interval.lower_rank, interval.upper_rank,
+                 100 * interval.coverage);
+}
+```
+// result_begin: markdown
+Median interval [0, 100] uses ranks 1 and 6 and has 96.875% coverage.
+// result_end
+
+> Enclose the whole CDF
+
+The Dvoretzky–Kiefer–Wolfowitz band has a single half-width determined by the
+sample size and desired simultaneous coverage. Values at a tied observation
+include every observation equal to it.
+
+```{cpp, id=empirical-cdf-band, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/robust_summary.hpp>
+#include <print>
+
+int main() {
+    const datamunge::stats::EmpiricalCdfBand band({7, 1, 1, 3, 4, 3, 4, 5}, .8);
+    std::println("| x | Empirical CDF | Lower | Upper |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    for (const auto& point : band.knots())
+        std::println("| {:.0f} | {:.3f} | {:.3f} | {:.3f} |",
+                     point.x, point.cdf, point.lower, point.upper);
+}
+```
+// result_begin: markdown
+| x | Empirical CDF | Lower | Upper |
+| ---: | ---: | ---: | ---: |
+| 1 | 0.250 | 0.000 | 0.629 |
+| 3 | 0.500 | 0.121 | 0.879 |
+| 4 | 0.750 | 0.371 | 1.000 |
+| 5 | 0.875 | 0.496 | 1.000 |
+| 7 | 1.000 | 0.621 | 1.000 |
+// result_end
+
+> Compare robust measures of spread
+
+Qn selects a low quantile of the distances between distinct observations.
+Sn takes a median of median distances. Huber's estimate clips deviations
+at a multiple of its current scale and updates both scale and location.
+Here five observations range from −2 to 2, and the sixth is 100.
+
+```{cpp, id=robust-scale, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/robust_summary.hpp>
+#include <print>
+#include <vector>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<double> sample{-2, -1, 0, 1, 2, 100};
+    const auto huber = huber_location_scale(sample);
+    std::println("| Measure | Value |");
+    std::println("| --- | ---: |");
+    std::println("| Qn scale | {:.3f} |", qn_scale(sample));
+    std::println("| Sn scale | {:.3f} |", sn_scale(sample));
+    std::println("| Huber scale | {:.3f} |", huber.scale);
+    std::println("\nHuber location is {:.3f}. The fit took {} updates. Converged = {}.",
+                 huber.location, huber.iterations, huber.converged);
+}
+```
+// result_begin: markdown
+| Measure | Value |
+| --- | ---: |
+| Qn scale | 2.717 |
+| Sn scale | 2.369 |
+| Huber scale | 2.896 |
+
+Huber location is 0.869. The fit took 54 updates. Converged = true.
+// result_end

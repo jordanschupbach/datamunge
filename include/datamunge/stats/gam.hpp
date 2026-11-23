@@ -24,6 +24,36 @@ struct GAMSmooth {
     double lambda{1}; ///< Nonnegative finite multiplier of summed squared second differences, ignored for linear terms.
 };
 
+/// @brief Identifies one cubic P-spline margin and its smoothing penalty.
+/// @par Example
+/// @code
+/// const dm::stats::GAMTensorMargin depth{.predictor = 1, .basis_size = 6, .lambda = 2};
+/// std::print("{}", depth.predictor); // 1
+/// @endcode
+/// @see GAMTensorSmooth
+struct GAMTensorMargin {
+    std::size_t predictor{0};   ///< Zero-based predictor column.
+    std::size_t basis_size{5}; ///< Number of cubic basis functions before centering, at least four.
+    double lambda{1};          ///< Nonnegative finite multiplier of this margin's second-difference penalty.
+};
+
+/// @brief Specifies a tensor-product interaction of two or more centered cubic margins.
+///
+/// Centering each marginal basis lets the interaction coexist with univariate
+/// terms on the same predictors. Each margin has its own quadratic penalty.
+/// @par Example
+/// @code
+/// const dm::stats::GAMTensorSmooth surface{{{0, 5, .2}, {1, 6, 3}}};
+/// std::print("{}", surface.margins.size()); // 2
+/// @endcode
+/// @par References
+/// - Wood (2006), Low-Rank Scale-Invariant Tensor Product Smooths for Generalized Additive Mixed Models.
+///   https://doi.org/10.1111/j.1541-0420.2006.00574.x
+/// @see GAMOptions, AdditiveModel::tensor_smooth()
+struct GAMTensorSmooth {
+    std::vector<GAMTensorMargin> margins; ///< Distinct predictor columns in tensor coordinate order.
+};
+
 /// @brief Controls additive term structure and penalized IRLS.
 /// @par Example
 /// @code
@@ -36,6 +66,7 @@ struct GAMOptions {
     std::vector<GAMSmooth> smooths; ///< One spec per predictor column, or empty to use defaults for every column.
     std::size_t max_iter{60}; ///< Positive upper bound on penalized IRLS updates.
     double tol{1e-8}; ///< Positive finite relative tolerance for the full working coefficient update.
+    std::vector<GAMTensorSmooth> tensor_smooths{}; ///< Optional interactions fitted alongside univariate terms.
 };
 
 /// @brief Gaussian random-intercept prior and additive fit controls.
@@ -68,7 +99,7 @@ struct GAMMOptions {
 class AdditiveModel {
 public:
     /// @brief Predicts response-scale means from columns in training predictor order.
-    /// @param predictors One finite vector per fitted additive term, with equal lengths.
+    /// @param predictors One finite vector per training predictor, with equal lengths.
     /// @param groups Optional group label per row. Empty uses zero group effects.
     /// Unknown nonempty labels also use zero. Only mixed models accept labels.
     /// @return Owned means in query order.
@@ -94,6 +125,29 @@ public:
     /// @endcode
     /// @see plot_smooth(), predict()
     [[nodiscard]] std::vector<double> smooth(std::size_t term, const std::vector<double>& x) const;
+
+    /// @brief Evaluates a centered tensor interaction on the link scale.
+    /// @param tensor Zero-based index in GAMOptions::tensor_smooths.
+    /// @param coordinates Equal-length finite query columns in the term's margin order.
+    /// Coordinates outside each training range are clamped independently.
+    /// @return Owned interaction contributions in query order.
+    /// @throws std::invalid_argument An invalid term, column shape, or coordinate was supplied.
+    /// @throws std::runtime_error Evaluation overflowed.
+    /// @par Example
+    /// @code
+    /// std::vector<double> x, z, y;
+    /// for (int i = 0; i < 4; ++i)
+    ///     for (int j = 0; j < 4; ++j) {
+    ///         x.push_back(i); z.push_back(j); y.push_back((i - 1.5) * (j - 1.5));
+    ///     }
+    /// const auto fit = dm::stats::fit_gam(y, {x, z}, {
+    ///     .smooths = {{0}, {0}}, .tensor_smooths = {{{{0, 4, 1}, {1, 4, 2}}}},
+    /// });
+    /// std::print("{:.2f}", fit.tensor_smooth(0, {{3}, {3}}).front()); // 2.25
+    /// @endcode
+    /// @see smooth(), predict()
+    [[nodiscard]] std::vector<double> tensor_smooth(std::size_t tensor,
+        const std::vector<std::vector<double>>& coordinates) const;
 
     /// @brief Plots one fitted additive component over its training range.
     /// @param term Zero-based predictor index.
@@ -151,6 +205,15 @@ private:
         std::size_t offset; ///< Index of the first coefficient for this term.
     };
 
+    /// @brief Owns the constrained marginal bases and empirical product centers.
+    struct TensorTerm {
+        std::vector<std::size_t> predictors; ///< Training columns in margin order.
+        std::vector<Term> margins;            ///< Centered cubic P-spline margins.
+        std::vector<std::size_t> strides;     ///< Successive strides for flattened tensor columns.
+        std::vector<double> centers;          ///< Means of the marginal basis products over training rows.
+        std::size_t offset;                    ///< First coefficient used by this interaction.
+    };
+
     /// @brief Fits a validated additive design with an optional diagonal group penalty.
     /// @param y Training response.
     /// @param predictors Predictor columns.
@@ -166,9 +229,32 @@ private:
     /// @return Owned centered design row.
     [[nodiscard]] static std::vector<double> term_row(const Term& term, double x);
 
+    /// @brief Builds a centered row of marginal basis products.
+    /// @param term Fitted tensor bases and centers.
+    /// @param columns Rectangular query columns in the tensor margin order.
+    /// @param row Query row index.
+    /// @return Tensor row in nested margin order, with the last margin varying fastest.
+    [[nodiscard]] static std::vector<double> tensor_row(const TensorTerm& term,
+        const std::vector<const std::vector<double>*>& columns, std::size_t row);
+
+    /// @brief Borrows only the columns used by one tensor interaction.
+    /// @param term Fitted tensor margins and their original predictor indices.
+    /// @param predictors Query columns in original training order.
+    /// @return Column pointers in the tensor margin order.
+    [[nodiscard]] static std::vector<const std::vector<double>*> tensor_columns(const TensorTerm& term,
+        const std::vector<std::vector<double>>& predictors);
+
+    /// @brief Applies fitted interaction coefficients to query rows.
+    /// @param term Fitted tensor margins, centers and coefficient offset.
+    /// @param columns Validated query columns in margin order.
+    /// @return Link-scale component in query row order.
+    [[nodiscard]] std::vector<double> tensor_contribution(const TensorTerm& term,
+        const std::vector<const std::vector<double>*>& columns) const;
+
     GLMFamily family_; ///< Fixed family and link.
     std::vector<Term> terms_; ///< Additive terms in input order.
-    std::vector<double> coefficients_; ///< Intercept, term coefficients, then optional group effects.
+    std::vector<TensorTerm> tensor_terms_; ///< Centered tensor interactions in option order.
+    std::vector<double> coefficients_; ///< Intercept, univariate terms, tensor terms, then optional group effects.
     std::vector<double> fitted_; ///< Fitted conditional means.
     std::vector<std::string> group_levels_; ///< Sorted observed group labels.
     bool converged_{false}; ///< Whether the configured stopping tolerance was met.
@@ -180,10 +266,10 @@ private:
                                    const std::vector<std::string>&, const GAMMOptions&);
 };
 
-/// @brief Fits a generalized additive model with fixed spline penalties.
+/// @brief Fits a generalized additive model with fixed univariate and tensor spline penalties.
 /// @param y Nonempty finite response in the selected GLM family domain.
 /// @param predictors Nonempty predictor columns, each finite, varying, and the same length as y.
-/// @param options Family, additive terms and IRLS controls. Defaults to cubic splines and Gaussian response.
+/// @param options Family, additive and tensor terms, and IRLS controls. Defaults to cubic splines and Gaussian response.
 /// @return Owned fitted model. Check converged() before use.
 /// @throws std::invalid_argument For invalid data, shapes or options.
 /// @throws std::runtime_error For nonidentifiable fits or invalid numerical steps.
@@ -192,6 +278,7 @@ private:
 /// @par References
 /// - Eilers and Marx (1996), Flexible smoothing with B-splines and penalties.
 ///   https://doi.org/10.1214/ss/1038425655
+/// - Wood (2006), https://doi.org/10.1111/j.1541-0420.2006.00574.x
 /// @see fit_gamm(), GLM
 AdditiveModel fit_gam(const std::vector<double>& y, const std::vector<std::vector<double>>& predictors,
                       const GAMOptions& options = {});

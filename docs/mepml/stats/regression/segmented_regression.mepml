@@ -1,0 +1,79 @@
+//? Title: Estimate two changes of slope in a continuous curve
+//? Exports: both
+//? Lang: en
+
+> Fit a continuous line with two breakpoints
+
+The signal first rises, then falls, and then rises again. The example
+fits three straight segments connected at two unknown breakpoints.
+At each candidate breakpoint, the solver refits the slopes. An
+estimated breakpoint can fall between measurements.
+
+Each profile interval fixes one breakpoint and refits the other
+breakpoint and all the line coefficients. The intervals are pointwise
+and use asymptotic likelihood-ratio calibration.
+
+```{cpp, id=fit-breakpoints, file="figures/segmented_regression.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/segmented_regression.hpp>
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge;
+    std::vector<double> position, signal;
+    for (int i = 0; i <= 30; ++i) {
+        position.push_back(i);
+        signal.push_back(2 + .5 * i - 1.2 * std::max(0., i - 8.3)
+                         + 1.6 * std::max(0., i - 21.6) + .18 * std::sin(i * 2.4));
+    }
+    const auto fit = stats::segmented_regression(position, signal, {
+        .breakpoints = 2, .minimum_segment_size = 3,
+    });
+    if (!fit.converged || fit.intervals.size() != fit.breakpoints.size())
+        throw std::runtime_error("Expected a converged fit with both intervals");
+    std::println("| Change | Breakpoint | 95% profile interval | Slope before | Slope after |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    for (std::size_t j = 0; j < fit.breakpoints.size(); ++j) {
+        const auto& interval = fit.intervals[j];
+        if (interval.lower.status != stats::ProfileEndpointStatus::Crossing ||
+            interval.upper.status != stats::ProfileEndpointStatus::Crossing)
+            throw std::runtime_error("Expected two likelihood-ratio crossings");
+        std::println("| {} | {:.3f} | [{:.3f}, {:.3f}] | {:.3f} | {:.3f} |",
+                     j + 1, fit.breakpoints[j], interval.lower.value, interval.upper.value,
+                     fit.slopes[j], fit.slopes[j + 1]);
+    }
+
+    std::vector<double> vertices{fit.origin, fit.breakpoints[0], fit.breakpoints[1], position.back()};
+    std::vector<double> heights{fit.value_at_origin};
+    for (std::size_t j = 0; j < fit.slopes.size(); ++j)
+        heights.push_back(heights.back() + fit.slopes[j] * (vertices[j + 1] - vertices[j]));
+    std::filesystem::create_directories("build");
+    graphics::RPlot::create()
+        .line(vertices, heights, "Fitted segments", {29, 78, 216}, 2.5)
+        .points(position, signal, "Observations", {51, 65, 85}, 5)
+        .abline_v(fit.breakpoints[0], {100, 116, 139}, 1)
+        .abline_v(fit.breakpoints[1], {100, 116, 139}, 1)
+        .title("Continuous segmented regression").x_label("Position").y_label("Signal")
+        .size(740, 420).save_svg("build/segmented_regression.svg");
+}
+```
+// result_begin: markdown
+| Change | Breakpoint | 95% profile interval | Slope before | Slope after |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 8.308 | [8.129, 8.491] | 0.498 | -0.701 |
+| 2 | 21.595 | [21.458, 21.731] | -0.701 | 0.902 |
+\image(figures/segmented_regression.svg)
+// result_end
+\caption(The three fitted segments meet at the estimated breakpoints.)
+\alttext(A blue line rises to the first breakpoint near 8.3, descends to the second near 21.6, and then rises. Points lie close to each segment.)
+
+The joint search uses several deterministic starting configurations.
+Each step searches one breakpoint over its feasible range, so the
+reported convergence describes the coordinate search for the best fit found.
+
+[Hudson (1966)|https://doi.org/10.1080/01621459.1966.10482198] ·
+[Muggeo (2003)|https://doi.org/10.1002/sim.1545]

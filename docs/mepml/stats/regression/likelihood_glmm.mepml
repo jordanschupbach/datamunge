@@ -1,0 +1,81 @@
+//? Title: Integrate a random intercept in a count model
+//? Exports: both
+//? Lang: en
+
+> Compare Laplace and adaptive Gauss–Hermite fits
+
+Eight production lines record defect counts at four settings. The
+Poisson model includes a common setting coefficient and one Gaussian
+random intercept per line. A log exposure offset accounts for the
+different inspection lengths.
+
+The fitter integrates each line's likelihood over its random
+intercept. Laplace uses the conditional mode and curvature. Adaptive
+Gauss–Hermite quadrature uses additional points around that same
+mode.
+
+```{cpp, id=integrated-defect-likelihood, file="figures/likelihood_glmm_quadrature.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/likelihood_glmm.hpp>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge;
+    const std::vector<std::size_t> count{
+        0,1,1,1, 1,2,2,3, 2,3,3,4, 3,4,7,6, 0,0,1,2, 5,8,13,9, 1,1,2,2, 0,2,4,3};
+    const double setting[]{-1,-.4,.35,1}, exposure[]{.8,1,1.2,1.5};
+    linalg::DenseMatrix<double> x(count.size(), 2, 1);
+    std::vector<std::size_t> lines;
+    stats::LikelihoodGLMMOptions options{.family = stats::GLMMFamily::Poisson};
+    for (std::size_t i = 0; i < count.size(); ++i) {
+        x(i, 1) = setting[i % 4];
+        options.offset.push_back(std::log(exposure[i % 4]));
+        lines.push_back(i / 4);
+    }
+
+    std::vector<double> points, likelihood;
+    std::println("| Quadrature points | Random-intercept SD | Log likelihood |");
+    std::println("| ---: | ---: | ---: |");
+    for (const std::size_t q : {1,5,9,15,31}) {
+        options.quadrature_points = q;
+        const auto fit = stats::fit_likelihood_glmm(x, count, lines, options);
+        if (fit.status != stats::LikelihoodGLMMStatus::Converged)
+            throw std::runtime_error("Expected an interior random-intercept fit");
+        std::println("| {} | {:.5f} | {:.8f} |", q, fit.random_intercept_sd, fit.log_likelihood);
+        points.push_back(q);
+        likelihood.push_back(fit.log_likelihood);
+    }
+    std::vector<double> error;
+    for (std::size_t i = 0; i + 1 < points.size(); ++i)
+        error.push_back(std::log10(std::abs(likelihood[i] - likelihood.back())));
+    points.pop_back();
+    std::filesystem::create_directories("build");
+    graphics::RPlot::create()
+        .line(points, error, "", {29, 78, 216}, 2.5)
+        .points(points, error, "", {29, 78, 216}, 5)
+        .title("Sensitivity to quadrature order").x_label("Quadrature points")
+        .y_label("Log10 absolute difference from the 31-point fit")
+        .size(740, 420).save_svg("build/likelihood_glmm_quadrature.svg");
+}
+```
+// result_begin: markdown
+| Quadrature points | Random-intercept SD | Log likelihood |
+| ---: | ---: | ---: |
+| 1 | 0.73281 | -56.99228908 |
+| 5 | 0.73625 | -56.96994589 |
+| 9 | 0.73647 | -56.96901581 |
+| 15 | 0.73647 | -56.96900243 |
+| 31 | 0.73647 | -56.96900244 |
+\image(figures/likelihood_glmm_quadrature.svg)
+// result_end
+\caption(The difference from the 31-point log likelihood falls to about one hundred-millionth by 15 points.)
+\alttext(On a base-10 log scale, the difference falls from around minus 1.6 at one point to minus 8 at 15 points.)
+
+Each row refits the model at that quadrature order. Here the estimated
+random-intercept SD changes little past five points, while the
+log likelihood keeps changing at smaller scales.
+
+[Liu and Pierce, A note on Gauss–Hermite quadrature|https://doi.org/10.1093/biomet/81.3.624]

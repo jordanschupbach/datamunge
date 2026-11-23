@@ -1,0 +1,83 @@
+//? Title: Fit an interaction with separate smoothing along each axis
+//? Exports: both
+//? Lang: en
+
+> Fit a tensor interaction with two penalties
+
+Measurements in this example vary with time and depth. The additive
+model includes a linear trend in each predictor. A tensor-product spline
+allows the time pattern to change with depth. Its two penalties control
+the curvature of the interaction separately along time and depth.
+
+```{cpp, id=tensor-gam-depth, file="figures/tensor_gam_depth.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/gam.hpp>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <stdexcept>
+
+int main() {
+    using namespace datamunge;
+    std::vector<double> time, depth, response, observed_time, observed_response;
+    constexpr double slice = .875;
+    for (int i = 0; i <= 8; ++i)
+        for (int j = 0; j <= 8; ++j) {
+            const auto t = i / 8., d = j / 8.;
+            const auto y = 2 + .3*t - .6*d + (d - .5)*std::sin(2*std::numbers::pi*t)
+                         + .04*std::cos(2*i + j);
+            time.push_back(t);
+            depth.push_back(d);
+            response.push_back(y);
+            if (d == slice) {
+                observed_time.push_back(t);
+                observed_response.push_back(y);
+            }
+        }
+
+    stats::GAMOptions options{
+        .smooths = {{0}, {0}},
+        .tensor_smooths = {{{{0, 7, .01}, {1, 5, 6}}}},
+    };
+    const auto flexible_time = stats::fit_gam(response, {time,depth}, options);
+    options.tensor_smooths[0].margins[0].lambda = 6;
+    options.tensor_smooths[0].margins[1].lambda = .01;
+    const auto penalized_time = stats::fit_gam(response, {time,depth}, options);
+    if (!flexible_time.converged() || !penalized_time.converged())
+        throw std::runtime_error("Expected both additive fits to converge");
+
+    std::println("| Time penalty | Depth penalty | Residual sum of squares |");
+    std::println("| ---: | ---: | ---: |");
+    std::println("| 0.01 | 6 | {:.3f} |", flexible_time.deviance());
+    std::println("| 6 | 0.01 | {:.3f} |", penalized_time.deviance());
+
+    std::vector<double> grid(81), at_depth(grid.size(), slice);
+    for (std::size_t i = 0; i < grid.size(); ++i)
+        grid[i] = i / 80.;
+    std::filesystem::create_directories("build");
+    graphics::RPlot::create()
+        .line(grid, flexible_time.predict({grid, at_depth}), "Time penalty 0.01", {29, 78, 216}, 2.5)
+        .line(grid, penalized_time.predict({grid, at_depth}), "Time penalty 6", {180, 83, 9}, 2.5)
+        .points(observed_time, observed_response, "Observed", {35, 44, 58}, 4)
+        .title("Fitted time response at depth 0.875")
+        .x_label("Time").y_label("Response").size(740, 420)
+        .save_svg("build/tensor_gam_depth.svg");
+}
+```
+// result_begin: markdown
+| Time penalty | Depth penalty | Residual sum of squares |
+| ---: | ---: | ---: |
+| 0.01 | 6 | 0.093 |
+| 6 | 0.01 | 2.253 |
+\image(figures/tensor_gam_depth.svg)
+// result_end
+\caption(The fitted curves and observations at depth 0.875.)
+\alttext(The fit with time penalty 0.01 follows the rise and fall of the observations. The fit with time penalty 6 slopes gently downward.)
+
+A smaller time penalty lets the interaction follow the oscillation.
+The larger time penalty produces a flatter curve at the same depth.
+Use `tensor_smooth()` to evaluate the interaction alone, and `predict()`
+for the response including the main effects.
+
+[Wood, Low-Rank Scale-Invariant Tensor Product Smooths|https://doi.org/10.1111/j.1541-0420.2006.00574.x]

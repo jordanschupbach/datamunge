@@ -1,0 +1,40 @@
+//? Title: Empirical likelihood for a mean
+//? Exports: both
+//? Lang: en
+
+The ordinary sample mean gives equal probability to each observation.
+Empirical likelihood fits probabilities subject to a specified mean and
+compares their product with the product under equal probabilities. Inverting
+that likelihood-ratio test gives an asymptotic confidence interval.
+
+```{cpp, id=empirical-mean, cache=yes, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/robust_summary.hpp>
+#include <print>
+#include <vector>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<double> sample{1, 1, 4, 5, 9};
+    const auto fit = empirical_likelihood_mean_test(sample, 6);
+    const auto ci = empirical_likelihood_mean_interval(sample);
+    std::println("| Observation | Weight when the mean is 6 |");
+    std::println("| ---: | ---: |");
+    for (std::size_t i = 0; i < sample.size(); ++i)
+        std::println("| {:.0f} | {:.4f} |", sample[i], fit.weights[i]);
+    std::println("\nThe likelihood-ratio statistic is {:.3f}, with p = {:.3f}.", fit.statistic, fit.p_value);
+    std::println("The sample mean is {:.1f}. Its empirical likelihood interval is [{:.3f}, {:.3f}].",
+                 ci.estimate, ci.lower, ci.upper);
+}
+```
+// result_begin: markdown
+| Observation | Weight when the mean is 6 |
+| ---: | ---: |
+| 1 | 0.1009 |
+| 1 | 0.1009 |
+| 4 | 0.1436 |
+| 5 | 0.1671 |
+| 9 | 0.4876 |
+
+The likelihood-ratio statistic is 1.978, with p = 0.160.
+The sample mean is 4.0. Its empirical likelihood interval is [1.924, 6.761].
+// result_end

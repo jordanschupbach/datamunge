@@ -1,0 +1,189 @@
+//? Title: Bootstrap designs for grouped, ordered and modeled data
+//? Exports: both
+//? Lang: en
+
+> Keep strata and clusters intact
+
+The sampling unit determines which rows move together. A stratified draw
+keeps the original number of observations in each stratum. A cluster draw
+selects whole sites with replacement. When site sizes differ, the number of
+rows can change. The cluster offsets identify separate copies of any site
+drawn more than once.
+
+```{cpp, id=grouped-bootstrap, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+
+int main() {
+    using namespace dm::stats;
+    using DF = dm::dstruct::DataFrame;
+    const DF data{
+        {"site", DF::numeric_column_type(dm::c(1.0, 2.0, 1.0, 2.0, 3.0, 3.0, 3.0))},
+        {"measurement", DF::numeric_column_type(dm::c(10.0, 20.0, 12.0, 19.0, 35.0, 37.0, 41.0))}
+    };
+    dm::random::SplitMix64 stratum_rng(42), cluster_rng(1);
+    const auto strata = stratified_bootstrap_indices({10, 20, 10, 20, 20, 10, 10}, stratum_rng);
+    const auto clusters = cluster_bootstrap_indices({1, 2, 1, 2, 3, 3, 3}, cluster_rng);
+    const auto within = data.take_rows(strata);
+    const auto across = data.take_rows(clusters.indices);
+
+    std::println("| Design | Rows | Site copies | First selected measurement |");
+    std::println("| --- | ---: | ---: | ---: |");
+    std::println("| Stratified | {} | | {:.0f} |", within.nrows(), within.double_at("measurement", 0));
+    std::println("| Cluster | {} | {} | {:.0f} |", across.nrows(), clusters.cluster_offsets.size() - 1,
+                 across.double_at("measurement", 0));
+}
+```
+// result_begin: markdown
+| Design | Rows | Site copies | First selected measurement |
+| --- | ---: | ---: | ---: |
+| Stratified | 7 | | 37 |
+| Cluster | 8 | 3 | 20 |
+// result_end
+
+> Draw blocks from an ordered series
+
+Moving blocks start where a full block fits. Circular blocks may wrap from
+the last observation to the first. The stationary bootstrap chooses a random
+start and a geometric run length by deciding whether to restart at each
+subsequent observation. The returned indices preserve the resampled time
+order.
+
+```{cpp, id=block-bootstrap, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/bootstrap_designs.hpp>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    datamunge::random::SplitMix64 moving_rng(1), circular_rng(1), stationary_rng(42);
+    const auto moving = block_bootstrap_indices(8, 3, moving_rng);
+    const auto circular = block_bootstrap_indices(8, 3, circular_rng, true);
+    const auto stationary = stationary_bootstrap_indices(8, 3, stationary_rng);
+    const auto print_rows = [](const char* method, const auto& indices) {
+        std::print("| {} |", method);
+        for (auto i : indices)
+            std::print(" {}", i);
+        std::println(" |");
+    };
+    std::println("| Design | Source indices in draw order |");
+    std::println("| --- | --- |");
+    print_rows("Moving blocks", moving);
+    print_rows("Circular blocks", circular);
+    print_rows("Stationary bootstrap", stationary);
+}
+```
+// result_begin: markdown
+| Design | Source indices in draw order |
+| --- | --- |
+| Moving blocks | 3 4 5 4 5 6 5 6 |
+| Circular blocks | 4 5 6 5 6 7 7 0 |
+| Stationary bootstrap | 5 2 3 6 6 7 0 3 |
+// result_end
+
+> Balance appearances across replicates
+
+A balanced bootstrap shuffles a pool containing the same number of copies
+of each source row. A row can still appear more than once in a replicate.
+Balance applies across the full set. For the sample mean this makes the
+average replicate estimate agree with the original sample mean.
+
+```{cpp, id=balanced-bootstrap, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/stats/bootstrap.hpp>
+#include <datamunge/stats/bootstrap_designs.hpp>
+#include <numeric>
+#include <print>
+
+int main() {
+    using namespace datamunge::stats;
+    const std::vector<double> sample{1, 2, 4, 9};
+    datamunge::random::SplitMix64 rng(42);
+    const auto draws = balanced_bootstrap_indices(sample.size(), 12, rng);
+    std::vector<double> means;
+    for (const auto& rows : draws) {
+        double sum = 0;
+        for (const auto i : rows)
+            sum += sample[i];
+        means.push_back(sum / rows.size());
+    }
+    const auto estimate = std::accumulate(sample.begin(), sample.end(), 0.0) / sample.size();
+    const auto summary = bootstrap_summary(estimate, means);
+    std::println("Observed mean {:.2f}. Estimated bootstrap bias {:.2f}.", summary.estimate, summary.bias);
+}
+```
+// result_begin: markdown
+Observed mean 4.00. Estimated bootstrap bias 0.00.
+// result_end
+
+> Simulate and refit under a regression null
+
+Test a zero slope with the predictor values held fixed. The parametric
+bootstrap simulates Gaussian responses from a fitted intercept-only null.
+The wild bootstrap multiplies each null residual independently while
+keeping its size tied to its original predictor. All three calibrations
+refit the slope and recompute its HC3 standard error on each draw.
+
+```{cpp, id=regression-bootstrap, results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <dm/dm.hpp>
+#include <numeric>
+
+int main() {
+    using namespace dm::stats;
+    const dm::Mat<> x{{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}};
+    const std::vector<double> y{1, 1.5, 2, 3.4, 2.2, 4.6, 3.3, 7.1, 3.7, 8.2};
+    const auto refit = [&](const std::vector<double>& response) {
+        const LM fit(response, x);
+        constexpr double x_mean = 4.5, sxx = 82.5;
+        double variance_numerator = 0;
+        for (std::size_t i = 0; i < response.size(); ++i) {
+            const auto dx = static_cast<double>(i) - x_mean;
+            const auto leverage = 1.0 / response.size() + dx * dx / sxx;
+            const auto contribution = dx * fit.residuals()[i] / (1 - leverage);
+            variance_numerator += contribution * contribution;
+        }
+        return fit.coefficients()[1] * sxx / std::sqrt(variance_numerator);
+    };
+    const auto observed = refit(y);
+    const auto mean = std::accumulate(y.begin(), y.end(), 0.0) / y.size();
+    const std::vector<double> fitted(y.size(), mean);
+    std::vector<double> residuals;
+    for (const auto value : y)
+        residuals.push_back(value - mean);
+    const auto sigma = std::sqrt(std::inner_product(residuals.begin(), residuals.end(),
+                                                   residuals.begin(), 0.0) / (y.size() - 1));
+    const auto gaussian_null = [&](auto& stream) {
+        std::vector<double> sample(y.size());
+        for (auto& value : sample)
+            value = stream.normal(mean, sigma);
+        return sample;
+    };
+    dm::random::SplitMix64 parametric_rng(42), rademacher_rng(42), mammen_rng(42);
+    constexpr std::size_t draws = 999;
+    const auto parametric = parametric_bootstrap_test(observed, draws, gaussian_null, refit, parametric_rng,
+                                                       Alternative::TwoSided);
+    const auto rademacher = wild_bootstrap_test(observed, fitted, residuals, draws, refit, rademacher_rng);
+    const auto mammen = wild_bootstrap_test(observed, fitted, residuals, draws, refit, mammen_rng,
+                                           WildBootstrapWeight::Mammen);
+    std::println("Observed HC3 slope statistic {:.3f}.\n", observed);
+    std::println("| Calibration | Null draws as extreme | Two-sided p-value |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| Gaussian parametric | {:.0f} | {:.3f} |", parametric.parameter2, parametric.p_value);
+    std::println("| Rademacher wild | {:.0f} | {:.3f} |", rademacher.parameter2, rademacher.p_value);
+    std::println("| Mammen wild | {:.0f} | {:.3f} |", mammen.parameter2, mammen.p_value);
+}
+```
+// result_begin: markdown
+Observed HC3 slope statistic 3.295.
+
+| Calibration | Null draws as extreme | Two-sided p-value |
+| --- | ---: | ---: |
+| Gaussian parametric | 8 | 0.009 |
+| Rademacher wild | 19 | 0.020 |
+| Mammen wild | 32 | 0.033 |
+// result_end
+
+[Stratified and parametric resampling|https://stat.ethz.ch/R-manual/R-devel/library/boot/html/boot.html] ·
+[Cluster resampling|https://doi.org/10.1111/j.1467-9868.2007.00593.x] ·
+[Moving blocks|https://doi.org/10.1214/aos/1176347265] ·
+[Circular blocks|https://purl.stanford.edu/xh812zd4638] ·
+[Stationary bootstrap|https://doi.org/10.1080/01621459.1994.10476870] ·
+[Balanced bootstrap|https://doi.org/10.1093/biomet/73.3.555] ·
+[Wild bootstrap|https://doi.org/10.1214/aos/1176349025]
