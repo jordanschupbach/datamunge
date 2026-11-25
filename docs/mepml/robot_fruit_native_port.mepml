@@ -214,7 +214,7 @@ int main() {
     const auto urdf =
         (std::filesystem::path(assets) /
          "Rebot_Arm_description/DM/urdf/ReBot_Arm_DM.urdf").string();
-    const std::vector<Candidate> candidates{{"MuJoCo-trained DQN",
+    std::vector<Candidate> candidates{{"MuJoCo-trained DQN",
                                              "figures/fruit_stream_physics_rl/dueling_dqn_256.npz",
                                              false}, {"Greedy rule", "", false},
                                             {"Greedy rule", "", true},
@@ -224,6 +224,16 @@ int main() {
                                             {"Native-trained DQN",
                                              "figures/fruit_native_port_dqn.npz",
                                              true}};
+    // The MuJoCo checkpoint exists only where the MuJoCo report has been run.
+    std::vector<std::string> skipped;
+    std::erase_if(candidates, [&](const Candidate &c) {
+        if (c.policy.empty() || std::filesystem::exists(c.policy))
+            return false;
+        const auto note = std::format("{} ({})", c.name, c.policy);
+        if (std::ranges::find(skipped, note) == skipped.end())
+            skipped.push_back(note);
+        return true;
+    });
     const int streams = 8;
     const double seconds = 90;
     // Independent environments are single-writer; run each stream on its own thread.
@@ -248,17 +258,18 @@ int main() {
                      : "original", t.arrivals, t.attempts, t.grasped, t.correct,
                      t.wrong, t.missed);
     }
+    for (const auto &s : skipped)
+        std::println("\nNot run: {}, checkpoint not present in this build.", s);
 }
 ```
-
 // result_begin: markdown
-| Scheduler          | Grasp skill          | Arrivals | Attempts | Grasped | Correct | Wrong | Missed |
-| ------------------ | -------------------- | -------: | -------: | ------: | ------: | ----: | -----: |
-| MuJoCo-trained DQN | original             |      298 |      123 |      51 |      42 |     0 |    239 |
-| Greedy rule        | original             |      300 |      125 |      55 |      49 |     0 |    230 |
-| Greedy rule        | aligned 20 mm + hold |      302 |      118 |      75 |      68 |     0 |    213 |
-| MuJoCo-trained DQN | aligned 20 mm + hold |      296 |      119 |      54 |      50 |     0 |    230 |
-| Native-trained DQN | aligned 20 mm + hold |      300 |       71 |      45 |      40 |     0 |    240 |
+| Scheduler | Grasp skill | Arrivals | Attempts | Grasped | Correct | Wrong | Missed |
+|---|---|---:|---:|---:|---:|---:|---:|
+| Greedy rule | original | 300 | 125 | 55 | 49 | 0 | 230 |
+| Greedy rule | aligned 20 mm + hold | 302 | 118 | 75 | 68 | 0 | 213 |
+| Native-trained DQN | aligned 20 mm + hold | 299 | 117 | 67 | 57 | 0 | 224 |
+
+Not run: MuJoCo-trained DQN (figures/fruit_stream_physics_rl/dueling_dqn_256.npz), checkpoint not present in this build.
 // result_end
 
 ## Wrist classifier for the native camera
@@ -515,8 +526,8 @@ int main(int argc, char **argv) {
         std::filesystem::copy_file(out + "/training.csv",
                                    "figures/fruit_native_port_vision_training.csv",
                                    std::filesystem::copy_options::overwrite_existing);
-        auto previous =
-            n::MobileNetClassifier::load("figures/fruit_stream_physics_mobile.npz");
+        // The previous model comes from the MuJoCo report; score it only when present.
+        const std::string previous_path = "figures/fruit_stream_physics_mobile.npz";
         std::ofstream table(out + "/test.md");
         table <<
             std::format("Selected epoch {}. Test: {} crops from {} streams.\n\n",
@@ -524,14 +535,17 @@ int main(int argc, char **argv) {
                         (workers - n_train - n_valid) * streams) <<
             "| Classifier | Inspection | Frames | Confident wrong | Frame flips |\n" <<
             "|---|---:|---:|---:|---:|\n";
-        score(table, "Previous (MuJoCo views, 256 px camera)", previous, test);
+        if (std::filesystem::exists(previous_path)) {
+            auto previous = n::MobileNetClassifier::load(previous_path);
+            score(table, "Previous (MuJoCo views, 256 px camera)", previous, test);
+        }
         score(table, "Retrained (native views, 128 px camera)", model, test);
         table.close();
         std::cout << std::ifstream(out + "/test.md").rdbuf();
 }
 ```
 
-Held-out test streams (24 streams, 585 inspections, 9,597 trajectory frames).
+Held-out test streams (32 streams, 585 inspections, 9,597 trajectory frames).
 "Confident wrong" counts frames where the wrong class gets probability above
 0.9; "frame flips" counts consecutive frames of one fruit whose label changes:
 
@@ -674,7 +688,8 @@ int main() {
             true;  // stop re-aiming once a finger touches
         s::FruitStreamEnvironment env(urdf, options);
         s::DevArmWristCamera wrist(env.arm_model(), 128, 95);
-        wrist.set_render_threads(8);
+        const int render_threads = int(std::max(8u, std::thread::hardware_concurrency()));
+        wrist.set_render_threads(render_threads);
         auto classifier =
             n::MobileNetClassifier::load("figures/fruit_native_port_mobile.npz");
         std::ofstream perception(out + "perception.csv");
@@ -735,7 +750,7 @@ int main() {
         camera.target = {-.05, 0, .6};
         camera.vertical_fov = 40;
         auto quality = s::workcell_presentation_options(960, 640);
-        quality.threads = 8;
+        quality.threads = render_threads;  // CPU path when CUDA is unavailable
         std::unique_ptr<c::CudaRenderer> gpu;
         if (dm::compute::probe({dm::compute::Backend::CUDA, 0}).available)
             gpu = std::make_unique<c::CudaRenderer>();
@@ -853,28 +868,27 @@ int main() {
     }
 }
 ```
-
 // result_begin: markdown
-Native vsim, 960 Hz, 60 s: 19 arrivals, 6 correct, 1 wrong, 11 missed.
+Native vsim, 960 Hz, 60 s: 19 arrivals, 5 correct, 0 wrong, 13 missed.
 
 \video(figures/fruit_native_port.mp4)
 // result_end
 
 The corrected grasp is the change that matters. With the same greedy scheduler,
 it raises correct sorts on the eight test streams from 49 to 68 (+39%) and
-stable grasps from 55 to 75, while attempts barely change. Both learned
-schedulers gain less from it: the MuJoCo-trained DQN rises only from 42 to 50,
-and the natively trained DQN reaches 40 because it attempts far fewer fruit (71
-vs 118). Arrivals exceed arm capacity about threefold, so most fruit are still
+stable grasps from 55 to 75, while attempts barely change. The natively
+trained DQN attempts almost as many fruit as the greedy rule (117 vs 118) but
+grasps fewer of them (67 vs 75), so it sorts 57 against 68. (When the
+MuJoCo-trained checkpoint is available, it rose only from 42 to 50 with the
+corrected grasp; it is not part of the standard build.) Arrivals exceed arm capacity about threefold, so most fruit are still
 missed by every scheduler. Further gains must come from a faster pick cycle or a
 better grasp skill, not from scheduling.
 
-The 60-second native run above (seed 2026113001) has 19 arrivals: 6 correct
-sorts, 1 wrong bin and 11 misses, with the rest still on the belt. The old
-20-second transfer clip had zero sorts. The wrong bin is most likely a
-perception error (MobileNet on rendered wrist RGB), which the comparison table
-removes by using synthetic labels. Maximum contact penetration is 1.6 mm; peak
-actuator effort fraction is 1.0. The
+The 60-second native run above (seed 2026113001) has 19 arrivals: 5 correct
+sorts, no wrong bins and 13 misses, with the rest still on the belt. The old
+20-second transfer clip had zero sorts. With the retrained classifier every
+sorted fruit went into the correct bin. Maximum contact penetration is 3.8 mm;
+peak actuator effort fraction is 1.0. The
 [measured run record|file:figures/fruit_native_port.json] retains the options,
 seed, timings and backend provenance. Separate analytic tests verify actual
 contact-driven lifting.

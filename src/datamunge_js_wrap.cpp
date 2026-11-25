@@ -1453,20 +1453,29 @@ template<> struct Bound<datamunge::optim::InequalityConstrainedFunction> : std::
 template<> struct Copyable<datamunge::optim::InequalityConstrainedFunction> : std::false_type {};
 template<> struct Bound<datamunge::optim::ResidualFunction> : std::true_type {};
 template<> struct Copyable<datamunge::optim::ResidualFunction> : std::false_type {};
+template<> struct Bound<datamunge::bayes::NUTSOptions> : std::true_type {};
+template<> struct Bound<datamunge::bayes::NUTSResult> : std::true_type {};
+template<> struct Bound<datamunge::bayes::NUTS> : std::true_type {};
+template<> struct Bound<datamunge::Callback> : std::true_type {};
+template<> struct Bound<datamunge::graphics::RGB> : std::true_type {};
+template<> struct Bound<datamunge::graphics::DataSeries> : std::true_type {};
+template<> struct Bound<datamunge::graphics::ABLine> : std::true_type {};
+template<> struct Bound<datamunge::graphics::LegendEntry> : std::true_type {};
+template<> struct Bound<datamunge::graphics::Plot> : std::true_type {};
+template<> struct Bound<datamunge::graphics::RPlot> : std::true_type {};
+template<> struct Bound<datamunge::graphics::RLayout> : std::true_type {};
 template<> struct Bound<datamunge::bayes::GibbsOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::GibbsResult> : std::true_type {};
 template<> struct Bound<datamunge::bayes::GibbsSampler> : std::true_type {};
 template<> struct Bound<datamunge::bayes::HMCOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::HMCResult> : std::true_type {};
 template<> struct Bound<datamunge::bayes::HMC> : std::true_type {};
+template<> struct Bound<datamunge::bayes::HMCProposal> : std::true_type {};
 template<> struct Bound<datamunge::bayes::ImportanceSamplingOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::ImportanceSamplingResult> : std::true_type {};
 template<> struct Bound<datamunge::bayes::ImportanceSampling> : std::true_type {};
 template<> struct Bound<datamunge::bayes::MAPOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::MAP> : std::true_type {};
-template<> struct Bound<datamunge::bayes::NUTSOptions> : std::true_type {};
-template<> struct Bound<datamunge::bayes::NUTSResult> : std::true_type {};
-template<> struct Bound<datamunge::bayes::NUTS> : std::true_type {};
 template<> struct Bound<datamunge::bayes::RWMOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::RWMResult> : std::true_type {};
 template<> struct Bound<datamunge::bayes::RandomWalkMetropolis> : std::true_type {};
@@ -1522,29 +1531,39 @@ template<> struct Bound<datamunge::geometry::ConvexHullWork> : std::true_type {}
 template<> struct Bound<datamunge::geometry::HullEvent> : std::true_type {};
 template<> struct Bound<datamunge::geometry::ConvexHullAnalysis> : std::true_type {};
 template<> struct Bound<datamunge::geometry::ConvexHullTrace> : std::true_type {};
-template<> struct Bound<datamunge::Callback> : std::true_type {};
-template<> struct Bound<datamunge::graphics::RGB> : std::true_type {};
-template<> struct Bound<datamunge::graphics::DataSeries> : std::true_type {};
-template<> struct Bound<datamunge::graphics::ABLine> : std::true_type {};
-template<> struct Bound<datamunge::graphics::LegendEntry> : std::true_type {};
-template<> struct Bound<datamunge::graphics::Plot> : std::true_type {};
-template<> struct Bound<datamunge::graphics::RPlot> : std::true_type {};
-template<> struct Bound<datamunge::graphics::RLayout> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DTWResult> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DTWWork> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DTWComputation> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DTWTrace> : std::true_type {};
+template<> struct Bound<datamunge::geometry::KDNearestProbe> : std::true_type {};
+template<> struct Bound<datamunge::geometry::KDSearchWork> : std::true_type {};
+template<> struct Bound<datamunge::geometry::KDNearestTrace> : std::true_type {};
 template<> struct Bound<datamunge::geometry::KDTree2D> : std::true_type {};
 template<> struct Copyable<datamunge::geometry::KDTree2D> : std::false_type {};
 template<> struct Bound<datamunge::geometry::Circle> : std::true_type {};
+template<> struct Bound<datamunge::geometry::EnclosingCircleEvent> : std::true_type {};
+template<> struct Bound<datamunge::geometry::EnclosingCircleTrace> : std::true_type {};
+template<> struct Bound<datamunge::geometry::EnclosingCircleCheck> : std::true_type {};
+template<> struct Bound<datamunge::geometry::SegmentIntersectionRun> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonEarCandidate> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonEarClip> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonTriangulationOptions> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonTriangulationRun> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonTriangulationTrace> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DiameterResult> : std::true_type {};
-template<> struct Bound<datamunge::geometry::MinimumBoundingRectangle> : std::true_type {};
+template<> struct Bound<datamunge::geometry::DiameterOptions> : std::true_type {};
+template<> struct Bound<datamunge::geometry::CaliperEvent> : std::true_type {};
+template<> struct Bound<datamunge::geometry::DiameterRun> : std::true_type {};
 template<> struct Bound<datamunge::geometry::VoronoiDiagram> : std::true_type {};
 template<> struct Bound<datamunge::LinalgMatrix> : std::true_type {};
 template<> struct Bound<datamunge::ode::RHS> : std::true_type {};
 template<> struct Copyable<datamunge::ode::RHS> : std::false_type {};
 template<> struct Bound<datamunge::ode::ODEOptions> : std::true_type {};
+template<> struct Bound<datamunge::ode::ODEExecutionLimits> : std::true_type {};
 template<> struct Bound<datamunge::ode::ODESolution> : std::true_type {};
+template<> struct Bound<datamunge::ode::ODEEvaluation> : std::true_type {};
+template<> struct Bound<datamunge::ode::ODEAttempt> : std::true_type {};
+template<> struct Bound<datamunge::ode::ODETrace> : std::true_type {};
 template<> struct Bound<datamunge::ode::ODESolver> : std::true_type {};
 template<> struct Bound<datamunge::optim::ACOROptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::ACOR> : std::true_type {};
@@ -1595,6 +1614,10 @@ template<> struct Bound<datamunge::optim::HarmonySearchOptions> : std::true_type
 template<> struct Bound<datamunge::optim::HarmonySearch> : std::true_type {};
 template<> struct Bound<datamunge::optim::InteriorPointOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::InteriorPoint> : std::true_type {};
+template<> struct Bound<datamunge::optim::SurrogatePrediction> : std::true_type {};
+template<> struct Bound<datamunge::optim::GaussianJointPosterior> : std::true_type {};
+template<> struct Bound<datamunge::optim::GaussianProcessSurrogateOptions> : std::true_type {};
+template<> struct Bound<datamunge::optim::RBFGaussianProcessSurrogate> : std::true_type {};
 template<> struct Bound<datamunge::optim::LBFGSOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::LBFGS> : std::true_type {};
 template<> struct Bound<datamunge::optim::LevenbergMarquardtOptions> : std::true_type {};
@@ -1617,9 +1640,6 @@ template<> struct Bound<datamunge::optim::RandomizedBlockCoordinateDescentOption
 template<> struct Bound<datamunge::optim::RandomizedBlockCoordinateDescent> : std::true_type {};
 template<> struct Bound<datamunge::optim::RMSPropOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::RMSProp> : std::true_type {};
-template<> struct Bound<datamunge::optim::SurrogatePrediction> : std::true_type {};
-template<> struct Bound<datamunge::optim::GaussianProcessSurrogateOptions> : std::true_type {};
-template<> struct Bound<datamunge::optim::RBFGaussianProcessSurrogate> : std::true_type {};
 template<> struct Bound<datamunge::optim::SGDOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::SGD> : std::true_type {};
 template<> struct Bound<datamunge::optim::SimulatedAnnealingOptions> : std::true_type {};
@@ -1634,13 +1654,18 @@ template<> struct Bound<datamunge::optim::TrustRegionNewtonOptions> : std::true_
 template<> struct Bound<datamunge::optim::TrustRegionNewton> : std::true_type {};
 template<> struct Bound<datamunge::optim::WhaleOptimizationOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::WhaleOptimization> : std::true_type {};
-template<> struct Bound<datamunge::fda::BSplineBasis> : std::true_type {};
 template<> struct Bound<datamunge::stats::HypothesisTestResult> : std::true_type {};
+template<> struct Bound<datamunge::fda::BSplineBasis> : std::true_type {};
+template<> struct Bound<datamunge::stats::GamesHowellComparison> : std::true_type {};
+template<> struct Bound<datamunge::stats::DunnComparison> : std::true_type {};
 template<> struct Bound<datamunge::stats::ARIMAOptions> : std::true_type {};
 template<> struct Bound<datamunge::stats::ARIMA> : std::true_type {};
 template<> struct Bound<datamunge::stats::KendallTau> : std::true_type {};
 template<> struct Bound<datamunge::stats::ExponentialSmoothingOptions> : std::true_type {};
 template<> struct Bound<datamunge::stats::ExponentialSmoothing> : std::true_type {};
+template<> struct Bound<datamunge::stats::ProportionDifferenceInterval> : std::true_type {};
+template<> struct Bound<datamunge::stats::RiskRatioInterval> : std::true_type {};
+template<> struct Bound<datamunge::stats::PoissonRateInterval> : std::true_type {};
 template<> struct Bound<datamunge::Bspline> : std::true_type {};
 template<> struct Bound<datamunge::BSplineRegression> : std::true_type {};
 template<> struct Bound<datamunge::PSplineRegression> : std::true_type {};
@@ -4955,6 +4980,346 @@ napi_value rosetta_js_3235(napi_env, napi_callback_info);
 napi_value rosetta_js_3236(napi_env, napi_callback_info);
 napi_value rosetta_js_3237(napi_env, napi_callback_info);
 napi_value rosetta_js_3238(napi_env, napi_callback_info);
+napi_value rosetta_js_3239(napi_env, napi_callback_info);
+napi_value rosetta_js_3240(napi_env, napi_callback_info);
+napi_value rosetta_js_3241(napi_env, napi_callback_info);
+napi_value rosetta_js_3242(napi_env, napi_callback_info);
+napi_value rosetta_js_3243(napi_env, napi_callback_info);
+napi_value rosetta_js_3244(napi_env, napi_callback_info);
+napi_value rosetta_js_3245(napi_env, napi_callback_info);
+napi_value rosetta_js_3246(napi_env, napi_callback_info);
+napi_value rosetta_js_3247(napi_env, napi_callback_info);
+napi_value rosetta_js_3248(napi_env, napi_callback_info);
+napi_value rosetta_js_3249(napi_env, napi_callback_info);
+napi_value rosetta_js_3250(napi_env, napi_callback_info);
+napi_value rosetta_js_3251(napi_env, napi_callback_info);
+napi_value rosetta_js_3252(napi_env, napi_callback_info);
+napi_value rosetta_js_3253(napi_env, napi_callback_info);
+napi_value rosetta_js_3254(napi_env, napi_callback_info);
+napi_value rosetta_js_3255(napi_env, napi_callback_info);
+napi_value rosetta_js_3256(napi_env, napi_callback_info);
+napi_value rosetta_js_3257(napi_env, napi_callback_info);
+napi_value rosetta_js_3258(napi_env, napi_callback_info);
+napi_value rosetta_js_3259(napi_env, napi_callback_info);
+napi_value rosetta_js_3260(napi_env, napi_callback_info);
+napi_value rosetta_js_3261(napi_env, napi_callback_info);
+napi_value rosetta_js_3262(napi_env, napi_callback_info);
+napi_value rosetta_js_3263(napi_env, napi_callback_info);
+napi_value rosetta_js_3264(napi_env, napi_callback_info);
+napi_value rosetta_js_3265(napi_env, napi_callback_info);
+napi_value rosetta_js_3266(napi_env, napi_callback_info);
+napi_value rosetta_js_3267(napi_env, napi_callback_info);
+napi_value rosetta_js_3268(napi_env, napi_callback_info);
+napi_value rosetta_js_3269(napi_env, napi_callback_info);
+napi_value rosetta_js_3270(napi_env, napi_callback_info);
+napi_value rosetta_js_3271(napi_env, napi_callback_info);
+napi_value rosetta_js_3272(napi_env, napi_callback_info);
+napi_value rosetta_js_3273(napi_env, napi_callback_info);
+napi_value rosetta_js_3274(napi_env, napi_callback_info);
+napi_value rosetta_js_3275(napi_env, napi_callback_info);
+napi_value rosetta_js_3276(napi_env, napi_callback_info);
+napi_value rosetta_js_3277(napi_env, napi_callback_info);
+napi_value rosetta_js_3278(napi_env, napi_callback_info);
+napi_value rosetta_js_3279(napi_env, napi_callback_info);
+napi_value rosetta_js_3280(napi_env, napi_callback_info);
+napi_value rosetta_js_3281(napi_env, napi_callback_info);
+napi_value rosetta_js_3282(napi_env, napi_callback_info);
+napi_value rosetta_js_3283(napi_env, napi_callback_info);
+napi_value rosetta_js_3284(napi_env, napi_callback_info);
+napi_value rosetta_js_3285(napi_env, napi_callback_info);
+napi_value rosetta_js_3286(napi_env, napi_callback_info);
+napi_value rosetta_js_3287(napi_env, napi_callback_info);
+napi_value rosetta_js_3288(napi_env, napi_callback_info);
+napi_value rosetta_js_3289(napi_env, napi_callback_info);
+napi_value rosetta_js_3290(napi_env, napi_callback_info);
+napi_value rosetta_js_3291(napi_env, napi_callback_info);
+napi_value rosetta_js_3292(napi_env, napi_callback_info);
+napi_value rosetta_js_3293(napi_env, napi_callback_info);
+napi_value rosetta_js_3294(napi_env, napi_callback_info);
+napi_value rosetta_js_3295(napi_env, napi_callback_info);
+napi_value rosetta_js_3296(napi_env, napi_callback_info);
+napi_value rosetta_js_3297(napi_env, napi_callback_info);
+napi_value rosetta_js_3298(napi_env, napi_callback_info);
+napi_value rosetta_js_3299(napi_env, napi_callback_info);
+napi_value rosetta_js_3300(napi_env, napi_callback_info);
+napi_value rosetta_js_3301(napi_env, napi_callback_info);
+napi_value rosetta_js_3302(napi_env, napi_callback_info);
+napi_value rosetta_js_3303(napi_env, napi_callback_info);
+napi_value rosetta_js_3304(napi_env, napi_callback_info);
+napi_value rosetta_js_3305(napi_env, napi_callback_info);
+napi_value rosetta_js_3306(napi_env, napi_callback_info);
+napi_value rosetta_js_3307(napi_env, napi_callback_info);
+napi_value rosetta_js_3308(napi_env, napi_callback_info);
+napi_value rosetta_js_3309(napi_env, napi_callback_info);
+napi_value rosetta_js_3310(napi_env, napi_callback_info);
+napi_value rosetta_js_3311(napi_env, napi_callback_info);
+napi_value rosetta_js_3312(napi_env, napi_callback_info);
+napi_value rosetta_js_3313(napi_env, napi_callback_info);
+napi_value rosetta_js_3314(napi_env, napi_callback_info);
+napi_value rosetta_js_3315(napi_env, napi_callback_info);
+napi_value rosetta_js_3316(napi_env, napi_callback_info);
+napi_value rosetta_js_3317(napi_env, napi_callback_info);
+napi_value rosetta_js_3318(napi_env, napi_callback_info);
+napi_value rosetta_js_3319(napi_env, napi_callback_info);
+napi_value rosetta_js_3320(napi_env, napi_callback_info);
+napi_value rosetta_js_3321(napi_env, napi_callback_info);
+napi_value rosetta_js_3322(napi_env, napi_callback_info);
+napi_value rosetta_js_3323(napi_env, napi_callback_info);
+napi_value rosetta_js_3324(napi_env, napi_callback_info);
+napi_value rosetta_js_3325(napi_env, napi_callback_info);
+napi_value rosetta_js_3326(napi_env, napi_callback_info);
+napi_value rosetta_js_3327(napi_env, napi_callback_info);
+napi_value rosetta_js_3328(napi_env, napi_callback_info);
+napi_value rosetta_js_3329(napi_env, napi_callback_info);
+napi_value rosetta_js_3330(napi_env, napi_callback_info);
+napi_value rosetta_js_3331(napi_env, napi_callback_info);
+napi_value rosetta_js_3332(napi_env, napi_callback_info);
+napi_value rosetta_js_3333(napi_env, napi_callback_info);
+napi_value rosetta_js_3334(napi_env, napi_callback_info);
+napi_value rosetta_js_3335(napi_env, napi_callback_info);
+napi_value rosetta_js_3336(napi_env, napi_callback_info);
+napi_value rosetta_js_3337(napi_env, napi_callback_info);
+napi_value rosetta_js_3338(napi_env, napi_callback_info);
+napi_value rosetta_js_3339(napi_env, napi_callback_info);
+napi_value rosetta_js_3340(napi_env, napi_callback_info);
+napi_value rosetta_js_3341(napi_env, napi_callback_info);
+napi_value rosetta_js_3342(napi_env, napi_callback_info);
+napi_value rosetta_js_3343(napi_env, napi_callback_info);
+napi_value rosetta_js_3344(napi_env, napi_callback_info);
+napi_value rosetta_js_3345(napi_env, napi_callback_info);
+napi_value rosetta_js_3346(napi_env, napi_callback_info);
+napi_value rosetta_js_3347(napi_env, napi_callback_info);
+napi_value rosetta_js_3348(napi_env, napi_callback_info);
+napi_value rosetta_js_3349(napi_env, napi_callback_info);
+napi_value rosetta_js_3350(napi_env, napi_callback_info);
+napi_value rosetta_js_3351(napi_env, napi_callback_info);
+napi_value rosetta_js_3352(napi_env, napi_callback_info);
+napi_value rosetta_js_3353(napi_env, napi_callback_info);
+napi_value rosetta_js_3354(napi_env, napi_callback_info);
+napi_value rosetta_js_3355(napi_env, napi_callback_info);
+napi_value rosetta_js_3356(napi_env, napi_callback_info);
+napi_value rosetta_js_3357(napi_env, napi_callback_info);
+napi_value rosetta_js_3358(napi_env, napi_callback_info);
+napi_value rosetta_js_3359(napi_env, napi_callback_info);
+napi_value rosetta_js_3360(napi_env, napi_callback_info);
+napi_value rosetta_js_3361(napi_env, napi_callback_info);
+napi_value rosetta_js_3362(napi_env, napi_callback_info);
+napi_value rosetta_js_3363(napi_env, napi_callback_info);
+napi_value rosetta_js_3364(napi_env, napi_callback_info);
+napi_value rosetta_js_3365(napi_env, napi_callback_info);
+napi_value rosetta_js_3366(napi_env, napi_callback_info);
+napi_value rosetta_js_3367(napi_env, napi_callback_info);
+napi_value rosetta_js_3368(napi_env, napi_callback_info);
+napi_value rosetta_js_3369(napi_env, napi_callback_info);
+napi_value rosetta_js_3370(napi_env, napi_callback_info);
+napi_value rosetta_js_3371(napi_env, napi_callback_info);
+napi_value rosetta_js_3372(napi_env, napi_callback_info);
+napi_value rosetta_js_3373(napi_env, napi_callback_info);
+napi_value rosetta_js_3374(napi_env, napi_callback_info);
+napi_value rosetta_js_3375(napi_env, napi_callback_info);
+napi_value rosetta_js_3376(napi_env, napi_callback_info);
+napi_value rosetta_js_3377(napi_env, napi_callback_info);
+napi_value rosetta_js_3378(napi_env, napi_callback_info);
+napi_value rosetta_js_3379(napi_env, napi_callback_info);
+napi_value rosetta_js_3380(napi_env, napi_callback_info);
+napi_value rosetta_js_3381(napi_env, napi_callback_info);
+napi_value rosetta_js_3382(napi_env, napi_callback_info);
+napi_value rosetta_js_3383(napi_env, napi_callback_info);
+napi_value rosetta_js_3384(napi_env, napi_callback_info);
+napi_value rosetta_js_3385(napi_env, napi_callback_info);
+napi_value rosetta_js_3386(napi_env, napi_callback_info);
+napi_value rosetta_js_3387(napi_env, napi_callback_info);
+napi_value rosetta_js_3388(napi_env, napi_callback_info);
+napi_value rosetta_js_3389(napi_env, napi_callback_info);
+napi_value rosetta_js_3390(napi_env, napi_callback_info);
+napi_value rosetta_js_3391(napi_env, napi_callback_info);
+napi_value rosetta_js_3392(napi_env, napi_callback_info);
+napi_value rosetta_js_3393(napi_env, napi_callback_info);
+napi_value rosetta_js_3394(napi_env, napi_callback_info);
+napi_value rosetta_js_3395(napi_env, napi_callback_info);
+napi_value rosetta_js_3396(napi_env, napi_callback_info);
+napi_value rosetta_js_3397(napi_env, napi_callback_info);
+napi_value rosetta_js_3398(napi_env, napi_callback_info);
+napi_value rosetta_js_3399(napi_env, napi_callback_info);
+napi_value rosetta_js_3400(napi_env, napi_callback_info);
+napi_value rosetta_js_3401(napi_env, napi_callback_info);
+napi_value rosetta_js_3402(napi_env, napi_callback_info);
+napi_value rosetta_js_3403(napi_env, napi_callback_info);
+napi_value rosetta_js_3404(napi_env, napi_callback_info);
+napi_value rosetta_js_3405(napi_env, napi_callback_info);
+napi_value rosetta_js_3406(napi_env, napi_callback_info);
+napi_value rosetta_js_3407(napi_env, napi_callback_info);
+napi_value rosetta_js_3408(napi_env, napi_callback_info);
+napi_value rosetta_js_3409(napi_env, napi_callback_info);
+napi_value rosetta_js_3410(napi_env, napi_callback_info);
+napi_value rosetta_js_3411(napi_env, napi_callback_info);
+napi_value rosetta_js_3412(napi_env, napi_callback_info);
+napi_value rosetta_js_3413(napi_env, napi_callback_info);
+napi_value rosetta_js_3414(napi_env, napi_callback_info);
+napi_value rosetta_js_3415(napi_env, napi_callback_info);
+napi_value rosetta_js_3416(napi_env, napi_callback_info);
+napi_value rosetta_js_3417(napi_env, napi_callback_info);
+napi_value rosetta_js_3418(napi_env, napi_callback_info);
+napi_value rosetta_js_3419(napi_env, napi_callback_info);
+napi_value rosetta_js_3420(napi_env, napi_callback_info);
+napi_value rosetta_js_3421(napi_env, napi_callback_info);
+napi_value rosetta_js_3422(napi_env, napi_callback_info);
+napi_value rosetta_js_3423(napi_env, napi_callback_info);
+napi_value rosetta_js_3424(napi_env, napi_callback_info);
+napi_value rosetta_js_3425(napi_env, napi_callback_info);
+napi_value rosetta_js_3426(napi_env, napi_callback_info);
+napi_value rosetta_js_3427(napi_env, napi_callback_info);
+napi_value rosetta_js_3428(napi_env, napi_callback_info);
+napi_value rosetta_js_3429(napi_env, napi_callback_info);
+napi_value rosetta_js_3430(napi_env, napi_callback_info);
+napi_value rosetta_js_3431(napi_env, napi_callback_info);
+napi_value rosetta_js_3432(napi_env, napi_callback_info);
+napi_value rosetta_js_3433(napi_env, napi_callback_info);
+napi_value rosetta_js_3434(napi_env, napi_callback_info);
+napi_value rosetta_js_3435(napi_env, napi_callback_info);
+napi_value rosetta_js_3436(napi_env, napi_callback_info);
+napi_value rosetta_js_3437(napi_env, napi_callback_info);
+napi_value rosetta_js_3438(napi_env, napi_callback_info);
+napi_value rosetta_js_3439(napi_env, napi_callback_info);
+napi_value rosetta_js_3440(napi_env, napi_callback_info);
+napi_value rosetta_js_3441(napi_env, napi_callback_info);
+napi_value rosetta_js_3442(napi_env, napi_callback_info);
+napi_value rosetta_js_3443(napi_env, napi_callback_info);
+napi_value rosetta_js_3444(napi_env, napi_callback_info);
+napi_value rosetta_js_3445(napi_env, napi_callback_info);
+napi_value rosetta_js_3446(napi_env, napi_callback_info);
+napi_value rosetta_js_3447(napi_env, napi_callback_info);
+napi_value rosetta_js_3448(napi_env, napi_callback_info);
+napi_value rosetta_js_3449(napi_env, napi_callback_info);
+napi_value rosetta_js_3450(napi_env, napi_callback_info);
+napi_value rosetta_js_3451(napi_env, napi_callback_info);
+napi_value rosetta_js_3452(napi_env, napi_callback_info);
+napi_value rosetta_js_3453(napi_env, napi_callback_info);
+napi_value rosetta_js_3454(napi_env, napi_callback_info);
+napi_value rosetta_js_3455(napi_env, napi_callback_info);
+napi_value rosetta_js_3456(napi_env, napi_callback_info);
+napi_value rosetta_js_3457(napi_env, napi_callback_info);
+napi_value rosetta_js_3458(napi_env, napi_callback_info);
+napi_value rosetta_js_3459(napi_env, napi_callback_info);
+napi_value rosetta_js_3460(napi_env, napi_callback_info);
+napi_value rosetta_js_3461(napi_env, napi_callback_info);
+napi_value rosetta_js_3462(napi_env, napi_callback_info);
+napi_value rosetta_js_3463(napi_env, napi_callback_info);
+napi_value rosetta_js_3464(napi_env, napi_callback_info);
+napi_value rosetta_js_3465(napi_env, napi_callback_info);
+napi_value rosetta_js_3466(napi_env, napi_callback_info);
+napi_value rosetta_js_3467(napi_env, napi_callback_info);
+napi_value rosetta_js_3468(napi_env, napi_callback_info);
+napi_value rosetta_js_3469(napi_env, napi_callback_info);
+napi_value rosetta_js_3470(napi_env, napi_callback_info);
+napi_value rosetta_js_3471(napi_env, napi_callback_info);
+napi_value rosetta_js_3472(napi_env, napi_callback_info);
+napi_value rosetta_js_3473(napi_env, napi_callback_info);
+napi_value rosetta_js_3474(napi_env, napi_callback_info);
+napi_value rosetta_js_3475(napi_env, napi_callback_info);
+napi_value rosetta_js_3476(napi_env, napi_callback_info);
+napi_value rosetta_js_3477(napi_env, napi_callback_info);
+napi_value rosetta_js_3478(napi_env, napi_callback_info);
+napi_value rosetta_js_3479(napi_env, napi_callback_info);
+napi_value rosetta_js_3480(napi_env, napi_callback_info);
+napi_value rosetta_js_3481(napi_env, napi_callback_info);
+napi_value rosetta_js_3482(napi_env, napi_callback_info);
+napi_value rosetta_js_3483(napi_env, napi_callback_info);
+napi_value rosetta_js_3484(napi_env, napi_callback_info);
+napi_value rosetta_js_3485(napi_env, napi_callback_info);
+napi_value rosetta_js_3486(napi_env, napi_callback_info);
+napi_value rosetta_js_3487(napi_env, napi_callback_info);
+napi_value rosetta_js_3488(napi_env, napi_callback_info);
+napi_value rosetta_js_3489(napi_env, napi_callback_info);
+napi_value rosetta_js_3490(napi_env, napi_callback_info);
+napi_value rosetta_js_3491(napi_env, napi_callback_info);
+napi_value rosetta_js_3492(napi_env, napi_callback_info);
+napi_value rosetta_js_3493(napi_env, napi_callback_info);
+napi_value rosetta_js_3494(napi_env, napi_callback_info);
+napi_value rosetta_js_3495(napi_env, napi_callback_info);
+napi_value rosetta_js_3496(napi_env, napi_callback_info);
+napi_value rosetta_js_3497(napi_env, napi_callback_info);
+napi_value rosetta_js_3498(napi_env, napi_callback_info);
+napi_value rosetta_js_3499(napi_env, napi_callback_info);
+napi_value rosetta_js_3500(napi_env, napi_callback_info);
+napi_value rosetta_js_3501(napi_env, napi_callback_info);
+napi_value rosetta_js_3502(napi_env, napi_callback_info);
+napi_value rosetta_js_3503(napi_env, napi_callback_info);
+napi_value rosetta_js_3504(napi_env, napi_callback_info);
+napi_value rosetta_js_3505(napi_env, napi_callback_info);
+napi_value rosetta_js_3506(napi_env, napi_callback_info);
+napi_value rosetta_js_3507(napi_env, napi_callback_info);
+napi_value rosetta_js_3508(napi_env, napi_callback_info);
+napi_value rosetta_js_3509(napi_env, napi_callback_info);
+napi_value rosetta_js_3510(napi_env, napi_callback_info);
+napi_value rosetta_js_3511(napi_env, napi_callback_info);
+napi_value rosetta_js_3512(napi_env, napi_callback_info);
+napi_value rosetta_js_3513(napi_env, napi_callback_info);
+napi_value rosetta_js_3514(napi_env, napi_callback_info);
+napi_value rosetta_js_3515(napi_env, napi_callback_info);
+napi_value rosetta_js_3516(napi_env, napi_callback_info);
+napi_value rosetta_js_3517(napi_env, napi_callback_info);
+napi_value rosetta_js_3518(napi_env, napi_callback_info);
+napi_value rosetta_js_3519(napi_env, napi_callback_info);
+napi_value rosetta_js_3520(napi_env, napi_callback_info);
+napi_value rosetta_js_3521(napi_env, napi_callback_info);
+napi_value rosetta_js_3522(napi_env, napi_callback_info);
+napi_value rosetta_js_3523(napi_env, napi_callback_info);
+napi_value rosetta_js_3524(napi_env, napi_callback_info);
+napi_value rosetta_js_3525(napi_env, napi_callback_info);
+napi_value rosetta_js_3526(napi_env, napi_callback_info);
+napi_value rosetta_js_3527(napi_env, napi_callback_info);
+napi_value rosetta_js_3528(napi_env, napi_callback_info);
+napi_value rosetta_js_3529(napi_env, napi_callback_info);
+napi_value rosetta_js_3530(napi_env, napi_callback_info);
+napi_value rosetta_js_3531(napi_env, napi_callback_info);
+napi_value rosetta_js_3532(napi_env, napi_callback_info);
+napi_value rosetta_js_3533(napi_env, napi_callback_info);
+napi_value rosetta_js_3534(napi_env, napi_callback_info);
+napi_value rosetta_js_3535(napi_env, napi_callback_info);
+napi_value rosetta_js_3536(napi_env, napi_callback_info);
+napi_value rosetta_js_3537(napi_env, napi_callback_info);
+napi_value rosetta_js_3538(napi_env, napi_callback_info);
+napi_value rosetta_js_3539(napi_env, napi_callback_info);
+napi_value rosetta_js_3540(napi_env, napi_callback_info);
+napi_value rosetta_js_3541(napi_env, napi_callback_info);
+napi_value rosetta_js_3542(napi_env, napi_callback_info);
+napi_value rosetta_js_3543(napi_env, napi_callback_info);
+napi_value rosetta_js_3544(napi_env, napi_callback_info);
+napi_value rosetta_js_3545(napi_env, napi_callback_info);
+napi_value rosetta_js_3546(napi_env, napi_callback_info);
+napi_value rosetta_js_3547(napi_env, napi_callback_info);
+napi_value rosetta_js_3548(napi_env, napi_callback_info);
+napi_value rosetta_js_3549(napi_env, napi_callback_info);
+napi_value rosetta_js_3550(napi_env, napi_callback_info);
+napi_value rosetta_js_3551(napi_env, napi_callback_info);
+napi_value rosetta_js_3552(napi_env, napi_callback_info);
+napi_value rosetta_js_3553(napi_env, napi_callback_info);
+napi_value rosetta_js_3554(napi_env, napi_callback_info);
+napi_value rosetta_js_3555(napi_env, napi_callback_info);
+napi_value rosetta_js_3556(napi_env, napi_callback_info);
+napi_value rosetta_js_3557(napi_env, napi_callback_info);
+napi_value rosetta_js_3558(napi_env, napi_callback_info);
+napi_value rosetta_js_3559(napi_env, napi_callback_info);
+napi_value rosetta_js_3560(napi_env, napi_callback_info);
+napi_value rosetta_js_3561(napi_env, napi_callback_info);
+napi_value rosetta_js_3562(napi_env, napi_callback_info);
+napi_value rosetta_js_3563(napi_env, napi_callback_info);
+napi_value rosetta_js_3564(napi_env, napi_callback_info);
+napi_value rosetta_js_3565(napi_env, napi_callback_info);
+napi_value rosetta_js_3566(napi_env, napi_callback_info);
+napi_value rosetta_js_3567(napi_env, napi_callback_info);
+napi_value rosetta_js_3568(napi_env, napi_callback_info);
+napi_value rosetta_js_3569(napi_env, napi_callback_info);
+napi_value rosetta_js_3570(napi_env, napi_callback_info);
+napi_value rosetta_js_3571(napi_env, napi_callback_info);
+napi_value rosetta_js_3572(napi_env, napi_callback_info);
+napi_value rosetta_js_3573(napi_env, napi_callback_info);
+napi_value rosetta_js_3574(napi_env, napi_callback_info);
+napi_value rosetta_js_3575(napi_env, napi_callback_info);
+napi_value rosetta_js_3576(napi_env, napi_callback_info);
+napi_value rosetta_js_3577(napi_env, napi_callback_info);
+napi_value rosetta_js_3578(napi_env, napi_callback_info);
 napi_value rosetta_js_init(napi_env env, napi_value exports) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         static const bool registered = [] {
@@ -4986,20 +5351,30 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         rosetta_js::register_type<datamunge::optim::InequalityConstrainedFunction>("InequalityConstrainedFunction");
         rosetta_js::add_base<datamunge::optim::InequalityConstrainedFunction, datamunge::optim::DifferentiableFunction>();
         rosetta_js::register_type<datamunge::optim::ResidualFunction>("ResidualFunction");
+        rosetta_js::register_type<datamunge::bayes::NUTSOptions>("NUTSOptions");
+        rosetta_js::register_type<datamunge::bayes::NUTSResult>("NUTSResult");
+        rosetta_js::register_type<datamunge::bayes::NUTS>("NUTS");
+        rosetta_js::register_type<datamunge::Callback>("Callback");
+        rosetta_js::register_type<datamunge::graphics::RGB>("RGB");
+        rosetta_js::register_type<datamunge::graphics::DataSeries>("DataSeries");
+        rosetta_js::register_type<datamunge::graphics::ABLine>("ABLine");
+        rosetta_js::register_type<datamunge::graphics::LegendEntry>("LegendEntry");
+        rosetta_js::register_type<datamunge::graphics::Plot>("Plot");
+        rosetta_js::register_type<datamunge::graphics::RPlot>("RPlot");
+        rosetta_js::add_base<datamunge::graphics::RPlot, datamunge::graphics::Plot>();
+        rosetta_js::register_type<datamunge::graphics::RLayout>("RLayout");
         rosetta_js::register_type<datamunge::bayes::GibbsOptions>("GibbsOptions");
         rosetta_js::register_type<datamunge::bayes::GibbsResult>("GibbsResult");
         rosetta_js::register_type<datamunge::bayes::GibbsSampler>("GibbsSampler");
         rosetta_js::register_type<datamunge::bayes::HMCOptions>("HMCOptions");
         rosetta_js::register_type<datamunge::bayes::HMCResult>("HMCResult");
         rosetta_js::register_type<datamunge::bayes::HMC>("HMC");
+        rosetta_js::register_type<datamunge::bayes::HMCProposal>("HMCProposal");
         rosetta_js::register_type<datamunge::bayes::ImportanceSamplingOptions>("ImportanceSamplingOptions");
         rosetta_js::register_type<datamunge::bayes::ImportanceSamplingResult>("ImportanceSamplingResult");
         rosetta_js::register_type<datamunge::bayes::ImportanceSampling>("ImportanceSampling");
         rosetta_js::register_type<datamunge::bayes::MAPOptions>("MAPOptions");
         rosetta_js::register_type<datamunge::bayes::MAP>("MAP");
-        rosetta_js::register_type<datamunge::bayes::NUTSOptions>("NUTSOptions");
-        rosetta_js::register_type<datamunge::bayes::NUTSResult>("NUTSResult");
-        rosetta_js::register_type<datamunge::bayes::NUTS>("NUTS");
         rosetta_js::register_type<datamunge::bayes::RWMOptions>("RWMOptions");
         rosetta_js::register_type<datamunge::bayes::RWMResult>("RWMResult");
         rosetta_js::register_type<datamunge::bayes::RandomWalkMetropolis>("RandomWalkMetropolis");
@@ -5052,28 +5427,37 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         rosetta_js::register_type<datamunge::geometry::HullEvent>("HullEvent");
         rosetta_js::register_type<datamunge::geometry::ConvexHullAnalysis>("ConvexHullAnalysis");
         rosetta_js::register_type<datamunge::geometry::ConvexHullTrace>("ConvexHullTrace");
-        rosetta_js::register_type<datamunge::Callback>("Callback");
-        rosetta_js::register_type<datamunge::graphics::RGB>("RGB");
-        rosetta_js::register_type<datamunge::graphics::DataSeries>("DataSeries");
-        rosetta_js::register_type<datamunge::graphics::ABLine>("ABLine");
-        rosetta_js::register_type<datamunge::graphics::LegendEntry>("LegendEntry");
-        rosetta_js::register_type<datamunge::graphics::Plot>("Plot");
-        rosetta_js::register_type<datamunge::graphics::RPlot>("RPlot");
-        rosetta_js::add_base<datamunge::graphics::RPlot, datamunge::graphics::Plot>();
-        rosetta_js::register_type<datamunge::graphics::RLayout>("RLayout");
         rosetta_js::register_type<datamunge::geometry::DTWResult>("DTWResult");
         rosetta_js::register_type<datamunge::geometry::DTWWork>("DTWWork");
         rosetta_js::register_type<datamunge::geometry::DTWComputation>("DTWComputation");
         rosetta_js::register_type<datamunge::geometry::DTWTrace>("DTWTrace");
+        rosetta_js::register_type<datamunge::geometry::KDNearestProbe>("KDNearestProbe");
+        rosetta_js::register_type<datamunge::geometry::KDSearchWork>("KDSearchWork");
+        rosetta_js::register_type<datamunge::geometry::KDNearestTrace>("KDNearestTrace");
         rosetta_js::register_type<datamunge::geometry::KDTree2D>("KDTree2D");
         rosetta_js::register_type<datamunge::geometry::Circle>("Circle");
+        rosetta_js::register_type<datamunge::geometry::EnclosingCircleEvent>("EnclosingCircleEvent");
+        rosetta_js::register_type<datamunge::geometry::EnclosingCircleTrace>("EnclosingCircleTrace");
+        rosetta_js::register_type<datamunge::geometry::EnclosingCircleCheck>("EnclosingCircleCheck");
+        rosetta_js::register_type<datamunge::geometry::SegmentIntersectionRun>("SegmentIntersectionRun");
+        rosetta_js::register_type<datamunge::geometry::PolygonEarCandidate>("PolygonEarCandidate");
+        rosetta_js::register_type<datamunge::geometry::PolygonEarClip>("PolygonEarClip");
+        rosetta_js::register_type<datamunge::geometry::PolygonTriangulationOptions>("PolygonTriangulationOptions");
+        rosetta_js::register_type<datamunge::geometry::PolygonTriangulationRun>("PolygonTriangulationRun");
+        rosetta_js::register_type<datamunge::geometry::PolygonTriangulationTrace>("PolygonTriangulationTrace");
         rosetta_js::register_type<datamunge::geometry::DiameterResult>("DiameterResult");
-        rosetta_js::register_type<datamunge::geometry::MinimumBoundingRectangle>("MinimumBoundingRectangle");
+        rosetta_js::register_type<datamunge::geometry::DiameterOptions>("DiameterOptions");
+        rosetta_js::register_type<datamunge::geometry::CaliperEvent>("CaliperEvent");
+        rosetta_js::register_type<datamunge::geometry::DiameterRun>("DiameterRun");
         rosetta_js::register_type<datamunge::geometry::VoronoiDiagram>("VoronoiDiagram");
         rosetta_js::register_type<datamunge::LinalgMatrix>("LinalgMatrix");
         rosetta_js::register_type<datamunge::ode::RHS>("RHS");
         rosetta_js::register_type<datamunge::ode::ODEOptions>("ODEOptions");
+        rosetta_js::register_type<datamunge::ode::ODEExecutionLimits>("ODEExecutionLimits");
         rosetta_js::register_type<datamunge::ode::ODESolution>("ODESolution");
+        rosetta_js::register_type<datamunge::ode::ODEEvaluation>("ODEEvaluation");
+        rosetta_js::register_type<datamunge::ode::ODEAttempt>("ODEAttempt");
+        rosetta_js::register_type<datamunge::ode::ODETrace>("ODETrace");
         rosetta_js::register_type<datamunge::ode::ODESolver>("ODESolver");
         rosetta_js::register_type<datamunge::optim::ACOROptions>("ACOROptions");
         rosetta_js::register_type<datamunge::optim::ACOR>("ACOR");
@@ -5123,6 +5507,11 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         rosetta_js::register_type<datamunge::optim::HarmonySearch>("HarmonySearch");
         rosetta_js::register_type<datamunge::optim::InteriorPointOptions>("InteriorPointOptions");
         rosetta_js::register_type<datamunge::optim::InteriorPoint>("InteriorPoint");
+        rosetta_js::register_type<datamunge::optim::SurrogatePrediction>("SurrogatePrediction");
+        rosetta_js::register_type<datamunge::optim::GaussianJointPosterior>("GaussianJointPosterior");
+        rosetta_js::register_type<datamunge::optim::GaussianProcessSurrogateOptions>("GaussianProcessSurrogateOptions");
+        rosetta_js::register_type<datamunge::optim::RBFGaussianProcessSurrogate>("RBFGaussianProcessSurrogate");
+        rosetta_js::add_base<datamunge::optim::RBFGaussianProcessSurrogate, datamunge::optim::BayesianSurrogate>();
         rosetta_js::register_type<datamunge::optim::LBFGSOptions>("LBFGSOptions");
         rosetta_js::register_type<datamunge::optim::LBFGS>("LBFGS");
         rosetta_js::register_type<datamunge::optim::LevenbergMarquardtOptions>("LevenbergMarquardtOptions");
@@ -5145,10 +5534,6 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         rosetta_js::register_type<datamunge::optim::RandomizedBlockCoordinateDescent>("RandomizedBlockCoordinateDescent");
         rosetta_js::register_type<datamunge::optim::RMSPropOptions>("RMSPropOptions");
         rosetta_js::register_type<datamunge::optim::RMSProp>("RMSProp");
-        rosetta_js::register_type<datamunge::optim::SurrogatePrediction>("SurrogatePrediction");
-        rosetta_js::register_type<datamunge::optim::GaussianProcessSurrogateOptions>("GaussianProcessSurrogateOptions");
-        rosetta_js::register_type<datamunge::optim::RBFGaussianProcessSurrogate>("RBFGaussianProcessSurrogate");
-        rosetta_js::add_base<datamunge::optim::RBFGaussianProcessSurrogate, datamunge::optim::BayesianSurrogate>();
         rosetta_js::register_type<datamunge::optim::SGDOptions>("SGDOptions");
         rosetta_js::register_type<datamunge::optim::SGD>("SGD");
         rosetta_js::register_type<datamunge::optim::SimulatedAnnealingOptions>("SimulatedAnnealingOptions");
@@ -5163,13 +5548,18 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         rosetta_js::register_type<datamunge::optim::TrustRegionNewton>("TrustRegionNewton");
         rosetta_js::register_type<datamunge::optim::WhaleOptimizationOptions>("WhaleOptimizationOptions");
         rosetta_js::register_type<datamunge::optim::WhaleOptimization>("WhaleOptimization");
-        rosetta_js::register_type<datamunge::fda::BSplineBasis>("BSplineBasis");
         rosetta_js::register_type<datamunge::stats::HypothesisTestResult>("HypothesisTestResult");
+        rosetta_js::register_type<datamunge::fda::BSplineBasis>("BSplineBasis");
+        rosetta_js::register_type<datamunge::stats::GamesHowellComparison>("GamesHowellComparison");
+        rosetta_js::register_type<datamunge::stats::DunnComparison>("DunnComparison");
         rosetta_js::register_type<datamunge::stats::ARIMAOptions>("ARIMAOptions");
         rosetta_js::register_type<datamunge::stats::ARIMA>("ARIMA");
         rosetta_js::register_type<datamunge::stats::KendallTau>("KendallTau");
         rosetta_js::register_type<datamunge::stats::ExponentialSmoothingOptions>("ExponentialSmoothingOptions");
         rosetta_js::register_type<datamunge::stats::ExponentialSmoothing>("ExponentialSmoothing");
+        rosetta_js::register_type<datamunge::stats::ProportionDifferenceInterval>("ProportionDifferenceInterval");
+        rosetta_js::register_type<datamunge::stats::RiskRatioInterval>("RiskRatioInterval");
+        rosetta_js::register_type<datamunge::stats::PoissonRateInterval>("PoissonRateInterval");
         rosetta_js::register_type<datamunge::Bspline>("Bspline");
         rosetta_js::register_type<datamunge::BSplineRegression>("BSplineRegression");
         rosetta_js::register_type<datamunge::PSplineRegression>("PSplineRegression");
@@ -5240,13 +5630,17 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         rosetta_js::EnumTable<datamunge::cv::StructuringElement>::entries = {{"Square", 0LL}, {"Cross", 1LL}, };
         rosetta_js::EnumTable<datamunge::fda::SplineSolver>::entries = {{"Automatic", 0LL}, {"Cholesky", 1LL}, {"ConjugateGradient", 2LL}, };
         rosetta_js::EnumTable<datamunge::fem::BCType>::entries = {{"Dirichlet", 0LL}, {"Neumann", 1LL}, {"Robin", 2LL}, };
+        rosetta_js::EnumTable<datamunge::geometry::CaliperEventKind>::entries = {{"AreaAdvance", 0LL}, {"AreaStop", 1LL}, {"PairTest", 2LL}, };
         rosetta_js::EnumTable<datamunge::geometry::DTWPredecessor>::entries = {{"origin", 0LL}, {"diagonal", 1LL}, {"advance_a", 2LL}, {"advance_b", 3LL}, {"unrepresentable", 4LL}, };
         rosetta_js::EnumTable<datamunge::geometry::HullAction>::entries = {{"test", 0LL}, {"pop", 1LL}, {"push", 2LL}, };
         rosetta_js::EnumTable<datamunge::geometry::HullPass>::entries = {{"lower", 0LL}, {"upper", 1LL}, };
+        rosetta_js::EnumTable<datamunge::geometry::KDProbeAction>::entries = {{"Visit", 0LL}, {"FarPlane", 1LL}, };
         rosetta_js::EnumTable<datamunge::geometry::Orientation>::entries = {{"Collinear", 0LL}, {"Clockwise", 1LL}, {"CounterClockwise", 2LL}, };
+        rosetta_js::EnumTable<datamunge::geometry::SegmentContact>::entries = {{"None", 0LL}, {"Point", 1LL}, {"Overlap", 2LL}, };
         rosetta_js::EnumTable<datamunge::graphics::DataSeries::Kind>::entries = {{"Scatter", 0LL}, {"Line", 1LL}, {"Bar", 2LL}, {"Box", 3LL}, {"Polygon", 4LL}, {"Text", 5LL}, {"Segment", 6LL}, };
         rosetta_js::EnumTable<datamunge::image::ImageMode>::entries = {{"Grayscale", 1LL}, {"GrayscaleAlpha", 2LL}, {"RGB", 3LL}, {"RGBA", 4LL}, };
         rosetta_js::EnumTable<datamunge::image::ResampleFilter>::entries = {{"Nearest", 0LL}, {"Bilinear", 1LL}, };
+        rosetta_js::EnumTable<datamunge::ode::ODEAttemptKind>::entries = {{"fixed_step", 0LL}, {"rk45_trial", 1LL}, {"rk4_startup", 2LL}, {"adams_bashforth", 3LL}, {"adams_pece", 4LL}, {"rk4_tail", 5LL}, };
         rosetta_js::EnumTable<datamunge::ode::StepMethod>::entries = {{"Euler", 0LL}, {"Midpoint", 1LL}, {"RK4", 2LL}, {"RK45", 3LL}, {"AdamsBashforth", 4LL}, {"AdamsMoulton", 5LL}, };
         rosetta_js::EnumTable<datamunge::optim::Acquisition>::entries = {{"ExpectedImprovement", 0LL}, {"ProbabilityOfImprovement", 1LL}, {"LowerConfidenceBound", 2LL}, };
         rosetta_js::EnumTable<datamunge::sim::Task>::entries = {{"InvertedPendulum", 0LL}, {"Hopper", 1LL}, };
@@ -5271,31 +5665,31 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         napi_value inspect = rosetta_js::symbol(env, "nodejs.util.inspect.custom", true); (void)inspect;
         { // datamunge::algebra::Expr
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("add", rosetta_js_247),
-                rosetta_js::method("subtract", rosetta_js_248),
-                rosetta_js::method("multiply", rosetta_js_249),
-                rosetta_js::method("divide", rosetta_js_250),
-                rosetta_js::method("power", rosetta_js_251),
-                rosetta_js::method("negate", rosetta_js_252),
-                rosetta_js::method("sin", rosetta_js_253),
-                rosetta_js::method("cos", rosetta_js_254),
-                rosetta_js::method("exp", rosetta_js_255),
-                rosetta_js::method("log", rosetta_js_256),
-                rosetta_js::method("differentiate", rosetta_js_257),
-                rosetta_js::method("integrate", rosetta_js_258),
-                rosetta_js::method("simplify", rosetta_js_259),
-                rosetta_js::method("evaluate", rosetta_js_260),
-                rosetta_js::method("to_string", rosetta_js_261),
-                rosetta_js::method("to_tex", rosetta_js_262),
-                rosetta_js::method("constant", rosetta_js_245, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("variable", rosetta_js_246, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("add", rosetta_js_268),
+                rosetta_js::method("subtract", rosetta_js_269),
+                rosetta_js::method("multiply", rosetta_js_270),
+                rosetta_js::method("divide", rosetta_js_271),
+                rosetta_js::method("power", rosetta_js_272),
+                rosetta_js::method("negate", rosetta_js_273),
+                rosetta_js::method("sin", rosetta_js_274),
+                rosetta_js::method("cos", rosetta_js_275),
+                rosetta_js::method("exp", rosetta_js_276),
+                rosetta_js::method("log", rosetta_js_277),
+                rosetta_js::method("differentiate", rosetta_js_278),
+                rosetta_js::method("integrate", rosetta_js_279),
+                rosetta_js::method("simplify", rosetta_js_280),
+                rosetta_js::method("evaluate", rosetta_js_281),
+                rosetta_js::method("to_string", rosetta_js_282),
+                rosetta_js::method("to_tex", rosetta_js_283),
+                rosetta_js::method("constant", rosetta_js_266, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("variable", rosetta_js_267, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::to_string_method));
             { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::to_string_method); d.name = inspect; properties.push_back(d); }
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Expr", rosetta_js_263, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Expr", rosetta_js_284, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::algebra::Expr>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5303,28 +5697,28 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::algebra::Polynomial
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("degree", rosetta_js_264),
-                rosetta_js::method("is_zero", rosetta_js_265),
-                rosetta_js::method("coefficient", rosetta_js_266),
-                rosetta_js::method("coefficients", rosetta_js_267),
-                rosetta_js::method("evaluate", rosetta_js_268),
-                rosetta_js::method("derivative", rosetta_js_269),
-                rosetta_js::method("antiderivative", rosetta_js_270),
-                rosetta_js::method("add", rosetta_js_271),
-                rosetta_js::method("subtract", rosetta_js_272),
-                rosetta_js::method("multiply", rosetta_js_273),
-                rosetta_js::method("scale", rosetta_js_274),
-                rosetta_js::method("negate", rosetta_js_275),
-                rosetta_js::method("to_string", rosetta_js_276),
-                rosetta_js::method("to_tex", rosetta_js_277),
-                rosetta_js::method("equals", rosetta_js_278),
+                rosetta_js::method("degree", rosetta_js_285),
+                rosetta_js::method("is_zero", rosetta_js_286),
+                rosetta_js::method("coefficient", rosetta_js_287),
+                rosetta_js::method("coefficients", rosetta_js_288),
+                rosetta_js::method("evaluate", rosetta_js_289),
+                rosetta_js::method("derivative", rosetta_js_290),
+                rosetta_js::method("antiderivative", rosetta_js_291),
+                rosetta_js::method("add", rosetta_js_292),
+                rosetta_js::method("subtract", rosetta_js_293),
+                rosetta_js::method("multiply", rosetta_js_294),
+                rosetta_js::method("scale", rosetta_js_295),
+                rosetta_js::method("negate", rosetta_js_296),
+                rosetta_js::method("to_string", rosetta_js_297),
+                rosetta_js::method("to_tex", rosetta_js_298),
+                rosetta_js::method("equals", rosetta_js_299),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::to_string_method));
             { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::to_string_method); d.name = inspect; properties.push_back(d); }
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Polynomial", rosetta_js_279, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Polynomial", rosetta_js_300, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::algebra::Polynomial>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5332,15 +5726,15 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::algebra::PolyExtendedGcdResult
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("gcd", rosetta_js_280, rosetta_js_281),
-                rosetta_js::accessor("s", rosetta_js_282, rosetta_js_283),
-                rosetta_js::accessor("t", rosetta_js_284, rosetta_js_285),
+                rosetta_js::accessor("gcd", rosetta_js_301, rosetta_js_302),
+                rosetta_js::accessor("s", rosetta_js_303, rosetta_js_304),
+                rosetta_js::accessor("t", rosetta_js_305, rosetta_js_306),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "PolyExtendedGcdResult", rosetta_js_286, nullptr, properties);
+            cls = rosetta_js::define_class(env, "PolyExtendedGcdResult", rosetta_js_307, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::algebra::PolyExtendedGcdResult>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5348,14 +5742,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::algebra::RealRootIntervals
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("lower", rosetta_js_287, rosetta_js_288),
-                rosetta_js::accessor("upper", rosetta_js_289, rosetta_js_290),
+                rosetta_js::accessor("lower", rosetta_js_308, rosetta_js_309),
+                rosetta_js::accessor("upper", rosetta_js_310, rosetta_js_311),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "RealRootIntervals", rosetta_js_291, nullptr, properties);
+            cls = rosetta_js::define_class(env, "RealRootIntervals", rosetta_js_312, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::algebra::RealRootIntervals>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5363,16 +5757,16 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::algebra::Complex
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("modulus", rosetta_js_292),
-                rosetta_js::method("equals", rosetta_js_293),
-                rosetta_js::accessor("re", rosetta_js_294, rosetta_js_295),
-                rosetta_js::accessor("im", rosetta_js_296, rosetta_js_297),
+                rosetta_js::method("modulus", rosetta_js_313),
+                rosetta_js::method("equals", rosetta_js_314),
+                rosetta_js::accessor("re", rosetta_js_315, rosetta_js_316),
+                rosetta_js::accessor("im", rosetta_js_317, rosetta_js_318),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Complex", rosetta_js_298, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Complex", rosetta_js_319, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::algebra::Complex>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5380,14 +5774,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::algebra::detail::Cplx
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("re", rosetta_js_299, rosetta_js_300),
-                rosetta_js::accessor("im", rosetta_js_301, rosetta_js_302),
+                rosetta_js::accessor("re", rosetta_js_320, rosetta_js_321),
+                rosetta_js::accessor("im", rosetta_js_322, rosetta_js_323),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Cplx", rosetta_js_303, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Cplx", rosetta_js_324, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::algebra::detail::Cplx>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5395,14 +5789,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::algebra::SquareFreeFactor
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("factor", rosetta_js_304, rosetta_js_305),
-                rosetta_js::accessor("multiplicity", rosetta_js_306, rosetta_js_307),
+                rosetta_js::accessor("factor", rosetta_js_325, rosetta_js_326),
+                rosetta_js::accessor("multiplicity", rosetta_js_327, rosetta_js_328),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "SquareFreeFactor", rosetta_js_308, nullptr, properties);
+            cls = rosetta_js::define_class(env, "SquareFreeFactor", rosetta_js_329, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::algebra::SquareFreeFactor>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5410,14 +5804,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::algebra::RealFactor
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("factor", rosetta_js_309, rosetta_js_310),
-                rosetta_js::accessor("multiplicity", rosetta_js_311, rosetta_js_312),
+                rosetta_js::accessor("factor", rosetta_js_330, rosetta_js_331),
+                rosetta_js::accessor("multiplicity", rosetta_js_332, rosetta_js_333),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "RealFactor", rosetta_js_313, nullptr, properties);
+            cls = rosetta_js::define_class(env, "RealFactor", rosetta_js_334, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::algebra::RealFactor>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5425,15 +5819,15 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::algebra::RealFactorization
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("num_factors", rosetta_js_314),
-                rosetta_js::method("factor_at", rosetta_js_315),
-                rosetta_js::accessor("leading_coefficient", rosetta_js_316, rosetta_js_317),
+                rosetta_js::method("num_factors", rosetta_js_335),
+                rosetta_js::method("factor_at", rosetta_js_336),
+                rosetta_js::accessor("leading_coefficient", rosetta_js_337, rosetta_js_338),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "RealFactorization", rosetta_js_318, nullptr, properties);
+            cls = rosetta_js::define_class(env, "RealFactorization", rosetta_js_339, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::algebra::RealFactorization>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5441,26 +5835,26 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::algebra::MultivariatePolynomial
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("num_variables", rosetta_js_319),
-                rosetta_js::method("num_terms", rosetta_js_320),
-                rosetta_js::method("is_zero", rosetta_js_321),
-                rosetta_js::method("exponents", rosetta_js_322),
-                rosetta_js::method("coefficients", rosetta_js_323),
-                rosetta_js::method("evaluate", rosetta_js_324),
-                rosetta_js::method("add", rosetta_js_325),
-                rosetta_js::method("subtract", rosetta_js_326),
-                rosetta_js::method("multiply", rosetta_js_327),
-                rosetta_js::method("scale", rosetta_js_328),
-                rosetta_js::method("leading_exponent", rosetta_js_329),
-                rosetta_js::method("leading_coefficient", rosetta_js_330),
-                rosetta_js::method("to_string", rosetta_js_331),
+                rosetta_js::method("num_variables", rosetta_js_340),
+                rosetta_js::method("num_terms", rosetta_js_341),
+                rosetta_js::method("is_zero", rosetta_js_342),
+                rosetta_js::method("exponents", rosetta_js_343),
+                rosetta_js::method("coefficients", rosetta_js_344),
+                rosetta_js::method("evaluate", rosetta_js_345),
+                rosetta_js::method("add", rosetta_js_346),
+                rosetta_js::method("subtract", rosetta_js_347),
+                rosetta_js::method("multiply", rosetta_js_348),
+                rosetta_js::method("scale", rosetta_js_349),
+                rosetta_js::method("leading_exponent", rosetta_js_350),
+                rosetta_js::method("leading_coefficient", rosetta_js_351),
+                rosetta_js::method("to_string", rosetta_js_352),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::to_string_method));
             { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::to_string_method); d.name = inspect; properties.push_back(d); }
             napi_value cls;
-            cls = rosetta_js::define_class(env, "MultivariatePolynomial", rosetta_js_332, nullptr, properties);
+            cls = rosetta_js::define_class(env, "MultivariatePolynomial", rosetta_js_353, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::algebra::MultivariatePolynomial>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5468,15 +5862,15 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::algebra::GfFactorization
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("leading", rosetta_js_333, rosetta_js_334),
-                rosetta_js::accessor("factors", rosetta_js_335, rosetta_js_336),
-                rosetta_js::accessor("multiplicities", rosetta_js_337, rosetta_js_338),
+                rosetta_js::accessor("leading", rosetta_js_354, rosetta_js_355),
+                rosetta_js::accessor("factors", rosetta_js_356, rosetta_js_357),
+                rosetta_js::accessor("multiplicities", rosetta_js_358, rosetta_js_359),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "GfFactorization", rosetta_js_339, nullptr, properties);
+            cls = rosetta_js::define_class(env, "GfFactorization", rosetta_js_360, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::algebra::GfFactorization>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5484,22 +5878,22 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::algebra::RationalFunction
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("numerator", rosetta_js_340),
-                rosetta_js::method("denominator", rosetta_js_341),
-                rosetta_js::method("evaluate", rosetta_js_342),
-                rosetta_js::method("add", rosetta_js_343),
-                rosetta_js::method("subtract", rosetta_js_344),
-                rosetta_js::method("multiply", rosetta_js_345),
-                rosetta_js::method("divide", rosetta_js_346),
-                rosetta_js::method("to_string", rosetta_js_347),
-                rosetta_js::method("to_tex", rosetta_js_348),
+                rosetta_js::method("numerator", rosetta_js_361),
+                rosetta_js::method("denominator", rosetta_js_362),
+                rosetta_js::method("evaluate", rosetta_js_363),
+                rosetta_js::method("add", rosetta_js_364),
+                rosetta_js::method("subtract", rosetta_js_365),
+                rosetta_js::method("multiply", rosetta_js_366),
+                rosetta_js::method("divide", rosetta_js_367),
+                rosetta_js::method("to_string", rosetta_js_368),
+                rosetta_js::method("to_tex", rosetta_js_369),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::to_string_method));
             { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::to_string_method); d.name = inspect; properties.push_back(d); }
             napi_value cls;
-            cls = rosetta_js::define_class(env, "RationalFunction", rosetta_js_349, nullptr, properties);
+            cls = rosetta_js::define_class(env, "RationalFunction", rosetta_js_370, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::algebra::RationalFunction>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5507,13 +5901,13 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::ArbitraryFunction
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("evaluate", rosetta_js_350),
+                rosetta_js::method("evaluate", rosetta_js_371),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ArbitraryFunction", rosetta_js_351, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ArbitraryFunction", rosetta_js_372, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::ArbitraryFunction>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5521,10 +5915,10 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::DifferentiableFunction
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("gradient", rosetta_js_352),
+                rosetta_js::method("gradient", rosetta_js_373),
             };
             napi_value cls;
-            cls = rosetta_js::define_class(env, "DifferentiableFunction", rosetta_js_353, nullptr, properties);
+            cls = rosetta_js::define_class(env, "DifferentiableFunction", rosetta_js_374, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::DifferentiableFunction>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5532,12 +5926,12 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::SeparableFunction
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("num_functions", rosetta_js_354),
-                rosetta_js::method("evaluate_term", rosetta_js_355),
-                rosetta_js::method("evaluate", rosetta_js_356),
+                rosetta_js::method("num_functions", rosetta_js_375),
+                rosetta_js::method("evaluate_term", rosetta_js_376),
+                rosetta_js::method("evaluate", rosetta_js_377),
             };
             napi_value cls;
-            cls = rosetta_js::define_class(env, "SeparableFunction", rosetta_js_357, nullptr, properties);
+            cls = rosetta_js::define_class(env, "SeparableFunction", rosetta_js_378, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::SeparableFunction>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5545,14 +5939,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::DifferentiableSeparableFunction
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("num_functions", rosetta_js_358),
-                rosetta_js::method("evaluate_term", rosetta_js_359),
-                rosetta_js::method("gradient_term", rosetta_js_360),
-                rosetta_js::method("evaluate", rosetta_js_361),
-                rosetta_js::method("gradient", rosetta_js_362),
+                rosetta_js::method("num_functions", rosetta_js_379),
+                rosetta_js::method("evaluate_term", rosetta_js_380),
+                rosetta_js::method("gradient_term", rosetta_js_381),
+                rosetta_js::method("evaluate", rosetta_js_382),
+                rosetta_js::method("gradient", rosetta_js_383),
             };
             napi_value cls;
-            cls = rosetta_js::define_class(env, "DifferentiableSeparableFunction", rosetta_js_363, nullptr, properties);
+            cls = rosetta_js::define_class(env, "DifferentiableSeparableFunction", rosetta_js_384, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::DifferentiableSeparableFunction>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5560,10 +5954,10 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::ProximalFunction
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("proximal", rosetta_js_364),
+                rosetta_js::method("proximal", rosetta_js_385),
             };
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ProximalFunction", rosetta_js_365, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ProximalFunction", rosetta_js_386, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::ProximalFunction>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5571,10 +5965,10 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::HessianFunction
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("hessian", rosetta_js_366),
+                rosetta_js::method("hessian", rosetta_js_387),
             };
             napi_value cls;
-            cls = rosetta_js::define_class(env, "HessianFunction", rosetta_js_367, nullptr, properties);
+            cls = rosetta_js::define_class(env, "HessianFunction", rosetta_js_388, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::HessianFunction>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5582,11 +5976,11 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::EqualityConstrainedFunction
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("constraints", rosetta_js_368),
-                rosetta_js::method("constraint_jacobian", rosetta_js_369),
+                rosetta_js::method("constraints", rosetta_js_389),
+                rosetta_js::method("constraint_jacobian", rosetta_js_390),
             };
             napi_value cls;
-            cls = rosetta_js::define_class(env, "EqualityConstrainedFunction", rosetta_js_370, nullptr, properties);
+            cls = rosetta_js::define_class(env, "EqualityConstrainedFunction", rosetta_js_391, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::EqualityConstrainedFunction>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5594,11 +5988,11 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::InequalityConstrainedFunction
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("inequalities", rosetta_js_371),
-                rosetta_js::method("inequality_jacobian", rosetta_js_372),
+                rosetta_js::method("inequalities", rosetta_js_392),
+                rosetta_js::method("inequality_jacobian", rosetta_js_393),
             };
             napi_value cls;
-            cls = rosetta_js::define_class(env, "InequalityConstrainedFunction", rosetta_js_373, nullptr, properties);
+            cls = rosetta_js::define_class(env, "InequalityConstrainedFunction", rosetta_js_394, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::InequalityConstrainedFunction>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5606,211 +6000,34 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::ResidualFunction
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("residuals", rosetta_js_374),
-                rosetta_js::method("jacobian", rosetta_js_375),
+                rosetta_js::method("residuals", rosetta_js_395),
+                rosetta_js::method("jacobian", rosetta_js_396),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ResidualFunction", rosetta_js_376, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ResidualFunction", rosetta_js_397, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::ResidualFunction>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
             rosetta_js::set(env, exports, "ResidualFunction", cls);
         }
-        { // datamunge::bayes::GibbsOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("num_samples", rosetta_js_377, rosetta_js_378),
-                rosetta_js::accessor("num_warmup", rosetta_js_379, rosetta_js_380),
-                rosetta_js::accessor("initial_step_sizes", rosetta_js_381, rosetta_js_382),
-                rosetta_js::accessor("target_accept_rate", rosetta_js_383, rosetta_js_384),
-                rosetta_js::accessor("seed", rosetta_js_385, rosetta_js_386),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "GibbsOptions", rosetta_js_387, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::bayes::GibbsOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "GibbsOptions", cls);
-        }
-        { // datamunge::bayes::GibbsResult
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("samples", rosetta_js_388, rosetta_js_389),
-                rosetta_js::accessor("accept_rates", rosetta_js_390, rosetta_js_391),
-                rosetta_js::accessor("final_step_sizes", rosetta_js_392, rosetta_js_393),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "GibbsResult", rosetta_js_394, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::bayes::GibbsResult>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "GibbsResult", cls);
-        }
-        { // datamunge::bayes::GibbsSampler
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("sample", rosetta_js_395),
-                rosetta_js::method("options", rosetta_js_396),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "GibbsSampler", rosetta_js_397, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::bayes::GibbsSampler>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "GibbsSampler", cls);
-        }
-        { // datamunge::bayes::HMCOptions
+        { // datamunge::bayes::NUTSOptions
             std::vector<napi_property_descriptor> properties = {
                 rosetta_js::accessor("num_samples", rosetta_js_398, rosetta_js_399),
                 rosetta_js::accessor("num_warmup", rosetta_js_400, rosetta_js_401),
-                rosetta_js::accessor("num_leapfrog_steps", rosetta_js_402, rosetta_js_403),
+                rosetta_js::accessor("max_tree_depth", rosetta_js_402, rosetta_js_403),
                 rosetta_js::accessor("initial_step_size", rosetta_js_404, rosetta_js_405),
                 rosetta_js::accessor("target_accept_rate", rosetta_js_406, rosetta_js_407),
-                rosetta_js::accessor("seed", rosetta_js_408, rosetta_js_409),
+                rosetta_js::accessor("max_delta_error", rosetta_js_408, rosetta_js_409),
+                rosetta_js::accessor("seed", rosetta_js_410, rosetta_js_411),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "HMCOptions", rosetta_js_410, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::bayes::HMCOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "HMCOptions", cls);
-        }
-        { // datamunge::bayes::HMCResult
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("samples", rosetta_js_411, rosetta_js_412),
-                rosetta_js::accessor("accept_rate", rosetta_js_413, rosetta_js_414),
-                rosetta_js::accessor("final_step_size", rosetta_js_415, rosetta_js_416),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "HMCResult", rosetta_js_417, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::bayes::HMCResult>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "HMCResult", cls);
-        }
-        { // datamunge::bayes::HMC
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("sample", rosetta_js_418),
-                rosetta_js::method("options", rosetta_js_419),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "HMC", rosetta_js_420, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::bayes::HMC>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "HMC", cls);
-        }
-        { // datamunge::bayes::ImportanceSamplingOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("num_samples", rosetta_js_421, rosetta_js_422),
-                rosetta_js::accessor("seed", rosetta_js_423, rosetta_js_424),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ImportanceSamplingOptions", rosetta_js_425, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::bayes::ImportanceSamplingOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ImportanceSamplingOptions", cls);
-        }
-        { // datamunge::bayes::ImportanceSamplingResult
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("samples", rosetta_js_426, rosetta_js_427),
-                rosetta_js::accessor("normalized_weights", rosetta_js_428, rosetta_js_429),
-                rosetta_js::accessor("effective_sample_size", rosetta_js_430, rosetta_js_431),
-                rosetta_js::accessor("log_evidence", rosetta_js_432, rosetta_js_433),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ImportanceSamplingResult", rosetta_js_434, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::bayes::ImportanceSamplingResult>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ImportanceSamplingResult", cls);
-        }
-        { // datamunge::bayes::ImportanceSampling
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("sample", rosetta_js_435),
-                rosetta_js::method("options", rosetta_js_436),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ImportanceSampling", rosetta_js_437, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::bayes::ImportanceSampling>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ImportanceSampling", cls);
-        }
-        { // datamunge::bayes::MAPOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("max_iterations", rosetta_js_438, rosetta_js_439),
-                rosetta_js::accessor("tolerance", rosetta_js_440, rosetta_js_441),
-                rosetta_js::accessor("history_size", rosetta_js_442, rosetta_js_443),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "MAPOptions", rosetta_js_444, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::bayes::MAPOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "MAPOptions", cls);
-        }
-        { // datamunge::bayes::MAP
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_445),
-                rosetta_js::method("options", rosetta_js_446),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "MAP", rosetta_js_447, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::bayes::MAP>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "MAP", cls);
-        }
-        { // datamunge::bayes::NUTSOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("num_samples", rosetta_js_448, rosetta_js_449),
-                rosetta_js::accessor("num_warmup", rosetta_js_450, rosetta_js_451),
-                rosetta_js::accessor("max_tree_depth", rosetta_js_452, rosetta_js_453),
-                rosetta_js::accessor("initial_step_size", rosetta_js_454, rosetta_js_455),
-                rosetta_js::accessor("target_accept_rate", rosetta_js_456, rosetta_js_457),
-                rosetta_js::accessor("max_delta_error", rosetta_js_458, rosetta_js_459),
-                rosetta_js::accessor("seed", rosetta_js_460, rosetta_js_461),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "NUTSOptions", rosetta_js_462, nullptr, properties);
+            cls = rosetta_js::define_class(env, "NUTSOptions", rosetta_js_412, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::bayes::NUTSOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5818,20 +6035,20 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::bayes::NUTSResult
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("samples", rosetta_js_463, rosetta_js_464),
-                rosetta_js::accessor("accept_rate", rosetta_js_465, rosetta_js_466),
-                rosetta_js::accessor("final_step_size", rosetta_js_467, rosetta_js_468),
-                rosetta_js::accessor("num_divergences", rosetta_js_469, rosetta_js_470),
-                rosetta_js::accessor("divergent", rosetta_js_471, rosetta_js_472),
-                rosetta_js::accessor("tree_depth", rosetta_js_473, rosetta_js_474),
-                rosetta_js::accessor("n_leapfrog", rosetta_js_475, rosetta_js_476),
-                rosetta_js::accessor("energy", rosetta_js_477, rosetta_js_478),
+                rosetta_js::accessor("samples", rosetta_js_413, rosetta_js_414),
+                rosetta_js::accessor("accept_rate", rosetta_js_415, rosetta_js_416),
+                rosetta_js::accessor("final_step_size", rosetta_js_417, rosetta_js_418),
+                rosetta_js::accessor("num_divergences", rosetta_js_419, rosetta_js_420),
+                rosetta_js::accessor("divergent", rosetta_js_421, rosetta_js_422),
+                rosetta_js::accessor("tree_depth", rosetta_js_423, rosetta_js_424),
+                rosetta_js::accessor("n_leapfrog", rosetta_js_425, rosetta_js_426),
+                rosetta_js::accessor("energy", rosetta_js_427, rosetta_js_428),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "NUTSResult", rosetta_js_479, nullptr, properties);
+            cls = rosetta_js::define_class(env, "NUTSResult", rosetta_js_429, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::bayes::NUTSResult>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -5839,952 +6056,28 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::bayes::NUTS
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("sample", rosetta_js_480),
-                rosetta_js::method("options", rosetta_js_481),
+                rosetta_js::method("sample", rosetta_js_430),
+                rosetta_js::method("options", rosetta_js_431),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "NUTS", rosetta_js_482, nullptr, properties);
+            cls = rosetta_js::define_class(env, "NUTS", rosetta_js_432, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::bayes::NUTS>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
             rosetta_js::set(env, exports, "NUTS", cls);
         }
-        { // datamunge::bayes::RWMOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("num_samples", rosetta_js_483, rosetta_js_484),
-                rosetta_js::accessor("num_warmup", rosetta_js_485, rosetta_js_486),
-                rosetta_js::accessor("initial_step_size", rosetta_js_487, rosetta_js_488),
-                rosetta_js::accessor("target_accept_rate", rosetta_js_489, rosetta_js_490),
-                rosetta_js::accessor("seed", rosetta_js_491, rosetta_js_492),
-                rosetta_js::accessor("adapt_covariance", rosetta_js_493, rosetta_js_494),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "RWMOptions", rosetta_js_495, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::bayes::RWMOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "RWMOptions", cls);
-        }
-        { // datamunge::bayes::RWMResult
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("samples", rosetta_js_496, rosetta_js_497),
-                rosetta_js::accessor("accept_rate", rosetta_js_498, rosetta_js_499),
-                rosetta_js::accessor("final_step_size", rosetta_js_500, rosetta_js_501),
-                rosetta_js::accessor("proposal_covariance", rosetta_js_502, rosetta_js_503),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "RWMResult", rosetta_js_504, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::bayes::RWMResult>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "RWMResult", cls);
-        }
-        { // datamunge::bayes::RandomWalkMetropolis
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("sample", rosetta_js_505),
-                rosetta_js::method("options", rosetta_js_506),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "RandomWalkMetropolis", rosetta_js_507, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::bayes::RandomWalkMetropolis>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "RandomWalkMetropolis", cls);
-        }
-        { // datamunge::image::Pixel
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("r", rosetta_js_508, rosetta_js_509),
-                rosetta_js::accessor("g", rosetta_js_510, rosetta_js_511),
-                rosetta_js::accessor("b", rosetta_js_512, rosetta_js_513),
-                rosetta_js::accessor("a", rosetta_js_514, rosetta_js_515),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "Pixel", rosetta_js_516, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::image::Pixel>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "Pixel", cls);
-        }
-        { // datamunge::image::Image
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("width", rosetta_js_517),
-                rosetta_js::method("height", rosetta_js_518),
-                rosetta_js::method("mode", rosetta_js_519),
-                rosetta_js::method("channels", rosetta_js_520),
-                rosetta_js::method("data", rosetta_js_521),
-                rosetta_js::method("get_pixel", rosetta_js_522),
-                rosetta_js::method("set_pixel", rosetta_js_523),
-                rosetta_js::method("fill", rosetta_js_524),
-                rosetta_js::method("channel_count", rosetta_js_525, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "Image", rosetta_js_526, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::image::Image>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "Image", cls);
-        }
-        { // datamunge::image::HSV
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("h", rosetta_js_527, rosetta_js_528),
-                rosetta_js::accessor("s", rosetta_js_529, rosetta_js_530),
-                rosetta_js::accessor("v", rosetta_js_531, rosetta_js_532),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "HSV", rosetta_js_533, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::image::HSV>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "HSV", cls);
-        }
-        { // datamunge::cv::KeyPoint
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("x", rosetta_js_534, rosetta_js_535),
-                rosetta_js::accessor("y", rosetta_js_536, rosetta_js_537),
-                rosetta_js::accessor("scale", rosetta_js_538, rosetta_js_539),
-                rosetta_js::accessor("response", rosetta_js_540, rosetta_js_541),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "KeyPoint", rosetta_js_542, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::cv::KeyPoint>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "KeyPoint", cls);
-        }
-        { // datamunge::cv::Corner
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("x", rosetta_js_543, rosetta_js_544),
-                rosetta_js::accessor("y", rosetta_js_545, rosetta_js_546),
-                rosetta_js::accessor("response", rosetta_js_547, rosetta_js_548),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "Corner", rosetta_js_549, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::cv::Corner>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "Corner", cls);
-        }
-        { // datamunge::cv::detail::StructureTensorField
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("sxx", rosetta_js_550, rosetta_js_551),
-                rosetta_js::accessor("syy", rosetta_js_552, rosetta_js_553),
-                rosetta_js::accessor("sxy", rosetta_js_554, rosetta_js_555),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "StructureTensorField", rosetta_js_556, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::cv::detail::StructureTensorField>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "StructureTensorField", cls);
-        }
-        { // datamunge::cv::HoughLine
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("rho", rosetta_js_557, rosetta_js_558),
-                rosetta_js::accessor("theta", rosetta_js_559, rosetta_js_560),
-                rosetta_js::accessor("votes", rosetta_js_561, rosetta_js_562),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "HoughLine", rosetta_js_563, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::cv::HoughLine>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "HoughLine", cls);
-        }
-        { // datamunge::cv::HoughCircle
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("cx", rosetta_js_564, rosetta_js_565),
-                rosetta_js::accessor("cy", rosetta_js_566, rosetta_js_567),
-                rosetta_js::accessor("radius", rosetta_js_568, rosetta_js_569),
-                rosetta_js::accessor("votes", rosetta_js_570, rosetta_js_571),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "HoughCircle", rosetta_js_572, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::cv::HoughCircle>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "HoughCircle", cls);
-        }
-        { // datamunge::cv::FlowVector
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("dx", rosetta_js_573, rosetta_js_574),
-                rosetta_js::accessor("dy", rosetta_js_575, rosetta_js_576),
-                rosetta_js::accessor("valid", rosetta_js_577, rosetta_js_578),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "FlowVector", rosetta_js_579, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::cv::FlowVector>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "FlowVector", cls);
-        }
-        { // datamunge::cv::LabelMap
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("labels", rosetta_js_580, rosetta_js_581),
-                rosetta_js::accessor("width", rosetta_js_582, rosetta_js_583),
-                rosetta_js::accessor("height", rosetta_js_584, rosetta_js_585),
-                rosetta_js::accessor("count", rosetta_js_586, rosetta_js_587),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "LabelMap", rosetta_js_588, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::cv::LabelMap>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "LabelMap", cls);
-        }
-        { // datamunge::datasets::ImageBatch
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("size", rosetta_js_589),
-                rosetta_js::method("features", rosetta_js_590),
-                rosetta_js::method("image", rosetta_js_591),
-                rosetta_js::accessor("pixels", rosetta_js_592, rosetta_js_593),
-                rosetta_js::accessor("labels", rosetta_js_594, rosetta_js_595),
-                rosetta_js::accessor("indices", rosetta_js_596, rosetta_js_597),
-                rosetta_js::accessor("shape", rosetta_js_598, rosetta_js_599),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ImageBatch", rosetta_js_600, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::datasets::ImageBatch>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ImageBatch", cls);
-        }
-        { // datamunge::datasets::ImageLoader
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("set_batch_size", rosetta_js_601),
-                rosetta_js::method("set_shuffle", rosetta_js_602),
-                rosetta_js::method("set_seed", rosetta_js_603),
-                rosetta_js::method("set_drop_last", rosetta_js_604),
-                rosetta_js::method("set_normalize", rosetta_js_605),
-                rosetta_js::method("set_layout", rosetta_js_606),
-                rosetta_js::method("set_limit", rosetta_js_607),
-                rosetta_js::method("set_coarse_labels", rosetta_js_608),
-                rosetta_js::method("dataset", rosetta_js_609),
-                rosetta_js::method("split", rosetta_js_610),
-                rosetta_js::method("directory", rosetta_js_611),
-                rosetta_js::method("batch_size", rosetta_js_612),
-                rosetta_js::method("shuffle", rosetta_js_613),
-                rosetta_js::method("seed", rosetta_js_614),
-                rosetta_js::method("drop_last", rosetta_js_615),
-                rosetta_js::method("normalize", rosetta_js_616),
-                rosetta_js::method("layout", rosetta_js_617),
-                rosetta_js::method("coarse_labels", rosetta_js_618),
-                rosetta_js::method("size", rosetta_js_619),
-                rosetta_js::method("split_size", rosetta_js_620),
-                rosetta_js::method("num_batches", rosetta_js_621),
-                rosetta_js::method("height", rosetta_js_622),
-                rosetta_js::method("width", rosetta_js_623),
-                rosetta_js::method("channels", rosetta_js_624),
-                rosetta_js::method("num_classes", rosetta_js_625),
-                rosetta_js::method("class_names", rosetta_js_626),
-                rosetta_js::method("epoch", rosetta_js_627),
-                rosetta_js::method("position", rosetta_js_628),
-                rosetta_js::method("has_next", rosetta_js_629),
-                rosetta_js::method("next", rosetta_js_630),
-                rosetta_js::method("reset", rosetta_js_631),
-                rosetta_js::method("batch", rosetta_js_632),
-                rosetta_js::method("take", rosetta_js_633),
-                rosetta_js::method("load_all", rosetta_js_634),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ImageLoader", rosetta_js_635, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::datasets::ImageLoader>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ImageLoader", cls);
-        }
-        { // datamunge::fem::Mesh1D
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("num_nodes", rosetta_js_636),
-                rosetta_js::method("num_elements", rosetta_js_637),
-                rosetta_js::method("node_at", rosetta_js_638),
-                rosetta_js::method("element_length", rosetta_js_639),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "Mesh1D", rosetta_js_640, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::fem::Mesh1D>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "Mesh1D", cls);
-        }
-        { // datamunge::fem::ScalarField1D
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("evaluate", rosetta_js_641),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ScalarField1D", rosetta_js_642, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::fem::ScalarField1D>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ScalarField1D", cls);
-        }
-        { // datamunge::fem::ScalarField2D
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("evaluate", rosetta_js_643),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ScalarField2D", rosetta_js_644, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::fem::ScalarField2D>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ScalarField2D", cls);
-        }
-        { // datamunge::fem::BoundaryCondition1D
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("type", rosetta_js_645, rosetta_js_646),
-                rosetta_js::accessor("value", rosetta_js_647, rosetta_js_648),
-                rosetta_js::accessor("robin_coefficient", rosetta_js_649, rosetta_js_650),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "BoundaryCondition1D", rosetta_js_651, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::fem::BoundaryCondition1D>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "BoundaryCondition1D", cls);
-        }
-        { // datamunge::fem::FEM1DResult
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("size", rosetta_js_652),
-                rosetta_js::method("node_at", rosetta_js_653),
-                rosetta_js::method("value_at", rosetta_js_654),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "FEM1DResult", rosetta_js_655, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::fem::FEM1DResult>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "FEM1DResult", cls);
-        }
-        { // datamunge::fem::FEM1DTimeSeries
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("num_steps", rosetta_js_656),
-                rosetta_js::method("num_nodes", rosetta_js_657),
-                rosetta_js::method("node_at", rosetta_js_658),
-                rosetta_js::method("time_at", rosetta_js_659),
-                rosetta_js::method("value_at", rosetta_js_660),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "FEM1DTimeSeries", rosetta_js_661, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::fem::FEM1DTimeSeries>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "FEM1DTimeSeries", cls);
-        }
-        { // datamunge::fem::FEM1D
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("solve", rosetta_js_662, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("solve_builtin", rosetta_js_663, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("solve_transient", rosetta_js_664, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("solve_transient_builtin", rosetta_js_665, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "FEM1D", rosetta_js_666, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::fem::FEM1D>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "FEM1D", cls);
-        }
-        { // datamunge::geometry::Point2D
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("equals", rosetta_js_667),
-                rosetta_js::accessor("x", rosetta_js_668, rosetta_js_669),
-                rosetta_js::accessor("y", rosetta_js_670, rosetta_js_671),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "Point2D", rosetta_js_672, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::geometry::Point2D>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "Point2D", cls);
-        }
-        { // datamunge::geometry::Triangle
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("a", rosetta_js_673, rosetta_js_674),
-                rosetta_js::accessor("b", rosetta_js_675, rosetta_js_676),
-                rosetta_js::accessor("c", rosetta_js_677, rosetta_js_678),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "Triangle", rosetta_js_679, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::geometry::Triangle>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "Triangle", cls);
-        }
-        { // datamunge::geometry::DelaunayWork
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("seed_orientation_tests", rosetta_js_680, rosetta_js_681),
-                rosetta_js::accessor("insertions", rosetta_js_682, rosetta_js_683),
-                rosetta_js::accessor("incircle_tests", rosetta_js_684, rosetta_js_685),
-                rosetta_js::accessor("hull_side_tests", rosetta_js_686, rosetta_js_687),
-                rosetta_js::accessor("removed_faces", rosetta_js_688, rosetta_js_689),
-                rosetta_js::accessor("boundary_edges", rosetta_js_690, rosetta_js_691),
-                rosetta_js::accessor("created_faces", rosetta_js_692, rosetta_js_693),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "DelaunayWork", rosetta_js_694, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::geometry::DelaunayWork>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "DelaunayWork", cls);
-        }
-        { // datamunge::geometry::DelaunayInsertion
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("input_index", rosetta_js_695, rosetta_js_696),
-                rosetta_js::accessor("faces_before", rosetta_js_697, rosetta_js_698),
-                rosetta_js::accessor("faces_after", rosetta_js_699, rosetta_js_700),
-                rosetta_js::accessor("removed", rosetta_js_701, rosetta_js_702),
-                rosetta_js::accessor("boundary", rosetta_js_703, rosetta_js_704),
-                rosetta_js::accessor("added", rosetta_js_705, rosetta_js_706),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "DelaunayInsertion", rosetta_js_707, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::geometry::DelaunayInsertion>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "DelaunayInsertion", cls);
-        }
-        { // datamunge::geometry::DelaunayTrace
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("points", rosetta_js_708, rosetta_js_709),
-                rosetta_js::accessor("representatives", rosetta_js_710, rosetta_js_711),
-                rosetta_js::accessor("representative_for_input", rosetta_js_712, rosetta_js_713),
-                rosetta_js::accessor("has_seed", rosetta_js_714, rosetta_js_715),
-                rosetta_js::accessor("seed", rosetta_js_716, rosetta_js_717),
-                rosetta_js::accessor("triangles", rosetta_js_718, rosetta_js_719),
-                rosetta_js::accessor("steps", rosetta_js_720, rosetta_js_721),
-                rosetta_js::accessor("work", rosetta_js_722, rosetta_js_723),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "DelaunayTrace", rosetta_js_724, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::geometry::DelaunayTrace>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "DelaunayTrace", cls);
-        }
-        { // datamunge::geometry::DelaunayAnalysis
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("distinct_points", rosetta_js_725, rosetta_js_726),
-                rosetta_js::accessor("used_points", rosetta_js_727, rosetta_js_728),
-                rosetta_js::accessor("triangles", rosetta_js_729, rosetta_js_730),
-                rosetta_js::accessor("edges", rosetta_js_731, rosetta_js_732),
-                rosetta_js::accessor("boundary_edges", rosetta_js_733, rosetta_js_734),
-                rosetta_js::accessor("circle_tests", rosetta_js_735, rosetta_js_736),
-                rosetta_js::accessor("interior_violations", rosetta_js_737, rosetta_js_738),
-                rosetta_js::accessor("minimum_angle_degrees", rosetta_js_739, rosetta_js_740),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "DelaunayAnalysis", rosetta_js_741, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::geometry::DelaunayAnalysis>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "DelaunayAnalysis", cls);
-        }
-        { // datamunge::fem::Mesh2D
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("num_nodes", rosetta_js_742),
-                rosetta_js::method("num_triangles", rosetta_js_743),
-                rosetta_js::method("node_at", rosetta_js_744),
-                rosetta_js::method("triangle_at", rosetta_js_745),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "Mesh2D", rosetta_js_746, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::fem::Mesh2D>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "Mesh2D", cls);
-        }
-        { // datamunge::fem::FEM2DResult
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("size", rosetta_js_747),
-                rosetta_js::method("node_at", rosetta_js_748),
-                rosetta_js::method("value_at", rosetta_js_749),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "FEM2DResult", rosetta_js_750, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::fem::FEM2DResult>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "FEM2DResult", cls);
-        }
-        { // datamunge::fem::FEM2D
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("solve", rosetta_js_751, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("solve_builtin", rosetta_js_752, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "FEM2D", rosetta_js_753, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::fem::FEM2D>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "FEM2D", cls);
-        }
-        { // datamunge::filter::AlphaBetaState
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("position", rosetta_js_754, rosetta_js_755),
-                rosetta_js::accessor("velocity", rosetta_js_756, rosetta_js_757),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "AlphaBetaState", rosetta_js_758, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::filter::AlphaBetaState>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "AlphaBetaState", cls);
-        }
-        { // datamunge::filter::AlphaBetaFilter
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("update", rosetta_js_759),
-                rosetta_js::method("position", rosetta_js_760),
-                rosetta_js::method("velocity", rosetta_js_761),
-                rosetta_js::method("alpha", rosetta_js_762),
-                rosetta_js::method("beta", rosetta_js_763),
-                rosetta_js::method("dt", rosetta_js_764),
-                rosetta_js::method("filter", rosetta_js_765),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "AlphaBetaFilter", rosetta_js_766, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::filter::AlphaBetaFilter>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "AlphaBetaFilter", cls);
-        }
-        { // datamunge::filter::AlphaBetaGammaState
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("position", rosetta_js_767, rosetta_js_768),
-                rosetta_js::accessor("velocity", rosetta_js_769, rosetta_js_770),
-                rosetta_js::accessor("acceleration", rosetta_js_771, rosetta_js_772),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "AlphaBetaGammaState", rosetta_js_773, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::filter::AlphaBetaGammaState>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "AlphaBetaGammaState", cls);
-        }
-        { // datamunge::filter::AlphaBetaGammaFilter
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("update", rosetta_js_774),
-                rosetta_js::method("position", rosetta_js_775),
-                rosetta_js::method("velocity", rosetta_js_776),
-                rosetta_js::method("acceleration", rosetta_js_777),
-                rosetta_js::method("alpha", rosetta_js_778),
-                rosetta_js::method("beta", rosetta_js_779),
-                rosetta_js::method("gamma", rosetta_js_780),
-                rosetta_js::method("dt", rosetta_js_781),
-                rosetta_js::method("filter", rosetta_js_782),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "AlphaBetaGammaFilter", rosetta_js_783, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::filter::AlphaBetaGammaFilter>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "AlphaBetaGammaFilter", cls);
-        }
-        { // datamunge::filter::KalmanState
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("x", rosetta_js_784, rosetta_js_785),
-                rosetta_js::accessor("P", rosetta_js_786, rosetta_js_787),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "KalmanState", rosetta_js_788, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::filter::KalmanState>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "KalmanState", cls);
-        }
-        { // datamunge::filter::SmoothResult
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("filtered", rosetta_js_789, rosetta_js_790),
-                rosetta_js::accessor("smoothed", rosetta_js_791, rosetta_js_792),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "SmoothResult", rosetta_js_793, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::filter::SmoothResult>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "SmoothResult", cls);
-        }
-        { // datamunge::filter::KalmanFilter
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("predict", rosetta_js_794),
-                rosetta_js::method("update", rosetta_js_795),
-                rosetta_js::method("state", rosetta_js_796),
-                rosetta_js::method("covariance", rosetta_js_797),
-                rosetta_js::method("filter", rosetta_js_798),
-                rosetta_js::method("smooth", rosetta_js_799),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "KalmanFilter", rosetta_js_800, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::filter::KalmanFilter>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "KalmanFilter", cls);
-        }
-        { // datamunge::filter::VectorFunction
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("evaluate", rosetta_js_801),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "VectorFunction", rosetta_js_802, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::filter::VectorFunction>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "VectorFunction", cls);
-        }
-        { // datamunge::filter::EnsembleKalmanFilter
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("predict", rosetta_js_803),
-                rosetta_js::method("update", rosetta_js_804),
-                rosetta_js::method("state", rosetta_js_805),
-                rosetta_js::method("covariance", rosetta_js_806),
-                rosetta_js::method("filter", rosetta_js_807),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "EnsembleKalmanFilter", rosetta_js_808, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::filter::EnsembleKalmanFilter>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "EnsembleKalmanFilter", cls);
-        }
-        { // datamunge::filter::ExtendedKalmanFilter
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("predict", rosetta_js_809),
-                rosetta_js::method("update", rosetta_js_810),
-                rosetta_js::method("state", rosetta_js_811),
-                rosetta_js::method("covariance", rosetta_js_812),
-                rosetta_js::method("filter", rosetta_js_813),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ExtendedKalmanFilter", rosetta_js_814, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::filter::ExtendedKalmanFilter>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ExtendedKalmanFilter", cls);
-        }
-        { // datamunge::filter::InformationFilter
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("predict", rosetta_js_815),
-                rosetta_js::method("update", rosetta_js_816),
-                rosetta_js::method("state", rosetta_js_817),
-                rosetta_js::method("covariance", rosetta_js_818),
-                rosetta_js::method("filter", rosetta_js_819),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "InformationFilter", rosetta_js_820, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::filter::InformationFilter>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "InformationFilter", cls);
-        }
-        { // datamunge::filter::ParticleFilter
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("predict", rosetta_js_821),
-                rosetta_js::method("update", rosetta_js_822),
-                rosetta_js::method("state", rosetta_js_823),
-                rosetta_js::method("covariance", rosetta_js_824),
-                rosetta_js::method("filter", rosetta_js_825),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ParticleFilter", rosetta_js_826, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::filter::ParticleFilter>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ParticleFilter", cls);
-        }
-        { // datamunge::filter::UnscentedKalmanFilter
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("predict", rosetta_js_827),
-                rosetta_js::method("update", rosetta_js_828),
-                rosetta_js::method("state", rosetta_js_829),
-                rosetta_js::method("covariance", rosetta_js_830),
-                rosetta_js::method("filter", rosetta_js_831),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "UnscentedKalmanFilter", rosetta_js_832, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::filter::UnscentedKalmanFilter>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "UnscentedKalmanFilter", cls);
-        }
-        { // datamunge::geometry::BoundingBox
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("min", rosetta_js_833, rosetta_js_834),
-                rosetta_js::accessor("max", rosetta_js_835, rosetta_js_836),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "BoundingBox", rosetta_js_837, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::geometry::BoundingBox>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "BoundingBox", cls);
-        }
-        { // datamunge::geometry::ClosestPairResult
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("a", rosetta_js_838, rosetta_js_839),
-                rosetta_js::accessor("b", rosetta_js_840, rosetta_js_841),
-                rosetta_js::accessor("distance", rosetta_js_842, rosetta_js_843),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ClosestPairResult", rosetta_js_844, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::geometry::ClosestPairResult>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ClosestPairResult", cls);
-        }
-        { // datamunge::geometry::ConvexHullOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("max_points", rosetta_js_845, rosetta_js_846),
-                rosetta_js::accessor("max_events", rosetta_js_847, rosetta_js_848),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ConvexHullOptions", rosetta_js_849, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::geometry::ConvexHullOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ConvexHullOptions", cls);
-        }
-        { // datamunge::geometry::HullIndexedPoint
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("point", rosetta_js_850, rosetta_js_851),
-                rosetta_js::accessor("input_index", rosetta_js_852, rosetta_js_853),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "HullIndexedPoint", rosetta_js_854, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::geometry::HullIndexedPoint>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "HullIndexedPoint", cls);
-        }
-        { // datamunge::geometry::ConvexHullWork
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("input_points", rosetta_js_855, rosetta_js_856),
-                rosetta_js::accessor("distinct_points", rosetta_js_857, rosetta_js_858),
-                rosetta_js::accessor("sort_comparisons", rosetta_js_859, rosetta_js_860),
-                rosetta_js::accessor("duplicate_comparisons", rosetta_js_861, rosetta_js_862),
-                rosetta_js::accessor("orientation_tests", rosetta_js_863, rosetta_js_864),
-                rosetta_js::accessor("pushes", rosetta_js_865, rosetta_js_866),
-                rosetta_js::accessor("pops", rosetta_js_867, rosetta_js_868),
-                rosetta_js::accessor("max_stack", rosetta_js_869, rosetta_js_870),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ConvexHullWork", rosetta_js_871, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::geometry::ConvexHullWork>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ConvexHullWork", cls);
-        }
-        { // datamunge::geometry::HullEvent
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("pass", rosetta_js_872, rosetta_js_873),
-                rosetta_js::accessor("action", rosetta_js_874, rosetta_js_875),
-                rosetta_js::accessor("candidate", rosetta_js_876, rosetta_js_877),
-                rosetta_js::accessor("point", rosetta_js_878, rosetta_js_879),
-                rosetta_js::accessor("a", rosetta_js_880, rosetta_js_881),
-                rosetta_js::accessor("b", rosetta_js_882, rosetta_js_883),
-                rosetta_js::accessor("turn", rosetta_js_884, rosetta_js_885),
-                rosetta_js::accessor("stack_size", rosetta_js_886, rosetta_js_887),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "HullEvent", rosetta_js_888, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::geometry::HullEvent>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "HullEvent", cls);
-        }
-        { // datamunge::geometry::ConvexHullAnalysis
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("hull", rosetta_js_889, rosetta_js_890),
-                rosetta_js::accessor("input_indices", rosetta_js_891, rosetta_js_892),
-                rosetta_js::accessor("work", rosetta_js_893, rosetta_js_894),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ConvexHullAnalysis", rosetta_js_895, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::geometry::ConvexHullAnalysis>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ConvexHullAnalysis", cls);
-        }
-        { // datamunge::geometry::ConvexHullTrace
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("analysis", rosetta_js_896, rosetta_js_897),
-                rosetta_js::accessor("sorted", rosetta_js_898, rosetta_js_899),
-                rosetta_js::accessor("events", rosetta_js_900, rosetta_js_901),
-                rosetta_js::accessor("lower", rosetta_js_902, rosetta_js_903),
-                rosetta_js::accessor("upper", rosetta_js_904, rosetta_js_905),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ConvexHullTrace", rosetta_js_906, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::geometry::ConvexHullTrace>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ConvexHullTrace", cls);
-        }
         { // datamunge::Callback
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("call", rosetta_js_907),
+                rosetta_js::method("call", rosetta_js_433),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Callback", rosetta_js_908, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Callback", rosetta_js_434, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::Callback>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -6792,16 +6085,16 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::graphics::RGB
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("r", rosetta_js_909, rosetta_js_910),
-                rosetta_js::accessor("g", rosetta_js_911, rosetta_js_912),
-                rosetta_js::accessor("b", rosetta_js_913, rosetta_js_914),
-                rosetta_js::accessor("alpha", rosetta_js_915, rosetta_js_916),
+                rosetta_js::accessor("r", rosetta_js_435, rosetta_js_436),
+                rosetta_js::accessor("g", rosetta_js_437, rosetta_js_438),
+                rosetta_js::accessor("b", rosetta_js_439, rosetta_js_440),
+                rosetta_js::accessor("alpha", rosetta_js_441, rosetta_js_442),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "RGB", rosetta_js_917, nullptr, properties);
+            cls = rosetta_js::define_class(env, "RGB", rosetta_js_443, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::graphics::RGB>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -6809,22 +6102,22 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::graphics::DataSeries
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("kind", rosetta_js_918, rosetta_js_919),
-                rosetta_js::accessor("x", rosetta_js_920, rosetta_js_921),
-                rosetta_js::accessor("y", rosetta_js_922, rosetta_js_923),
-                rosetta_js::accessor("label", rosetta_js_924, rosetta_js_925),
-                rosetta_js::accessor("color", rosetta_js_926, rosetta_js_927),
-                rosetta_js::accessor("stroke_width", rosetta_js_928, rosetta_js_929),
-                rosetta_js::accessor("marker_size", rosetta_js_930, rosetta_js_931),
-                rosetta_js::accessor("bar_width", rosetta_js_932, rosetta_js_933),
-                rosetta_js::accessor("filled", rosetta_js_934, rosetta_js_935),
-                rosetta_js::accessor("point_colors", rosetta_js_936, rosetta_js_937),
+                rosetta_js::accessor("kind", rosetta_js_444, rosetta_js_445),
+                rosetta_js::accessor("x", rosetta_js_446, rosetta_js_447),
+                rosetta_js::accessor("y", rosetta_js_448, rosetta_js_449),
+                rosetta_js::accessor("label", rosetta_js_450, rosetta_js_451),
+                rosetta_js::accessor("color", rosetta_js_452, rosetta_js_453),
+                rosetta_js::accessor("stroke_width", rosetta_js_454, rosetta_js_455),
+                rosetta_js::accessor("marker_size", rosetta_js_456, rosetta_js_457),
+                rosetta_js::accessor("bar_width", rosetta_js_458, rosetta_js_459),
+                rosetta_js::accessor("filled", rosetta_js_460, rosetta_js_461),
+                rosetta_js::accessor("point_colors", rosetta_js_462, rosetta_js_463),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "DataSeries", rosetta_js_938, nullptr, properties);
+            cls = rosetta_js::define_class(env, "DataSeries", rosetta_js_464, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::graphics::DataSeries>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -6832,17 +6125,17 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::graphics::ABLine
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("vertical", rosetta_js_939, rosetta_js_940),
-                rosetta_js::accessor("value", rosetta_js_941, rosetta_js_942),
-                rosetta_js::accessor("slope", rosetta_js_943, rosetta_js_944),
-                rosetta_js::accessor("color", rosetta_js_945, rosetta_js_946),
-                rosetta_js::accessor("stroke_width", rosetta_js_947, rosetta_js_948),
+                rosetta_js::accessor("vertical", rosetta_js_465, rosetta_js_466),
+                rosetta_js::accessor("value", rosetta_js_467, rosetta_js_468),
+                rosetta_js::accessor("slope", rosetta_js_469, rosetta_js_470),
+                rosetta_js::accessor("color", rosetta_js_471, rosetta_js_472),
+                rosetta_js::accessor("stroke_width", rosetta_js_473, rosetta_js_474),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ABLine", rosetta_js_949, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ABLine", rosetta_js_475, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::graphics::ABLine>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -6850,14 +6143,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::graphics::LegendEntry
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("label", rosetta_js_950, rosetta_js_951),
-                rosetta_js::accessor("color", rosetta_js_952, rosetta_js_953),
+                rosetta_js::accessor("label", rosetta_js_476, rosetta_js_477),
+                rosetta_js::accessor("color", rosetta_js_478, rosetta_js_479),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "LegendEntry", rosetta_js_954, nullptr, properties);
+            cls = rosetta_js::define_class(env, "LegendEntry", rosetta_js_480, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::graphics::LegendEntry>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -6865,71 +6158,72 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::graphics::Plot
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("size", rosetta_js_955),
-                rosetta_js::method("title", rosetta_js_956),
-                rosetta_js::method("subtitle", rosetta_js_957),
-                rosetta_js::method("x_label", rosetta_js_958),
-                rosetta_js::method("y_label", rosetta_js_959),
-                rosetta_js::method("background", rosetta_js_960),
-                rosetta_js::method("axis_color", rosetta_js_961),
-                rosetta_js::method("grid_color", rosetta_js_962),
-                rosetta_js::method("show_grid", rosetta_js_963),
-                rosetta_js::method("x_limits", rosetta_js_964),
-                rosetta_js::method("y_limits", rosetta_js_965),
-                rosetta_js::method("hide_axes", rosetta_js_966),
-                rosetta_js::method("x_tick_labels", rosetta_js_967),
-                rosetta_js::method("x_ticks", rosetta_js_968),
-                rosetta_js::method("y_tick_labels", rosetta_js_969),
-                rosetta_js::method("y_ticks", rosetta_js_970),
-                rosetta_js::method("margins", rosetta_js_971),
-                rosetta_js::method("tick_font_size", rosetta_js_972),
-                rosetta_js::method("pretty_ticks", rosetta_js_973),
-                rosetta_js::method("width", rosetta_js_974),
-                rosetta_js::method("height", rosetta_js_975),
-                rosetta_js::method("title_text", rosetta_js_976),
-                rosetta_js::method("subtitle_text", rosetta_js_977),
-                rosetta_js::method("x_label_text", rosetta_js_978),
-                rosetta_js::method("y_label_text", rosetta_js_979),
-                rosetta_js::method("series", rosetta_js_980),
-                rosetta_js::method("background_color", rosetta_js_981),
-                rosetta_js::method("axes_color", rosetta_js_982),
-                rosetta_js::method("major_grid_color", rosetta_js_983),
-                rosetta_js::method("grid_visible", rosetta_js_984),
-                rosetta_js::method("has_x_limits", rosetta_js_985),
-                rosetta_js::method("has_y_limits", rosetta_js_986),
-                rosetta_js::method("x_min", rosetta_js_987),
-                rosetta_js::method("x_max", rosetta_js_988),
-                rosetta_js::method("y_min", rosetta_js_989),
-                rosetta_js::method("y_max", rosetta_js_990),
-                rosetta_js::method("axes_hidden", rosetta_js_991),
-                rosetta_js::method("x_tick_label_list", rosetta_js_992),
-                rosetta_js::method("x_tick_position_list", rosetta_js_993),
-                rosetta_js::method("y_tick_label_list", rosetta_js_994),
-                rosetta_js::method("y_tick_position_list", rosetta_js_995),
-                rosetta_js::method("reference_lines", rosetta_js_996),
-                rosetta_js::method("legend_entries", rosetta_js_997),
-                rosetta_js::method("has_custom_margins", rosetta_js_998),
-                rosetta_js::method("margin_left", rosetta_js_999),
-                rosetta_js::method("margin_right", rosetta_js_1000),
-                rosetta_js::method("margin_top", rosetta_js_1001),
-                rosetta_js::method("margin_bottom", rosetta_js_1002),
-                rosetta_js::method("tick_font_px", rosetta_js_1003),
-                rosetta_js::method("pretty_ticks_enabled", rosetta_js_1004),
-                rosetta_js::method("to_svg", rosetta_js_1005),
-                rosetta_js::method("save", rosetta_js_1006),
-                rosetta_js::method("save_svg", rosetta_js_1007),
-                rosetta_js::method("to_png", rosetta_js_1008),
-                rosetta_js::method("to_pdf", rosetta_js_1009),
-                rosetta_js::method("save_png", rosetta_js_1010),
-                rosetta_js::method("save_pdf", rosetta_js_1011),
-                rosetta_js::method("view", rosetta_js_1012),
-                rosetta_js::method("show", rosetta_js_1013),
+                rosetta_js::method("size", rosetta_js_481),
+                rosetta_js::method("dpi", rosetta_js_482),
+                rosetta_js::method("title", rosetta_js_483),
+                rosetta_js::method("subtitle", rosetta_js_484),
+                rosetta_js::method("x_label", rosetta_js_485),
+                rosetta_js::method("y_label", rosetta_js_486),
+                rosetta_js::method("background", rosetta_js_487),
+                rosetta_js::method("axis_color", rosetta_js_488),
+                rosetta_js::method("grid_color", rosetta_js_489),
+                rosetta_js::method("show_grid", rosetta_js_490),
+                rosetta_js::method("x_limits", rosetta_js_491),
+                rosetta_js::method("y_limits", rosetta_js_492),
+                rosetta_js::method("hide_axes", rosetta_js_493),
+                rosetta_js::method("x_tick_labels", rosetta_js_494),
+                rosetta_js::method("x_ticks", rosetta_js_495),
+                rosetta_js::method("y_tick_labels", rosetta_js_496),
+                rosetta_js::method("y_ticks", rosetta_js_497),
+                rosetta_js::method("margins", rosetta_js_498),
+                rosetta_js::method("tick_font_size", rosetta_js_499),
+                rosetta_js::method("pretty_ticks", rosetta_js_500),
+                rosetta_js::method("width", rosetta_js_501),
+                rosetta_js::method("height", rosetta_js_502),
+                rosetta_js::method("title_text", rosetta_js_503),
+                rosetta_js::method("subtitle_text", rosetta_js_504),
+                rosetta_js::method("x_label_text", rosetta_js_505),
+                rosetta_js::method("y_label_text", rosetta_js_506),
+                rosetta_js::method("series", rosetta_js_507),
+                rosetta_js::method("background_color", rosetta_js_508),
+                rosetta_js::method("axes_color", rosetta_js_509),
+                rosetta_js::method("major_grid_color", rosetta_js_510),
+                rosetta_js::method("grid_visible", rosetta_js_511),
+                rosetta_js::method("has_x_limits", rosetta_js_512),
+                rosetta_js::method("has_y_limits", rosetta_js_513),
+                rosetta_js::method("x_min", rosetta_js_514),
+                rosetta_js::method("x_max", rosetta_js_515),
+                rosetta_js::method("y_min", rosetta_js_516),
+                rosetta_js::method("y_max", rosetta_js_517),
+                rosetta_js::method("axes_hidden", rosetta_js_518),
+                rosetta_js::method("x_tick_label_list", rosetta_js_519),
+                rosetta_js::method("x_tick_position_list", rosetta_js_520),
+                rosetta_js::method("y_tick_label_list", rosetta_js_521),
+                rosetta_js::method("y_tick_position_list", rosetta_js_522),
+                rosetta_js::method("reference_lines", rosetta_js_523),
+                rosetta_js::method("legend_entries", rosetta_js_524),
+                rosetta_js::method("has_custom_margins", rosetta_js_525),
+                rosetta_js::method("margin_left", rosetta_js_526),
+                rosetta_js::method("margin_right", rosetta_js_527),
+                rosetta_js::method("margin_top", rosetta_js_528),
+                rosetta_js::method("margin_bottom", rosetta_js_529),
+                rosetta_js::method("tick_font_px", rosetta_js_530),
+                rosetta_js::method("pretty_ticks_enabled", rosetta_js_531),
+                rosetta_js::method("to_svg", rosetta_js_532),
+                rosetta_js::method("save", rosetta_js_533),
+                rosetta_js::method("save_svg", rosetta_js_534),
+                rosetta_js::method("to_png", rosetta_js_535),
+                rosetta_js::method("to_pdf", rosetta_js_536),
+                rosetta_js::method("save_png", rosetta_js_537),
+                rosetta_js::method("save_pdf", rosetta_js_538),
+                rosetta_js::method("view", rosetta_js_539),
+                rosetta_js::method("show", rosetta_js_540),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Plot", rosetta_js_1014, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Plot", rosetta_js_541, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::graphics::Plot>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -6937,60 +6231,98 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::graphics::RPlot
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("size", rosetta_js_1016),
-                rosetta_js::method("title", rosetta_js_1017),
-                rosetta_js::method("subtitle", rosetta_js_1018),
-                rosetta_js::method("x_label", rosetta_js_1019),
-                rosetta_js::method("y_label", rosetta_js_1020),
-                rosetta_js::method("xlab", rosetta_js_1021),
-                rosetta_js::method("ylab", rosetta_js_1022),
-                rosetta_js::method("set_title", rosetta_js_1023),
-                rosetta_js::method("set_subtitle", rosetta_js_1024),
-                rosetta_js::method("set_xlab", rosetta_js_1025),
-                rosetta_js::method("set_ylab", rosetta_js_1026),
-                rosetta_js::method("set_col", rosetta_js_1027),
-                rosetta_js::method("background", rosetta_js_1028),
-                rosetta_js::method("axis_color", rosetta_js_1029),
-                rosetta_js::method("grid_color", rosetta_js_1030),
-                rosetta_js::method("show_grid", rosetta_js_1031),
-                rosetta_js::method("x_limits", rosetta_js_1032),
-                rosetta_js::method("y_limits", rosetta_js_1033),
-                rosetta_js::method("xlim", rosetta_js_1034),
-                rosetta_js::method("ylim", rosetta_js_1035),
-                rosetta_js::method("hide_axes", rosetta_js_1036),
-                rosetta_js::method("x_tick_labels", rosetta_js_1037),
-                rosetta_js::method("x_ticks", rosetta_js_1038),
-                rosetta_js::method("y_tick_labels", rosetta_js_1039),
-                rosetta_js::method("y_ticks", rosetta_js_1040),
-                rosetta_js::method("margins", rosetta_js_1041),
-                rosetta_js::method("tick_font_size", rosetta_js_1042),
-                rosetta_js::method("pretty_ticks", rosetta_js_1043),
-                rosetta_js::method("points", rosetta_js_1051),
-                rosetta_js::method("points_colored", rosetta_js_1052),
-                rosetta_js::method("line", rosetta_js_1053),
-                rosetta_js::method("lines", rosetta_js_1054),
-                rosetta_js::method("bars", rosetta_js_1055),
-                rosetta_js::method("box", rosetta_js_1056),
-                rosetta_js::method("abline", rosetta_js_1057),
-                rosetta_js::method("abline_h", rosetta_js_1058),
-                rosetta_js::method("abline_v", rosetta_js_1059),
-                rosetta_js::method("qqline", rosetta_js_1060),
-                rosetta_js::method("legend", rosetta_js_1061),
-                rosetta_js::method("text", rosetta_js_1062),
-                rosetta_js::method("polygon", rosetta_js_1063),
-                rosetta_js::method("image", rosetta_js_1064),
-                rosetta_js::method("segments", rosetta_js_1065),
-                rosetta_js::method("create", rosetta_js_1015, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("plot", rosetta_js_1044, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("hist", rosetta_js_1045, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("barplot", rosetta_js_1046, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("boxplot", rosetta_js_1047, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("pie", rosetta_js_1048, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("curve", rosetta_js_1049, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("qqnorm", rosetta_js_1050, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("size", rosetta_js_543),
+                rosetta_js::method("dpi", rosetta_js_544),
+                rosetta_js::method("title", rosetta_js_545),
+                rosetta_js::method("subtitle", rosetta_js_546),
+                rosetta_js::method("x_label", rosetta_js_547),
+                rosetta_js::method("y_label", rosetta_js_548),
+                rosetta_js::method("xlab", rosetta_js_549),
+                rosetta_js::method("ylab", rosetta_js_550),
+                rosetta_js::method("set_title", rosetta_js_551),
+                rosetta_js::method("set_subtitle", rosetta_js_552),
+                rosetta_js::method("set_xlab", rosetta_js_553),
+                rosetta_js::method("set_ylab", rosetta_js_554),
+                rosetta_js::method("set_col", rosetta_js_555),
+                rosetta_js::method("background", rosetta_js_556),
+                rosetta_js::method("axis_color", rosetta_js_557),
+                rosetta_js::method("grid_color", rosetta_js_558),
+                rosetta_js::method("show_grid", rosetta_js_559),
+                rosetta_js::method("x_limits", rosetta_js_560),
+                rosetta_js::method("y_limits", rosetta_js_561),
+                rosetta_js::method("xlim", rosetta_js_562),
+                rosetta_js::method("ylim", rosetta_js_563),
+                rosetta_js::method("hide_axes", rosetta_js_564),
+                rosetta_js::method("x_tick_labels", rosetta_js_565),
+                rosetta_js::method("x_ticks", rosetta_js_566),
+                rosetta_js::method("y_tick_labels", rosetta_js_567),
+                rosetta_js::method("y_ticks", rosetta_js_568),
+                rosetta_js::method("margins", rosetta_js_569),
+                rosetta_js::method("tick_font_size", rosetta_js_570),
+                rosetta_js::method("pretty_ticks", rosetta_js_571),
+                rosetta_js::method("points", rosetta_js_579),
+                rosetta_js::method("points_colored", rosetta_js_580),
+                rosetta_js::method("line", rosetta_js_581),
+                rosetta_js::method("lines", rosetta_js_582),
+                rosetta_js::method("bars", rosetta_js_583),
+                rosetta_js::method("box", rosetta_js_584),
+                rosetta_js::method("abline", rosetta_js_585),
+                rosetta_js::method("abline_h", rosetta_js_586),
+                rosetta_js::method("abline_v", rosetta_js_587),
+                rosetta_js::method("qqline", rosetta_js_588),
+                rosetta_js::method("legend", rosetta_js_589),
+                rosetta_js::method("text", rosetta_js_590),
+                rosetta_js::method("polygon", rosetta_js_591),
+                rosetta_js::method("image", rosetta_js_592),
+                rosetta_js::method("segments", rosetta_js_593),
+                rosetta_js::method("steps", rosetta_js_594),
+                rosetta_js::method("stems", rosetta_js_595),
+                rosetta_js::method("lollipop", rosetta_js_596),
+                rosetta_js::method("area", rosetta_js_597),
+                rosetta_js::method("ribbon", rosetta_js_598),
+                rosetta_js::method("error_bars", rosetta_js_599),
+                rosetta_js::method("rectangles", rosetta_js_600),
+                rosetta_js::method("horizontal_bars", rosetta_js_601),
+                rosetta_js::method("grouped_bars", rosetta_js_602),
+                rosetta_js::method("stacked_bars", rosetta_js_603),
+                rosetta_js::method("waterfall", rosetta_js_604),
+                rosetta_js::method("ecdf", rosetta_js_605),
+                rosetta_js::method("rug", rosetta_js_606),
+                rosetta_js::method("density", rosetta_js_607),
+                rosetta_js::method("violin", rosetta_js_608),
+                rosetta_js::method("bubbles", rosetta_js_609),
+                rosetta_js::method("arrows", rosetta_js_610),
+                rosetta_js::method("contour", rosetta_js_611),
+                rosetta_js::method("candlesticks", rosetta_js_612),
+                rosetta_js::method("ohlc", rosetta_js_613),
+                rosetta_js::method("dumbbell", rosetta_js_614),
+                rosetta_js::method("dot_stack", rosetta_js_615),
+                rosetta_js::method("population_pyramid", rosetta_js_616),
+                rosetta_js::method("frequency_polygon", rosetta_js_617),
+                rosetta_js::method("qqplot", rosetta_js_618),
+                rosetta_js::method("bland_altman", rosetta_js_619),
+                rosetta_js::method("autocorrelation", rosetta_js_620),
+                rosetta_js::method("forest", rosetta_js_621),
+                rosetta_js::method("pareto", rosetta_js_622),
+                rosetta_js::method("stacked_area", rosetta_js_623),
+                rosetta_js::method("parallel_coordinates", rosetta_js_624),
+                rosetta_js::method("ternary", rosetta_js_625),
+                rosetta_js::method("wireframe", rosetta_js_626),
+                rosetta_js::method("treemap", rosetta_js_627),
+                rosetta_js::method("arc_diagram", rosetta_js_628),
+                rosetta_js::method("choropleth", rosetta_js_629),
+                rosetta_js::method("radar", rosetta_js_630),
+                rosetta_js::method("create", rosetta_js_542, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("plot", rosetta_js_572, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("hist", rosetta_js_573, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("barplot", rosetta_js_574, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("boxplot", rosetta_js_575, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("pie", rosetta_js_576, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("curve", rosetta_js_577, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("qqnorm", rosetta_js_578, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
             };
             napi_value cls;
-            cls = rosetta_js::define_class(env, "RPlot", rosetta_js_1066, nullptr, properties);
+            cls = rosetta_js::define_class(env, "RPlot", rosetta_js_631, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::graphics::RPlot>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -6998,27 +6330,28 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::graphics::RLayout
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("add", rosetta_js_1068),
-                rosetta_js::method("size", rosetta_js_1069),
-                rosetta_js::method("title", rosetta_js_1070),
-                rosetta_js::method("rows", rosetta_js_1071),
-                rosetta_js::method("cols", rosetta_js_1072),
-                rosetta_js::method("width", rosetta_js_1073),
-                rosetta_js::method("height", rosetta_js_1074),
-                rosetta_js::method("panel_count", rosetta_js_1075),
-                rosetta_js::method("title_text", rosetta_js_1076),
-                rosetta_js::method("panel", rosetta_js_1077),
-                rosetta_js::method("to_svg", rosetta_js_1078),
-                rosetta_js::method("save", rosetta_js_1079),
-                rosetta_js::method("save_svg", rosetta_js_1080),
-                rosetta_js::method("to_png", rosetta_js_1081),
-                rosetta_js::method("to_pdf", rosetta_js_1082),
-                rosetta_js::method("save_png", rosetta_js_1083),
-                rosetta_js::method("save_pdf", rosetta_js_1084),
-                rosetta_js::method("fit_panels", rosetta_js_1085),
-                rosetta_js::method("show", rosetta_js_1086),
-                rosetta_js::method("view", rosetta_js_1087),
-                rosetta_js::method("create", rosetta_js_1067, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("add", rosetta_js_633),
+                rosetta_js::method("size", rosetta_js_634),
+                rosetta_js::method("dpi", rosetta_js_635),
+                rosetta_js::method("title", rosetta_js_636),
+                rosetta_js::method("rows", rosetta_js_637),
+                rosetta_js::method("cols", rosetta_js_638),
+                rosetta_js::method("width", rosetta_js_639),
+                rosetta_js::method("height", rosetta_js_640),
+                rosetta_js::method("panel_count", rosetta_js_641),
+                rosetta_js::method("title_text", rosetta_js_642),
+                rosetta_js::method("panel", rosetta_js_643),
+                rosetta_js::method("to_svg", rosetta_js_644),
+                rosetta_js::method("save", rosetta_js_645),
+                rosetta_js::method("save_svg", rosetta_js_646),
+                rosetta_js::method("to_png", rosetta_js_647),
+                rosetta_js::method("to_pdf", rosetta_js_648),
+                rosetta_js::method("save_png", rosetta_js_649),
+                rosetta_js::method("save_pdf", rosetta_js_650),
+                rosetta_js::method("fit_panels", rosetta_js_651),
+                rosetta_js::method("show", rosetta_js_652),
+                rosetta_js::method("view", rosetta_js_653),
+                rosetta_js::method("create", rosetta_js_632, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
@@ -7026,23 +6359,1140 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
             { napi_property_descriptor d{"title_band_px", nullptr, nullptr, nullptr, nullptr, rosetta_js::result<std::remove_cv_t<decltype(datamunge::graphics::RLayout::title_band_px)>>(env, static_cast<std::remove_cv_t<decltype(datamunge::graphics::RLayout::title_band_px)>>(datamunge::graphics::RLayout::title_band_px), nullptr, rosetta_js::Return::copy), static_cast<napi_property_attributes>(napi_enumerable | napi_static), nullptr}; properties.push_back(d); }
             { napi_property_descriptor d{"min_panel_px", nullptr, nullptr, nullptr, nullptr, rosetta_js::result<std::remove_cv_t<decltype(datamunge::graphics::RLayout::min_panel_px)>>(env, static_cast<std::remove_cv_t<decltype(datamunge::graphics::RLayout::min_panel_px)>>(datamunge::graphics::RLayout::min_panel_px), nullptr, rosetta_js::Return::copy), static_cast<napi_property_attributes>(napi_enumerable | napi_static), nullptr}; properties.push_back(d); }
             napi_value cls;
-            cls = rosetta_js::define_class(env, "RLayout", rosetta_js_1088, nullptr, properties);
+            cls = rosetta_js::define_class(env, "RLayout", rosetta_js_654, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::graphics::RLayout>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
             rosetta_js::set(env, exports, "RLayout", cls);
         }
-        { // datamunge::geometry::DTWResult
+        { // datamunge::bayes::GibbsOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("distance", rosetta_js_1089, rosetta_js_1090),
-                rosetta_js::accessor("path_a", rosetta_js_1091, rosetta_js_1092),
-                rosetta_js::accessor("path_b", rosetta_js_1093, rosetta_js_1094),
+                rosetta_js::accessor("num_samples", rosetta_js_655, rosetta_js_656),
+                rosetta_js::accessor("num_warmup", rosetta_js_657, rosetta_js_658),
+                rosetta_js::accessor("initial_step_sizes", rosetta_js_659, rosetta_js_660),
+                rosetta_js::accessor("target_accept_rate", rosetta_js_661, rosetta_js_662),
+                rosetta_js::accessor("seed", rosetta_js_663, rosetta_js_664),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "DTWResult", rosetta_js_1095, nullptr, properties);
+            cls = rosetta_js::define_class(env, "GibbsOptions", rosetta_js_665, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::bayes::GibbsOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "GibbsOptions", cls);
+        }
+        { // datamunge::bayes::GibbsResult
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("samples", rosetta_js_666, rosetta_js_667),
+                rosetta_js::accessor("accept_rates", rosetta_js_668, rosetta_js_669),
+                rosetta_js::accessor("final_step_sizes", rosetta_js_670, rosetta_js_671),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "GibbsResult", rosetta_js_672, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::bayes::GibbsResult>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "GibbsResult", cls);
+        }
+        { // datamunge::bayes::GibbsSampler
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("sample", rosetta_js_673),
+                rosetta_js::method("options", rosetta_js_674),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "GibbsSampler", rosetta_js_675, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::bayes::GibbsSampler>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "GibbsSampler", cls);
+        }
+        { // datamunge::bayes::HMCOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("num_samples", rosetta_js_676, rosetta_js_677),
+                rosetta_js::accessor("num_warmup", rosetta_js_678, rosetta_js_679),
+                rosetta_js::accessor("num_leapfrog_steps", rosetta_js_680, rosetta_js_681),
+                rosetta_js::accessor("initial_step_size", rosetta_js_682, rosetta_js_683),
+                rosetta_js::accessor("target_accept_rate", rosetta_js_684, rosetta_js_685),
+                rosetta_js::accessor("seed", rosetta_js_686, rosetta_js_687),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "HMCOptions", rosetta_js_688, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::bayes::HMCOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "HMCOptions", cls);
+        }
+        { // datamunge::bayes::HMCResult
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("samples", rosetta_js_689, rosetta_js_690),
+                rosetta_js::accessor("accept_rate", rosetta_js_691, rosetta_js_692),
+                rosetta_js::accessor("final_step_size", rosetta_js_693, rosetta_js_694),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "HMCResult", rosetta_js_695, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::bayes::HMCResult>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "HMCResult", cls);
+        }
+        { // datamunge::bayes::HMC
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("sample", rosetta_js_696),
+                rosetta_js::method("options", rosetta_js_697),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "HMC", rosetta_js_698, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::bayes::HMC>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "HMC", cls);
+        }
+        { // datamunge::bayes::HMCProposal
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("position", rosetta_js_699, rosetta_js_700),
+                rosetta_js::accessor("momentum", rosetta_js_701, rosetta_js_702),
+                rosetta_js::accessor("energy_change", rosetta_js_703, rosetta_js_704),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "HMCProposal", rosetta_js_705, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::bayes::HMCProposal>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "HMCProposal", cls);
+        }
+        { // datamunge::bayes::ImportanceSamplingOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("num_samples", rosetta_js_706, rosetta_js_707),
+                rosetta_js::accessor("seed", rosetta_js_708, rosetta_js_709),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ImportanceSamplingOptions", rosetta_js_710, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::bayes::ImportanceSamplingOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ImportanceSamplingOptions", cls);
+        }
+        { // datamunge::bayes::ImportanceSamplingResult
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("samples", rosetta_js_711, rosetta_js_712),
+                rosetta_js::accessor("normalized_weights", rosetta_js_713, rosetta_js_714),
+                rosetta_js::accessor("effective_sample_size", rosetta_js_715, rosetta_js_716),
+                rosetta_js::accessor("log_evidence", rosetta_js_717, rosetta_js_718),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ImportanceSamplingResult", rosetta_js_719, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::bayes::ImportanceSamplingResult>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ImportanceSamplingResult", cls);
+        }
+        { // datamunge::bayes::ImportanceSampling
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("sample", rosetta_js_720),
+                rosetta_js::method("options", rosetta_js_721),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ImportanceSampling", rosetta_js_722, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::bayes::ImportanceSampling>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ImportanceSampling", cls);
+        }
+        { // datamunge::bayes::MAPOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("max_iterations", rosetta_js_723, rosetta_js_724),
+                rosetta_js::accessor("tolerance", rosetta_js_725, rosetta_js_726),
+                rosetta_js::accessor("history_size", rosetta_js_727, rosetta_js_728),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "MAPOptions", rosetta_js_729, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::bayes::MAPOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "MAPOptions", cls);
+        }
+        { // datamunge::bayes::MAP
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_730),
+                rosetta_js::method("options", rosetta_js_731),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "MAP", rosetta_js_732, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::bayes::MAP>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "MAP", cls);
+        }
+        { // datamunge::bayes::RWMOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("num_samples", rosetta_js_733, rosetta_js_734),
+                rosetta_js::accessor("num_warmup", rosetta_js_735, rosetta_js_736),
+                rosetta_js::accessor("initial_step_size", rosetta_js_737, rosetta_js_738),
+                rosetta_js::accessor("target_accept_rate", rosetta_js_739, rosetta_js_740),
+                rosetta_js::accessor("seed", rosetta_js_741, rosetta_js_742),
+                rosetta_js::accessor("adapt_covariance", rosetta_js_743, rosetta_js_744),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "RWMOptions", rosetta_js_745, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::bayes::RWMOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "RWMOptions", cls);
+        }
+        { // datamunge::bayes::RWMResult
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("samples", rosetta_js_746, rosetta_js_747),
+                rosetta_js::accessor("accept_rate", rosetta_js_748, rosetta_js_749),
+                rosetta_js::accessor("final_step_size", rosetta_js_750, rosetta_js_751),
+                rosetta_js::accessor("proposal_covariance", rosetta_js_752, rosetta_js_753),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "RWMResult", rosetta_js_754, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::bayes::RWMResult>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "RWMResult", cls);
+        }
+        { // datamunge::bayes::RandomWalkMetropolis
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("sample", rosetta_js_755),
+                rosetta_js::method("options", rosetta_js_756),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "RandomWalkMetropolis", rosetta_js_757, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::bayes::RandomWalkMetropolis>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "RandomWalkMetropolis", cls);
+        }
+        { // datamunge::image::Pixel
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("r", rosetta_js_758, rosetta_js_759),
+                rosetta_js::accessor("g", rosetta_js_760, rosetta_js_761),
+                rosetta_js::accessor("b", rosetta_js_762, rosetta_js_763),
+                rosetta_js::accessor("a", rosetta_js_764, rosetta_js_765),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "Pixel", rosetta_js_766, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::image::Pixel>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "Pixel", cls);
+        }
+        { // datamunge::image::Image
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("width", rosetta_js_767),
+                rosetta_js::method("height", rosetta_js_768),
+                rosetta_js::method("mode", rosetta_js_769),
+                rosetta_js::method("channels", rosetta_js_770),
+                rosetta_js::method("data", rosetta_js_771),
+                rosetta_js::method("get_pixel", rosetta_js_772),
+                rosetta_js::method("set_pixel", rosetta_js_773),
+                rosetta_js::method("fill", rosetta_js_774),
+                rosetta_js::method("channel_count", rosetta_js_775, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "Image", rosetta_js_776, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::image::Image>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "Image", cls);
+        }
+        { // datamunge::image::HSV
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("h", rosetta_js_777, rosetta_js_778),
+                rosetta_js::accessor("s", rosetta_js_779, rosetta_js_780),
+                rosetta_js::accessor("v", rosetta_js_781, rosetta_js_782),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "HSV", rosetta_js_783, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::image::HSV>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "HSV", cls);
+        }
+        { // datamunge::cv::KeyPoint
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("x", rosetta_js_784, rosetta_js_785),
+                rosetta_js::accessor("y", rosetta_js_786, rosetta_js_787),
+                rosetta_js::accessor("scale", rosetta_js_788, rosetta_js_789),
+                rosetta_js::accessor("response", rosetta_js_790, rosetta_js_791),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "KeyPoint", rosetta_js_792, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::cv::KeyPoint>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "KeyPoint", cls);
+        }
+        { // datamunge::cv::Corner
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("x", rosetta_js_793, rosetta_js_794),
+                rosetta_js::accessor("y", rosetta_js_795, rosetta_js_796),
+                rosetta_js::accessor("response", rosetta_js_797, rosetta_js_798),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "Corner", rosetta_js_799, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::cv::Corner>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "Corner", cls);
+        }
+        { // datamunge::cv::detail::StructureTensorField
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("sxx", rosetta_js_800, rosetta_js_801),
+                rosetta_js::accessor("syy", rosetta_js_802, rosetta_js_803),
+                rosetta_js::accessor("sxy", rosetta_js_804, rosetta_js_805),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "StructureTensorField", rosetta_js_806, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::cv::detail::StructureTensorField>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "StructureTensorField", cls);
+        }
+        { // datamunge::cv::HoughLine
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("rho", rosetta_js_807, rosetta_js_808),
+                rosetta_js::accessor("theta", rosetta_js_809, rosetta_js_810),
+                rosetta_js::accessor("votes", rosetta_js_811, rosetta_js_812),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "HoughLine", rosetta_js_813, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::cv::HoughLine>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "HoughLine", cls);
+        }
+        { // datamunge::cv::HoughCircle
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("cx", rosetta_js_814, rosetta_js_815),
+                rosetta_js::accessor("cy", rosetta_js_816, rosetta_js_817),
+                rosetta_js::accessor("radius", rosetta_js_818, rosetta_js_819),
+                rosetta_js::accessor("votes", rosetta_js_820, rosetta_js_821),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "HoughCircle", rosetta_js_822, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::cv::HoughCircle>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "HoughCircle", cls);
+        }
+        { // datamunge::cv::FlowVector
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("dx", rosetta_js_823, rosetta_js_824),
+                rosetta_js::accessor("dy", rosetta_js_825, rosetta_js_826),
+                rosetta_js::accessor("valid", rosetta_js_827, rosetta_js_828),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "FlowVector", rosetta_js_829, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::cv::FlowVector>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "FlowVector", cls);
+        }
+        { // datamunge::cv::LabelMap
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("labels", rosetta_js_830, rosetta_js_831),
+                rosetta_js::accessor("width", rosetta_js_832, rosetta_js_833),
+                rosetta_js::accessor("height", rosetta_js_834, rosetta_js_835),
+                rosetta_js::accessor("count", rosetta_js_836, rosetta_js_837),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "LabelMap", rosetta_js_838, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::cv::LabelMap>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "LabelMap", cls);
+        }
+        { // datamunge::datasets::ImageBatch
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("size", rosetta_js_839),
+                rosetta_js::method("features", rosetta_js_840),
+                rosetta_js::method("image", rosetta_js_841),
+                rosetta_js::accessor("pixels", rosetta_js_842, rosetta_js_843),
+                rosetta_js::accessor("labels", rosetta_js_844, rosetta_js_845),
+                rosetta_js::accessor("indices", rosetta_js_846, rosetta_js_847),
+                rosetta_js::accessor("shape", rosetta_js_848, rosetta_js_849),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ImageBatch", rosetta_js_850, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::datasets::ImageBatch>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ImageBatch", cls);
+        }
+        { // datamunge::datasets::ImageLoader
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("set_batch_size", rosetta_js_851),
+                rosetta_js::method("set_shuffle", rosetta_js_852),
+                rosetta_js::method("set_seed", rosetta_js_853),
+                rosetta_js::method("set_drop_last", rosetta_js_854),
+                rosetta_js::method("set_normalize", rosetta_js_855),
+                rosetta_js::method("set_layout", rosetta_js_856),
+                rosetta_js::method("set_limit", rosetta_js_857),
+                rosetta_js::method("set_coarse_labels", rosetta_js_858),
+                rosetta_js::method("dataset", rosetta_js_859),
+                rosetta_js::method("split", rosetta_js_860),
+                rosetta_js::method("directory", rosetta_js_861),
+                rosetta_js::method("batch_size", rosetta_js_862),
+                rosetta_js::method("shuffle", rosetta_js_863),
+                rosetta_js::method("seed", rosetta_js_864),
+                rosetta_js::method("drop_last", rosetta_js_865),
+                rosetta_js::method("normalize", rosetta_js_866),
+                rosetta_js::method("layout", rosetta_js_867),
+                rosetta_js::method("coarse_labels", rosetta_js_868),
+                rosetta_js::method("size", rosetta_js_869),
+                rosetta_js::method("split_size", rosetta_js_870),
+                rosetta_js::method("num_batches", rosetta_js_871),
+                rosetta_js::method("height", rosetta_js_872),
+                rosetta_js::method("width", rosetta_js_873),
+                rosetta_js::method("channels", rosetta_js_874),
+                rosetta_js::method("num_classes", rosetta_js_875),
+                rosetta_js::method("class_names", rosetta_js_876),
+                rosetta_js::method("epoch", rosetta_js_877),
+                rosetta_js::method("position", rosetta_js_878),
+                rosetta_js::method("has_next", rosetta_js_879),
+                rosetta_js::method("next", rosetta_js_880),
+                rosetta_js::method("reset", rosetta_js_881),
+                rosetta_js::method("batch", rosetta_js_882),
+                rosetta_js::method("take", rosetta_js_883),
+                rosetta_js::method("load_all", rosetta_js_884),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ImageLoader", rosetta_js_885, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::datasets::ImageLoader>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ImageLoader", cls);
+        }
+        { // datamunge::fem::Mesh1D
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("num_nodes", rosetta_js_886),
+                rosetta_js::method("num_elements", rosetta_js_887),
+                rosetta_js::method("node_at", rosetta_js_888),
+                rosetta_js::method("element_length", rosetta_js_889),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "Mesh1D", rosetta_js_890, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::fem::Mesh1D>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "Mesh1D", cls);
+        }
+        { // datamunge::fem::ScalarField1D
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("evaluate", rosetta_js_891),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ScalarField1D", rosetta_js_892, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::fem::ScalarField1D>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ScalarField1D", cls);
+        }
+        { // datamunge::fem::ScalarField2D
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("evaluate", rosetta_js_893),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ScalarField2D", rosetta_js_894, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::fem::ScalarField2D>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ScalarField2D", cls);
+        }
+        { // datamunge::fem::BoundaryCondition1D
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("type", rosetta_js_895, rosetta_js_896),
+                rosetta_js::accessor("value", rosetta_js_897, rosetta_js_898),
+                rosetta_js::accessor("robin_coefficient", rosetta_js_899, rosetta_js_900),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "BoundaryCondition1D", rosetta_js_901, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::fem::BoundaryCondition1D>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "BoundaryCondition1D", cls);
+        }
+        { // datamunge::fem::FEM1DResult
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("size", rosetta_js_902),
+                rosetta_js::method("node_at", rosetta_js_903),
+                rosetta_js::method("value_at", rosetta_js_904),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "FEM1DResult", rosetta_js_905, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::fem::FEM1DResult>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "FEM1DResult", cls);
+        }
+        { // datamunge::fem::FEM1DTimeSeries
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("num_steps", rosetta_js_906),
+                rosetta_js::method("num_nodes", rosetta_js_907),
+                rosetta_js::method("node_at", rosetta_js_908),
+                rosetta_js::method("time_at", rosetta_js_909),
+                rosetta_js::method("value_at", rosetta_js_910),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "FEM1DTimeSeries", rosetta_js_911, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::fem::FEM1DTimeSeries>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "FEM1DTimeSeries", cls);
+        }
+        { // datamunge::fem::FEM1D
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("solve", rosetta_js_912, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("solve_builtin", rosetta_js_913, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("solve_transient", rosetta_js_914, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("solve_transient_builtin", rosetta_js_915, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "FEM1D", rosetta_js_916, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::fem::FEM1D>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "FEM1D", cls);
+        }
+        { // datamunge::geometry::Point2D
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("equals", rosetta_js_917),
+                rosetta_js::accessor("x", rosetta_js_918, rosetta_js_919),
+                rosetta_js::accessor("y", rosetta_js_920, rosetta_js_921),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "Point2D", rosetta_js_922, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::Point2D>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "Point2D", cls);
+        }
+        { // datamunge::geometry::Triangle
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("a", rosetta_js_923, rosetta_js_924),
+                rosetta_js::accessor("b", rosetta_js_925, rosetta_js_926),
+                rosetta_js::accessor("c", rosetta_js_927, rosetta_js_928),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "Triangle", rosetta_js_929, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::Triangle>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "Triangle", cls);
+        }
+        { // datamunge::geometry::DelaunayWork
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("seed_orientation_tests", rosetta_js_930, rosetta_js_931),
+                rosetta_js::accessor("insertions", rosetta_js_932, rosetta_js_933),
+                rosetta_js::accessor("incircle_tests", rosetta_js_934, rosetta_js_935),
+                rosetta_js::accessor("hull_side_tests", rosetta_js_936, rosetta_js_937),
+                rosetta_js::accessor("removed_faces", rosetta_js_938, rosetta_js_939),
+                rosetta_js::accessor("boundary_edges", rosetta_js_940, rosetta_js_941),
+                rosetta_js::accessor("created_faces", rosetta_js_942, rosetta_js_943),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "DelaunayWork", rosetta_js_944, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::DelaunayWork>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "DelaunayWork", cls);
+        }
+        { // datamunge::geometry::DelaunayInsertion
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("input_index", rosetta_js_945, rosetta_js_946),
+                rosetta_js::accessor("faces_before", rosetta_js_947, rosetta_js_948),
+                rosetta_js::accessor("faces_after", rosetta_js_949, rosetta_js_950),
+                rosetta_js::accessor("removed", rosetta_js_951, rosetta_js_952),
+                rosetta_js::accessor("boundary", rosetta_js_953, rosetta_js_954),
+                rosetta_js::accessor("added", rosetta_js_955, rosetta_js_956),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "DelaunayInsertion", rosetta_js_957, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::DelaunayInsertion>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "DelaunayInsertion", cls);
+        }
+        { // datamunge::geometry::DelaunayTrace
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("points", rosetta_js_958, rosetta_js_959),
+                rosetta_js::accessor("representatives", rosetta_js_960, rosetta_js_961),
+                rosetta_js::accessor("representative_for_input", rosetta_js_962, rosetta_js_963),
+                rosetta_js::accessor("has_seed", rosetta_js_964, rosetta_js_965),
+                rosetta_js::accessor("seed", rosetta_js_966, rosetta_js_967),
+                rosetta_js::accessor("triangles", rosetta_js_968, rosetta_js_969),
+                rosetta_js::accessor("steps", rosetta_js_970, rosetta_js_971),
+                rosetta_js::accessor("work", rosetta_js_972, rosetta_js_973),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "DelaunayTrace", rosetta_js_974, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::DelaunayTrace>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "DelaunayTrace", cls);
+        }
+        { // datamunge::geometry::DelaunayAnalysis
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("distinct_points", rosetta_js_975, rosetta_js_976),
+                rosetta_js::accessor("used_points", rosetta_js_977, rosetta_js_978),
+                rosetta_js::accessor("triangles", rosetta_js_979, rosetta_js_980),
+                rosetta_js::accessor("edges", rosetta_js_981, rosetta_js_982),
+                rosetta_js::accessor("boundary_edges", rosetta_js_983, rosetta_js_984),
+                rosetta_js::accessor("circle_tests", rosetta_js_985, rosetta_js_986),
+                rosetta_js::accessor("interior_violations", rosetta_js_987, rosetta_js_988),
+                rosetta_js::accessor("minimum_angle_degrees", rosetta_js_989, rosetta_js_990),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "DelaunayAnalysis", rosetta_js_991, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::DelaunayAnalysis>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "DelaunayAnalysis", cls);
+        }
+        { // datamunge::fem::Mesh2D
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("num_nodes", rosetta_js_992),
+                rosetta_js::method("num_triangles", rosetta_js_993),
+                rosetta_js::method("node_at", rosetta_js_994),
+                rosetta_js::method("triangle_at", rosetta_js_995),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "Mesh2D", rosetta_js_996, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::fem::Mesh2D>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "Mesh2D", cls);
+        }
+        { // datamunge::fem::FEM2DResult
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("size", rosetta_js_997),
+                rosetta_js::method("node_at", rosetta_js_998),
+                rosetta_js::method("value_at", rosetta_js_999),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "FEM2DResult", rosetta_js_1000, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::fem::FEM2DResult>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "FEM2DResult", cls);
+        }
+        { // datamunge::fem::FEM2D
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("solve", rosetta_js_1001, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("solve_builtin", rosetta_js_1002, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "FEM2D", rosetta_js_1003, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::fem::FEM2D>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "FEM2D", cls);
+        }
+        { // datamunge::filter::AlphaBetaState
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("position", rosetta_js_1004, rosetta_js_1005),
+                rosetta_js::accessor("velocity", rosetta_js_1006, rosetta_js_1007),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "AlphaBetaState", rosetta_js_1008, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::filter::AlphaBetaState>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "AlphaBetaState", cls);
+        }
+        { // datamunge::filter::AlphaBetaFilter
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("update", rosetta_js_1009),
+                rosetta_js::method("position", rosetta_js_1010),
+                rosetta_js::method("velocity", rosetta_js_1011),
+                rosetta_js::method("alpha", rosetta_js_1012),
+                rosetta_js::method("beta", rosetta_js_1013),
+                rosetta_js::method("dt", rosetta_js_1014),
+                rosetta_js::method("filter", rosetta_js_1015),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "AlphaBetaFilter", rosetta_js_1016, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::filter::AlphaBetaFilter>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "AlphaBetaFilter", cls);
+        }
+        { // datamunge::filter::AlphaBetaGammaState
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("position", rosetta_js_1017, rosetta_js_1018),
+                rosetta_js::accessor("velocity", rosetta_js_1019, rosetta_js_1020),
+                rosetta_js::accessor("acceleration", rosetta_js_1021, rosetta_js_1022),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "AlphaBetaGammaState", rosetta_js_1023, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::filter::AlphaBetaGammaState>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "AlphaBetaGammaState", cls);
+        }
+        { // datamunge::filter::AlphaBetaGammaFilter
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("update", rosetta_js_1024),
+                rosetta_js::method("position", rosetta_js_1025),
+                rosetta_js::method("velocity", rosetta_js_1026),
+                rosetta_js::method("acceleration", rosetta_js_1027),
+                rosetta_js::method("alpha", rosetta_js_1028),
+                rosetta_js::method("beta", rosetta_js_1029),
+                rosetta_js::method("gamma", rosetta_js_1030),
+                rosetta_js::method("dt", rosetta_js_1031),
+                rosetta_js::method("filter", rosetta_js_1032),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "AlphaBetaGammaFilter", rosetta_js_1033, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::filter::AlphaBetaGammaFilter>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "AlphaBetaGammaFilter", cls);
+        }
+        { // datamunge::filter::KalmanState
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("x", rosetta_js_1034, rosetta_js_1035),
+                rosetta_js::accessor("P", rosetta_js_1036, rosetta_js_1037),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "KalmanState", rosetta_js_1038, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::filter::KalmanState>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "KalmanState", cls);
+        }
+        { // datamunge::filter::SmoothResult
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("filtered", rosetta_js_1039, rosetta_js_1040),
+                rosetta_js::accessor("smoothed", rosetta_js_1041, rosetta_js_1042),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "SmoothResult", rosetta_js_1043, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::filter::SmoothResult>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "SmoothResult", cls);
+        }
+        { // datamunge::filter::KalmanFilter
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("predict", rosetta_js_1044),
+                rosetta_js::method("update", rosetta_js_1045),
+                rosetta_js::method("state", rosetta_js_1046),
+                rosetta_js::method("covariance", rosetta_js_1047),
+                rosetta_js::method("filter", rosetta_js_1048),
+                rosetta_js::method("smooth", rosetta_js_1049),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "KalmanFilter", rosetta_js_1050, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::filter::KalmanFilter>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "KalmanFilter", cls);
+        }
+        { // datamunge::filter::VectorFunction
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("evaluate", rosetta_js_1051),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "VectorFunction", rosetta_js_1052, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::filter::VectorFunction>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "VectorFunction", cls);
+        }
+        { // datamunge::filter::EnsembleKalmanFilter
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("predict", rosetta_js_1053),
+                rosetta_js::method("update", rosetta_js_1054),
+                rosetta_js::method("state", rosetta_js_1055),
+                rosetta_js::method("covariance", rosetta_js_1056),
+                rosetta_js::method("filter", rosetta_js_1057),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "EnsembleKalmanFilter", rosetta_js_1058, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::filter::EnsembleKalmanFilter>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "EnsembleKalmanFilter", cls);
+        }
+        { // datamunge::filter::ExtendedKalmanFilter
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("predict", rosetta_js_1059),
+                rosetta_js::method("update", rosetta_js_1060),
+                rosetta_js::method("state", rosetta_js_1061),
+                rosetta_js::method("covariance", rosetta_js_1062),
+                rosetta_js::method("filter", rosetta_js_1063),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ExtendedKalmanFilter", rosetta_js_1064, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::filter::ExtendedKalmanFilter>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ExtendedKalmanFilter", cls);
+        }
+        { // datamunge::filter::InformationFilter
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("predict", rosetta_js_1065),
+                rosetta_js::method("update", rosetta_js_1066),
+                rosetta_js::method("state", rosetta_js_1067),
+                rosetta_js::method("covariance", rosetta_js_1068),
+                rosetta_js::method("filter", rosetta_js_1069),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "InformationFilter", rosetta_js_1070, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::filter::InformationFilter>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "InformationFilter", cls);
+        }
+        { // datamunge::filter::ParticleFilter
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("predict", rosetta_js_1071),
+                rosetta_js::method("update", rosetta_js_1072),
+                rosetta_js::method("state", rosetta_js_1073),
+                rosetta_js::method("covariance", rosetta_js_1074),
+                rosetta_js::method("filter", rosetta_js_1075),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ParticleFilter", rosetta_js_1076, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::filter::ParticleFilter>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ParticleFilter", cls);
+        }
+        { // datamunge::filter::UnscentedKalmanFilter
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("predict", rosetta_js_1077),
+                rosetta_js::method("update", rosetta_js_1078),
+                rosetta_js::method("state", rosetta_js_1079),
+                rosetta_js::method("covariance", rosetta_js_1080),
+                rosetta_js::method("filter", rosetta_js_1081),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "UnscentedKalmanFilter", rosetta_js_1082, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::filter::UnscentedKalmanFilter>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "UnscentedKalmanFilter", cls);
+        }
+        { // datamunge::geometry::BoundingBox
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("min", rosetta_js_1083, rosetta_js_1084),
+                rosetta_js::accessor("max", rosetta_js_1085, rosetta_js_1086),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "BoundingBox", rosetta_js_1087, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::BoundingBox>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "BoundingBox", cls);
+        }
+        { // datamunge::geometry::ClosestPairResult
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("a", rosetta_js_1088, rosetta_js_1089),
+                rosetta_js::accessor("b", rosetta_js_1090, rosetta_js_1091),
+                rosetta_js::accessor("distance", rosetta_js_1092, rosetta_js_1093),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ClosestPairResult", rosetta_js_1094, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::ClosestPairResult>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ClosestPairResult", cls);
+        }
+        { // datamunge::geometry::ConvexHullOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("max_points", rosetta_js_1095, rosetta_js_1096),
+                rosetta_js::accessor("max_events", rosetta_js_1097, rosetta_js_1098),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ConvexHullOptions", rosetta_js_1099, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::ConvexHullOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ConvexHullOptions", cls);
+        }
+        { // datamunge::geometry::HullIndexedPoint
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("point", rosetta_js_1100, rosetta_js_1101),
+                rosetta_js::accessor("input_index", rosetta_js_1102, rosetta_js_1103),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "HullIndexedPoint", rosetta_js_1104, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::HullIndexedPoint>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "HullIndexedPoint", cls);
+        }
+        { // datamunge::geometry::ConvexHullWork
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("input_points", rosetta_js_1105, rosetta_js_1106),
+                rosetta_js::accessor("distinct_points", rosetta_js_1107, rosetta_js_1108),
+                rosetta_js::accessor("sort_comparisons", rosetta_js_1109, rosetta_js_1110),
+                rosetta_js::accessor("duplicate_comparisons", rosetta_js_1111, rosetta_js_1112),
+                rosetta_js::accessor("orientation_tests", rosetta_js_1113, rosetta_js_1114),
+                rosetta_js::accessor("pushes", rosetta_js_1115, rosetta_js_1116),
+                rosetta_js::accessor("pops", rosetta_js_1117, rosetta_js_1118),
+                rosetta_js::accessor("max_stack", rosetta_js_1119, rosetta_js_1120),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ConvexHullWork", rosetta_js_1121, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::ConvexHullWork>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ConvexHullWork", cls);
+        }
+        { // datamunge::geometry::HullEvent
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("pass", rosetta_js_1122, rosetta_js_1123),
+                rosetta_js::accessor("action", rosetta_js_1124, rosetta_js_1125),
+                rosetta_js::accessor("candidate", rosetta_js_1126, rosetta_js_1127),
+                rosetta_js::accessor("point", rosetta_js_1128, rosetta_js_1129),
+                rosetta_js::accessor("a", rosetta_js_1130, rosetta_js_1131),
+                rosetta_js::accessor("b", rosetta_js_1132, rosetta_js_1133),
+                rosetta_js::accessor("turn", rosetta_js_1134, rosetta_js_1135),
+                rosetta_js::accessor("stack_size", rosetta_js_1136, rosetta_js_1137),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "HullEvent", rosetta_js_1138, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::HullEvent>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "HullEvent", cls);
+        }
+        { // datamunge::geometry::ConvexHullAnalysis
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("hull", rosetta_js_1139, rosetta_js_1140),
+                rosetta_js::accessor("input_indices", rosetta_js_1141, rosetta_js_1142),
+                rosetta_js::accessor("work", rosetta_js_1143, rosetta_js_1144),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ConvexHullAnalysis", rosetta_js_1145, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::ConvexHullAnalysis>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ConvexHullAnalysis", cls);
+        }
+        { // datamunge::geometry::ConvexHullTrace
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("analysis", rosetta_js_1146, rosetta_js_1147),
+                rosetta_js::accessor("sorted", rosetta_js_1148, rosetta_js_1149),
+                rosetta_js::accessor("events", rosetta_js_1150, rosetta_js_1151),
+                rosetta_js::accessor("lower", rosetta_js_1152, rosetta_js_1153),
+                rosetta_js::accessor("upper", rosetta_js_1154, rosetta_js_1155),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ConvexHullTrace", rosetta_js_1156, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::ConvexHullTrace>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ConvexHullTrace", cls);
+        }
+        { // datamunge::geometry::DTWResult
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("distance", rosetta_js_1157, rosetta_js_1158),
+                rosetta_js::accessor("path_a", rosetta_js_1159, rosetta_js_1160),
+                rosetta_js::accessor("path_b", rosetta_js_1161, rosetta_js_1162),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "DTWResult", rosetta_js_1163, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::geometry::DTWResult>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7050,15 +7500,15 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::geometry::DTWWork
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("cells", rosetta_js_1096, rosetta_js_1097),
-                rosetta_js::accessor("predecessor_reads", rosetta_js_1098, rosetta_js_1099),
-                rosetta_js::accessor("traceback_steps", rosetta_js_1100, rosetta_js_1101),
+                rosetta_js::accessor("cells", rosetta_js_1164, rosetta_js_1165),
+                rosetta_js::accessor("predecessor_reads", rosetta_js_1166, rosetta_js_1167),
+                rosetta_js::accessor("traceback_steps", rosetta_js_1168, rosetta_js_1169),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "DTWWork", rosetta_js_1102, nullptr, properties);
+            cls = rosetta_js::define_class(env, "DTWWork", rosetta_js_1170, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::geometry::DTWWork>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7066,14 +7516,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::geometry::DTWComputation
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("result", rosetta_js_1103, rosetta_js_1104),
-                rosetta_js::accessor("work", rosetta_js_1105, rosetta_js_1106),
+                rosetta_js::accessor("result", rosetta_js_1171, rosetta_js_1172),
+                rosetta_js::accessor("work", rosetta_js_1173, rosetta_js_1174),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "DTWComputation", rosetta_js_1107, nullptr, properties);
+            cls = rosetta_js::define_class(env, "DTWComputation", rosetta_js_1175, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::geometry::DTWComputation>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7081,37 +7531,93 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::geometry::DTWTrace
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("a", rosetta_js_1108, rosetta_js_1109),
-                rosetta_js::accessor("b", rosetta_js_1110, rosetta_js_1111),
-                rosetta_js::accessor("cumulative", rosetta_js_1112, rosetta_js_1113),
-                rosetta_js::accessor("predecessors", rosetta_js_1114, rosetta_js_1115),
-                rosetta_js::accessor("result", rosetta_js_1116, rosetta_js_1117),
-                rosetta_js::accessor("work", rosetta_js_1118, rosetta_js_1119),
-                rosetta_js::accessor("captured_entries", rosetta_js_1120, rosetta_js_1121),
+                rosetta_js::accessor("a", rosetta_js_1176, rosetta_js_1177),
+                rosetta_js::accessor("b", rosetta_js_1178, rosetta_js_1179),
+                rosetta_js::accessor("cumulative", rosetta_js_1180, rosetta_js_1181),
+                rosetta_js::accessor("predecessors", rosetta_js_1182, rosetta_js_1183),
+                rosetta_js::accessor("result", rosetta_js_1184, rosetta_js_1185),
+                rosetta_js::accessor("work", rosetta_js_1186, rosetta_js_1187),
+                rosetta_js::accessor("captured_entries", rosetta_js_1188, rosetta_js_1189),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "DTWTrace", rosetta_js_1122, nullptr, properties);
+            cls = rosetta_js::define_class(env, "DTWTrace", rosetta_js_1190, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::geometry::DTWTrace>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
             rosetta_js::set(env, exports, "DTWTrace", cls);
         }
-        { // datamunge::geometry::KDTree2D
+        { // datamunge::geometry::KDNearestProbe
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("empty", rosetta_js_1123),
-                rosetta_js::method("size", rosetta_js_1124),
-                rosetta_js::method("nearest", rosetta_js_1125),
-                rosetta_js::method("k_nearest", rosetta_js_1126),
-                rosetta_js::method("points_in_radius", rosetta_js_1127),
+                rosetta_js::accessor("action", rosetta_js_1191, rosetta_js_1192),
+                rosetta_js::accessor("original_index", rosetta_js_1193, rosetta_js_1194),
+                rosetta_js::accessor("child_index", rosetta_js_1195, rosetta_js_1196),
+                rosetta_js::accessor("axis", rosetta_js_1197, rosetta_js_1198),
+                rosetta_js::accessor("best_index_before", rosetta_js_1199, rosetta_js_1200),
+                rosetta_js::accessor("best_index_after", rosetta_js_1201, rosetta_js_1202),
+                rosetta_js::accessor("explore_far", rosetta_js_1203, rosetta_js_1204),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "KDTree2D", rosetta_js_1128, nullptr, properties);
+            cls = rosetta_js::define_class(env, "KDNearestProbe", rosetta_js_1205, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::KDNearestProbe>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "KDNearestProbe", cls);
+        }
+        { // datamunge::geometry::KDSearchWork
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("visited_nodes", rosetta_js_1206, rosetta_js_1207),
+                rosetta_js::accessor("plane_tests", rosetta_js_1208, rosetta_js_1209),
+                rosetta_js::accessor("pruned_subtrees", rosetta_js_1210, rosetta_js_1211),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "KDSearchWork", rosetta_js_1212, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::KDSearchWork>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "KDSearchWork", cls);
+        }
+        { // datamunge::geometry::KDNearestTrace
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("query", rosetta_js_1213, rosetta_js_1214),
+                rosetta_js::accessor("point", rosetta_js_1215, rosetta_js_1216),
+                rosetta_js::accessor("original_index", rosetta_js_1217, rosetta_js_1218),
+                rosetta_js::accessor("points", rosetta_js_1219, rosetta_js_1220),
+                rosetta_js::accessor("work", rosetta_js_1221, rosetta_js_1222),
+                rosetta_js::accessor("probes", rosetta_js_1223, rosetta_js_1224),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "KDNearestTrace", rosetta_js_1225, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::KDNearestTrace>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "KDNearestTrace", cls);
+        }
+        { // datamunge::geometry::KDTree2D
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("empty", rosetta_js_1226),
+                rosetta_js::method("size", rosetta_js_1227),
+                rosetta_js::method("nearest", rosetta_js_1228),
+                rosetta_js::method("k_nearest", rosetta_js_1229),
+                rosetta_js::method("points_in_radius", rosetta_js_1230),
+                rosetta_js::method("nearest_trace", rosetta_js_1231),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "KDTree2D", rosetta_js_1232, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::geometry::KDTree2D>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7119,62 +7625,259 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::geometry::Circle
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("center", rosetta_js_1129, rosetta_js_1130),
-                rosetta_js::accessor("radius", rosetta_js_1131, rosetta_js_1132),
+                rosetta_js::accessor("center", rosetta_js_1233, rosetta_js_1234),
+                rosetta_js::accessor("radius", rosetta_js_1235, rosetta_js_1236),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Circle", rosetta_js_1133, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Circle", rosetta_js_1237, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::geometry::Circle>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
             rosetta_js::set(env, exports, "Circle", cls);
         }
-        { // datamunge::geometry::DiameterResult
+        { // datamunge::geometry::EnclosingCircleEvent
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("a", rosetta_js_1134, rosetta_js_1135),
-                rosetta_js::accessor("b", rosetta_js_1136, rosetta_js_1137),
-                rosetta_js::accessor("distance", rosetta_js_1138, rosetta_js_1139),
+                rosetta_js::accessor("depth", rosetta_js_1238, rosetta_js_1239),
+                rosetta_js::accessor("input_index", rosetta_js_1240, rosetta_js_1241),
+                rosetta_js::accessor("contained", rosetta_js_1242, rosetta_js_1243),
+                rosetta_js::accessor("before", rosetta_js_1244, rosetta_js_1245),
+                rosetta_js::accessor("after", rosetta_js_1246, rosetta_js_1247),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "DiameterResult", rosetta_js_1140, nullptr, properties);
+            cls = rosetta_js::define_class(env, "EnclosingCircleEvent", rosetta_js_1248, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::EnclosingCircleEvent>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "EnclosingCircleEvent", cls);
+        }
+        { // datamunge::geometry::EnclosingCircleTrace
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("input", rosetta_js_1249, rosetta_js_1250),
+                rosetta_js::accessor("shuffled", rosetta_js_1251, rosetta_js_1252),
+                rosetta_js::accessor("permutation", rosetta_js_1253, rosetta_js_1254),
+                rosetta_js::accessor("initial", rosetta_js_1255, rosetta_js_1256),
+                rosetta_js::accessor("result", rosetta_js_1257, rosetta_js_1258),
+                rosetta_js::accessor("events", rosetta_js_1259, rosetta_js_1260),
+                rosetta_js::accessor("captured_entries", rosetta_js_1261, rosetta_js_1262),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "EnclosingCircleTrace", rosetta_js_1263, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::EnclosingCircleTrace>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "EnclosingCircleTrace", cls);
+        }
+        { // datamunge::geometry::EnclosingCircleCheck
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("residuals", rosetta_js_1264, rosetta_js_1265),
+                rosetta_js::accessor("outside", rosetta_js_1266, rosetta_js_1267),
+                rosetta_js::accessor("near_boundary", rosetta_js_1268, rosetta_js_1269),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "EnclosingCircleCheck", rosetta_js_1270, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::EnclosingCircleCheck>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "EnclosingCircleCheck", cls);
+        }
+        { // datamunge::geometry::SegmentIntersectionRun
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("contact", rosetta_js_1271, rosetta_js_1272),
+                rosetta_js::accessor("orientations", rosetta_js_1273, rosetta_js_1274),
+                rosetta_js::accessor("orientation_tests", rosetta_js_1275, rosetta_js_1276),
+                rosetta_js::accessor("bounding_tests", rosetta_js_1277, rosetta_js_1278),
+                rosetta_js::accessor("first", rosetta_js_1279, rosetta_js_1280),
+                rosetta_js::accessor("second", rosetta_js_1281, rosetta_js_1282),
+                rosetta_js::accessor("point_constructed", rosetta_js_1283, rosetta_js_1284),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "SegmentIntersectionRun", rosetta_js_1285, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::SegmentIntersectionRun>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "SegmentIntersectionRun", cls);
+        }
+        { // datamunge::geometry::PolygonEarCandidate
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("ring_size", rosetta_js_1286, rosetta_js_1287),
+                rosetta_js::accessor("triangle", rosetta_js_1288, rosetta_js_1289),
+                rosetta_js::accessor("orientation", rosetta_js_1290, rosetta_js_1291),
+                rosetta_js::accessor("containment_tests", rosetta_js_1292, rosetta_js_1293),
+                rosetta_js::accessor("has_blocker", rosetta_js_1294, rosetta_js_1295),
+                rosetta_js::accessor("blocker", rosetta_js_1296, rosetta_js_1297),
+                rosetta_js::accessor("clipped", rosetta_js_1298, rosetta_js_1299),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "PolygonEarCandidate", rosetta_js_1300, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::PolygonEarCandidate>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "PolygonEarCandidate", cls);
+        }
+        { // datamunge::geometry::PolygonEarClip
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("triangle", rosetta_js_1301, rosetta_js_1302),
+                rosetta_js::accessor("remaining", rosetta_js_1303, rosetta_js_1304),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "PolygonEarClip", rosetta_js_1305, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::PolygonEarClip>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "PolygonEarClip", cls);
+        }
+        { // datamunge::geometry::PolygonTriangulationOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("max_predicates", rosetta_js_1306, rosetta_js_1307),
+                rosetta_js::accessor("max_trace_entries", rosetta_js_1308, rosetta_js_1309),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "PolygonTriangulationOptions", rosetta_js_1310, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::PolygonTriangulationOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "PolygonTriangulationOptions", cls);
+        }
+        { // datamunge::geometry::PolygonTriangulationRun
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("triangles", rosetta_js_1311, rosetta_js_1312),
+                rosetta_js::accessor("reversed", rosetta_js_1313, rosetta_js_1314),
+                rosetta_js::accessor("orientations", rosetta_js_1315, rosetta_js_1316),
+                rosetta_js::accessor("candidates", rosetta_js_1317, rosetta_js_1318),
+                rosetta_js::accessor("containment_tests", rosetta_js_1319, rosetta_js_1320),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "PolygonTriangulationRun", rosetta_js_1321, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::PolygonTriangulationRun>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "PolygonTriangulationRun", cls);
+        }
+        { // datamunge::geometry::PolygonTriangulationTrace
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("run", rosetta_js_1322, rosetta_js_1323),
+                rosetta_js::accessor("initial_ring", rosetta_js_1324, rosetta_js_1325),
+                rosetta_js::accessor("candidates", rosetta_js_1326, rosetta_js_1327),
+                rosetta_js::accessor("clips", rosetta_js_1328, rosetta_js_1329),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "PolygonTriangulationTrace", rosetta_js_1330, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::PolygonTriangulationTrace>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "PolygonTriangulationTrace", cls);
+        }
+        { // datamunge::geometry::DiameterResult
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("a", rosetta_js_1331, rosetta_js_1332),
+                rosetta_js::accessor("b", rosetta_js_1333, rosetta_js_1334),
+                rosetta_js::accessor("distance", rosetta_js_1335, rosetta_js_1336),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "DiameterResult", rosetta_js_1337, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::geometry::DiameterResult>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
             rosetta_js::set(env, exports, "DiameterResult", cls);
         }
-        { // datamunge::geometry::MinimumBoundingRectangle
+        { // datamunge::geometry::DiameterOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("corners", rosetta_js_1141, rosetta_js_1142),
-                rosetta_js::accessor("width", rosetta_js_1143, rosetta_js_1144),
-                rosetta_js::accessor("height", rosetta_js_1145, rosetta_js_1146),
-                rosetta_js::accessor("area", rosetta_js_1147, rosetta_js_1148),
+                rosetta_js::accessor("max_points", rosetta_js_1338, rosetta_js_1339),
+                rosetta_js::accessor("max_events", rosetta_js_1340, rosetta_js_1341),
+                rosetta_js::accessor("max_trace_entries", rosetta_js_1342, rosetta_js_1343),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "MinimumBoundingRectangle", rosetta_js_1149, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::geometry::MinimumBoundingRectangle>::value.id;
+            cls = rosetta_js::define_class(env, "DiameterOptions", rosetta_js_1344, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::DiameterOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "MinimumBoundingRectangle", cls);
+            rosetta_js::set(env, exports, "DiameterOptions", cls);
+        }
+        { // datamunge::geometry::CaliperEvent
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("kind", rosetta_js_1345, rosetta_js_1346),
+                rosetta_js::accessor("first", rosetta_js_1347, rosetta_js_1348),
+                rosetta_js::accessor("second", rosetta_js_1349, rosetta_js_1350),
+                rosetta_js::accessor("next", rosetta_js_1351, rosetta_js_1352),
+                rosetta_js::accessor("area_sign", rosetta_js_1353, rosetta_js_1354),
+                rosetta_js::accessor("distance", rosetta_js_1355, rosetta_js_1356),
+                rosetta_js::accessor("improved", rosetta_js_1357, rosetta_js_1358),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "CaliperEvent", rosetta_js_1359, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::CaliperEvent>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "CaliperEvent", cls);
+        }
+        { // datamunge::geometry::DiameterRun
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("result", rosetta_js_1360, rosetta_js_1361),
+                rosetta_js::accessor("hull", rosetta_js_1362, rosetta_js_1363),
+                rosetta_js::accessor("area_tests", rosetta_js_1364, rosetta_js_1365),
+                rosetta_js::accessor("pair_tests", rosetta_js_1366, rosetta_js_1367),
+                rosetta_js::accessor("pointer_advances", rosetta_js_1368, rosetta_js_1369),
+                rosetta_js::accessor("events", rosetta_js_1370, rosetta_js_1371),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "DiameterRun", rosetta_js_1372, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::geometry::DiameterRun>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "DiameterRun", cls);
         }
         { // datamunge::geometry::VoronoiDiagram
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("vertices", rosetta_js_1150, rosetta_js_1151),
-                rosetta_js::accessor("cells", rosetta_js_1152, rosetta_js_1153),
+                rosetta_js::accessor("vertices", rosetta_js_1373, rosetta_js_1374),
+                rosetta_js::accessor("cells", rosetta_js_1375, rosetta_js_1376),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "VoronoiDiagram", rosetta_js_1154, nullptr, properties);
+            cls = rosetta_js::define_class(env, "VoronoiDiagram", rosetta_js_1377, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::geometry::VoronoiDiagram>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7182,22 +7885,22 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::LinalgMatrix
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("rows", rosetta_js_1155),
-                rosetta_js::method("cols", rosetta_js_1156),
-                rosetta_js::method("is_sparse", rosetta_js_1157),
-                rosetta_js::method("transpose", rosetta_js_1158),
-                rosetta_js::method("multiply", rosetta_js_1159),
-                rosetta_js::method("inverse_action", rosetta_js_1160),
-                rosetta_js::method("solve", rosetta_js_1161),
-                rosetta_js::method("eval", rosetta_js_1162),
-                rosetta_js::method("values", rosetta_js_1163),
-                rosetta_js::method("text", rosetta_js_1164),
+                rosetta_js::method("rows", rosetta_js_1378),
+                rosetta_js::method("cols", rosetta_js_1379),
+                rosetta_js::method("is_sparse", rosetta_js_1380),
+                rosetta_js::method("transpose", rosetta_js_1381),
+                rosetta_js::method("multiply", rosetta_js_1382),
+                rosetta_js::method("inverse_action", rosetta_js_1383),
+                rosetta_js::method("solve", rosetta_js_1384),
+                rosetta_js::method("eval", rosetta_js_1385),
+                rosetta_js::method("values", rosetta_js_1386),
+                rosetta_js::method("text", rosetta_js_1387),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "LinalgMatrix", rosetta_js_1165, nullptr, properties);
+            cls = rosetta_js::define_class(env, "LinalgMatrix", rosetta_js_1388, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::LinalgMatrix>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7205,13 +7908,13 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::ode::RHS
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("evaluate", rosetta_js_1166),
+                rosetta_js::method("evaluate", rosetta_js_1389),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "RHS", rosetta_js_1167, nullptr, properties);
+            cls = rosetta_js::define_class(env, "RHS", rosetta_js_1390, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::ode::RHS>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7219,52 +7922,135 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::ode::ODEOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("method", rosetta_js_1168, rosetta_js_1169),
-                rosetta_js::accessor("multistep_order", rosetta_js_1170, rosetta_js_1171),
-                rosetta_js::accessor("step_size", rosetta_js_1172, rosetta_js_1173),
-                rosetta_js::accessor("abs_tol", rosetta_js_1174, rosetta_js_1175),
-                rosetta_js::accessor("rel_tol", rosetta_js_1176, rosetta_js_1177),
-                rosetta_js::accessor("max_step", rosetta_js_1178, rosetta_js_1179),
+                rosetta_js::accessor("method", rosetta_js_1391, rosetta_js_1392),
+                rosetta_js::accessor("multistep_order", rosetta_js_1393, rosetta_js_1394),
+                rosetta_js::accessor("step_size", rosetta_js_1395, rosetta_js_1396),
+                rosetta_js::accessor("abs_tol", rosetta_js_1397, rosetta_js_1398),
+                rosetta_js::accessor("rel_tol", rosetta_js_1399, rosetta_js_1400),
+                rosetta_js::accessor("max_step", rosetta_js_1401, rosetta_js_1402),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ODEOptions", rosetta_js_1180, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ODEOptions", rosetta_js_1403, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::ode::ODEOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
             rosetta_js::set(env, exports, "ODEOptions", cls);
         }
-        { // datamunge::ode::ODESolution
+        { // datamunge::ode::ODEExecutionLimits
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("size", rosetta_js_1181),
-                rosetta_js::method("time_at", rosetta_js_1182),
-                rosetta_js::method("state_at", rosetta_js_1183),
-                rosetta_js::accessor("steps_taken", rosetta_js_1184, rosetta_js_1185),
-                rosetta_js::accessor("function_evaluations", rosetta_js_1186, rosetta_js_1187),
+                rosetta_js::accessor("max_attempts", rosetta_js_1404, rosetta_js_1405),
+                rosetta_js::accessor("max_evaluations", rosetta_js_1406, rosetta_js_1407),
+                rosetta_js::accessor("max_solution_entries", rosetta_js_1408, rosetta_js_1409),
+                rosetta_js::accessor("max_trace_entries", rosetta_js_1410, rosetta_js_1411),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ODESolution", rosetta_js_1188, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ODEExecutionLimits", rosetta_js_1412, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::ode::ODEExecutionLimits>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ODEExecutionLimits", cls);
+        }
+        { // datamunge::ode::ODESolution
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("size", rosetta_js_1413),
+                rosetta_js::method("time_at", rosetta_js_1414),
+                rosetta_js::method("state_at", rosetta_js_1415),
+                rosetta_js::accessor("steps_taken", rosetta_js_1416, rosetta_js_1417),
+                rosetta_js::accessor("function_evaluations", rosetta_js_1418, rosetta_js_1419),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ODESolution", rosetta_js_1420, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::ode::ODESolution>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
             rosetta_js::set(env, exports, "ODESolution", cls);
         }
-        { // datamunge::ode::ODESolver
+        { // datamunge::ode::ODEEvaluation
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("solve", rosetta_js_1189),
-                rosetta_js::method("solve_builtin", rosetta_js_1190),
-                rosetta_js::method("options", rosetta_js_1191),
+                rosetta_js::accessor("time", rosetta_js_1421, rosetta_js_1422),
+                rosetta_js::accessor("state", rosetta_js_1423, rosetta_js_1424),
+                rosetta_js::accessor("derivative", rosetta_js_1425, rosetta_js_1426),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ODESolver", rosetta_js_1192, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ODEEvaluation", rosetta_js_1427, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::ode::ODEEvaluation>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ODEEvaluation", cls);
+        }
+        { // datamunge::ode::ODEAttempt
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("kind", rosetta_js_1428, rosetta_js_1429),
+                rosetta_js::accessor("time_before", rosetta_js_1430, rosetta_js_1431),
+                rosetta_js::accessor("step", rosetta_js_1432, rosetta_js_1433),
+                rosetta_js::accessor("before", rosetta_js_1434, rosetta_js_1435),
+                rosetta_js::accessor("proposed", rosetta_js_1436, rosetta_js_1437),
+                rosetta_js::accessor("time_after", rosetta_js_1438, rosetta_js_1439),
+                rosetta_js::accessor("error_norm", rosetta_js_1440, rosetta_js_1441),
+                rosetta_js::accessor("error_widened", rosetta_js_1442, rosetta_js_1443),
+                rosetta_js::accessor("accepted", rosetta_js_1444, rosetta_js_1445),
+                rosetta_js::accessor("evaluation_begin", rosetta_js_1446, rosetta_js_1447),
+                rosetta_js::accessor("evaluation_end", rosetta_js_1448, rosetta_js_1449),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ODEAttempt", rosetta_js_1450, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::ode::ODEAttempt>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ODEAttempt", cls);
+        }
+        { // datamunge::ode::ODETrace
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("options", rosetta_js_1451, rosetta_js_1452),
+                rosetta_js::accessor("limits", rosetta_js_1453, rosetta_js_1454),
+                rosetta_js::accessor("initial_state", rosetta_js_1455, rosetta_js_1456),
+                rosetta_js::accessor("start", rosetta_js_1457, rosetta_js_1458),
+                rosetta_js::accessor("end", rosetta_js_1459, rosetta_js_1460),
+                rosetta_js::accessor("solution", rosetta_js_1461, rosetta_js_1462),
+                rosetta_js::accessor("evaluations", rosetta_js_1463, rosetta_js_1464),
+                rosetta_js::accessor("attempts", rosetta_js_1465, rosetta_js_1466),
+                rosetta_js::accessor("captured_entries", rosetta_js_1467, rosetta_js_1468),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ODETrace", rosetta_js_1469, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::ode::ODETrace>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ODETrace", cls);
+        }
+        { // datamunge::ode::ODESolver
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("solve", rosetta_js_1470),
+                rosetta_js::method("solve_with_limits", rosetta_js_1471),
+                rosetta_js::method("trace", rosetta_js_1472),
+                rosetta_js::method("solve_builtin", rosetta_js_1473),
+                rosetta_js::method("solve_builtin_with_limits", rosetta_js_1474),
+                rosetta_js::method("trace_builtin", rosetta_js_1475),
+                rosetta_js::method("options", rosetta_js_1476),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ODESolver", rosetta_js_1477, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::ode::ODESolver>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7272,19 +8058,19 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::ACOROptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("archive_size", rosetta_js_1193, rosetta_js_1194),
-                rosetta_js::accessor("samples_per_iteration", rosetta_js_1195, rosetta_js_1196),
-                rosetta_js::accessor("locality", rosetta_js_1197, rosetta_js_1198),
-                rosetta_js::accessor("convergence_speed", rosetta_js_1199, rosetta_js_1200),
-                rosetta_js::accessor("max_iterations", rosetta_js_1201, rosetta_js_1202),
-                rosetta_js::accessor("tolerance", rosetta_js_1203, rosetta_js_1204),
-                rosetta_js::accessor("seed", rosetta_js_1205, rosetta_js_1206),
+                rosetta_js::accessor("archive_size", rosetta_js_1478, rosetta_js_1479),
+                rosetta_js::accessor("samples_per_iteration", rosetta_js_1480, rosetta_js_1481),
+                rosetta_js::accessor("locality", rosetta_js_1482, rosetta_js_1483),
+                rosetta_js::accessor("convergence_speed", rosetta_js_1484, rosetta_js_1485),
+                rosetta_js::accessor("max_iterations", rosetta_js_1486, rosetta_js_1487),
+                rosetta_js::accessor("tolerance", rosetta_js_1488, rosetta_js_1489),
+                rosetta_js::accessor("seed", rosetta_js_1490, rosetta_js_1491),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ACOROptions", rosetta_js_1207, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ACOROptions", rosetta_js_1492, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::ACOROptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7292,14 +8078,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::ACOR
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1208),
-                rosetta_js::method("options", rosetta_js_1209),
+                rosetta_js::method("optimize", rosetta_js_1493),
+                rosetta_js::method("options", rosetta_js_1494),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ACOR", rosetta_js_1210, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ACOR", rosetta_js_1495, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::ACOR>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7307,18 +8093,18 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::AdamOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("step_size", rosetta_js_1211, rosetta_js_1212),
-                rosetta_js::accessor("beta1", rosetta_js_1213, rosetta_js_1214),
-                rosetta_js::accessor("beta2", rosetta_js_1215, rosetta_js_1216),
-                rosetta_js::accessor("epsilon", rosetta_js_1217, rosetta_js_1218),
-                rosetta_js::accessor("max_iterations", rosetta_js_1219, rosetta_js_1220),
-                rosetta_js::accessor("tolerance", rosetta_js_1221, rosetta_js_1222),
+                rosetta_js::accessor("step_size", rosetta_js_1496, rosetta_js_1497),
+                rosetta_js::accessor("beta1", rosetta_js_1498, rosetta_js_1499),
+                rosetta_js::accessor("beta2", rosetta_js_1500, rosetta_js_1501),
+                rosetta_js::accessor("epsilon", rosetta_js_1502, rosetta_js_1503),
+                rosetta_js::accessor("max_iterations", rosetta_js_1504, rosetta_js_1505),
+                rosetta_js::accessor("tolerance", rosetta_js_1506, rosetta_js_1507),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "AdamOptions", rosetta_js_1223, nullptr, properties);
+            cls = rosetta_js::define_class(env, "AdamOptions", rosetta_js_1508, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::AdamOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7326,14 +8112,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::Adam
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1224),
-                rosetta_js::method("options", rosetta_js_1225),
+                rosetta_js::method("optimize", rosetta_js_1509),
+                rosetta_js::method("options", rosetta_js_1510),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Adam", rosetta_js_1226, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Adam", rosetta_js_1511, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::Adam>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7341,16 +8127,16 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::AdaGradOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("step_size", rosetta_js_1227, rosetta_js_1228),
-                rosetta_js::accessor("epsilon", rosetta_js_1229, rosetta_js_1230),
-                rosetta_js::accessor("max_iterations", rosetta_js_1231, rosetta_js_1232),
-                rosetta_js::accessor("tolerance", rosetta_js_1233, rosetta_js_1234),
+                rosetta_js::accessor("step_size", rosetta_js_1512, rosetta_js_1513),
+                rosetta_js::accessor("epsilon", rosetta_js_1514, rosetta_js_1515),
+                rosetta_js::accessor("max_iterations", rosetta_js_1516, rosetta_js_1517),
+                rosetta_js::accessor("tolerance", rosetta_js_1518, rosetta_js_1519),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "AdaGradOptions", rosetta_js_1235, nullptr, properties);
+            cls = rosetta_js::define_class(env, "AdaGradOptions", rosetta_js_1520, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::AdaGradOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7358,14 +8144,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::AdaGrad
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1236),
-                rosetta_js::method("options", rosetta_js_1237),
+                rosetta_js::method("optimize", rosetta_js_1521),
+                rosetta_js::method("options", rosetta_js_1522),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "AdaGrad", rosetta_js_1238, nullptr, properties);
+            cls = rosetta_js::define_class(env, "AdaGrad", rosetta_js_1523, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::AdaGrad>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7373,16 +8159,16 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::AdaDeltaOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("decay_rate", rosetta_js_1239, rosetta_js_1240),
-                rosetta_js::accessor("epsilon", rosetta_js_1241, rosetta_js_1242),
-                rosetta_js::accessor("max_iterations", rosetta_js_1243, rosetta_js_1244),
-                rosetta_js::accessor("tolerance", rosetta_js_1245, rosetta_js_1246),
+                rosetta_js::accessor("decay_rate", rosetta_js_1524, rosetta_js_1525),
+                rosetta_js::accessor("epsilon", rosetta_js_1526, rosetta_js_1527),
+                rosetta_js::accessor("max_iterations", rosetta_js_1528, rosetta_js_1529),
+                rosetta_js::accessor("tolerance", rosetta_js_1530, rosetta_js_1531),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "AdaDeltaOptions", rosetta_js_1247, nullptr, properties);
+            cls = rosetta_js::define_class(env, "AdaDeltaOptions", rosetta_js_1532, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::AdaDeltaOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7390,14 +8176,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::AdaDelta
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1248),
-                rosetta_js::method("options", rosetta_js_1249),
+                rosetta_js::method("optimize", rosetta_js_1533),
+                rosetta_js::method("options", rosetta_js_1534),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "AdaDelta", rosetta_js_1250, nullptr, properties);
+            cls = rosetta_js::define_class(env, "AdaDelta", rosetta_js_1535, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::AdaDelta>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7405,18 +8191,18 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::AMSGradOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("step_size", rosetta_js_1251, rosetta_js_1252),
-                rosetta_js::accessor("beta1", rosetta_js_1253, rosetta_js_1254),
-                rosetta_js::accessor("beta2", rosetta_js_1255, rosetta_js_1256),
-                rosetta_js::accessor("epsilon", rosetta_js_1257, rosetta_js_1258),
-                rosetta_js::accessor("max_iterations", rosetta_js_1259, rosetta_js_1260),
-                rosetta_js::accessor("tolerance", rosetta_js_1261, rosetta_js_1262),
+                rosetta_js::accessor("step_size", rosetta_js_1536, rosetta_js_1537),
+                rosetta_js::accessor("beta1", rosetta_js_1538, rosetta_js_1539),
+                rosetta_js::accessor("beta2", rosetta_js_1540, rosetta_js_1541),
+                rosetta_js::accessor("epsilon", rosetta_js_1542, rosetta_js_1543),
+                rosetta_js::accessor("max_iterations", rosetta_js_1544, rosetta_js_1545),
+                rosetta_js::accessor("tolerance", rosetta_js_1546, rosetta_js_1547),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "AMSGradOptions", rosetta_js_1263, nullptr, properties);
+            cls = rosetta_js::define_class(env, "AMSGradOptions", rosetta_js_1548, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::AMSGradOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7424,14 +8210,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::AMSGrad
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1264),
-                rosetta_js::method("options", rosetta_js_1265),
+                rosetta_js::method("optimize", rosetta_js_1549),
+                rosetta_js::method("options", rosetta_js_1550),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "AMSGrad", rosetta_js_1266, nullptr, properties);
+            cls = rosetta_js::define_class(env, "AMSGrad", rosetta_js_1551, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::AMSGrad>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7439,17 +8225,17 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::ArtificialBeeColonyOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("population_size", rosetta_js_1267, rosetta_js_1268),
-                rosetta_js::accessor("abandonment_limit", rosetta_js_1269, rosetta_js_1270),
-                rosetta_js::accessor("max_generations", rosetta_js_1271, rosetta_js_1272),
-                rosetta_js::accessor("tolerance", rosetta_js_1273, rosetta_js_1274),
-                rosetta_js::accessor("seed", rosetta_js_1275, rosetta_js_1276),
+                rosetta_js::accessor("population_size", rosetta_js_1552, rosetta_js_1553),
+                rosetta_js::accessor("abandonment_limit", rosetta_js_1554, rosetta_js_1555),
+                rosetta_js::accessor("max_generations", rosetta_js_1556, rosetta_js_1557),
+                rosetta_js::accessor("tolerance", rosetta_js_1558, rosetta_js_1559),
+                rosetta_js::accessor("seed", rosetta_js_1560, rosetta_js_1561),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ArtificialBeeColonyOptions", rosetta_js_1277, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ArtificialBeeColonyOptions", rosetta_js_1562, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::ArtificialBeeColonyOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7457,14 +8243,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::ArtificialBeeColony
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1278),
-                rosetta_js::method("options", rosetta_js_1279),
+                rosetta_js::method("optimize", rosetta_js_1563),
+                rosetta_js::method("options", rosetta_js_1564),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ArtificialBeeColony", rosetta_js_1280, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ArtificialBeeColony", rosetta_js_1565, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::ArtificialBeeColony>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7472,17 +8258,17 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::AugmentedLagrangianOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("step_size", rosetta_js_1281, rosetta_js_1282),
-                rosetta_js::accessor("initial_penalty", rosetta_js_1283, rosetta_js_1284),
-                rosetta_js::accessor("max_outer_iterations", rosetta_js_1285, rosetta_js_1286),
-                rosetta_js::accessor("inner_iterations", rosetta_js_1287, rosetta_js_1288),
-                rosetta_js::accessor("tolerance", rosetta_js_1289, rosetta_js_1290),
+                rosetta_js::accessor("step_size", rosetta_js_1566, rosetta_js_1567),
+                rosetta_js::accessor("initial_penalty", rosetta_js_1568, rosetta_js_1569),
+                rosetta_js::accessor("max_outer_iterations", rosetta_js_1570, rosetta_js_1571),
+                rosetta_js::accessor("inner_iterations", rosetta_js_1572, rosetta_js_1573),
+                rosetta_js::accessor("tolerance", rosetta_js_1574, rosetta_js_1575),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "AugmentedLagrangianOptions", rosetta_js_1291, nullptr, properties);
+            cls = rosetta_js::define_class(env, "AugmentedLagrangianOptions", rosetta_js_1576, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::AugmentedLagrangianOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7490,14 +8276,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::AugmentedLagrangian
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1292),
-                rosetta_js::method("options", rosetta_js_1293),
+                rosetta_js::method("optimize", rosetta_js_1577),
+                rosetta_js::method("options", rosetta_js_1578),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "AugmentedLagrangian", rosetta_js_1294, nullptr, properties);
+            cls = rosetta_js::define_class(env, "AugmentedLagrangian", rosetta_js_1579, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::AugmentedLagrangian>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7505,14 +8291,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::BayesianSurrogate
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("fit", rosetta_js_1295),
-                rosetta_js::method("acquisition", rosetta_js_1296),
+                rosetta_js::method("fit", rosetta_js_1580),
+                rosetta_js::method("acquisition", rosetta_js_1581),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "BayesianSurrogate", rosetta_js_1297, nullptr, properties);
+            cls = rosetta_js::define_class(env, "BayesianSurrogate", rosetta_js_1582, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::BayesianSurrogate>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7520,17 +8306,17 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::BayesianOptimizationOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("initial_samples", rosetta_js_1298, rosetta_js_1299),
-                rosetta_js::accessor("max_iterations", rosetta_js_1300, rosetta_js_1301),
-                rosetta_js::accessor("seed", rosetta_js_1302, rosetta_js_1303),
-                rosetta_js::accessor("candidates", rosetta_js_1304, rosetta_js_1305),
-                rosetta_js::accessor("refine_iterations", rosetta_js_1306, rosetta_js_1307),
+                rosetta_js::accessor("initial_samples", rosetta_js_1583, rosetta_js_1584),
+                rosetta_js::accessor("max_iterations", rosetta_js_1585, rosetta_js_1586),
+                rosetta_js::accessor("seed", rosetta_js_1587, rosetta_js_1588),
+                rosetta_js::accessor("candidates", rosetta_js_1589, rosetta_js_1590),
+                rosetta_js::accessor("refine_iterations", rosetta_js_1591, rosetta_js_1592),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "BayesianOptimizationOptions", rosetta_js_1308, nullptr, properties);
+            cls = rosetta_js::define_class(env, "BayesianOptimizationOptions", rosetta_js_1593, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::BayesianOptimizationOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7538,18 +8324,18 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::BayesianOptimizationResult
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("best_point", rosetta_js_1309, rosetta_js_1310),
-                rosetta_js::accessor("best_value", rosetta_js_1311, rosetta_js_1312),
-                rosetta_js::accessor("points", rosetta_js_1313, rosetta_js_1314),
-                rosetta_js::accessor("values", rosetta_js_1315, rosetta_js_1316),
-                rosetta_js::accessor("best_values", rosetta_js_1317, rosetta_js_1318),
-                rosetta_js::accessor("acquisition_values", rosetta_js_1319, rosetta_js_1320),
+                rosetta_js::accessor("best_point", rosetta_js_1594, rosetta_js_1595),
+                rosetta_js::accessor("best_value", rosetta_js_1596, rosetta_js_1597),
+                rosetta_js::accessor("points", rosetta_js_1598, rosetta_js_1599),
+                rosetta_js::accessor("values", rosetta_js_1600, rosetta_js_1601),
+                rosetta_js::accessor("best_values", rosetta_js_1602, rosetta_js_1603),
+                rosetta_js::accessor("acquisition_values", rosetta_js_1604, rosetta_js_1605),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "BayesianOptimizationResult", rosetta_js_1321, nullptr, properties);
+            cls = rosetta_js::define_class(env, "BayesianOptimizationResult", rosetta_js_1606, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::BayesianOptimizationResult>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7557,15 +8343,15 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::BayesianOptimization
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("run", rosetta_js_1322),
-                rosetta_js::method("optimize", rosetta_js_1323),
-                rosetta_js::method("options", rosetta_js_1324),
+                rosetta_js::method("run", rosetta_js_1607),
+                rosetta_js::method("optimize", rosetta_js_1608),
+                rosetta_js::method("options", rosetta_js_1609),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "BayesianOptimization", rosetta_js_1325, nullptr, properties);
+            cls = rosetta_js::define_class(env, "BayesianOptimization", rosetta_js_1610, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::BayesianOptimization>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7573,17 +8359,17 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::ConjugateGradientOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("max_iterations", rosetta_js_1326, rosetta_js_1327),
-                rosetta_js::accessor("tolerance", rosetta_js_1328, rosetta_js_1329),
-                rosetta_js::accessor("armijo_c1", rosetta_js_1330, rosetta_js_1331),
-                rosetta_js::accessor("backtracking_factor", rosetta_js_1332, rosetta_js_1333),
-                rosetta_js::accessor("max_line_search_trials", rosetta_js_1334, rosetta_js_1335),
+                rosetta_js::accessor("max_iterations", rosetta_js_1611, rosetta_js_1612),
+                rosetta_js::accessor("tolerance", rosetta_js_1613, rosetta_js_1614),
+                rosetta_js::accessor("armijo_c1", rosetta_js_1615, rosetta_js_1616),
+                rosetta_js::accessor("backtracking_factor", rosetta_js_1617, rosetta_js_1618),
+                rosetta_js::accessor("max_line_search_trials", rosetta_js_1619, rosetta_js_1620),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ConjugateGradientOptions", rosetta_js_1336, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ConjugateGradientOptions", rosetta_js_1621, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::ConjugateGradientOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7591,14 +8377,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::ConjugateGradient
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1337),
-                rosetta_js::method("options", rosetta_js_1338),
+                rosetta_js::method("optimize", rosetta_js_1622),
+                rosetta_js::method("options", rosetta_js_1623),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ConjugateGradient", rosetta_js_1339, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ConjugateGradient", rosetta_js_1624, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::ConjugateGradient>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7606,17 +8392,17 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::CMAESOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("population_size", rosetta_js_1340, rosetta_js_1341),
-                rosetta_js::accessor("initial_step_size", rosetta_js_1342, rosetta_js_1343),
-                rosetta_js::accessor("max_generations", rosetta_js_1344, rosetta_js_1345),
-                rosetta_js::accessor("tolerance", rosetta_js_1346, rosetta_js_1347),
-                rosetta_js::accessor("seed", rosetta_js_1348, rosetta_js_1349),
+                rosetta_js::accessor("population_size", rosetta_js_1625, rosetta_js_1626),
+                rosetta_js::accessor("initial_step_size", rosetta_js_1627, rosetta_js_1628),
+                rosetta_js::accessor("max_generations", rosetta_js_1629, rosetta_js_1630),
+                rosetta_js::accessor("tolerance", rosetta_js_1631, rosetta_js_1632),
+                rosetta_js::accessor("seed", rosetta_js_1633, rosetta_js_1634),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "CMAESOptions", rosetta_js_1350, nullptr, properties);
+            cls = rosetta_js::define_class(env, "CMAESOptions", rosetta_js_1635, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::CMAESOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7624,14 +8410,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::CMAES
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1351),
-                rosetta_js::method("options", rosetta_js_1352),
+                rosetta_js::method("optimize", rosetta_js_1636),
+                rosetta_js::method("options", rosetta_js_1637),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "CMAES", rosetta_js_1353, nullptr, properties);
+            cls = rosetta_js::define_class(env, "CMAES", rosetta_js_1638, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::CMAES>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7639,18 +8425,18 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::CoordinateDescentOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("step_size", rosetta_js_1354, rosetta_js_1355),
-                rosetta_js::accessor("max_iterations", rosetta_js_1356, rosetta_js_1357),
-                rosetta_js::accessor("tolerance", rosetta_js_1358, rosetta_js_1359),
-                rosetta_js::accessor("armijo_c1", rosetta_js_1360, rosetta_js_1361),
-                rosetta_js::accessor("backtracking_factor", rosetta_js_1362, rosetta_js_1363),
-                rosetta_js::accessor("max_line_search_trials", rosetta_js_1364, rosetta_js_1365),
+                rosetta_js::accessor("step_size", rosetta_js_1639, rosetta_js_1640),
+                rosetta_js::accessor("max_iterations", rosetta_js_1641, rosetta_js_1642),
+                rosetta_js::accessor("tolerance", rosetta_js_1643, rosetta_js_1644),
+                rosetta_js::accessor("armijo_c1", rosetta_js_1645, rosetta_js_1646),
+                rosetta_js::accessor("backtracking_factor", rosetta_js_1647, rosetta_js_1648),
+                rosetta_js::accessor("max_line_search_trials", rosetta_js_1649, rosetta_js_1650),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "CoordinateDescentOptions", rosetta_js_1366, nullptr, properties);
+            cls = rosetta_js::define_class(env, "CoordinateDescentOptions", rosetta_js_1651, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::CoordinateDescentOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7658,14 +8444,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::CoordinateDescent
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1367),
-                rosetta_js::method("options", rosetta_js_1368),
+                rosetta_js::method("optimize", rosetta_js_1652),
+                rosetta_js::method("options", rosetta_js_1653),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "CoordinateDescent", rosetta_js_1369, nullptr, properties);
+            cls = rosetta_js::define_class(env, "CoordinateDescent", rosetta_js_1654, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::CoordinateDescent>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7673,19 +8459,19 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::CrossEntropyMethodOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("population_size", rosetta_js_1370, rosetta_js_1371),
-                rosetta_js::accessor("elite_ratio", rosetta_js_1372, rosetta_js_1373),
-                rosetta_js::accessor("initial_std_dev", rosetta_js_1374, rosetta_js_1375),
-                rosetta_js::accessor("smoothing", rosetta_js_1376, rosetta_js_1377),
-                rosetta_js::accessor("max_iterations", rosetta_js_1378, rosetta_js_1379),
-                rosetta_js::accessor("tolerance", rosetta_js_1380, rosetta_js_1381),
-                rosetta_js::accessor("seed", rosetta_js_1382, rosetta_js_1383),
+                rosetta_js::accessor("population_size", rosetta_js_1655, rosetta_js_1656),
+                rosetta_js::accessor("elite_ratio", rosetta_js_1657, rosetta_js_1658),
+                rosetta_js::accessor("initial_std_dev", rosetta_js_1659, rosetta_js_1660),
+                rosetta_js::accessor("smoothing", rosetta_js_1661, rosetta_js_1662),
+                rosetta_js::accessor("max_iterations", rosetta_js_1663, rosetta_js_1664),
+                rosetta_js::accessor("tolerance", rosetta_js_1665, rosetta_js_1666),
+                rosetta_js::accessor("seed", rosetta_js_1667, rosetta_js_1668),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "CrossEntropyMethodOptions", rosetta_js_1384, nullptr, properties);
+            cls = rosetta_js::define_class(env, "CrossEntropyMethodOptions", rosetta_js_1669, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::CrossEntropyMethodOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7693,14 +8479,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::CrossEntropyMethod
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1385),
-                rosetta_js::method("options", rosetta_js_1386),
+                rosetta_js::method("optimize", rosetta_js_1670),
+                rosetta_js::method("options", rosetta_js_1671),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "CrossEntropyMethod", rosetta_js_1387, nullptr, properties);
+            cls = rosetta_js::define_class(env, "CrossEntropyMethod", rosetta_js_1672, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::CrossEntropyMethod>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7708,19 +8494,19 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::CuckooSearchOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("population_size", rosetta_js_1388, rosetta_js_1389),
-                rosetta_js::accessor("discovery_rate", rosetta_js_1390, rosetta_js_1391),
-                rosetta_js::accessor("levy_beta", rosetta_js_1392, rosetta_js_1393),
-                rosetta_js::accessor("step_scale", rosetta_js_1394, rosetta_js_1395),
-                rosetta_js::accessor("max_iterations", rosetta_js_1396, rosetta_js_1397),
-                rosetta_js::accessor("tolerance", rosetta_js_1398, rosetta_js_1399),
-                rosetta_js::accessor("seed", rosetta_js_1400, rosetta_js_1401),
+                rosetta_js::accessor("population_size", rosetta_js_1673, rosetta_js_1674),
+                rosetta_js::accessor("discovery_rate", rosetta_js_1675, rosetta_js_1676),
+                rosetta_js::accessor("levy_beta", rosetta_js_1677, rosetta_js_1678),
+                rosetta_js::accessor("step_scale", rosetta_js_1679, rosetta_js_1680),
+                rosetta_js::accessor("max_iterations", rosetta_js_1681, rosetta_js_1682),
+                rosetta_js::accessor("tolerance", rosetta_js_1683, rosetta_js_1684),
+                rosetta_js::accessor("seed", rosetta_js_1685, rosetta_js_1686),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "CuckooSearchOptions", rosetta_js_1402, nullptr, properties);
+            cls = rosetta_js::define_class(env, "CuckooSearchOptions", rosetta_js_1687, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::CuckooSearchOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7728,14 +8514,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::CuckooSearch
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1403),
-                rosetta_js::method("options", rosetta_js_1404),
+                rosetta_js::method("optimize", rosetta_js_1688),
+                rosetta_js::method("options", rosetta_js_1689),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "CuckooSearch", rosetta_js_1405, nullptr, properties);
+            cls = rosetta_js::define_class(env, "CuckooSearch", rosetta_js_1690, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::CuckooSearch>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7743,20 +8529,20 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::DEOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("population_size", rosetta_js_1406, rosetta_js_1407),
-                rosetta_js::accessor("max_generations", rosetta_js_1408, rosetta_js_1409),
-                rosetta_js::accessor("differential_weight", rosetta_js_1410, rosetta_js_1411),
-                rosetta_js::accessor("crossover_rate", rosetta_js_1412, rosetta_js_1413),
-                rosetta_js::accessor("mutation_strategy", rosetta_js_1414, rosetta_js_1415),
-                rosetta_js::accessor("crossover_strategy", rosetta_js_1416, rosetta_js_1417),
-                rosetta_js::accessor("tolerance", rosetta_js_1418, rosetta_js_1419),
-                rosetta_js::accessor("seed", rosetta_js_1420, rosetta_js_1421),
+                rosetta_js::accessor("population_size", rosetta_js_1691, rosetta_js_1692),
+                rosetta_js::accessor("max_generations", rosetta_js_1693, rosetta_js_1694),
+                rosetta_js::accessor("differential_weight", rosetta_js_1695, rosetta_js_1696),
+                rosetta_js::accessor("crossover_rate", rosetta_js_1697, rosetta_js_1698),
+                rosetta_js::accessor("mutation_strategy", rosetta_js_1699, rosetta_js_1700),
+                rosetta_js::accessor("crossover_strategy", rosetta_js_1701, rosetta_js_1702),
+                rosetta_js::accessor("tolerance", rosetta_js_1703, rosetta_js_1704),
+                rosetta_js::accessor("seed", rosetta_js_1705, rosetta_js_1706),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "DEOptions", rosetta_js_1422, nullptr, properties);
+            cls = rosetta_js::define_class(env, "DEOptions", rosetta_js_1707, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::DEOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7764,14 +8550,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::DifferentialEvolution
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1423),
-                rosetta_js::method("options", rosetta_js_1424),
+                rosetta_js::method("optimize", rosetta_js_1708),
+                rosetta_js::method("options", rosetta_js_1709),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "DifferentialEvolution", rosetta_js_1425, nullptr, properties);
+            cls = rosetta_js::define_class(env, "DifferentialEvolution", rosetta_js_1710, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::DifferentialEvolution>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7779,19 +8565,19 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::EstimationOfDistributionOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("population_size", rosetta_js_1426, rosetta_js_1427),
-                rosetta_js::accessor("selection_ratio", rosetta_js_1428, rosetta_js_1429),
-                rosetta_js::accessor("initial_std_dev", rosetta_js_1430, rosetta_js_1431),
-                rosetta_js::accessor("covariance_regularization", rosetta_js_1432, rosetta_js_1433),
-                rosetta_js::accessor("max_generations", rosetta_js_1434, rosetta_js_1435),
-                rosetta_js::accessor("tolerance", rosetta_js_1436, rosetta_js_1437),
-                rosetta_js::accessor("seed", rosetta_js_1438, rosetta_js_1439),
+                rosetta_js::accessor("population_size", rosetta_js_1711, rosetta_js_1712),
+                rosetta_js::accessor("selection_ratio", rosetta_js_1713, rosetta_js_1714),
+                rosetta_js::accessor("initial_std_dev", rosetta_js_1715, rosetta_js_1716),
+                rosetta_js::accessor("covariance_regularization", rosetta_js_1717, rosetta_js_1718),
+                rosetta_js::accessor("max_generations", rosetta_js_1719, rosetta_js_1720),
+                rosetta_js::accessor("tolerance", rosetta_js_1721, rosetta_js_1722),
+                rosetta_js::accessor("seed", rosetta_js_1723, rosetta_js_1724),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "EstimationOfDistributionOptions", rosetta_js_1440, nullptr, properties);
+            cls = rosetta_js::define_class(env, "EstimationOfDistributionOptions", rosetta_js_1725, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::EstimationOfDistributionOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7799,14 +8585,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::EstimationOfDistribution
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1441),
-                rosetta_js::method("options", rosetta_js_1442),
+                rosetta_js::method("optimize", rosetta_js_1726),
+                rosetta_js::method("options", rosetta_js_1727),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "EstimationOfDistribution", rosetta_js_1443, nullptr, properties);
+            cls = rosetta_js::define_class(env, "EstimationOfDistribution", rosetta_js_1728, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::EstimationOfDistribution>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7814,19 +8600,19 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::EvolutionStrategyOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("mu", rosetta_js_1444, rosetta_js_1445),
-                rosetta_js::accessor("offspring_size", rosetta_js_1446, rosetta_js_1447),
-                rosetta_js::accessor("strategy", rosetta_js_1448, rosetta_js_1449),
-                rosetta_js::accessor("initial_step_size", rosetta_js_1450, rosetta_js_1451),
-                rosetta_js::accessor("max_generations", rosetta_js_1452, rosetta_js_1453),
-                rosetta_js::accessor("tolerance", rosetta_js_1454, rosetta_js_1455),
-                rosetta_js::accessor("seed", rosetta_js_1456, rosetta_js_1457),
+                rosetta_js::accessor("mu", rosetta_js_1729, rosetta_js_1730),
+                rosetta_js::accessor("offspring_size", rosetta_js_1731, rosetta_js_1732),
+                rosetta_js::accessor("strategy", rosetta_js_1733, rosetta_js_1734),
+                rosetta_js::accessor("initial_step_size", rosetta_js_1735, rosetta_js_1736),
+                rosetta_js::accessor("max_generations", rosetta_js_1737, rosetta_js_1738),
+                rosetta_js::accessor("tolerance", rosetta_js_1739, rosetta_js_1740),
+                rosetta_js::accessor("seed", rosetta_js_1741, rosetta_js_1742),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "EvolutionStrategyOptions", rosetta_js_1458, nullptr, properties);
+            cls = rosetta_js::define_class(env, "EvolutionStrategyOptions", rosetta_js_1743, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::EvolutionStrategyOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7834,14 +8620,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::EvolutionStrategy
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1459),
-                rosetta_js::method("options", rosetta_js_1460),
+                rosetta_js::method("optimize", rosetta_js_1744),
+                rosetta_js::method("options", rosetta_js_1745),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "EvolutionStrategy", rosetta_js_1461, nullptr, properties);
+            cls = rosetta_js::define_class(env, "EvolutionStrategy", rosetta_js_1746, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::EvolutionStrategy>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7849,20 +8635,20 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::FireflyAlgorithmOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("population_size", rosetta_js_1462, rosetta_js_1463),
-                rosetta_js::accessor("attractiveness_at_zero", rosetta_js_1464, rosetta_js_1465),
-                rosetta_js::accessor("light_absorption", rosetta_js_1466, rosetta_js_1467),
-                rosetta_js::accessor("randomization_step", rosetta_js_1468, rosetta_js_1469),
-                rosetta_js::accessor("randomization_decay", rosetta_js_1470, rosetta_js_1471),
-                rosetta_js::accessor("max_iterations", rosetta_js_1472, rosetta_js_1473),
-                rosetta_js::accessor("tolerance", rosetta_js_1474, rosetta_js_1475),
-                rosetta_js::accessor("seed", rosetta_js_1476, rosetta_js_1477),
+                rosetta_js::accessor("population_size", rosetta_js_1747, rosetta_js_1748),
+                rosetta_js::accessor("attractiveness_at_zero", rosetta_js_1749, rosetta_js_1750),
+                rosetta_js::accessor("light_absorption", rosetta_js_1751, rosetta_js_1752),
+                rosetta_js::accessor("randomization_step", rosetta_js_1753, rosetta_js_1754),
+                rosetta_js::accessor("randomization_decay", rosetta_js_1755, rosetta_js_1756),
+                rosetta_js::accessor("max_iterations", rosetta_js_1757, rosetta_js_1758),
+                rosetta_js::accessor("tolerance", rosetta_js_1759, rosetta_js_1760),
+                rosetta_js::accessor("seed", rosetta_js_1761, rosetta_js_1762),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "FireflyAlgorithmOptions", rosetta_js_1478, nullptr, properties);
+            cls = rosetta_js::define_class(env, "FireflyAlgorithmOptions", rosetta_js_1763, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::FireflyAlgorithmOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7870,14 +8656,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::FireflyAlgorithm
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1479),
-                rosetta_js::method("options", rosetta_js_1480),
+                rosetta_js::method("optimize", rosetta_js_1764),
+                rosetta_js::method("options", rosetta_js_1765),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "FireflyAlgorithm", rosetta_js_1481, nullptr, properties);
+            cls = rosetta_js::define_class(env, "FireflyAlgorithm", rosetta_js_1766, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::FireflyAlgorithm>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7885,15 +8671,15 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::FISTAOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("step_size", rosetta_js_1482, rosetta_js_1483),
-                rosetta_js::accessor("max_iterations", rosetta_js_1484, rosetta_js_1485),
-                rosetta_js::accessor("tolerance", rosetta_js_1486, rosetta_js_1487),
+                rosetta_js::accessor("step_size", rosetta_js_1767, rosetta_js_1768),
+                rosetta_js::accessor("max_iterations", rosetta_js_1769, rosetta_js_1770),
+                rosetta_js::accessor("tolerance", rosetta_js_1771, rosetta_js_1772),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "FISTAOptions", rosetta_js_1488, nullptr, properties);
+            cls = rosetta_js::define_class(env, "FISTAOptions", rosetta_js_1773, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::FISTAOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7901,14 +8687,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::FISTA
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1489),
-                rosetta_js::method("options", rosetta_js_1490),
+                rosetta_js::method("optimize", rosetta_js_1774),
+                rosetta_js::method("options", rosetta_js_1775),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "FISTA", rosetta_js_1491, nullptr, properties);
+            cls = rosetta_js::define_class(env, "FISTA", rosetta_js_1776, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::FISTA>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7916,25 +8702,25 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::GAOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("population_size", rosetta_js_1492, rosetta_js_1493),
-                rosetta_js::accessor("max_generations", rosetta_js_1494, rosetta_js_1495),
-                rosetta_js::accessor("crossover_rate", rosetta_js_1496, rosetta_js_1497),
-                rosetta_js::accessor("mutation_rate", rosetta_js_1498, rosetta_js_1499),
-                rosetta_js::accessor("mutation_std_dev", rosetta_js_1500, rosetta_js_1501),
-                rosetta_js::accessor("selection_strategy", rosetta_js_1502, rosetta_js_1503),
-                rosetta_js::accessor("tournament_size", rosetta_js_1504, rosetta_js_1505),
-                rosetta_js::accessor("crossover_strategy", rosetta_js_1506, rosetta_js_1507),
-                rosetta_js::accessor("blend_alpha", rosetta_js_1508, rosetta_js_1509),
-                rosetta_js::accessor("elitism", rosetta_js_1510, rosetta_js_1511),
-                rosetta_js::accessor("elite_count", rosetta_js_1512, rosetta_js_1513),
-                rosetta_js::accessor("tolerance", rosetta_js_1514, rosetta_js_1515),
-                rosetta_js::accessor("seed", rosetta_js_1516, rosetta_js_1517),
+                rosetta_js::accessor("population_size", rosetta_js_1777, rosetta_js_1778),
+                rosetta_js::accessor("max_generations", rosetta_js_1779, rosetta_js_1780),
+                rosetta_js::accessor("crossover_rate", rosetta_js_1781, rosetta_js_1782),
+                rosetta_js::accessor("mutation_rate", rosetta_js_1783, rosetta_js_1784),
+                rosetta_js::accessor("mutation_std_dev", rosetta_js_1785, rosetta_js_1786),
+                rosetta_js::accessor("selection_strategy", rosetta_js_1787, rosetta_js_1788),
+                rosetta_js::accessor("tournament_size", rosetta_js_1789, rosetta_js_1790),
+                rosetta_js::accessor("crossover_strategy", rosetta_js_1791, rosetta_js_1792),
+                rosetta_js::accessor("blend_alpha", rosetta_js_1793, rosetta_js_1794),
+                rosetta_js::accessor("elitism", rosetta_js_1795, rosetta_js_1796),
+                rosetta_js::accessor("elite_count", rosetta_js_1797, rosetta_js_1798),
+                rosetta_js::accessor("tolerance", rosetta_js_1799, rosetta_js_1800),
+                rosetta_js::accessor("seed", rosetta_js_1801, rosetta_js_1802),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "GAOptions", rosetta_js_1518, nullptr, properties);
+            cls = rosetta_js::define_class(env, "GAOptions", rosetta_js_1803, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::GAOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7942,14 +8728,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::GeneticAlgorithm
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1519),
-                rosetta_js::method("options", rosetta_js_1520),
+                rosetta_js::method("optimize", rosetta_js_1804),
+                rosetta_js::method("options", rosetta_js_1805),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "GeneticAlgorithm", rosetta_js_1521, nullptr, properties);
+            cls = rosetta_js::define_class(env, "GeneticAlgorithm", rosetta_js_1806, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::GeneticAlgorithm>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -7957,621 +8743,22 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::GradientDescentOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("step_size", rosetta_js_1522, rosetta_js_1523),
-                rosetta_js::accessor("momentum", rosetta_js_1524, rosetta_js_1525),
-                rosetta_js::accessor("max_iterations", rosetta_js_1526, rosetta_js_1527),
-                rosetta_js::accessor("tolerance", rosetta_js_1528, rosetta_js_1529),
+                rosetta_js::accessor("step_size", rosetta_js_1807, rosetta_js_1808),
+                rosetta_js::accessor("momentum", rosetta_js_1809, rosetta_js_1810),
+                rosetta_js::accessor("max_iterations", rosetta_js_1811, rosetta_js_1812),
+                rosetta_js::accessor("tolerance", rosetta_js_1813, rosetta_js_1814),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "GradientDescentOptions", rosetta_js_1530, nullptr, properties);
+            cls = rosetta_js::define_class(env, "GradientDescentOptions", rosetta_js_1815, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::GradientDescentOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
             rosetta_js::set(env, exports, "GradientDescentOptions", cls);
         }
         { // datamunge::optim::GradientDescent
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1531),
-                rosetta_js::method("options", rosetta_js_1532),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "GradientDescent", rosetta_js_1533, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::GradientDescent>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "GradientDescent", cls);
-        }
-        { // datamunge::optim::GreyWolfOptimizerOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("population_size", rosetta_js_1534, rosetta_js_1535),
-                rosetta_js::accessor("max_iterations", rosetta_js_1536, rosetta_js_1537),
-                rosetta_js::accessor("tolerance", rosetta_js_1538, rosetta_js_1539),
-                rosetta_js::accessor("seed", rosetta_js_1540, rosetta_js_1541),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "GreyWolfOptimizerOptions", rosetta_js_1542, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::GreyWolfOptimizerOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "GreyWolfOptimizerOptions", cls);
-        }
-        { // datamunge::optim::GreyWolfOptimizer
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1543),
-                rosetta_js::method("options", rosetta_js_1544),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "GreyWolfOptimizer", rosetta_js_1545, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::GreyWolfOptimizer>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "GreyWolfOptimizer", cls);
-        }
-        { // datamunge::optim::HarmonySearchOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("population_size", rosetta_js_1546, rosetta_js_1547),
-                rosetta_js::accessor("memory_consideration_rate", rosetta_js_1548, rosetta_js_1549),
-                rosetta_js::accessor("pitch_adjustment_rate", rosetta_js_1550, rosetta_js_1551),
-                rosetta_js::accessor("bandwidth_fraction", rosetta_js_1552, rosetta_js_1553),
-                rosetta_js::accessor("max_iterations", rosetta_js_1554, rosetta_js_1555),
-                rosetta_js::accessor("tolerance", rosetta_js_1556, rosetta_js_1557),
-                rosetta_js::accessor("seed", rosetta_js_1558, rosetta_js_1559),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "HarmonySearchOptions", rosetta_js_1560, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::HarmonySearchOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "HarmonySearchOptions", cls);
-        }
-        { // datamunge::optim::HarmonySearch
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1561),
-                rosetta_js::method("options", rosetta_js_1562),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "HarmonySearch", rosetta_js_1563, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::HarmonySearch>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "HarmonySearch", cls);
-        }
-        { // datamunge::optim::InteriorPointOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("step_size", rosetta_js_1564, rosetta_js_1565),
-                rosetta_js::accessor("initial_barrier", rosetta_js_1566, rosetta_js_1567),
-                rosetta_js::accessor("barrier_decay", rosetta_js_1568, rosetta_js_1569),
-                rosetta_js::accessor("max_outer_iterations", rosetta_js_1570, rosetta_js_1571),
-                rosetta_js::accessor("inner_iterations", rosetta_js_1572, rosetta_js_1573),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "InteriorPointOptions", rosetta_js_1574, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::InteriorPointOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "InteriorPointOptions", cls);
-        }
-        { // datamunge::optim::InteriorPoint
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1575),
-                rosetta_js::method("options", rosetta_js_1576),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "InteriorPoint", rosetta_js_1577, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::InteriorPoint>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "InteriorPoint", cls);
-        }
-        { // datamunge::optim::LBFGSOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("max_iterations", rosetta_js_1578, rosetta_js_1579),
-                rosetta_js::accessor("tolerance", rosetta_js_1580, rosetta_js_1581),
-                rosetta_js::accessor("history_size", rosetta_js_1582, rosetta_js_1583),
-                rosetta_js::accessor("armijo_c1", rosetta_js_1584, rosetta_js_1585),
-                rosetta_js::accessor("wolfe_c2", rosetta_js_1586, rosetta_js_1587),
-                rosetta_js::accessor("max_line_search_trials", rosetta_js_1588, rosetta_js_1589),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "LBFGSOptions", rosetta_js_1590, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::LBFGSOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "LBFGSOptions", cls);
-        }
-        { // datamunge::optim::LBFGS
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1591),
-                rosetta_js::method("options", rosetta_js_1592),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "LBFGS", rosetta_js_1593, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::LBFGS>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "LBFGS", cls);
-        }
-        { // datamunge::optim::LevenbergMarquardtOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("initial_damping", rosetta_js_1594, rosetta_js_1595),
-                rosetta_js::accessor("max_iterations", rosetta_js_1596, rosetta_js_1597),
-                rosetta_js::accessor("tolerance", rosetta_js_1598, rosetta_js_1599),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "LevenbergMarquardtOptions", rosetta_js_1600, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::LevenbergMarquardtOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "LevenbergMarquardtOptions", cls);
-        }
-        { // datamunge::optim::LevenbergMarquardt
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1601),
-                rosetta_js::method("options", rosetta_js_1602),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "LevenbergMarquardt", rosetta_js_1603, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::LevenbergMarquardt>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "LevenbergMarquardt", cls);
-        }
-        { // datamunge::optim::NelderMeadOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("initial_simplex_scale", rosetta_js_1604, rosetta_js_1605),
-                rosetta_js::accessor("reflection", rosetta_js_1606, rosetta_js_1607),
-                rosetta_js::accessor("expansion", rosetta_js_1608, rosetta_js_1609),
-                rosetta_js::accessor("contraction", rosetta_js_1610, rosetta_js_1611),
-                rosetta_js::accessor("shrink", rosetta_js_1612, rosetta_js_1613),
-                rosetta_js::accessor("max_iterations", rosetta_js_1614, rosetta_js_1615),
-                rosetta_js::accessor("tolerance", rosetta_js_1616, rosetta_js_1617),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "NelderMeadOptions", rosetta_js_1618, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::NelderMeadOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "NelderMeadOptions", cls);
-        }
-        { // datamunge::optim::NelderMead
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1619),
-                rosetta_js::method("options", rosetta_js_1620),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "NelderMead", rosetta_js_1621, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::NelderMead>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "NelderMead", cls);
-        }
-        { // datamunge::optim::NesterovAcceleratedGradientOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("step_size", rosetta_js_1622, rosetta_js_1623),
-                rosetta_js::accessor("momentum", rosetta_js_1624, rosetta_js_1625),
-                rosetta_js::accessor("max_iterations", rosetta_js_1626, rosetta_js_1627),
-                rosetta_js::accessor("tolerance", rosetta_js_1628, rosetta_js_1629),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "NesterovAcceleratedGradientOptions", rosetta_js_1630, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::NesterovAcceleratedGradientOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "NesterovAcceleratedGradientOptions", cls);
-        }
-        { // datamunge::optim::NesterovAcceleratedGradient
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1631),
-                rosetta_js::method("options", rosetta_js_1632),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "NesterovAcceleratedGradient", rosetta_js_1633, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::NesterovAcceleratedGradient>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "NesterovAcceleratedGradient", cls);
-        }
-        { // datamunge::optim::NadamOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("step_size", rosetta_js_1634, rosetta_js_1635),
-                rosetta_js::accessor("beta1", rosetta_js_1636, rosetta_js_1637),
-                rosetta_js::accessor("beta2", rosetta_js_1638, rosetta_js_1639),
-                rosetta_js::accessor("epsilon", rosetta_js_1640, rosetta_js_1641),
-                rosetta_js::accessor("max_iterations", rosetta_js_1642, rosetta_js_1643),
-                rosetta_js::accessor("tolerance", rosetta_js_1644, rosetta_js_1645),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "NadamOptions", rosetta_js_1646, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::NadamOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "NadamOptions", cls);
-        }
-        { // datamunge::optim::Nadam
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1647),
-                rosetta_js::method("options", rosetta_js_1648),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "Nadam", rosetta_js_1649, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::Nadam>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "Nadam", cls);
-        }
-        { // datamunge::optim::NewtonOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("max_iterations", rosetta_js_1650, rosetta_js_1651),
-                rosetta_js::accessor("tolerance", rosetta_js_1652, rosetta_js_1653),
-                rosetta_js::accessor("damping", rosetta_js_1654, rosetta_js_1655),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "NewtonOptions", rosetta_js_1656, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::NewtonOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "NewtonOptions", cls);
-        }
-        { // datamunge::optim::Newton
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1657),
-                rosetta_js::method("options", rosetta_js_1658),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "Newton", rosetta_js_1659, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::Newton>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "Newton", cls);
-        }
-        { // datamunge::optim::ParallelTemperingOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("num_replicas", rosetta_js_1660, rosetta_js_1661),
-                rosetta_js::accessor("initial_temperature", rosetta_js_1662, rosetta_js_1663),
-                rosetta_js::accessor("final_temperature", rosetta_js_1664, rosetta_js_1665),
-                rosetta_js::accessor("step_std_dev", rosetta_js_1666, rosetta_js_1667),
-                rosetta_js::accessor("swap_interval", rosetta_js_1668, rosetta_js_1669),
-                rosetta_js::accessor("max_sweeps", rosetta_js_1670, rosetta_js_1671),
-                rosetta_js::accessor("seed", rosetta_js_1672, rosetta_js_1673),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ParallelTemperingOptions", rosetta_js_1674, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::ParallelTemperingOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ParallelTemperingOptions", cls);
-        }
-        { // datamunge::optim::ParallelTempering
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1675),
-                rosetta_js::method("options", rosetta_js_1676),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ParallelTempering", rosetta_js_1677, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::ParallelTempering>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ParallelTempering", cls);
-        }
-        { // datamunge::optim::PSOOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("population_size", rosetta_js_1678, rosetta_js_1679),
-                rosetta_js::accessor("max_iterations", rosetta_js_1680, rosetta_js_1681),
-                rosetta_js::accessor("inertia_weight", rosetta_js_1682, rosetta_js_1683),
-                rosetta_js::accessor("cognitive_coefficient", rosetta_js_1684, rosetta_js_1685),
-                rosetta_js::accessor("social_coefficient", rosetta_js_1686, rosetta_js_1687),
-                rosetta_js::accessor("topology", rosetta_js_1688, rosetta_js_1689),
-                rosetta_js::accessor("ring_neighbors", rosetta_js_1690, rosetta_js_1691),
-                rosetta_js::accessor("inertia_strategy", rosetta_js_1692, rosetta_js_1693),
-                rosetta_js::accessor("final_inertia_weight", rosetta_js_1694, rosetta_js_1695),
-                rosetta_js::accessor("tolerance", rosetta_js_1696, rosetta_js_1697),
-                rosetta_js::accessor("seed", rosetta_js_1698, rosetta_js_1699),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "PSOOptions", rosetta_js_1700, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::PSOOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "PSOOptions", cls);
-        }
-        { // datamunge::optim::PSO
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1701),
-                rosetta_js::method("options", rosetta_js_1702),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "PSO", rosetta_js_1703, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::PSO>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "PSO", cls);
-        }
-        { // datamunge::optim::ProximalGradientOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("step_size", rosetta_js_1704, rosetta_js_1705),
-                rosetta_js::accessor("max_iterations", rosetta_js_1706, rosetta_js_1707),
-                rosetta_js::accessor("tolerance", rosetta_js_1708, rosetta_js_1709),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ProximalGradientOptions", rosetta_js_1710, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::ProximalGradientOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ProximalGradientOptions", cls);
-        }
-        { // datamunge::optim::ProximalGradient
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1711),
-                rosetta_js::method("options", rosetta_js_1712),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "ProximalGradient", rosetta_js_1713, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::ProximalGradient>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "ProximalGradient", cls);
-        }
-        { // datamunge::optim::RandomizedBlockCoordinateDescentOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("block_size", rosetta_js_1714, rosetta_js_1715),
-                rosetta_js::accessor("step_size", rosetta_js_1716, rosetta_js_1717),
-                rosetta_js::accessor("max_iterations", rosetta_js_1718, rosetta_js_1719),
-                rosetta_js::accessor("tolerance", rosetta_js_1720, rosetta_js_1721),
-                rosetta_js::accessor("armijo_c1", rosetta_js_1722, rosetta_js_1723),
-                rosetta_js::accessor("backtracking_factor", rosetta_js_1724, rosetta_js_1725),
-                rosetta_js::accessor("max_line_search_trials", rosetta_js_1726, rosetta_js_1727),
-                rosetta_js::accessor("seed", rosetta_js_1728, rosetta_js_1729),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "RandomizedBlockCoordinateDescentOptions", rosetta_js_1730, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::RandomizedBlockCoordinateDescentOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "RandomizedBlockCoordinateDescentOptions", cls);
-        }
-        { // datamunge::optim::RandomizedBlockCoordinateDescent
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1731),
-                rosetta_js::method("options", rosetta_js_1732),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "RandomizedBlockCoordinateDescent", rosetta_js_1733, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::RandomizedBlockCoordinateDescent>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "RandomizedBlockCoordinateDescent", cls);
-        }
-        { // datamunge::optim::RMSPropOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("step_size", rosetta_js_1734, rosetta_js_1735),
-                rosetta_js::accessor("decay_rate", rosetta_js_1736, rosetta_js_1737),
-                rosetta_js::accessor("epsilon", rosetta_js_1738, rosetta_js_1739),
-                rosetta_js::accessor("max_iterations", rosetta_js_1740, rosetta_js_1741),
-                rosetta_js::accessor("tolerance", rosetta_js_1742, rosetta_js_1743),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "RMSPropOptions", rosetta_js_1744, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::RMSPropOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "RMSPropOptions", cls);
-        }
-        { // datamunge::optim::RMSProp
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1745),
-                rosetta_js::method("options", rosetta_js_1746),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "RMSProp", rosetta_js_1747, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::RMSProp>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "RMSProp", cls);
-        }
-        { // datamunge::optim::SurrogatePrediction
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("mean", rosetta_js_1748, rosetta_js_1749),
-                rosetta_js::accessor("sd", rosetta_js_1750, rosetta_js_1751),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "SurrogatePrediction", rosetta_js_1752, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::SurrogatePrediction>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "SurrogatePrediction", cls);
-        }
-        { // datamunge::optim::GaussianProcessSurrogateOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("length_scale", rosetta_js_1753, rosetta_js_1754),
-                rosetta_js::accessor("signal_variance", rosetta_js_1755, rosetta_js_1756),
-                rosetta_js::accessor("noise", rosetta_js_1757, rosetta_js_1758),
-                rosetta_js::accessor("normalize_values", rosetta_js_1759, rosetta_js_1760),
-                rosetta_js::accessor("fit_hyperparameters", rosetta_js_1761, rosetta_js_1762),
-                rosetta_js::accessor("fit_noise", rosetta_js_1763, rosetta_js_1764),
-                rosetta_js::accessor("min_length_scale", rosetta_js_1765, rosetta_js_1766),
-                rosetta_js::accessor("max_length_scale", rosetta_js_1767, rosetta_js_1768),
-                rosetta_js::accessor("acquisition", rosetta_js_1769, rosetta_js_1770),
-                rosetta_js::accessor("exploration", rosetta_js_1771, rosetta_js_1772),
-                rosetta_js::accessor("kappa", rosetta_js_1773, rosetta_js_1774),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "GaussianProcessSurrogateOptions", rosetta_js_1775, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::GaussianProcessSurrogateOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "GaussianProcessSurrogateOptions", cls);
-        }
-        { // datamunge::optim::RBFGaussianProcessSurrogate
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("options", rosetta_js_1776),
-                rosetta_js::method("fit", rosetta_js_1777),
-                rosetta_js::method("acquisition", rosetta_js_1778),
-                rosetta_js::method("predict", rosetta_js_1779),
-                rosetta_js::method("log_marginal_likelihood", rosetta_js_1780),
-                rosetta_js::method("length_scale", rosetta_js_1781),
-                rosetta_js::method("noise", rosetta_js_1782),
-                rosetta_js::method("signal_variance", rosetta_js_1783),
-                rosetta_js::method("prior_mean", rosetta_js_1784),
-                rosetta_js::method("value_scale", rosetta_js_1785),
-                rosetta_js::method("points", rosetta_js_1786),
-                rosetta_js::method("values", rosetta_js_1787),
-            };
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "RBFGaussianProcessSurrogate", rosetta_js_1788, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::RBFGaussianProcessSurrogate>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "RBFGaussianProcessSurrogate", cls);
-        }
-        { // datamunge::optim::SGDOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("step_size", rosetta_js_1789, rosetta_js_1790),
-                rosetta_js::accessor("max_epochs", rosetta_js_1791, rosetta_js_1792),
-                rosetta_js::accessor("batch_size", rosetta_js_1793, rosetta_js_1794),
-                rosetta_js::accessor("tolerance", rosetta_js_1795, rosetta_js_1796),
-                rosetta_js::accessor("shuffle", rosetta_js_1797, rosetta_js_1798),
-                rosetta_js::accessor("seed", rosetta_js_1799, rosetta_js_1800),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "SGDOptions", rosetta_js_1801, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::SGDOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "SGDOptions", cls);
-        }
-        { // datamunge::optim::SGD
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1802),
-                rosetta_js::method("options", rosetta_js_1803),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "SGD", rosetta_js_1804, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::SGD>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "SGD", cls);
-        }
-        { // datamunge::optim::SimulatedAnnealingOptions
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("initial_temperature", rosetta_js_1805, rosetta_js_1806),
-                rosetta_js::accessor("cooling_rate", rosetta_js_1807, rosetta_js_1808),
-                rosetta_js::accessor("max_iterations", rosetta_js_1809, rosetta_js_1810),
-                rosetta_js::accessor("step_std_dev", rosetta_js_1811, rosetta_js_1812),
-                rosetta_js::accessor("seed", rosetta_js_1813, rosetta_js_1814),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "SimulatedAnnealingOptions", rosetta_js_1815, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::SimulatedAnnealingOptions>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "SimulatedAnnealingOptions", cls);
-        }
-        { // datamunge::optim::SimulatedAnnealing
             std::vector<napi_property_descriptor> properties = {
                 rosetta_js::method("optimize", rosetta_js_1816),
                 rosetta_js::method("options", rosetta_js_1817),
@@ -8580,15 +8767,15 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "SimulatedAnnealing", rosetta_js_1818, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::SimulatedAnnealing>::value.id;
+            cls = rosetta_js::define_class(env, "GradientDescent", rosetta_js_1818, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::GradientDescent>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "SimulatedAnnealing", cls);
+            rosetta_js::set(env, exports, "GradientDescent", cls);
         }
-        { // datamunge::optim::SAGAOptions
+        { // datamunge::optim::GreyWolfOptimizerOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("step_size", rosetta_js_1819, rosetta_js_1820),
+                rosetta_js::accessor("population_size", rosetta_js_1819, rosetta_js_1820),
                 rosetta_js::accessor("max_iterations", rosetta_js_1821, rosetta_js_1822),
                 rosetta_js::accessor("tolerance", rosetta_js_1823, rosetta_js_1824),
                 rosetta_js::accessor("seed", rosetta_js_1825, rosetta_js_1826),
@@ -8597,13 +8784,13 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "SAGAOptions", rosetta_js_1827, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::optim::SAGAOptions>::value.id;
+            cls = rosetta_js::define_class(env, "GreyWolfOptimizerOptions", rosetta_js_1827, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::GreyWolfOptimizerOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "SAGAOptions", cls);
+            rosetta_js::set(env, exports, "GreyWolfOptimizerOptions", cls);
         }
-        { // datamunge::optim::SAGA
+        { // datamunge::optim::GreyWolfOptimizer
             std::vector<napi_property_descriptor> properties = {
                 rosetta_js::method("optimize", rosetta_js_1828),
                 rosetta_js::method("options", rosetta_js_1829),
@@ -8612,7 +8799,622 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "SAGA", rosetta_js_1830, nullptr, properties);
+            cls = rosetta_js::define_class(env, "GreyWolfOptimizer", rosetta_js_1830, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::GreyWolfOptimizer>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "GreyWolfOptimizer", cls);
+        }
+        { // datamunge::optim::HarmonySearchOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("population_size", rosetta_js_1831, rosetta_js_1832),
+                rosetta_js::accessor("memory_consideration_rate", rosetta_js_1833, rosetta_js_1834),
+                rosetta_js::accessor("pitch_adjustment_rate", rosetta_js_1835, rosetta_js_1836),
+                rosetta_js::accessor("bandwidth_fraction", rosetta_js_1837, rosetta_js_1838),
+                rosetta_js::accessor("max_iterations", rosetta_js_1839, rosetta_js_1840),
+                rosetta_js::accessor("tolerance", rosetta_js_1841, rosetta_js_1842),
+                rosetta_js::accessor("seed", rosetta_js_1843, rosetta_js_1844),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "HarmonySearchOptions", rosetta_js_1845, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::HarmonySearchOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "HarmonySearchOptions", cls);
+        }
+        { // datamunge::optim::HarmonySearch
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_1846),
+                rosetta_js::method("options", rosetta_js_1847),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "HarmonySearch", rosetta_js_1848, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::HarmonySearch>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "HarmonySearch", cls);
+        }
+        { // datamunge::optim::InteriorPointOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("step_size", rosetta_js_1849, rosetta_js_1850),
+                rosetta_js::accessor("initial_barrier", rosetta_js_1851, rosetta_js_1852),
+                rosetta_js::accessor("barrier_decay", rosetta_js_1853, rosetta_js_1854),
+                rosetta_js::accessor("max_outer_iterations", rosetta_js_1855, rosetta_js_1856),
+                rosetta_js::accessor("inner_iterations", rosetta_js_1857, rosetta_js_1858),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "InteriorPointOptions", rosetta_js_1859, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::InteriorPointOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "InteriorPointOptions", cls);
+        }
+        { // datamunge::optim::InteriorPoint
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_1860),
+                rosetta_js::method("options", rosetta_js_1861),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "InteriorPoint", rosetta_js_1862, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::InteriorPoint>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "InteriorPoint", cls);
+        }
+        { // datamunge::optim::SurrogatePrediction
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("mean", rosetta_js_1863, rosetta_js_1864),
+                rosetta_js::accessor("sd", rosetta_js_1865, rosetta_js_1866),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "SurrogatePrediction", rosetta_js_1867, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::SurrogatePrediction>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "SurrogatePrediction", cls);
+        }
+        { // datamunge::optim::GaussianJointPosterior
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("mean", rosetta_js_1868, rosetta_js_1869),
+                rosetta_js::accessor("covariance", rosetta_js_1870, rosetta_js_1871),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "GaussianJointPosterior", rosetta_js_1872, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::GaussianJointPosterior>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "GaussianJointPosterior", cls);
+        }
+        { // datamunge::optim::GaussianProcessSurrogateOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("length_scale", rosetta_js_1873, rosetta_js_1874),
+                rosetta_js::accessor("signal_variance", rosetta_js_1875, rosetta_js_1876),
+                rosetta_js::accessor("noise", rosetta_js_1877, rosetta_js_1878),
+                rosetta_js::accessor("normalize_values", rosetta_js_1879, rosetta_js_1880),
+                rosetta_js::accessor("fit_hyperparameters", rosetta_js_1881, rosetta_js_1882),
+                rosetta_js::accessor("fit_noise", rosetta_js_1883, rosetta_js_1884),
+                rosetta_js::accessor("min_length_scale", rosetta_js_1885, rosetta_js_1886),
+                rosetta_js::accessor("max_length_scale", rosetta_js_1887, rosetta_js_1888),
+                rosetta_js::accessor("acquisition", rosetta_js_1889, rosetta_js_1890),
+                rosetta_js::accessor("exploration", rosetta_js_1891, rosetta_js_1892),
+                rosetta_js::accessor("kappa", rosetta_js_1893, rosetta_js_1894),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "GaussianProcessSurrogateOptions", rosetta_js_1895, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::GaussianProcessSurrogateOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "GaussianProcessSurrogateOptions", cls);
+        }
+        { // datamunge::optim::RBFGaussianProcessSurrogate
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("options", rosetta_js_1896),
+                rosetta_js::method("fit", rosetta_js_1897),
+                rosetta_js::method("acquisition", rosetta_js_1898),
+                rosetta_js::method("predict", rosetta_js_1899),
+                rosetta_js::method("joint_posterior", rosetta_js_1900),
+                rosetta_js::method("log_marginal_likelihood", rosetta_js_1901),
+                rosetta_js::method("length_scale", rosetta_js_1902),
+                rosetta_js::method("noise", rosetta_js_1903),
+                rosetta_js::method("signal_variance", rosetta_js_1904),
+                rosetta_js::method("prior_mean", rosetta_js_1905),
+                rosetta_js::method("value_scale", rosetta_js_1906),
+                rosetta_js::method("points", rosetta_js_1907),
+                rosetta_js::method("values", rosetta_js_1908),
+            };
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "RBFGaussianProcessSurrogate", rosetta_js_1909, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::RBFGaussianProcessSurrogate>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "RBFGaussianProcessSurrogate", cls);
+        }
+        { // datamunge::optim::LBFGSOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("max_iterations", rosetta_js_1910, rosetta_js_1911),
+                rosetta_js::accessor("tolerance", rosetta_js_1912, rosetta_js_1913),
+                rosetta_js::accessor("history_size", rosetta_js_1914, rosetta_js_1915),
+                rosetta_js::accessor("armijo_c1", rosetta_js_1916, rosetta_js_1917),
+                rosetta_js::accessor("wolfe_c2", rosetta_js_1918, rosetta_js_1919),
+                rosetta_js::accessor("max_line_search_trials", rosetta_js_1920, rosetta_js_1921),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "LBFGSOptions", rosetta_js_1922, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::LBFGSOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "LBFGSOptions", cls);
+        }
+        { // datamunge::optim::LBFGS
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_1923),
+                rosetta_js::method("options", rosetta_js_1924),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "LBFGS", rosetta_js_1925, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::LBFGS>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "LBFGS", cls);
+        }
+        { // datamunge::optim::LevenbergMarquardtOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("initial_damping", rosetta_js_1926, rosetta_js_1927),
+                rosetta_js::accessor("max_iterations", rosetta_js_1928, rosetta_js_1929),
+                rosetta_js::accessor("tolerance", rosetta_js_1930, rosetta_js_1931),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "LevenbergMarquardtOptions", rosetta_js_1932, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::LevenbergMarquardtOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "LevenbergMarquardtOptions", cls);
+        }
+        { // datamunge::optim::LevenbergMarquardt
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_1933),
+                rosetta_js::method("options", rosetta_js_1934),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "LevenbergMarquardt", rosetta_js_1935, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::LevenbergMarquardt>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "LevenbergMarquardt", cls);
+        }
+        { // datamunge::optim::NelderMeadOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("initial_simplex_scale", rosetta_js_1936, rosetta_js_1937),
+                rosetta_js::accessor("reflection", rosetta_js_1938, rosetta_js_1939),
+                rosetta_js::accessor("expansion", rosetta_js_1940, rosetta_js_1941),
+                rosetta_js::accessor("contraction", rosetta_js_1942, rosetta_js_1943),
+                rosetta_js::accessor("shrink", rosetta_js_1944, rosetta_js_1945),
+                rosetta_js::accessor("max_iterations", rosetta_js_1946, rosetta_js_1947),
+                rosetta_js::accessor("tolerance", rosetta_js_1948, rosetta_js_1949),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "NelderMeadOptions", rosetta_js_1950, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::NelderMeadOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "NelderMeadOptions", cls);
+        }
+        { // datamunge::optim::NelderMead
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_1951),
+                rosetta_js::method("options", rosetta_js_1952),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "NelderMead", rosetta_js_1953, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::NelderMead>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "NelderMead", cls);
+        }
+        { // datamunge::optim::NesterovAcceleratedGradientOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("step_size", rosetta_js_1954, rosetta_js_1955),
+                rosetta_js::accessor("momentum", rosetta_js_1956, rosetta_js_1957),
+                rosetta_js::accessor("max_iterations", rosetta_js_1958, rosetta_js_1959),
+                rosetta_js::accessor("tolerance", rosetta_js_1960, rosetta_js_1961),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "NesterovAcceleratedGradientOptions", rosetta_js_1962, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::NesterovAcceleratedGradientOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "NesterovAcceleratedGradientOptions", cls);
+        }
+        { // datamunge::optim::NesterovAcceleratedGradient
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_1963),
+                rosetta_js::method("options", rosetta_js_1964),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "NesterovAcceleratedGradient", rosetta_js_1965, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::NesterovAcceleratedGradient>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "NesterovAcceleratedGradient", cls);
+        }
+        { // datamunge::optim::NadamOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("step_size", rosetta_js_1966, rosetta_js_1967),
+                rosetta_js::accessor("beta1", rosetta_js_1968, rosetta_js_1969),
+                rosetta_js::accessor("beta2", rosetta_js_1970, rosetta_js_1971),
+                rosetta_js::accessor("epsilon", rosetta_js_1972, rosetta_js_1973),
+                rosetta_js::accessor("max_iterations", rosetta_js_1974, rosetta_js_1975),
+                rosetta_js::accessor("tolerance", rosetta_js_1976, rosetta_js_1977),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "NadamOptions", rosetta_js_1978, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::NadamOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "NadamOptions", cls);
+        }
+        { // datamunge::optim::Nadam
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_1979),
+                rosetta_js::method("options", rosetta_js_1980),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "Nadam", rosetta_js_1981, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::Nadam>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "Nadam", cls);
+        }
+        { // datamunge::optim::NewtonOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("max_iterations", rosetta_js_1982, rosetta_js_1983),
+                rosetta_js::accessor("tolerance", rosetta_js_1984, rosetta_js_1985),
+                rosetta_js::accessor("damping", rosetta_js_1986, rosetta_js_1987),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "NewtonOptions", rosetta_js_1988, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::NewtonOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "NewtonOptions", cls);
+        }
+        { // datamunge::optim::Newton
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_1989),
+                rosetta_js::method("options", rosetta_js_1990),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "Newton", rosetta_js_1991, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::Newton>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "Newton", cls);
+        }
+        { // datamunge::optim::ParallelTemperingOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("num_replicas", rosetta_js_1992, rosetta_js_1993),
+                rosetta_js::accessor("initial_temperature", rosetta_js_1994, rosetta_js_1995),
+                rosetta_js::accessor("final_temperature", rosetta_js_1996, rosetta_js_1997),
+                rosetta_js::accessor("step_std_dev", rosetta_js_1998, rosetta_js_1999),
+                rosetta_js::accessor("swap_interval", rosetta_js_2000, rosetta_js_2001),
+                rosetta_js::accessor("max_sweeps", rosetta_js_2002, rosetta_js_2003),
+                rosetta_js::accessor("seed", rosetta_js_2004, rosetta_js_2005),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ParallelTemperingOptions", rosetta_js_2006, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::ParallelTemperingOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ParallelTemperingOptions", cls);
+        }
+        { // datamunge::optim::ParallelTempering
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_2007),
+                rosetta_js::method("options", rosetta_js_2008),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ParallelTempering", rosetta_js_2009, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::ParallelTempering>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ParallelTempering", cls);
+        }
+        { // datamunge::optim::PSOOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("population_size", rosetta_js_2010, rosetta_js_2011),
+                rosetta_js::accessor("max_iterations", rosetta_js_2012, rosetta_js_2013),
+                rosetta_js::accessor("inertia_weight", rosetta_js_2014, rosetta_js_2015),
+                rosetta_js::accessor("cognitive_coefficient", rosetta_js_2016, rosetta_js_2017),
+                rosetta_js::accessor("social_coefficient", rosetta_js_2018, rosetta_js_2019),
+                rosetta_js::accessor("topology", rosetta_js_2020, rosetta_js_2021),
+                rosetta_js::accessor("ring_neighbors", rosetta_js_2022, rosetta_js_2023),
+                rosetta_js::accessor("inertia_strategy", rosetta_js_2024, rosetta_js_2025),
+                rosetta_js::accessor("final_inertia_weight", rosetta_js_2026, rosetta_js_2027),
+                rosetta_js::accessor("tolerance", rosetta_js_2028, rosetta_js_2029),
+                rosetta_js::accessor("seed", rosetta_js_2030, rosetta_js_2031),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "PSOOptions", rosetta_js_2032, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::PSOOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "PSOOptions", cls);
+        }
+        { // datamunge::optim::PSO
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_2033),
+                rosetta_js::method("options", rosetta_js_2034),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "PSO", rosetta_js_2035, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::PSO>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "PSO", cls);
+        }
+        { // datamunge::optim::ProximalGradientOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("step_size", rosetta_js_2036, rosetta_js_2037),
+                rosetta_js::accessor("max_iterations", rosetta_js_2038, rosetta_js_2039),
+                rosetta_js::accessor("tolerance", rosetta_js_2040, rosetta_js_2041),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ProximalGradientOptions", rosetta_js_2042, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::ProximalGradientOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ProximalGradientOptions", cls);
+        }
+        { // datamunge::optim::ProximalGradient
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_2043),
+                rosetta_js::method("options", rosetta_js_2044),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ProximalGradient", rosetta_js_2045, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::ProximalGradient>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ProximalGradient", cls);
+        }
+        { // datamunge::optim::RandomizedBlockCoordinateDescentOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("block_size", rosetta_js_2046, rosetta_js_2047),
+                rosetta_js::accessor("step_size", rosetta_js_2048, rosetta_js_2049),
+                rosetta_js::accessor("max_iterations", rosetta_js_2050, rosetta_js_2051),
+                rosetta_js::accessor("tolerance", rosetta_js_2052, rosetta_js_2053),
+                rosetta_js::accessor("armijo_c1", rosetta_js_2054, rosetta_js_2055),
+                rosetta_js::accessor("backtracking_factor", rosetta_js_2056, rosetta_js_2057),
+                rosetta_js::accessor("max_line_search_trials", rosetta_js_2058, rosetta_js_2059),
+                rosetta_js::accessor("seed", rosetta_js_2060, rosetta_js_2061),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "RandomizedBlockCoordinateDescentOptions", rosetta_js_2062, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::RandomizedBlockCoordinateDescentOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "RandomizedBlockCoordinateDescentOptions", cls);
+        }
+        { // datamunge::optim::RandomizedBlockCoordinateDescent
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_2063),
+                rosetta_js::method("options", rosetta_js_2064),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "RandomizedBlockCoordinateDescent", rosetta_js_2065, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::RandomizedBlockCoordinateDescent>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "RandomizedBlockCoordinateDescent", cls);
+        }
+        { // datamunge::optim::RMSPropOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("step_size", rosetta_js_2066, rosetta_js_2067),
+                rosetta_js::accessor("decay_rate", rosetta_js_2068, rosetta_js_2069),
+                rosetta_js::accessor("epsilon", rosetta_js_2070, rosetta_js_2071),
+                rosetta_js::accessor("max_iterations", rosetta_js_2072, rosetta_js_2073),
+                rosetta_js::accessor("tolerance", rosetta_js_2074, rosetta_js_2075),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "RMSPropOptions", rosetta_js_2076, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::RMSPropOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "RMSPropOptions", cls);
+        }
+        { // datamunge::optim::RMSProp
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_2077),
+                rosetta_js::method("options", rosetta_js_2078),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "RMSProp", rosetta_js_2079, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::RMSProp>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "RMSProp", cls);
+        }
+        { // datamunge::optim::SGDOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("step_size", rosetta_js_2080, rosetta_js_2081),
+                rosetta_js::accessor("max_epochs", rosetta_js_2082, rosetta_js_2083),
+                rosetta_js::accessor("batch_size", rosetta_js_2084, rosetta_js_2085),
+                rosetta_js::accessor("tolerance", rosetta_js_2086, rosetta_js_2087),
+                rosetta_js::accessor("shuffle", rosetta_js_2088, rosetta_js_2089),
+                rosetta_js::accessor("seed", rosetta_js_2090, rosetta_js_2091),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "SGDOptions", rosetta_js_2092, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::SGDOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "SGDOptions", cls);
+        }
+        { // datamunge::optim::SGD
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_2093),
+                rosetta_js::method("options", rosetta_js_2094),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "SGD", rosetta_js_2095, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::SGD>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "SGD", cls);
+        }
+        { // datamunge::optim::SimulatedAnnealingOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("initial_temperature", rosetta_js_2096, rosetta_js_2097),
+                rosetta_js::accessor("cooling_rate", rosetta_js_2098, rosetta_js_2099),
+                rosetta_js::accessor("max_iterations", rosetta_js_2100, rosetta_js_2101),
+                rosetta_js::accessor("step_std_dev", rosetta_js_2102, rosetta_js_2103),
+                rosetta_js::accessor("seed", rosetta_js_2104, rosetta_js_2105),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "SimulatedAnnealingOptions", rosetta_js_2106, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::SimulatedAnnealingOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "SimulatedAnnealingOptions", cls);
+        }
+        { // datamunge::optim::SimulatedAnnealing
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_2107),
+                rosetta_js::method("options", rosetta_js_2108),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "SimulatedAnnealing", rosetta_js_2109, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::SimulatedAnnealing>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "SimulatedAnnealing", cls);
+        }
+        { // datamunge::optim::SAGAOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("step_size", rosetta_js_2110, rosetta_js_2111),
+                rosetta_js::accessor("max_iterations", rosetta_js_2112, rosetta_js_2113),
+                rosetta_js::accessor("tolerance", rosetta_js_2114, rosetta_js_2115),
+                rosetta_js::accessor("seed", rosetta_js_2116, rosetta_js_2117),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "SAGAOptions", rosetta_js_2118, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::optim::SAGAOptions>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "SAGAOptions", cls);
+        }
+        { // datamunge::optim::SAGA
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::method("optimize", rosetta_js_2119),
+                rosetta_js::method("options", rosetta_js_2120),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "SAGA", rosetta_js_2121, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::SAGA>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -8620,17 +9422,17 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::SVRGOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("step_size", rosetta_js_1831, rosetta_js_1832),
-                rosetta_js::accessor("max_epochs", rosetta_js_1833, rosetta_js_1834),
-                rosetta_js::accessor("inner_iterations", rosetta_js_1835, rosetta_js_1836),
-                rosetta_js::accessor("tolerance", rosetta_js_1837, rosetta_js_1838),
-                rosetta_js::accessor("seed", rosetta_js_1839, rosetta_js_1840),
+                rosetta_js::accessor("step_size", rosetta_js_2122, rosetta_js_2123),
+                rosetta_js::accessor("max_epochs", rosetta_js_2124, rosetta_js_2125),
+                rosetta_js::accessor("inner_iterations", rosetta_js_2126, rosetta_js_2127),
+                rosetta_js::accessor("tolerance", rosetta_js_2128, rosetta_js_2129),
+                rosetta_js::accessor("seed", rosetta_js_2130, rosetta_js_2131),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "SVRGOptions", rosetta_js_1841, nullptr, properties);
+            cls = rosetta_js::define_class(env, "SVRGOptions", rosetta_js_2132, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::SVRGOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -8638,14 +9440,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::SVRG
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1842),
-                rosetta_js::method("options", rosetta_js_1843),
+                rosetta_js::method("optimize", rosetta_js_2133),
+                rosetta_js::method("options", rosetta_js_2134),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "SVRG", rosetta_js_1844, nullptr, properties);
+            cls = rosetta_js::define_class(env, "SVRG", rosetta_js_2135, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::SVRG>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -8653,16 +9455,16 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::SQPOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("step_size", rosetta_js_1845, rosetta_js_1846),
-                rosetta_js::accessor("regularization", rosetta_js_1847, rosetta_js_1848),
-                rosetta_js::accessor("max_iterations", rosetta_js_1849, rosetta_js_1850),
-                rosetta_js::accessor("tolerance", rosetta_js_1851, rosetta_js_1852),
+                rosetta_js::accessor("step_size", rosetta_js_2136, rosetta_js_2137),
+                rosetta_js::accessor("regularization", rosetta_js_2138, rosetta_js_2139),
+                rosetta_js::accessor("max_iterations", rosetta_js_2140, rosetta_js_2141),
+                rosetta_js::accessor("tolerance", rosetta_js_2142, rosetta_js_2143),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "SQPOptions", rosetta_js_1853, nullptr, properties);
+            cls = rosetta_js::define_class(env, "SQPOptions", rosetta_js_2144, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::SQPOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -8670,14 +9472,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::SQP
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1854),
-                rosetta_js::method("options", rosetta_js_1855),
+                rosetta_js::method("optimize", rosetta_js_2145),
+                rosetta_js::method("options", rosetta_js_2146),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "SQP", rosetta_js_1856, nullptr, properties);
+            cls = rosetta_js::define_class(env, "SQP", rosetta_js_2147, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::SQP>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -8685,16 +9487,16 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::TrustRegionNewtonOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("initial_radius", rosetta_js_1857, rosetta_js_1858),
-                rosetta_js::accessor("max_radius", rosetta_js_1859, rosetta_js_1860),
-                rosetta_js::accessor("max_iterations", rosetta_js_1861, rosetta_js_1862),
-                rosetta_js::accessor("tolerance", rosetta_js_1863, rosetta_js_1864),
+                rosetta_js::accessor("initial_radius", rosetta_js_2148, rosetta_js_2149),
+                rosetta_js::accessor("max_radius", rosetta_js_2150, rosetta_js_2151),
+                rosetta_js::accessor("max_iterations", rosetta_js_2152, rosetta_js_2153),
+                rosetta_js::accessor("tolerance", rosetta_js_2154, rosetta_js_2155),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "TrustRegionNewtonOptions", rosetta_js_1865, nullptr, properties);
+            cls = rosetta_js::define_class(env, "TrustRegionNewtonOptions", rosetta_js_2156, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::TrustRegionNewtonOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -8702,14 +9504,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::TrustRegionNewton
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1866),
-                rosetta_js::method("options", rosetta_js_1867),
+                rosetta_js::method("optimize", rosetta_js_2157),
+                rosetta_js::method("options", rosetta_js_2158),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "TrustRegionNewton", rosetta_js_1868, nullptr, properties);
+            cls = rosetta_js::define_class(env, "TrustRegionNewton", rosetta_js_2159, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::TrustRegionNewton>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -8717,17 +9519,17 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::WhaleOptimizationOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("population_size", rosetta_js_1869, rosetta_js_1870),
-                rosetta_js::accessor("spiral_constant", rosetta_js_1871, rosetta_js_1872),
-                rosetta_js::accessor("max_iterations", rosetta_js_1873, rosetta_js_1874),
-                rosetta_js::accessor("tolerance", rosetta_js_1875, rosetta_js_1876),
-                rosetta_js::accessor("seed", rosetta_js_1877, rosetta_js_1878),
+                rosetta_js::accessor("population_size", rosetta_js_2160, rosetta_js_2161),
+                rosetta_js::accessor("spiral_constant", rosetta_js_2162, rosetta_js_2163),
+                rosetta_js::accessor("max_iterations", rosetta_js_2164, rosetta_js_2165),
+                rosetta_js::accessor("tolerance", rosetta_js_2166, rosetta_js_2167),
+                rosetta_js::accessor("seed", rosetta_js_2168, rosetta_js_2169),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "WhaleOptimizationOptions", rosetta_js_1879, nullptr, properties);
+            cls = rosetta_js::define_class(env, "WhaleOptimizationOptions", rosetta_js_2170, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::WhaleOptimizationOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -8735,81 +9537,120 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::optim::WhaleOptimization
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("optimize", rosetta_js_1880),
-                rosetta_js::method("options", rosetta_js_1881),
+                rosetta_js::method("optimize", rosetta_js_2171),
+                rosetta_js::method("options", rosetta_js_2172),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "WhaleOptimization", rosetta_js_1882, nullptr, properties);
+            cls = rosetta_js::define_class(env, "WhaleOptimization", rosetta_js_2173, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::optim::WhaleOptimization>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
             rosetta_js::set(env, exports, "WhaleOptimization", cls);
         }
-        { // datamunge::fda::BSplineBasis
-            std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("degree", rosetta_js_1884),
-                rosetta_js::method("basis_size", rosetta_js_1885),
-                rosetta_js::method("knots", rosetta_js_1886),
-                rosetta_js::method("domain", rosetta_js_1887),
-                rosetta_js::method("open_uniform", rosetta_js_1883, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("close", rosetta_js::object_close),
-            };
-            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
-            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
-            napi_value cls;
-            cls = rosetta_js::define_class(env, "BSplineBasis", rosetta_js_1888, nullptr, properties);
-            const auto id = rosetta_js::Info<datamunge::fda::BSplineBasis>::value.id;
-            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
-            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
-            rosetta_js::set(env, exports, "BSplineBasis", cls);
-        }
         { // datamunge::stats::HypothesisTestResult
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("statistic", rosetta_js_1889, rosetta_js_1890),
-                rosetta_js::accessor("parameter1", rosetta_js_1891, rosetta_js_1892),
-                rosetta_js::accessor("parameter2", rosetta_js_1893, rosetta_js_1894),
-                rosetta_js::accessor("p_value", rosetta_js_1895, rosetta_js_1896),
-                rosetta_js::accessor("estimate1", rosetta_js_1897, rosetta_js_1898),
-                rosetta_js::accessor("estimate2", rosetta_js_1899, rosetta_js_1900),
-                rosetta_js::accessor("conf_int_lower", rosetta_js_1901, rosetta_js_1902),
-                rosetta_js::accessor("conf_int_upper", rosetta_js_1903, rosetta_js_1904),
-                rosetta_js::accessor("has_conf_int", rosetta_js_1905, rosetta_js_1906),
-                rosetta_js::accessor("alternative", rosetta_js_1907, rosetta_js_1908),
-                rosetta_js::accessor("method", rosetta_js_1909, rosetta_js_1910),
+                rosetta_js::accessor("statistic", rosetta_js_2174, rosetta_js_2175),
+                rosetta_js::accessor("parameter1", rosetta_js_2176, rosetta_js_2177),
+                rosetta_js::accessor("parameter2", rosetta_js_2178, rosetta_js_2179),
+                rosetta_js::accessor("p_value", rosetta_js_2180, rosetta_js_2181),
+                rosetta_js::accessor("estimate1", rosetta_js_2182, rosetta_js_2183),
+                rosetta_js::accessor("estimate2", rosetta_js_2184, rosetta_js_2185),
+                rosetta_js::accessor("conf_int_lower", rosetta_js_2186, rosetta_js_2187),
+                rosetta_js::accessor("conf_int_upper", rosetta_js_2188, rosetta_js_2189),
+                rosetta_js::accessor("has_conf_int", rosetta_js_2190, rosetta_js_2191),
+                rosetta_js::accessor("alternative", rosetta_js_2192, rosetta_js_2193),
+                rosetta_js::accessor("method", rosetta_js_2194, rosetta_js_2195),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "HypothesisTestResult", rosetta_js_1911, nullptr, properties);
+            cls = rosetta_js::define_class(env, "HypothesisTestResult", rosetta_js_2196, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::stats::HypothesisTestResult>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
             rosetta_js::set(env, exports, "HypothesisTestResult", cls);
         }
-        { // datamunge::stats::ARIMAOptions
+        { // datamunge::fda::BSplineBasis
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("p", rosetta_js_1912, rosetta_js_1913),
-                rosetta_js::accessor("d", rosetta_js_1914, rosetta_js_1915),
-                rosetta_js::accessor("q", rosetta_js_1916, rosetta_js_1917),
-                rosetta_js::accessor("seasonal_p", rosetta_js_1918, rosetta_js_1919),
-                rosetta_js::accessor("seasonal_d", rosetta_js_1920, rosetta_js_1921),
-                rosetta_js::accessor("seasonal_q", rosetta_js_1922, rosetta_js_1923),
-                rosetta_js::accessor("seasonal_period", rosetta_js_1924, rosetta_js_1925),
-                rosetta_js::accessor("include_mean", rosetta_js_1926, rosetta_js_1927),
-                rosetta_js::accessor("de_population_size", rosetta_js_1928, rosetta_js_1929),
-                rosetta_js::accessor("de_max_generations", rosetta_js_1930, rosetta_js_1931),
-                rosetta_js::accessor("coefficient_bound", rosetta_js_1932, rosetta_js_1933),
-                rosetta_js::accessor("seed", rosetta_js_1934, rosetta_js_1935),
+                rosetta_js::method("degree", rosetta_js_2198),
+                rosetta_js::method("basis_size", rosetta_js_2199),
+                rosetta_js::method("knots", rosetta_js_2200),
+                rosetta_js::method("domain", rosetta_js_2201),
+                rosetta_js::method("open_uniform", rosetta_js_2197, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ARIMAOptions", rosetta_js_1936, nullptr, properties);
+            cls = rosetta_js::define_class(env, "BSplineBasis", rosetta_js_2202, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::fda::BSplineBasis>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "BSplineBasis", cls);
+        }
+        { // datamunge::stats::GamesHowellComparison
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("group1", rosetta_js_2203, rosetta_js_2204),
+                rosetta_js::accessor("group2", rosetta_js_2205, rosetta_js_2206),
+                rosetta_js::accessor("difference", rosetta_js_2207, rosetta_js_2208),
+                rosetta_js::accessor("degrees_of_freedom", rosetta_js_2209, rosetta_js_2210),
+                rosetta_js::accessor("lower", rosetta_js_2211, rosetta_js_2212),
+                rosetta_js::accessor("upper", rosetta_js_2213, rosetta_js_2214),
+                rosetta_js::accessor("p_adjusted", rosetta_js_2215, rosetta_js_2216),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "GamesHowellComparison", rosetta_js_2217, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::stats::GamesHowellComparison>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "GamesHowellComparison", cls);
+        }
+        { // datamunge::stats::DunnComparison
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("group1", rosetta_js_2218, rosetta_js_2219),
+                rosetta_js::accessor("group2", rosetta_js_2220, rosetta_js_2221),
+                rosetta_js::accessor("rank_difference", rosetta_js_2222, rosetta_js_2223),
+                rosetta_js::accessor("statistic", rosetta_js_2224, rosetta_js_2225),
+                rosetta_js::accessor("p_value", rosetta_js_2226, rosetta_js_2227),
+                rosetta_js::accessor("p_adjusted", rosetta_js_2228, rosetta_js_2229),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "DunnComparison", rosetta_js_2230, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::stats::DunnComparison>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "DunnComparison", cls);
+        }
+        { // datamunge::stats::ARIMAOptions
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("p", rosetta_js_2231, rosetta_js_2232),
+                rosetta_js::accessor("d", rosetta_js_2233, rosetta_js_2234),
+                rosetta_js::accessor("q", rosetta_js_2235, rosetta_js_2236),
+                rosetta_js::accessor("seasonal_p", rosetta_js_2237, rosetta_js_2238),
+                rosetta_js::accessor("seasonal_d", rosetta_js_2239, rosetta_js_2240),
+                rosetta_js::accessor("seasonal_q", rosetta_js_2241, rosetta_js_2242),
+                rosetta_js::accessor("seasonal_period", rosetta_js_2243, rosetta_js_2244),
+                rosetta_js::accessor("include_mean", rosetta_js_2245, rosetta_js_2246),
+                rosetta_js::accessor("de_population_size", rosetta_js_2247, rosetta_js_2248),
+                rosetta_js::accessor("de_max_generations", rosetta_js_2249, rosetta_js_2250),
+                rosetta_js::accessor("coefficient_bound", rosetta_js_2251, rosetta_js_2252),
+                rosetta_js::accessor("seed", rosetta_js_2253, rosetta_js_2254),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ARIMAOptions", rosetta_js_2255, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::stats::ARIMAOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -8817,31 +9658,31 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::stats::ARIMA
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("options", rosetta_js_1937),
-                rosetta_js::method("ar_coefficients", rosetta_js_1938),
-                rosetta_js::method("ma_coefficients", rosetta_js_1939),
-                rosetta_js::method("seasonal_ar_coefficients", rosetta_js_1940),
-                rosetta_js::method("seasonal_ma_coefficients", rosetta_js_1941),
-                rosetta_js::method("mean", rosetta_js_1942),
-                rosetta_js::method("observations", rosetta_js_1943),
-                rosetta_js::method("n_used", rosetta_js_1944),
-                rosetta_js::method("sigma2", rosetta_js_1945),
-                rosetta_js::method("log_likelihood", rosetta_js_1946),
-                rosetta_js::method("aic", rosetta_js_1947),
-                rosetta_js::method("bic", rosetta_js_1948),
-                rosetta_js::method("fitted_values", rosetta_js_1949),
-                rosetta_js::method("residuals", rosetta_js_1950),
-                rosetta_js::method("forecast", rosetta_js_1951),
-                rosetta_js::method("expanded_ar_coefficients", rosetta_js_1952),
-                rosetta_js::method("expanded_ma_coefficients", rosetta_js_1953),
-                rosetta_js::method("psi_weights", rosetta_js_1954),
-                rosetta_js::method("forecast_with_intervals", rosetta_js_1955),
+                rosetta_js::method("options", rosetta_js_2256),
+                rosetta_js::method("ar_coefficients", rosetta_js_2257),
+                rosetta_js::method("ma_coefficients", rosetta_js_2258),
+                rosetta_js::method("seasonal_ar_coefficients", rosetta_js_2259),
+                rosetta_js::method("seasonal_ma_coefficients", rosetta_js_2260),
+                rosetta_js::method("mean", rosetta_js_2261),
+                rosetta_js::method("observations", rosetta_js_2262),
+                rosetta_js::method("n_used", rosetta_js_2263),
+                rosetta_js::method("sigma2", rosetta_js_2264),
+                rosetta_js::method("log_likelihood", rosetta_js_2265),
+                rosetta_js::method("aic", rosetta_js_2266),
+                rosetta_js::method("bic", rosetta_js_2267),
+                rosetta_js::method("fitted_values", rosetta_js_2268),
+                rosetta_js::method("residuals", rosetta_js_2269),
+                rosetta_js::method("forecast", rosetta_js_2270),
+                rosetta_js::method("expanded_ar_coefficients", rosetta_js_2271),
+                rosetta_js::method("expanded_ma_coefficients", rosetta_js_2272),
+                rosetta_js::method("psi_weights", rosetta_js_2273),
+                rosetta_js::method("forecast_with_intervals", rosetta_js_2274),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ARIMA", rosetta_js_1956, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ARIMA", rosetta_js_2275, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::stats::ARIMA>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -8849,19 +9690,19 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::stats::KendallTau
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("concordant", rosetta_js_1957, rosetta_js_1958),
-                rosetta_js::accessor("discordant", rosetta_js_1959, rosetta_js_1960),
-                rosetta_js::accessor("ties_x", rosetta_js_1961, rosetta_js_1962),
-                rosetta_js::accessor("ties_y", rosetta_js_1963, rosetta_js_1964),
-                rosetta_js::accessor("ties_xy", rosetta_js_1965, rosetta_js_1966),
-                rosetta_js::accessor("tau_a", rosetta_js_1967, rosetta_js_1968),
-                rosetta_js::accessor("tau_b", rosetta_js_1969, rosetta_js_1970),
+                rosetta_js::accessor("concordant", rosetta_js_2276, rosetta_js_2277),
+                rosetta_js::accessor("discordant", rosetta_js_2278, rosetta_js_2279),
+                rosetta_js::accessor("ties_x", rosetta_js_2280, rosetta_js_2281),
+                rosetta_js::accessor("ties_y", rosetta_js_2282, rosetta_js_2283),
+                rosetta_js::accessor("ties_xy", rosetta_js_2284, rosetta_js_2285),
+                rosetta_js::accessor("tau_a", rosetta_js_2286, rosetta_js_2287),
+                rosetta_js::accessor("tau_b", rosetta_js_2288, rosetta_js_2289),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "KendallTau", rosetta_js_1971, nullptr, properties);
+            cls = rosetta_js::define_class(env, "KendallTau", rosetta_js_2290, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::stats::KendallTau>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -8869,22 +9710,22 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::stats::ExponentialSmoothingOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("trend", rosetta_js_1972, rosetta_js_1973),
-                rosetta_js::accessor("seasonal", rosetta_js_1974, rosetta_js_1975),
-                rosetta_js::accessor("seasonal_period", rosetta_js_1976, rosetta_js_1977),
-                rosetta_js::accessor("alpha", rosetta_js_1978, rosetta_js_1979),
-                rosetta_js::accessor("beta", rosetta_js_1980, rosetta_js_1981),
-                rosetta_js::accessor("gamma", rosetta_js_1982, rosetta_js_1983),
-                rosetta_js::accessor("phi", rosetta_js_1984, rosetta_js_1985),
-                rosetta_js::accessor("de_population_size", rosetta_js_1986, rosetta_js_1987),
-                rosetta_js::accessor("de_max_generations", rosetta_js_1988, rosetta_js_1989),
-                rosetta_js::accessor("seed", rosetta_js_1990, rosetta_js_1991),
+                rosetta_js::accessor("trend", rosetta_js_2291, rosetta_js_2292),
+                rosetta_js::accessor("seasonal", rosetta_js_2293, rosetta_js_2294),
+                rosetta_js::accessor("seasonal_period", rosetta_js_2295, rosetta_js_2296),
+                rosetta_js::accessor("alpha", rosetta_js_2297, rosetta_js_2298),
+                rosetta_js::accessor("beta", rosetta_js_2299, rosetta_js_2300),
+                rosetta_js::accessor("gamma", rosetta_js_2301, rosetta_js_2302),
+                rosetta_js::accessor("phi", rosetta_js_2303, rosetta_js_2304),
+                rosetta_js::accessor("de_population_size", rosetta_js_2305, rosetta_js_2306),
+                rosetta_js::accessor("de_max_generations", rosetta_js_2307, rosetta_js_2308),
+                rosetta_js::accessor("seed", rosetta_js_2309, rosetta_js_2310),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ExponentialSmoothingOptions", rosetta_js_1992, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ExponentialSmoothingOptions", rosetta_js_2311, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::stats::ExponentialSmoothingOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -8892,30 +9733,78 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::stats::ExponentialSmoothing
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("options", rosetta_js_1993),
-                rosetta_js::method("alpha", rosetta_js_1994),
-                rosetta_js::method("beta", rosetta_js_1995),
-                rosetta_js::method("gamma", rosetta_js_1996),
-                rosetta_js::method("phi", rosetta_js_1997),
-                rosetta_js::method("observations", rosetta_js_1998),
-                rosetta_js::method("sse", rosetta_js_1999),
-                rosetta_js::method("sigma2", rosetta_js_2000),
-                rosetta_js::method("log_likelihood", rosetta_js_2001),
-                rosetta_js::method("aic", rosetta_js_2002),
-                rosetta_js::method("bic", rosetta_js_2003),
-                rosetta_js::method("fitted_values", rosetta_js_2004),
-                rosetta_js::method("residuals", rosetta_js_2005),
-                rosetta_js::method("forecast", rosetta_js_2006),
+                rosetta_js::method("options", rosetta_js_2312),
+                rosetta_js::method("alpha", rosetta_js_2313),
+                rosetta_js::method("beta", rosetta_js_2314),
+                rosetta_js::method("gamma", rosetta_js_2315),
+                rosetta_js::method("phi", rosetta_js_2316),
+                rosetta_js::method("observations", rosetta_js_2317),
+                rosetta_js::method("sse", rosetta_js_2318),
+                rosetta_js::method("sigma2", rosetta_js_2319),
+                rosetta_js::method("log_likelihood", rosetta_js_2320),
+                rosetta_js::method("aic", rosetta_js_2321),
+                rosetta_js::method("bic", rosetta_js_2322),
+                rosetta_js::method("fitted_values", rosetta_js_2323),
+                rosetta_js::method("residuals", rosetta_js_2324),
+                rosetta_js::method("forecast", rosetta_js_2325),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ExponentialSmoothing", rosetta_js_2007, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ExponentialSmoothing", rosetta_js_2326, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::stats::ExponentialSmoothing>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
             rosetta_js::set(env, exports, "ExponentialSmoothing", cls);
+        }
+        { // datamunge::stats::ProportionDifferenceInterval
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("difference", rosetta_js_2327, rosetta_js_2328),
+                rosetta_js::accessor("lower", rosetta_js_2329, rosetta_js_2330),
+                rosetta_js::accessor("upper", rosetta_js_2331, rosetta_js_2332),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "ProportionDifferenceInterval", rosetta_js_2333, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::stats::ProportionDifferenceInterval>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "ProportionDifferenceInterval", cls);
+        }
+        { // datamunge::stats::RiskRatioInterval
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("estimate", rosetta_js_2334, rosetta_js_2335),
+                rosetta_js::accessor("lower", rosetta_js_2336, rosetta_js_2337),
+                rosetta_js::accessor("upper", rosetta_js_2338, rosetta_js_2339),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "RiskRatioInterval", rosetta_js_2340, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::stats::RiskRatioInterval>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "RiskRatioInterval", cls);
+        }
+        { // datamunge::stats::PoissonRateInterval
+            std::vector<napi_property_descriptor> properties = {
+                rosetta_js::accessor("estimate", rosetta_js_2341, rosetta_js_2342),
+                rosetta_js::accessor("lower", rosetta_js_2343, rosetta_js_2344),
+                rosetta_js::accessor("upper", rosetta_js_2345, rosetta_js_2346),
+                rosetta_js::method("close", rosetta_js::object_close),
+            };
+            if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
+            properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
+            napi_value cls;
+            cls = rosetta_js::define_class(env, "PoissonRateInterval", rosetta_js_2347, nullptr, properties);
+            const auto id = rosetta_js::Info<datamunge::stats::PoissonRateInterval>::value.id;
+            rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
+            rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
+            rosetta_js::set(env, exports, "PoissonRateInterval", cls);
         }
         { // datamunge::Bspline
             std::vector<napi_property_descriptor> properties = {
@@ -8924,7 +9813,7 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Bspline", rosetta_js_2008, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Bspline", rosetta_js_2348, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::Bspline>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -8932,21 +9821,21 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::BSplineRegression
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("predict", rosetta_js_2009),
-                rosetta_js::method("coefficients", rosetta_js_2010),
-                rosetta_js::method("fitted", rosetta_js_2011),
-                rosetta_js::method("residuals", rosetta_js_2012),
-                rosetta_js::method("r_squared", rosetta_js_2013),
-                rosetta_js::method("basis_size", rosetta_js_2014),
-                rosetta_js::method("degree", rosetta_js_2015),
-                rosetta_js::method("knots", rosetta_js_2016),
-                rosetta_js::method("domain", rosetta_js_2017),
+                rosetta_js::method("predict", rosetta_js_2349),
+                rosetta_js::method("coefficients", rosetta_js_2350),
+                rosetta_js::method("fitted", rosetta_js_2351),
+                rosetta_js::method("residuals", rosetta_js_2352),
+                rosetta_js::method("r_squared", rosetta_js_2353),
+                rosetta_js::method("basis_size", rosetta_js_2354),
+                rosetta_js::method("degree", rosetta_js_2355),
+                rosetta_js::method("knots", rosetta_js_2356),
+                rosetta_js::method("domain", rosetta_js_2357),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "BSplineRegression", rosetta_js_2018, nullptr, properties);
+            cls = rosetta_js::define_class(env, "BSplineRegression", rosetta_js_2358, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::BSplineRegression>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -8954,26 +9843,26 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::PSplineRegression
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("predict", rosetta_js_2019),
-                rosetta_js::method("coefficients", rosetta_js_2020),
-                rosetta_js::method("fitted", rosetta_js_2021),
-                rosetta_js::method("residuals", rosetta_js_2022),
-                rosetta_js::method("r_squared", rosetta_js_2023),
-                rosetta_js::method("lambda", rosetta_js_2024),
-                rosetta_js::method("penalty_order", rosetta_js_2025),
-                rosetta_js::method("effective_df", rosetta_js_2026),
-                rosetta_js::method("gcv", rosetta_js_2027),
-                rosetta_js::method("basis_size", rosetta_js_2028),
-                rosetta_js::method("degree", rosetta_js_2029),
-                rosetta_js::method("knots", rosetta_js_2030),
-                rosetta_js::method("domain", rosetta_js_2031),
-                rosetta_js::method("coefficient_differences", rosetta_js_2032),
+                rosetta_js::method("predict", rosetta_js_2359),
+                rosetta_js::method("coefficients", rosetta_js_2360),
+                rosetta_js::method("fitted", rosetta_js_2361),
+                rosetta_js::method("residuals", rosetta_js_2362),
+                rosetta_js::method("r_squared", rosetta_js_2363),
+                rosetta_js::method("lambda", rosetta_js_2364),
+                rosetta_js::method("penalty_order", rosetta_js_2365),
+                rosetta_js::method("effective_df", rosetta_js_2366),
+                rosetta_js::method("gcv", rosetta_js_2367),
+                rosetta_js::method("basis_size", rosetta_js_2368),
+                rosetta_js::method("degree", rosetta_js_2369),
+                rosetta_js::method("knots", rosetta_js_2370),
+                rosetta_js::method("domain", rosetta_js_2371),
+                rosetta_js::method("coefficient_differences", rosetta_js_2372),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "PSplineRegression", rosetta_js_2033, nullptr, properties);
+            cls = rosetta_js::define_class(env, "PSplineRegression", rosetta_js_2373, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::PSplineRegression>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -8981,71 +9870,71 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::DataFrame
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("nrows", rosetta_js_2035),
-                rosetta_js::method("ncols", rosetta_js_2036),
-                rosetta_js::method("shape", rosetta_js_2037),
-                rosetta_js::method("columns", rosetta_js_2038),
-                rosetta_js::method("add_numeric_column", rosetta_js_2039),
-                rosetta_js::method("add_string_column", rosetta_js_2040),
-                rosetta_js::method("add_string_column_encoded", rosetta_js_2041),
-                rosetta_js::method("fill_null_numeric", rosetta_js_2042),
-                rosetta_js::method("fill_null_string", rosetta_js_2043),
-                rosetta_js::method("mutate_numeric", rosetta_js_2044),
-                rosetta_js::method("mutate_string", rosetta_js_2045),
-                rosetta_js::method("mutate_string_encoded", rosetta_js_2046),
-                rosetta_js::method("rename", rosetta_js_2047),
-                rosetta_js::method("select", rosetta_js_2048),
-                rosetta_js::method("select_encoded", rosetta_js_2049),
-                rosetta_js::method("relocate", rosetta_js_2050),
-                rosetta_js::method("relocate_encoded", rosetta_js_2051),
-                rosetta_js::method("sort_by", rosetta_js_2052),
-                rosetta_js::method("arrange", rosetta_js_2053),
-                rosetta_js::method("arrange_encoded", rosetta_js_2054),
-                rosetta_js::method("drop_duplicates", rosetta_js_2055),
-                rosetta_js::method("drop_duplicates_encoded", rosetta_js_2056),
-                rosetta_js::method("distinct", rosetta_js_2057),
-                rosetta_js::method("distinct_encoded", rosetta_js_2058),
-                rosetta_js::method("pull_numeric", rosetta_js_2059),
-                rosetta_js::method("pull_numeric_valid", rosetta_js_2060),
-                rosetta_js::method("pull_string", rosetta_js_2061),
-                rosetta_js::method("pull_string_valid", rosetta_js_2062),
-                rosetta_js::method("n_distinct", rosetta_js_2063),
-                rosetta_js::method("group_by_sum", rosetta_js_2064),
-                rosetta_js::method("group_by_sum_encoded", rosetta_js_2065),
-                rosetta_js::method("count", rosetta_js_2066),
-                rosetta_js::method("count_encoded", rosetta_js_2067),
-                rosetta_js::method("summarise", rosetta_js_2068),
-                rosetta_js::method("summarise_encoded", rosetta_js_2069),
-                rosetta_js::method("pivot_longer", rosetta_js_2070),
-                rosetta_js::method("pivot_longer_encoded", rosetta_js_2071),
-                rosetta_js::method("pivot_wider", rosetta_js_2072),
-                rosetta_js::method("pivot_wider_encoded", rosetta_js_2073),
-                rosetta_js::method("bind_rows", rosetta_js_2074),
-                rosetta_js::method("bind_cols", rosetta_js_2075),
-                rosetta_js::method("join", rosetta_js_2076),
-                rosetta_js::method("numeric_count", rosetta_js_2077),
-                rosetta_js::method("numeric_null_count", rosetta_js_2078),
-                rosetta_js::method("numeric_sum", rosetta_js_2079),
-                rosetta_js::method("numeric_mean", rosetta_js_2080),
-                rosetta_js::method("numeric_min", rosetta_js_2081),
-                rosetta_js::method("numeric_max", rosetta_js_2082),
-                rosetta_js::method("to_string", rosetta_js_2083),
-                rosetta_js::method("to_md", rosetta_js_2084),
-                rosetta_js::method("is_numeric_column", rosetta_js_2085),
-                rosetta_js::method("is_null", rosetta_js_2086),
-                rosetta_js::method("numeric_at", rosetta_js_2087),
-                rosetta_js::method("string_at", rosetta_js_2088),
-                rosetta_js::method("empty", rosetta_js_2034, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("read_csv", rosetta_js_2089, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("parse_csv", rosetta_js_2090, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("from_image_batch", rosetta_js_2091, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("nrows", rosetta_js_2375),
+                rosetta_js::method("ncols", rosetta_js_2376),
+                rosetta_js::method("shape", rosetta_js_2377),
+                rosetta_js::method("columns", rosetta_js_2378),
+                rosetta_js::method("add_numeric_column", rosetta_js_2379),
+                rosetta_js::method("add_string_column", rosetta_js_2380),
+                rosetta_js::method("add_string_column_encoded", rosetta_js_2381),
+                rosetta_js::method("fill_null_numeric", rosetta_js_2382),
+                rosetta_js::method("fill_null_string", rosetta_js_2383),
+                rosetta_js::method("mutate_numeric", rosetta_js_2384),
+                rosetta_js::method("mutate_string", rosetta_js_2385),
+                rosetta_js::method("mutate_string_encoded", rosetta_js_2386),
+                rosetta_js::method("rename", rosetta_js_2387),
+                rosetta_js::method("select", rosetta_js_2388),
+                rosetta_js::method("select_encoded", rosetta_js_2389),
+                rosetta_js::method("relocate", rosetta_js_2390),
+                rosetta_js::method("relocate_encoded", rosetta_js_2391),
+                rosetta_js::method("sort_by", rosetta_js_2392),
+                rosetta_js::method("arrange", rosetta_js_2393),
+                rosetta_js::method("arrange_encoded", rosetta_js_2394),
+                rosetta_js::method("drop_duplicates", rosetta_js_2395),
+                rosetta_js::method("drop_duplicates_encoded", rosetta_js_2396),
+                rosetta_js::method("distinct", rosetta_js_2397),
+                rosetta_js::method("distinct_encoded", rosetta_js_2398),
+                rosetta_js::method("pull_numeric", rosetta_js_2399),
+                rosetta_js::method("pull_numeric_valid", rosetta_js_2400),
+                rosetta_js::method("pull_string", rosetta_js_2401),
+                rosetta_js::method("pull_string_valid", rosetta_js_2402),
+                rosetta_js::method("n_distinct", rosetta_js_2403),
+                rosetta_js::method("group_by_sum", rosetta_js_2404),
+                rosetta_js::method("group_by_sum_encoded", rosetta_js_2405),
+                rosetta_js::method("count", rosetta_js_2406),
+                rosetta_js::method("count_encoded", rosetta_js_2407),
+                rosetta_js::method("summarise", rosetta_js_2408),
+                rosetta_js::method("summarise_encoded", rosetta_js_2409),
+                rosetta_js::method("pivot_longer", rosetta_js_2410),
+                rosetta_js::method("pivot_longer_encoded", rosetta_js_2411),
+                rosetta_js::method("pivot_wider", rosetta_js_2412),
+                rosetta_js::method("pivot_wider_encoded", rosetta_js_2413),
+                rosetta_js::method("bind_rows", rosetta_js_2414),
+                rosetta_js::method("bind_cols", rosetta_js_2415),
+                rosetta_js::method("join", rosetta_js_2416),
+                rosetta_js::method("numeric_count", rosetta_js_2417),
+                rosetta_js::method("numeric_null_count", rosetta_js_2418),
+                rosetta_js::method("numeric_sum", rosetta_js_2419),
+                rosetta_js::method("numeric_mean", rosetta_js_2420),
+                rosetta_js::method("numeric_min", rosetta_js_2421),
+                rosetta_js::method("numeric_max", rosetta_js_2422),
+                rosetta_js::method("to_string", rosetta_js_2423),
+                rosetta_js::method("to_md", rosetta_js_2424),
+                rosetta_js::method("is_numeric_column", rosetta_js_2425),
+                rosetta_js::method("is_null", rosetta_js_2426),
+                rosetta_js::method("numeric_at", rosetta_js_2427),
+                rosetta_js::method("string_at", rosetta_js_2428),
+                rosetta_js::method("empty", rosetta_js_2374, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("read_csv", rosetta_js_2429, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("parse_csv", rosetta_js_2430, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("from_image_batch", rosetta_js_2431, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::to_string_method));
             { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::to_string_method); d.name = inspect; properties.push_back(d); }
             napi_value cls;
-            cls = rosetta_js::define_class(env, "DataFrame", rosetta_js_2092, nullptr, properties);
+            cls = rosetta_js::define_class(env, "DataFrame", rosetta_js_2432, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::DataFrame>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9053,19 +9942,19 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::CsvReader
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("has_next", rosetta_js_2093),
-                rosetta_js::method("next", rosetta_js_2094),
-                rosetta_js::method("reset", rosetta_js_2095),
-                rosetta_js::method("batch_size", rosetta_js_2096),
-                rosetta_js::method("set_batch_size", rosetta_js_2097),
-                rosetta_js::method("column_names", rosetta_js_2098),
-                rosetta_js::method("rows_read", rosetta_js_2099),
+                rosetta_js::method("has_next", rosetta_js_2433),
+                rosetta_js::method("next", rosetta_js_2434),
+                rosetta_js::method("reset", rosetta_js_2435),
+                rosetta_js::method("batch_size", rosetta_js_2436),
+                rosetta_js::method("set_batch_size", rosetta_js_2437),
+                rosetta_js::method("column_names", rosetta_js_2438),
+                rosetta_js::method("rows_read", rosetta_js_2439),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "CsvReader", rosetta_js_2100, nullptr, properties);
+            cls = rosetta_js::define_class(env, "CsvReader", rosetta_js_2440, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::CsvReader>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9073,18 +9962,18 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::ShapeLayer
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("size", rosetta_js_2102),
-                rosetta_js::method("shape_type", rosetta_js_2103),
-                rosetta_js::method("bounds", rosetta_js_2104),
-                rosetta_js::method("attributes", rosetta_js_2105),
-                rosetta_js::method("shape_kind", rosetta_js_2106),
-                rosetta_js::method("num_parts", rosetta_js_2107),
-                rosetta_js::method("part_x", rosetta_js_2108),
-                rosetta_js::method("part_y", rosetta_js_2109),
-                rosetta_js::method("point_x", rosetta_js_2110),
-                rosetta_js::method("point_y", rosetta_js_2111),
-                rosetta_js::method("plot", rosetta_js_2112),
-                rosetta_js::method("read", rosetta_js_2101, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("size", rosetta_js_2442),
+                rosetta_js::method("shape_type", rosetta_js_2443),
+                rosetta_js::method("bounds", rosetta_js_2444),
+                rosetta_js::method("attributes", rosetta_js_2445),
+                rosetta_js::method("shape_kind", rosetta_js_2446),
+                rosetta_js::method("num_parts", rosetta_js_2447),
+                rosetta_js::method("part_x", rosetta_js_2448),
+                rosetta_js::method("part_y", rosetta_js_2449),
+                rosetta_js::method("point_x", rosetta_js_2450),
+                rosetta_js::method("point_y", rosetta_js_2451),
+                rosetta_js::method("plot", rosetta_js_2452),
+                rosetta_js::method("read", rosetta_js_2441, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
@@ -9098,43 +9987,43 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::GGPlot
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("geom_point", rosetta_js_2113),
-                rosetta_js::method("geom_line", rosetta_js_2114),
-                rosetta_js::method("geom_bar", rosetta_js_2115),
-                rosetta_js::method("geom_col", rosetta_js_2116),
-                rosetta_js::method("geom_histogram", rosetta_js_2117),
-                rosetta_js::method("geom_boxplot", rosetta_js_2118),
-                rosetta_js::method("geom_smooth", rosetta_js_2119),
-                rosetta_js::method("geom_area", rosetta_js_2120),
-                rosetta_js::method("geom_ribbon", rosetta_js_2121),
-                rosetta_js::method("geom_density", rosetta_js_2122),
-                rosetta_js::method("facet_wrap", rosetta_js_2123),
-                rosetta_js::method("theme_minimal", rosetta_js_2124),
-                rosetta_js::method("theme_bw", rosetta_js_2125),
-                rosetta_js::method("theme_classic", rosetta_js_2126),
-                rosetta_js::method("scale_color_manual", rosetta_js_2127),
-                rosetta_js::method("labs", rosetta_js_2128),
-                rosetta_js::method("to_svg", rosetta_js_2129),
-                rosetta_js::method("save", rosetta_js_2130),
-                rosetta_js::method("save_svg", rosetta_js_2131),
-                rosetta_js::method("show", rosetta_js_2132),
-                rosetta_js::method("rows", rosetta_js_2133),
-                rosetta_js::method("x_column", rosetta_js_2134),
-                rosetta_js::method("y_column", rosetta_js_2135),
-                rosetta_js::method("color_column", rosetta_js_2136),
-                rosetta_js::method("layer_count", rosetta_js_2137),
-                rosetta_js::method("layer_kinds", rosetta_js_2138),
-                rosetta_js::method("theme_name", rosetta_js_2139),
-                rosetta_js::method("facet_column", rosetta_js_2140),
-                rosetta_js::method("title_text", rosetta_js_2141),
-                rosetta_js::method("x_label", rosetta_js_2142),
-                rosetta_js::method("y_label", rosetta_js_2143),
+                rosetta_js::method("geom_point", rosetta_js_2453),
+                rosetta_js::method("geom_line", rosetta_js_2454),
+                rosetta_js::method("geom_bar", rosetta_js_2455),
+                rosetta_js::method("geom_col", rosetta_js_2456),
+                rosetta_js::method("geom_histogram", rosetta_js_2457),
+                rosetta_js::method("geom_boxplot", rosetta_js_2458),
+                rosetta_js::method("geom_smooth", rosetta_js_2459),
+                rosetta_js::method("geom_area", rosetta_js_2460),
+                rosetta_js::method("geom_ribbon", rosetta_js_2461),
+                rosetta_js::method("geom_density", rosetta_js_2462),
+                rosetta_js::method("facet_wrap", rosetta_js_2463),
+                rosetta_js::method("theme_minimal", rosetta_js_2464),
+                rosetta_js::method("theme_bw", rosetta_js_2465),
+                rosetta_js::method("theme_classic", rosetta_js_2466),
+                rosetta_js::method("scale_color_manual", rosetta_js_2467),
+                rosetta_js::method("labs", rosetta_js_2468),
+                rosetta_js::method("to_svg", rosetta_js_2469),
+                rosetta_js::method("save", rosetta_js_2470),
+                rosetta_js::method("save_svg", rosetta_js_2471),
+                rosetta_js::method("show", rosetta_js_2472),
+                rosetta_js::method("rows", rosetta_js_2473),
+                rosetta_js::method("x_column", rosetta_js_2474),
+                rosetta_js::method("y_column", rosetta_js_2475),
+                rosetta_js::method("color_column", rosetta_js_2476),
+                rosetta_js::method("layer_count", rosetta_js_2477),
+                rosetta_js::method("layer_kinds", rosetta_js_2478),
+                rosetta_js::method("theme_name", rosetta_js_2479),
+                rosetta_js::method("facet_column", rosetta_js_2480),
+                rosetta_js::method("title_text", rosetta_js_2481),
+                rosetta_js::method("x_label", rosetta_js_2482),
+                rosetta_js::method("y_label", rosetta_js_2483),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "GGPlot", rosetta_js_2144, nullptr, properties);
+            cls = rosetta_js::define_class(env, "GGPlot", rosetta_js_2484, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::GGPlot>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9142,38 +10031,38 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::Splom
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("set_col", rosetta_js_2145),
-                rosetta_js::method("set_title", rosetta_js_2146),
-                rosetta_js::method("title", rosetta_js_2147),
-                rosetta_js::method("size", rosetta_js_2148),
-                rosetta_js::method("color", rosetta_js_2149),
-                rosetta_js::method("group_by", rosetta_js_2150),
-                rosetta_js::method("point_colors", rosetta_js_2151),
-                rosetta_js::method("level_palette", rosetta_js_2152),
-                rosetta_js::method("marker_size", rosetta_js_2153),
-                rosetta_js::method("diagonal_names", rosetta_js_2154),
-                rosetta_js::method("diagonal_density", rosetta_js_2155),
-                rosetta_js::method("diagonal_histogram", rosetta_js_2156),
-                rosetta_js::method("span", rosetta_js_2157),
-                rosetta_js::method("prediction_level", rosetta_js_2158),
-                rosetta_js::method("bins", rosetta_js_2159),
-                rosetta_js::method("show_grid", rosetta_js_2160),
-                rosetta_js::method("variables", rosetta_js_2161),
-                rosetta_js::method("groups", rosetta_js_2162),
-                rosetta_js::method("title_text", rosetta_js_2163),
-                rosetta_js::method("width", rosetta_js_2164),
-                rosetta_js::method("height", rosetta_js_2165),
-                rosetta_js::method("panel", rosetta_js_2166),
-                rosetta_js::method("to_svg", rosetta_js_2167),
-                rosetta_js::method("save", rosetta_js_2168),
-                rosetta_js::method("save_svg", rosetta_js_2169),
-                rosetta_js::method("show", rosetta_js_2170),
+                rosetta_js::method("set_col", rosetta_js_2485),
+                rosetta_js::method("set_title", rosetta_js_2486),
+                rosetta_js::method("title", rosetta_js_2487),
+                rosetta_js::method("size", rosetta_js_2488),
+                rosetta_js::method("color", rosetta_js_2489),
+                rosetta_js::method("group_by", rosetta_js_2490),
+                rosetta_js::method("point_colors", rosetta_js_2491),
+                rosetta_js::method("level_palette", rosetta_js_2492),
+                rosetta_js::method("marker_size", rosetta_js_2493),
+                rosetta_js::method("diagonal_names", rosetta_js_2494),
+                rosetta_js::method("diagonal_density", rosetta_js_2495),
+                rosetta_js::method("diagonal_histogram", rosetta_js_2496),
+                rosetta_js::method("span", rosetta_js_2497),
+                rosetta_js::method("prediction_level", rosetta_js_2498),
+                rosetta_js::method("bins", rosetta_js_2499),
+                rosetta_js::method("show_grid", rosetta_js_2500),
+                rosetta_js::method("variables", rosetta_js_2501),
+                rosetta_js::method("groups", rosetta_js_2502),
+                rosetta_js::method("title_text", rosetta_js_2503),
+                rosetta_js::method("width", rosetta_js_2504),
+                rosetta_js::method("height", rosetta_js_2505),
+                rosetta_js::method("panel", rosetta_js_2506),
+                rosetta_js::method("to_svg", rosetta_js_2507),
+                rosetta_js::method("save", rosetta_js_2508),
+                rosetta_js::method("save_svg", rosetta_js_2509),
+                rosetta_js::method("show", rosetta_js_2510),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Splom", rosetta_js_2171, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Splom", rosetta_js_2511, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::Splom>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9181,45 +10070,45 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::LM
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("formula_text", rosetta_js_2172),
-                rosetta_js::method("has_intercept", rosetta_js_2173),
-                rosetta_js::method("observations", rosetta_js_2174),
-                rosetta_js::method("rank", rosetta_js_2175),
-                rosetta_js::method("degrees_of_freedom", rosetta_js_2176),
-                rosetta_js::method("coefficients", rosetta_js_2177),
-                rosetta_js::method("coefficient_names", rosetta_js_2178),
-                rosetta_js::method("fitted_values", rosetta_js_2179),
-                rosetta_js::method("residuals", rosetta_js_2180),
-                rosetta_js::method("standard_errors", rosetta_js_2181),
-                rosetta_js::method("t_values", rosetta_js_2182),
-                rosetta_js::method("p_values", rosetta_js_2183),
-                rosetta_js::method("r_squared", rosetta_js_2184),
-                rosetta_js::method("adjusted_r_squared", rosetta_js_2185),
-                rosetta_js::method("sigma", rosetta_js_2186),
-                rosetta_js::method("f_statistic", rosetta_js_2187),
-                rosetta_js::method("f_p_value", rosetta_js_2188),
-                rosetta_js::method("confidence_interval_lower", rosetta_js_2189),
-                rosetta_js::method("confidence_interval_upper", rosetta_js_2190),
-                rosetta_js::method("leverage", rosetta_js_2191),
-                rosetta_js::method("standardized_residuals", rosetta_js_2192),
-                rosetta_js::method("studentized_residuals", rosetta_js_2193),
-                rosetta_js::method("cooks_distance", rosetta_js_2194),
-                rosetta_js::method("summary", rosetta_js_2195),
-                rosetta_js::method("print_summary", rosetta_js_2196),
-                rosetta_js::method("predict", rosetta_js_2197),
-                rosetta_js::method("predict_frame", rosetta_js_2198),
-                rosetta_js::method("anova", rosetta_js_2199),
-                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2200),
-                rosetta_js::method("plot_normal_qq", rosetta_js_2201),
-                rosetta_js::method("plot_scale_location", rosetta_js_2202),
-                rosetta_js::method("plot_residuals_vs_leverage", rosetta_js_2203),
-                rosetta_js::method("save_diagnostic_plots", rosetta_js_2204),
+                rosetta_js::method("formula_text", rosetta_js_2512),
+                rosetta_js::method("has_intercept", rosetta_js_2513),
+                rosetta_js::method("observations", rosetta_js_2514),
+                rosetta_js::method("rank", rosetta_js_2515),
+                rosetta_js::method("degrees_of_freedom", rosetta_js_2516),
+                rosetta_js::method("coefficients", rosetta_js_2517),
+                rosetta_js::method("coefficient_names", rosetta_js_2518),
+                rosetta_js::method("fitted_values", rosetta_js_2519),
+                rosetta_js::method("residuals", rosetta_js_2520),
+                rosetta_js::method("standard_errors", rosetta_js_2521),
+                rosetta_js::method("t_values", rosetta_js_2522),
+                rosetta_js::method("p_values", rosetta_js_2523),
+                rosetta_js::method("r_squared", rosetta_js_2524),
+                rosetta_js::method("adjusted_r_squared", rosetta_js_2525),
+                rosetta_js::method("sigma", rosetta_js_2526),
+                rosetta_js::method("f_statistic", rosetta_js_2527),
+                rosetta_js::method("f_p_value", rosetta_js_2528),
+                rosetta_js::method("confidence_interval_lower", rosetta_js_2529),
+                rosetta_js::method("confidence_interval_upper", rosetta_js_2530),
+                rosetta_js::method("leverage", rosetta_js_2531),
+                rosetta_js::method("standardized_residuals", rosetta_js_2532),
+                rosetta_js::method("studentized_residuals", rosetta_js_2533),
+                rosetta_js::method("cooks_distance", rosetta_js_2534),
+                rosetta_js::method("summary", rosetta_js_2535),
+                rosetta_js::method("print_summary", rosetta_js_2536),
+                rosetta_js::method("predict", rosetta_js_2537),
+                rosetta_js::method("predict_frame", rosetta_js_2538),
+                rosetta_js::method("anova", rosetta_js_2539),
+                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2540),
+                rosetta_js::method("plot_normal_qq", rosetta_js_2541),
+                rosetta_js::method("plot_scale_location", rosetta_js_2542),
+                rosetta_js::method("plot_residuals_vs_leverage", rosetta_js_2543),
+                rosetta_js::method("save_diagnostic_plots", rosetta_js_2544),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "LM", rosetta_js_2205, nullptr, properties);
+            cls = rosetta_js::define_class(env, "LM", rosetta_js_2545, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::LM>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9227,40 +10116,40 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::LMM
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("formula_text", rosetta_js_2206),
-                rosetta_js::method("group_variable", rosetta_js_2207),
-                rosetta_js::method("has_random_intercept", rosetta_js_2208),
-                rosetta_js::method("random_effect_names", rosetta_js_2209),
-                rosetta_js::method("is_reml", rosetta_js_2210),
-                rosetta_js::method("observations", rosetta_js_2211),
-                rosetta_js::method("num_groups", rosetta_js_2212),
-                rosetta_js::method("rank", rosetta_js_2213),
-                rosetta_js::method("coefficients", rosetta_js_2214),
-                rosetta_js::method("coefficient_names", rosetta_js_2215),
-                rosetta_js::method("standard_errors", rosetta_js_2216),
-                rosetta_js::method("z_values", rosetta_js_2217),
-                rosetta_js::method("p_values", rosetta_js_2218),
-                rosetta_js::method("fitted_values", rosetta_js_2219),
-                rosetta_js::method("residuals", rosetta_js_2220),
-                rosetta_js::method("residual_variance", rosetta_js_2221),
-                rosetta_js::method("residual_std_dev", rosetta_js_2222),
-                rosetta_js::method("random_effect_std_devs", rosetta_js_2223),
-                rosetta_js::method("random_effect_correlation", rosetta_js_2224),
-                rosetta_js::method("group_labels", rosetta_js_2225),
-                rosetta_js::method("random_effects_for_group", rosetta_js_2226),
-                rosetta_js::method("log_likelihood", rosetta_js_2227),
-                rosetta_js::method("deviance", rosetta_js_2228),
-                rosetta_js::method("aic", rosetta_js_2229),
-                rosetta_js::method("bic", rosetta_js_2230),
-                rosetta_js::method("summary", rosetta_js_2231),
-                rosetta_js::method("print_summary", rosetta_js_2232),
-                rosetta_js::method("predict", rosetta_js_2233),
+                rosetta_js::method("formula_text", rosetta_js_2546),
+                rosetta_js::method("group_variable", rosetta_js_2547),
+                rosetta_js::method("has_random_intercept", rosetta_js_2548),
+                rosetta_js::method("random_effect_names", rosetta_js_2549),
+                rosetta_js::method("is_reml", rosetta_js_2550),
+                rosetta_js::method("observations", rosetta_js_2551),
+                rosetta_js::method("num_groups", rosetta_js_2552),
+                rosetta_js::method("rank", rosetta_js_2553),
+                rosetta_js::method("coefficients", rosetta_js_2554),
+                rosetta_js::method("coefficient_names", rosetta_js_2555),
+                rosetta_js::method("standard_errors", rosetta_js_2556),
+                rosetta_js::method("z_values", rosetta_js_2557),
+                rosetta_js::method("p_values", rosetta_js_2558),
+                rosetta_js::method("fitted_values", rosetta_js_2559),
+                rosetta_js::method("residuals", rosetta_js_2560),
+                rosetta_js::method("residual_variance", rosetta_js_2561),
+                rosetta_js::method("residual_std_dev", rosetta_js_2562),
+                rosetta_js::method("random_effect_std_devs", rosetta_js_2563),
+                rosetta_js::method("random_effect_correlation", rosetta_js_2564),
+                rosetta_js::method("group_labels", rosetta_js_2565),
+                rosetta_js::method("random_effects_for_group", rosetta_js_2566),
+                rosetta_js::method("log_likelihood", rosetta_js_2567),
+                rosetta_js::method("deviance", rosetta_js_2568),
+                rosetta_js::method("aic", rosetta_js_2569),
+                rosetta_js::method("bic", rosetta_js_2570),
+                rosetta_js::method("summary", rosetta_js_2571),
+                rosetta_js::method("print_summary", rosetta_js_2572),
+                rosetta_js::method("predict", rosetta_js_2573),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "LMM", rosetta_js_2234, nullptr, properties);
+            cls = rosetta_js::define_class(env, "LMM", rosetta_js_2574, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::LMM>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9268,37 +10157,37 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::GLMM
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("formula_text", rosetta_js_2235),
-                rosetta_js::method("family", rosetta_js_2236),
-                rosetta_js::method("group_variable", rosetta_js_2237),
-                rosetta_js::method("has_random_intercept", rosetta_js_2238),
-                rosetta_js::method("random_effect_names", rosetta_js_2239),
-                rosetta_js::method("observations", rosetta_js_2240),
-                rosetta_js::method("num_groups", rosetta_js_2241),
-                rosetta_js::method("rank", rosetta_js_2242),
-                rosetta_js::method("iterations", rosetta_js_2243),
-                rosetta_js::method("coefficients", rosetta_js_2244),
-                rosetta_js::method("coefficient_names", rosetta_js_2245),
-                rosetta_js::method("standard_errors", rosetta_js_2246),
-                rosetta_js::method("z_values", rosetta_js_2247),
-                rosetta_js::method("p_values", rosetta_js_2248),
-                rosetta_js::method("fitted_values", rosetta_js_2249),
-                rosetta_js::method("random_effect_std_devs", rosetta_js_2250),
-                rosetta_js::method("random_effect_correlation", rosetta_js_2251),
-                rosetta_js::method("group_labels", rosetta_js_2252),
-                rosetta_js::method("random_effects_for_group", rosetta_js_2253),
-                rosetta_js::method("deviance", rosetta_js_2254),
-                rosetta_js::method("aic", rosetta_js_2255),
-                rosetta_js::method("bic", rosetta_js_2256),
-                rosetta_js::method("summary", rosetta_js_2257),
-                rosetta_js::method("print_summary", rosetta_js_2258),
-                rosetta_js::method("predict", rosetta_js_2259),
+                rosetta_js::method("formula_text", rosetta_js_2575),
+                rosetta_js::method("family", rosetta_js_2576),
+                rosetta_js::method("group_variable", rosetta_js_2577),
+                rosetta_js::method("has_random_intercept", rosetta_js_2578),
+                rosetta_js::method("random_effect_names", rosetta_js_2579),
+                rosetta_js::method("observations", rosetta_js_2580),
+                rosetta_js::method("num_groups", rosetta_js_2581),
+                rosetta_js::method("rank", rosetta_js_2582),
+                rosetta_js::method("iterations", rosetta_js_2583),
+                rosetta_js::method("coefficients", rosetta_js_2584),
+                rosetta_js::method("coefficient_names", rosetta_js_2585),
+                rosetta_js::method("standard_errors", rosetta_js_2586),
+                rosetta_js::method("z_values", rosetta_js_2587),
+                rosetta_js::method("p_values", rosetta_js_2588),
+                rosetta_js::method("fitted_values", rosetta_js_2589),
+                rosetta_js::method("random_effect_std_devs", rosetta_js_2590),
+                rosetta_js::method("random_effect_correlation", rosetta_js_2591),
+                rosetta_js::method("group_labels", rosetta_js_2592),
+                rosetta_js::method("random_effects_for_group", rosetta_js_2593),
+                rosetta_js::method("deviance", rosetta_js_2594),
+                rosetta_js::method("aic", rosetta_js_2595),
+                rosetta_js::method("bic", rosetta_js_2596),
+                rosetta_js::method("summary", rosetta_js_2597),
+                rosetta_js::method("print_summary", rosetta_js_2598),
+                rosetta_js::method("predict", rosetta_js_2599),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "GLMM", rosetta_js_2260, nullptr, properties);
+            cls = rosetta_js::define_class(env, "GLMM", rosetta_js_2600, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::GLMM>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9306,30 +10195,30 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::INLAMixedModel
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("formula_text", rosetta_js_2261),
-                rosetta_js::method("family", rosetta_js_2262),
-                rosetta_js::method("group_variable", rosetta_js_2263),
-                rosetta_js::method("random_effect_names", rosetta_js_2264),
-                rosetta_js::method("observations", rosetta_js_2265),
-                rosetta_js::method("num_groups", rosetta_js_2266),
-                rosetta_js::method("fixed_effects_mean", rosetta_js_2267),
-                rosetta_js::method("fixed_effects_sd", rosetta_js_2268),
-                rosetta_js::method("coefficient_names", rosetta_js_2269),
-                rosetta_js::method("random_effect_std_devs", rosetta_js_2270),
-                rosetta_js::method("residual_std_dev", rosetta_js_2271),
-                rosetta_js::method("group_labels", rosetta_js_2272),
-                rosetta_js::method("random_effects_mean_for_group", rosetta_js_2273),
-                rosetta_js::method("random_effects_sd_for_group", rosetta_js_2274),
-                rosetta_js::method("log_marginal_likelihood", rosetta_js_2275),
-                rosetta_js::method("summary", rosetta_js_2276),
-                rosetta_js::method("print_summary", rosetta_js_2277),
-                rosetta_js::method("predict", rosetta_js_2278),
+                rosetta_js::method("formula_text", rosetta_js_2601),
+                rosetta_js::method("family", rosetta_js_2602),
+                rosetta_js::method("group_variable", rosetta_js_2603),
+                rosetta_js::method("random_effect_names", rosetta_js_2604),
+                rosetta_js::method("observations", rosetta_js_2605),
+                rosetta_js::method("num_groups", rosetta_js_2606),
+                rosetta_js::method("fixed_effects_mean", rosetta_js_2607),
+                rosetta_js::method("fixed_effects_sd", rosetta_js_2608),
+                rosetta_js::method("coefficient_names", rosetta_js_2609),
+                rosetta_js::method("random_effect_std_devs", rosetta_js_2610),
+                rosetta_js::method("residual_std_dev", rosetta_js_2611),
+                rosetta_js::method("group_labels", rosetta_js_2612),
+                rosetta_js::method("random_effects_mean_for_group", rosetta_js_2613),
+                rosetta_js::method("random_effects_sd_for_group", rosetta_js_2614),
+                rosetta_js::method("log_marginal_likelihood", rosetta_js_2615),
+                rosetta_js::method("summary", rosetta_js_2616),
+                rosetta_js::method("print_summary", rosetta_js_2617),
+                rosetta_js::method("predict", rosetta_js_2618),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "INLAMixedModel", rosetta_js_2279, nullptr, properties);
+            cls = rosetta_js::define_class(env, "INLAMixedModel", rosetta_js_2619, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::INLAMixedModel>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9337,30 +10226,30 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::LDA
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("classes", rosetta_js_2280),
-                rosetta_js::method("predictor_names", rosetta_js_2281),
-                rosetta_js::method("observations", rosetta_js_2282),
-                rosetta_js::method("num_discriminants", rosetta_js_2283),
-                rosetta_js::method("priors", rosetta_js_2284),
-                rosetta_js::method("group_means", rosetta_js_2285),
-                rosetta_js::method("scaling", rosetta_js_2286),
-                rosetta_js::method("proportion_of_trace", rosetta_js_2287),
-                rosetta_js::method("training_accuracy", rosetta_js_2288),
-                rosetta_js::method("confusion_matrix", rosetta_js_2289),
-                rosetta_js::method("summary", rosetta_js_2290),
-                rosetta_js::method("print_summary", rosetta_js_2291),
-                rosetta_js::method("to_md", rosetta_js_2292),
-                rosetta_js::method("predict", rosetta_js_2293),
-                rosetta_js::method("predict_frame", rosetta_js_2294),
-                rosetta_js::method("plot_discriminants", rosetta_js_2295),
-                rosetta_js::method("save_discriminant_plot", rosetta_js_2296),
-                rosetta_js::method("plot_decision_regions", rosetta_js_2297),
+                rosetta_js::method("classes", rosetta_js_2620),
+                rosetta_js::method("predictor_names", rosetta_js_2621),
+                rosetta_js::method("observations", rosetta_js_2622),
+                rosetta_js::method("num_discriminants", rosetta_js_2623),
+                rosetta_js::method("priors", rosetta_js_2624),
+                rosetta_js::method("group_means", rosetta_js_2625),
+                rosetta_js::method("scaling", rosetta_js_2626),
+                rosetta_js::method("proportion_of_trace", rosetta_js_2627),
+                rosetta_js::method("training_accuracy", rosetta_js_2628),
+                rosetta_js::method("confusion_matrix", rosetta_js_2629),
+                rosetta_js::method("summary", rosetta_js_2630),
+                rosetta_js::method("print_summary", rosetta_js_2631),
+                rosetta_js::method("to_md", rosetta_js_2632),
+                rosetta_js::method("predict", rosetta_js_2633),
+                rosetta_js::method("predict_frame", rosetta_js_2634),
+                rosetta_js::method("plot_discriminants", rosetta_js_2635),
+                rosetta_js::method("save_discriminant_plot", rosetta_js_2636),
+                rosetta_js::method("plot_decision_regions", rosetta_js_2637),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "LDA", rosetta_js_2298, nullptr, properties);
+            cls = rosetta_js::define_class(env, "LDA", rosetta_js_2638, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::LDA>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9368,22 +10257,22 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::SVM
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("classes", rosetta_js_2299),
-                rosetta_js::method("predictor_names", rosetta_js_2300),
-                rosetta_js::method("observations", rosetta_js_2301),
-                rosetta_js::method("num_support_vectors", rosetta_js_2302),
-                rosetta_js::method("training_accuracy", rosetta_js_2303),
-                rosetta_js::method("confusion_matrix", rosetta_js_2304),
-                rosetta_js::method("summary", rosetta_js_2305),
-                rosetta_js::method("print_summary", rosetta_js_2306),
-                rosetta_js::method("predict", rosetta_js_2307),
-                rosetta_js::method("predict_frame", rosetta_js_2308),
+                rosetta_js::method("classes", rosetta_js_2639),
+                rosetta_js::method("predictor_names", rosetta_js_2640),
+                rosetta_js::method("observations", rosetta_js_2641),
+                rosetta_js::method("num_support_vectors", rosetta_js_2642),
+                rosetta_js::method("training_accuracy", rosetta_js_2643),
+                rosetta_js::method("confusion_matrix", rosetta_js_2644),
+                rosetta_js::method("summary", rosetta_js_2645),
+                rosetta_js::method("print_summary", rosetta_js_2646),
+                rosetta_js::method("predict", rosetta_js_2647),
+                rosetta_js::method("predict_frame", rosetta_js_2648),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "SVM", rosetta_js_2309, nullptr, properties);
+            cls = rosetta_js::define_class(env, "SVM", rosetta_js_2649, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::SVM>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9391,27 +10280,27 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::DecisionTreeClassifier
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("classes", rosetta_js_2310),
-                rosetta_js::method("predictor_names", rosetta_js_2311),
-                rosetta_js::method("observations", rosetta_js_2312),
-                rosetta_js::method("node_count", rosetta_js_2313),
-                rosetta_js::method("leaf_count", rosetta_js_2314),
-                rosetta_js::method("depth", rosetta_js_2315),
-                rosetta_js::method("feature_importance", rosetta_js_2316),
-                rosetta_js::method("training_accuracy", rosetta_js_2317),
-                rosetta_js::method("confusion_matrix", rosetta_js_2318),
-                rosetta_js::method("summary", rosetta_js_2319),
-                rosetta_js::method("print_summary", rosetta_js_2320),
-                rosetta_js::method("predict", rosetta_js_2321),
-                rosetta_js::method("predict_frame", rosetta_js_2322),
-                rosetta_js::method("plot_classification", rosetta_js_2323),
-                rosetta_js::method("plot_decision_regions", rosetta_js_2324),
+                rosetta_js::method("classes", rosetta_js_2650),
+                rosetta_js::method("predictor_names", rosetta_js_2651),
+                rosetta_js::method("observations", rosetta_js_2652),
+                rosetta_js::method("node_count", rosetta_js_2653),
+                rosetta_js::method("leaf_count", rosetta_js_2654),
+                rosetta_js::method("depth", rosetta_js_2655),
+                rosetta_js::method("feature_importance", rosetta_js_2656),
+                rosetta_js::method("training_accuracy", rosetta_js_2657),
+                rosetta_js::method("confusion_matrix", rosetta_js_2658),
+                rosetta_js::method("summary", rosetta_js_2659),
+                rosetta_js::method("print_summary", rosetta_js_2660),
+                rosetta_js::method("predict", rosetta_js_2661),
+                rosetta_js::method("predict_frame", rosetta_js_2662),
+                rosetta_js::method("plot_classification", rosetta_js_2663),
+                rosetta_js::method("plot_decision_regions", rosetta_js_2664),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "DecisionTreeClassifier", rosetta_js_2325, nullptr, properties);
+            cls = rosetta_js::define_class(env, "DecisionTreeClassifier", rosetta_js_2665, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::DecisionTreeClassifier>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9419,26 +10308,26 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::DecisionTreeRegressor
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("predictor_names", rosetta_js_2326),
-                rosetta_js::method("observations", rosetta_js_2327),
-                rosetta_js::method("node_count", rosetta_js_2328),
-                rosetta_js::method("leaf_count", rosetta_js_2329),
-                rosetta_js::method("depth", rosetta_js_2330),
-                rosetta_js::method("feature_importance", rosetta_js_2331),
-                rosetta_js::method("fitted_values", rosetta_js_2332),
-                rosetta_js::method("r_squared", rosetta_js_2333),
-                rosetta_js::method("rmse", rosetta_js_2334),
-                rosetta_js::method("summary", rosetta_js_2335),
-                rosetta_js::method("print_summary", rosetta_js_2336),
-                rosetta_js::method("predict", rosetta_js_2337),
-                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2338),
-                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2339),
+                rosetta_js::method("predictor_names", rosetta_js_2666),
+                rosetta_js::method("observations", rosetta_js_2667),
+                rosetta_js::method("node_count", rosetta_js_2668),
+                rosetta_js::method("leaf_count", rosetta_js_2669),
+                rosetta_js::method("depth", rosetta_js_2670),
+                rosetta_js::method("feature_importance", rosetta_js_2671),
+                rosetta_js::method("fitted_values", rosetta_js_2672),
+                rosetta_js::method("r_squared", rosetta_js_2673),
+                rosetta_js::method("rmse", rosetta_js_2674),
+                rosetta_js::method("summary", rosetta_js_2675),
+                rosetta_js::method("print_summary", rosetta_js_2676),
+                rosetta_js::method("predict", rosetta_js_2677),
+                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2678),
+                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2679),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "DecisionTreeRegressor", rosetta_js_2340, nullptr, properties);
+            cls = rosetta_js::define_class(env, "DecisionTreeRegressor", rosetta_js_2680, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::DecisionTreeRegressor>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9446,27 +10335,27 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::RandomForestClassifier
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("classes", rosetta_js_2341),
-                rosetta_js::method("predictor_names", rosetta_js_2342),
-                rosetta_js::method("observations", rosetta_js_2343),
-                rosetta_js::method("n_trees", rosetta_js_2344),
-                rosetta_js::method("max_features_used", rosetta_js_2345),
-                rosetta_js::method("feature_importance", rosetta_js_2346),
-                rosetta_js::method("training_accuracy", rosetta_js_2347),
-                rosetta_js::method("oob_accuracy", rosetta_js_2348),
-                rosetta_js::method("confusion_matrix", rosetta_js_2349),
-                rosetta_js::method("summary", rosetta_js_2350),
-                rosetta_js::method("print_summary", rosetta_js_2351),
-                rosetta_js::method("predict", rosetta_js_2352),
-                rosetta_js::method("predict_frame", rosetta_js_2353),
-                rosetta_js::method("plot_classification", rosetta_js_2354),
-                rosetta_js::method("plot_decision_regions", rosetta_js_2355),
+                rosetta_js::method("classes", rosetta_js_2681),
+                rosetta_js::method("predictor_names", rosetta_js_2682),
+                rosetta_js::method("observations", rosetta_js_2683),
+                rosetta_js::method("n_trees", rosetta_js_2684),
+                rosetta_js::method("max_features_used", rosetta_js_2685),
+                rosetta_js::method("feature_importance", rosetta_js_2686),
+                rosetta_js::method("training_accuracy", rosetta_js_2687),
+                rosetta_js::method("oob_accuracy", rosetta_js_2688),
+                rosetta_js::method("confusion_matrix", rosetta_js_2689),
+                rosetta_js::method("summary", rosetta_js_2690),
+                rosetta_js::method("print_summary", rosetta_js_2691),
+                rosetta_js::method("predict", rosetta_js_2692),
+                rosetta_js::method("predict_frame", rosetta_js_2693),
+                rosetta_js::method("plot_classification", rosetta_js_2694),
+                rosetta_js::method("plot_decision_regions", rosetta_js_2695),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "RandomForestClassifier", rosetta_js_2356, nullptr, properties);
+            cls = rosetta_js::define_class(env, "RandomForestClassifier", rosetta_js_2696, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::RandomForestClassifier>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9474,27 +10363,27 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::RandomForestRegressor
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("predictor_names", rosetta_js_2357),
-                rosetta_js::method("observations", rosetta_js_2358),
-                rosetta_js::method("n_trees", rosetta_js_2359),
-                rosetta_js::method("max_features_used", rosetta_js_2360),
-                rosetta_js::method("feature_importance", rosetta_js_2361),
-                rosetta_js::method("fitted_values", rosetta_js_2362),
-                rosetta_js::method("r_squared", rosetta_js_2363),
-                rosetta_js::method("rmse", rosetta_js_2364),
-                rosetta_js::method("oob_r_squared", rosetta_js_2365),
-                rosetta_js::method("oob_rmse", rosetta_js_2366),
-                rosetta_js::method("summary", rosetta_js_2367),
-                rosetta_js::method("print_summary", rosetta_js_2368),
-                rosetta_js::method("predict", rosetta_js_2369),
-                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2370),
-                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2371),
+                rosetta_js::method("predictor_names", rosetta_js_2697),
+                rosetta_js::method("observations", rosetta_js_2698),
+                rosetta_js::method("n_trees", rosetta_js_2699),
+                rosetta_js::method("max_features_used", rosetta_js_2700),
+                rosetta_js::method("feature_importance", rosetta_js_2701),
+                rosetta_js::method("fitted_values", rosetta_js_2702),
+                rosetta_js::method("r_squared", rosetta_js_2703),
+                rosetta_js::method("rmse", rosetta_js_2704),
+                rosetta_js::method("oob_r_squared", rosetta_js_2705),
+                rosetta_js::method("oob_rmse", rosetta_js_2706),
+                rosetta_js::method("summary", rosetta_js_2707),
+                rosetta_js::method("print_summary", rosetta_js_2708),
+                rosetta_js::method("predict", rosetta_js_2709),
+                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2710),
+                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2711),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "RandomForestRegressor", rosetta_js_2372, nullptr, properties);
+            cls = rosetta_js::define_class(env, "RandomForestRegressor", rosetta_js_2712, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::RandomForestRegressor>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9502,35 +10391,35 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::ElasticNet
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("formula_text", rosetta_js_2373),
-                rosetta_js::method("has_intercept", rosetta_js_2374),
-                rosetta_js::method("predictor_names", rosetta_js_2375),
-                rosetta_js::method("observations", rosetta_js_2376),
-                rosetta_js::method("alpha", rosetta_js_2377),
-                rosetta_js::method("lambda", rosetta_js_2378),
-                rosetta_js::method("lambda_was_selected", rosetta_js_2379),
-                rosetta_js::method("lambda_path", rosetta_js_2380),
-                rosetta_js::method("cv_mean_squared_error", rosetta_js_2381),
-                rosetta_js::method("coefficients", rosetta_js_2382),
-                rosetta_js::method("intercept", rosetta_js_2383),
-                rosetta_js::method("non_zero_coefficients", rosetta_js_2384),
-                rosetta_js::method("fitted_values", rosetta_js_2385),
-                rosetta_js::method("residuals", rosetta_js_2386),
-                rosetta_js::method("r_squared", rosetta_js_2387),
-                rosetta_js::method("rmse", rosetta_js_2388),
-                rosetta_js::method("summary", rosetta_js_2389),
-                rosetta_js::method("print_summary", rosetta_js_2390),
-                rosetta_js::method("predict", rosetta_js_2391),
-                rosetta_js::method("plot_coefficient_path", rosetta_js_2392),
-                rosetta_js::method("plot_cv_curve", rosetta_js_2393),
-                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2394),
-                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2395),
+                rosetta_js::method("formula_text", rosetta_js_2713),
+                rosetta_js::method("has_intercept", rosetta_js_2714),
+                rosetta_js::method("predictor_names", rosetta_js_2715),
+                rosetta_js::method("observations", rosetta_js_2716),
+                rosetta_js::method("alpha", rosetta_js_2717),
+                rosetta_js::method("lambda", rosetta_js_2718),
+                rosetta_js::method("lambda_was_selected", rosetta_js_2719),
+                rosetta_js::method("lambda_path", rosetta_js_2720),
+                rosetta_js::method("cv_mean_squared_error", rosetta_js_2721),
+                rosetta_js::method("coefficients", rosetta_js_2722),
+                rosetta_js::method("intercept", rosetta_js_2723),
+                rosetta_js::method("non_zero_coefficients", rosetta_js_2724),
+                rosetta_js::method("fitted_values", rosetta_js_2725),
+                rosetta_js::method("residuals", rosetta_js_2726),
+                rosetta_js::method("r_squared", rosetta_js_2727),
+                rosetta_js::method("rmse", rosetta_js_2728),
+                rosetta_js::method("summary", rosetta_js_2729),
+                rosetta_js::method("print_summary", rosetta_js_2730),
+                rosetta_js::method("predict", rosetta_js_2731),
+                rosetta_js::method("plot_coefficient_path", rosetta_js_2732),
+                rosetta_js::method("plot_cv_curve", rosetta_js_2733),
+                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2734),
+                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2735),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "ElasticNet", rosetta_js_2396, nullptr, properties);
+            cls = rosetta_js::define_class(env, "ElasticNet", rosetta_js_2736, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::ElasticNet>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9538,33 +10427,33 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::Ridge
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("formula_text", rosetta_js_2397),
-                rosetta_js::method("has_intercept", rosetta_js_2398),
-                rosetta_js::method("predictor_names", rosetta_js_2399),
-                rosetta_js::method("observations", rosetta_js_2400),
-                rosetta_js::method("lambda", rosetta_js_2401),
-                rosetta_js::method("lambda_was_selected", rosetta_js_2402),
-                rosetta_js::method("lambda_path", rosetta_js_2403),
-                rosetta_js::method("cv_mean_squared_error", rosetta_js_2404),
-                rosetta_js::method("coefficients", rosetta_js_2405),
-                rosetta_js::method("intercept", rosetta_js_2406),
-                rosetta_js::method("fitted_values", rosetta_js_2407),
-                rosetta_js::method("residuals", rosetta_js_2408),
-                rosetta_js::method("r_squared", rosetta_js_2409),
-                rosetta_js::method("rmse", rosetta_js_2410),
-                rosetta_js::method("summary", rosetta_js_2411),
-                rosetta_js::method("print_summary", rosetta_js_2412),
-                rosetta_js::method("predict", rosetta_js_2413),
-                rosetta_js::method("plot_coefficient_path", rosetta_js_2414),
-                rosetta_js::method("plot_cv_curve", rosetta_js_2415),
-                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2416),
-                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2417),
+                rosetta_js::method("formula_text", rosetta_js_2737),
+                rosetta_js::method("has_intercept", rosetta_js_2738),
+                rosetta_js::method("predictor_names", rosetta_js_2739),
+                rosetta_js::method("observations", rosetta_js_2740),
+                rosetta_js::method("lambda", rosetta_js_2741),
+                rosetta_js::method("lambda_was_selected", rosetta_js_2742),
+                rosetta_js::method("lambda_path", rosetta_js_2743),
+                rosetta_js::method("cv_mean_squared_error", rosetta_js_2744),
+                rosetta_js::method("coefficients", rosetta_js_2745),
+                rosetta_js::method("intercept", rosetta_js_2746),
+                rosetta_js::method("fitted_values", rosetta_js_2747),
+                rosetta_js::method("residuals", rosetta_js_2748),
+                rosetta_js::method("r_squared", rosetta_js_2749),
+                rosetta_js::method("rmse", rosetta_js_2750),
+                rosetta_js::method("summary", rosetta_js_2751),
+                rosetta_js::method("print_summary", rosetta_js_2752),
+                rosetta_js::method("predict", rosetta_js_2753),
+                rosetta_js::method("plot_coefficient_path", rosetta_js_2754),
+                rosetta_js::method("plot_cv_curve", rosetta_js_2755),
+                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2756),
+                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2757),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Ridge", rosetta_js_2418, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Ridge", rosetta_js_2758, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::Ridge>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9572,34 +10461,34 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::Lasso
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("formula_text", rosetta_js_2419),
-                rosetta_js::method("has_intercept", rosetta_js_2420),
-                rosetta_js::method("predictor_names", rosetta_js_2421),
-                rosetta_js::method("observations", rosetta_js_2422),
-                rosetta_js::method("lambda", rosetta_js_2423),
-                rosetta_js::method("lambda_was_selected", rosetta_js_2424),
-                rosetta_js::method("lambda_path", rosetta_js_2425),
-                rosetta_js::method("cv_mean_squared_error", rosetta_js_2426),
-                rosetta_js::method("coefficients", rosetta_js_2427),
-                rosetta_js::method("intercept", rosetta_js_2428),
-                rosetta_js::method("non_zero_coefficients", rosetta_js_2429),
-                rosetta_js::method("fitted_values", rosetta_js_2430),
-                rosetta_js::method("residuals", rosetta_js_2431),
-                rosetta_js::method("r_squared", rosetta_js_2432),
-                rosetta_js::method("rmse", rosetta_js_2433),
-                rosetta_js::method("summary", rosetta_js_2434),
-                rosetta_js::method("print_summary", rosetta_js_2435),
-                rosetta_js::method("predict", rosetta_js_2436),
-                rosetta_js::method("plot_coefficient_path", rosetta_js_2437),
-                rosetta_js::method("plot_cv_curve", rosetta_js_2438),
-                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2439),
-                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2440),
+                rosetta_js::method("formula_text", rosetta_js_2759),
+                rosetta_js::method("has_intercept", rosetta_js_2760),
+                rosetta_js::method("predictor_names", rosetta_js_2761),
+                rosetta_js::method("observations", rosetta_js_2762),
+                rosetta_js::method("lambda", rosetta_js_2763),
+                rosetta_js::method("lambda_was_selected", rosetta_js_2764),
+                rosetta_js::method("lambda_path", rosetta_js_2765),
+                rosetta_js::method("cv_mean_squared_error", rosetta_js_2766),
+                rosetta_js::method("coefficients", rosetta_js_2767),
+                rosetta_js::method("intercept", rosetta_js_2768),
+                rosetta_js::method("non_zero_coefficients", rosetta_js_2769),
+                rosetta_js::method("fitted_values", rosetta_js_2770),
+                rosetta_js::method("residuals", rosetta_js_2771),
+                rosetta_js::method("r_squared", rosetta_js_2772),
+                rosetta_js::method("rmse", rosetta_js_2773),
+                rosetta_js::method("summary", rosetta_js_2774),
+                rosetta_js::method("print_summary", rosetta_js_2775),
+                rosetta_js::method("predict", rosetta_js_2776),
+                rosetta_js::method("plot_coefficient_path", rosetta_js_2777),
+                rosetta_js::method("plot_cv_curve", rosetta_js_2778),
+                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2779),
+                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2780),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Lasso", rosetta_js_2441, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Lasso", rosetta_js_2781, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::Lasso>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9607,24 +10496,24 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::KNNClassifier
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("classes", rosetta_js_2442),
-                rosetta_js::method("predictor_names", rosetta_js_2443),
-                rosetta_js::method("observations", rosetta_js_2444),
-                rosetta_js::method("k", rosetta_js_2445),
-                rosetta_js::method("training_accuracy", rosetta_js_2446),
-                rosetta_js::method("confusion_matrix", rosetta_js_2447),
-                rosetta_js::method("summary", rosetta_js_2448),
-                rosetta_js::method("print_summary", rosetta_js_2449),
-                rosetta_js::method("predict", rosetta_js_2450),
-                rosetta_js::method("predict_frame", rosetta_js_2451),
-                rosetta_js::method("plot_classification", rosetta_js_2452),
-                rosetta_js::method("plot_decision_regions", rosetta_js_2453),
+                rosetta_js::method("classes", rosetta_js_2782),
+                rosetta_js::method("predictor_names", rosetta_js_2783),
+                rosetta_js::method("observations", rosetta_js_2784),
+                rosetta_js::method("k", rosetta_js_2785),
+                rosetta_js::method("training_accuracy", rosetta_js_2786),
+                rosetta_js::method("confusion_matrix", rosetta_js_2787),
+                rosetta_js::method("summary", rosetta_js_2788),
+                rosetta_js::method("print_summary", rosetta_js_2789),
+                rosetta_js::method("predict", rosetta_js_2790),
+                rosetta_js::method("predict_frame", rosetta_js_2791),
+                rosetta_js::method("plot_classification", rosetta_js_2792),
+                rosetta_js::method("plot_decision_regions", rosetta_js_2793),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "KNNClassifier", rosetta_js_2454, nullptr, properties);
+            cls = rosetta_js::define_class(env, "KNNClassifier", rosetta_js_2794, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::KNNClassifier>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9632,23 +10521,23 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::KNNRegressor
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("predictor_names", rosetta_js_2455),
-                rosetta_js::method("observations", rosetta_js_2456),
-                rosetta_js::method("k", rosetta_js_2457),
-                rosetta_js::method("fitted_values", rosetta_js_2458),
-                rosetta_js::method("r_squared", rosetta_js_2459),
-                rosetta_js::method("rmse", rosetta_js_2460),
-                rosetta_js::method("summary", rosetta_js_2461),
-                rosetta_js::method("print_summary", rosetta_js_2462),
-                rosetta_js::method("predict", rosetta_js_2463),
-                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2464),
-                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2465),
+                rosetta_js::method("predictor_names", rosetta_js_2795),
+                rosetta_js::method("observations", rosetta_js_2796),
+                rosetta_js::method("k", rosetta_js_2797),
+                rosetta_js::method("fitted_values", rosetta_js_2798),
+                rosetta_js::method("r_squared", rosetta_js_2799),
+                rosetta_js::method("rmse", rosetta_js_2800),
+                rosetta_js::method("summary", rosetta_js_2801),
+                rosetta_js::method("print_summary", rosetta_js_2802),
+                rosetta_js::method("predict", rosetta_js_2803),
+                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2804),
+                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2805),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "KNNRegressor", rosetta_js_2466, nullptr, properties);
+            cls = rosetta_js::define_class(env, "KNNRegressor", rosetta_js_2806, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::KNNRegressor>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9656,22 +10545,22 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::KMeans
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("feature_names", rosetta_js_2467),
-                rosetta_js::method("n_clusters", rosetta_js_2468),
-                rosetta_js::method("observations", rosetta_js_2469),
-                rosetta_js::method("iterations_used", rosetta_js_2470),
-                rosetta_js::method("labels", rosetta_js_2471),
-                rosetta_js::method("inertia", rosetta_js_2472),
-                rosetta_js::method("cluster_center", rosetta_js_2473),
-                rosetta_js::method("predict", rosetta_js_2474),
-                rosetta_js::method("summary", rosetta_js_2475),
-                rosetta_js::method("print_summary", rosetta_js_2476),
+                rosetta_js::method("feature_names", rosetta_js_2807),
+                rosetta_js::method("n_clusters", rosetta_js_2808),
+                rosetta_js::method("observations", rosetta_js_2809),
+                rosetta_js::method("iterations_used", rosetta_js_2810),
+                rosetta_js::method("labels", rosetta_js_2811),
+                rosetta_js::method("inertia", rosetta_js_2812),
+                rosetta_js::method("cluster_center", rosetta_js_2813),
+                rosetta_js::method("predict", rosetta_js_2814),
+                rosetta_js::method("summary", rosetta_js_2815),
+                rosetta_js::method("print_summary", rosetta_js_2816),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "KMeans", rosetta_js_2477, nullptr, properties);
+            cls = rosetta_js::define_class(env, "KMeans", rosetta_js_2817, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::KMeans>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9679,28 +10568,28 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::PCA
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("feature_names", rosetta_js_2478),
-                rosetta_js::method("observations", rosetta_js_2479),
-                rosetta_js::method("num_components", rosetta_js_2480),
-                rosetta_js::method("kept_row_indices", rosetta_js_2481),
-                rosetta_js::method("explained_variance", rosetta_js_2482),
-                rosetta_js::method("explained_variance_ratio", rosetta_js_2483),
-                rosetta_js::method("cumulative_explained_variance_ratio", rosetta_js_2484),
-                rosetta_js::method("component_loadings", rosetta_js_2485),
-                rosetta_js::method("component_scores", rosetta_js_2486),
-                rosetta_js::method("scores_frame", rosetta_js_2487),
-                rosetta_js::method("transform", rosetta_js_2488),
-                rosetta_js::method("summary", rosetta_js_2489),
-                rosetta_js::method("print_summary", rosetta_js_2490),
-                rosetta_js::method("plot_scores", rosetta_js_2491),
-                rosetta_js::method("plot_scores_grouped", rosetta_js_2492),
-                rosetta_js::method("plot_scree", rosetta_js_2493),
+                rosetta_js::method("feature_names", rosetta_js_2818),
+                rosetta_js::method("observations", rosetta_js_2819),
+                rosetta_js::method("num_components", rosetta_js_2820),
+                rosetta_js::method("kept_row_indices", rosetta_js_2821),
+                rosetta_js::method("explained_variance", rosetta_js_2822),
+                rosetta_js::method("explained_variance_ratio", rosetta_js_2823),
+                rosetta_js::method("cumulative_explained_variance_ratio", rosetta_js_2824),
+                rosetta_js::method("component_loadings", rosetta_js_2825),
+                rosetta_js::method("component_scores", rosetta_js_2826),
+                rosetta_js::method("scores_frame", rosetta_js_2827),
+                rosetta_js::method("transform", rosetta_js_2828),
+                rosetta_js::method("summary", rosetta_js_2829),
+                rosetta_js::method("print_summary", rosetta_js_2830),
+                rosetta_js::method("plot_scores", rosetta_js_2831),
+                rosetta_js::method("plot_scores_grouped", rosetta_js_2832),
+                rosetta_js::method("plot_scree", rosetta_js_2833),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "PCA", rosetta_js_2494, nullptr, properties);
+            cls = rosetta_js::define_class(env, "PCA", rosetta_js_2834, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::PCA>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9708,24 +10597,24 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::MDS
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("feature_names", rosetta_js_2495),
-                rosetta_js::method("observations", rosetta_js_2496),
-                rosetta_js::method("n_components", rosetta_js_2497),
-                rosetta_js::method("kept_row_indices", rosetta_js_2498),
-                rosetta_js::method("eigenvalues", rosetta_js_2499),
-                rosetta_js::method("goodness_of_fit", rosetta_js_2500),
-                rosetta_js::method("dimension", rosetta_js_2501),
-                rosetta_js::method("embedding_frame", rosetta_js_2502),
-                rosetta_js::method("summary", rosetta_js_2503),
-                rosetta_js::method("print_summary", rosetta_js_2504),
-                rosetta_js::method("plot_embedding", rosetta_js_2505),
-                rosetta_js::method("plot_embedding_grouped", rosetta_js_2506),
+                rosetta_js::method("feature_names", rosetta_js_2835),
+                rosetta_js::method("observations", rosetta_js_2836),
+                rosetta_js::method("n_components", rosetta_js_2837),
+                rosetta_js::method("kept_row_indices", rosetta_js_2838),
+                rosetta_js::method("eigenvalues", rosetta_js_2839),
+                rosetta_js::method("goodness_of_fit", rosetta_js_2840),
+                rosetta_js::method("dimension", rosetta_js_2841),
+                rosetta_js::method("embedding_frame", rosetta_js_2842),
+                rosetta_js::method("summary", rosetta_js_2843),
+                rosetta_js::method("print_summary", rosetta_js_2844),
+                rosetta_js::method("plot_embedding", rosetta_js_2845),
+                rosetta_js::method("plot_embedding_grouped", rosetta_js_2846),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "MDS", rosetta_js_2507, nullptr, properties);
+            cls = rosetta_js::define_class(env, "MDS", rosetta_js_2847, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::MDS>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9733,24 +10622,24 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::Isomap
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("feature_names", rosetta_js_2508),
-                rosetta_js::method("observations", rosetta_js_2509),
-                rosetta_js::method("n_components", rosetta_js_2510),
-                rosetta_js::method("kept_row_indices", rosetta_js_2511),
-                rosetta_js::method("eigenvalues", rosetta_js_2512),
-                rosetta_js::method("goodness_of_fit", rosetta_js_2513),
-                rosetta_js::method("dimension", rosetta_js_2514),
-                rosetta_js::method("embedding_frame", rosetta_js_2515),
-                rosetta_js::method("summary", rosetta_js_2516),
-                rosetta_js::method("print_summary", rosetta_js_2517),
-                rosetta_js::method("plot_embedding", rosetta_js_2518),
-                rosetta_js::method("plot_embedding_grouped", rosetta_js_2519),
+                rosetta_js::method("feature_names", rosetta_js_2848),
+                rosetta_js::method("observations", rosetta_js_2849),
+                rosetta_js::method("n_components", rosetta_js_2850),
+                rosetta_js::method("kept_row_indices", rosetta_js_2851),
+                rosetta_js::method("eigenvalues", rosetta_js_2852),
+                rosetta_js::method("goodness_of_fit", rosetta_js_2853),
+                rosetta_js::method("dimension", rosetta_js_2854),
+                rosetta_js::method("embedding_frame", rosetta_js_2855),
+                rosetta_js::method("summary", rosetta_js_2856),
+                rosetta_js::method("print_summary", rosetta_js_2857),
+                rosetta_js::method("plot_embedding", rosetta_js_2858),
+                rosetta_js::method("plot_embedding_grouped", rosetta_js_2859),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Isomap", rosetta_js_2520, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Isomap", rosetta_js_2860, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::Isomap>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9758,23 +10647,23 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::LLE
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("feature_names", rosetta_js_2521),
-                rosetta_js::method("observations", rosetta_js_2522),
-                rosetta_js::method("n_components", rosetta_js_2523),
-                rosetta_js::method("kept_row_indices", rosetta_js_2524),
-                rosetta_js::method("eigenvalues", rosetta_js_2525),
-                rosetta_js::method("dimension", rosetta_js_2526),
-                rosetta_js::method("embedding_frame", rosetta_js_2527),
-                rosetta_js::method("summary", rosetta_js_2528),
-                rosetta_js::method("print_summary", rosetta_js_2529),
-                rosetta_js::method("plot_embedding", rosetta_js_2530),
-                rosetta_js::method("plot_embedding_grouped", rosetta_js_2531),
+                rosetta_js::method("feature_names", rosetta_js_2861),
+                rosetta_js::method("observations", rosetta_js_2862),
+                rosetta_js::method("n_components", rosetta_js_2863),
+                rosetta_js::method("kept_row_indices", rosetta_js_2864),
+                rosetta_js::method("eigenvalues", rosetta_js_2865),
+                rosetta_js::method("dimension", rosetta_js_2866),
+                rosetta_js::method("embedding_frame", rosetta_js_2867),
+                rosetta_js::method("summary", rosetta_js_2868),
+                rosetta_js::method("print_summary", rosetta_js_2869),
+                rosetta_js::method("plot_embedding", rosetta_js_2870),
+                rosetta_js::method("plot_embedding_grouped", rosetta_js_2871),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "LLE", rosetta_js_2532, nullptr, properties);
+            cls = rosetta_js::define_class(env, "LLE", rosetta_js_2872, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::LLE>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9782,23 +10671,23 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::TSNE
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("feature_names", rosetta_js_2533),
-                rosetta_js::method("observations", rosetta_js_2534),
-                rosetta_js::method("n_components", rosetta_js_2535),
-                rosetta_js::method("kept_row_indices", rosetta_js_2536),
-                rosetta_js::method("achieved_perplexity", rosetta_js_2537),
-                rosetta_js::method("dimension", rosetta_js_2538),
-                rosetta_js::method("embedding_frame", rosetta_js_2539),
-                rosetta_js::method("summary", rosetta_js_2540),
-                rosetta_js::method("print_summary", rosetta_js_2541),
-                rosetta_js::method("plot_embedding", rosetta_js_2542),
-                rosetta_js::method("plot_embedding_grouped", rosetta_js_2543),
+                rosetta_js::method("feature_names", rosetta_js_2873),
+                rosetta_js::method("observations", rosetta_js_2874),
+                rosetta_js::method("n_components", rosetta_js_2875),
+                rosetta_js::method("kept_row_indices", rosetta_js_2876),
+                rosetta_js::method("achieved_perplexity", rosetta_js_2877),
+                rosetta_js::method("dimension", rosetta_js_2878),
+                rosetta_js::method("embedding_frame", rosetta_js_2879),
+                rosetta_js::method("summary", rosetta_js_2880),
+                rosetta_js::method("print_summary", rosetta_js_2881),
+                rosetta_js::method("plot_embedding", rosetta_js_2882),
+                rosetta_js::method("plot_embedding_grouped", rosetta_js_2883),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "TSNE", rosetta_js_2544, nullptr, properties);
+            cls = rosetta_js::define_class(env, "TSNE", rosetta_js_2884, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::TSNE>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9806,23 +10695,23 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::LaplacianEigenmaps
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("feature_names", rosetta_js_2545),
-                rosetta_js::method("observations", rosetta_js_2546),
-                rosetta_js::method("n_components", rosetta_js_2547),
-                rosetta_js::method("kept_row_indices", rosetta_js_2548),
-                rosetta_js::method("eigenvalues", rosetta_js_2549),
-                rosetta_js::method("dimension", rosetta_js_2550),
-                rosetta_js::method("embedding_frame", rosetta_js_2551),
-                rosetta_js::method("summary", rosetta_js_2552),
-                rosetta_js::method("print_summary", rosetta_js_2553),
-                rosetta_js::method("plot_embedding", rosetta_js_2554),
-                rosetta_js::method("plot_embedding_grouped", rosetta_js_2555),
+                rosetta_js::method("feature_names", rosetta_js_2885),
+                rosetta_js::method("observations", rosetta_js_2886),
+                rosetta_js::method("n_components", rosetta_js_2887),
+                rosetta_js::method("kept_row_indices", rosetta_js_2888),
+                rosetta_js::method("eigenvalues", rosetta_js_2889),
+                rosetta_js::method("dimension", rosetta_js_2890),
+                rosetta_js::method("embedding_frame", rosetta_js_2891),
+                rosetta_js::method("summary", rosetta_js_2892),
+                rosetta_js::method("print_summary", rosetta_js_2893),
+                rosetta_js::method("plot_embedding", rosetta_js_2894),
+                rosetta_js::method("plot_embedding_grouped", rosetta_js_2895),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "LaplacianEigenmaps", rosetta_js_2556, nullptr, properties);
+            cls = rosetta_js::define_class(env, "LaplacianEigenmaps", rosetta_js_2896, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::LaplacianEigenmaps>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9830,23 +10719,23 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::DiffusionMaps
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("feature_names", rosetta_js_2557),
-                rosetta_js::method("observations", rosetta_js_2558),
-                rosetta_js::method("n_components", rosetta_js_2559),
-                rosetta_js::method("kept_row_indices", rosetta_js_2560),
-                rosetta_js::method("eigenvalues", rosetta_js_2561),
-                rosetta_js::method("dimension", rosetta_js_2562),
-                rosetta_js::method("embedding_frame", rosetta_js_2563),
-                rosetta_js::method("summary", rosetta_js_2564),
-                rosetta_js::method("print_summary", rosetta_js_2565),
-                rosetta_js::method("plot_embedding", rosetta_js_2566),
-                rosetta_js::method("plot_embedding_grouped", rosetta_js_2567),
+                rosetta_js::method("feature_names", rosetta_js_2897),
+                rosetta_js::method("observations", rosetta_js_2898),
+                rosetta_js::method("n_components", rosetta_js_2899),
+                rosetta_js::method("kept_row_indices", rosetta_js_2900),
+                rosetta_js::method("eigenvalues", rosetta_js_2901),
+                rosetta_js::method("dimension", rosetta_js_2902),
+                rosetta_js::method("embedding_frame", rosetta_js_2903),
+                rosetta_js::method("summary", rosetta_js_2904),
+                rosetta_js::method("print_summary", rosetta_js_2905),
+                rosetta_js::method("plot_embedding", rosetta_js_2906),
+                rosetta_js::method("plot_embedding_grouped", rosetta_js_2907),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "DiffusionMaps", rosetta_js_2568, nullptr, properties);
+            cls = rosetta_js::define_class(env, "DiffusionMaps", rosetta_js_2908, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::DiffusionMaps>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9854,23 +10743,23 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::KernelPCA
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("feature_names", rosetta_js_2569),
-                rosetta_js::method("observations", rosetta_js_2570),
-                rosetta_js::method("n_components", rosetta_js_2571),
-                rosetta_js::method("kept_row_indices", rosetta_js_2572),
-                rosetta_js::method("eigenvalues", rosetta_js_2573),
-                rosetta_js::method("dimension", rosetta_js_2574),
-                rosetta_js::method("embedding_frame", rosetta_js_2575),
-                rosetta_js::method("summary", rosetta_js_2576),
-                rosetta_js::method("print_summary", rosetta_js_2577),
-                rosetta_js::method("plot_embedding", rosetta_js_2578),
-                rosetta_js::method("plot_embedding_grouped", rosetta_js_2579),
+                rosetta_js::method("feature_names", rosetta_js_2909),
+                rosetta_js::method("observations", rosetta_js_2910),
+                rosetta_js::method("n_components", rosetta_js_2911),
+                rosetta_js::method("kept_row_indices", rosetta_js_2912),
+                rosetta_js::method("eigenvalues", rosetta_js_2913),
+                rosetta_js::method("dimension", rosetta_js_2914),
+                rosetta_js::method("embedding_frame", rosetta_js_2915),
+                rosetta_js::method("summary", rosetta_js_2916),
+                rosetta_js::method("print_summary", rosetta_js_2917),
+                rosetta_js::method("plot_embedding", rosetta_js_2918),
+                rosetta_js::method("plot_embedding_grouped", rosetta_js_2919),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "KernelPCA", rosetta_js_2580, nullptr, properties);
+            cls = rosetta_js::define_class(env, "KernelPCA", rosetta_js_2920, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::KernelPCA>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9878,24 +10767,24 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::SammonMapping
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("feature_names", rosetta_js_2581),
-                rosetta_js::method("observations", rosetta_js_2582),
-                rosetta_js::method("n_components", rosetta_js_2583),
-                rosetta_js::method("kept_row_indices", rosetta_js_2584),
-                rosetta_js::method("dimension", rosetta_js_2585),
-                rosetta_js::method("embedding_frame", rosetta_js_2586),
-                rosetta_js::method("stress", rosetta_js_2587),
-                rosetta_js::method("iterations_run", rosetta_js_2588),
-                rosetta_js::method("summary", rosetta_js_2589),
-                rosetta_js::method("print_summary", rosetta_js_2590),
-                rosetta_js::method("plot_embedding", rosetta_js_2591),
-                rosetta_js::method("plot_embedding_grouped", rosetta_js_2592),
+                rosetta_js::method("feature_names", rosetta_js_2921),
+                rosetta_js::method("observations", rosetta_js_2922),
+                rosetta_js::method("n_components", rosetta_js_2923),
+                rosetta_js::method("kept_row_indices", rosetta_js_2924),
+                rosetta_js::method("dimension", rosetta_js_2925),
+                rosetta_js::method("embedding_frame", rosetta_js_2926),
+                rosetta_js::method("stress", rosetta_js_2927),
+                rosetta_js::method("iterations_run", rosetta_js_2928),
+                rosetta_js::method("summary", rosetta_js_2929),
+                rosetta_js::method("print_summary", rosetta_js_2930),
+                rosetta_js::method("plot_embedding", rosetta_js_2931),
+                rosetta_js::method("plot_embedding_grouped", rosetta_js_2932),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "SammonMapping", rosetta_js_2593, nullptr, properties);
+            cls = rosetta_js::define_class(env, "SammonMapping", rosetta_js_2933, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::SammonMapping>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9903,24 +10792,24 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::UMAP
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("feature_names", rosetta_js_2594),
-                rosetta_js::method("observations", rosetta_js_2595),
-                rosetta_js::method("n_components", rosetta_js_2596),
-                rosetta_js::method("kept_row_indices", rosetta_js_2597),
-                rosetta_js::method("dimension", rosetta_js_2598),
-                rosetta_js::method("embedding_frame", rosetta_js_2599),
-                rosetta_js::method("sigmas", rosetta_js_2600),
-                rosetta_js::method("rhos", rosetta_js_2601),
-                rosetta_js::method("summary", rosetta_js_2602),
-                rosetta_js::method("print_summary", rosetta_js_2603),
-                rosetta_js::method("plot_embedding", rosetta_js_2604),
-                rosetta_js::method("plot_embedding_grouped", rosetta_js_2605),
+                rosetta_js::method("feature_names", rosetta_js_2934),
+                rosetta_js::method("observations", rosetta_js_2935),
+                rosetta_js::method("n_components", rosetta_js_2936),
+                rosetta_js::method("kept_row_indices", rosetta_js_2937),
+                rosetta_js::method("dimension", rosetta_js_2938),
+                rosetta_js::method("embedding_frame", rosetta_js_2939),
+                rosetta_js::method("sigmas", rosetta_js_2940),
+                rosetta_js::method("rhos", rosetta_js_2941),
+                rosetta_js::method("summary", rosetta_js_2942),
+                rosetta_js::method("print_summary", rosetta_js_2943),
+                rosetta_js::method("plot_embedding", rosetta_js_2944),
+                rosetta_js::method("plot_embedding_grouped", rosetta_js_2945),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "UMAP", rosetta_js_2606, nullptr, properties);
+            cls = rosetta_js::define_class(env, "UMAP", rosetta_js_2946, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::UMAP>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9928,23 +10817,23 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::AgglomerativeClustering
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("feature_names", rosetta_js_2607),
-                rosetta_js::method("observations", rosetta_js_2608),
-                rosetta_js::method("labels", rosetta_js_2609),
-                rosetta_js::method("cut", rosetta_js_2610),
-                rosetta_js::method("num_merges", rosetta_js_2611),
-                rosetta_js::method("merge_cluster_a", rosetta_js_2612),
-                rosetta_js::method("merge_cluster_b", rosetta_js_2613),
-                rosetta_js::method("merge_distance", rosetta_js_2614),
-                rosetta_js::method("merge_size", rosetta_js_2615),
-                rosetta_js::method("summary", rosetta_js_2616),
-                rosetta_js::method("print_summary", rosetta_js_2617),
+                rosetta_js::method("feature_names", rosetta_js_2947),
+                rosetta_js::method("observations", rosetta_js_2948),
+                rosetta_js::method("labels", rosetta_js_2949),
+                rosetta_js::method("cut", rosetta_js_2950),
+                rosetta_js::method("num_merges", rosetta_js_2951),
+                rosetta_js::method("merge_cluster_a", rosetta_js_2952),
+                rosetta_js::method("merge_cluster_b", rosetta_js_2953),
+                rosetta_js::method("merge_distance", rosetta_js_2954),
+                rosetta_js::method("merge_size", rosetta_js_2955),
+                rosetta_js::method("summary", rosetta_js_2956),
+                rosetta_js::method("print_summary", rosetta_js_2957),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "AgglomerativeClustering", rosetta_js_2618, nullptr, properties);
+            cls = rosetta_js::define_class(env, "AgglomerativeClustering", rosetta_js_2958, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::AgglomerativeClustering>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9952,19 +10841,19 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::DBSCAN
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("feature_names", rosetta_js_2619),
-                rosetta_js::method("observations", rosetta_js_2620),
-                rosetta_js::method("n_clusters", rosetta_js_2621),
-                rosetta_js::method("n_noise", rosetta_js_2622),
-                rosetta_js::method("labels", rosetta_js_2623),
-                rosetta_js::method("summary", rosetta_js_2624),
-                rosetta_js::method("print_summary", rosetta_js_2625),
+                rosetta_js::method("feature_names", rosetta_js_2959),
+                rosetta_js::method("observations", rosetta_js_2960),
+                rosetta_js::method("n_clusters", rosetta_js_2961),
+                rosetta_js::method("n_noise", rosetta_js_2962),
+                rosetta_js::method("labels", rosetta_js_2963),
+                rosetta_js::method("summary", rosetta_js_2964),
+                rosetta_js::method("print_summary", rosetta_js_2965),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "DBSCAN", rosetta_js_2626, nullptr, properties);
+            cls = rosetta_js::define_class(env, "DBSCAN", rosetta_js_2966, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::DBSCAN>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -9972,27 +10861,27 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::GBMClassifier
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("classes", rosetta_js_2627),
-                rosetta_js::method("predictor_names", rosetta_js_2628),
-                rosetta_js::method("observations", rosetta_js_2629),
-                rosetta_js::method("n_trees", rosetta_js_2630),
-                rosetta_js::method("feature_importance", rosetta_js_2631),
-                rosetta_js::method("training_accuracy", rosetta_js_2632),
-                rosetta_js::method("confusion_matrix", rosetta_js_2633),
-                rosetta_js::method("training_deviance", rosetta_js_2634),
-                rosetta_js::method("summary", rosetta_js_2635),
-                rosetta_js::method("print_summary", rosetta_js_2636),
-                rosetta_js::method("predict", rosetta_js_2637),
-                rosetta_js::method("predict_frame", rosetta_js_2638),
-                rosetta_js::method("plot_classification", rosetta_js_2639),
-                rosetta_js::method("plot_decision_regions", rosetta_js_2640),
-                rosetta_js::method("plot_training_deviance", rosetta_js_2641),
+                rosetta_js::method("classes", rosetta_js_2967),
+                rosetta_js::method("predictor_names", rosetta_js_2968),
+                rosetta_js::method("observations", rosetta_js_2969),
+                rosetta_js::method("n_trees", rosetta_js_2970),
+                rosetta_js::method("feature_importance", rosetta_js_2971),
+                rosetta_js::method("training_accuracy", rosetta_js_2972),
+                rosetta_js::method("confusion_matrix", rosetta_js_2973),
+                rosetta_js::method("training_deviance", rosetta_js_2974),
+                rosetta_js::method("summary", rosetta_js_2975),
+                rosetta_js::method("print_summary", rosetta_js_2976),
+                rosetta_js::method("predict", rosetta_js_2977),
+                rosetta_js::method("predict_frame", rosetta_js_2978),
+                rosetta_js::method("plot_classification", rosetta_js_2979),
+                rosetta_js::method("plot_decision_regions", rosetta_js_2980),
+                rosetta_js::method("plot_training_deviance", rosetta_js_2981),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "GBMClassifier", rosetta_js_2642, nullptr, properties);
+            cls = rosetta_js::define_class(env, "GBMClassifier", rosetta_js_2982, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::GBMClassifier>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10000,26 +10889,26 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::GBMRegressor
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("predictor_names", rosetta_js_2643),
-                rosetta_js::method("observations", rosetta_js_2644),
-                rosetta_js::method("n_trees", rosetta_js_2645),
-                rosetta_js::method("feature_importance", rosetta_js_2646),
-                rosetta_js::method("fitted_values", rosetta_js_2647),
-                rosetta_js::method("r_squared", rosetta_js_2648),
-                rosetta_js::method("rmse", rosetta_js_2649),
-                rosetta_js::method("training_deviance", rosetta_js_2650),
-                rosetta_js::method("summary", rosetta_js_2651),
-                rosetta_js::method("print_summary", rosetta_js_2652),
-                rosetta_js::method("predict", rosetta_js_2653),
-                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2654),
-                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2655),
-                rosetta_js::method("plot_training_deviance", rosetta_js_2656),
+                rosetta_js::method("predictor_names", rosetta_js_2983),
+                rosetta_js::method("observations", rosetta_js_2984),
+                rosetta_js::method("n_trees", rosetta_js_2985),
+                rosetta_js::method("feature_importance", rosetta_js_2986),
+                rosetta_js::method("fitted_values", rosetta_js_2987),
+                rosetta_js::method("r_squared", rosetta_js_2988),
+                rosetta_js::method("rmse", rosetta_js_2989),
+                rosetta_js::method("training_deviance", rosetta_js_2990),
+                rosetta_js::method("summary", rosetta_js_2991),
+                rosetta_js::method("print_summary", rosetta_js_2992),
+                rosetta_js::method("predict", rosetta_js_2993),
+                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2994),
+                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2995),
+                rosetta_js::method("plot_training_deviance", rosetta_js_2996),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "GBMRegressor", rosetta_js_2657, nullptr, properties);
+            cls = rosetta_js::define_class(env, "GBMRegressor", rosetta_js_2997, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::GBMRegressor>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10027,27 +10916,27 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::XGBoostClassifier
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("classes", rosetta_js_2658),
-                rosetta_js::method("predictor_names", rosetta_js_2659),
-                rosetta_js::method("observations", rosetta_js_2660),
-                rosetta_js::method("n_trees", rosetta_js_2661),
-                rosetta_js::method("feature_importance", rosetta_js_2662),
-                rosetta_js::method("training_accuracy", rosetta_js_2663),
-                rosetta_js::method("confusion_matrix", rosetta_js_2664),
-                rosetta_js::method("training_deviance", rosetta_js_2665),
-                rosetta_js::method("summary", rosetta_js_2666),
-                rosetta_js::method("print_summary", rosetta_js_2667),
-                rosetta_js::method("predict", rosetta_js_2668),
-                rosetta_js::method("predict_frame", rosetta_js_2669),
-                rosetta_js::method("plot_classification", rosetta_js_2670),
-                rosetta_js::method("plot_decision_regions", rosetta_js_2671),
-                rosetta_js::method("plot_training_deviance", rosetta_js_2672),
+                rosetta_js::method("classes", rosetta_js_2998),
+                rosetta_js::method("predictor_names", rosetta_js_2999),
+                rosetta_js::method("observations", rosetta_js_3000),
+                rosetta_js::method("n_trees", rosetta_js_3001),
+                rosetta_js::method("feature_importance", rosetta_js_3002),
+                rosetta_js::method("training_accuracy", rosetta_js_3003),
+                rosetta_js::method("confusion_matrix", rosetta_js_3004),
+                rosetta_js::method("training_deviance", rosetta_js_3005),
+                rosetta_js::method("summary", rosetta_js_3006),
+                rosetta_js::method("print_summary", rosetta_js_3007),
+                rosetta_js::method("predict", rosetta_js_3008),
+                rosetta_js::method("predict_frame", rosetta_js_3009),
+                rosetta_js::method("plot_classification", rosetta_js_3010),
+                rosetta_js::method("plot_decision_regions", rosetta_js_3011),
+                rosetta_js::method("plot_training_deviance", rosetta_js_3012),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "XGBoostClassifier", rosetta_js_2673, nullptr, properties);
+            cls = rosetta_js::define_class(env, "XGBoostClassifier", rosetta_js_3013, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::XGBoostClassifier>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10055,26 +10944,26 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::XGBoostRegressor
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("predictor_names", rosetta_js_2674),
-                rosetta_js::method("observations", rosetta_js_2675),
-                rosetta_js::method("n_trees", rosetta_js_2676),
-                rosetta_js::method("feature_importance", rosetta_js_2677),
-                rosetta_js::method("fitted_values", rosetta_js_2678),
-                rosetta_js::method("r_squared", rosetta_js_2679),
-                rosetta_js::method("rmse", rosetta_js_2680),
-                rosetta_js::method("training_deviance", rosetta_js_2681),
-                rosetta_js::method("summary", rosetta_js_2682),
-                rosetta_js::method("print_summary", rosetta_js_2683),
-                rosetta_js::method("predict", rosetta_js_2684),
-                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2685),
-                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2686),
-                rosetta_js::method("plot_training_deviance", rosetta_js_2687),
+                rosetta_js::method("predictor_names", rosetta_js_3014),
+                rosetta_js::method("observations", rosetta_js_3015),
+                rosetta_js::method("n_trees", rosetta_js_3016),
+                rosetta_js::method("feature_importance", rosetta_js_3017),
+                rosetta_js::method("fitted_values", rosetta_js_3018),
+                rosetta_js::method("r_squared", rosetta_js_3019),
+                rosetta_js::method("rmse", rosetta_js_3020),
+                rosetta_js::method("training_deviance", rosetta_js_3021),
+                rosetta_js::method("summary", rosetta_js_3022),
+                rosetta_js::method("print_summary", rosetta_js_3023),
+                rosetta_js::method("predict", rosetta_js_3024),
+                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_3025),
+                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_3026),
+                rosetta_js::method("plot_training_deviance", rosetta_js_3027),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "XGBoostRegressor", rosetta_js_2688, nullptr, properties);
+            cls = rosetta_js::define_class(env, "XGBoostRegressor", rosetta_js_3028, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::XGBoostRegressor>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10082,28 +10971,28 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::KernelRegression
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("predictor_names", rosetta_js_2689),
-                rosetta_js::method("observations", rosetta_js_2690),
-                rosetta_js::method("bandwidth", rosetta_js_2691),
-                rosetta_js::method("bandwidth_was_selected", rosetta_js_2692),
-                rosetta_js::method("bandwidth_grid", rosetta_js_2693),
-                rosetta_js::method("cv_mean_squared_error", rosetta_js_2694),
-                rosetta_js::method("fitted_values", rosetta_js_2695),
-                rosetta_js::method("r_squared", rosetta_js_2696),
-                rosetta_js::method("rmse", rosetta_js_2697),
-                rosetta_js::method("summary", rosetta_js_2698),
-                rosetta_js::method("print_summary", rosetta_js_2699),
-                rosetta_js::method("predict", rosetta_js_2700),
-                rosetta_js::method("plot_fit", rosetta_js_2701),
-                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2702),
-                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2703),
-                rosetta_js::method("plot_cv_curve", rosetta_js_2704),
+                rosetta_js::method("predictor_names", rosetta_js_3029),
+                rosetta_js::method("observations", rosetta_js_3030),
+                rosetta_js::method("bandwidth", rosetta_js_3031),
+                rosetta_js::method("bandwidth_was_selected", rosetta_js_3032),
+                rosetta_js::method("bandwidth_grid", rosetta_js_3033),
+                rosetta_js::method("cv_mean_squared_error", rosetta_js_3034),
+                rosetta_js::method("fitted_values", rosetta_js_3035),
+                rosetta_js::method("r_squared", rosetta_js_3036),
+                rosetta_js::method("rmse", rosetta_js_3037),
+                rosetta_js::method("summary", rosetta_js_3038),
+                rosetta_js::method("print_summary", rosetta_js_3039),
+                rosetta_js::method("predict", rosetta_js_3040),
+                rosetta_js::method("plot_fit", rosetta_js_3041),
+                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_3042),
+                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_3043),
+                rosetta_js::method("plot_cv_curve", rosetta_js_3044),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "KernelRegression", rosetta_js_2705, nullptr, properties);
+            cls = rosetta_js::define_class(env, "KernelRegression", rosetta_js_3045, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::KernelRegression>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10111,33 +11000,33 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::GaussianProcessRegression
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("predictor_names", rosetta_js_2706),
-                rosetta_js::method("observations", rosetta_js_2707),
-                rosetta_js::method("length_scale", rosetta_js_2708),
-                rosetta_js::method("signal_variance", rosetta_js_2709),
-                rosetta_js::method("noise_variance", rosetta_js_2710),
-                rosetta_js::method("log_marginal_likelihood", rosetta_js_2711),
-                rosetta_js::method("length_scale_was_selected", rosetta_js_2712),
-                rosetta_js::method("noise_ratio_was_selected", rosetta_js_2713),
-                rosetta_js::method("length_scale_grid", rosetta_js_2714),
-                rosetta_js::method("length_scale_profile_log_likelihood", rosetta_js_2715),
-                rosetta_js::method("fitted_values", rosetta_js_2716),
-                rosetta_js::method("r_squared", rosetta_js_2717),
-                rosetta_js::method("rmse", rosetta_js_2718),
-                rosetta_js::method("summary", rosetta_js_2719),
-                rosetta_js::method("print_summary", rosetta_js_2720),
-                rosetta_js::method("predict", rosetta_js_2721),
-                rosetta_js::method("predict_frame", rosetta_js_2722),
-                rosetta_js::method("plot_fit", rosetta_js_2723),
-                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_2724),
-                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2725),
-                rosetta_js::method("plot_length_scale_profile", rosetta_js_2726),
+                rosetta_js::method("predictor_names", rosetta_js_3046),
+                rosetta_js::method("observations", rosetta_js_3047),
+                rosetta_js::method("length_scale", rosetta_js_3048),
+                rosetta_js::method("signal_variance", rosetta_js_3049),
+                rosetta_js::method("noise_variance", rosetta_js_3050),
+                rosetta_js::method("log_marginal_likelihood", rosetta_js_3051),
+                rosetta_js::method("length_scale_was_selected", rosetta_js_3052),
+                rosetta_js::method("noise_ratio_was_selected", rosetta_js_3053),
+                rosetta_js::method("length_scale_grid", rosetta_js_3054),
+                rosetta_js::method("length_scale_profile_log_likelihood", rosetta_js_3055),
+                rosetta_js::method("fitted_values", rosetta_js_3056),
+                rosetta_js::method("r_squared", rosetta_js_3057),
+                rosetta_js::method("rmse", rosetta_js_3058),
+                rosetta_js::method("summary", rosetta_js_3059),
+                rosetta_js::method("print_summary", rosetta_js_3060),
+                rosetta_js::method("predict", rosetta_js_3061),
+                rosetta_js::method("predict_frame", rosetta_js_3062),
+                rosetta_js::method("plot_fit", rosetta_js_3063),
+                rosetta_js::method("plot_predicted_vs_actual", rosetta_js_3064),
+                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_3065),
+                rosetta_js::method("plot_length_scale_profile", rosetta_js_3066),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "GaussianProcessRegression", rosetta_js_2727, nullptr, properties);
+            cls = rosetta_js::define_class(env, "GaussianProcessRegression", rosetta_js_3067, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::GaussianProcessRegression>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10145,24 +11034,24 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::NaiveBayesClassifier
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("classes", rosetta_js_2728),
-                rosetta_js::method("predictor_names", rosetta_js_2729),
-                rosetta_js::method("observations", rosetta_js_2730),
-                rosetta_js::method("class_priors", rosetta_js_2731),
-                rosetta_js::method("training_accuracy", rosetta_js_2732),
-                rosetta_js::method("confusion_matrix", rosetta_js_2733),
-                rosetta_js::method("summary", rosetta_js_2734),
-                rosetta_js::method("print_summary", rosetta_js_2735),
-                rosetta_js::method("predict", rosetta_js_2736),
-                rosetta_js::method("predict_frame", rosetta_js_2737),
-                rosetta_js::method("plot_classification", rosetta_js_2738),
-                rosetta_js::method("plot_decision_regions", rosetta_js_2739),
+                rosetta_js::method("classes", rosetta_js_3068),
+                rosetta_js::method("predictor_names", rosetta_js_3069),
+                rosetta_js::method("observations", rosetta_js_3070),
+                rosetta_js::method("class_priors", rosetta_js_3071),
+                rosetta_js::method("training_accuracy", rosetta_js_3072),
+                rosetta_js::method("confusion_matrix", rosetta_js_3073),
+                rosetta_js::method("summary", rosetta_js_3074),
+                rosetta_js::method("print_summary", rosetta_js_3075),
+                rosetta_js::method("predict", rosetta_js_3076),
+                rosetta_js::method("predict_frame", rosetta_js_3077),
+                rosetta_js::method("plot_classification", rosetta_js_3078),
+                rosetta_js::method("plot_decision_regions", rosetta_js_3079),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "NaiveBayesClassifier", rosetta_js_2740, nullptr, properties);
+            cls = rosetta_js::define_class(env, "NaiveBayesClassifier", rosetta_js_3080, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::NaiveBayesClassifier>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10170,44 +11059,44 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::GLM
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("formula_text", rosetta_js_2741),
-                rosetta_js::method("family", rosetta_js_2742),
-                rosetta_js::method("has_intercept", rosetta_js_2743),
-                rosetta_js::method("observations", rosetta_js_2744),
-                rosetta_js::method("rank", rosetta_js_2745),
-                rosetta_js::method("degrees_of_freedom", rosetta_js_2746),
-                rosetta_js::method("coefficients", rosetta_js_2747),
-                rosetta_js::method("coefficient_names", rosetta_js_2748),
-                rosetta_js::method("fitted_values", rosetta_js_2749),
-                rosetta_js::method("linear_predictors", rosetta_js_2750),
-                rosetta_js::method("residuals", rosetta_js_2751),
-                rosetta_js::method("pearson_residuals", rosetta_js_2752),
-                rosetta_js::method("standardized_residuals", rosetta_js_2753),
-                rosetta_js::method("leverage", rosetta_js_2754),
-                rosetta_js::method("standard_errors", rosetta_js_2755),
-                rosetta_js::method("test_statistics", rosetta_js_2756),
-                rosetta_js::method("p_values", rosetta_js_2757),
-                rosetta_js::method("deviance", rosetta_js_2758),
-                rosetta_js::method("null_deviance", rosetta_js_2759),
-                rosetta_js::method("dispersion", rosetta_js_2760),
-                rosetta_js::method("aic", rosetta_js_2761),
-                rosetta_js::method("confidence_interval_lower", rosetta_js_2762),
-                rosetta_js::method("confidence_interval_upper", rosetta_js_2763),
-                rosetta_js::method("summary", rosetta_js_2764),
-                rosetta_js::method("print_summary", rosetta_js_2765),
-                rosetta_js::method("predict", rosetta_js_2766),
-                rosetta_js::method("predict_frame", rosetta_js_2767),
-                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_2768),
-                rosetta_js::method("plot_normal_qq", rosetta_js_2769),
-                rosetta_js::method("plot_scale_location", rosetta_js_2770),
-                rosetta_js::method("plot_residuals_vs_leverage", rosetta_js_2771),
-                rosetta_js::method("save_diagnostic_plots", rosetta_js_2772),
+                rosetta_js::method("formula_text", rosetta_js_3081),
+                rosetta_js::method("family", rosetta_js_3082),
+                rosetta_js::method("has_intercept", rosetta_js_3083),
+                rosetta_js::method("observations", rosetta_js_3084),
+                rosetta_js::method("rank", rosetta_js_3085),
+                rosetta_js::method("degrees_of_freedom", rosetta_js_3086),
+                rosetta_js::method("coefficients", rosetta_js_3087),
+                rosetta_js::method("coefficient_names", rosetta_js_3088),
+                rosetta_js::method("fitted_values", rosetta_js_3089),
+                rosetta_js::method("linear_predictors", rosetta_js_3090),
+                rosetta_js::method("residuals", rosetta_js_3091),
+                rosetta_js::method("pearson_residuals", rosetta_js_3092),
+                rosetta_js::method("standardized_residuals", rosetta_js_3093),
+                rosetta_js::method("leverage", rosetta_js_3094),
+                rosetta_js::method("standard_errors", rosetta_js_3095),
+                rosetta_js::method("test_statistics", rosetta_js_3096),
+                rosetta_js::method("p_values", rosetta_js_3097),
+                rosetta_js::method("deviance", rosetta_js_3098),
+                rosetta_js::method("null_deviance", rosetta_js_3099),
+                rosetta_js::method("dispersion", rosetta_js_3100),
+                rosetta_js::method("aic", rosetta_js_3101),
+                rosetta_js::method("confidence_interval_lower", rosetta_js_3102),
+                rosetta_js::method("confidence_interval_upper", rosetta_js_3103),
+                rosetta_js::method("summary", rosetta_js_3104),
+                rosetta_js::method("print_summary", rosetta_js_3105),
+                rosetta_js::method("predict", rosetta_js_3106),
+                rosetta_js::method("predict_frame", rosetta_js_3107),
+                rosetta_js::method("plot_residuals_vs_fitted", rosetta_js_3108),
+                rosetta_js::method("plot_normal_qq", rosetta_js_3109),
+                rosetta_js::method("plot_scale_location", rosetta_js_3110),
+                rosetta_js::method("plot_residuals_vs_leverage", rosetta_js_3111),
+                rosetta_js::method("save_diagnostic_plots", rosetta_js_3112),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "GLM", rosetta_js_2773, nullptr, properties);
+            cls = rosetta_js::define_class(env, "GLM", rosetta_js_3113, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::GLM>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10215,92 +11104,92 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::Tensor
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("ndim", rosetta_js_2782),
-                rosetta_js::method("shape", rosetta_js_2783),
-                rosetta_js::method("size", rosetta_js_2784),
-                rosetta_js::method("dtype_name", rosetta_js_2785),
-                rosetta_js::method("at", rosetta_js_2786),
-                rosetta_js::method("set", rosetta_js_2787),
-                rosetta_js::method("string_at", rosetta_js_2788),
-                rosetta_js::method("set_string", rosetta_js_2789),
-                rosetta_js::method("at_flat", rosetta_js_2790),
-                rosetta_js::method("set_flat", rosetta_js_2791),
-                rosetta_js::method("string_at_flat", rosetta_js_2792),
-                rosetta_js::method("set_string_flat", rosetta_js_2793),
-                rosetta_js::method("reshape", rosetta_js_2794),
-                rosetta_js::method("flatten", rosetta_js_2795),
-                rosetta_js::method("transpose", rosetta_js_2796),
-                rosetta_js::method("squeeze", rosetta_js_2797),
-                rosetta_js::method("squeeze_axis", rosetta_js_2798),
-                rosetta_js::method("expand_dims", rosetta_js_2799),
-                rosetta_js::method("slice", rosetta_js_2800),
-                rosetta_js::method("index_select", rosetta_js_2801),
-                rosetta_js::method("add", rosetta_js_2804),
-                rosetta_js::method("subtract", rosetta_js_2805),
-                rosetta_js::method("multiply", rosetta_js_2806),
-                rosetta_js::method("divide", rosetta_js_2807),
-                rosetta_js::method("power", rosetta_js_2808),
-                rosetta_js::method("add_scalar", rosetta_js_2809),
-                rosetta_js::method("subtract_scalar", rosetta_js_2810),
-                rosetta_js::method("multiply_scalar", rosetta_js_2811),
-                rosetta_js::method("divide_scalar", rosetta_js_2812),
-                rosetta_js::method("power_scalar", rosetta_js_2813),
-                rosetta_js::method("negate", rosetta_js_2814),
-                rosetta_js::method("abs", rosetta_js_2815),
-                rosetta_js::method("sqrt", rosetta_js_2816),
-                rosetta_js::method("exp", rosetta_js_2817),
-                rosetta_js::method("log", rosetta_js_2818),
-                rosetta_js::method("apply", rosetta_js_2819),
-                rosetta_js::method("equal", rosetta_js_2820),
-                rosetta_js::method("not_equal", rosetta_js_2821),
-                rosetta_js::method("less", rosetta_js_2822),
-                rosetta_js::method("less_equal", rosetta_js_2823),
-                rosetta_js::method("greater", rosetta_js_2824),
-                rosetta_js::method("greater_equal", rosetta_js_2825),
-                rosetta_js::method("sum", rosetta_js_2826),
-                rosetta_js::method("mean", rosetta_js_2827),
-                rosetta_js::method("max", rosetta_js_2828),
-                rosetta_js::method("min", rosetta_js_2829),
-                rosetta_js::method("prod", rosetta_js_2830),
-                rosetta_js::method("argmax", rosetta_js_2831),
-                rosetta_js::method("argmin", rosetta_js_2832),
-                rosetta_js::method("all", rosetta_js_2833),
-                rosetta_js::method("any", rosetta_js_2834),
-                rosetta_js::method("sum_axis", rosetta_js_2835),
-                rosetta_js::method("mean_axis", rosetta_js_2836),
-                rosetta_js::method("max_axis", rosetta_js_2837),
-                rosetta_js::method("min_axis", rosetta_js_2838),
-                rosetta_js::method("prod_axis", rosetta_js_2839),
-                rosetta_js::method("argmax_axis", rosetta_js_2840),
-                rosetta_js::method("argmin_axis", rosetta_js_2841),
-                rosetta_js::method("matmul", rosetta_js_2842),
-                rosetta_js::method("dot", rosetta_js_2843),
-                rosetta_js::method("outer", rosetta_js_2844),
-                rosetta_js::method("max_pool2d", rosetta_js_2847),
-                rosetta_js::method("avg_pool2d", rosetta_js_2848),
-                rosetta_js::method("relu", rosetta_js_2849),
-                rosetta_js::method("sigmoid", rosetta_js_2850),
-                rosetta_js::method("softmax", rosetta_js_2851),
-                rosetta_js::method("to_string", rosetta_js_2852),
-                rosetta_js::method("zeros", rosetta_js_2774, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("ones", rosetta_js_2775, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("full", rosetta_js_2776, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("from_values", rosetta_js_2777, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("from_bool_values", rosetta_js_2778, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("from_string_values", rosetta_js_2779, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("arange", rosetta_js_2780, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("eye", rosetta_js_2781, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("concatenate2", rosetta_js_2802, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("stack2", rosetta_js_2803, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("from_image", rosetta_js_2845, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("conv2d", rosetta_js_2846, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("ndim", rosetta_js_3122),
+                rosetta_js::method("shape", rosetta_js_3123),
+                rosetta_js::method("size", rosetta_js_3124),
+                rosetta_js::method("dtype_name", rosetta_js_3125),
+                rosetta_js::method("at", rosetta_js_3126),
+                rosetta_js::method("set", rosetta_js_3127),
+                rosetta_js::method("string_at", rosetta_js_3128),
+                rosetta_js::method("set_string", rosetta_js_3129),
+                rosetta_js::method("at_flat", rosetta_js_3130),
+                rosetta_js::method("set_flat", rosetta_js_3131),
+                rosetta_js::method("string_at_flat", rosetta_js_3132),
+                rosetta_js::method("set_string_flat", rosetta_js_3133),
+                rosetta_js::method("reshape", rosetta_js_3134),
+                rosetta_js::method("flatten", rosetta_js_3135),
+                rosetta_js::method("transpose", rosetta_js_3136),
+                rosetta_js::method("squeeze", rosetta_js_3137),
+                rosetta_js::method("squeeze_axis", rosetta_js_3138),
+                rosetta_js::method("expand_dims", rosetta_js_3139),
+                rosetta_js::method("slice", rosetta_js_3140),
+                rosetta_js::method("index_select", rosetta_js_3141),
+                rosetta_js::method("add", rosetta_js_3144),
+                rosetta_js::method("subtract", rosetta_js_3145),
+                rosetta_js::method("multiply", rosetta_js_3146),
+                rosetta_js::method("divide", rosetta_js_3147),
+                rosetta_js::method("power", rosetta_js_3148),
+                rosetta_js::method("add_scalar", rosetta_js_3149),
+                rosetta_js::method("subtract_scalar", rosetta_js_3150),
+                rosetta_js::method("multiply_scalar", rosetta_js_3151),
+                rosetta_js::method("divide_scalar", rosetta_js_3152),
+                rosetta_js::method("power_scalar", rosetta_js_3153),
+                rosetta_js::method("negate", rosetta_js_3154),
+                rosetta_js::method("abs", rosetta_js_3155),
+                rosetta_js::method("sqrt", rosetta_js_3156),
+                rosetta_js::method("exp", rosetta_js_3157),
+                rosetta_js::method("log", rosetta_js_3158),
+                rosetta_js::method("apply", rosetta_js_3159),
+                rosetta_js::method("equal", rosetta_js_3160),
+                rosetta_js::method("not_equal", rosetta_js_3161),
+                rosetta_js::method("less", rosetta_js_3162),
+                rosetta_js::method("less_equal", rosetta_js_3163),
+                rosetta_js::method("greater", rosetta_js_3164),
+                rosetta_js::method("greater_equal", rosetta_js_3165),
+                rosetta_js::method("sum", rosetta_js_3166),
+                rosetta_js::method("mean", rosetta_js_3167),
+                rosetta_js::method("max", rosetta_js_3168),
+                rosetta_js::method("min", rosetta_js_3169),
+                rosetta_js::method("prod", rosetta_js_3170),
+                rosetta_js::method("argmax", rosetta_js_3171),
+                rosetta_js::method("argmin", rosetta_js_3172),
+                rosetta_js::method("all", rosetta_js_3173),
+                rosetta_js::method("any", rosetta_js_3174),
+                rosetta_js::method("sum_axis", rosetta_js_3175),
+                rosetta_js::method("mean_axis", rosetta_js_3176),
+                rosetta_js::method("max_axis", rosetta_js_3177),
+                rosetta_js::method("min_axis", rosetta_js_3178),
+                rosetta_js::method("prod_axis", rosetta_js_3179),
+                rosetta_js::method("argmax_axis", rosetta_js_3180),
+                rosetta_js::method("argmin_axis", rosetta_js_3181),
+                rosetta_js::method("matmul", rosetta_js_3182),
+                rosetta_js::method("dot", rosetta_js_3183),
+                rosetta_js::method("outer", rosetta_js_3184),
+                rosetta_js::method("max_pool2d", rosetta_js_3187),
+                rosetta_js::method("avg_pool2d", rosetta_js_3188),
+                rosetta_js::method("relu", rosetta_js_3189),
+                rosetta_js::method("sigmoid", rosetta_js_3190),
+                rosetta_js::method("softmax", rosetta_js_3191),
+                rosetta_js::method("to_string", rosetta_js_3192),
+                rosetta_js::method("zeros", rosetta_js_3114, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("ones", rosetta_js_3115, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("full", rosetta_js_3116, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("from_values", rosetta_js_3117, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("from_bool_values", rosetta_js_3118, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("from_string_values", rosetta_js_3119, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("arange", rosetta_js_3120, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("eye", rosetta_js_3121, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("concatenate2", rosetta_js_3142, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("stack2", rosetta_js_3143, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("from_image", rosetta_js_3185, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("conv2d", rosetta_js_3186, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::to_string_method));
             { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::to_string_method); d.name = inspect; properties.push_back(d); }
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Tensor", rosetta_js_2853, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Tensor", rosetta_js_3193, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::Tensor>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10308,32 +11197,32 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::Dual
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("value", rosetta_js_2854),
-                rosetta_js::method("derivative", rosetta_js_2855),
-                rosetta_js::method("add", rosetta_js_2856),
-                rosetta_js::method("subtract", rosetta_js_2857),
-                rosetta_js::method("multiply", rosetta_js_2858),
-                rosetta_js::method("divide", rosetta_js_2859),
-                rosetta_js::method("negate", rosetta_js_2860),
-                rosetta_js::method("add_scalar", rosetta_js_2861),
-                rosetta_js::method("subtract_scalar", rosetta_js_2862),
-                rosetta_js::method("multiply_scalar", rosetta_js_2863),
-                rosetta_js::method("divide_scalar", rosetta_js_2864),
-                rosetta_js::method("pow", rosetta_js_2865),
-                rosetta_js::method("exp", rosetta_js_2866),
-                rosetta_js::method("log", rosetta_js_2867),
-                rosetta_js::method("sqrt", rosetta_js_2868),
-                rosetta_js::method("sin", rosetta_js_2869),
-                rosetta_js::method("cos", rosetta_js_2870),
-                rosetta_js::method("tan", rosetta_js_2871),
-                rosetta_js::method("tanh", rosetta_js_2872),
-                rosetta_js::method("abs", rosetta_js_2873),
+                rosetta_js::method("value", rosetta_js_3194),
+                rosetta_js::method("derivative", rosetta_js_3195),
+                rosetta_js::method("add", rosetta_js_3196),
+                rosetta_js::method("subtract", rosetta_js_3197),
+                rosetta_js::method("multiply", rosetta_js_3198),
+                rosetta_js::method("divide", rosetta_js_3199),
+                rosetta_js::method("negate", rosetta_js_3200),
+                rosetta_js::method("add_scalar", rosetta_js_3201),
+                rosetta_js::method("subtract_scalar", rosetta_js_3202),
+                rosetta_js::method("multiply_scalar", rosetta_js_3203),
+                rosetta_js::method("divide_scalar", rosetta_js_3204),
+                rosetta_js::method("pow", rosetta_js_3205),
+                rosetta_js::method("exp", rosetta_js_3206),
+                rosetta_js::method("log", rosetta_js_3207),
+                rosetta_js::method("sqrt", rosetta_js_3208),
+                rosetta_js::method("sin", rosetta_js_3209),
+                rosetta_js::method("cos", rosetta_js_3210),
+                rosetta_js::method("tan", rosetta_js_3211),
+                rosetta_js::method("tanh", rosetta_js_3212),
+                rosetta_js::method("abs", rosetta_js_3213),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Dual", rosetta_js_2874, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Dual", rosetta_js_3214, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::Dual>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10341,33 +11230,33 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::HyperDual
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("value", rosetta_js_2875),
-                rosetta_js::method("eps1", rosetta_js_2876),
-                rosetta_js::method("eps2", rosetta_js_2877),
-                rosetta_js::method("eps1eps2", rosetta_js_2878),
-                rosetta_js::method("add", rosetta_js_2879),
-                rosetta_js::method("subtract", rosetta_js_2880),
-                rosetta_js::method("multiply", rosetta_js_2881),
-                rosetta_js::method("divide", rosetta_js_2882),
-                rosetta_js::method("negate", rosetta_js_2883),
-                rosetta_js::method("add_scalar", rosetta_js_2884),
-                rosetta_js::method("subtract_scalar", rosetta_js_2885),
-                rosetta_js::method("multiply_scalar", rosetta_js_2886),
-                rosetta_js::method("divide_scalar", rosetta_js_2887),
-                rosetta_js::method("pow", rosetta_js_2888),
-                rosetta_js::method("exp", rosetta_js_2889),
-                rosetta_js::method("log", rosetta_js_2890),
-                rosetta_js::method("sqrt", rosetta_js_2891),
-                rosetta_js::method("sin", rosetta_js_2892),
-                rosetta_js::method("cos", rosetta_js_2893),
-                rosetta_js::method("tan", rosetta_js_2894),
-                rosetta_js::method("tanh", rosetta_js_2895),
+                rosetta_js::method("value", rosetta_js_3215),
+                rosetta_js::method("eps1", rosetta_js_3216),
+                rosetta_js::method("eps2", rosetta_js_3217),
+                rosetta_js::method("eps1eps2", rosetta_js_3218),
+                rosetta_js::method("add", rosetta_js_3219),
+                rosetta_js::method("subtract", rosetta_js_3220),
+                rosetta_js::method("multiply", rosetta_js_3221),
+                rosetta_js::method("divide", rosetta_js_3222),
+                rosetta_js::method("negate", rosetta_js_3223),
+                rosetta_js::method("add_scalar", rosetta_js_3224),
+                rosetta_js::method("subtract_scalar", rosetta_js_3225),
+                rosetta_js::method("multiply_scalar", rosetta_js_3226),
+                rosetta_js::method("divide_scalar", rosetta_js_3227),
+                rosetta_js::method("pow", rosetta_js_3228),
+                rosetta_js::method("exp", rosetta_js_3229),
+                rosetta_js::method("log", rosetta_js_3230),
+                rosetta_js::method("sqrt", rosetta_js_3231),
+                rosetta_js::method("sin", rosetta_js_3232),
+                rosetta_js::method("cos", rosetta_js_3233),
+                rosetta_js::method("tan", rosetta_js_3234),
+                rosetta_js::method("tanh", rosetta_js_3235),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "HyperDual", rosetta_js_2896, nullptr, properties);
+            cls = rosetta_js::define_class(env, "HyperDual", rosetta_js_3236, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::HyperDual>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10375,32 +11264,32 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::Var
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("value", rosetta_js_2897),
-                rosetta_js::method("index", rosetta_js_2898),
-                rosetta_js::method("add", rosetta_js_2899),
-                rosetta_js::method("subtract", rosetta_js_2900),
-                rosetta_js::method("multiply", rosetta_js_2901),
-                rosetta_js::method("divide", rosetta_js_2902),
-                rosetta_js::method("negate", rosetta_js_2903),
-                rosetta_js::method("add_scalar", rosetta_js_2904),
-                rosetta_js::method("subtract_scalar", rosetta_js_2905),
-                rosetta_js::method("multiply_scalar", rosetta_js_2906),
-                rosetta_js::method("divide_scalar", rosetta_js_2907),
-                rosetta_js::method("pow", rosetta_js_2908),
-                rosetta_js::method("exp", rosetta_js_2909),
-                rosetta_js::method("log", rosetta_js_2910),
-                rosetta_js::method("sqrt", rosetta_js_2911),
-                rosetta_js::method("sin", rosetta_js_2912),
-                rosetta_js::method("cos", rosetta_js_2913),
-                rosetta_js::method("tan", rosetta_js_2914),
-                rosetta_js::method("tanh", rosetta_js_2915),
-                rosetta_js::method("abs", rosetta_js_2916),
+                rosetta_js::method("value", rosetta_js_3237),
+                rosetta_js::method("index", rosetta_js_3238),
+                rosetta_js::method("add", rosetta_js_3239),
+                rosetta_js::method("subtract", rosetta_js_3240),
+                rosetta_js::method("multiply", rosetta_js_3241),
+                rosetta_js::method("divide", rosetta_js_3242),
+                rosetta_js::method("negate", rosetta_js_3243),
+                rosetta_js::method("add_scalar", rosetta_js_3244),
+                rosetta_js::method("subtract_scalar", rosetta_js_3245),
+                rosetta_js::method("multiply_scalar", rosetta_js_3246),
+                rosetta_js::method("divide_scalar", rosetta_js_3247),
+                rosetta_js::method("pow", rosetta_js_3248),
+                rosetta_js::method("exp", rosetta_js_3249),
+                rosetta_js::method("log", rosetta_js_3250),
+                rosetta_js::method("sqrt", rosetta_js_3251),
+                rosetta_js::method("sin", rosetta_js_3252),
+                rosetta_js::method("cos", rosetta_js_3253),
+                rosetta_js::method("tan", rosetta_js_3254),
+                rosetta_js::method("tanh", rosetta_js_3255),
+                rosetta_js::method("abs", rosetta_js_3256),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Var", rosetta_js_2917, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Var", rosetta_js_3257, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::Var>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10408,15 +11297,15 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::Tape
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("size", rosetta_js_2918),
-                rosetta_js::method("value_at", rosetta_js_2919),
-                rosetta_js::method("backward", rosetta_js_2920),
+                rosetta_js::method("size", rosetta_js_3258),
+                rosetta_js::method("value_at", rosetta_js_3259),
+                rosetta_js::method("backward", rosetta_js_3260),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "Tape", rosetta_js_2921, nullptr, properties);
+            cls = rosetta_js::define_class(env, "Tape", rosetta_js_3261, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::Tape>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10424,22 +11313,22 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::MLPClassifierSearch
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("best_hidden_nodes", rosetta_js_2922),
-                rosetta_js::method("validation_log_loss", rosetta_js_2923),
-                rosetta_js::method("test_accuracy", rosetta_js_2924),
-                rosetta_js::method("training_rows", rosetta_js_2925),
-                rosetta_js::method("validation_rows", rosetta_js_2926),
-                rosetta_js::method("test_rows", rosetta_js_2927),
-                rosetta_js::method("summary", rosetta_js_2928),
-                rosetta_js::method("trials", rosetta_js_2929),
-                rosetta_js::method("predict", rosetta_js_2930),
-                rosetta_js::method("plot_decision_regions", rosetta_js_2931),
+                rosetta_js::method("best_hidden_nodes", rosetta_js_3262),
+                rosetta_js::method("validation_log_loss", rosetta_js_3263),
+                rosetta_js::method("test_accuracy", rosetta_js_3264),
+                rosetta_js::method("training_rows", rosetta_js_3265),
+                rosetta_js::method("validation_rows", rosetta_js_3266),
+                rosetta_js::method("test_rows", rosetta_js_3267),
+                rosetta_js::method("summary", rosetta_js_3268),
+                rosetta_js::method("trials", rosetta_js_3269),
+                rosetta_js::method("predict", rosetta_js_3270),
+                rosetta_js::method("plot_decision_regions", rosetta_js_3271),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "MLPClassifierSearch", rosetta_js_2932, nullptr, properties);
+            cls = rosetta_js::define_class(env, "MLPClassifierSearch", rosetta_js_3272, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::MLPClassifierSearch>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10447,23 +11336,23 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::cad::Solid
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("united", rosetta_js_2937),
-                rosetta_js::method("subtracted", rosetta_js_2938),
-                rosetta_js::method("intersected", rosetta_js_2939),
-                rosetta_js::method("translated", rosetta_js_2940),
-                rosetta_js::method("rotated", rosetta_js_2941),
-                rosetta_js::method("filleted", rosetta_js_2942),
-                rosetta_js::method("chamfered", rosetta_js_2943),
-                rosetta_js::method("shelled", rosetta_js_2944),
-                rosetta_js::method("volume", rosetta_js_2945),
-                rosetta_js::method("valid", rosetta_js_2946),
-                rosetta_js::method("edges", rosetta_js_2947),
-                rosetta_js::method("faces", rosetta_js_2948),
-                rosetta_js::method("save", rosetta_js_2949),
-                rosetta_js::method("box", rosetta_js_2933, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("cylinder", rosetta_js_2934, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("sphere", rosetta_js_2935, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("torus", rosetta_js_2936, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("united", rosetta_js_3277),
+                rosetta_js::method("subtracted", rosetta_js_3278),
+                rosetta_js::method("intersected", rosetta_js_3279),
+                rosetta_js::method("translated", rosetta_js_3280),
+                rosetta_js::method("rotated", rosetta_js_3281),
+                rosetta_js::method("filleted", rosetta_js_3282),
+                rosetta_js::method("chamfered", rosetta_js_3283),
+                rosetta_js::method("shelled", rosetta_js_3284),
+                rosetta_js::method("volume", rosetta_js_3285),
+                rosetta_js::method("valid", rosetta_js_3286),
+                rosetta_js::method("edges", rosetta_js_3287),
+                rosetta_js::method("faces", rosetta_js_3288),
+                rosetta_js::method("save", rosetta_js_3289),
+                rosetta_js::method("box", rosetta_js_3273, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("cylinder", rosetta_js_3274, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("sphere", rosetta_js_3275, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("torus", rosetta_js_3276, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
@@ -10477,30 +11366,30 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::cad::View
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("set_joint", rosetta_js_2952),
-                rosetta_js::method("joint_names", rosetta_js_2953),
-                rosetta_js::method("add", rosetta_js_2954),
-                rosetta_js::method("primitive", rosetta_js_2955),
-                rosetta_js::method("size", rosetta_js_2956),
-                rosetta_js::method("samples", rosetta_js_2957),
-                rosetta_js::method("style", rosetta_js_2958),
-                rosetta_js::method("shadows", rosetta_js_2959),
-                rosetta_js::method("camera", rosetta_js_2960),
-                rosetta_js::method("fit", rosetta_js_2961),
-                rosetta_js::method("light", rosetta_js_2962),
-                rosetta_js::method("render", rosetta_js_2963),
-                rosetta_js::method("save_gltf", rosetta_js_2964),
-                rosetta_js::method("pick_object", rosetta_js_2965),
-                rosetta_js::method("object_count", rosetta_js_2966),
-                rosetta_js::method("triangle_count", rosetta_js_2967),
-                rosetta_js::method("from_file", rosetta_js_2950, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("from_urdf", rosetta_js_2951, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("set_joint", rosetta_js_3292),
+                rosetta_js::method("joint_names", rosetta_js_3293),
+                rosetta_js::method("add", rosetta_js_3294),
+                rosetta_js::method("primitive", rosetta_js_3295),
+                rosetta_js::method("size", rosetta_js_3296),
+                rosetta_js::method("samples", rosetta_js_3297),
+                rosetta_js::method("style", rosetta_js_3298),
+                rosetta_js::method("shadows", rosetta_js_3299),
+                rosetta_js::method("camera", rosetta_js_3300),
+                rosetta_js::method("fit", rosetta_js_3301),
+                rosetta_js::method("light", rosetta_js_3302),
+                rosetta_js::method("render", rosetta_js_3303),
+                rosetta_js::method("save_gltf", rosetta_js_3304),
+                rosetta_js::method("pick_object", rosetta_js_3305),
+                rosetta_js::method("object_count", rosetta_js_3306),
+                rosetta_js::method("triangle_count", rosetta_js_3307),
+                rosetta_js::method("from_file", rosetta_js_3290, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("from_urdf", rosetta_js_3291, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "CadScene", rosetta_js_2968, nullptr, properties);
+            cls = rosetta_js::define_class(env, "CadScene", rosetta_js_3308, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::cad::View>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10508,16 +11397,16 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::fda::SplineSolveOptions
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("method", rosetta_js_2969, rosetta_js_2970),
-                rosetta_js::accessor("direct_limit", rosetta_js_2971, rosetta_js_2972),
-                rosetta_js::accessor("tolerance", rosetta_js_2973, rosetta_js_2974),
-                rosetta_js::accessor("max_iterations", rosetta_js_2975, rosetta_js_2976),
+                rosetta_js::accessor("method", rosetta_js_3309, rosetta_js_3310),
+                rosetta_js::accessor("direct_limit", rosetta_js_3311, rosetta_js_3312),
+                rosetta_js::accessor("tolerance", rosetta_js_3313, rosetta_js_3314),
+                rosetta_js::accessor("max_iterations", rosetta_js_3315, rosetta_js_3316),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "SplineSolveOptions", rosetta_js_2977, nullptr, properties);
+            cls = rosetta_js::define_class(env, "SplineSolveOptions", rosetta_js_3317, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::fda::SplineSolveOptions>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10525,14 +11414,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::fda::BSplineRefinement
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("apply", rosetta_js_2978),
-                rosetta_js::accessor("basis", rosetta_js_2979, rosetta_js_2980),
+                rosetta_js::method("apply", rosetta_js_3318),
+                rosetta_js::accessor("basis", rosetta_js_3319, rosetta_js_3320),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "BSplineRefinement", rosetta_js_2981, nullptr, properties);
+            cls = rosetta_js::define_class(env, "BSplineRefinement", rosetta_js_3321, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::fda::BSplineRefinement>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10540,25 +11429,25 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::fda::TensorBSpline
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("dimensions", rosetta_js_2982),
-                rosetta_js::method("bases", rosetta_js_2983),
-                rosetta_js::method("shape", rosetta_js_2984),
-                rosetta_js::method("coefficient_count", rosetta_js_2985),
-                rosetta_js::method("coefficients", rosetta_js_2986),
-                rosetta_js::method("domain_min", rosetta_js_2987),
-                rosetta_js::method("domain_max", rosetta_js_2988),
-                rosetta_js::method("coefficient", rosetta_js_2989),
-                rosetta_js::method("set_coefficient", rosetta_js_2990),
-                rosetta_js::method("evaluate", rosetta_js_2991),
-                rosetta_js::method("evaluate_points", rosetta_js_2992),
-                rosetta_js::method("evaluate_grid", rosetta_js_2993),
-                rosetta_js::method("dyadic_refine", rosetta_js_2994),
+                rosetta_js::method("dimensions", rosetta_js_3322),
+                rosetta_js::method("bases", rosetta_js_3323),
+                rosetta_js::method("shape", rosetta_js_3324),
+                rosetta_js::method("coefficient_count", rosetta_js_3325),
+                rosetta_js::method("coefficients", rosetta_js_3326),
+                rosetta_js::method("domain_min", rosetta_js_3327),
+                rosetta_js::method("domain_max", rosetta_js_3328),
+                rosetta_js::method("coefficient", rosetta_js_3329),
+                rosetta_js::method("set_coefficient", rosetta_js_3330),
+                rosetta_js::method("evaluate", rosetta_js_3331),
+                rosetta_js::method("evaluate_points", rosetta_js_3332),
+                rosetta_js::method("evaluate_grid", rosetta_js_3333),
+                rosetta_js::method("dyadic_refine", rosetta_js_3334),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "TensorBSpline", rosetta_js_2995, nullptr, properties);
+            cls = rosetta_js::define_class(env, "TensorBSpline", rosetta_js_3335, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::fda::TensorBSpline>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10566,32 +11455,32 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::fda::detail::OrthantCellTree
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("dimensions", rosetta_js_2996),
-                rosetta_js::method("arity", rosetta_js_2997),
-                rosetta_js::method("size", rosetta_js_2998),
-                rosetta_js::method("max_depth", rosetta_js_2999),
-                rosetta_js::method("check", rosetta_js_3000),
-                rosetta_js::method("check_slot", rosetta_js_3001),
-                rosetta_js::method("lo", rosetta_js_3002),
-                rosetta_js::method("hi", rosetta_js_3003),
-                rosetta_js::method("depth", rosetta_js_3004),
-                rosetta_js::method("parent", rosetta_js_3005),
-                rosetta_js::method("child", rosetta_js_3006),
-                rosetta_js::method("is_leaf", rosetta_js_3007),
-                rosetta_js::method("ensure_child", rosetta_js_3008),
-                rosetta_js::method("child_box", rosetta_js_3009),
-                rosetta_js::method("slot_for", rosetta_js_3010),
-                rosetta_js::method("contains", rosetta_js_3011),
-                rosetta_js::method("locate", rosetta_js_3012),
-                rosetta_js::method("cells_at_depth", rosetta_js_3013),
-                rosetta_js::method("covered_to_depth", rosetta_js_3015),
-                rosetta_js::method("overlaps", rosetta_js_3014, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("dimensions", rosetta_js_3336),
+                rosetta_js::method("arity", rosetta_js_3337),
+                rosetta_js::method("size", rosetta_js_3338),
+                rosetta_js::method("max_depth", rosetta_js_3339),
+                rosetta_js::method("check", rosetta_js_3340),
+                rosetta_js::method("check_slot", rosetta_js_3341),
+                rosetta_js::method("lo", rosetta_js_3342),
+                rosetta_js::method("hi", rosetta_js_3343),
+                rosetta_js::method("depth", rosetta_js_3344),
+                rosetta_js::method("parent", rosetta_js_3345),
+                rosetta_js::method("child", rosetta_js_3346),
+                rosetta_js::method("is_leaf", rosetta_js_3347),
+                rosetta_js::method("ensure_child", rosetta_js_3348),
+                rosetta_js::method("child_box", rosetta_js_3349),
+                rosetta_js::method("slot_for", rosetta_js_3350),
+                rosetta_js::method("contains", rosetta_js_3351),
+                rosetta_js::method("locate", rosetta_js_3352),
+                rosetta_js::method("cells_at_depth", rosetta_js_3353),
+                rosetta_js::method("covered_to_depth", rosetta_js_3355),
+                rosetta_js::method("overlaps", rosetta_js_3354, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "OrthantCellTree", rosetta_js_3016, nullptr, properties);
+            cls = rosetta_js::define_class(env, "OrthantCellTree", rosetta_js_3356, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::fda::detail::OrthantCellTree>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10599,14 +11488,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::fda::detail::AxisRefinement
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("rows", rosetta_js_3017, rosetta_js_3018),
-                rosetta_js::accessor("cols", rosetta_js_3019, rosetta_js_3020),
+                rosetta_js::accessor("rows", rosetta_js_3357, rosetta_js_3358),
+                rosetta_js::accessor("cols", rosetta_js_3359, rosetta_js_3360),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "AxisRefinement", rosetta_js_3021, nullptr, properties);
+            cls = rosetta_js::define_class(env, "AxisRefinement", rosetta_js_3361, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::fda::detail::AxisRefinement>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10614,33 +11503,33 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::fda::HierarchicalBSpline
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("dimensions", rosetta_js_3022),
-                rosetta_js::method("cell_count", rosetta_js_3023),
-                rosetta_js::method("root", rosetta_js_3024),
-                rosetta_js::method("parent", rosetta_js_3025),
-                rosetta_js::method("child", rosetta_js_3026),
-                rosetta_js::method("depth", rosetta_js_3027),
-                rosetta_js::method("cell_min", rosetta_js_3028),
-                rosetta_js::method("cell_max", rosetta_js_3029),
-                rosetta_js::method("locate", rosetta_js_3030),
-                rosetta_js::method("has_spline", rosetta_js_3031),
-                rosetta_js::method("spline", rosetta_js_3032),
-                rosetta_js::method("set_spline", rosetta_js_3033),
-                rosetta_js::method("clear_spline", rosetta_js_3034),
-                rosetta_js::method("subdivide", rosetta_js_3035),
-                rosetta_js::method("refine", rosetta_js_3036),
-                rosetta_js::method("refine_region", rosetta_js_3037),
-                rosetta_js::method("fit_cell", rosetta_js_3038),
-                rosetta_js::method("fit_cell_penalized", rosetta_js_3039),
-                rosetta_js::method("evaluate", rosetta_js_3040),
-                rosetta_js::method("evaluate_points", rosetta_js_3041),
-                rosetta_js::method("evaluate_grid", rosetta_js_3042),
+                rosetta_js::method("dimensions", rosetta_js_3362),
+                rosetta_js::method("cell_count", rosetta_js_3363),
+                rosetta_js::method("root", rosetta_js_3364),
+                rosetta_js::method("parent", rosetta_js_3365),
+                rosetta_js::method("child", rosetta_js_3366),
+                rosetta_js::method("depth", rosetta_js_3367),
+                rosetta_js::method("cell_min", rosetta_js_3368),
+                rosetta_js::method("cell_max", rosetta_js_3369),
+                rosetta_js::method("locate", rosetta_js_3370),
+                rosetta_js::method("has_spline", rosetta_js_3371),
+                rosetta_js::method("spline", rosetta_js_3372),
+                rosetta_js::method("set_spline", rosetta_js_3373),
+                rosetta_js::method("clear_spline", rosetta_js_3374),
+                rosetta_js::method("subdivide", rosetta_js_3375),
+                rosetta_js::method("refine", rosetta_js_3376),
+                rosetta_js::method("refine_region", rosetta_js_3377),
+                rosetta_js::method("fit_cell", rosetta_js_3378),
+                rosetta_js::method("fit_cell_penalized", rosetta_js_3379),
+                rosetta_js::method("evaluate", rosetta_js_3380),
+                rosetta_js::method("evaluate_points", rosetta_js_3381),
+                rosetta_js::method("evaluate_grid", rosetta_js_3382),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "HierarchicalBSpline", rosetta_js_3043, nullptr, properties);
+            cls = rosetta_js::define_class(env, "HierarchicalBSpline", rosetta_js_3383, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::fda::HierarchicalBSpline>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10648,41 +11537,41 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::fda::TruncatedHierarchicalBSpline
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("dimensions", rosetta_js_3044),
-                rosetta_js::method("level_count", rosetta_js_3045),
-                rosetta_js::method("level", rosetta_js_3046),
-                rosetta_js::method("cell_count", rosetta_js_3047),
-                rosetta_js::method("root", rosetta_js_3048),
-                rosetta_js::method("parent", rosetta_js_3049),
-                rosetta_js::method("child", rosetta_js_3050),
-                rosetta_js::method("depth", rosetta_js_3051),
-                rosetta_js::method("cell_min", rosetta_js_3052),
-                rosetta_js::method("cell_max", rosetta_js_3053),
-                rosetta_js::method("locate", rosetta_js_3054),
-                rosetta_js::method("refine", rosetta_js_3055),
-                rosetta_js::method("subdivide", rosetta_js_3056),
-                rosetta_js::method("refine_region", rosetta_js_3057),
-                rosetta_js::method("support_min", rosetta_js_3058),
-                rosetta_js::method("support_max", rosetta_js_3059),
-                rosetta_js::method("is_active", rosetta_js_3060),
-                rosetta_js::method("active_indices", rosetta_js_3061),
-                rosetta_js::method("basis_size", rosetta_js_3062),
-                rosetta_js::method("coefficient", rosetta_js_3063),
-                rosetta_js::method("set_coefficient", rosetta_js_3064),
-                rosetta_js::method("truncated_basis", rosetta_js_3065),
-                rosetta_js::method("fit_level", rosetta_js_3066),
-                rosetta_js::method("fit_level_penalized", rosetta_js_3067),
-                rosetta_js::method("fit", rosetta_js_3068),
-                rosetta_js::method("fit_penalized", rosetta_js_3069),
-                rosetta_js::method("evaluate", rosetta_js_3070),
-                rosetta_js::method("evaluate_points", rosetta_js_3071),
-                rosetta_js::method("evaluate_grid", rosetta_js_3072),
+                rosetta_js::method("dimensions", rosetta_js_3384),
+                rosetta_js::method("level_count", rosetta_js_3385),
+                rosetta_js::method("level", rosetta_js_3386),
+                rosetta_js::method("cell_count", rosetta_js_3387),
+                rosetta_js::method("root", rosetta_js_3388),
+                rosetta_js::method("parent", rosetta_js_3389),
+                rosetta_js::method("child", rosetta_js_3390),
+                rosetta_js::method("depth", rosetta_js_3391),
+                rosetta_js::method("cell_min", rosetta_js_3392),
+                rosetta_js::method("cell_max", rosetta_js_3393),
+                rosetta_js::method("locate", rosetta_js_3394),
+                rosetta_js::method("refine", rosetta_js_3395),
+                rosetta_js::method("subdivide", rosetta_js_3396),
+                rosetta_js::method("refine_region", rosetta_js_3397),
+                rosetta_js::method("support_min", rosetta_js_3398),
+                rosetta_js::method("support_max", rosetta_js_3399),
+                rosetta_js::method("is_active", rosetta_js_3400),
+                rosetta_js::method("active_indices", rosetta_js_3401),
+                rosetta_js::method("basis_size", rosetta_js_3402),
+                rosetta_js::method("coefficient", rosetta_js_3403),
+                rosetta_js::method("set_coefficient", rosetta_js_3404),
+                rosetta_js::method("truncated_basis", rosetta_js_3405),
+                rosetta_js::method("fit_level", rosetta_js_3406),
+                rosetta_js::method("fit_level_penalized", rosetta_js_3407),
+                rosetta_js::method("fit", rosetta_js_3408),
+                rosetta_js::method("fit_penalized", rosetta_js_3409),
+                rosetta_js::method("evaluate", rosetta_js_3410),
+                rosetta_js::method("evaluate_points", rosetta_js_3411),
+                rosetta_js::method("evaluate_grid", rosetta_js_3412),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "TruncatedHierarchicalBSpline", rosetta_js_3073, nullptr, properties);
+            cls = rosetta_js::define_class(env, "TruncatedHierarchicalBSpline", rosetta_js_3413, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::fda::TruncatedHierarchicalBSpline>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10690,67 +11579,67 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::nn::NnTensor
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("save_npy", rosetta_js_3081),
-                rosetta_js::method("defined", rosetta_js_3082),
-                rosetta_js::method("values", rosetta_js_3083),
-                rosetta_js::method("shape", rosetta_js_3084),
-                rosetta_js::method("dtype", rosetta_js_3085),
-                rosetta_js::method("ndim", rosetta_js_3086),
-                rosetta_js::method("numel", rosetta_js_3087),
-                rosetta_js::method("item", rosetta_js_3088),
-                rosetta_js::method("at", rosetta_js_3089),
-                rosetta_js::method("str", rosetta_js_3090),
-                rosetta_js::method("astype", rosetta_js_3091),
-                rosetta_js::method("reshape", rosetta_js_3092),
-                rosetta_js::method("transpose", rosetta_js_3093),
-                rosetta_js::method("slice", rosetta_js_3094),
-                rosetta_js::method("concat", rosetta_js_3095),
-                rosetta_js::method("add", rosetta_js_3096),
-                rosetta_js::method("sub", rosetta_js_3097),
-                rosetta_js::method("mul", rosetta_js_3098),
-                rosetta_js::method("div", rosetta_js_3099),
-                rosetta_js::method("add_scalar", rosetta_js_3100),
-                rosetta_js::method("mul_scalar", rosetta_js_3101),
-                rosetta_js::method("pow", rosetta_js_3102),
-                rosetta_js::method("neg", rosetta_js_3103),
-                rosetta_js::method("matmul", rosetta_js_3104),
-                rosetta_js::method("exp", rosetta_js_3105),
-                rosetta_js::method("log", rosetta_js_3106),
-                rosetta_js::method("sqrt", rosetta_js_3107),
-                rosetta_js::method("abs", rosetta_js_3108),
-                rosetta_js::method("square", rosetta_js_3109),
-                rosetta_js::method("tanh", rosetta_js_3110),
-                rosetta_js::method("sigmoid", rosetta_js_3111),
-                rosetta_js::method("relu", rosetta_js_3112),
-                rosetta_js::method("activate", rosetta_js_3113),
-                rosetta_js::method("softmax", rosetta_js_3114),
-                rosetta_js::method("log_softmax", rosetta_js_3115),
-                rosetta_js::method("sum", rosetta_js_3116),
-                rosetta_js::method("mean", rosetta_js_3117),
-                rosetta_js::method("max", rosetta_js_3118),
-                rosetta_js::method("min", rosetta_js_3119),
-                rosetta_js::method("argmax", rosetta_js_3120),
-                rosetta_js::method("set_requires_grad", rosetta_js_3121),
-                rosetta_js::method("requires_grad", rosetta_js_3122),
-                rosetta_js::method("backward", rosetta_js_3123),
-                rosetta_js::method("grad", rosetta_js_3124),
-                rosetta_js::method("zero_grad", rosetta_js_3125),
-                rosetta_js::method("detach", rosetta_js_3126),
-                rosetta_js::method("to_string", rosetta_js_3127),
-                rosetta_js::method("zeros", rosetta_js_3074, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("ones", rosetta_js_3075, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("full", rosetta_js_3076, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("arange", rosetta_js_3077, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("randn", rosetta_js_3078, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("uniform", rosetta_js_3079, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
-                rosetta_js::method("load_npy", rosetta_js_3080, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("save_npy", rosetta_js_3421),
+                rosetta_js::method("defined", rosetta_js_3422),
+                rosetta_js::method("values", rosetta_js_3423),
+                rosetta_js::method("shape", rosetta_js_3424),
+                rosetta_js::method("dtype", rosetta_js_3425),
+                rosetta_js::method("ndim", rosetta_js_3426),
+                rosetta_js::method("numel", rosetta_js_3427),
+                rosetta_js::method("item", rosetta_js_3428),
+                rosetta_js::method("at", rosetta_js_3429),
+                rosetta_js::method("str", rosetta_js_3430),
+                rosetta_js::method("astype", rosetta_js_3431),
+                rosetta_js::method("reshape", rosetta_js_3432),
+                rosetta_js::method("transpose", rosetta_js_3433),
+                rosetta_js::method("slice", rosetta_js_3434),
+                rosetta_js::method("concat", rosetta_js_3435),
+                rosetta_js::method("add", rosetta_js_3436),
+                rosetta_js::method("sub", rosetta_js_3437),
+                rosetta_js::method("mul", rosetta_js_3438),
+                rosetta_js::method("div", rosetta_js_3439),
+                rosetta_js::method("add_scalar", rosetta_js_3440),
+                rosetta_js::method("mul_scalar", rosetta_js_3441),
+                rosetta_js::method("pow", rosetta_js_3442),
+                rosetta_js::method("neg", rosetta_js_3443),
+                rosetta_js::method("matmul", rosetta_js_3444),
+                rosetta_js::method("exp", rosetta_js_3445),
+                rosetta_js::method("log", rosetta_js_3446),
+                rosetta_js::method("sqrt", rosetta_js_3447),
+                rosetta_js::method("abs", rosetta_js_3448),
+                rosetta_js::method("square", rosetta_js_3449),
+                rosetta_js::method("tanh", rosetta_js_3450),
+                rosetta_js::method("sigmoid", rosetta_js_3451),
+                rosetta_js::method("relu", rosetta_js_3452),
+                rosetta_js::method("activate", rosetta_js_3453),
+                rosetta_js::method("softmax", rosetta_js_3454),
+                rosetta_js::method("log_softmax", rosetta_js_3455),
+                rosetta_js::method("sum", rosetta_js_3456),
+                rosetta_js::method("mean", rosetta_js_3457),
+                rosetta_js::method("max", rosetta_js_3458),
+                rosetta_js::method("min", rosetta_js_3459),
+                rosetta_js::method("argmax", rosetta_js_3460),
+                rosetta_js::method("set_requires_grad", rosetta_js_3461),
+                rosetta_js::method("requires_grad", rosetta_js_3462),
+                rosetta_js::method("backward", rosetta_js_3463),
+                rosetta_js::method("grad", rosetta_js_3464),
+                rosetta_js::method("zero_grad", rosetta_js_3465),
+                rosetta_js::method("detach", rosetta_js_3466),
+                rosetta_js::method("to_string", rosetta_js_3467),
+                rosetta_js::method("zeros", rosetta_js_3414, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("ones", rosetta_js_3415, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("full", rosetta_js_3416, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("arange", rosetta_js_3417, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("randn", rosetta_js_3418, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("uniform", rosetta_js_3419, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("load_npy", rosetta_js_3420, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::to_string_method));
             { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::to_string_method); d.name = inspect; properties.push_back(d); }
             napi_value cls;
-            cls = rosetta_js::define_class(env, "NnTensor", rosetta_js_3128, nullptr, properties);
+            cls = rosetta_js::define_class(env, "NnTensor", rosetta_js_3468, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::nn::NnTensor>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10758,38 +11647,38 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::nn::NnModel
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("add_dense", rosetta_js_3129),
-                rosetta_js::method("add_conv2d", rosetta_js_3130),
-                rosetta_js::method("add_max_pool2d", rosetta_js_3131),
-                rosetta_js::method("add_avg_pool2d", rosetta_js_3132),
-                rosetta_js::method("add_global_avg_pool2d", rosetta_js_3133),
-                rosetta_js::method("add_batch_norm", rosetta_js_3134),
-                rosetta_js::method("add_layer_norm", rosetta_js_3135),
-                rosetta_js::method("add_dropout", rosetta_js_3136),
-                rosetta_js::method("add_activation", rosetta_js_3137),
-                rosetta_js::method("add_flatten", rosetta_js_3138),
-                rosetta_js::method("add_reshape", rosetta_js_3139),
-                rosetta_js::method("num_layers", rosetta_js_3140),
-                rosetta_js::method("summary", rosetta_js_3141),
-                rosetta_js::method("forward", rosetta_js_3142),
-                rosetta_js::method("predict", rosetta_js_3143),
-                rosetta_js::method("loss", rosetta_js_3144),
-                rosetta_js::method("compute_gradients", rosetta_js_3145),
-                rosetta_js::method("gradient", rosetta_js_3146),
-                rosetta_js::method("set_optimizer", rosetta_js_3147),
-                rosetta_js::method("train_step", rosetta_js_3148),
-                rosetta_js::method("parameter_names", rosetta_js_3149),
-                rosetta_js::method("parameter", rosetta_js_3150),
-                rosetta_js::method("set_parameter", rosetta_js_3151),
-                rosetta_js::method("parameter_count", rosetta_js_3152),
-                rosetta_js::method("save", rosetta_js_3153),
-                rosetta_js::method("load", rosetta_js_3154),
+                rosetta_js::method("add_dense", rosetta_js_3469),
+                rosetta_js::method("add_conv2d", rosetta_js_3470),
+                rosetta_js::method("add_max_pool2d", rosetta_js_3471),
+                rosetta_js::method("add_avg_pool2d", rosetta_js_3472),
+                rosetta_js::method("add_global_avg_pool2d", rosetta_js_3473),
+                rosetta_js::method("add_batch_norm", rosetta_js_3474),
+                rosetta_js::method("add_layer_norm", rosetta_js_3475),
+                rosetta_js::method("add_dropout", rosetta_js_3476),
+                rosetta_js::method("add_activation", rosetta_js_3477),
+                rosetta_js::method("add_flatten", rosetta_js_3478),
+                rosetta_js::method("add_reshape", rosetta_js_3479),
+                rosetta_js::method("num_layers", rosetta_js_3480),
+                rosetta_js::method("summary", rosetta_js_3481),
+                rosetta_js::method("forward", rosetta_js_3482),
+                rosetta_js::method("predict", rosetta_js_3483),
+                rosetta_js::method("loss", rosetta_js_3484),
+                rosetta_js::method("compute_gradients", rosetta_js_3485),
+                rosetta_js::method("gradient", rosetta_js_3486),
+                rosetta_js::method("set_optimizer", rosetta_js_3487),
+                rosetta_js::method("train_step", rosetta_js_3488),
+                rosetta_js::method("parameter_names", rosetta_js_3489),
+                rosetta_js::method("parameter", rosetta_js_3490),
+                rosetta_js::method("set_parameter", rosetta_js_3491),
+                rosetta_js::method("parameter_count", rosetta_js_3492),
+                rosetta_js::method("save", rosetta_js_3493),
+                rosetta_js::method("load", rosetta_js_3494),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "NnModel", rosetta_js_3155, nullptr, properties);
+            cls = rosetta_js::define_class(env, "NnModel", rosetta_js_3495, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::nn::NnModel>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10797,18 +11686,18 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::sim::TaskOutput
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::accessor("observations", rosetta_js_3156, rosetta_js_3157),
-                rosetta_js::accessor("rewards", rosetta_js_3158, rosetta_js_3159),
-                rosetta_js::accessor("terminated", rosetta_js_3160, rosetta_js_3161),
-                rosetta_js::accessor("truncated", rosetta_js_3162, rosetta_js_3163),
-                rosetta_js::accessor("final_observations", rosetta_js_3164, rosetta_js_3165),
-                rosetta_js::accessor("final_valid", rosetta_js_3166, rosetta_js_3167),
+                rosetta_js::accessor("observations", rosetta_js_3496, rosetta_js_3497),
+                rosetta_js::accessor("rewards", rosetta_js_3498, rosetta_js_3499),
+                rosetta_js::accessor("terminated", rosetta_js_3500, rosetta_js_3501),
+                rosetta_js::accessor("truncated", rosetta_js_3502, rosetta_js_3503),
+                rosetta_js::accessor("final_observations", rosetta_js_3504, rosetta_js_3505),
+                rosetta_js::accessor("final_valid", rosetta_js_3506, rosetta_js_3507),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "TaskOutput", rosetta_js_3168, nullptr, properties);
+            cls = rosetta_js::define_class(env, "TaskOutput", rosetta_js_3508, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::sim::TaskOutput>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10816,14 +11705,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::sim::TaskBatch
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("size", rosetta_js_3169),
-                rosetta_js::method("observation_size", rosetta_js_3170),
-                rosetta_js::method("action_size", rosetta_js_3171),
-                rosetta_js::method("output", rosetta_js_3172),
-                rosetta_js::method("step", rosetta_js_3173),
-                rosetta_js::method("reset", rosetta_js_3174),
-                rosetta_js::method("seed", rosetta_js_3175),
-                rosetta_js::method("create", rosetta_js_3176, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
+                rosetta_js::method("size", rosetta_js_3509),
+                rosetta_js::method("observation_size", rosetta_js_3510),
+                rosetta_js::method("action_size", rosetta_js_3511),
+                rosetta_js::method("output", rosetta_js_3512),
+                rosetta_js::method("step", rosetta_js_3513),
+                rosetta_js::method("reset", rosetta_js_3514),
+                rosetta_js::method("seed", rosetta_js_3515),
+                rosetta_js::method("create", rosetta_js_3516, static_cast<napi_property_attributes>(napi_default_method | napi_static)),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
@@ -10837,32 +11726,32 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::dstruct::DirectedGraph<std::string>
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("empty", rosetta_js_3177),
-                rosetta_js::method("vertex_count", rosetta_js_3178),
-                rosetta_js::method("edge_count", rosetta_js_3179),
-                rosetta_js::method("clear", rosetta_js_3180),
-                rosetta_js::method("add_vertex", rosetta_js_3181),
-                rosetta_js::method("remove_vertex", rosetta_js_3182),
-                rosetta_js::method("has_vertex", rosetta_js_3183),
-                rosetta_js::method("add_edge", rosetta_js_3184),
-                rosetta_js::method("remove_edge", rosetta_js_3185),
-                rosetta_js::method("has_edge", rosetta_js_3186),
-                rosetta_js::method("vertices", rosetta_js_3187),
-                rosetta_js::method("outgoing_neighbors", rosetta_js_3188),
-                rosetta_js::method("incoming_neighbors", rosetta_js_3189),
-                rosetta_js::method("out_degree", rosetta_js_3190),
-                rosetta_js::method("in_degree", rosetta_js_3191),
-                rosetta_js::method("bfs", rosetta_js_3192),
-                rosetta_js::method("dfs", rosetta_js_3193),
-                rosetta_js::method("contains_path", rosetta_js_3194),
-                rosetta_js::method("transpose", rosetta_js_3195),
-                rosetta_js::method("topological_sort", rosetta_js_3196),
+                rosetta_js::method("empty", rosetta_js_3517),
+                rosetta_js::method("vertex_count", rosetta_js_3518),
+                rosetta_js::method("edge_count", rosetta_js_3519),
+                rosetta_js::method("clear", rosetta_js_3520),
+                rosetta_js::method("add_vertex", rosetta_js_3521),
+                rosetta_js::method("remove_vertex", rosetta_js_3522),
+                rosetta_js::method("has_vertex", rosetta_js_3523),
+                rosetta_js::method("add_edge", rosetta_js_3524),
+                rosetta_js::method("remove_edge", rosetta_js_3525),
+                rosetta_js::method("has_edge", rosetta_js_3526),
+                rosetta_js::method("vertices", rosetta_js_3527),
+                rosetta_js::method("outgoing_neighbors", rosetta_js_3528),
+                rosetta_js::method("incoming_neighbors", rosetta_js_3529),
+                rosetta_js::method("out_degree", rosetta_js_3530),
+                rosetta_js::method("in_degree", rosetta_js_3531),
+                rosetta_js::method("bfs", rosetta_js_3532),
+                rosetta_js::method("dfs", rosetta_js_3533),
+                rosetta_js::method("contains_path", rosetta_js_3534),
+                rosetta_js::method("transpose", rosetta_js_3535),
+                rosetta_js::method("topological_sort", rosetta_js_3536),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "DirectedGraph", rosetta_js_3197, nullptr, properties);
+            cls = rosetta_js::define_class(env, "DirectedGraph", rosetta_js_3537, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::dstruct::DirectedGraph<std::string>>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10870,30 +11759,30 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::dstruct::UndirectedGraph<std::string>
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("empty", rosetta_js_3198),
-                rosetta_js::method("vertex_count", rosetta_js_3199),
-                rosetta_js::method("edge_count", rosetta_js_3200),
-                rosetta_js::method("clear", rosetta_js_3201),
-                rosetta_js::method("add_vertex", rosetta_js_3202),
-                rosetta_js::method("remove_vertex", rosetta_js_3203),
-                rosetta_js::method("has_vertex", rosetta_js_3204),
-                rosetta_js::method("add_edge", rosetta_js_3205),
-                rosetta_js::method("remove_edge", rosetta_js_3206),
-                rosetta_js::method("has_edge", rosetta_js_3207),
-                rosetta_js::method("vertices", rosetta_js_3208),
-                rosetta_js::method("neighbors", rosetta_js_3209),
-                rosetta_js::method("degree", rosetta_js_3210),
-                rosetta_js::method("bfs", rosetta_js_3211),
-                rosetta_js::method("dfs", rosetta_js_3212),
-                rosetta_js::method("contains_path", rosetta_js_3213),
-                rosetta_js::method("connected_components", rosetta_js_3214),
-                rosetta_js::method("has_cycle", rosetta_js_3215),
+                rosetta_js::method("empty", rosetta_js_3538),
+                rosetta_js::method("vertex_count", rosetta_js_3539),
+                rosetta_js::method("edge_count", rosetta_js_3540),
+                rosetta_js::method("clear", rosetta_js_3541),
+                rosetta_js::method("add_vertex", rosetta_js_3542),
+                rosetta_js::method("remove_vertex", rosetta_js_3543),
+                rosetta_js::method("has_vertex", rosetta_js_3544),
+                rosetta_js::method("add_edge", rosetta_js_3545),
+                rosetta_js::method("remove_edge", rosetta_js_3546),
+                rosetta_js::method("has_edge", rosetta_js_3547),
+                rosetta_js::method("vertices", rosetta_js_3548),
+                rosetta_js::method("neighbors", rosetta_js_3549),
+                rosetta_js::method("degree", rosetta_js_3550),
+                rosetta_js::method("bfs", rosetta_js_3551),
+                rosetta_js::method("dfs", rosetta_js_3552),
+                rosetta_js::method("contains_path", rosetta_js_3553),
+                rosetta_js::method("connected_components", rosetta_js_3554),
+                rosetta_js::method("has_cycle", rosetta_js_3555),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "UndirectedGraph", rosetta_js_3216, nullptr, properties);
+            cls = rosetta_js::define_class(env, "UndirectedGraph", rosetta_js_3556, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::dstruct::UndirectedGraph<std::string>>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -10901,33 +11790,33 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         { // datamunge::dstruct::WeightedGraph<std::string, double>
             std::vector<napi_property_descriptor> properties = {
-                rosetta_js::method("directed", rosetta_js_3217),
-                rosetta_js::method("empty", rosetta_js_3218),
-                rosetta_js::method("vertex_count", rosetta_js_3219),
-                rosetta_js::method("edge_count", rosetta_js_3220),
-                rosetta_js::method("clear", rosetta_js_3221),
-                rosetta_js::method("add_vertex", rosetta_js_3222),
-                rosetta_js::method("remove_vertex", rosetta_js_3223),
-                rosetta_js::method("has_vertex", rosetta_js_3224),
-                rosetta_js::method("add_edge", rosetta_js_3225),
-                rosetta_js::method("remove_edge", rosetta_js_3226),
-                rosetta_js::method("has_edge", rosetta_js_3227),
-                rosetta_js::method("edge_weight", rosetta_js_3228),
-                rosetta_js::method("vertices", rosetta_js_3229),
-                rosetta_js::method("neighbors", rosetta_js_3230),
-                rosetta_js::method("dijkstra_distances", rosetta_js_3231),
-                rosetta_js::method("bellman_ford_distances", rosetta_js_3232),
-                rosetta_js::method("bellman_ford_has_negative_cycle", rosetta_js_3233),
-                rosetta_js::method("minimum_spanning_tree", rosetta_js_3234),
-                rosetta_js::method("connected_components", rosetta_js_3235),
-                rosetta_js::method("strongly_connected_components", rosetta_js_3236),
-                rosetta_js::method("has_cycle", rosetta_js_3237),
+                rosetta_js::method("directed", rosetta_js_3557),
+                rosetta_js::method("empty", rosetta_js_3558),
+                rosetta_js::method("vertex_count", rosetta_js_3559),
+                rosetta_js::method("edge_count", rosetta_js_3560),
+                rosetta_js::method("clear", rosetta_js_3561),
+                rosetta_js::method("add_vertex", rosetta_js_3562),
+                rosetta_js::method("remove_vertex", rosetta_js_3563),
+                rosetta_js::method("has_vertex", rosetta_js_3564),
+                rosetta_js::method("add_edge", rosetta_js_3565),
+                rosetta_js::method("remove_edge", rosetta_js_3566),
+                rosetta_js::method("has_edge", rosetta_js_3567),
+                rosetta_js::method("edge_weight", rosetta_js_3568),
+                rosetta_js::method("vertices", rosetta_js_3569),
+                rosetta_js::method("neighbors", rosetta_js_3570),
+                rosetta_js::method("dijkstra_distances", rosetta_js_3571),
+                rosetta_js::method("bellman_ford_distances", rosetta_js_3572),
+                rosetta_js::method("bellman_ford_has_negative_cycle", rosetta_js_3573),
+                rosetta_js::method("minimum_spanning_tree", rosetta_js_3574),
+                rosetta_js::method("connected_components", rosetta_js_3575),
+                rosetta_js::method("strongly_connected_components", rosetta_js_3576),
+                rosetta_js::method("has_cycle", rosetta_js_3577),
                 rosetta_js::method("close", rosetta_js::object_close),
             };
             if (dispose) { napi_property_descriptor d = rosetta_js::method(nullptr, rosetta_js::object_close); d.name = dispose; properties.push_back(d); }
             properties.push_back(rosetta_js::method("toString", rosetta_js::object_to_string));
             napi_value cls;
-            cls = rosetta_js::define_class(env, "WeightedGraph", rosetta_js_3238, nullptr, properties);
+            cls = rosetta_js::define_class(env, "WeightedGraph", rosetta_js_3578, nullptr, properties);
             const auto id = rosetta_js::Info<datamunge::dstruct::WeightedGraph<std::string, double>>::value.id;
             rosetta_js::check(env, napi_create_reference(env, cls, 1, &s.constructors[id]));
             rosetta_js::check(env, napi_create_reference(env, rosetta_js::get(env, cls, "prototype"), 1, &s.prototypes[id]));
@@ -11011,176 +11900,197 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
                 rosetta_js::method("determinant", rosetta_js_54, napi_default_jsproperty),
                 rosetta_js::method("resultant", rosetta_js_55, napi_default_jsproperty),
                 rosetta_js::method("discriminant", rosetta_js_56, napi_default_jsproperty),
-                rosetta_js::method("leapfrog_gaussian_acceptance", rosetta_js_57, napi_default_jsproperty),
-                rosetta_js::method("gaussian_importance_efficiency", rosetta_js_58, napi_default_jsproperty),
-                rosetta_js::method("rgb_to_gray", rosetta_js_59, napi_default_jsproperty),
-                rosetta_js::method("rgb_to_hsv", rosetta_js_60, napi_default_jsproperty),
-                rosetta_js::method("hsv_to_rgb", rosetta_js_61, napi_default_jsproperty),
-                rosetta_js::method("to_grayscale", rosetta_js_62, napi_default_jsproperty),
-                rosetta_js::method("to_rgb", rosetta_js_63, napi_default_jsproperty),
-                rosetta_js::method("to_rgba", rosetta_js_64, napi_default_jsproperty),
-                rosetta_js::method("split_channels", rosetta_js_65, napi_default_jsproperty),
-                rosetta_js::method("merge_channels", rosetta_js_66, napi_default_jsproperty),
-                rosetta_js::method("dog_blobs", rosetta_js_67, napi_default_jsproperty),
-                rosetta_js::method("structure_tensor", rosetta_js_68, napi_default_jsproperty),
-                rosetta_js::method("extract_local_maxima", rosetta_js_69, napi_default_jsproperty),
-                rosetta_js::method("harris_corners", rosetta_js_70, napi_default_jsproperty),
-                rosetta_js::method("shi_tomasi_corners", rosetta_js_71, napi_default_jsproperty),
-                rosetta_js::method("fast_corners", rosetta_js_72, napi_default_jsproperty),
-                rosetta_js::method("line_endpoints", rosetta_js_73, napi_default_jsproperty),
-                rosetta_js::method("hough_lines", rosetta_js_74, napi_default_jsproperty),
-                rosetta_js::method("hough_circles", rosetta_js_75, napi_default_jsproperty),
-                rosetta_js::method("in_structuring_element", rosetta_js_76, napi_default_jsproperty),
-                rosetta_js::method("is_foreground", rosetta_js_77, napi_default_jsproperty),
-                rosetta_js::method("erode", rosetta_js_78, napi_default_jsproperty),
-                rosetta_js::method("dilate", rosetta_js_79, napi_default_jsproperty),
-                rosetta_js::method("morphological_open", rosetta_js_80, napi_default_jsproperty),
-                rosetta_js::method("morphological_close", rosetta_js_81, napi_default_jsproperty),
-                rosetta_js::method("lucas_kanade_optical_flow", rosetta_js_82, napi_default_jsproperty),
-                rosetta_js::method("box_kernel", rosetta_js_83, napi_default_jsproperty),
-                rosetta_js::method("gaussian_kernel", rosetta_js_84, napi_default_jsproperty),
-                rosetta_js::method("convolve", rosetta_js_85, napi_default_jsproperty),
-                rosetta_js::method("box_blur", rosetta_js_86, napi_default_jsproperty),
-                rosetta_js::method("gaussian_blur", rosetta_js_87, napi_default_jsproperty),
-                rosetta_js::method("sharpen", rosetta_js_88, napi_default_jsproperty),
-                rosetta_js::method("sobel_edges", rosetta_js_89, napi_default_jsproperty),
-                rosetta_js::method("adjust_brightness", rosetta_js_90, napi_default_jsproperty),
-                rosetta_js::method("adjust_contrast", rosetta_js_91, napi_default_jsproperty),
-                rosetta_js::method("threshold", rosetta_js_92, napi_default_jsproperty),
-                rosetta_js::method("lerp_byte", rosetta_js_93, napi_default_jsproperty),
-                rosetta_js::method("bilinear_sample", rosetta_js_94, napi_default_jsproperty),
-                rosetta_js::method("resize", rosetta_js_95, napi_default_jsproperty),
-                rosetta_js::method("crop", rosetta_js_96, napi_default_jsproperty),
-                rosetta_js::method("flip_horizontal", rosetta_js_97, napi_default_jsproperty),
-                rosetta_js::method("flip_vertical", rosetta_js_98, napi_default_jsproperty),
-                rosetta_js::method("rotate90", rosetta_js_99, napi_default_jsproperty),
-                rosetta_js::method("rotate", rosetta_js_100, napi_default_jsproperty),
-                rosetta_js::method("gaussian_pyramid", rosetta_js_101, napi_default_jsproperty),
-                rosetta_js::method("signed_difference_image", rosetta_js_102, napi_default_jsproperty),
-                rosetta_js::method("laplacian_pyramid", rosetta_js_103, napi_default_jsproperty),
-                rosetta_js::method("connected_components", rosetta_js_104, napi_default_jsproperty),
-                rosetta_js::method("otsu_threshold", rosetta_js_105, napi_default_jsproperty),
-                rosetta_js::method("kmeans_segment", rosetta_js_106, napi_default_jsproperty),
-                rosetta_js::method("data_home", rosetta_js_107, napi_default_jsproperty),
-                rosetta_js::method("downloadable", rosetta_js_108, napi_default_jsproperty),
-                rosetta_js::method("fetch", rosetta_js_109, napi_default_jsproperty),
-                rosetta_js::method("download_file", rosetta_js_110, napi_default_jsproperty),
-                rosetta_js::method("make_uniform_mesh1d", rosetta_js_111, napi_default_jsproperty),
-                rosetta_js::method("squared_distance", rosetta_js_112, napi_default_jsproperty),
-                rosetta_js::method("distance", rosetta_js_113, napi_default_jsproperty),
-                rosetta_js::method("cross", rosetta_js_114, napi_default_jsproperty),
-                rosetta_js::method("delaunay_triangulation", rosetta_js_115, napi_default_jsproperty),
-                rosetta_js::method("delaunay_trace", rosetta_js_116, napi_default_jsproperty),
-                rosetta_js::method("delaunay_analyze", rosetta_js_117, napi_default_jsproperty),
-                rosetta_js::method("delaunay_uniform_cloud", rosetta_js_118, napi_default_jsproperty),
-                rosetta_js::method("make_rectangular_mesh2d", rosetta_js_119, napi_default_jsproperty),
-                rosetta_js::method("make_mesh2d_from_points", rosetta_js_120, napi_default_jsproperty),
-                rosetta_js::method("boundary_nodes", rosetta_js_121, napi_default_jsproperty),
-                rosetta_js::method("bounding_box", rosetta_js_122, napi_default_jsproperty),
-                rosetta_js::method("closest_pair", rosetta_js_123, napi_default_jsproperty),
-                rosetta_js::method("convex_hull", rosetta_js_124, napi_default_jsproperty),
-                rosetta_js::method("convex_hull_analyze", rosetta_js_125, napi_default_jsproperty),
-                rosetta_js::method("convex_hull_trace", rosetta_js_126, napi_default_jsproperty),
-                rosetta_js::method("sample_gaussian_points", rosetta_js_127, napi_default_jsproperty),
-                rosetta_js::method("terrain_colors", rosetta_js_128, napi_default_jsproperty),
-                rosetta_js::method("diverging_colors", rosetta_js_129, napi_default_jsproperty),
-                rosetta_js::method("viridis_colors", rosetta_js_130, napi_default_jsproperty),
-                rosetta_js::method("value_colors", rosetta_js_131, napi_default_jsproperty),
-                rosetta_js::method("dtw_trace_entries", rosetta_js_132, napi_default_jsproperty),
-                rosetta_js::method("dynamic_time_warping_work", rosetta_js_133, napi_default_jsproperty),
-                rosetta_js::method("dynamic_time_warping", rosetta_js_134, napi_default_jsproperty),
-                rosetta_js::method("dynamic_time_warping_trace", rosetta_js_135, napi_default_jsproperty),
-                rosetta_js::method("dtw_path_cost", rosetta_js_136, napi_default_jsproperty),
-                rosetta_js::method("plot_dtw_alignment", rosetta_js_137, napi_default_jsproperty),
-                rosetta_js::method("discrete_frechet_distance", rosetta_js_138, napi_default_jsproperty),
-                rosetta_js::method("circle_from_one_point", rosetta_js_139, napi_default_jsproperty),
-                rosetta_js::method("circle_from_two_points", rosetta_js_140, napi_default_jsproperty),
-                rosetta_js::method("circle_from_three_points", rosetta_js_141, napi_default_jsproperty),
-                rosetta_js::method("circle_contains", rosetta_js_142, napi_default_jsproperty),
-                rosetta_js::method("min_enclosing_circle", rosetta_js_143, napi_default_jsproperty),
-                rosetta_js::method("point_in_polygon", rosetta_js_144, napi_default_jsproperty),
-                rosetta_js::method("signed_polygon_area", rosetta_js_145, napi_default_jsproperty),
-                rosetta_js::method("polygon_area", rosetta_js_146, napi_default_jsproperty),
-                rosetta_js::method("polygon_centroid", rosetta_js_147, napi_default_jsproperty),
-                rosetta_js::method("is_convex_polygon", rosetta_js_148, napi_default_jsproperty),
-                rosetta_js::method("orientation", rosetta_js_149, napi_default_jsproperty),
-                rosetta_js::method("on_segment", rosetta_js_150, napi_default_jsproperty),
-                rosetta_js::method("segments_intersect", rosetta_js_151, napi_default_jsproperty),
-                rosetta_js::method("line_intersection_point", rosetta_js_152, napi_default_jsproperty),
-                rosetta_js::method("segment_intersection_point", rosetta_js_153, napi_default_jsproperty),
-                rosetta_js::method("inside_clip_edge", rosetta_js_154, napi_default_jsproperty),
-                rosetta_js::method("clip_polygon", rosetta_js_155, napi_default_jsproperty),
-                rosetta_js::method("point_in_triangle", rosetta_js_156, napi_default_jsproperty),
-                rosetta_js::method("triangulate_polygon", rosetta_js_157, napi_default_jsproperty),
-                rosetta_js::method("polygon_diameter", rosetta_js_158, napi_default_jsproperty),
-                rosetta_js::method("minimum_bounding_rectangle", rosetta_js_159, napi_default_jsproperty),
-                rosetta_js::method("point_to_line_distance", rosetta_js_160, napi_default_jsproperty),
-                rosetta_js::method("simplify_polyline", rosetta_js_161, napi_default_jsproperty),
-                rosetta_js::method("circumcenter", rosetta_js_162, napi_default_jsproperty),
-                rosetta_js::method("voronoi_diagram", rosetta_js_163, napi_default_jsproperty),
-                rosetta_js::method("read_bmp", rosetta_js_164, napi_default_jsproperty),
-                rosetta_js::method("write_bmp", rosetta_js_165, napi_default_jsproperty),
-                rosetta_js::method("set_pixel_clipped", rosetta_js_166, napi_default_jsproperty),
-                rosetta_js::method("stamp", rosetta_js_167, napi_default_jsproperty),
-                rosetta_js::method("draw_line", rosetta_js_168, napi_default_jsproperty),
-                rosetta_js::method("draw_rectangle", rosetta_js_169, napi_default_jsproperty),
-                rosetta_js::method("draw_circle", rosetta_js_170, napi_default_jsproperty),
-                rosetta_js::method("draw_polygon", rosetta_js_171, napi_default_jsproperty),
-                rosetta_js::method("read_ppm", rosetta_js_172, napi_default_jsproperty),
-                rosetta_js::method("write_ppm", rosetta_js_173, napi_default_jsproperty),
-                rosetta_js::method("read_pgm", rosetta_js_174, napi_default_jsproperty),
-                rosetta_js::method("write_pgm", rosetta_js_175, napi_default_jsproperty),
-                rosetta_js::method("read_pbm", rosetta_js_176, napi_default_jsproperty),
-                rosetta_js::method("write_pbm", rosetta_js_177, napi_default_jsproperty),
-                rosetta_js::method("read_png", rosetta_js_178, napi_default_jsproperty),
-                rosetta_js::method("write_png", rosetta_js_179, napi_default_jsproperty),
-                rosetta_js::method("expected_improvement", rosetta_js_180, napi_default_jsproperty),
-                rosetta_js::method("probability_of_improvement", rosetta_js_181, napi_default_jsproperty),
-                rosetta_js::method("one_way_anova", rosetta_js_182, napi_default_jsproperty),
-                rosetta_js::method("kruskal_wallis_test", rosetta_js_183, napi_default_jsproperty),
-                rosetta_js::method("chi_squared_goodness_of_fit", rosetta_js_184, napi_default_jsproperty),
-                rosetta_js::method("chi_squared_test_independence", rosetta_js_185, napi_default_jsproperty),
-                rosetta_js::method("pearson_correlation_test", rosetta_js_186, napi_default_jsproperty),
-                rosetta_js::method("spearman_correlation_test", rosetta_js_187, napi_default_jsproperty),
-                rosetta_js::method("kendall_tau", rosetta_js_188, napi_default_jsproperty),
-                rosetta_js::method("fisher_exact_test_2x2", rosetta_js_189, napi_default_jsproperty),
-                rosetta_js::method("ks_test_one_sample_normal", rosetta_js_190, napi_default_jsproperty),
-                rosetta_js::method("ks_test_one_sample_uniform", rosetta_js_191, napi_default_jsproperty),
-                rosetta_js::method("ks_test_two_sample", rosetta_js_192, napi_default_jsproperty),
-                rosetta_js::method("shapiro_francia_test", rosetta_js_193, napi_default_jsproperty),
-                rosetta_js::method("p_adjust", rosetta_js_194, napi_default_jsproperty),
-                rosetta_js::method("westfall_young_adjust", rosetta_js_195, napi_default_jsproperty),
-                rosetta_js::method("romano_wolf_adjust", rosetta_js_196, napi_default_jsproperty),
-                rosetta_js::method("proportion_test_one_sample", rosetta_js_197, napi_default_jsproperty),
-                rosetta_js::method("proportion_test_two_sample", rosetta_js_198, napi_default_jsproperty),
-                rosetta_js::method("binomial_test", rosetta_js_199, napi_default_jsproperty),
-                rosetta_js::method("t_test_one_sample", rosetta_js_200, napi_default_jsproperty),
-                rosetta_js::method("t_test_two_sample", rosetta_js_201, napi_default_jsproperty),
-                rosetta_js::method("t_test_paired", rosetta_js_202, napi_default_jsproperty),
-                rosetta_js::method("f_test_variance", rosetta_js_203, napi_default_jsproperty),
-                rosetta_js::method("wilcoxon_signed_rank_test", rosetta_js_204, napi_default_jsproperty),
-                rosetta_js::method("wilcoxon_rank_sum_test", rosetta_js_205, napi_default_jsproperty),
-                rosetta_js::method("bs", rosetta_js_206, napi_default_jsproperty),
-                rosetta_js::method("mkdir", rosetta_js_207, napi_default_jsproperty),
-                rosetta_js::method("hello", rosetta_js_208, napi_default_jsproperty),
-                rosetta_js::method("call_with_callback", rosetta_js_209, napi_default_jsproperty),
-                rosetta_js::method("map_dvector_with_callback", rosetta_js_210, napi_default_jsproperty),
-                rosetta_js::method("make_dvector", rosetta_js_211, napi_default_jsproperty),
-                rosetta_js::method("sum_dvector", rosetta_js_212, napi_default_jsproperty),
-                rosetta_js::method("make_dpair", rosetta_js_213, napi_default_jsproperty),
-                rosetta_js::method("sum_dpair", rosetta_js_214, napi_default_jsproperty),
-                rosetta_js::method("refine_basis", rosetta_js_233, napi_default_jsproperty),
-                rosetta_js::method("dyadic_refine", rosetta_js_234, napi_default_jsproperty),
-                rosetta_js::method("fit_tensor_bspline", rosetta_js_235, napi_default_jsproperty),
-                rosetta_js::method("fit_tensor_pspline", rosetta_js_236, napi_default_jsproperty),
-                rosetta_js::method("nn_gemm_backend", rosetta_js_237, napi_default_jsproperty),
-                rosetta_js::method("nn_get_num_threads", rosetta_js_238, napi_default_jsproperty),
-                rosetta_js::method("nn_set_num_threads", rosetta_js_239, napi_default_jsproperty),
-                rosetta_js::method("set_seed", rosetta_js_240, napi_default_jsproperty),
-                rosetta_js::method("unif", rosetta_js_241, napi_default_jsproperty),
-                rosetta_js::method("runif", rosetta_js_242, napi_default_jsproperty),
-                rosetta_js::method("rnorm", rosetta_js_243, napi_default_jsproperty),
-                rosetta_js::method("seql", rosetta_js_244, napi_default_jsproperty),
+                rosetta_js::method("terrain_colors", rosetta_js_57, napi_default_jsproperty),
+                rosetta_js::method("diverging_colors", rosetta_js_58, napi_default_jsproperty),
+                rosetta_js::method("viridis_colors", rosetta_js_59, napi_default_jsproperty),
+                rosetta_js::method("value_colors", rosetta_js_60, napi_default_jsproperty),
+                rosetta_js::method("hmc_proposal", rosetta_js_61, napi_default_jsproperty),
+                rosetta_js::method("leapfrog_gaussian_acceptance", rosetta_js_62, napi_default_jsproperty),
+                rosetta_js::method("gaussian_importance_efficiency", rosetta_js_63, napi_default_jsproperty),
+                rosetta_js::method("rgb_to_gray", rosetta_js_64, napi_default_jsproperty),
+                rosetta_js::method("rgb_to_hsv", rosetta_js_65, napi_default_jsproperty),
+                rosetta_js::method("hsv_to_rgb", rosetta_js_66, napi_default_jsproperty),
+                rosetta_js::method("to_grayscale", rosetta_js_67, napi_default_jsproperty),
+                rosetta_js::method("to_rgb", rosetta_js_68, napi_default_jsproperty),
+                rosetta_js::method("to_rgba", rosetta_js_69, napi_default_jsproperty),
+                rosetta_js::method("split_channels", rosetta_js_70, napi_default_jsproperty),
+                rosetta_js::method("merge_channels", rosetta_js_71, napi_default_jsproperty),
+                rosetta_js::method("dog_blobs", rosetta_js_72, napi_default_jsproperty),
+                rosetta_js::method("structure_tensor", rosetta_js_73, napi_default_jsproperty),
+                rosetta_js::method("extract_local_maxima", rosetta_js_74, napi_default_jsproperty),
+                rosetta_js::method("harris_corners", rosetta_js_75, napi_default_jsproperty),
+                rosetta_js::method("shi_tomasi_corners", rosetta_js_76, napi_default_jsproperty),
+                rosetta_js::method("fast_corners", rosetta_js_77, napi_default_jsproperty),
+                rosetta_js::method("line_endpoints", rosetta_js_78, napi_default_jsproperty),
+                rosetta_js::method("hough_lines", rosetta_js_79, napi_default_jsproperty),
+                rosetta_js::method("hough_circles", rosetta_js_80, napi_default_jsproperty),
+                rosetta_js::method("in_structuring_element", rosetta_js_81, napi_default_jsproperty),
+                rosetta_js::method("is_foreground", rosetta_js_82, napi_default_jsproperty),
+                rosetta_js::method("erode", rosetta_js_83, napi_default_jsproperty),
+                rosetta_js::method("dilate", rosetta_js_84, napi_default_jsproperty),
+                rosetta_js::method("morphological_open", rosetta_js_85, napi_default_jsproperty),
+                rosetta_js::method("morphological_close", rosetta_js_86, napi_default_jsproperty),
+                rosetta_js::method("lucas_kanade_optical_flow", rosetta_js_87, napi_default_jsproperty),
+                rosetta_js::method("box_kernel", rosetta_js_88, napi_default_jsproperty),
+                rosetta_js::method("gaussian_kernel", rosetta_js_89, napi_default_jsproperty),
+                rosetta_js::method("convolve", rosetta_js_90, napi_default_jsproperty),
+                rosetta_js::method("box_blur", rosetta_js_91, napi_default_jsproperty),
+                rosetta_js::method("gaussian_blur", rosetta_js_92, napi_default_jsproperty),
+                rosetta_js::method("sharpen", rosetta_js_93, napi_default_jsproperty),
+                rosetta_js::method("sobel_edges", rosetta_js_94, napi_default_jsproperty),
+                rosetta_js::method("adjust_brightness", rosetta_js_95, napi_default_jsproperty),
+                rosetta_js::method("adjust_contrast", rosetta_js_96, napi_default_jsproperty),
+                rosetta_js::method("threshold", rosetta_js_97, napi_default_jsproperty),
+                rosetta_js::method("lerp_byte", rosetta_js_98, napi_default_jsproperty),
+                rosetta_js::method("bilinear_sample", rosetta_js_99, napi_default_jsproperty),
+                rosetta_js::method("resize", rosetta_js_100, napi_default_jsproperty),
+                rosetta_js::method("crop", rosetta_js_101, napi_default_jsproperty),
+                rosetta_js::method("flip_horizontal", rosetta_js_102, napi_default_jsproperty),
+                rosetta_js::method("flip_vertical", rosetta_js_103, napi_default_jsproperty),
+                rosetta_js::method("rotate90", rosetta_js_104, napi_default_jsproperty),
+                rosetta_js::method("rotate", rosetta_js_105, napi_default_jsproperty),
+                rosetta_js::method("gaussian_pyramid", rosetta_js_106, napi_default_jsproperty),
+                rosetta_js::method("signed_difference_image", rosetta_js_107, napi_default_jsproperty),
+                rosetta_js::method("laplacian_pyramid", rosetta_js_108, napi_default_jsproperty),
+                rosetta_js::method("connected_components", rosetta_js_109, napi_default_jsproperty),
+                rosetta_js::method("otsu_threshold", rosetta_js_110, napi_default_jsproperty),
+                rosetta_js::method("kmeans_segment", rosetta_js_111, napi_default_jsproperty),
+                rosetta_js::method("data_home", rosetta_js_112, napi_default_jsproperty),
+                rosetta_js::method("downloadable", rosetta_js_113, napi_default_jsproperty),
+                rosetta_js::method("fetch", rosetta_js_114, napi_default_jsproperty),
+                rosetta_js::method("download_file", rosetta_js_115, napi_default_jsproperty),
+                rosetta_js::method("make_uniform_mesh1d", rosetta_js_116, napi_default_jsproperty),
+                rosetta_js::method("squared_distance", rosetta_js_117, napi_default_jsproperty),
+                rosetta_js::method("distance", rosetta_js_118, napi_default_jsproperty),
+                rosetta_js::method("cross", rosetta_js_119, napi_default_jsproperty),
+                rosetta_js::method("delaunay_triangulation", rosetta_js_120, napi_default_jsproperty),
+                rosetta_js::method("delaunay_trace", rosetta_js_121, napi_default_jsproperty),
+                rosetta_js::method("delaunay_analyze", rosetta_js_122, napi_default_jsproperty),
+                rosetta_js::method("delaunay_uniform_cloud", rosetta_js_123, napi_default_jsproperty),
+                rosetta_js::method("make_rectangular_mesh2d", rosetta_js_124, napi_default_jsproperty),
+                rosetta_js::method("make_mesh2d_from_points", rosetta_js_125, napi_default_jsproperty),
+                rosetta_js::method("boundary_nodes", rosetta_js_126, napi_default_jsproperty),
+                rosetta_js::method("bounding_box", rosetta_js_127, napi_default_jsproperty),
+                rosetta_js::method("closest_pair", rosetta_js_128, napi_default_jsproperty),
+                rosetta_js::method("convex_hull", rosetta_js_129, napi_default_jsproperty),
+                rosetta_js::method("convex_hull_analyze", rosetta_js_130, napi_default_jsproperty),
+                rosetta_js::method("convex_hull_trace", rosetta_js_131, napi_default_jsproperty),
+                rosetta_js::method("sample_gaussian_points", rosetta_js_132, napi_default_jsproperty),
+                rosetta_js::method("dtw_trace_entries", rosetta_js_133, napi_default_jsproperty),
+                rosetta_js::method("dynamic_time_warping_work", rosetta_js_134, napi_default_jsproperty),
+                rosetta_js::method("dynamic_time_warping", rosetta_js_135, napi_default_jsproperty),
+                rosetta_js::method("dynamic_time_warping_trace", rosetta_js_136, napi_default_jsproperty),
+                rosetta_js::method("dtw_path_cost", rosetta_js_137, napi_default_jsproperty),
+                rosetta_js::method("plot_dtw_alignment", rosetta_js_138, napi_default_jsproperty),
+                rosetta_js::method("discrete_frechet_distance", rosetta_js_139, napi_default_jsproperty),
+                rosetta_js::method("min_enclosing_circle", rosetta_js_140, napi_default_jsproperty),
+                rosetta_js::method("min_enclosing_circle_trace", rosetta_js_141, napi_default_jsproperty),
+                rosetta_js::method("enclosing_circle_check", rosetta_js_142, napi_default_jsproperty),
+                rosetta_js::method("enclosing_circle_demo", rosetta_js_143, napi_default_jsproperty),
+                rosetta_js::method("circle_boundary", rosetta_js_144, napi_default_jsproperty),
+                rosetta_js::method("circle_from_one_point", rosetta_js_145, napi_default_jsproperty),
+                rosetta_js::method("circle_from_two_points", rosetta_js_146, napi_default_jsproperty),
+                rosetta_js::method("circle_from_three_points", rosetta_js_147, napi_default_jsproperty),
+                rosetta_js::method("circle_contains", rosetta_js_148, napi_default_jsproperty),
+                rosetta_js::method("polygon_centroid", rosetta_js_149, napi_default_jsproperty),
+                rosetta_js::method("is_convex_polygon", rosetta_js_150, napi_default_jsproperty),
+                rosetta_js::method("orientation", rosetta_js_151, napi_default_jsproperty),
+                rosetta_js::method("segment_intersection_run", rosetta_js_152, napi_default_jsproperty),
+                rosetta_js::method("segment_intersection_trace", rosetta_js_153, napi_default_jsproperty),
+                rosetta_js::method("segments_intersect", rosetta_js_154, napi_default_jsproperty),
+                rosetta_js::method("line_intersection_point", rosetta_js_155, napi_default_jsproperty),
+                rosetta_js::method("segment_intersection_point", rosetta_js_156, napi_default_jsproperty),
+                rosetta_js::method("inside_clip_edge", rosetta_js_157, napi_default_jsproperty),
+                rosetta_js::method("clip_polygon", rosetta_js_158, napi_default_jsproperty),
+                rosetta_js::method("point_in_triangle", rosetta_js_159, napi_default_jsproperty),
+                rosetta_js::method("triangulate_polygon", rosetta_js_160, napi_default_jsproperty),
+                rosetta_js::method("triangulate_polygon_run", rosetta_js_161, napi_default_jsproperty),
+                rosetta_js::method("triangulate_polygon_trace", rosetta_js_162, napi_default_jsproperty),
+                rosetta_js::method("polygon_diameter_run", rosetta_js_163, napi_default_jsproperty),
+                rosetta_js::method("polygon_diameter_trace", rosetta_js_164, napi_default_jsproperty),
+                rosetta_js::method("polygon_diameter", rosetta_js_165, napi_default_jsproperty),
+                rosetta_js::method("diameter_example_cloud", rosetta_js_166, napi_default_jsproperty),
+                rosetta_js::method("point_to_line_distance", rosetta_js_167, napi_default_jsproperty),
+                rosetta_js::method("simplify_polyline", rosetta_js_168, napi_default_jsproperty),
+                rosetta_js::method("circumcenter", rosetta_js_169, napi_default_jsproperty),
+                rosetta_js::method("voronoi_diagram", rosetta_js_170, napi_default_jsproperty),
+                rosetta_js::method("read_bmp", rosetta_js_171, napi_default_jsproperty),
+                rosetta_js::method("write_bmp", rosetta_js_172, napi_default_jsproperty),
+                rosetta_js::method("set_pixel_clipped", rosetta_js_173, napi_default_jsproperty),
+                rosetta_js::method("stamp", rosetta_js_174, napi_default_jsproperty),
+                rosetta_js::method("draw_line", rosetta_js_175, napi_default_jsproperty),
+                rosetta_js::method("draw_rectangle", rosetta_js_176, napi_default_jsproperty),
+                rosetta_js::method("draw_circle", rosetta_js_177, napi_default_jsproperty),
+                rosetta_js::method("draw_polygon", rosetta_js_178, napi_default_jsproperty),
+                rosetta_js::method("read_ppm", rosetta_js_179, napi_default_jsproperty),
+                rosetta_js::method("write_ppm", rosetta_js_180, napi_default_jsproperty),
+                rosetta_js::method("read_pgm", rosetta_js_181, napi_default_jsproperty),
+                rosetta_js::method("write_pgm", rosetta_js_182, napi_default_jsproperty),
+                rosetta_js::method("read_pbm", rosetta_js_183, napi_default_jsproperty),
+                rosetta_js::method("write_pbm", rosetta_js_184, napi_default_jsproperty),
+                rosetta_js::method("read_png", rosetta_js_185, napi_default_jsproperty),
+                rosetta_js::method("write_png", rosetta_js_186, napi_default_jsproperty),
+                rosetta_js::method("expected_improvement", rosetta_js_187, napi_default_jsproperty),
+                rosetta_js::method("probability_of_improvement", rosetta_js_188, napi_default_jsproperty),
+                rosetta_js::method("p_adjust", rosetta_js_189, napi_default_jsproperty),
+                rosetta_js::method("p_adjust_method", rosetta_js_190, napi_default_jsproperty),
+                rosetta_js::method("westfall_young_adjust", rosetta_js_191, napi_default_jsproperty),
+                rosetta_js::method("romano_wolf_adjust", rosetta_js_192, napi_default_jsproperty),
+                rosetta_js::method("one_way_anova", rosetta_js_193, napi_default_jsproperty),
+                rosetta_js::method("welch_anova", rosetta_js_194, napi_default_jsproperty),
+                rosetta_js::method("games_howell", rosetta_js_195, napi_default_jsproperty),
+                rosetta_js::method("levene_test", rosetta_js_196, napi_default_jsproperty),
+                rosetta_js::method("bartlett_test", rosetta_js_197, napi_default_jsproperty),
+                rosetta_js::method("fligner_killeen_test", rosetta_js_198, napi_default_jsproperty),
+                rosetta_js::method("kruskal_wallis_test", rosetta_js_199, napi_default_jsproperty),
+                rosetta_js::method("dunn_test", rosetta_js_200, napi_default_jsproperty),
+                rosetta_js::method("chi_squared_goodness_of_fit", rosetta_js_201, napi_default_jsproperty),
+                rosetta_js::method("power_divergence_test", rosetta_js_202, napi_default_jsproperty),
+                rosetta_js::method("chi_squared_test_independence", rosetta_js_203, napi_default_jsproperty),
+                rosetta_js::method("pearson_correlation_test", rosetta_js_204, napi_default_jsproperty),
+                rosetta_js::method("spearman_correlation_test", rosetta_js_205, napi_default_jsproperty),
+                rosetta_js::method("kendall_tau", rosetta_js_206, napi_default_jsproperty),
+                rosetta_js::method("fisher_exact_test_2x2", rosetta_js_207, napi_default_jsproperty),
+                rosetta_js::method("ks_test_one_sample", rosetta_js_208, napi_default_jsproperty),
+                rosetta_js::method("ks_test_one_sample_normal", rosetta_js_209, napi_default_jsproperty),
+                rosetta_js::method("ks_test_one_sample_uniform", rosetta_js_210, napi_default_jsproperty),
+                rosetta_js::method("ks_test_two_sample", rosetta_js_211, napi_default_jsproperty),
+                rosetta_js::method("shapiro_francia_test", rosetta_js_212, napi_default_jsproperty),
+                rosetta_js::method("proportion_test_one_sample", rosetta_js_213, napi_default_jsproperty),
+                rosetta_js::method("proportion_test_two_sample", rosetta_js_214, napi_default_jsproperty),
+                rosetta_js::method("binomial_test", rosetta_js_215, napi_default_jsproperty),
+                rosetta_js::method("newcombe_difference_interval", rosetta_js_216, napi_default_jsproperty),
+                rosetta_js::method("risk_ratio_score_interval", rosetta_js_217, napi_default_jsproperty),
+                rosetta_js::method("poisson_rate_interval", rosetta_js_218, napi_default_jsproperty),
+                rosetta_js::method("poisson_rate_ratio_interval", rosetta_js_219, napi_default_jsproperty),
+                rosetta_js::method("cochran_armitage_test", rosetta_js_220, napi_default_jsproperty),
+                rosetta_js::method("t_test_one_sample", rosetta_js_221, napi_default_jsproperty),
+                rosetta_js::method("t_test_two_sample", rosetta_js_222, napi_default_jsproperty),
+                rosetta_js::method("t_test_paired", rosetta_js_223, napi_default_jsproperty),
+                rosetta_js::method("f_test_variance", rosetta_js_224, napi_default_jsproperty),
+                rosetta_js::method("wilcoxon_signed_rank_test", rosetta_js_225, napi_default_jsproperty),
+                rosetta_js::method("wilcoxon_rank_sum_test", rosetta_js_226, napi_default_jsproperty),
+                rosetta_js::method("bs", rosetta_js_227, napi_default_jsproperty),
+                rosetta_js::method("mkdir", rosetta_js_228, napi_default_jsproperty),
+                rosetta_js::method("hello", rosetta_js_229, napi_default_jsproperty),
+                rosetta_js::method("call_with_callback", rosetta_js_230, napi_default_jsproperty),
+                rosetta_js::method("map_dvector_with_callback", rosetta_js_231, napi_default_jsproperty),
+                rosetta_js::method("make_dvector", rosetta_js_232, napi_default_jsproperty),
+                rosetta_js::method("sum_dvector", rosetta_js_233, napi_default_jsproperty),
+                rosetta_js::method("make_dpair", rosetta_js_234, napi_default_jsproperty),
+                rosetta_js::method("sum_dpair", rosetta_js_235, napi_default_jsproperty),
+                rosetta_js::method("refine_basis", rosetta_js_254, napi_default_jsproperty),
+                rosetta_js::method("dyadic_refine", rosetta_js_255, napi_default_jsproperty),
+                rosetta_js::method("fit_tensor_bspline", rosetta_js_256, napi_default_jsproperty),
+                rosetta_js::method("fit_tensor_pspline", rosetta_js_257, napi_default_jsproperty),
+                rosetta_js::method("nn_gemm_backend", rosetta_js_258, napi_default_jsproperty),
+                rosetta_js::method("nn_get_num_threads", rosetta_js_259, napi_default_jsproperty),
+                rosetta_js::method("nn_set_num_threads", rosetta_js_260, napi_default_jsproperty),
+                rosetta_js::method("set_seed", rosetta_js_261, napi_default_jsproperty),
+                rosetta_js::method("unif", rosetta_js_262, napi_default_jsproperty),
+                rosetta_js::method("runif", rosetta_js_263, napi_default_jsproperty),
+                rosetta_js::method("rnorm", rosetta_js_264, napi_default_jsproperty),
+                rosetta_js::method("seql", rosetta_js_265, napi_default_jsproperty),
             };
             rosetta_js::check(env, napi_define_properties(env, target, sizeof(functions) / sizeof(functions[0]), functions));
         }
@@ -11188,24 +12098,24 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
             napi_value target;
             rosetta_js::check(env, napi_create_object(env, &target));
             const napi_property_descriptor functions[] = {
-                rosetta_js::method("iris", rosetta_js_215, napi_default_jsproperty),
-                rosetta_js::method("penguins", rosetta_js_216, napi_default_jsproperty),
-                rosetta_js::method("tooth_growth", rosetta_js_217, napi_default_jsproperty),
-                rosetta_js::method("wine", rosetta_js_218, napi_default_jsproperty),
-                rosetta_js::method("titanic", rosetta_js_219, napi_default_jsproperty),
-                rosetta_js::method("eight_schools", rosetta_js_220, napi_default_jsproperty),
-                rosetta_js::method("air_passengers", rosetta_js_221, napi_default_jsproperty),
-                rosetta_js::method("volcano", rosetta_js_222, napi_default_jsproperty),
-                rosetta_js::method("faithful", rosetta_js_223, napi_default_jsproperty),
-                rosetta_js::method("mtcars", rosetta_js_224, napi_default_jsproperty),
-                rosetta_js::method("airquality", rosetta_js_225, napi_default_jsproperty),
-                rosetta_js::method("breast_cancer", rosetta_js_226, napi_default_jsproperty),
-                rosetta_js::method("diabetes", rosetta_js_227, napi_default_jsproperty),
-                rosetta_js::method("digits", rosetta_js_228, napi_default_jsproperty),
-                rosetta_js::method("diamonds", rosetta_js_229, napi_default_jsproperty),
-                rosetta_js::method("california_housing", rosetta_js_230, napi_default_jsproperty),
-                rosetta_js::method("load", rosetta_js_231, napi_default_jsproperty),
-                rosetta_js::method("catalog", rosetta_js_232, napi_default_jsproperty),
+                rosetta_js::method("iris", rosetta_js_236, napi_default_jsproperty),
+                rosetta_js::method("penguins", rosetta_js_237, napi_default_jsproperty),
+                rosetta_js::method("tooth_growth", rosetta_js_238, napi_default_jsproperty),
+                rosetta_js::method("wine", rosetta_js_239, napi_default_jsproperty),
+                rosetta_js::method("titanic", rosetta_js_240, napi_default_jsproperty),
+                rosetta_js::method("eight_schools", rosetta_js_241, napi_default_jsproperty),
+                rosetta_js::method("air_passengers", rosetta_js_242, napi_default_jsproperty),
+                rosetta_js::method("volcano", rosetta_js_243, napi_default_jsproperty),
+                rosetta_js::method("faithful", rosetta_js_244, napi_default_jsproperty),
+                rosetta_js::method("mtcars", rosetta_js_245, napi_default_jsproperty),
+                rosetta_js::method("airquality", rosetta_js_246, napi_default_jsproperty),
+                rosetta_js::method("breast_cancer", rosetta_js_247, napi_default_jsproperty),
+                rosetta_js::method("diabetes", rosetta_js_248, napi_default_jsproperty),
+                rosetta_js::method("digits", rosetta_js_249, napi_default_jsproperty),
+                rosetta_js::method("diamonds", rosetta_js_250, napi_default_jsproperty),
+                rosetta_js::method("california_housing", rosetta_js_251, napi_default_jsproperty),
+                rosetta_js::method("load", rosetta_js_252, napi_default_jsproperty),
+                rosetta_js::method("catalog", rosetta_js_253, napi_default_jsproperty),
             };
             rosetta_js::check(env, napi_define_properties(env, target, sizeof(functions) / sizeof(functions[0]), functions));
             rosetta_js::set(env, exports, "data", target);
@@ -11243,6 +12153,14 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         {
             napi_value e = rosetta_js::enum_object(env, {
+                {"AreaAdvance", rosetta_js::Value<datamunge::geometry::CaliperEventKind>::push(env, datamunge::geometry::CaliperEventKind::AreaAdvance)},
+                {"AreaStop", rosetta_js::Value<datamunge::geometry::CaliperEventKind>::push(env, datamunge::geometry::CaliperEventKind::AreaStop)},
+                {"PairTest", rosetta_js::Value<datamunge::geometry::CaliperEventKind>::push(env, datamunge::geometry::CaliperEventKind::PairTest)},
+            });
+            rosetta_js::set(env, exports, "CaliperEventKind", e);
+        }
+        {
+            napi_value e = rosetta_js::enum_object(env, {
                 {"origin", rosetta_js::Value<datamunge::geometry::DTWPredecessor>::push(env, datamunge::geometry::DTWPredecessor::origin)},
                 {"diagonal", rosetta_js::Value<datamunge::geometry::DTWPredecessor>::push(env, datamunge::geometry::DTWPredecessor::diagonal)},
                 {"advance_a", rosetta_js::Value<datamunge::geometry::DTWPredecessor>::push(env, datamunge::geometry::DTWPredecessor::advance_a)},
@@ -11268,11 +12186,26 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
         }
         {
             napi_value e = rosetta_js::enum_object(env, {
+                {"Visit", rosetta_js::Value<datamunge::geometry::KDProbeAction>::push(env, datamunge::geometry::KDProbeAction::Visit)},
+                {"FarPlane", rosetta_js::Value<datamunge::geometry::KDProbeAction>::push(env, datamunge::geometry::KDProbeAction::FarPlane)},
+            });
+            rosetta_js::set(env, exports, "KDProbeAction", e);
+        }
+        {
+            napi_value e = rosetta_js::enum_object(env, {
                 {"Collinear", rosetta_js::Value<datamunge::geometry::Orientation>::push(env, datamunge::geometry::Orientation::Collinear)},
                 {"Clockwise", rosetta_js::Value<datamunge::geometry::Orientation>::push(env, datamunge::geometry::Orientation::Clockwise)},
                 {"CounterClockwise", rosetta_js::Value<datamunge::geometry::Orientation>::push(env, datamunge::geometry::Orientation::CounterClockwise)},
             });
             rosetta_js::set(env, exports, "Orientation", e);
+        }
+        {
+            napi_value e = rosetta_js::enum_object(env, {
+                {"None", rosetta_js::Value<datamunge::geometry::SegmentContact>::push(env, datamunge::geometry::SegmentContact::None)},
+                {"Point", rosetta_js::Value<datamunge::geometry::SegmentContact>::push(env, datamunge::geometry::SegmentContact::Point)},
+                {"Overlap", rosetta_js::Value<datamunge::geometry::SegmentContact>::push(env, datamunge::geometry::SegmentContact::Overlap)},
+            });
+            rosetta_js::set(env, exports, "SegmentContact", e);
         }
         {
             napi_value e = rosetta_js::enum_object(env, {
@@ -11302,6 +12235,17 @@ napi_value rosetta_js_init(napi_env env, napi_value exports) {
                 {"Bilinear", rosetta_js::Value<datamunge::image::ResampleFilter>::push(env, datamunge::image::ResampleFilter::Bilinear)},
             });
             rosetta_js::set(env, exports, "ResampleFilter", e);
+        }
+        {
+            napi_value e = rosetta_js::enum_object(env, {
+                {"fixed_step", rosetta_js::Value<datamunge::ode::ODEAttemptKind>::push(env, datamunge::ode::ODEAttemptKind::fixed_step)},
+                {"rk45_trial", rosetta_js::Value<datamunge::ode::ODEAttemptKind>::push(env, datamunge::ode::ODEAttemptKind::rk45_trial)},
+                {"rk4_startup", rosetta_js::Value<datamunge::ode::ODEAttemptKind>::push(env, datamunge::ode::ODEAttemptKind::rk4_startup)},
+                {"adams_bashforth", rosetta_js::Value<datamunge::ode::ODEAttemptKind>::push(env, datamunge::ode::ODEAttemptKind::adams_bashforth)},
+                {"adams_pece", rosetta_js::Value<datamunge::ode::ODEAttemptKind>::push(env, datamunge::ode::ODEAttemptKind::adams_pece)},
+                {"rk4_tail", rosetta_js::Value<datamunge::ode::ODEAttemptKind>::push(env, datamunge::ode::ODEAttemptKind::rk4_tail)},
+            });
+            rosetta_js::set(env, exports, "ODEAttemptKind", e);
         }
         {
             napi_value e = rosetta_js::enum_object(env, {

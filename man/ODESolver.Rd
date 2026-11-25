@@ -2,15 +2,17 @@
 % Please edit documentation in R/datamunger.R
 \name{ODESolver}
 \alias{ODESolver}
-\title{Numerically integrates dy/dt = f(t, y) forward from t_start to t_end (t_end must be greater than t_start; this project's "basic" ODE support does not handle backward integration) given an initial state y0, via one of: explicit Euler, the explicit midpoint rule (RK2), classical Runge-Kutta (RK4), adaptive Dormand-Prince Runge-Kutta 4(5) (RK45), explicit Adams-Bashforth (order 2-4), or Adams-Bashforth-Moulton predictor-corrector (order 2-4 -- the "implicit" linear multistep option; this project uses a PECE predictor-corrector rather than a full Newton-iteration implicit solve, avoiding the need for a Jacobian).}
+\title{Owned-options forward solver with canonical one-step/adaptive/PECE paths.}
 \description{
-Every multistep method self-starts using classical RK4 for its first few steps.
+Different solver objects own their options; concurrency also depends on the caller's RHS thread safety. Methods use local work buffers and no global state.
 }
 \section{Constructor}{
 
 \code{ODESolver$new(options = ODEOptions$new())}
+
+Own and validate the complete original numerical options.
 \itemize{
-\item \code{options} (\code{ODEOptions})
+\item \code{options} (\code{ODEOptions}): Known method and finite admissible controls, defaults RK4/h.01.
 }
 }
 
@@ -18,26 +20,212 @@ Every multistep method self-starts using classical RK4 for its first few steps.
 
 \itemize{
 \item \verb{$solve(rhs, y0, t_start, t_end)} -> \code{ODESolution}
+
+Integrate one complete checked forward initial-value problem.
+Complete finite nonempty y0 and finite forward span t_end>t_start with
+representable difference are checked before callbacks. Known method, finite
+positive step/abs_tol, finite rel_tol>=0 and max_step>=0 are validated, including
+inactive numeric controls. Each callback receives a finite fixed-dimensional
+stage and must return finite matching dimension; exceptions propagate.
+Steps must advance representable time; tiny/nonadvancing steps throw rather
+than loop. No absolute1e-14 endpoint skip; successful output reaches t_end.
+Adams uses original RK4 startup and clamped order2..4; a shortened final step
+uses RK4 instead of applying constant-grid coefficients to unequal spacing.
+RK45 does not reuse FSAL and accepts only scaled error<=1, not a tiny-step bypass.
+Local error control is not a certified global error, stability or energy bound.
+State/control/input references are not retained. Callback effects before a
+later error/quota failure persist; no partial solution/trace is returned.
+Default work policies:1000000 attempts,7000000 RHS calls,1000000 retained
+solution scalar entries; limits overloads allow0 to disable each policy.
+\itemize{
+\item \code{rhs}: Live derivative callback, finite matching-dimensional outputs required.
+\item \code{y0}: Original finite nonempty fixed-dimensional state.
+\item \code{t_start}: Original finite initial time.
+\item \code{t_end}: Original finite strictly later terminal time.
+\item Returns: Owned actual ODESolution, including both requested endpoint times on success.
+}
+\item \verb{$solve_with_limits(rhs, y0, t_start, t_end, limits = ODEExecutionLimits$new())} -> \code{ODESolution}
+
+Integrate one complete checked forward initial-value problem.
+Complete finite nonempty y0 and finite forward span t_end>t_start with
+representable difference are checked before callbacks. Known method, finite
+positive step/abs_tol, finite rel_tol>=0 and max_step>=0 are validated, including
+inactive numeric controls. Each callback receives a finite fixed-dimensional
+stage and must return finite matching dimension; exceptions propagate.
+Steps must advance representable time; tiny/nonadvancing steps throw rather
+than loop. No absolute1e-14 endpoint skip; successful output reaches t_end.
+Adams uses original RK4 startup and clamped order2..4; a shortened final step
+uses RK4 instead of applying constant-grid coefficients to unequal spacing.
+RK45 does not reuse FSAL and accepts only scaled error<=1, not a tiny-step bypass.
+Local error control is not a certified global error, stability or energy bound.
+State/control/input references are not retained. Callback effects before a
+later error/quota failure persist; no partial solution/trace is returned.
+Default work policies:1000000 attempts,7000000 RHS calls,1000000 retained
+solution scalar entries; limits overloads allow0 to disable each policy.
+\itemize{
+\item \code{rhs}: Live derivative callback, finite matching-dimensional outputs required.
+\item \code{y0}: Original finite nonempty fixed-dimensional state.
+\item \code{t_start}: Original finite initial time.
+\item \code{t_end}: Original finite strictly later terminal time.
+\item \code{limits}: Actual work/output/history policies, defaults documented above;0 disables each.
+\item Returns: Owned actual ODESolution, including both requested endpoint times on success.
+}
+\item \verb{$trace(rhs, y0, t_start, t_end, limits = ODEExecutionLimits$new())} -> \code{ODETrace}
+
+Capture actual canonical forward ODE callback and step histories.
+Complete finite nonempty y0 and finite forward span t_end>t_start with
+representable difference are checked before callbacks. Known method, finite
+positive step/abs_tol, finite rel_tol>=0 and max_step>=0 are validated, including
+inactive numeric controls. Each callback receives a finite fixed-dimensional
+stage and must return finite matching dimension; exceptions propagate.
+Steps must advance representable time; tiny/nonadvancing steps throw rather
+than loop. No absolute1e-14 endpoint skip; successful output reaches t_end.
+Adams uses original RK4 startup and clamped order2..4; a shortened final step
+uses RK4 instead of applying constant-grid coefficients to unequal spacing.
+RK45 does not reuse FSAL and accepts only scaled error<=1, not a tiny-step bypass.
+Local error control is not a certified global error, stability or energy bound.
+State/control/input references are not retained. Callback effects before a
+later error/quota failure persist; no partial solution/trace is returned.
+Default work policies:1000000 attempts,7000000 RHS calls,1000000 retained
+solution scalar entries; limits overloads allow0 to disable each policy.
+Trace units root8+D(options6,times2,initialD), each accepted solution
+sample1+D, each callback2+2D, each actual attempt1+2D. Default1000000,
+0 disables; admission precedes each retained copy/append. This is not RAM.
+\itemize{
+\item \code{rhs}: Live derivative callback, finite matching-dimensional outputs required.
+\item \code{y0}: Original finite nonempty fixed-dimensional state.
+\item \code{t_start}: Original finite initial time.
+\item \code{t_end}: Original finite strictly later terminal time.
+\item \code{limits}: Actual work/output/history policies, defaults documented above;0 disables each.
+\item Returns: Owned actual ODETrace, including both requested endpoint times on success.
+}
 \item \verb{$solve_builtin(system, params, y0, t_start, t_end)} -> \code{ODESolution}
 
-Same as solve(), but the RHS is one of a fixed set of named systems instead of a
-live user-supplied one -- the only way every language binding (not just the ones
-with SWIG director support) can use this solver. \code{params} is interpreted
-positionally per system (missing entries fall back to the defaults below):
+Integrate one complete checked forward initial-value problem.
+Complete finite nonempty y0 and finite forward span t_end>t_start with
+representable difference are checked before callbacks. Known method, finite
+positive step/abs_tol, finite rel_tol>=0 and max_step>=0 are validated, including
+inactive numeric controls. Each callback receives a finite fixed-dimensional
+stage and must return finite matching dimension; exceptions propagate.
+Steps must advance representable time; tiny/nonadvancing steps throw rather
+than loop. No absolute1e-14 endpoint skip; successful output reaches t_end.
+Adams uses original RK4 startup and clamped order2..4; a shortened final step
+uses RK4 instead of applying constant-grid coefficients to unequal spacing.
+RK45 does not reuse FSAL and accepts only scaled error<=1, not a tiny-step bypass.
+Local error control is not a certified global error, stability or energy bound.
+State/control/input references are not retained. Callback effects before a
+later error/quota failure persist; no partial solution/trace is returned.
+Builtins:exponential_decay(k=1,dim1),logistic_growth(r=1,K=1,dim1),
+harmonic_oscillator(omega=1,dim2),van_der_pol(mu=1,dim2),
+lorenz(sigma=10,rho=28,beta=8/3,dim3).Missing parameters use defaults;
+finite extras ignored. All supplied parameters finite, logistic K>0, finite
+omega squared required. Exact state dimension is checked before integration.
+Default work policies:1000000 attempts,7000000 RHS calls,1000000 retained
+solution scalar entries; limits overloads allow0 to disable each policy.
 \itemize{
-\item "exponential_decay": dy/dt = -k y.                     params = \{k=1\}, y0 size 1.
-\item "logistic_growth":   dy/dt = r y (1 - y/K).            params = \{r=1, K=1\}, y0 size 1.
-\item "harmonic_oscillator": (x,v), dx/dt=v, dv/dt=-omega^2 x. params = \{omega=1\}, y0 size 2.
-\item "van_der_pol":       (x,v), dx/dt=v, dv/dt=mu(1-x^2)v-x. params = \{mu=1\}, y0 size 2.
-\item "lorenz": (x,y,z), the classic chaotic system.         params = \{sigma=10, rho=28, beta=8/3\}, y0 size 3.
-Throws std::invalid_argument for an unknown system name.
+\item \code{system}: Existing builtin identifier, exact spellings above.
+\item \code{params}: Complete finite positional parameters, missing entries defaulted.
+\item \code{y0}: Original finite nonempty fixed-dimensional state.
+\item \code{t_start}: Original finite initial time.
+\item \code{t_end}: Original finite strictly later terminal time.
+\item Returns: Owned actual ODESolution, including both requested endpoint times on success.
+}
+\item \verb{$solve_builtin_with_limits(system, params, y0, t_start, t_end, limits = ODEExecutionLimits$new())} -> \code{ODESolution}
+
+Integrate one complete checked forward initial-value problem.
+Complete finite nonempty y0 and finite forward span t_end>t_start with
+representable difference are checked before callbacks. Known method, finite
+positive step/abs_tol, finite rel_tol>=0 and max_step>=0 are validated, including
+inactive numeric controls. Each callback receives a finite fixed-dimensional
+stage and must return finite matching dimension; exceptions propagate.
+Steps must advance representable time; tiny/nonadvancing steps throw rather
+than loop. No absolute1e-14 endpoint skip; successful output reaches t_end.
+Adams uses original RK4 startup and clamped order2..4; a shortened final step
+uses RK4 instead of applying constant-grid coefficients to unequal spacing.
+RK45 does not reuse FSAL and accepts only scaled error<=1, not a tiny-step bypass.
+Local error control is not a certified global error, stability or energy bound.
+State/control/input references are not retained. Callback effects before a
+later error/quota failure persist; no partial solution/trace is returned.
+Builtins:exponential_decay(k=1,dim1),logistic_growth(r=1,K=1,dim1),
+harmonic_oscillator(omega=1,dim2),van_der_pol(mu=1,dim2),
+lorenz(sigma=10,rho=28,beta=8/3,dim3).Missing parameters use defaults;
+finite extras ignored. All supplied parameters finite, logistic K>0, finite
+omega squared required. Exact state dimension is checked before integration.
+Default work policies:1000000 attempts,7000000 RHS calls,1000000 retained
+solution scalar entries; limits overloads allow0 to disable each policy.
+\itemize{
+\item \code{system}: Existing builtin identifier, exact spellings above.
+\item \code{params}: Complete finite positional parameters, missing entries defaulted.
+\item \code{y0}: Original finite nonempty fixed-dimensional state.
+\item \code{t_start}: Original finite initial time.
+\item \code{t_end}: Original finite strictly later terminal time.
+\item \code{limits}: Actual work/output/history policies, defaults documented above;0 disables each.
+\item Returns: Owned actual ODESolution, including both requested endpoint times on success.
+}
+\item \verb{$trace_builtin(system, params, y0, t_start, t_end, limits = ODEExecutionLimits$new())} -> \code{ODETrace}
+
+Capture actual canonical forward ODE callback and step histories.
+Complete finite nonempty y0 and finite forward span t_end>t_start with
+representable difference are checked before callbacks. Known method, finite
+positive step/abs_tol, finite rel_tol>=0 and max_step>=0 are validated, including
+inactive numeric controls. Each callback receives a finite fixed-dimensional
+stage and must return finite matching dimension; exceptions propagate.
+Steps must advance representable time; tiny/nonadvancing steps throw rather
+than loop. No absolute1e-14 endpoint skip; successful output reaches t_end.
+Adams uses original RK4 startup and clamped order2..4; a shortened final step
+uses RK4 instead of applying constant-grid coefficients to unequal spacing.
+RK45 does not reuse FSAL and accepts only scaled error<=1, not a tiny-step bypass.
+Local error control is not a certified global error, stability or energy bound.
+State/control/input references are not retained. Callback effects before a
+later error/quota failure persist; no partial solution/trace is returned.
+Builtins:exponential_decay(k=1,dim1),logistic_growth(r=1,K=1,dim1),
+harmonic_oscillator(omega=1,dim2),van_der_pol(mu=1,dim2),
+lorenz(sigma=10,rho=28,beta=8/3,dim3).Missing parameters use defaults;
+finite extras ignored. All supplied parameters finite, logistic K>0, finite
+omega squared required. Exact state dimension is checked before integration.
+Default work policies:1000000 attempts,7000000 RHS calls,1000000 retained
+solution scalar entries; limits overloads allow0 to disable each policy.
+Trace units root8+D(options6,times2,initialD), each accepted solution
+sample1+D, each callback2+2D, each actual attempt1+2D. Default1000000,
+0 disables; admission precedes each retained copy/append. This is not RAM.
+\itemize{
+\item \code{system}: Existing builtin identifier, exact spellings above.
+\item \code{params}: Complete finite positional parameters, missing entries defaulted.
+\item \code{y0}: Original finite nonempty fixed-dimensional state.
+\item \code{t_start}: Original finite initial time.
+\item \code{t_end}: Original finite strictly later terminal time.
+\item \code{limits}: Actual work/output/history policies, defaults documented above;0 disables each.
+\item Returns: Owned actual ODETrace, including both requested endpoint times on success.
 }
 \item \verb{$options()} -> \code{ODEOptions}
 
-The options this ODESolver was configured with.
+Borrow the owned validated numerical options without mutation.
 \itemize{
-\item Returns: The stored options.
+\item Returns: Read-only reference valid until this solver is destroyed.
 }
 }
 }
 
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{dm::ode::ODESolver s;auto r=s.solve_builtin("exponential_decay",\{1.\},\{1.\},0.,.01);std::print("\{\}\\n",r.t.back()); // 0.01
+}\if{html}{\out{</div>}}
+}
+
+\section{Errors}{
+
+\itemize{
+\item \code{std::invalid_argument}: If any complete method/numerical control fails.
+}
+}
+
+\references{
+\itemize{
+\item NIST DLMF3.7(v), Runge-Kutta Method, https://dlmf.nist.gov/3.7.v.
+\item J. R. Dormand and P. J. Prince(1980), A family of embedded Runge-Kutta formulae, doi:10.1016/0771-050X(80)90013-3. Native controller does not reuse FSAL and rejects nonconforming tiny trials.
+}
+}
+\seealso{
+RHS, ODETrace
+}

@@ -12,7 +12,7 @@ level counts (string), titled with the variable name;
 \item numeric vs numeric above the diagonal: the points with a local linear smooth of the mean and
 a 95\% prediction band, one per group; point colors follow set_col() or group_by();
 \item numeric vs numeric below the diagonal: bivariate kernel density contours, one set per group;
-\item string vs numeric: one violin per level with the median and interquartile range marked;
+\item string vs numeric: one raincloud per level (half violin, box plot, and jittered points);
 \item string vs string: a mosaic shaded by chi-squared Pearson residuals, with its p-value.
 }
 }
@@ -91,7 +91,7 @@ Sets one color per data row for the points (recycled); clears group_by().
 }
 \item \verb{$level_palette(colors)} -> \code{Splom}
 
-Sets the fills cycled over categorical levels in violins and stacked bars.
+Sets the fills cycled over categorical levels in rainclouds and stacked bars.
 \itemize{
 \item \code{colors}: Fill colors in sorted-level order, recycled.
 \item Returns: This matrix, for chaining.
@@ -146,7 +146,7 @@ Sets the histogram bin count used by diagonal_histogram() (default 10).
 }
 \item \verb{$show_grid(enabled = TRUE)} -> \code{Splom}
 
-Toggles the light background grid of the scatter and violin panels (default on).
+Toggles the light background grid of the scatter and raincloud panels (default on).
 \itemize{
 \item \code{enabled}: True draws the grid.
 \item Returns: This matrix, for chaining.

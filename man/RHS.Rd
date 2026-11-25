@@ -2,9 +2,9 @@
 % Please edit documentation in R/datamunger.R
 \name{RHS}
 \alias{RHS}
-\title{Right-hand side of a first-order ODE system dy/dt = f(t, y): R x R^n -> R^n.}
+\title{Caller-defined derivative callback dy/dt=f(t,y), without retained solver-owned references.}
 \description{
-Director-enabled only in the Python binding, matching datamunge::filter::VectorFunction (the closest existing precedent -- a vector\if{html}{\out{<double>}}-returning pure-virtual director): every other SWIG backend either has no director support at all, or -- confirmed by a real compile failure while wiring this class up in R -- cannot generate a working director wrapper for a virtual method that returns std::vector\if{html}{\out{<double>}}. Every other binding can only use ODESolver::solve_builtin()'s fixed set of named systems, since a live user-supplied RHS requires exactly that subclassing.
+The solver requires finite matching-dimensional returns and guards stages/call budgets before invoking it. User callback exceptions/effects propagate and are not rolled back. Thread safety belongs to the callback implementation. Configured SWIG director support is backend-specific; named builtin systems remain available independently of subclassing support. No all-binding claim.
 }
 \section{Constructor}{
 
@@ -15,6 +15,23 @@ Director-enabled only in the Python binding, matching datamunge::filter::VectorF
 
 \itemize{
 \item \verb{$evaluate(t, y)} -> \verb{numeric vector}
+
+Evaluate a complete derivative vector at one actual time/state.
+\itemize{
+\item \code{t}: Actual finite stage time supplied by solver.
+\item \code{y}: Actual finite fixed-dimensional stage,borrowed only for this call.
+\item Returns: Owned finite derivative vector with the same dimension as y.
+}
 }
 }
 
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{struct F:dm::ode::RHS\{std::vector<double>evaluate(double,const std::vector<double>&y)override\{return \{-y[0]\};\}\};F f;std::print("\{\}\\n",f.evaluate(0,\{1\})[0]); // -1
+}\if{html}{\out{</div>}}
+}
+
+\seealso{
+ODESolver
+}

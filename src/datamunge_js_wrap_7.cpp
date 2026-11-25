@@ -1453,20 +1453,29 @@ template<> struct Bound<datamunge::optim::InequalityConstrainedFunction> : std::
 template<> struct Copyable<datamunge::optim::InequalityConstrainedFunction> : std::false_type {};
 template<> struct Bound<datamunge::optim::ResidualFunction> : std::true_type {};
 template<> struct Copyable<datamunge::optim::ResidualFunction> : std::false_type {};
+template<> struct Bound<datamunge::bayes::NUTSOptions> : std::true_type {};
+template<> struct Bound<datamunge::bayes::NUTSResult> : std::true_type {};
+template<> struct Bound<datamunge::bayes::NUTS> : std::true_type {};
+template<> struct Bound<datamunge::Callback> : std::true_type {};
+template<> struct Bound<datamunge::graphics::RGB> : std::true_type {};
+template<> struct Bound<datamunge::graphics::DataSeries> : std::true_type {};
+template<> struct Bound<datamunge::graphics::ABLine> : std::true_type {};
+template<> struct Bound<datamunge::graphics::LegendEntry> : std::true_type {};
+template<> struct Bound<datamunge::graphics::Plot> : std::true_type {};
+template<> struct Bound<datamunge::graphics::RPlot> : std::true_type {};
+template<> struct Bound<datamunge::graphics::RLayout> : std::true_type {};
 template<> struct Bound<datamunge::bayes::GibbsOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::GibbsResult> : std::true_type {};
 template<> struct Bound<datamunge::bayes::GibbsSampler> : std::true_type {};
 template<> struct Bound<datamunge::bayes::HMCOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::HMCResult> : std::true_type {};
 template<> struct Bound<datamunge::bayes::HMC> : std::true_type {};
+template<> struct Bound<datamunge::bayes::HMCProposal> : std::true_type {};
 template<> struct Bound<datamunge::bayes::ImportanceSamplingOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::ImportanceSamplingResult> : std::true_type {};
 template<> struct Bound<datamunge::bayes::ImportanceSampling> : std::true_type {};
 template<> struct Bound<datamunge::bayes::MAPOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::MAP> : std::true_type {};
-template<> struct Bound<datamunge::bayes::NUTSOptions> : std::true_type {};
-template<> struct Bound<datamunge::bayes::NUTSResult> : std::true_type {};
-template<> struct Bound<datamunge::bayes::NUTS> : std::true_type {};
 template<> struct Bound<datamunge::bayes::RWMOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::RWMResult> : std::true_type {};
 template<> struct Bound<datamunge::bayes::RandomWalkMetropolis> : std::true_type {};
@@ -1522,29 +1531,39 @@ template<> struct Bound<datamunge::geometry::ConvexHullWork> : std::true_type {}
 template<> struct Bound<datamunge::geometry::HullEvent> : std::true_type {};
 template<> struct Bound<datamunge::geometry::ConvexHullAnalysis> : std::true_type {};
 template<> struct Bound<datamunge::geometry::ConvexHullTrace> : std::true_type {};
-template<> struct Bound<datamunge::Callback> : std::true_type {};
-template<> struct Bound<datamunge::graphics::RGB> : std::true_type {};
-template<> struct Bound<datamunge::graphics::DataSeries> : std::true_type {};
-template<> struct Bound<datamunge::graphics::ABLine> : std::true_type {};
-template<> struct Bound<datamunge::graphics::LegendEntry> : std::true_type {};
-template<> struct Bound<datamunge::graphics::Plot> : std::true_type {};
-template<> struct Bound<datamunge::graphics::RPlot> : std::true_type {};
-template<> struct Bound<datamunge::graphics::RLayout> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DTWResult> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DTWWork> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DTWComputation> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DTWTrace> : std::true_type {};
+template<> struct Bound<datamunge::geometry::KDNearestProbe> : std::true_type {};
+template<> struct Bound<datamunge::geometry::KDSearchWork> : std::true_type {};
+template<> struct Bound<datamunge::geometry::KDNearestTrace> : std::true_type {};
 template<> struct Bound<datamunge::geometry::KDTree2D> : std::true_type {};
 template<> struct Copyable<datamunge::geometry::KDTree2D> : std::false_type {};
 template<> struct Bound<datamunge::geometry::Circle> : std::true_type {};
+template<> struct Bound<datamunge::geometry::EnclosingCircleEvent> : std::true_type {};
+template<> struct Bound<datamunge::geometry::EnclosingCircleTrace> : std::true_type {};
+template<> struct Bound<datamunge::geometry::EnclosingCircleCheck> : std::true_type {};
+template<> struct Bound<datamunge::geometry::SegmentIntersectionRun> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonEarCandidate> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonEarClip> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonTriangulationOptions> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonTriangulationRun> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonTriangulationTrace> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DiameterResult> : std::true_type {};
-template<> struct Bound<datamunge::geometry::MinimumBoundingRectangle> : std::true_type {};
+template<> struct Bound<datamunge::geometry::DiameterOptions> : std::true_type {};
+template<> struct Bound<datamunge::geometry::CaliperEvent> : std::true_type {};
+template<> struct Bound<datamunge::geometry::DiameterRun> : std::true_type {};
 template<> struct Bound<datamunge::geometry::VoronoiDiagram> : std::true_type {};
 template<> struct Bound<datamunge::LinalgMatrix> : std::true_type {};
 template<> struct Bound<datamunge::ode::RHS> : std::true_type {};
 template<> struct Copyable<datamunge::ode::RHS> : std::false_type {};
 template<> struct Bound<datamunge::ode::ODEOptions> : std::true_type {};
+template<> struct Bound<datamunge::ode::ODEExecutionLimits> : std::true_type {};
 template<> struct Bound<datamunge::ode::ODESolution> : std::true_type {};
+template<> struct Bound<datamunge::ode::ODEEvaluation> : std::true_type {};
+template<> struct Bound<datamunge::ode::ODEAttempt> : std::true_type {};
+template<> struct Bound<datamunge::ode::ODETrace> : std::true_type {};
 template<> struct Bound<datamunge::ode::ODESolver> : std::true_type {};
 template<> struct Bound<datamunge::optim::ACOROptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::ACOR> : std::true_type {};
@@ -1595,6 +1614,10 @@ template<> struct Bound<datamunge::optim::HarmonySearchOptions> : std::true_type
 template<> struct Bound<datamunge::optim::HarmonySearch> : std::true_type {};
 template<> struct Bound<datamunge::optim::InteriorPointOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::InteriorPoint> : std::true_type {};
+template<> struct Bound<datamunge::optim::SurrogatePrediction> : std::true_type {};
+template<> struct Bound<datamunge::optim::GaussianJointPosterior> : std::true_type {};
+template<> struct Bound<datamunge::optim::GaussianProcessSurrogateOptions> : std::true_type {};
+template<> struct Bound<datamunge::optim::RBFGaussianProcessSurrogate> : std::true_type {};
 template<> struct Bound<datamunge::optim::LBFGSOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::LBFGS> : std::true_type {};
 template<> struct Bound<datamunge::optim::LevenbergMarquardtOptions> : std::true_type {};
@@ -1617,9 +1640,6 @@ template<> struct Bound<datamunge::optim::RandomizedBlockCoordinateDescentOption
 template<> struct Bound<datamunge::optim::RandomizedBlockCoordinateDescent> : std::true_type {};
 template<> struct Bound<datamunge::optim::RMSPropOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::RMSProp> : std::true_type {};
-template<> struct Bound<datamunge::optim::SurrogatePrediction> : std::true_type {};
-template<> struct Bound<datamunge::optim::GaussianProcessSurrogateOptions> : std::true_type {};
-template<> struct Bound<datamunge::optim::RBFGaussianProcessSurrogate> : std::true_type {};
 template<> struct Bound<datamunge::optim::SGDOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::SGD> : std::true_type {};
 template<> struct Bound<datamunge::optim::SimulatedAnnealingOptions> : std::true_type {};
@@ -1634,13 +1654,18 @@ template<> struct Bound<datamunge::optim::TrustRegionNewtonOptions> : std::true_
 template<> struct Bound<datamunge::optim::TrustRegionNewton> : std::true_type {};
 template<> struct Bound<datamunge::optim::WhaleOptimizationOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::WhaleOptimization> : std::true_type {};
-template<> struct Bound<datamunge::fda::BSplineBasis> : std::true_type {};
 template<> struct Bound<datamunge::stats::HypothesisTestResult> : std::true_type {};
+template<> struct Bound<datamunge::fda::BSplineBasis> : std::true_type {};
+template<> struct Bound<datamunge::stats::GamesHowellComparison> : std::true_type {};
+template<> struct Bound<datamunge::stats::DunnComparison> : std::true_type {};
 template<> struct Bound<datamunge::stats::ARIMAOptions> : std::true_type {};
 template<> struct Bound<datamunge::stats::ARIMA> : std::true_type {};
 template<> struct Bound<datamunge::stats::KendallTau> : std::true_type {};
 template<> struct Bound<datamunge::stats::ExponentialSmoothingOptions> : std::true_type {};
 template<> struct Bound<datamunge::stats::ExponentialSmoothing> : std::true_type {};
+template<> struct Bound<datamunge::stats::ProportionDifferenceInterval> : std::true_type {};
+template<> struct Bound<datamunge::stats::RiskRatioInterval> : std::true_type {};
+template<> struct Bound<datamunge::stats::PoissonRateInterval> : std::true_type {};
 template<> struct Bound<datamunge::Bspline> : std::true_type {};
 template<> struct Bound<datamunge::BSplineRegression> : std::true_type {};
 template<> struct Bound<datamunge::PSplineRegression> : std::true_type {};
@@ -1716,7 +1741,7 @@ template<> struct Value<datamunge::Vector<double>> {
 };
 } }
 namespace ROSETTA_JS_MODULE {
-napi_value rosetta_js_42(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_10(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         const int raw = call.count(), given = call.given(); (void)raw;
@@ -1727,19 +1752,92 @@ napi_value rosetta_js_42(napi_env env, napi_callback_info info) {
                 if (raw >= 2 && given <= 2) {
                     if (n == 2) {
                         rosetta_js::converting() = "argument 'a'";
-                        rosetta_js::Param<double> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'm'";
-                        rosetta_js::Param<double> p1(env, call.arg(1));
+                        rosetta_js::Param<datamunge::algebra::Polynomial> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'b'";
+                        rosetta_js::Param<datamunge::algebra::Polynomial> p1(env, call.arg(1));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::algebra::mod_inverse(p0.get(), p1.get()); }, nullptr, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::algebra::poly_gcd(p0.get(), p1.get()); }, nullptr, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "mod_inverse", "    mod_inverse(a: number, m: number): number\n");
+        rosetta_js::no_overload(call, "poly_gcd", "    poly_gcd(a: Polynomial, b: Polynomial): Polynomial\n");
     });
 }
-napi_value rosetta_js_54(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_22(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 2); (void)n;
+                if (raw >= 2 && given <= 2) {
+                    if (n == 2) {
+                        rosetta_js::converting() = "argument 'a'";
+                        rosetta_js::Param<datamunge::algebra::detail::Cplx> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'b'";
+                        rosetta_js::Param<datamunge::algebra::detail::Cplx> p1(env, call.arg(1));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::algebra::detail::c_mul(p0.get(), p1.get()); }, nullptr, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "c_mul", "    c_mul(a: Cplx, b: Cplx): Cplx\n");
+    });
+}
+napi_value rosetta_js_63(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 2); (void)n;
+                if (raw >= 2 && given <= 2) {
+                    if (n == 2) {
+                        rosetta_js::converting() = "argument 'scale'";
+                        rosetta_js::Param<double> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'dimension'";
+                        rosetta_js::Param<int> p1(env, call.arg(1));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::bayes::gaussian_importance_efficiency(p0.get(), p1.get()); }, nullptr, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "gaussian_importance_efficiency", "    gaussian_importance_efficiency(scale: number, dimension: number): number\n");
+    });
+}
+napi_value rosetta_js_81(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 4); (void)n;
+                if (raw >= 4 && given <= 4) {
+                    if (n == 4) {
+                        rosetta_js::converting() = "argument 'se'";
+                        rosetta_js::Param<datamunge::cv::StructuringElement> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'dx'";
+                        rosetta_js::Param<int> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'dy'";
+                        rosetta_js::Param<int> p2(env, call.arg(2));
+                        rosetta_js::converting() = "argument 'radius'";
+                        rosetta_js::Param<int> p3(env, call.arg(3));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::cv::detail::in_structuring_element(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "in_structuring_element", "    in_structuring_element(se: StructuringElement | keyof typeof StructuringElement, dx: number, dy: number, radius: number): boolean\n");
+    });
+}
+napi_value rosetta_js_94(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         const int raw = call.count(), given = call.given(); (void)raw;
@@ -1749,202 +1847,15 @@ napi_value rosetta_js_54(napi_env env, napi_callback_info info) {
                 const int n = std::max(given, 1); (void)n;
                 if (raw >= 1 && given <= 1) {
                     if (n == 1) {
-                        rosetta_js::converting() = "argument 'mat'";
-                        rosetta_js::Param<std::vector<std::vector<double>>> p0(env, call.arg(0));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::algebra::detail::determinant(p0.get()); }, nullptr, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "determinant", "    determinant(mat: number[][]): number\n");
-    });
-}
-napi_value rosetta_js_68(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 2) {
-                    if (n == 2) {
-                        rosetta_js::converting() = "argument 'img'";
-                        rosetta_js::Param<const datamunge::image::Image &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'sigma'";
-                        rosetta_js::Param<double> p1(env, call.arg(1));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::cv::detail::structure_tensor(p0.get(), p1.get()); }, nullptr, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "structure_tensor", "    structure_tensor(img: Image, sigma: number): StructureTensorField\n");
-    });
-}
-napi_value rosetta_js_70(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 5) {
-                    if (n == 1) {
-                        rosetta_js::converting() = "argument 'img'";
-                        rosetta_js::Param<const datamunge::image::Image &> p0(env, call.arg(0));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get()); }, nullptr, rosetta_js::Return::automatic);
-                    }
-                    if (n == 2) {
-                        rosetta_js::converting() = "argument 'img'";
-                        rosetta_js::Param<const datamunge::image::Image &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'k'";
-                        rosetta_js::Param<double> p1(env, call.arg(1));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get(), p1.get()); }, nullptr, rosetta_js::Return::automatic);
-                    }
-                    if (n == 3) {
-                        rosetta_js::converting() = "argument 'img'";
-                        rosetta_js::Param<const datamunge::image::Image &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'k'";
-                        rosetta_js::Param<double> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'sigma'";
-                        rosetta_js::Param<double> p2(env, call.arg(2));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_js::Return::automatic);
-                    }
-                    if (n == 4) {
-                        rosetta_js::converting() = "argument 'img'";
-                        rosetta_js::Param<const datamunge::image::Image &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'k'";
-                        rosetta_js::Param<double> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'sigma'";
-                        rosetta_js::Param<double> p2(env, call.arg(2));
-                        rosetta_js::converting() = "argument 'threshold_ratio'";
-                        rosetta_js::Param<double> p3(env, call.arg(3));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_js::Return::automatic);
-                    }
-                    if (n == 5) {
-                        rosetta_js::converting() = "argument 'img'";
-                        rosetta_js::Param<const datamunge::image::Image &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'k'";
-                        rosetta_js::Param<double> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'sigma'";
-                        rosetta_js::Param<double> p2(env, call.arg(2));
-                        rosetta_js::converting() = "argument 'threshold_ratio'";
-                        rosetta_js::Param<double> p3(env, call.arg(3));
-                        rosetta_js::converting() = "argument 'nms_radius'";
-                        rosetta_js::Param<int> p4(env, call.arg(4));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::cv::harris_corners(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()); }, nullptr, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "harris_corners", "    harris_corners(img: Image, k\?: number, sigma\?: number, threshold_ratio\?: number, nms_radius\?: number): Corner[]\n");
-    });
-}
-napi_value rosetta_js_82(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 3); (void)n;
-                if (raw >= 3 && given <= 4) {
-                    if (n == 3) {
-                        rosetta_js::converting() = "argument 'prev'";
-                        rosetta_js::Param<const datamunge::image::Image &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'next'";
-                        rosetta_js::Param<const datamunge::image::Image &> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'points'";
-                        rosetta_js::Param<const std::vector<std::pair<int, int>> &> p2(env, call.arg(2));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::cv::lucas_kanade_optical_flow(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_js::Return::automatic);
-                    }
-                    if (n == 4) {
-                        rosetta_js::converting() = "argument 'prev'";
-                        rosetta_js::Param<const datamunge::image::Image &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'next'";
-                        rosetta_js::Param<const datamunge::image::Image &> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'points'";
-                        rosetta_js::Param<const std::vector<std::pair<int, int>> &> p2(env, call.arg(2));
-                        rosetta_js::converting() = "argument 'window_radius'";
-                        rosetta_js::Param<int> p3(env, call.arg(3));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::cv::lucas_kanade_optical_flow(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "lucas_kanade_optical_flow", "    lucas_kanade_optical_flow(prev: Image, next: Image, points: ([number, number])[], window_radius\?: number): FlowVector[]\n");
-    });
-}
-napi_value rosetta_js_93(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 3); (void)n;
-                if (raw >= 3 && given <= 3) {
-                    if (n == 3) {
-                        rosetta_js::converting() = "argument 'a'";
-                        rosetta_js::Param<unsigned char> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'b'";
-                        rosetta_js::Param<unsigned char> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 't'";
-                        rosetta_js::Param<double> p2(env, call.arg(2));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::image::detail::lerp_byte(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "lerp_byte", "    lerp_byte(a: number, b: number, t: number): number\n");
-    });
-}
-napi_value rosetta_js_95(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 3); (void)n;
-                if (raw >= 3 && given <= 4) {
-                    if (n == 3) {
                         rosetta_js::converting() = "argument 'src'";
                         rosetta_js::Param<const datamunge::image::Image &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'new_width'";
-                        rosetta_js::Param<int> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'new_height'";
-                        rosetta_js::Param<int> p2(env, call.arg(2));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::image::resize(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_js::Return::automatic);
-                    }
-                    if (n == 4) {
-                        rosetta_js::converting() = "argument 'src'";
-                        rosetta_js::Param<const datamunge::image::Image &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'new_width'";
-                        rosetta_js::Param<int> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'new_height'";
-                        rosetta_js::Param<int> p2(env, call.arg(2));
-                        rosetta_js::converting() = "argument 'filter'";
-                        rosetta_js::Param<datamunge::image::ResampleFilter> p3(env, call.arg(3));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::image::resize(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::image::sobel_edges(p0.get()); }, nullptr, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "resize", "    resize(src: Image, new_width: number, new_height: number, filter\?: ResampleFilter | keyof typeof ResampleFilter): Image\n");
+        rosetta_js::no_overload(call, "sobel_edges", "    sobel_edges(src: Image): Image\n");
     });
 }
 napi_value rosetta_js_111(napi_env env, napi_callback_info info) {
@@ -1954,54 +1865,78 @@ napi_value rosetta_js_111(napi_env env, napi_callback_info info) {
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                const int n = std::max(given, 3); (void)n;
-                if (raw >= 3 && given <= 3) {
-                    if (n == 3) {
-                        rosetta_js::converting() = "argument 'a'";
-                        rosetta_js::Param<double> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'b'";
-                        rosetta_js::Param<double> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'num_elements'";
-                        rosetta_js::Param<unsigned long> p2(env, call.arg(2));
+                const int n = std::max(given, 2); (void)n;
+                if (raw >= 2 && given <= 4) {
+                    if (n == 2) {
+                        rosetta_js::converting() = "argument 'img'";
+                        rosetta_js::Param<const datamunge::image::Image &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'k'";
+                        rosetta_js::Param<int> p1(env, call.arg(1));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::fem::make_uniform_mesh1d(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::cv::kmeans_segment(p0.get(), p1.get()); }, nullptr, rosetta_js::Return::automatic);
+                    }
+                    if (n == 3) {
+                        rosetta_js::converting() = "argument 'img'";
+                        rosetta_js::Param<const datamunge::image::Image &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'k'";
+                        rosetta_js::Param<int> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'max_iterations'";
+                        rosetta_js::Param<int> p2(env, call.arg(2));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::cv::kmeans_segment(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_js::Return::automatic);
+                    }
+                    if (n == 4) {
+                        rosetta_js::converting() = "argument 'img'";
+                        rosetta_js::Param<const datamunge::image::Image &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'k'";
+                        rosetta_js::Param<int> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'max_iterations'";
+                        rosetta_js::Param<int> p2(env, call.arg(2));
+                        rosetta_js::converting() = "argument 'seed'";
+                        rosetta_js::Param<unsigned int> p3(env, call.arg(3));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::cv::kmeans_segment(p0.get(), p1.get(), p2.get(), p3.get()); }, nullptr, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "make_uniform_mesh1d", "    make_uniform_mesh1d(a: number, b: number, num_elements: number): Mesh1D\n");
+        rosetta_js::no_overload(call, "kmeans_segment", "    kmeans_segment(img: Image, k: number, max_iterations\?: number, seed\?: number): Image\n");
     });
 }
-napi_value rosetta_js_125(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_122(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 2) {
-                    if (n == 1) {
-                        rosetta_js::converting() = "argument 'points'";
-                        rosetta_js::Param<const std::vector<datamunge::geometry::Point2D> &> p0(env, call.arg(0));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::geometry::convex_hull_analyze(p0.get()); }, nullptr, rosetta_js::Return::automatic);
-                    }
+                const int n = std::max(given, 2); (void)n;
+                if (raw >= 2 && given <= 3) {
                     if (n == 2) {
                         rosetta_js::converting() = "argument 'points'";
                         rosetta_js::Param<const std::vector<datamunge::geometry::Point2D> &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'options'";
-                        rosetta_js::Param<datamunge::geometry::ConvexHullOptions> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'triangles'";
+                        rosetta_js::Param<const std::vector<datamunge::geometry::Triangle> &> p1(env, call.arg(1));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::geometry::convex_hull_analyze(p0.get(), p1.get()); }, nullptr, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::geometry::delaunay_analyze(p0.get(), p1.get()); }, nullptr, rosetta_js::Return::automatic);
+                    }
+                    if (n == 3) {
+                        rosetta_js::converting() = "argument 'points'";
+                        rosetta_js::Param<const std::vector<datamunge::geometry::Point2D> &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'triangles'";
+                        rosetta_js::Param<const std::vector<datamunge::geometry::Triangle> &> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'max_tests'";
+                        rosetta_js::Param<unsigned long> p2(env, call.arg(2));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::geometry::delaunay_analyze(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "convex_hull_analyze", "    convex_hull_analyze(points: Point2D[], options\?: ConvexHullOptions): ConvexHullAnalysis\n");
+        rosetta_js::no_overload(call, "delaunay_analyze", "    delaunay_analyze(points: Point2D[], triangles: Triangle[], max_tests\?: number): DelaunayAnalysis\n");
     });
 }
-napi_value rosetta_js_140(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_134(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         const int raw = call.count(), given = call.given(); (void)raw;
@@ -2012,19 +1947,19 @@ napi_value rosetta_js_140(napi_env env, napi_callback_info info) {
                 if (raw >= 2 && given <= 2) {
                     if (n == 2) {
                         rosetta_js::converting() = "argument 'a'";
-                        rosetta_js::Param<const datamunge::geometry::Point2D &> p0(env, call.arg(0));
+                        rosetta_js::Param<const std::vector<double> &> p0(env, call.arg(0));
                         rosetta_js::converting() = "argument 'b'";
-                        rosetta_js::Param<const datamunge::geometry::Point2D &> p1(env, call.arg(1));
+                        rosetta_js::Param<const std::vector<double> &> p1(env, call.arg(1));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::geometry::detail::circle_from_two_points(p0.get(), p1.get()); }, nullptr, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::geometry::dynamic_time_warping_work(p0.get(), p1.get()); }, nullptr, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "circle_from_two_points", "    circle_from_two_points(a: Point2D, b: Point2D): Circle\n");
+        rosetta_js::no_overload(call, "dynamic_time_warping_work", "    dynamic_time_warping_work(a: number[], b: number[]): DTWComputation\n");
     });
 }
-napi_value rosetta_js_143(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_149(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         const int raw = call.count(), given = call.given(); (void)raw;
@@ -2034,18 +1969,142 @@ napi_value rosetta_js_143(napi_env env, napi_callback_info info) {
                 const int n = std::max(given, 1); (void)n;
                 if (raw >= 1 && given <= 1) {
                     if (n == 1) {
-                        rosetta_js::converting() = "argument 'points'";
-                        rosetta_js::Param<std::vector<datamunge::geometry::Point2D>> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'vertices'";
+                        rosetta_js::Param<const std::vector<datamunge::geometry::Point2D> &> p0(env, call.arg(0));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::geometry::min_enclosing_circle(p0.get()); }, nullptr, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::geometry::polygon_centroid(p0.get()); }, nullptr, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "min_enclosing_circle", "    min_enclosing_circle(points: Point2D[]): Circle\n");
+        rosetta_js::no_overload(call, "polygon_centroid", "    polygon_centroid(vertices: Point2D[]): Point2D\n");
     });
 }
-napi_value rosetta_js_188(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_157(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 3); (void)n;
+                if (raw >= 3 && given <= 3) {
+                    if (n == 3) {
+                        rosetta_js::converting() = "argument 'p'";
+                        rosetta_js::Param<const datamunge::geometry::Point2D &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'edge_a'";
+                        rosetta_js::Param<const datamunge::geometry::Point2D &> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'edge_b'";
+                        rosetta_js::Param<const datamunge::geometry::Point2D &> p2(env, call.arg(2));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::geometry::detail::inside_clip_edge(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "inside_clip_edge", "    inside_clip_edge(p: Point2D, edge_a: Point2D, edge_b: Point2D): boolean\n");
+    });
+}
+napi_value rosetta_js_175(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 6); (void)n;
+                if (raw >= 6 && given <= 7) {
+                    if (n == 6) {
+                        rosetta_js::converting() = "argument 'img'";
+                        rosetta_js::Param<datamunge::image::Image &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'x0'";
+                        rosetta_js::Param<int> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'y0'";
+                        rosetta_js::Param<int> p2(env, call.arg(2));
+                        rosetta_js::converting() = "argument 'x1'";
+                        rosetta_js::Param<int> p3(env, call.arg(3));
+                        rosetta_js::converting() = "argument 'y1'";
+                        rosetta_js::Param<int> p4(env, call.arg(4));
+                        rosetta_js::converting() = "argument 'color'";
+                        rosetta_js::Param<const datamunge::image::Pixel &> p5(env, call.arg(5));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::image::draw_line(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()); }, nullptr, rosetta_js::Return::automatic);
+                    }
+                    if (n == 7) {
+                        rosetta_js::converting() = "argument 'img'";
+                        rosetta_js::Param<datamunge::image::Image &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'x0'";
+                        rosetta_js::Param<int> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'y0'";
+                        rosetta_js::Param<int> p2(env, call.arg(2));
+                        rosetta_js::converting() = "argument 'x1'";
+                        rosetta_js::Param<int> p3(env, call.arg(3));
+                        rosetta_js::converting() = "argument 'y1'";
+                        rosetta_js::Param<int> p4(env, call.arg(4));
+                        rosetta_js::converting() = "argument 'color'";
+                        rosetta_js::Param<const datamunge::image::Pixel &> p5(env, call.arg(5));
+                        rosetta_js::converting() = "argument 'thickness'";
+                        rosetta_js::Param<int> p6(env, call.arg(6));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::image::draw_line(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get(), p6.get()); }, nullptr, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "draw_line", "    draw_line(img: Image, x0: number, y0: number, x1: number, y1: number, color: Pixel, thickness\?: number)\n");
+    });
+}
+napi_value rosetta_js_190(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    if (n == 1) {
+                        rosetta_js::converting() = "argument 'name'";
+                        rosetta_js::Param<std::basic_string_view<char>> p0(env, call.arg(0));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::stats::p_adjust_method(p0.get()); }, nullptr, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "p_adjust_method", "    p_adjust_method(name: string): PAdjustMethod\n");
+    });
+}
+napi_value rosetta_js_201(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 2) {
+                    if (n == 1) {
+                        rosetta_js::converting() = "argument 'observed'";
+                        rosetta_js::Param<const std::vector<double> &> p0(env, call.arg(0));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::stats::chi_squared_goodness_of_fit(p0.get()); }, nullptr, rosetta_js::Return::automatic);
+                    }
+                    if (n == 2) {
+                        rosetta_js::converting() = "argument 'observed'";
+                        rosetta_js::Param<const std::vector<double> &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'expected_probabilities'";
+                        rosetta_js::Param<const std::vector<double> &> p1(env, call.arg(1));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::stats::chi_squared_goodness_of_fit(p0.get(), p1.get()); }, nullptr, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "chi_squared_goodness_of_fit", "    chi_squared_goodness_of_fit(observed: number[], expected_probabilities\?: number[]): HypothesisTestResult\n");
+    });
+}
+napi_value rosetta_js_211(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         const int raw = call.count(), given = call.given(); (void)raw;
@@ -2053,51 +2112,50 @@ napi_value rosetta_js_188(napi_env env, napi_callback_info info) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 2) {
+                if (raw >= 2 && given <= 3) {
                     if (n == 2) {
                         rosetta_js::converting() = "argument 'x'";
                         rosetta_js::Param<const std::vector<double> &> p0(env, call.arg(0));
                         rosetta_js::converting() = "argument 'y'";
                         rosetta_js::Param<const std::vector<double> &> p1(env, call.arg(1));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::stats::kendall_tau(p0.get(), p1.get()); }, nullptr, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::stats::ks_test_two_sample(p0.get(), p1.get()); }, nullptr, rosetta_js::Return::automatic);
+                    }
+                    if (n == 3) {
+                        rosetta_js::converting() = "argument 'x'";
+                        rosetta_js::Param<const std::vector<double> &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'y'";
+                        rosetta_js::Param<const std::vector<double> &> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'alternative'";
+                        rosetta_js::Param<datamunge::stats::Alternative> p2(env, call.arg(2));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::stats::ks_test_two_sample(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "kendall_tau", "    kendall_tau(x: number[], y: number[]): KendallTau\n");
+        rosetta_js::no_overload(call, "ks_test_two_sample", "    ks_test_two_sample(x: number[], y: number[], alternative\?: Alternative | keyof typeof Alternative): HypothesisTestResult\n");
     });
 }
-napi_value rosetta_js_194(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_250(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 2) {
-                    if (n == 1) {
-                        rosetta_js::converting() = "argument 'p'";
-                        rosetta_js::Param<const std::vector<double> &> p0(env, call.arg(0));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::stats::p_adjust(p0.get()); }, nullptr, rosetta_js::Return::automatic);
-                    }
-                    if (n == 2) {
-                        rosetta_js::converting() = "argument 'p'";
-                        rosetta_js::Param<const std::vector<double> &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'method'";
-                        rosetta_js::Param<datamunge::stats::PAdjustMethod> p1(env, call.arg(1));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::stats::p_adjust(p0.get(), p1.get()); }, nullptr, rosetta_js::Return::automatic);
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    if (n == 0) {
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::data::diamonds(); }, nullptr, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "p_adjust", "    p_adjust(p: number[], method\?: PAdjustMethod | keyof typeof PAdjustMethod): number[]\n");
+        rosetta_js::no_overload(call, "diamonds", "    diamonds(): DataFrame | null\n");
     });
 }
-napi_value rosetta_js_212(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_261(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         const int raw = call.count(), given = call.given(); (void)raw;
@@ -2107,64 +2165,53 @@ napi_value rosetta_js_212(napi_env env, napi_callback_info info) {
                 const int n = std::max(given, 1); (void)n;
                 if (raw >= 1 && given <= 1) {
                     if (n == 1) {
-                        rosetta_js::converting() = "argument 'values'";
-                        rosetta_js::Param<const std::vector<double> &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'seed'";
+                        rosetta_js::Param<unsigned long> p0(env, call.arg(0));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::sum_dvector(p0.get()); }, nullptr, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::js_bindings::set_seed(p0.get()); }, nullptr, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "sum_dvector", "    sum_dvector(values: number[]): number\n");
+        rosetta_js::no_overload(call, "set_seed", "    set_seed(seed: number)\n");
     });
 }
-napi_value rosetta_js_224(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_265(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::data::mtcars(); }, nullptr, rosetta_js::Return::automatic);
+                const int n = std::max(given, 3); (void)n;
+                if (raw >= 3 && given <= 3) {
+                    if (n == 3) {
+                        rosetta_js::converting() = "argument 'from'";
+                        rosetta_js::Param<double> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'to'";
+                        rosetta_js::Param<double> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'n'";
+                        rosetta_js::Param<unsigned long> p2(env, call.arg(2));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::js_bindings::seql(p0.get(), p1.get(), p2.get()); }, nullptr, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "mtcars", "    mtcars(): DataFrame | null\n");
+        rosetta_js::no_overload(call, "seql", "    seql(from: number, to: number, n: number): number[]\n");
     });
 }
-napi_value rosetta_js_230(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_330(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::data::california_housing(); }, nullptr, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "california_housing", "    california_housing(): DataFrame | null\n");
-    });
-}
-napi_value rosetta_js_304(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::algebra::SquareFreeFactor>(env, call.self);
+        auto* native = rosetta_js::native<datamunge::algebra::RealFactor>(env, call.self);
         return rosetta_js::result<decltype((native->factor))>(env, native->factor, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_305(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_331(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::algebra::SquareFreeFactor>(env, call.self);
+        auto* native = rosetta_js::native<datamunge::algebra::RealFactor>(env, call.self);
         using F = std::remove_cv_t<std::remove_reference_t<decltype(native->factor)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
@@ -2177,17 +2224,17 @@ napi_value rosetta_js_305(napi_env env, napi_callback_info info) {
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_306(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_332(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::algebra::SquareFreeFactor>(env, call.self);
+        auto* native = rosetta_js::native<datamunge::algebra::RealFactor>(env, call.self);
         return rosetta_js::result<decltype((native->multiplicity))>(env, native->multiplicity, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_307(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_333(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::algebra::SquareFreeFactor>(env, call.self);
+        auto* native = rosetta_js::native<datamunge::algebra::RealFactor>(env, call.self);
         using F = std::remove_cv_t<std::remove_reference_t<decltype(native->multiplicity)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
@@ -2200,10 +2247,10 @@ napi_value rosetta_js_307(napi_env env, napi_callback_info info) {
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_308(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_334(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info, true);
-        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::algebra::SquareFreeFactor>::value); (void)subclass;
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::algebra::RealFactor>::value); (void)subclass;
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -2211,296 +2258,58 @@ napi_value rosetta_js_308(napi_env env, napi_callback_info info) {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
                     if (n == 0) {
-                        return rosetta_js::adopt<datamunge::algebra::SquareFreeFactor>(call, new datamunge::algebra::SquareFreeFactor(), nullptr);
+                        return rosetta_js::adopt<datamunge::algebra::RealFactor>(call, new datamunge::algebra::RealFactor(), nullptr);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "SquareFreeFactor", "    new SquareFreeFactor()\n");
+        rosetta_js::no_overload(call, "RealFactor", "    new RealFactor()\n");
     });
 }
-napi_value rosetta_js_340(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_373(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::algebra::RationalFunction>(env, call.self)) rosetta_js::wrong_receiver("RationalFunction", "numerator");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::algebra::RationalFunction>(env, call.self);
-                    if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->numerator(); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "numerator", "    numerator(): Polynomial\n");
-    });
-}
-napi_value rosetta_js_341(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::algebra::RationalFunction>(env, call.self)) rosetta_js::wrong_receiver("RationalFunction", "denominator");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::algebra::RationalFunction>(env, call.self);
-                    if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->denominator(); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "denominator", "    denominator(): Polynomial\n");
-    });
-}
-napi_value rosetta_js_342(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::algebra::RationalFunction>(env, call.self)) rosetta_js::wrong_receiver("RationalFunction", "evaluate");
+        if (!rosetta_js::is_instance<datamunge::optim::DifferentiableFunction>(env, call.self)) rosetta_js::wrong_receiver("DifferentiableFunction", "gradient");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 1); (void)n;
                 if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_js::native<datamunge::algebra::RationalFunction>(env, call.self);
-                    if (n == 1) {
-                        rosetta_js::converting() = "argument 'x'";
-                        rosetta_js::Param<double> p0(env, call.arg(0));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->evaluate(p0.get()); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "evaluate", "    evaluate(x: number): number\n");
-    });
-}
-napi_value rosetta_js_343(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::algebra::RationalFunction>(env, call.self)) rosetta_js::wrong_receiver("RationalFunction", "add");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_js::native<datamunge::algebra::RationalFunction>(env, call.self);
-                    if (n == 1) {
-                        rosetta_js::converting() = "argument 'other'";
-                        rosetta_js::Param<const datamunge::algebra::RationalFunction &> p0(env, call.arg(0));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->add(p0.get()); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "add", "    add(other: RationalFunction): RationalFunction\n");
-    });
-}
-napi_value rosetta_js_344(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::algebra::RationalFunction>(env, call.self)) rosetta_js::wrong_receiver("RationalFunction", "subtract");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_js::native<datamunge::algebra::RationalFunction>(env, call.self);
-                    if (n == 1) {
-                        rosetta_js::converting() = "argument 'other'";
-                        rosetta_js::Param<const datamunge::algebra::RationalFunction &> p0(env, call.arg(0));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->subtract(p0.get()); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "subtract", "    subtract(other: RationalFunction): RationalFunction\n");
-    });
-}
-napi_value rosetta_js_345(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::algebra::RationalFunction>(env, call.self)) rosetta_js::wrong_receiver("RationalFunction", "multiply");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_js::native<datamunge::algebra::RationalFunction>(env, call.self);
-                    if (n == 1) {
-                        rosetta_js::converting() = "argument 'other'";
-                        rosetta_js::Param<const datamunge::algebra::RationalFunction &> p0(env, call.arg(0));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->multiply(p0.get()); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "multiply", "    multiply(other: RationalFunction): RationalFunction\n");
-    });
-}
-napi_value rosetta_js_346(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::algebra::RationalFunction>(env, call.self)) rosetta_js::wrong_receiver("RationalFunction", "divide");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_js::native<datamunge::algebra::RationalFunction>(env, call.self);
-                    if (n == 1) {
-                        rosetta_js::converting() = "argument 'other'";
-                        rosetta_js::Param<const datamunge::algebra::RationalFunction &> p0(env, call.arg(0));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->divide(p0.get()); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "divide", "    divide(other: RationalFunction): RationalFunction\n");
-    });
-}
-napi_value rosetta_js_347(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::algebra::RationalFunction>(env, call.self)) rosetta_js::wrong_receiver("RationalFunction", "to_string");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::algebra::RationalFunction>(env, call.self);
-                    if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->to_string(); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "to_string", "    to_string(): string\n");
-    });
-}
-napi_value rosetta_js_348(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::algebra::RationalFunction>(env, call.self)) rosetta_js::wrong_receiver("RationalFunction", "to_tex");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 2) {
-                    rosetta_js::converting() = "this";
-                    rosetta_js::Param<const datamunge::algebra::RationalFunction &> self_param(env, call.self);
-                    rosetta_js::converting() = nullptr;
-                    if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::js_bindings::rational_function_to_tex(self_param.get()); }, call.self, rosetta_js::Return::automatic);
-                    }
-                    if (n == 1) {
-                        rosetta_js::converting() = "argument 'variable'";
-                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p0(env, call.arg(0));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::js_bindings::rational_function_to_tex(self_param.get(), p0.get()); }, call.self, rosetta_js::Return::automatic);
-                    }
-                    if (n == 2) {
-                        rosetta_js::converting() = "argument 'variable'";
-                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'precision'";
-                        rosetta_js::Param<int> p1(env, call.arg(1));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return ::datamunge::js_bindings::rational_function_to_tex(self_param.get(), p0.get(), p1.get()); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "to_tex", "    to_tex(variable\?: string, precision\?: number): string\n");
-    });
-}
-napi_value rosetta_js_349(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info, true);
-        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::algebra::RationalFunction>::value); (void)subclass;
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 0; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    if (n == 0) {
-                        return rosetta_js::adopt<datamunge::algebra::RationalFunction>(call, new datamunge::algebra::RationalFunction(), nullptr);
-                    }
-                }
-            }
-            {
-                const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 2
-                    && (n <= 0 || rosetta_js::Param<datamunge::algebra::Polynomial>::check(env, call.arg(0), strict))
-                    && (n <= 1 || rosetta_js::Param<datamunge::algebra::Polynomial>::check(env, call.arg(1), strict))) {
-                    if (n == 2) {
-                        rosetta_js::converting() = "argument 'numerator'";
-                        rosetta_js::Param<datamunge::algebra::Polynomial> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'denominator'";
-                        rosetta_js::Param<datamunge::algebra::Polynomial> p1(env, call.arg(1));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::adopt<datamunge::algebra::RationalFunction>(call, new datamunge::algebra::RationalFunction(p0.get(), p1.get()), nullptr);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "RationalFunction", "    new RationalFunction()\n    new RationalFunction(numerator: Polynomial, denominator: Polynomial)\n");
-    });
-}
-napi_value rosetta_js_350(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::optim::ArbitraryFunction>(env, call.self)) rosetta_js::wrong_receiver("ArbitraryFunction", "evaluate");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_js::native<datamunge::optim::ArbitraryFunction>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::optim::DifferentiableFunction>(env, call.self);
                     if (n == 1) {
                         rosetta_js::converting() = "argument 'coordinates'";
                         rosetta_js::Param<const std::vector<double> &> p0(env, call.arg(0));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { if (rosetta_js::is_director(env, call.self)) { rosetta_js::pure_virtual("datamunge::optim::ArbitraryFunction::evaluate"); } return native->evaluate(p0.get()); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { if (rosetta_js::is_director(env, call.self)) { rosetta_js::pure_virtual("datamunge::optim::DifferentiableFunction::gradient"); } return native->gradient(p0.get()); }, call.self, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "evaluate", "    evaluate(coordinates: number[]): number\n");
+        rosetta_js::no_overload(call, "gradient", "    gradient(coordinates: number[]): number[]\n");
     });
 }
-struct rosetta_director_datamunge__optim__ArbitraryFunction final : datamunge::optim::ArbitraryFunction, rosetta_js::Director {
-    template<class... A> explicit rosetta_director_datamunge__optim__ArbitraryFunction(A&&... arguments) : datamunge::optim::ArbitraryFunction(std::forward<A>(arguments)...) {}
+struct rosetta_director_datamunge__optim__DifferentiableFunction final : datamunge::optim::DifferentiableFunction, rosetta_js::Director {
+    template<class... A> explicit rosetta_director_datamunge__optim__DifferentiableFunction(A&&... arguments) : datamunge::optim::DifferentiableFunction(std::forward<A>(arguments)...) {}
+    std::vector<double> gradient(const std::vector<double> & a0) override {
+        {
+            rosetta_js::Override found(this, "gradient", &rosetta_js::Info<datamunge::optim::DifferentiableFunction>::value);
+            if (found) return rosetta_js::invoke_override<std::vector<double>, const std::vector<double> &>(found, a0);
+        }
+        rosetta_js::pure_virtual("datamunge::optim::DifferentiableFunction::gradient");
+    }
     double evaluate(const std::vector<double> & a0) override {
         {
-            rosetta_js::Override found(this, "evaluate", &rosetta_js::Info<datamunge::optim::ArbitraryFunction>::value);
+            rosetta_js::Override found(this, "evaluate", &rosetta_js::Info<datamunge::optim::DifferentiableFunction>::value);
             if (found) return rosetta_js::invoke_override<double, const std::vector<double> &>(found, a0);
         }
-        rosetta_js::pure_virtual("datamunge::optim::ArbitraryFunction::evaluate");
+        rosetta_js::pure_virtual("datamunge::optim::DifferentiableFunction::evaluate");
     }
 };
-napi_value rosetta_js_351(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_374(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info, true);
-        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::optim::ArbitraryFunction>::value); (void)subclass;
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::optim::DifferentiableFunction>::value); (void)subclass;
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -2509,51 +2318,186 @@ napi_value rosetta_js_351(napi_env env, napi_callback_info info) {
                 if (raw >= 0 && given <= 0) {
                     if (n == 0) {
                         if (subclass) {
-                            auto* created = new rosetta_director_datamunge__optim__ArbitraryFunction();
-                            return rosetta_js::adopt<datamunge::optim::ArbitraryFunction>(call, static_cast<datamunge::optim::ArbitraryFunction*>(created), static_cast<rosetta_js::Director*>(created));
+                            auto* created = new rosetta_director_datamunge__optim__DifferentiableFunction();
+                            return rosetta_js::adopt<datamunge::optim::DifferentiableFunction>(call, static_cast<datamunge::optim::DifferentiableFunction*>(created), static_cast<rosetta_js::Director*>(created));
                         }
-                        rosetta_js::type_fail("ArbitraryFunction is abstract; implement it in JavaScript with class Mine extends ArbitraryFunction {...}");
+                        rosetta_js::type_fail("DifferentiableFunction is abstract; implement it in JavaScript with class Mine extends DifferentiableFunction {...}");
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "ArbitraryFunction", "    new ArbitraryFunction()\n");
+        rosetta_js::no_overload(call, "DifferentiableFunction", "    new DifferentiableFunction()\n");
     });
 }
-napi_value rosetta_js_667(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_430(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::geometry::Point2D>(env, call.self)) rosetta_js::wrong_receiver("Point2D", "equals");
+        if (!rosetta_js::is_instance<datamunge::bayes::NUTS>(env, call.self)) rosetta_js::wrong_receiver("NUTS", "sample");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_js::native<datamunge::geometry::Point2D>(env, call.self);
-                    if (n == 1) {
-                        rosetta_js::converting() = "argument 'other'";
-                        rosetta_js::Param<const datamunge::geometry::Point2D &> p0(env, call.arg(0));
+                const int n = std::max(given, 2); (void)n;
+                if (raw >= 2 && given <= 2) {
+                    auto* native = rosetta_js::native<datamunge::bayes::NUTS>(env, call.self);
+                    if (n == 2) {
+                        rosetta_js::converting() = "argument 'log_posterior'";
+                        rosetta_js::Param<datamunge::optim::DifferentiableFunction &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'initial_params'";
+                        rosetta_js::Param<const std::vector<double> &> p1(env, call.arg(1));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->operator==(p0.get()); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->sample(p0.get(), p1.get()); }, call.self, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "equals", "    equals(other: Point2D): boolean\n");
+        rosetta_js::no_overload(call, "sample", "    sample(log_posterior: DifferentiableFunction, initial_params: number[]): NUTSResult\n");
     });
 }
-napi_value rosetta_js_668(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_431(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::Point2D>(env, call.self);
+        if (!rosetta_js::is_instance<datamunge::bayes::NUTS>(env, call.self)) rosetta_js::wrong_receiver("NUTS", "options");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_js::native<datamunge::bayes::NUTS>(env, call.self);
+                    if (n == 0) {
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->options(); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "options", "    options(): NUTSOptions\n");
+    });
+}
+napi_value rosetta_js_432(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info, true);
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::bayes::NUTS>::value); (void)subclass;
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 1) {
+                    if (n == 0) {
+                        return rosetta_js::adopt<datamunge::bayes::NUTS>(call, new datamunge::bayes::NUTS(), nullptr);
+                    }
+                    if (n == 1) {
+                        rosetta_js::converting() = "argument 'options'";
+                        rosetta_js::Param<datamunge::bayes::NUTSOptions> p0(env, call.arg(0));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::adopt<datamunge::bayes::NUTS>(call, new datamunge::bayes::NUTS(p0.get()), nullptr);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "NUTS", "    new NUTS(options\?: NUTSOptions)\n");
+    });
+}
+napi_value rosetta_js_689(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::bayes::HMCResult>(env, call.self);
+        return rosetta_js::result<decltype((native->samples))>(env, native->samples, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_690(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::bayes::HMCResult>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->samples)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->samples) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'samples'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->samples, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_691(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::bayes::HMCResult>(env, call.self);
+        return rosetta_js::result<decltype((native->accept_rate))>(env, native->accept_rate, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_692(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::bayes::HMCResult>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->accept_rate)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->accept_rate) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'accept_rate'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->accept_rate, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_693(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::bayes::HMCResult>(env, call.self);
+        return rosetta_js::result<decltype((native->final_step_size))>(env, native->final_step_size, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_694(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::bayes::HMCResult>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->final_step_size)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->final_step_size) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'final_step_size'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->final_step_size, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_695(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info, true);
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::bayes::HMCResult>::value); (void)subclass;
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    if (n == 0) {
+                        return rosetta_js::adopt<datamunge::bayes::HMCResult>(call, new datamunge::bayes::HMCResult(), nullptr);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "HMCResult", "    new HMCResult()\n");
+    });
+}
+napi_value rosetta_js_793(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::cv::Corner>(env, call.self);
         return rosetta_js::result<decltype((native->x))>(env, native->x, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_669(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_794(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::Point2D>(env, call.self);
+        auto* native = rosetta_js::native<datamunge::cv::Corner>(env, call.self);
         using F = std::remove_cv_t<std::remove_reference_t<decltype(native->x)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
@@ -2566,17 +2510,17 @@ napi_value rosetta_js_669(napi_env env, napi_callback_info info) {
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_670(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_795(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::Point2D>(env, call.self);
+        auto* native = rosetta_js::native<datamunge::cv::Corner>(env, call.self);
         return rosetta_js::result<decltype((native->y))>(env, native->y, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_671(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_796(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::Point2D>(env, call.self);
+        auto* native = rosetta_js::native<datamunge::cv::Corner>(env, call.self);
         using F = std::remove_cv_t<std::remove_reference_t<decltype(native->y)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
@@ -2589,10 +2533,33 @@ napi_value rosetta_js_671(napi_env env, napi_callback_info info) {
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_672(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_797(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::cv::Corner>(env, call.self);
+        return rosetta_js::result<decltype((native->response))>(env, native->response, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_798(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::cv::Corner>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->response)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->response) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'response'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->response, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_799(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info, true);
-        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::geometry::Point2D>::value); (void)subclass;
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::cv::Corner>::value); (void)subclass;
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -2600,140 +2567,117 @@ napi_value rosetta_js_672(napi_env env, napi_callback_info info) {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
                     if (n == 0) {
-                        return rosetta_js::adopt<datamunge::geometry::Point2D>(call, new datamunge::geometry::Point2D(), nullptr);
+                        return rosetta_js::adopt<datamunge::cv::Corner>(call, new datamunge::cv::Corner(), nullptr);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "Point2D", "    new Point2D()\n");
+        rosetta_js::no_overload(call, "Corner", "    new Corner()\n");
     });
 }
-napi_value rosetta_js_680(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_975(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DelaunayWork>(env, call.self);
-        return rosetta_js::result<decltype((native->seed_orientation_tests))>(env, native->seed_orientation_tests, call.self, rosetta_js::Return::automatic);
+        auto* native = rosetta_js::native<datamunge::geometry::DelaunayAnalysis>(env, call.self);
+        return rosetta_js::result<decltype((native->distinct_points))>(env, native->distinct_points, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_681(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_976(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DelaunayWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->seed_orientation_tests)>>;
+        auto* native = rosetta_js::native<datamunge::geometry::DelaunayAnalysis>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->distinct_points)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->seed_orientation_tests) return rosetta_js::undefined(env);
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->distinct_points) return rosetta_js::undefined(env);
         }
-        rosetta_js::converting() = "field 'seed_orientation_tests'";
+        rosetta_js::converting() = "field 'distinct_points'";
         rosetta_js::Param<const F&> converted(env, call.arg(0));
         rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->seed_orientation_tests, converted.get());
+        rosetta_js::assign_field(native->distinct_points, converted.get());
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_682(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_977(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DelaunayWork>(env, call.self);
-        return rosetta_js::result<decltype((native->insertions))>(env, native->insertions, call.self, rosetta_js::Return::automatic);
+        auto* native = rosetta_js::native<datamunge::geometry::DelaunayAnalysis>(env, call.self);
+        return rosetta_js::result<decltype((native->used_points))>(env, native->used_points, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_683(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_978(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DelaunayWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->insertions)>>;
+        auto* native = rosetta_js::native<datamunge::geometry::DelaunayAnalysis>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->used_points)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->insertions) return rosetta_js::undefined(env);
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->used_points) return rosetta_js::undefined(env);
         }
-        rosetta_js::converting() = "field 'insertions'";
+        rosetta_js::converting() = "field 'used_points'";
         rosetta_js::Param<const F&> converted(env, call.arg(0));
         rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->insertions, converted.get());
+        rosetta_js::assign_field(native->used_points, converted.get());
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_684(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_979(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DelaunayWork>(env, call.self);
-        return rosetta_js::result<decltype((native->incircle_tests))>(env, native->incircle_tests, call.self, rosetta_js::Return::automatic);
+        auto* native = rosetta_js::native<datamunge::geometry::DelaunayAnalysis>(env, call.self);
+        return rosetta_js::result<decltype((native->triangles))>(env, native->triangles, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_685(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_980(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DelaunayWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->incircle_tests)>>;
+        auto* native = rosetta_js::native<datamunge::geometry::DelaunayAnalysis>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->triangles)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->incircle_tests) return rosetta_js::undefined(env);
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->triangles) return rosetta_js::undefined(env);
         }
-        rosetta_js::converting() = "field 'incircle_tests'";
+        rosetta_js::converting() = "field 'triangles'";
         rosetta_js::Param<const F&> converted(env, call.arg(0));
         rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->incircle_tests, converted.get());
+        rosetta_js::assign_field(native->triangles, converted.get());
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_686(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_981(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DelaunayWork>(env, call.self);
-        return rosetta_js::result<decltype((native->hull_side_tests))>(env, native->hull_side_tests, call.self, rosetta_js::Return::automatic);
+        auto* native = rosetta_js::native<datamunge::geometry::DelaunayAnalysis>(env, call.self);
+        return rosetta_js::result<decltype((native->edges))>(env, native->edges, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_687(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_982(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DelaunayWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->hull_side_tests)>>;
+        auto* native = rosetta_js::native<datamunge::geometry::DelaunayAnalysis>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->edges)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->hull_side_tests) return rosetta_js::undefined(env);
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->edges) return rosetta_js::undefined(env);
         }
-        rosetta_js::converting() = "field 'hull_side_tests'";
+        rosetta_js::converting() = "field 'edges'";
         rosetta_js::Param<const F&> converted(env, call.arg(0));
         rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->hull_side_tests, converted.get());
+        rosetta_js::assign_field(native->edges, converted.get());
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_688(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_983(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DelaunayWork>(env, call.self);
-        return rosetta_js::result<decltype((native->removed_faces))>(env, native->removed_faces, call.self, rosetta_js::Return::automatic);
-    });
-}
-napi_value rosetta_js_689(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DelaunayWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->removed_faces)>>;
-        if constexpr (rosetta_js::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->removed_faces) return rosetta_js::undefined(env);
-        }
-        rosetta_js::converting() = "field 'removed_faces'";
-        rosetta_js::Param<const F&> converted(env, call.arg(0));
-        rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->removed_faces, converted.get());
-        return rosetta_js::undefined(env);
-    });
-}
-napi_value rosetta_js_690(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DelaunayWork>(env, call.self);
+        auto* native = rosetta_js::native<datamunge::geometry::DelaunayAnalysis>(env, call.self);
         return rosetta_js::result<decltype((native->boundary_edges))>(env, native->boundary_edges, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_691(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_984(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DelaunayWork>(env, call.self);
+        auto* native = rosetta_js::native<datamunge::geometry::DelaunayAnalysis>(env, call.self);
         using F = std::remove_cv_t<std::remove_reference_t<decltype(native->boundary_edges)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
@@ -2746,33 +2690,79 @@ napi_value rosetta_js_691(napi_env env, napi_callback_info info) {
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_692(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_985(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DelaunayWork>(env, call.self);
-        return rosetta_js::result<decltype((native->created_faces))>(env, native->created_faces, call.self, rosetta_js::Return::automatic);
+        auto* native = rosetta_js::native<datamunge::geometry::DelaunayAnalysis>(env, call.self);
+        return rosetta_js::result<decltype((native->circle_tests))>(env, native->circle_tests, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_693(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_986(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DelaunayWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->created_faces)>>;
+        auto* native = rosetta_js::native<datamunge::geometry::DelaunayAnalysis>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->circle_tests)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->created_faces) return rosetta_js::undefined(env);
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->circle_tests) return rosetta_js::undefined(env);
         }
-        rosetta_js::converting() = "field 'created_faces'";
+        rosetta_js::converting() = "field 'circle_tests'";
         rosetta_js::Param<const F&> converted(env, call.arg(0));
         rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->created_faces, converted.get());
+        rosetta_js::assign_field(native->circle_tests, converted.get());
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_694(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_987(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::geometry::DelaunayAnalysis>(env, call.self);
+        return rosetta_js::result<decltype((native->interior_violations))>(env, native->interior_violations, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_988(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::geometry::DelaunayAnalysis>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->interior_violations)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->interior_violations) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'interior_violations'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->interior_violations, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_989(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::geometry::DelaunayAnalysis>(env, call.self);
+        return rosetta_js::result<decltype((native->minimum_angle_degrees))>(env, native->minimum_angle_degrees, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_990(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::geometry::DelaunayAnalysis>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->minimum_angle_degrees)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->minimum_angle_degrees) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'minimum_angle_degrees'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->minimum_angle_degrees, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_991(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info, true);
-        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::geometry::DelaunayWork>::value); (void)subclass;
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::geometry::DelaunayAnalysis>::value); (void)subclass;
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -2780,15 +2770,15 @@ napi_value rosetta_js_694(napi_env env, napi_callback_info info) {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
                     if (n == 0) {
-                        return rosetta_js::adopt<datamunge::geometry::DelaunayWork>(call, new datamunge::geometry::DelaunayWork(), nullptr);
+                        return rosetta_js::adopt<datamunge::geometry::DelaunayAnalysis>(call, new datamunge::geometry::DelaunayAnalysis(), nullptr);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "DelaunayWork", "    new DelaunayWork()\n");
+        rosetta_js::no_overload(call, "DelaunayAnalysis", "    new DelaunayAnalysis()\n");
     });
 }
-napi_value rosetta_js_742(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_992(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fem::Mesh2D>(env, call.self)) rosetta_js::wrong_receiver("Mesh2D", "num_nodes");
@@ -2808,7 +2798,7 @@ napi_value rosetta_js_742(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "num_nodes", "    num_nodes(): number\n");
     });
 }
-napi_value rosetta_js_743(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_993(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fem::Mesh2D>(env, call.self)) rosetta_js::wrong_receiver("Mesh2D", "num_triangles");
@@ -2828,7 +2818,7 @@ napi_value rosetta_js_743(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "num_triangles", "    num_triangles(): number\n");
     });
 }
-napi_value rosetta_js_744(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_994(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fem::Mesh2D>(env, call.self)) rosetta_js::wrong_receiver("Mesh2D", "node_at");
@@ -2851,7 +2841,7 @@ napi_value rosetta_js_744(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "node_at", "    node_at(index: number): Point2D\n");
     });
 }
-napi_value rosetta_js_745(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_995(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fem::Mesh2D>(env, call.self)) rosetta_js::wrong_receiver("Mesh2D", "triangle_at");
@@ -2874,7 +2864,7 @@ napi_value rosetta_js_745(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "triangle_at", "    triangle_at(index: number): Triangle\n");
     });
 }
-napi_value rosetta_js_746(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_996(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info, true);
         const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::fem::Mesh2D>::value); (void)subclass;
@@ -2893,194 +2883,76 @@ napi_value rosetta_js_746(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "Mesh2D", "    new Mesh2D()\n");
     });
 }
-napi_value rosetta_js_855(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_997(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullWork>(env, call.self);
-        return rosetta_js::result<decltype((native->input_points))>(env, native->input_points, call.self, rosetta_js::Return::automatic);
-    });
-}
-napi_value rosetta_js_856(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->input_points)>>;
-        if constexpr (rosetta_js::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->input_points) return rosetta_js::undefined(env);
+        if (!rosetta_js::is_instance<datamunge::fem::FEM2DResult>(env, call.self)) rosetta_js::wrong_receiver("FEM2DResult", "size");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_js::native<datamunge::fem::FEM2DResult>(env, call.self);
+                    if (n == 0) {
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->size(); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
         }
-        rosetta_js::converting() = "field 'input_points'";
-        rosetta_js::Param<const F&> converted(env, call.arg(0));
-        rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->input_points, converted.get());
-        return rosetta_js::undefined(env);
+        rosetta_js::no_overload(call, "size", "    size(): number\n");
     });
 }
-napi_value rosetta_js_857(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_998(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullWork>(env, call.self);
-        return rosetta_js::result<decltype((native->distinct_points))>(env, native->distinct_points, call.self, rosetta_js::Return::automatic);
-    });
-}
-napi_value rosetta_js_858(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->distinct_points)>>;
-        if constexpr (rosetta_js::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->distinct_points) return rosetta_js::undefined(env);
+        if (!rosetta_js::is_instance<datamunge::fem::FEM2DResult>(env, call.self)) rosetta_js::wrong_receiver("FEM2DResult", "node_at");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_js::native<datamunge::fem::FEM2DResult>(env, call.self);
+                    if (n == 1) {
+                        rosetta_js::converting() = "argument 'index'";
+                        rosetta_js::Param<unsigned long> p0(env, call.arg(0));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->node_at(p0.get()); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
         }
-        rosetta_js::converting() = "field 'distinct_points'";
-        rosetta_js::Param<const F&> converted(env, call.arg(0));
-        rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->distinct_points, converted.get());
-        return rosetta_js::undefined(env);
+        rosetta_js::no_overload(call, "node_at", "    node_at(index: number): Point2D\n");
     });
 }
-napi_value rosetta_js_859(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_999(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullWork>(env, call.self);
-        return rosetta_js::result<decltype((native->sort_comparisons))>(env, native->sort_comparisons, call.self, rosetta_js::Return::automatic);
-    });
-}
-napi_value rosetta_js_860(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->sort_comparisons)>>;
-        if constexpr (rosetta_js::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->sort_comparisons) return rosetta_js::undefined(env);
+        if (!rosetta_js::is_instance<datamunge::fem::FEM2DResult>(env, call.self)) rosetta_js::wrong_receiver("FEM2DResult", "value_at");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_js::native<datamunge::fem::FEM2DResult>(env, call.self);
+                    if (n == 1) {
+                        rosetta_js::converting() = "argument 'index'";
+                        rosetta_js::Param<unsigned long> p0(env, call.arg(0));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->value_at(p0.get()); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
         }
-        rosetta_js::converting() = "field 'sort_comparisons'";
-        rosetta_js::Param<const F&> converted(env, call.arg(0));
-        rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->sort_comparisons, converted.get());
-        return rosetta_js::undefined(env);
+        rosetta_js::no_overload(call, "value_at", "    value_at(index: number): number\n");
     });
 }
-napi_value rosetta_js_861(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullWork>(env, call.self);
-        return rosetta_js::result<decltype((native->duplicate_comparisons))>(env, native->duplicate_comparisons, call.self, rosetta_js::Return::automatic);
-    });
-}
-napi_value rosetta_js_862(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->duplicate_comparisons)>>;
-        if constexpr (rosetta_js::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->duplicate_comparisons) return rosetta_js::undefined(env);
-        }
-        rosetta_js::converting() = "field 'duplicate_comparisons'";
-        rosetta_js::Param<const F&> converted(env, call.arg(0));
-        rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->duplicate_comparisons, converted.get());
-        return rosetta_js::undefined(env);
-    });
-}
-napi_value rosetta_js_863(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullWork>(env, call.self);
-        return rosetta_js::result<decltype((native->orientation_tests))>(env, native->orientation_tests, call.self, rosetta_js::Return::automatic);
-    });
-}
-napi_value rosetta_js_864(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->orientation_tests)>>;
-        if constexpr (rosetta_js::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->orientation_tests) return rosetta_js::undefined(env);
-        }
-        rosetta_js::converting() = "field 'orientation_tests'";
-        rosetta_js::Param<const F&> converted(env, call.arg(0));
-        rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->orientation_tests, converted.get());
-        return rosetta_js::undefined(env);
-    });
-}
-napi_value rosetta_js_865(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullWork>(env, call.self);
-        return rosetta_js::result<decltype((native->pushes))>(env, native->pushes, call.self, rosetta_js::Return::automatic);
-    });
-}
-napi_value rosetta_js_866(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->pushes)>>;
-        if constexpr (rosetta_js::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->pushes) return rosetta_js::undefined(env);
-        }
-        rosetta_js::converting() = "field 'pushes'";
-        rosetta_js::Param<const F&> converted(env, call.arg(0));
-        rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->pushes, converted.get());
-        return rosetta_js::undefined(env);
-    });
-}
-napi_value rosetta_js_867(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullWork>(env, call.self);
-        return rosetta_js::result<decltype((native->pops))>(env, native->pops, call.self, rosetta_js::Return::automatic);
-    });
-}
-napi_value rosetta_js_868(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->pops)>>;
-        if constexpr (rosetta_js::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->pops) return rosetta_js::undefined(env);
-        }
-        rosetta_js::converting() = "field 'pops'";
-        rosetta_js::Param<const F&> converted(env, call.arg(0));
-        rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->pops, converted.get());
-        return rosetta_js::undefined(env);
-    });
-}
-napi_value rosetta_js_869(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullWork>(env, call.self);
-        return rosetta_js::result<decltype((native->max_stack))>(env, native->max_stack, call.self, rosetta_js::Return::automatic);
-    });
-}
-napi_value rosetta_js_870(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_stack)>>;
-        if constexpr (rosetta_js::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->max_stack) return rosetta_js::undefined(env);
-        }
-        rosetta_js::converting() = "field 'max_stack'";
-        rosetta_js::Param<const F&> converted(env, call.arg(0));
-        rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->max_stack, converted.get());
-        return rosetta_js::undefined(env);
-    });
-}
-napi_value rosetta_js_871(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1000(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info, true);
-        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::geometry::ConvexHullWork>::value); (void)subclass;
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::fem::FEM2DResult>::value); (void)subclass;
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3088,71 +2960,140 @@ napi_value rosetta_js_871(napi_env env, napi_callback_info info) {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
                     if (n == 0) {
-                        return rosetta_js::adopt<datamunge::geometry::ConvexHullWork>(call, new datamunge::geometry::ConvexHullWork(), nullptr);
+                        return rosetta_js::adopt<datamunge::fem::FEM2DResult>(call, new datamunge::fem::FEM2DResult(), nullptr);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "ConvexHullWork", "    new ConvexHullWork()\n");
+        rosetta_js::no_overload(call, "FEM2DResult", "    new FEM2DResult()\n");
     });
 }
-napi_value rosetta_js_896(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1249(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullTrace>(env, call.self);
-        return rosetta_js::result<decltype((native->analysis))>(env, native->analysis, call.self, rosetta_js::Return::automatic);
+        auto* native = rosetta_js::native<datamunge::geometry::EnclosingCircleTrace>(env, call.self);
+        return rosetta_js::result<decltype((native->input))>(env, native->input, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_897(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1250(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullTrace>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->analysis)>>;
+        auto* native = rosetta_js::native<datamunge::geometry::EnclosingCircleTrace>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->input)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->analysis) return rosetta_js::undefined(env);
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->input) return rosetta_js::undefined(env);
         }
-        rosetta_js::converting() = "field 'analysis'";
+        rosetta_js::converting() = "field 'input'";
         rosetta_js::Param<const F&> converted(env, call.arg(0));
         rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->analysis, converted.get());
+        rosetta_js::assign_field(native->input, converted.get());
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_898(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1251(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullTrace>(env, call.self);
-        return rosetta_js::result<decltype((native->sorted))>(env, native->sorted, call.self, rosetta_js::Return::automatic);
+        auto* native = rosetta_js::native<datamunge::geometry::EnclosingCircleTrace>(env, call.self);
+        return rosetta_js::result<decltype((native->shuffled))>(env, native->shuffled, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_899(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1252(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullTrace>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->sorted)>>;
+        auto* native = rosetta_js::native<datamunge::geometry::EnclosingCircleTrace>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->shuffled)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->sorted) return rosetta_js::undefined(env);
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->shuffled) return rosetta_js::undefined(env);
         }
-        rosetta_js::converting() = "field 'sorted'";
+        rosetta_js::converting() = "field 'shuffled'";
         rosetta_js::Param<const F&> converted(env, call.arg(0));
         rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->sorted, converted.get());
+        rosetta_js::assign_field(native->shuffled, converted.get());
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_900(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1253(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullTrace>(env, call.self);
+        auto* native = rosetta_js::native<datamunge::geometry::EnclosingCircleTrace>(env, call.self);
+        return rosetta_js::result<decltype((native->permutation))>(env, native->permutation, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_1254(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::geometry::EnclosingCircleTrace>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->permutation)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->permutation) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'permutation'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->permutation, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_1255(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::geometry::EnclosingCircleTrace>(env, call.self);
+        return rosetta_js::result<decltype((native->initial))>(env, native->initial, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_1256(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::geometry::EnclosingCircleTrace>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->initial)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->initial) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'initial'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->initial, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_1257(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::geometry::EnclosingCircleTrace>(env, call.self);
+        return rosetta_js::result<decltype((native->result))>(env, native->result, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_1258(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::geometry::EnclosingCircleTrace>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->result)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->result) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'result'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->result, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_1259(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::geometry::EnclosingCircleTrace>(env, call.self);
         return rosetta_js::result<decltype((native->events))>(env, native->events, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_901(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1260(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullTrace>(env, call.self);
+        auto* native = rosetta_js::native<datamunge::geometry::EnclosingCircleTrace>(env, call.self);
         using F = std::remove_cv_t<std::remove_reference_t<decltype(native->events)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
@@ -3165,56 +3106,33 @@ napi_value rosetta_js_901(napi_env env, napi_callback_info info) {
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_902(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1261(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullTrace>(env, call.self);
-        return rosetta_js::result<decltype((native->lower))>(env, native->lower, call.self, rosetta_js::Return::automatic);
+        auto* native = rosetta_js::native<datamunge::geometry::EnclosingCircleTrace>(env, call.self);
+        return rosetta_js::result<decltype((native->captured_entries))>(env, native->captured_entries, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_903(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1262(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullTrace>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->lower)>>;
+        auto* native = rosetta_js::native<datamunge::geometry::EnclosingCircleTrace>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->captured_entries)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->lower) return rosetta_js::undefined(env);
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->captured_entries) return rosetta_js::undefined(env);
         }
-        rosetta_js::converting() = "field 'lower'";
+        rosetta_js::converting() = "field 'captured_entries'";
         rosetta_js::Param<const F&> converted(env, call.arg(0));
         rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->lower, converted.get());
+        rosetta_js::assign_field(native->captured_entries, converted.get());
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_904(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullTrace>(env, call.self);
-        return rosetta_js::result<decltype((native->upper))>(env, native->upper, call.self, rosetta_js::Return::automatic);
-    });
-}
-napi_value rosetta_js_905(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::ConvexHullTrace>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->upper)>>;
-        if constexpr (rosetta_js::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->upper) return rosetta_js::undefined(env);
-        }
-        rosetta_js::converting() = "field 'upper'";
-        rosetta_js::Param<const F&> converted(env, call.arg(0));
-        rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->upper, converted.get());
-        return rosetta_js::undefined(env);
-    });
-}
-napi_value rosetta_js_906(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1263(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info, true);
-        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::geometry::ConvexHullTrace>::value); (void)subclass;
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::geometry::EnclosingCircleTrace>::value); (void)subclass;
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3222,64 +3140,110 @@ napi_value rosetta_js_906(napi_env env, napi_callback_info info) {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
                     if (n == 0) {
-                        return rosetta_js::adopt<datamunge::geometry::ConvexHullTrace>(call, new datamunge::geometry::ConvexHullTrace(), nullptr);
+                        return rosetta_js::adopt<datamunge::geometry::EnclosingCircleTrace>(call, new datamunge::geometry::EnclosingCircleTrace(), nullptr);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "ConvexHullTrace", "    new ConvexHullTrace()\n");
+        rosetta_js::no_overload(call, "EnclosingCircleTrace", "    new EnclosingCircleTrace()\n");
     });
 }
-napi_value rosetta_js_950(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1322(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::graphics::LegendEntry>(env, call.self);
-        return rosetta_js::result<decltype((native->label))>(env, native->label, call.self, rosetta_js::Return::automatic);
+        auto* native = rosetta_js::native<datamunge::geometry::PolygonTriangulationTrace>(env, call.self);
+        return rosetta_js::result<decltype((native->run))>(env, native->run, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_951(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1323(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::graphics::LegendEntry>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->label)>>;
+        auto* native = rosetta_js::native<datamunge::geometry::PolygonTriangulationTrace>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->run)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->label) return rosetta_js::undefined(env);
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->run) return rosetta_js::undefined(env);
         }
-        rosetta_js::converting() = "field 'label'";
+        rosetta_js::converting() = "field 'run'";
         rosetta_js::Param<const F&> converted(env, call.arg(0));
         rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->label, converted.get());
+        rosetta_js::assign_field(native->run, converted.get());
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_952(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1324(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::graphics::LegendEntry>(env, call.self);
-        return rosetta_js::result<decltype((native->color))>(env, native->color, call.self, rosetta_js::Return::automatic);
+        auto* native = rosetta_js::native<datamunge::geometry::PolygonTriangulationTrace>(env, call.self);
+        return rosetta_js::result<decltype((native->initial_ring))>(env, native->initial_ring, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_953(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1325(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::graphics::LegendEntry>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->color)>>;
+        auto* native = rosetta_js::native<datamunge::geometry::PolygonTriangulationTrace>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->initial_ring)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->color) return rosetta_js::undefined(env);
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->initial_ring) return rosetta_js::undefined(env);
         }
-        rosetta_js::converting() = "field 'color'";
+        rosetta_js::converting() = "field 'initial_ring'";
         rosetta_js::Param<const F&> converted(env, call.arg(0));
         rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->color, converted.get());
+        rosetta_js::assign_field(native->initial_ring, converted.get());
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_954(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1326(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::geometry::PolygonTriangulationTrace>(env, call.self);
+        return rosetta_js::result<decltype((native->candidates))>(env, native->candidates, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_1327(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::geometry::PolygonTriangulationTrace>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->candidates)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->candidates) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'candidates'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->candidates, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_1328(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::geometry::PolygonTriangulationTrace>(env, call.self);
+        return rosetta_js::result<decltype((native->clips))>(env, native->clips, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_1329(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::geometry::PolygonTriangulationTrace>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->clips)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->clips) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'clips'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->clips, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_1330(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info, true);
-        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::graphics::LegendEntry>::value); (void)subclass;
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::geometry::PolygonTriangulationTrace>::value); (void)subclass;
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3287,231 +3251,48 @@ napi_value rosetta_js_954(napi_env env, napi_callback_info info) {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
                     if (n == 0) {
-                        return rosetta_js::adopt<datamunge::graphics::LegendEntry>(call, new datamunge::graphics::LegendEntry(), nullptr);
+                        return rosetta_js::adopt<datamunge::geometry::PolygonTriangulationTrace>(call, new datamunge::geometry::PolygonTriangulationTrace(), nullptr);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "LegendEntry", "    new LegendEntry()\n");
+        rosetta_js::no_overload(call, "PolygonTriangulationTrace", "    new PolygonTriangulationTrace()\n");
     });
 }
-napi_value rosetta_js_1096(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1583(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DTWWork>(env, call.self);
-        return rosetta_js::result<decltype((native->cells))>(env, native->cells, call.self, rosetta_js::Return::automatic);
+        auto* native = rosetta_js::native<datamunge::optim::BayesianOptimizationOptions>(env, call.self);
+        return rosetta_js::result<decltype((native->initial_samples))>(env, native->initial_samples, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_1097(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1584(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DTWWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->cells)>>;
+        auto* native = rosetta_js::native<datamunge::optim::BayesianOptimizationOptions>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->initial_samples)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->cells) return rosetta_js::undefined(env);
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->initial_samples) return rosetta_js::undefined(env);
         }
-        rosetta_js::converting() = "field 'cells'";
+        rosetta_js::converting() = "field 'initial_samples'";
         rosetta_js::Param<const F&> converted(env, call.arg(0));
         rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->cells, converted.get());
+        rosetta_js::assign_field(native->initial_samples, converted.get());
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_1098(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1585(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DTWWork>(env, call.self);
-        return rosetta_js::result<decltype((native->predecessor_reads))>(env, native->predecessor_reads, call.self, rosetta_js::Return::automatic);
-    });
-}
-napi_value rosetta_js_1099(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DTWWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->predecessor_reads)>>;
-        if constexpr (rosetta_js::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->predecessor_reads) return rosetta_js::undefined(env);
-        }
-        rosetta_js::converting() = "field 'predecessor_reads'";
-        rosetta_js::Param<const F&> converted(env, call.arg(0));
-        rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->predecessor_reads, converted.get());
-        return rosetta_js::undefined(env);
-    });
-}
-napi_value rosetta_js_1100(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DTWWork>(env, call.self);
-        return rosetta_js::result<decltype((native->traceback_steps))>(env, native->traceback_steps, call.self, rosetta_js::Return::automatic);
-    });
-}
-napi_value rosetta_js_1101(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::geometry::DTWWork>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->traceback_steps)>>;
-        if constexpr (rosetta_js::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->traceback_steps) return rosetta_js::undefined(env);
-        }
-        rosetta_js::converting() = "field 'traceback_steps'";
-        rosetta_js::Param<const F&> converted(env, call.arg(0));
-        rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->traceback_steps, converted.get());
-        return rosetta_js::undefined(env);
-    });
-}
-napi_value rosetta_js_1102(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info, true);
-        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::geometry::DTWWork>::value); (void)subclass;
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    if (n == 0) {
-                        return rosetta_js::adopt<datamunge::geometry::DTWWork>(call, new datamunge::geometry::DTWWork(), nullptr);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "DTWWork", "    new DTWWork()\n");
-    });
-}
-napi_value rosetta_js_1236(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::optim::AdaGrad>(env, call.self)) rosetta_js::wrong_receiver("AdaGrad", "optimize");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 2) {
-                    auto* native = rosetta_js::native<datamunge::optim::AdaGrad>(env, call.self);
-                    if (n == 2) {
-                        rosetta_js::converting() = "argument 'function'";
-                        rosetta_js::Param<datamunge::optim::DifferentiableFunction &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'coordinates'";
-                        rosetta_js::Param<std::vector<double> &> p1(env, call.arg(1));
-                        rosetta_js::converting() = nullptr;
-                        napi_value results = rosetta_js::call(env, [&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, call.self, rosetta_js::Return::automatic);
-                        p1.writeback(env, call.arg(1));
-                        return results;
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "optimize", "    optimize(function: DifferentiableFunction, coordinates: number[] | Ref<number[]>): number\n");
-    });
-}
-napi_value rosetta_js_1237(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::optim::AdaGrad>(env, call.self)) rosetta_js::wrong_receiver("AdaGrad", "options");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::optim::AdaGrad>(env, call.self);
-                    if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->options(); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "options", "    options(): AdaGradOptions\n");
-    });
-}
-napi_value rosetta_js_1238(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info, true);
-        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::optim::AdaGrad>::value); (void)subclass;
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 1) {
-                    if (n == 0) {
-                        return rosetta_js::adopt<datamunge::optim::AdaGrad>(call, new datamunge::optim::AdaGrad(), nullptr);
-                    }
-                    if (n == 1) {
-                        rosetta_js::converting() = "argument 'options'";
-                        rosetta_js::Param<datamunge::optim::AdaGradOptions> p0(env, call.arg(0));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::adopt<datamunge::optim::AdaGrad>(call, new datamunge::optim::AdaGrad(p0.get()), nullptr);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "AdaGrad", "    new AdaGrad(options\?: AdaGradOptions)\n");
-    });
-}
-napi_value rosetta_js_1239(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::optim::AdaDeltaOptions>(env, call.self);
-        return rosetta_js::result<decltype((native->decay_rate))>(env, native->decay_rate, call.self, rosetta_js::Return::automatic);
-    });
-}
-napi_value rosetta_js_1240(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::optim::AdaDeltaOptions>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->decay_rate)>>;
-        if constexpr (rosetta_js::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->decay_rate) return rosetta_js::undefined(env);
-        }
-        rosetta_js::converting() = "field 'decay_rate'";
-        rosetta_js::Param<const F&> converted(env, call.arg(0));
-        rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->decay_rate, converted.get());
-        return rosetta_js::undefined(env);
-    });
-}
-napi_value rosetta_js_1241(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::optim::AdaDeltaOptions>(env, call.self);
-        return rosetta_js::result<decltype((native->epsilon))>(env, native->epsilon, call.self, rosetta_js::Return::automatic);
-    });
-}
-napi_value rosetta_js_1242(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::optim::AdaDeltaOptions>(env, call.self);
-        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->epsilon)>>;
-        if constexpr (rosetta_js::bound_v<F>) {
-            // obj.field.x = v assigns the modified field object to itself.
-            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->epsilon) return rosetta_js::undefined(env);
-        }
-        rosetta_js::converting() = "field 'epsilon'";
-        rosetta_js::Param<const F&> converted(env, call.arg(0));
-        rosetta_js::converting() = nullptr;
-        rosetta_js::assign_field(native->epsilon, converted.get());
-        return rosetta_js::undefined(env);
-    });
-}
-napi_value rosetta_js_1243(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::optim::AdaDeltaOptions>(env, call.self);
+        auto* native = rosetta_js::native<datamunge::optim::BayesianOptimizationOptions>(env, call.self);
         return rosetta_js::result<decltype((native->max_iterations))>(env, native->max_iterations, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_1244(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1586(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::optim::AdaDeltaOptions>(env, call.self);
+        auto* native = rosetta_js::native<datamunge::optim::BayesianOptimizationOptions>(env, call.self);
         using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
@@ -3524,17 +3305,220 @@ napi_value rosetta_js_1244(napi_env env, napi_callback_info info) {
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_1245(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1587(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::optim::AdaDeltaOptions>(env, call.self);
+        auto* native = rosetta_js::native<datamunge::optim::BayesianOptimizationOptions>(env, call.self);
+        return rosetta_js::result<decltype((native->seed))>(env, native->seed, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_1588(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::BayesianOptimizationOptions>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->seed)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->seed) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'seed'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->seed, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_1589(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::BayesianOptimizationOptions>(env, call.self);
+        return rosetta_js::result<decltype((native->candidates))>(env, native->candidates, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_1590(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::BayesianOptimizationOptions>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->candidates)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->candidates) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'candidates'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->candidates, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_1591(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::BayesianOptimizationOptions>(env, call.self);
+        return rosetta_js::result<decltype((native->refine_iterations))>(env, native->refine_iterations, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_1592(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::BayesianOptimizationOptions>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->refine_iterations)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->refine_iterations) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'refine_iterations'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->refine_iterations, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_1593(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info, true);
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::optim::BayesianOptimizationOptions>::value); (void)subclass;
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    if (n == 0) {
+                        return rosetta_js::adopt<datamunge::optim::BayesianOptimizationOptions>(call, new datamunge::optim::BayesianOptimizationOptions(), nullptr);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "BayesianOptimizationOptions", "    new BayesianOptimizationOptions()\n");
+    });
+}
+napi_value rosetta_js_1711(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::EstimationOfDistributionOptions>(env, call.self);
+        return rosetta_js::result<decltype((native->population_size))>(env, native->population_size, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_1712(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::EstimationOfDistributionOptions>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->population_size)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->population_size) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'population_size'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->population_size, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_1713(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::EstimationOfDistributionOptions>(env, call.self);
+        return rosetta_js::result<decltype((native->selection_ratio))>(env, native->selection_ratio, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_1714(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::EstimationOfDistributionOptions>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->selection_ratio)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->selection_ratio) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'selection_ratio'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->selection_ratio, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_1715(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::EstimationOfDistributionOptions>(env, call.self);
+        return rosetta_js::result<decltype((native->initial_std_dev))>(env, native->initial_std_dev, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_1716(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::EstimationOfDistributionOptions>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->initial_std_dev)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->initial_std_dev) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'initial_std_dev'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->initial_std_dev, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_1717(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::EstimationOfDistributionOptions>(env, call.self);
+        return rosetta_js::result<decltype((native->covariance_regularization))>(env, native->covariance_regularization, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_1718(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::EstimationOfDistributionOptions>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->covariance_regularization)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->covariance_regularization) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'covariance_regularization'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->covariance_regularization, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_1719(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::EstimationOfDistributionOptions>(env, call.self);
+        return rosetta_js::result<decltype((native->max_generations))>(env, native->max_generations, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_1720(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::EstimationOfDistributionOptions>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_generations)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->max_generations) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'max_generations'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->max_generations, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_1721(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::EstimationOfDistributionOptions>(env, call.self);
         return rosetta_js::result<decltype((native->tolerance))>(env, native->tolerance, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_1246(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1722(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        auto* native = rosetta_js::native<datamunge::optim::AdaDeltaOptions>(env, call.self);
+        auto* native = rosetta_js::native<datamunge::optim::EstimationOfDistributionOptions>(env, call.self);
         using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>;
         if constexpr (rosetta_js::bound_v<F>) {
             // obj.field.x = v assigns the modified field object to itself.
@@ -3547,10 +3531,33 @@ napi_value rosetta_js_1246(napi_env env, napi_callback_info info) {
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_1247(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1723(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::EstimationOfDistributionOptions>(env, call.self);
+        return rosetta_js::result<decltype((native->seed))>(env, native->seed, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_1724(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::EstimationOfDistributionOptions>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->seed)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->seed) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'seed'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->seed, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_1725(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info, true);
-        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::optim::AdaDeltaOptions>::value); (void)subclass;
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::optim::EstimationOfDistributionOptions>::value); (void)subclass;
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
@@ -3558,22 +3565,87 @@ napi_value rosetta_js_1247(napi_env env, napi_callback_info info) {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
                     if (n == 0) {
-                        return rosetta_js::adopt<datamunge::optim::AdaDeltaOptions>(call, new datamunge::optim::AdaDeltaOptions(), nullptr);
+                        return rosetta_js::adopt<datamunge::optim::EstimationOfDistributionOptions>(call, new datamunge::optim::EstimationOfDistributionOptions(), nullptr);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "AdaDeltaOptions", "    new AdaDeltaOptions()\n");
+        rosetta_js::no_overload(call, "EstimationOfDistributionOptions", "    new EstimationOfDistributionOptions()\n");
     });
 }
-napi_value rosetta_js_1634(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1868(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::GaussianJointPosterior>(env, call.self);
+        return rosetta_js::result<decltype((native->mean))>(env, native->mean, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_1869(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::GaussianJointPosterior>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->mean)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->mean) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'mean'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->mean, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_1870(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::GaussianJointPosterior>(env, call.self);
+        return rosetta_js::result<decltype((native->covariance))>(env, native->covariance, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_1871(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::GaussianJointPosterior>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->covariance)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->covariance) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'covariance'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->covariance, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_1872(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info, true);
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::optim::GaussianJointPosterior>::value); (void)subclass;
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    if (n == 0) {
+                        return rosetta_js::adopt<datamunge::optim::GaussianJointPosterior>(call, new datamunge::optim::GaussianJointPosterior(), nullptr);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "GaussianJointPosterior", "    new GaussianJointPosterior()\n");
+    });
+}
+napi_value rosetta_js_1966(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         auto* native = rosetta_js::native<datamunge::optim::NadamOptions>(env, call.self);
         return rosetta_js::result<decltype((native->step_size))>(env, native->step_size, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_1635(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1967(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         auto* native = rosetta_js::native<datamunge::optim::NadamOptions>(env, call.self);
@@ -3589,14 +3661,14 @@ napi_value rosetta_js_1635(napi_env env, napi_callback_info info) {
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_1636(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1968(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         auto* native = rosetta_js::native<datamunge::optim::NadamOptions>(env, call.self);
         return rosetta_js::result<decltype((native->beta1))>(env, native->beta1, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_1637(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1969(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         auto* native = rosetta_js::native<datamunge::optim::NadamOptions>(env, call.self);
@@ -3612,14 +3684,14 @@ napi_value rosetta_js_1637(napi_env env, napi_callback_info info) {
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_1638(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1970(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         auto* native = rosetta_js::native<datamunge::optim::NadamOptions>(env, call.self);
         return rosetta_js::result<decltype((native->beta2))>(env, native->beta2, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_1639(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1971(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         auto* native = rosetta_js::native<datamunge::optim::NadamOptions>(env, call.self);
@@ -3635,14 +3707,14 @@ napi_value rosetta_js_1639(napi_env env, napi_callback_info info) {
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_1640(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1972(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         auto* native = rosetta_js::native<datamunge::optim::NadamOptions>(env, call.self);
         return rosetta_js::result<decltype((native->epsilon))>(env, native->epsilon, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_1641(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1973(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         auto* native = rosetta_js::native<datamunge::optim::NadamOptions>(env, call.self);
@@ -3658,14 +3730,14 @@ napi_value rosetta_js_1641(napi_env env, napi_callback_info info) {
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_1642(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1974(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         auto* native = rosetta_js::native<datamunge::optim::NadamOptions>(env, call.self);
         return rosetta_js::result<decltype((native->max_iterations))>(env, native->max_iterations, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_1643(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1975(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         auto* native = rosetta_js::native<datamunge::optim::NadamOptions>(env, call.self);
@@ -3681,14 +3753,14 @@ napi_value rosetta_js_1643(napi_env env, napi_callback_info info) {
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_1644(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1976(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         auto* native = rosetta_js::native<datamunge::optim::NadamOptions>(env, call.self);
         return rosetta_js::result<decltype((native->tolerance))>(env, native->tolerance, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_1645(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1977(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         auto* native = rosetta_js::native<datamunge::optim::NadamOptions>(env, call.self);
@@ -3704,7 +3776,7 @@ napi_value rosetta_js_1645(napi_env env, napi_callback_info info) {
         return rosetta_js::undefined(env);
     });
 }
-napi_value rosetta_js_1646(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_1978(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info, true);
         const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::optim::NadamOptions>::value); (void)subclass;
@@ -3723,79 +3795,118 @@ napi_value rosetta_js_1646(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "NadamOptions", "    new NadamOptions()\n");
     });
 }
-napi_value rosetta_js_1816(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2148(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::optim::SimulatedAnnealing>(env, call.self)) rosetta_js::wrong_receiver("SimulatedAnnealing", "optimize");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 2) {
-                    auto* native = rosetta_js::native<datamunge::optim::SimulatedAnnealing>(env, call.self);
-                    if (n == 2) {
-                        rosetta_js::converting() = "argument 'function'";
-                        rosetta_js::Param<datamunge::optim::ArbitraryFunction &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'coordinates'";
-                        rosetta_js::Param<std::vector<double> &> p1(env, call.arg(1));
-                        rosetta_js::converting() = nullptr;
-                        napi_value results = rosetta_js::call(env, [&]() -> decltype(auto) { return native->optimize(p0.get(), p1.get()); }, call.self, rosetta_js::Return::automatic);
-                        p1.writeback(env, call.arg(1));
-                        return results;
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "optimize", "    optimize(function: ArbitraryFunction, coordinates: number[] | Ref<number[]>): number\n");
+        auto* native = rosetta_js::native<datamunge::optim::TrustRegionNewtonOptions>(env, call.self);
+        return rosetta_js::result<decltype((native->initial_radius))>(env, native->initial_radius, call.self, rosetta_js::Return::automatic);
     });
 }
-napi_value rosetta_js_1817(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2149(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::optim::SimulatedAnnealing>(env, call.self)) rosetta_js::wrong_receiver("SimulatedAnnealing", "options");
+        auto* native = rosetta_js::native<datamunge::optim::TrustRegionNewtonOptions>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->initial_radius)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->initial_radius) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'initial_radius'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->initial_radius, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_2150(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::TrustRegionNewtonOptions>(env, call.self);
+        return rosetta_js::result<decltype((native->max_radius))>(env, native->max_radius, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_2151(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::TrustRegionNewtonOptions>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_radius)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->max_radius) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'max_radius'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->max_radius, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_2152(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::TrustRegionNewtonOptions>(env, call.self);
+        return rosetta_js::result<decltype((native->max_iterations))>(env, native->max_iterations, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_2153(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::TrustRegionNewtonOptions>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->max_iterations)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->max_iterations) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'max_iterations'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->max_iterations, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_2154(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::TrustRegionNewtonOptions>(env, call.self);
+        return rosetta_js::result<decltype((native->tolerance))>(env, native->tolerance, call.self, rosetta_js::Return::automatic);
+    });
+}
+napi_value rosetta_js_2155(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        auto* native = rosetta_js::native<datamunge::optim::TrustRegionNewtonOptions>(env, call.self);
+        using F = std::remove_cv_t<std::remove_reference_t<decltype(native->tolerance)>>;
+        if constexpr (rosetta_js::bound_v<F>) {
+            // obj.field.x = v assigns the modified field object to itself.
+            if (rosetta_js::is_instance<F>(env, call.arg(0)) && rosetta_js::native<F>(env, call.arg(0)) == &native->tolerance) return rosetta_js::undefined(env);
+        }
+        rosetta_js::converting() = "field 'tolerance'";
+        rosetta_js::Param<const F&> converted(env, call.arg(0));
+        rosetta_js::converting() = nullptr;
+        rosetta_js::assign_field(native->tolerance, converted.get());
+        return rosetta_js::undefined(env);
+    });
+}
+napi_value rosetta_js_2156(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info, true);
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::optim::TrustRegionNewtonOptions>::value); (void)subclass;
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::optim::SimulatedAnnealing>(env, call.self);
                     if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->options(); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::adopt<datamunge::optim::TrustRegionNewtonOptions>(call, new datamunge::optim::TrustRegionNewtonOptions(), nullptr);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "options", "    options(): SimulatedAnnealingOptions\n");
+        rosetta_js::no_overload(call, "TrustRegionNewtonOptions", "    new TrustRegionNewtonOptions()\n");
     });
 }
-napi_value rosetta_js_1818(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info, true);
-        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::optim::SimulatedAnnealing>::value); (void)subclass;
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 1) {
-                    if (n == 0) {
-                        return rosetta_js::adopt<datamunge::optim::SimulatedAnnealing>(call, new datamunge::optim::SimulatedAnnealing(), nullptr);
-                    }
-                    if (n == 1) {
-                        rosetta_js::converting() = "argument 'options'";
-                        rosetta_js::Param<datamunge::optim::SimulatedAnnealingOptions> p0(env, call.arg(0));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::adopt<datamunge::optim::SimulatedAnnealing>(call, new datamunge::optim::SimulatedAnnealing(p0.get()), nullptr);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "SimulatedAnnealing", "    new SimulatedAnnealing(options\?: SimulatedAnnealingOptions)\n");
-    });
-}
-napi_value rosetta_js_2373(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2713(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "formula_text");
@@ -3815,7 +3926,7 @@ napi_value rosetta_js_2373(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "formula_text", "    formula_text(): string\n");
     });
 }
-napi_value rosetta_js_2374(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2714(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "has_intercept");
@@ -3835,7 +3946,7 @@ napi_value rosetta_js_2374(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "has_intercept", "    has_intercept(): boolean\n");
     });
 }
-napi_value rosetta_js_2375(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2715(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "predictor_names");
@@ -3855,7 +3966,7 @@ napi_value rosetta_js_2375(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "predictor_names", "    predictor_names(): string[]\n");
     });
 }
-napi_value rosetta_js_2376(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2716(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "observations");
@@ -3875,7 +3986,7 @@ napi_value rosetta_js_2376(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "observations", "    observations(): number\n");
     });
 }
-napi_value rosetta_js_2377(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2717(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "alpha");
@@ -3895,7 +4006,7 @@ napi_value rosetta_js_2377(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "alpha", "    alpha(): number\n");
     });
 }
-napi_value rosetta_js_2378(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2718(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "lambda");
@@ -3915,7 +4026,7 @@ napi_value rosetta_js_2378(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "lambda", "    lambda(): number\n");
     });
 }
-napi_value rosetta_js_2379(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2719(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "lambda_was_selected");
@@ -3935,7 +4046,7 @@ napi_value rosetta_js_2379(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "lambda_was_selected", "    lambda_was_selected(): boolean\n");
     });
 }
-napi_value rosetta_js_2380(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2720(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "lambda_path");
@@ -3955,7 +4066,7 @@ napi_value rosetta_js_2380(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "lambda_path", "    lambda_path(): number[]\n");
     });
 }
-napi_value rosetta_js_2381(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2721(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "cv_mean_squared_error");
@@ -3975,7 +4086,7 @@ napi_value rosetta_js_2381(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "cv_mean_squared_error", "    cv_mean_squared_error(): number[]\n");
     });
 }
-napi_value rosetta_js_2382(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2722(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "coefficients");
@@ -3995,7 +4106,7 @@ napi_value rosetta_js_2382(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "coefficients", "    coefficients(): number[]\n");
     });
 }
-napi_value rosetta_js_2383(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2723(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "intercept");
@@ -4015,7 +4126,7 @@ napi_value rosetta_js_2383(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "intercept", "    intercept(): number\n");
     });
 }
-napi_value rosetta_js_2384(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2724(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "non_zero_coefficients");
@@ -4035,7 +4146,7 @@ napi_value rosetta_js_2384(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "non_zero_coefficients", "    non_zero_coefficients(): number\n");
     });
 }
-napi_value rosetta_js_2385(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2725(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "fitted_values");
@@ -4055,7 +4166,7 @@ napi_value rosetta_js_2385(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "fitted_values", "    fitted_values(): number[]\n");
     });
 }
-napi_value rosetta_js_2386(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2726(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "residuals");
@@ -4075,7 +4186,7 @@ napi_value rosetta_js_2386(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "residuals", "    residuals(): number[]\n");
     });
 }
-napi_value rosetta_js_2387(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2727(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "r_squared");
@@ -4095,7 +4206,7 @@ napi_value rosetta_js_2387(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "r_squared", "    r_squared(): number\n");
     });
 }
-napi_value rosetta_js_2388(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2728(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "rmse");
@@ -4115,7 +4226,7 @@ napi_value rosetta_js_2388(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "rmse", "    rmse(): number\n");
     });
 }
-napi_value rosetta_js_2389(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2729(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "summary");
@@ -4135,7 +4246,7 @@ napi_value rosetta_js_2389(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "summary", "    summary(): string\n");
     });
 }
-napi_value rosetta_js_2390(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2730(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "print_summary");
@@ -4155,7 +4266,7 @@ napi_value rosetta_js_2390(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "print_summary", "    print_summary()\n");
     });
 }
-napi_value rosetta_js_2391(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2731(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "predict");
@@ -4178,7 +4289,7 @@ napi_value rosetta_js_2391(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "predict", "    predict(newdata: DataFrame): number[]\n");
     });
 }
-napi_value rosetta_js_2392(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2732(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "plot_coefficient_path");
@@ -4198,7 +4309,7 @@ napi_value rosetta_js_2392(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "plot_coefficient_path", "    plot_coefficient_path(): RPlot\n");
     });
 }
-napi_value rosetta_js_2393(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2733(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "plot_cv_curve");
@@ -4218,7 +4329,7 @@ napi_value rosetta_js_2393(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "plot_cv_curve", "    plot_cv_curve(): RPlot\n");
     });
 }
-napi_value rosetta_js_2394(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2734(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "plot_predicted_vs_actual");
@@ -4238,7 +4349,7 @@ napi_value rosetta_js_2394(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "plot_predicted_vs_actual", "    plot_predicted_vs_actual(): RPlot\n");
     });
 }
-napi_value rosetta_js_2395(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2735(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::ElasticNet>(env, call.self)) rosetta_js::wrong_receiver("ElasticNet", "plot_residuals_vs_fitted");
@@ -4258,7 +4369,7 @@ napi_value rosetta_js_2395(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "plot_residuals_vs_fitted", "    plot_residuals_vs_fitted(): RPlot\n");
     });
 }
-napi_value rosetta_js_2396(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2736(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info, true);
         const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::ElasticNet>::value); (void)subclass;
@@ -4372,17 +4483,17 @@ napi_value rosetta_js_2396(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "ElasticNet", "    new ElasticNet(data: DataFrame, formula: string, alpha\?: number, lambda\?: number, n_lambda\?: number, cv_folds\?: number, standardize\?: boolean, seed\?: number)\n");
     });
 }
-napi_value rosetta_js_2478(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2897(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::PCA>(env, call.self)) rosetta_js::wrong_receiver("PCA", "feature_names");
+        if (!rosetta_js::is_instance<datamunge::DiffusionMaps>(env, call.self)) rosetta_js::wrong_receiver("DiffusionMaps", "feature_names");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::PCA>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DiffusionMaps>(env, call.self);
                     if (n == 0) {
                         return rosetta_js::call(env, [&]() -> decltype(auto) { return native->feature_names(); }, call.self, rosetta_js::Return::automatic);
                     }
@@ -4392,17 +4503,17 @@ napi_value rosetta_js_2478(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "feature_names", "    feature_names(): string[]\n");
     });
 }
-napi_value rosetta_js_2479(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2898(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::PCA>(env, call.self)) rosetta_js::wrong_receiver("PCA", "observations");
+        if (!rosetta_js::is_instance<datamunge::DiffusionMaps>(env, call.self)) rosetta_js::wrong_receiver("DiffusionMaps", "observations");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::PCA>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DiffusionMaps>(env, call.self);
                     if (n == 0) {
                         return rosetta_js::call(env, [&]() -> decltype(auto) { return native->observations(); }, call.self, rosetta_js::Return::automatic);
                     }
@@ -4412,37 +4523,37 @@ napi_value rosetta_js_2479(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "observations", "    observations(): number\n");
     });
 }
-napi_value rosetta_js_2480(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2899(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::PCA>(env, call.self)) rosetta_js::wrong_receiver("PCA", "num_components");
+        if (!rosetta_js::is_instance<datamunge::DiffusionMaps>(env, call.self)) rosetta_js::wrong_receiver("DiffusionMaps", "n_components");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::PCA>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DiffusionMaps>(env, call.self);
                     if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->num_components(); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->n_components(); }, call.self, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "num_components", "    num_components(): number\n");
+        rosetta_js::no_overload(call, "n_components", "    n_components(): number\n");
     });
 }
-napi_value rosetta_js_2481(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2900(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::PCA>(env, call.self)) rosetta_js::wrong_receiver("PCA", "kept_row_indices");
+        if (!rosetta_js::is_instance<datamunge::DiffusionMaps>(env, call.self)) rosetta_js::wrong_receiver("DiffusionMaps", "kept_row_indices");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::PCA>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DiffusionMaps>(env, call.self);
                     if (n == 0) {
                         return rosetta_js::call(env, [&]() -> decltype(auto) { return native->kept_row_indices(); }, call.self, rosetta_js::Return::automatic);
                     }
@@ -4452,166 +4563,80 @@ napi_value rosetta_js_2481(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "kept_row_indices", "    kept_row_indices(): number[]\n");
     });
 }
-napi_value rosetta_js_2482(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2901(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::PCA>(env, call.self)) rosetta_js::wrong_receiver("PCA", "explained_variance");
+        if (!rosetta_js::is_instance<datamunge::DiffusionMaps>(env, call.self)) rosetta_js::wrong_receiver("DiffusionMaps", "eigenvalues");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::PCA>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DiffusionMaps>(env, call.self);
                     if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->explained_variance(); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->eigenvalues(); }, call.self, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "explained_variance", "    explained_variance(): number[]\n");
+        rosetta_js::no_overload(call, "eigenvalues", "    eigenvalues(): number[]\n");
     });
 }
-napi_value rosetta_js_2483(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2902(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::PCA>(env, call.self)) rosetta_js::wrong_receiver("PCA", "explained_variance_ratio");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::PCA>(env, call.self);
-                    if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->explained_variance_ratio(); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "explained_variance_ratio", "    explained_variance_ratio(): number[]\n");
-    });
-}
-napi_value rosetta_js_2484(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::PCA>(env, call.self)) rosetta_js::wrong_receiver("PCA", "cumulative_explained_variance_ratio");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::PCA>(env, call.self);
-                    if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->cumulative_explained_variance_ratio(); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "cumulative_explained_variance_ratio", "    cumulative_explained_variance_ratio(): number[]\n");
-    });
-}
-napi_value rosetta_js_2485(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::PCA>(env, call.self)) rosetta_js::wrong_receiver("PCA", "component_loadings");
+        if (!rosetta_js::is_instance<datamunge::DiffusionMaps>(env, call.self)) rosetta_js::wrong_receiver("DiffusionMaps", "dimension");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 1); (void)n;
                 if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_js::native<datamunge::PCA>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DiffusionMaps>(env, call.self);
                     if (n == 1) {
-                        rosetta_js::converting() = "argument 'component_index'";
+                        rosetta_js::converting() = "argument 'index'";
                         rosetta_js::Param<unsigned long> p0(env, call.arg(0));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->component_loadings(p0.get()); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->dimension(p0.get()); }, call.self, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "component_loadings", "    component_loadings(component_index: number): number[]\n");
+        rosetta_js::no_overload(call, "dimension", "    dimension(index: number): number[]\n");
     });
 }
-napi_value rosetta_js_2486(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2903(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::PCA>(env, call.self)) rosetta_js::wrong_receiver("PCA", "component_scores");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_js::native<datamunge::PCA>(env, call.self);
-                    if (n == 1) {
-                        rosetta_js::converting() = "argument 'component_index'";
-                        rosetta_js::Param<unsigned long> p0(env, call.arg(0));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->component_scores(p0.get()); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "component_scores", "    component_scores(component_index: number): number[]\n");
-    });
-}
-napi_value rosetta_js_2487(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::PCA>(env, call.self)) rosetta_js::wrong_receiver("PCA", "scores_frame");
+        if (!rosetta_js::is_instance<datamunge::DiffusionMaps>(env, call.self)) rosetta_js::wrong_receiver("DiffusionMaps", "embedding_frame");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::PCA>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DiffusionMaps>(env, call.self);
                     if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->scores_frame(); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->embedding_frame(); }, call.self, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "scores_frame", "    scores_frame(): DataFrame | null\n");
+        rosetta_js::no_overload(call, "embedding_frame", "    embedding_frame(): DataFrame | null\n");
     });
 }
-napi_value rosetta_js_2488(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2904(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::PCA>(env, call.self)) rosetta_js::wrong_receiver("PCA", "transform");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_js::native<datamunge::PCA>(env, call.self);
-                    if (n == 1) {
-                        rosetta_js::converting() = "argument 'newdata'";
-                        rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->transform(p0.get()); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "transform", "    transform(newdata: DataFrame): DataFrame | null\n");
-    });
-}
-napi_value rosetta_js_2489(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::PCA>(env, call.self)) rosetta_js::wrong_receiver("PCA", "summary");
+        if (!rosetta_js::is_instance<datamunge::DiffusionMaps>(env, call.self)) rosetta_js::wrong_receiver("DiffusionMaps", "summary");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::PCA>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DiffusionMaps>(env, call.self);
                     if (n == 0) {
                         return rosetta_js::call(env, [&]() -> decltype(auto) { return native->summary(); }, call.self, rosetta_js::Return::automatic);
                     }
@@ -4621,17 +4646,17 @@ napi_value rosetta_js_2489(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "summary", "    summary(): string\n");
     });
 }
-napi_value rosetta_js_2490(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2905(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::PCA>(env, call.self)) rosetta_js::wrong_receiver("PCA", "print_summary");
+        if (!rosetta_js::is_instance<datamunge::DiffusionMaps>(env, call.self)) rosetta_js::wrong_receiver("DiffusionMaps", "print_summary");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::PCA>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DiffusionMaps>(env, call.self);
                     if (n == 0) {
                         return rosetta_js::call(env, [&]() -> decltype(auto) { return native->print_summary(); }, call.self, rosetta_js::Return::automatic);
                     }
@@ -4641,241 +4666,265 @@ napi_value rosetta_js_2490(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "print_summary", "    print_summary()\n");
     });
 }
-napi_value rosetta_js_2491(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2906(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::PCA>(env, call.self)) rosetta_js::wrong_receiver("PCA", "plot_scores");
+        if (!rosetta_js::is_instance<datamunge::DiffusionMaps>(env, call.self)) rosetta_js::wrong_receiver("DiffusionMaps", "plot_embedding");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 2) {
-                    auto* native = rosetta_js::native<datamunge::PCA>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DiffusionMaps>(env, call.self);
                     if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->plot_scores(); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->plot_embedding(); }, call.self, rosetta_js::Return::automatic);
                     }
                     if (n == 1) {
-                        rosetta_js::converting() = "argument 'component_x'";
+                        rosetta_js::converting() = "argument 'dimension_x'";
                         rosetta_js::Param<unsigned long> p0(env, call.arg(0));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->plot_scores(p0.get()); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->plot_embedding(p0.get()); }, call.self, rosetta_js::Return::automatic);
                     }
                     if (n == 2) {
-                        rosetta_js::converting() = "argument 'component_x'";
+                        rosetta_js::converting() = "argument 'dimension_x'";
                         rosetta_js::Param<unsigned long> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'component_y'";
+                        rosetta_js::converting() = "argument 'dimension_y'";
                         rosetta_js::Param<unsigned long> p1(env, call.arg(1));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->plot_scores(p0.get(), p1.get()); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->plot_embedding(p0.get(), p1.get()); }, call.self, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "plot_scores", "    plot_scores(component_x\?: number, component_y\?: number): RPlot\n");
+        rosetta_js::no_overload(call, "plot_embedding", "    plot_embedding(dimension_x\?: number, dimension_y\?: number): RPlot\n");
     });
 }
-napi_value rosetta_js_2492(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2907(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::PCA>(env, call.self)) rosetta_js::wrong_receiver("PCA", "plot_scores_grouped");
+        if (!rosetta_js::is_instance<datamunge::DiffusionMaps>(env, call.self)) rosetta_js::wrong_receiver("DiffusionMaps", "plot_embedding_grouped");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 1); (void)n;
                 if (raw >= 1 && given <= 3) {
-                    auto* native = rosetta_js::native<datamunge::PCA>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DiffusionMaps>(env, call.self);
                     if (n == 1) {
                         rosetta_js::converting() = "argument 'group_labels'";
                         rosetta_js::Param<const std::vector<std::__cxx11::basic_string<char>> &> p0(env, call.arg(0));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->plot_scores_grouped(p0.get()); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->plot_embedding_grouped(p0.get()); }, call.self, rosetta_js::Return::automatic);
                     }
                     if (n == 2) {
                         rosetta_js::converting() = "argument 'group_labels'";
                         rosetta_js::Param<const std::vector<std::__cxx11::basic_string<char>> &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'component_x'";
+                        rosetta_js::converting() = "argument 'dimension_x'";
                         rosetta_js::Param<unsigned long> p1(env, call.arg(1));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->plot_scores_grouped(p0.get(), p1.get()); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->plot_embedding_grouped(p0.get(), p1.get()); }, call.self, rosetta_js::Return::automatic);
                     }
                     if (n == 3) {
                         rosetta_js::converting() = "argument 'group_labels'";
                         rosetta_js::Param<const std::vector<std::__cxx11::basic_string<char>> &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'component_x'";
+                        rosetta_js::converting() = "argument 'dimension_x'";
                         rosetta_js::Param<unsigned long> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'component_y'";
+                        rosetta_js::converting() = "argument 'dimension_y'";
                         rosetta_js::Param<unsigned long> p2(env, call.arg(2));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->plot_scores_grouped(p0.get(), p1.get(), p2.get()); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->plot_embedding_grouped(p0.get(), p1.get(), p2.get()); }, call.self, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "plot_scores_grouped", "    plot_scores_grouped(group_labels: string[], component_x\?: number, component_y\?: number): RPlot\n");
+        rosetta_js::no_overload(call, "plot_embedding_grouped", "    plot_embedding_grouped(group_labels: string[], dimension_x\?: number, dimension_y\?: number): RPlot\n");
     });
 }
-napi_value rosetta_js_2493(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::PCA>(env, call.self)) rosetta_js::wrong_receiver("PCA", "plot_scree");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::PCA>(env, call.self);
-                    if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->plot_scree(); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "plot_scree", "    plot_scree(): RPlot\n");
-    });
-}
-napi_value rosetta_js_2494(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2908(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info, true);
-        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::PCA>::value); (void)subclass;
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::DiffusionMaps>::value); (void)subclass;
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 0; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 4
+                if (raw >= 2 && given <= 6
                     && (n <= 0 || rosetta_js::Param<const datamunge::DataFrame &>::check(env, call.arg(0), strict))
                     && (n <= 1 || rosetta_js::Param<const std::vector<std::__cxx11::basic_string<char>> &>::check(env, call.arg(1), strict))
-                    && (n <= 2 || rosetta_js::Param<bool>::check(env, call.arg(2), strict))
-                    && (n <= 3 || rosetta_js::Param<bool>::check(env, call.arg(3), strict))) {
+                    && (n <= 2 || rosetta_js::Param<unsigned long>::check(env, call.arg(2), strict))
+                    && (n <= 3 || rosetta_js::Param<double>::check(env, call.arg(3), strict))
+                    && (n <= 4 || rosetta_js::Param<double>::check(env, call.arg(4), strict))
+                    && (n <= 5 || rosetta_js::Param<double>::check(env, call.arg(5), strict))) {
                     if (n == 2) {
                         rosetta_js::converting() = "argument 'data'";
                         rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
                         rosetta_js::converting() = "argument 'feature_columns'";
                         rosetta_js::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(env, call.arg(1));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::adopt<datamunge::PCA>(call, new datamunge::PCA(p0.get(), p1.get()), nullptr);
+                        return rosetta_js::adopt<datamunge::DiffusionMaps>(call, new datamunge::DiffusionMaps(p0.get(), p1.get()), nullptr);
                     }
                     if (n == 3) {
                         rosetta_js::converting() = "argument 'data'";
                         rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
                         rosetta_js::converting() = "argument 'feature_columns'";
                         rosetta_js::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'center'";
-                        rosetta_js::Param<bool> p2(env, call.arg(2));
+                        rosetta_js::converting() = "argument 'n_components'";
+                        rosetta_js::Param<unsigned long> p2(env, call.arg(2));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::adopt<datamunge::PCA>(call, new datamunge::PCA(p0.get(), p1.get(), p2.get()), nullptr);
+                        return rosetta_js::adopt<datamunge::DiffusionMaps>(call, new datamunge::DiffusionMaps(p0.get(), p1.get(), p2.get()), nullptr);
                     }
                     if (n == 4) {
                         rosetta_js::converting() = "argument 'data'";
                         rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
                         rosetta_js::converting() = "argument 'feature_columns'";
                         rosetta_js::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'center'";
-                        rosetta_js::Param<bool> p2(env, call.arg(2));
-                        rosetta_js::converting() = "argument 'scale'";
-                        rosetta_js::Param<bool> p3(env, call.arg(3));
+                        rosetta_js::converting() = "argument 'n_components'";
+                        rosetta_js::Param<unsigned long> p2(env, call.arg(2));
+                        rosetta_js::converting() = "argument 'heat_kernel_epsilon'";
+                        rosetta_js::Param<double> p3(env, call.arg(3));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::adopt<datamunge::PCA>(call, new datamunge::PCA(p0.get(), p1.get(), p2.get(), p3.get()), nullptr);
+                        return rosetta_js::adopt<datamunge::DiffusionMaps>(call, new datamunge::DiffusionMaps(p0.get(), p1.get(), p2.get(), p3.get()), nullptr);
+                    }
+                    if (n == 5) {
+                        rosetta_js::converting() = "argument 'data'";
+                        rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'feature_columns'";
+                        rosetta_js::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'n_components'";
+                        rosetta_js::Param<unsigned long> p2(env, call.arg(2));
+                        rosetta_js::converting() = "argument 'heat_kernel_epsilon'";
+                        rosetta_js::Param<double> p3(env, call.arg(3));
+                        rosetta_js::converting() = "argument 'alpha'";
+                        rosetta_js::Param<double> p4(env, call.arg(4));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::adopt<datamunge::DiffusionMaps>(call, new datamunge::DiffusionMaps(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()), nullptr);
+                    }
+                    if (n == 6) {
+                        rosetta_js::converting() = "argument 'data'";
+                        rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'feature_columns'";
+                        rosetta_js::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'n_components'";
+                        rosetta_js::Param<unsigned long> p2(env, call.arg(2));
+                        rosetta_js::converting() = "argument 'heat_kernel_epsilon'";
+                        rosetta_js::Param<double> p3(env, call.arg(3));
+                        rosetta_js::converting() = "argument 'alpha'";
+                        rosetta_js::Param<double> p4(env, call.arg(4));
+                        rosetta_js::converting() = "argument 'diffusion_time'";
+                        rosetta_js::Param<double> p5(env, call.arg(5));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::adopt<datamunge::DiffusionMaps>(call, new datamunge::DiffusionMaps(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()), nullptr);
                     }
                 }
             }
             {
                 const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 4
+                if (raw >= 2 && given <= 6
                     && (n <= 0 || rosetta_js::Param<const datamunge::DataFrame &>::check(env, call.arg(0), strict))
                     && (n <= 1 || rosetta_js::Param<const std::__cxx11::basic_string<char> &>::check(env, call.arg(1), strict))
-                    && (n <= 2 || rosetta_js::Param<bool>::check(env, call.arg(2), strict))
-                    && (n <= 3 || rosetta_js::Param<bool>::check(env, call.arg(3), strict))) {
+                    && (n <= 2 || rosetta_js::Param<unsigned long>::check(env, call.arg(2), strict))
+                    && (n <= 3 || rosetta_js::Param<double>::check(env, call.arg(3), strict))
+                    && (n <= 4 || rosetta_js::Param<double>::check(env, call.arg(4), strict))
+                    && (n <= 5 || rosetta_js::Param<double>::check(env, call.arg(5), strict))) {
                     if (n == 2) {
                         rosetta_js::converting() = "argument 'data'";
                         rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
                         rosetta_js::converting() = "argument 'encoded_feature_columns'";
                         rosetta_js::Param<const std::__cxx11::basic_string<char> &> p1(env, call.arg(1));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::adopt<datamunge::PCA>(call, new datamunge::PCA(p0.get(), p1.get()), nullptr);
+                        return rosetta_js::adopt<datamunge::DiffusionMaps>(call, new datamunge::DiffusionMaps(p0.get(), p1.get()), nullptr);
                     }
                     if (n == 3) {
                         rosetta_js::converting() = "argument 'data'";
                         rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
                         rosetta_js::converting() = "argument 'encoded_feature_columns'";
                         rosetta_js::Param<const std::__cxx11::basic_string<char> &> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'center'";
-                        rosetta_js::Param<bool> p2(env, call.arg(2));
+                        rosetta_js::converting() = "argument 'n_components'";
+                        rosetta_js::Param<unsigned long> p2(env, call.arg(2));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::adopt<datamunge::PCA>(call, new datamunge::PCA(p0.get(), p1.get(), p2.get()), nullptr);
+                        return rosetta_js::adopt<datamunge::DiffusionMaps>(call, new datamunge::DiffusionMaps(p0.get(), p1.get(), p2.get()), nullptr);
                     }
                     if (n == 4) {
                         rosetta_js::converting() = "argument 'data'";
                         rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
                         rosetta_js::converting() = "argument 'encoded_feature_columns'";
                         rosetta_js::Param<const std::__cxx11::basic_string<char> &> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'center'";
-                        rosetta_js::Param<bool> p2(env, call.arg(2));
-                        rosetta_js::converting() = "argument 'scale'";
-                        rosetta_js::Param<bool> p3(env, call.arg(3));
+                        rosetta_js::converting() = "argument 'n_components'";
+                        rosetta_js::Param<unsigned long> p2(env, call.arg(2));
+                        rosetta_js::converting() = "argument 'heat_kernel_epsilon'";
+                        rosetta_js::Param<double> p3(env, call.arg(3));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::adopt<datamunge::PCA>(call, new datamunge::PCA(p0.get(), p1.get(), p2.get(), p3.get()), nullptr);
+                        return rosetta_js::adopt<datamunge::DiffusionMaps>(call, new datamunge::DiffusionMaps(p0.get(), p1.get(), p2.get(), p3.get()), nullptr);
+                    }
+                    if (n == 5) {
+                        rosetta_js::converting() = "argument 'data'";
+                        rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'encoded_feature_columns'";
+                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'n_components'";
+                        rosetta_js::Param<unsigned long> p2(env, call.arg(2));
+                        rosetta_js::converting() = "argument 'heat_kernel_epsilon'";
+                        rosetta_js::Param<double> p3(env, call.arg(3));
+                        rosetta_js::converting() = "argument 'alpha'";
+                        rosetta_js::Param<double> p4(env, call.arg(4));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::adopt<datamunge::DiffusionMaps>(call, new datamunge::DiffusionMaps(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()), nullptr);
+                    }
+                    if (n == 6) {
+                        rosetta_js::converting() = "argument 'data'";
+                        rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'encoded_feature_columns'";
+                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'n_components'";
+                        rosetta_js::Param<unsigned long> p2(env, call.arg(2));
+                        rosetta_js::converting() = "argument 'heat_kernel_epsilon'";
+                        rosetta_js::Param<double> p3(env, call.arg(3));
+                        rosetta_js::converting() = "argument 'alpha'";
+                        rosetta_js::Param<double> p4(env, call.arg(4));
+                        rosetta_js::converting() = "argument 'diffusion_time'";
+                        rosetta_js::Param<double> p5(env, call.arg(5));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::adopt<datamunge::DiffusionMaps>(call, new datamunge::DiffusionMaps(p0.get(), p1.get(), p2.get(), p3.get(), p4.get(), p5.get()), nullptr);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "PCA", "    new PCA(data: DataFrame, feature_columns: string[], center\?: boolean, scale\?: boolean)\n    new PCA(data: DataFrame, encoded_feature_columns: string, center\?: boolean, scale\?: boolean)\n");
+        rosetta_js::no_overload(call, "DiffusionMaps", "    new DiffusionMaps(data: DataFrame, feature_columns: string[], n_components\?: number, heat_kernel_epsilon\?: number, alpha\?: number, diffusion_time\?: number)\n    new DiffusionMaps(data: DataFrame, encoded_feature_columns: string, n_components\?: number, heat_kernel_epsilon\?: number, alpha\?: number, diffusion_time\?: number)\n");
     });
 }
-napi_value rosetta_js_2728(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2959(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::NaiveBayesClassifier>(env, call.self)) rosetta_js::wrong_receiver("NaiveBayesClassifier", "classes");
+        if (!rosetta_js::is_instance<datamunge::DBSCAN>(env, call.self)) rosetta_js::wrong_receiver("DBSCAN", "feature_names");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::NaiveBayesClassifier>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DBSCAN>(env, call.self);
                     if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->classes(); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->feature_names(); }, call.self, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "classes", "    classes(): string[]\n");
+        rosetta_js::no_overload(call, "feature_names", "    feature_names(): string[]\n");
     });
 }
-napi_value rosetta_js_2729(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2960(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::NaiveBayesClassifier>(env, call.self)) rosetta_js::wrong_receiver("NaiveBayesClassifier", "predictor_names");
+        if (!rosetta_js::is_instance<datamunge::DBSCAN>(env, call.self)) rosetta_js::wrong_receiver("DBSCAN", "observations");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::NaiveBayesClassifier>(env, call.self);
-                    if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->predictor_names(); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "predictor_names", "    predictor_names(): string[]\n");
-    });
-}
-napi_value rosetta_js_2730(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::NaiveBayesClassifier>(env, call.self)) rosetta_js::wrong_receiver("NaiveBayesClassifier", "observations");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 0); (void)n;
-                if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::NaiveBayesClassifier>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DBSCAN>(env, call.self);
                     if (n == 0) {
                         return rosetta_js::call(env, [&]() -> decltype(auto) { return native->observations(); }, call.self, rosetta_js::Return::automatic);
                     }
@@ -4885,77 +4934,77 @@ napi_value rosetta_js_2730(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "observations", "    observations(): number\n");
     });
 }
-napi_value rosetta_js_2731(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2961(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::NaiveBayesClassifier>(env, call.self)) rosetta_js::wrong_receiver("NaiveBayesClassifier", "class_priors");
+        if (!rosetta_js::is_instance<datamunge::DBSCAN>(env, call.self)) rosetta_js::wrong_receiver("DBSCAN", "n_clusters");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::NaiveBayesClassifier>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DBSCAN>(env, call.self);
                     if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->class_priors(); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->n_clusters(); }, call.self, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "class_priors", "    class_priors(): number[]\n");
+        rosetta_js::no_overload(call, "n_clusters", "    n_clusters(): number\n");
     });
 }
-napi_value rosetta_js_2732(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2962(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::NaiveBayesClassifier>(env, call.self)) rosetta_js::wrong_receiver("NaiveBayesClassifier", "training_accuracy");
+        if (!rosetta_js::is_instance<datamunge::DBSCAN>(env, call.self)) rosetta_js::wrong_receiver("DBSCAN", "n_noise");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::NaiveBayesClassifier>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DBSCAN>(env, call.self);
                     if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->training_accuracy(); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->n_noise(); }, call.self, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "training_accuracy", "    training_accuracy(): number\n");
+        rosetta_js::no_overload(call, "n_noise", "    n_noise(): number\n");
     });
 }
-napi_value rosetta_js_2733(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2963(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::NaiveBayesClassifier>(env, call.self)) rosetta_js::wrong_receiver("NaiveBayesClassifier", "confusion_matrix");
+        if (!rosetta_js::is_instance<datamunge::DBSCAN>(env, call.self)) rosetta_js::wrong_receiver("DBSCAN", "labels");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::NaiveBayesClassifier>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DBSCAN>(env, call.self);
                     if (n == 0) {
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->confusion_matrix(); }, call.self, rosetta_js::Return::automatic);
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->labels(); }, call.self, rosetta_js::Return::automatic);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "confusion_matrix", "    confusion_matrix(): DataFrame | null\n");
+        rosetta_js::no_overload(call, "labels", "    labels(): number[]\n");
     });
 }
-napi_value rosetta_js_2734(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2964(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::NaiveBayesClassifier>(env, call.self)) rosetta_js::wrong_receiver("NaiveBayesClassifier", "summary");
+        if (!rosetta_js::is_instance<datamunge::DBSCAN>(env, call.self)) rosetta_js::wrong_receiver("DBSCAN", "summary");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::NaiveBayesClassifier>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DBSCAN>(env, call.self);
                     if (n == 0) {
                         return rosetta_js::call(env, [&]() -> decltype(auto) { return native->summary(); }, call.self, rosetta_js::Return::automatic);
                     }
@@ -4965,17 +5014,17 @@ napi_value rosetta_js_2734(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "summary", "    summary(): string\n");
     });
 }
-napi_value rosetta_js_2735(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2965(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::NaiveBayesClassifier>(env, call.self)) rosetta_js::wrong_receiver("NaiveBayesClassifier", "print_summary");
+        if (!rosetta_js::is_instance<datamunge::DBSCAN>(env, call.self)) rosetta_js::wrong_receiver("DBSCAN", "print_summary");
         const int raw = call.count(), given = call.given(); (void)raw;
         for (int pass = 1; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 0); (void)n;
                 if (raw >= 0 && given <= 0) {
-                    auto* native = rosetta_js::native<datamunge::NaiveBayesClassifier>(env, call.self);
+                    auto* native = rosetta_js::native<datamunge::DBSCAN>(env, call.self);
                     if (n == 0) {
                         return rosetta_js::call(env, [&]() -> decltype(auto) { return native->print_summary(); }, call.self, rosetta_js::Return::automatic);
                     }
@@ -4985,161 +5034,211 @@ napi_value rosetta_js_2735(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "print_summary", "    print_summary()\n");
     });
 }
-napi_value rosetta_js_2736(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::NaiveBayesClassifier>(env, call.self)) rosetta_js::wrong_receiver("NaiveBayesClassifier", "predict");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_js::native<datamunge::NaiveBayesClassifier>(env, call.self);
-                    if (n == 1) {
-                        rosetta_js::converting() = "argument 'newdata'";
-                        rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->predict(p0.get()); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "predict", "    predict(newdata: DataFrame): string[]\n");
-    });
-}
-napi_value rosetta_js_2737(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::NaiveBayesClassifier>(env, call.self)) rosetta_js::wrong_receiver("NaiveBayesClassifier", "predict_frame");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 1); (void)n;
-                if (raw >= 1 && given <= 1) {
-                    auto* native = rosetta_js::native<datamunge::NaiveBayesClassifier>(env, call.self);
-                    if (n == 1) {
-                        rosetta_js::converting() = "argument 'newdata'";
-                        rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->predict_frame(p0.get()); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "predict_frame", "    predict_frame(newdata: DataFrame): DataFrame | null\n");
-    });
-}
-napi_value rosetta_js_2738(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::NaiveBayesClassifier>(env, call.self)) rosetta_js::wrong_receiver("NaiveBayesClassifier", "plot_classification");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 3); (void)n;
-                if (raw >= 3 && given <= 3) {
-                    auto* native = rosetta_js::native<datamunge::NaiveBayesClassifier>(env, call.self);
-                    if (n == 3) {
-                        rosetta_js::converting() = "argument 'data'";
-                        rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'x_feature'";
-                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'y_feature'";
-                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p2(env, call.arg(2));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->plot_classification(p0.get(), p1.get(), p2.get()); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "plot_classification", "    plot_classification(data: DataFrame, x_feature: string, y_feature: string): RPlot\n");
-    });
-}
-napi_value rosetta_js_2739(napi_env env, napi_callback_info info) {
-    return rosetta_js::boundary(env, [&]() -> napi_value {
-        rosetta_js::Call call(env, info);
-        if (!rosetta_js::is_instance<datamunge::NaiveBayesClassifier>(env, call.self)) rosetta_js::wrong_receiver("NaiveBayesClassifier", "plot_decision_regions");
-        const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
-            const bool strict = pass == 0; (void)strict;
-            {
-                const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 3) {
-                    auto* native = rosetta_js::native<datamunge::NaiveBayesClassifier>(env, call.self);
-                    if (n == 2) {
-                        rosetta_js::converting() = "argument 'x_feature'";
-                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'y_feature'";
-                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p1(env, call.arg(1));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->plot_decision_regions(p0.get(), p1.get()); }, call.self, rosetta_js::Return::automatic);
-                    }
-                    if (n == 3) {
-                        rosetta_js::converting() = "argument 'x_feature'";
-                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'y_feature'";
-                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'grid_resolution'";
-                        rosetta_js::Param<unsigned long> p2(env, call.arg(2));
-                        rosetta_js::converting() = nullptr;
-                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->plot_decision_regions(p0.get(), p1.get(), p2.get()); }, call.self, rosetta_js::Return::automatic);
-                    }
-                }
-            }
-        }
-        rosetta_js::no_overload(call, "plot_decision_regions", "    plot_decision_regions(x_feature: string, y_feature: string, grid_resolution\?: number): RPlot\n");
-    });
-}
-napi_value rosetta_js_2740(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_2966(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info, true);
-        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::NaiveBayesClassifier>::value); (void)subclass;
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::DBSCAN>::value); (void)subclass;
         const int raw = call.count(), given = call.given(); (void)raw;
-        for (int pass = 1; pass < 2; ++pass) {
+        for (int pass = 0; pass < 2; ++pass) {
             const bool strict = pass == 0; (void)strict;
             {
                 const int n = std::max(given, 2); (void)n;
-                if (raw >= 2 && given <= 4) {
+                if (raw >= 2 && given <= 5
+                    && (n <= 0 || rosetta_js::Param<const datamunge::DataFrame &>::check(env, call.arg(0), strict))
+                    && (n <= 1 || rosetta_js::Param<const std::vector<std::__cxx11::basic_string<char>> &>::check(env, call.arg(1), strict))
+                    && (n <= 2 || rosetta_js::Param<double>::check(env, call.arg(2), strict))
+                    && (n <= 3 || rosetta_js::Param<unsigned long>::check(env, call.arg(3), strict))
+                    && (n <= 4 || rosetta_js::Param<const std::__cxx11::basic_string<char> &>::check(env, call.arg(4), strict))) {
                     if (n == 2) {
                         rosetta_js::converting() = "argument 'data'";
                         rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'formula'";
-                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'feature_columns'";
+                        rosetta_js::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(env, call.arg(1));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::adopt<datamunge::NaiveBayesClassifier>(call, new datamunge::NaiveBayesClassifier(p0.get(), p1.get()), nullptr);
+                        return rosetta_js::adopt<datamunge::DBSCAN>(call, new datamunge::DBSCAN(p0.get(), p1.get()), nullptr);
                     }
                     if (n == 3) {
                         rosetta_js::converting() = "argument 'data'";
                         rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'formula'";
-                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'laplace_smoothing'";
+                        rosetta_js::converting() = "argument 'feature_columns'";
+                        rosetta_js::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'eps'";
                         rosetta_js::Param<double> p2(env, call.arg(2));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::adopt<datamunge::NaiveBayesClassifier>(call, new datamunge::NaiveBayesClassifier(p0.get(), p1.get(), p2.get()), nullptr);
+                        return rosetta_js::adopt<datamunge::DBSCAN>(call, new datamunge::DBSCAN(p0.get(), p1.get(), p2.get()), nullptr);
                     }
                     if (n == 4) {
                         rosetta_js::converting() = "argument 'data'";
                         rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
-                        rosetta_js::converting() = "argument 'formula'";
-                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p1(env, call.arg(1));
-                        rosetta_js::converting() = "argument 'laplace_smoothing'";
+                        rosetta_js::converting() = "argument 'feature_columns'";
+                        rosetta_js::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'eps'";
                         rosetta_js::Param<double> p2(env, call.arg(2));
-                        rosetta_js::converting() = "argument 'var_smoothing'";
-                        rosetta_js::Param<double> p3(env, call.arg(3));
+                        rosetta_js::converting() = "argument 'min_samples'";
+                        rosetta_js::Param<unsigned long> p3(env, call.arg(3));
                         rosetta_js::converting() = nullptr;
-                        return rosetta_js::adopt<datamunge::NaiveBayesClassifier>(call, new datamunge::NaiveBayesClassifier(p0.get(), p1.get(), p2.get(), p3.get()), nullptr);
+                        return rosetta_js::adopt<datamunge::DBSCAN>(call, new datamunge::DBSCAN(p0.get(), p1.get(), p2.get(), p3.get()), nullptr);
+                    }
+                    if (n == 5) {
+                        rosetta_js::converting() = "argument 'data'";
+                        rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'feature_columns'";
+                        rosetta_js::Param<const std::vector<std::__cxx11::basic_string<char>> &> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'eps'";
+                        rosetta_js::Param<double> p2(env, call.arg(2));
+                        rosetta_js::converting() = "argument 'min_samples'";
+                        rosetta_js::Param<unsigned long> p3(env, call.arg(3));
+                        rosetta_js::converting() = "argument 'metric'";
+                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p4(env, call.arg(4));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::adopt<datamunge::DBSCAN>(call, new datamunge::DBSCAN(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()), nullptr);
+                    }
+                }
+            }
+            {
+                const int n = std::max(given, 2); (void)n;
+                if (raw >= 2 && given <= 5
+                    && (n <= 0 || rosetta_js::Param<const datamunge::DataFrame &>::check(env, call.arg(0), strict))
+                    && (n <= 1 || rosetta_js::Param<const std::__cxx11::basic_string<char> &>::check(env, call.arg(1), strict))
+                    && (n <= 2 || rosetta_js::Param<double>::check(env, call.arg(2), strict))
+                    && (n <= 3 || rosetta_js::Param<unsigned long>::check(env, call.arg(3), strict))
+                    && (n <= 4 || rosetta_js::Param<const std::__cxx11::basic_string<char> &>::check(env, call.arg(4), strict))) {
+                    if (n == 2) {
+                        rosetta_js::converting() = "argument 'data'";
+                        rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'encoded_feature_columns'";
+                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p1(env, call.arg(1));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::adopt<datamunge::DBSCAN>(call, new datamunge::DBSCAN(p0.get(), p1.get()), nullptr);
+                    }
+                    if (n == 3) {
+                        rosetta_js::converting() = "argument 'data'";
+                        rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'encoded_feature_columns'";
+                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'eps'";
+                        rosetta_js::Param<double> p2(env, call.arg(2));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::adopt<datamunge::DBSCAN>(call, new datamunge::DBSCAN(p0.get(), p1.get(), p2.get()), nullptr);
+                    }
+                    if (n == 4) {
+                        rosetta_js::converting() = "argument 'data'";
+                        rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'encoded_feature_columns'";
+                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'eps'";
+                        rosetta_js::Param<double> p2(env, call.arg(2));
+                        rosetta_js::converting() = "argument 'min_samples'";
+                        rosetta_js::Param<unsigned long> p3(env, call.arg(3));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::adopt<datamunge::DBSCAN>(call, new datamunge::DBSCAN(p0.get(), p1.get(), p2.get(), p3.get()), nullptr);
+                    }
+                    if (n == 5) {
+                        rosetta_js::converting() = "argument 'data'";
+                        rosetta_js::Param<const datamunge::DataFrame &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'encoded_feature_columns'";
+                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p1(env, call.arg(1));
+                        rosetta_js::converting() = "argument 'eps'";
+                        rosetta_js::Param<double> p2(env, call.arg(2));
+                        rosetta_js::converting() = "argument 'min_samples'";
+                        rosetta_js::Param<unsigned long> p3(env, call.arg(3));
+                        rosetta_js::converting() = "argument 'metric'";
+                        rosetta_js::Param<const std::__cxx11::basic_string<char> &> p4(env, call.arg(4));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::adopt<datamunge::DBSCAN>(call, new datamunge::DBSCAN(p0.get(), p1.get(), p2.get(), p3.get(), p4.get()), nullptr);
                     }
                 }
             }
         }
-        rosetta_js::no_overload(call, "NaiveBayesClassifier", "    new NaiveBayesClassifier(data: DataFrame, formula: string, laplace_smoothing\?: number, var_smoothing\?: number)\n");
+        rosetta_js::no_overload(call, "DBSCAN", "    new DBSCAN(data: DataFrame, feature_columns: string[], eps\?: number, min_samples\?: number, metric\?: string)\n    new DBSCAN(data: DataFrame, encoded_feature_columns: string, eps\?: number, min_samples\?: number, metric\?: string)\n");
     });
 }
-napi_value rosetta_js_2922(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3258(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        if (!rosetta_js::is_instance<datamunge::Tape>(env, call.self)) rosetta_js::wrong_receiver("Tape", "size");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_js::native<datamunge::Tape>(env, call.self);
+                    if (n == 0) {
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->size(); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "size", "    size(): number\n");
+    });
+}
+napi_value rosetta_js_3259(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        if (!rosetta_js::is_instance<datamunge::Tape>(env, call.self)) rosetta_js::wrong_receiver("Tape", "value_at");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_js::native<datamunge::Tape>(env, call.self);
+                    if (n == 1) {
+                        rosetta_js::converting() = "argument 'index'";
+                        rosetta_js::Param<unsigned long> p0(env, call.arg(0));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->value_at(p0.get()); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "value_at", "    value_at(index: number): number\n");
+    });
+}
+napi_value rosetta_js_3260(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        if (!rosetta_js::is_instance<datamunge::Tape>(env, call.self)) rosetta_js::wrong_receiver("Tape", "backward");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_js::native<datamunge::Tape>(env, call.self);
+                    if (n == 1) {
+                        rosetta_js::converting() = "argument 'output'";
+                        rosetta_js::Param<const datamunge::Var &> p0(env, call.arg(0));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->backward(p0.get()); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "backward", "    backward(output: Var): number[]\n");
+    });
+}
+napi_value rosetta_js_3261(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info, true);
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::Tape>::value); (void)subclass;
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    if (n == 0) {
+                        return rosetta_js::adopt<datamunge::Tape>(call, new datamunge::Tape(), nullptr);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "Tape", "    new Tape()\n");
+    });
+}
+napi_value rosetta_js_3262(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::MLPClassifierSearch>(env, call.self)) rosetta_js::wrong_receiver("MLPClassifierSearch", "best_hidden_nodes");
@@ -5159,7 +5258,7 @@ napi_value rosetta_js_2922(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "best_hidden_nodes", "    best_hidden_nodes(): number\n");
     });
 }
-napi_value rosetta_js_2923(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3263(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::MLPClassifierSearch>(env, call.self)) rosetta_js::wrong_receiver("MLPClassifierSearch", "validation_log_loss");
@@ -5179,7 +5278,7 @@ napi_value rosetta_js_2923(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "validation_log_loss", "    validation_log_loss(): number\n");
     });
 }
-napi_value rosetta_js_2924(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3264(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::MLPClassifierSearch>(env, call.self)) rosetta_js::wrong_receiver("MLPClassifierSearch", "test_accuracy");
@@ -5199,7 +5298,7 @@ napi_value rosetta_js_2924(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "test_accuracy", "    test_accuracy(): number\n");
     });
 }
-napi_value rosetta_js_2925(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3265(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::MLPClassifierSearch>(env, call.self)) rosetta_js::wrong_receiver("MLPClassifierSearch", "training_rows");
@@ -5219,7 +5318,7 @@ napi_value rosetta_js_2925(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "training_rows", "    training_rows(): number\n");
     });
 }
-napi_value rosetta_js_2926(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3266(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::MLPClassifierSearch>(env, call.self)) rosetta_js::wrong_receiver("MLPClassifierSearch", "validation_rows");
@@ -5239,7 +5338,7 @@ napi_value rosetta_js_2926(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "validation_rows", "    validation_rows(): number\n");
     });
 }
-napi_value rosetta_js_2927(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3267(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::MLPClassifierSearch>(env, call.self)) rosetta_js::wrong_receiver("MLPClassifierSearch", "test_rows");
@@ -5259,7 +5358,7 @@ napi_value rosetta_js_2927(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "test_rows", "    test_rows(): number\n");
     });
 }
-napi_value rosetta_js_2928(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3268(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::MLPClassifierSearch>(env, call.self)) rosetta_js::wrong_receiver("MLPClassifierSearch", "summary");
@@ -5279,7 +5378,7 @@ napi_value rosetta_js_2928(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "summary", "    summary(): string\n");
     });
 }
-napi_value rosetta_js_2929(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3269(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::MLPClassifierSearch>(env, call.self)) rosetta_js::wrong_receiver("MLPClassifierSearch", "trials");
@@ -5299,7 +5398,7 @@ napi_value rosetta_js_2929(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "trials", "    trials(): DataFrame | null\n");
     });
 }
-napi_value rosetta_js_2930(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3270(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::MLPClassifierSearch>(env, call.self)) rosetta_js::wrong_receiver("MLPClassifierSearch", "predict");
@@ -5322,7 +5421,7 @@ napi_value rosetta_js_2930(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "predict", "    predict(newdata: DataFrame): string[]\n");
     });
 }
-napi_value rosetta_js_2931(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3271(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::MLPClassifierSearch>(env, call.self)) rosetta_js::wrong_receiver("MLPClassifierSearch", "plot_decision_regions");
@@ -5348,7 +5447,7 @@ napi_value rosetta_js_2931(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "plot_decision_regions", "    plot_decision_regions(grid_resolution\?: number): RPlot\n");
     });
 }
-napi_value rosetta_js_2932(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3272(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info, true);
         const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::MLPClassifierSearch>::value); (void)subclass;
@@ -5490,7 +5589,339 @@ napi_value rosetta_js_2932(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "MLPClassifierSearch", "    new MLPClassifierSearch(data: DataFrame, response: string, x_feature: string, y_feature: string, min_hidden\?: number, max_hidden\?: number, initial_samples\?: number, iterations\?: number, epochs\?: number, seed\?: number)\n");
     });
 }
-napi_value rosetta_js_3044(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3322(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        if (!rosetta_js::is_instance<datamunge::fda::TensorBSpline>(env, call.self)) rosetta_js::wrong_receiver("TensorBSpline", "dimensions");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_js::native<datamunge::fda::TensorBSpline>(env, call.self);
+                    if (n == 0) {
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->dimensions(); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "dimensions", "    dimensions(): number\n");
+    });
+}
+napi_value rosetta_js_3323(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        if (!rosetta_js::is_instance<datamunge::fda::TensorBSpline>(env, call.self)) rosetta_js::wrong_receiver("TensorBSpline", "bases");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_js::native<datamunge::fda::TensorBSpline>(env, call.self);
+                    if (n == 0) {
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->bases(); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "bases", "    bases(): BSplineBasis[]\n");
+    });
+}
+napi_value rosetta_js_3324(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        if (!rosetta_js::is_instance<datamunge::fda::TensorBSpline>(env, call.self)) rosetta_js::wrong_receiver("TensorBSpline", "shape");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_js::native<datamunge::fda::TensorBSpline>(env, call.self);
+                    if (n == 0) {
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->shape(); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "shape", "    shape(): number[]\n");
+    });
+}
+napi_value rosetta_js_3325(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        if (!rosetta_js::is_instance<datamunge::fda::TensorBSpline>(env, call.self)) rosetta_js::wrong_receiver("TensorBSpline", "coefficient_count");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_js::native<datamunge::fda::TensorBSpline>(env, call.self);
+                    if (n == 0) {
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->coefficient_count(); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "coefficient_count", "    coefficient_count(): number\n");
+    });
+}
+napi_value rosetta_js_3326(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        if (!rosetta_js::is_instance<datamunge::fda::TensorBSpline>(env, call.self)) rosetta_js::wrong_receiver("TensorBSpline", "coefficients");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_js::native<datamunge::fda::TensorBSpline>(env, call.self);
+                    if (n == 0) {
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->coefficients(); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "coefficients", "    coefficients(): number[]\n");
+    });
+}
+napi_value rosetta_js_3327(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        if (!rosetta_js::is_instance<datamunge::fda::TensorBSpline>(env, call.self)) rosetta_js::wrong_receiver("TensorBSpline", "domain_min");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_js::native<datamunge::fda::TensorBSpline>(env, call.self);
+                    if (n == 0) {
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->domain_min(); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "domain_min", "    domain_min(): number[]\n");
+    });
+}
+napi_value rosetta_js_3328(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        if (!rosetta_js::is_instance<datamunge::fda::TensorBSpline>(env, call.self)) rosetta_js::wrong_receiver("TensorBSpline", "domain_max");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_js::native<datamunge::fda::TensorBSpline>(env, call.self);
+                    if (n == 0) {
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->domain_max(); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "domain_max", "    domain_max(): number[]\n");
+    });
+}
+napi_value rosetta_js_3329(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        if (!rosetta_js::is_instance<datamunge::fda::TensorBSpline>(env, call.self)) rosetta_js::wrong_receiver("TensorBSpline", "coefficient");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_js::native<datamunge::fda::TensorBSpline>(env, call.self);
+                    if (n == 1) {
+                        rosetta_js::converting() = "argument 'index'";
+                        rosetta_js::Param<const std::vector<int> &> p0(env, call.arg(0));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->coefficient(p0.get()); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "coefficient", "    coefficient(index: number[]): number\n");
+    });
+}
+napi_value rosetta_js_3330(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        if (!rosetta_js::is_instance<datamunge::fda::TensorBSpline>(env, call.self)) rosetta_js::wrong_receiver("TensorBSpline", "set_coefficient");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 2); (void)n;
+                if (raw >= 2 && given <= 2) {
+                    auto* native = rosetta_js::native<datamunge::fda::TensorBSpline>(env, call.self);
+                    if (n == 2) {
+                        rosetta_js::converting() = "argument 'index'";
+                        rosetta_js::Param<const std::vector<int> &> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'value'";
+                        rosetta_js::Param<double> p1(env, call.arg(1));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->set_coefficient(p0.get(), p1.get()); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "set_coefficient", "    set_coefficient(index: number[], value: number)\n");
+    });
+}
+napi_value rosetta_js_3331(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        if (!rosetta_js::is_instance<datamunge::fda::TensorBSpline>(env, call.self)) rosetta_js::wrong_receiver("TensorBSpline", "evaluate");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 0; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1
+                    && (n <= 0 || rosetta_js::Param<double>::check(env, call.arg(0), strict))) {
+                    auto* native = rosetta_js::native<datamunge::fda::TensorBSpline>(env, call.self);
+                    if (n == 1) {
+                        rosetta_js::converting() = "argument 'x'";
+                        rosetta_js::Param<double> p0(env, call.arg(0));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->evaluate(p0.get()); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+            {
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1
+                    && (n <= 0 || rosetta_js::Param<const std::vector<double> &>::check(env, call.arg(0), strict))) {
+                    auto* native = rosetta_js::native<datamunge::fda::TensorBSpline>(env, call.self);
+                    if (n == 1) {
+                        rosetta_js::converting() = "argument 'point'";
+                        rosetta_js::Param<const std::vector<double> &> p0(env, call.arg(0));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->evaluate(p0.get()); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "evaluate", "    evaluate(x: number): number\n    evaluate(point: number[]): number\n");
+    });
+}
+napi_value rosetta_js_3332(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        if (!rosetta_js::is_instance<datamunge::fda::TensorBSpline>(env, call.self)) rosetta_js::wrong_receiver("TensorBSpline", "evaluate_points");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_js::native<datamunge::fda::TensorBSpline>(env, call.self);
+                    if (n == 1) {
+                        rosetta_js::converting() = "argument 'points'";
+                        rosetta_js::Param<const std::vector<std::vector<double>> &> p0(env, call.arg(0));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->evaluate_points(p0.get()); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "evaluate_points", "    evaluate_points(points: number[][]): number[]\n");
+    });
+}
+napi_value rosetta_js_3333(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        if (!rosetta_js::is_instance<datamunge::fda::TensorBSpline>(env, call.self)) rosetta_js::wrong_receiver("TensorBSpline", "evaluate_grid");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 1); (void)n;
+                if (raw >= 1 && given <= 1) {
+                    auto* native = rosetta_js::native<datamunge::fda::TensorBSpline>(env, call.self);
+                    if (n == 1) {
+                        rosetta_js::converting() = "argument 'axes'";
+                        rosetta_js::Param<const std::vector<std::vector<double>> &> p0(env, call.arg(0));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->evaluate_grid(p0.get()); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "evaluate_grid", "    evaluate_grid(axes: number[][]): number[]\n");
+    });
+}
+napi_value rosetta_js_3334(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info);
+        if (!rosetta_js::is_instance<datamunge::fda::TensorBSpline>(env, call.self)) rosetta_js::wrong_receiver("TensorBSpline", "dyadic_refine");
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 1; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 0); (void)n;
+                if (raw >= 0 && given <= 0) {
+                    auto* native = rosetta_js::native<datamunge::fda::TensorBSpline>(env, call.self);
+                    if (n == 0) {
+                        return rosetta_js::call(env, [&]() -> decltype(auto) { return native->dyadic_refine(); }, call.self, rosetta_js::Return::automatic);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "dyadic_refine", "    dyadic_refine(): TensorBSpline\n");
+    });
+}
+napi_value rosetta_js_3335(napi_env env, napi_callback_info info) {
+    return rosetta_js::boundary(env, [&]() -> napi_value {
+        rosetta_js::Call call(env, info, true);
+        const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::fda::TensorBSpline>::value); (void)subclass;
+        const int raw = call.count(), given = call.given(); (void)raw;
+        for (int pass = 0; pass < 2; ++pass) {
+            const bool strict = pass == 0; (void)strict;
+            {
+                const int n = std::max(given, 2); (void)n;
+                if (raw >= 2 && given <= 2
+                    && (n <= 0 || rosetta_js::Param<datamunge::fda::BSplineBasis>::check(env, call.arg(0), strict))
+                    && (n <= 1 || rosetta_js::Param<std::vector<double>>::check(env, call.arg(1), strict))) {
+                    if (n == 2) {
+                        rosetta_js::converting() = "argument 'basis'";
+                        rosetta_js::Param<datamunge::fda::BSplineBasis> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'coefficients'";
+                        rosetta_js::Param<std::vector<double>> p1(env, call.arg(1));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::adopt<datamunge::fda::TensorBSpline>(call, new datamunge::fda::TensorBSpline(p0.get(), p1.get()), nullptr);
+                    }
+                }
+            }
+            {
+                const int n = std::max(given, 2); (void)n;
+                if (raw >= 2 && given <= 2
+                    && (n <= 0 || rosetta_js::Param<std::vector<datamunge::fda::BSplineBasis>>::check(env, call.arg(0), strict))
+                    && (n <= 1 || rosetta_js::Param<std::vector<double>>::check(env, call.arg(1), strict))) {
+                    if (n == 2) {
+                        rosetta_js::converting() = "argument 'bases'";
+                        rosetta_js::Param<std::vector<datamunge::fda::BSplineBasis>> p0(env, call.arg(0));
+                        rosetta_js::converting() = "argument 'coefficients'";
+                        rosetta_js::Param<std::vector<double>> p1(env, call.arg(1));
+                        rosetta_js::converting() = nullptr;
+                        return rosetta_js::adopt<datamunge::fda::TensorBSpline>(call, new datamunge::fda::TensorBSpline(p0.get(), p1.get()), nullptr);
+                    }
+                }
+            }
+        }
+        rosetta_js::no_overload(call, "TensorBSpline", "    new TensorBSpline(basis: BSplineBasis, coefficients: number[])\n    new TensorBSpline(bases: BSplineBasis[], coefficients: number[])\n");
+    });
+}
+napi_value rosetta_js_3384(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "dimensions");
@@ -5510,7 +5941,7 @@ napi_value rosetta_js_3044(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "dimensions", "    dimensions(): number\n");
     });
 }
-napi_value rosetta_js_3045(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3385(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "level_count");
@@ -5530,7 +5961,7 @@ napi_value rosetta_js_3045(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "level_count", "    level_count(): number\n");
     });
 }
-napi_value rosetta_js_3046(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3386(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "level");
@@ -5553,7 +5984,7 @@ napi_value rosetta_js_3046(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "level", "    level(level: number): TensorBSpline\n");
     });
 }
-napi_value rosetta_js_3047(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3387(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "cell_count");
@@ -5573,7 +6004,7 @@ napi_value rosetta_js_3047(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "cell_count", "    cell_count(): number\n");
     });
 }
-napi_value rosetta_js_3048(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3388(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "root");
@@ -5593,7 +6024,7 @@ napi_value rosetta_js_3048(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "root", "    root(): number\n");
     });
 }
-napi_value rosetta_js_3049(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3389(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "parent");
@@ -5616,7 +6047,7 @@ napi_value rosetta_js_3049(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "parent", "    parent(cell: number): number\n");
     });
 }
-napi_value rosetta_js_3050(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3390(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "child");
@@ -5641,7 +6072,7 @@ napi_value rosetta_js_3050(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "child", "    child(cell: number, slot: number): number\n");
     });
 }
-napi_value rosetta_js_3051(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3391(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "depth");
@@ -5664,7 +6095,7 @@ napi_value rosetta_js_3051(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "depth", "    depth(cell: number): number\n");
     });
 }
-napi_value rosetta_js_3052(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3392(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "cell_min");
@@ -5687,7 +6118,7 @@ napi_value rosetta_js_3052(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "cell_min", "    cell_min(cell: number): number[]\n");
     });
 }
-napi_value rosetta_js_3053(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3393(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "cell_max");
@@ -5710,7 +6141,7 @@ napi_value rosetta_js_3053(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "cell_max", "    cell_max(cell: number): number[]\n");
     });
 }
-napi_value rosetta_js_3054(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3394(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "locate");
@@ -5733,7 +6164,7 @@ napi_value rosetta_js_3054(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "locate", "    locate(point: number[]): number\n");
     });
 }
-napi_value rosetta_js_3055(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3395(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "refine");
@@ -5758,7 +6189,7 @@ napi_value rosetta_js_3055(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "refine", "    refine(cell: number, slot: number): number\n");
     });
 }
-napi_value rosetta_js_3056(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3396(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "subdivide");
@@ -5781,7 +6212,7 @@ napi_value rosetta_js_3056(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "subdivide", "    subdivide(cell: number): number[]\n");
     });
 }
-napi_value rosetta_js_3057(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3397(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "refine_region");
@@ -5808,7 +6239,7 @@ napi_value rosetta_js_3057(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "refine_region", "    refine_region(region_min: number[], region_max: number[], depth: number)\n");
     });
 }
-napi_value rosetta_js_3058(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3398(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "support_min");
@@ -5833,7 +6264,7 @@ napi_value rosetta_js_3058(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "support_min", "    support_min(level: number, index: number[]): number[]\n");
     });
 }
-napi_value rosetta_js_3059(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3399(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "support_max");
@@ -5858,7 +6289,7 @@ napi_value rosetta_js_3059(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "support_max", "    support_max(level: number, index: number[]): number[]\n");
     });
 }
-napi_value rosetta_js_3060(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3400(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "is_active");
@@ -5883,7 +6314,7 @@ napi_value rosetta_js_3060(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "is_active", "    is_active(level: number, index: number[]): boolean\n");
     });
 }
-napi_value rosetta_js_3061(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3401(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "active_indices");
@@ -5906,7 +6337,7 @@ napi_value rosetta_js_3061(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "active_indices", "    active_indices(level: number): number[][]\n");
     });
 }
-napi_value rosetta_js_3062(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3402(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "basis_size");
@@ -5926,7 +6357,7 @@ napi_value rosetta_js_3062(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "basis_size", "    basis_size(): number\n");
     });
 }
-napi_value rosetta_js_3063(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3403(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "coefficient");
@@ -5951,7 +6382,7 @@ napi_value rosetta_js_3063(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "coefficient", "    coefficient(level: number, index: number[]): number\n");
     });
 }
-napi_value rosetta_js_3064(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3404(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "set_coefficient");
@@ -5978,7 +6409,7 @@ napi_value rosetta_js_3064(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "set_coefficient", "    set_coefficient(level: number, index: number[], value: number)\n");
     });
 }
-napi_value rosetta_js_3065(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3405(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "truncated_basis");
@@ -6005,7 +6436,7 @@ napi_value rosetta_js_3065(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "truncated_basis", "    truncated_basis(level: number, index: number[], point: number[]): number\n");
     });
 }
-napi_value rosetta_js_3066(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3406(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "fit_level");
@@ -6044,7 +6475,7 @@ napi_value rosetta_js_3066(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "fit_level", "    fit_level(level: number, points: number[][], values: number[], options\?: SplineSolveOptions)\n");
     });
 }
-napi_value rosetta_js_3067(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3407(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "fit_level_penalized");
@@ -6103,7 +6534,7 @@ napi_value rosetta_js_3067(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "fit_level_penalized", "    fit_level_penalized(level: number, points: number[][], values: number[], lambdas: number[], order\?: number, options\?: SplineSolveOptions)\n");
     });
 }
-napi_value rosetta_js_3068(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3408(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "fit");
@@ -6138,7 +6569,7 @@ napi_value rosetta_js_3068(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "fit", "    fit(points: number[][], values: number[], options\?: SplineSolveOptions)\n");
     });
 }
-napi_value rosetta_js_3069(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3409(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "fit_penalized");
@@ -6191,7 +6622,7 @@ napi_value rosetta_js_3069(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "fit_penalized", "    fit_penalized(points: number[][], values: number[], lambdas: number[], order\?: number, options\?: SplineSolveOptions)\n");
     });
 }
-napi_value rosetta_js_3070(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3410(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "evaluate");
@@ -6214,7 +6645,7 @@ napi_value rosetta_js_3070(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "evaluate", "    evaluate(point: number[]): number\n");
     });
 }
-napi_value rosetta_js_3071(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3411(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "evaluate_points");
@@ -6237,7 +6668,7 @@ napi_value rosetta_js_3071(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "evaluate_points", "    evaluate_points(points: number[][]): number[]\n");
     });
 }
-napi_value rosetta_js_3072(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3412(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info);
         if (!rosetta_js::is_instance<datamunge::fda::TruncatedHierarchicalBSpline>(env, call.self)) rosetta_js::wrong_receiver("TruncatedHierarchicalBSpline", "evaluate_grid");
@@ -6260,7 +6691,7 @@ napi_value rosetta_js_3072(napi_env env, napi_callback_info info) {
         rosetta_js::no_overload(call, "evaluate_grid", "    evaluate_grid(axes: number[][]): number[]\n");
     });
 }
-napi_value rosetta_js_3073(napi_env env, napi_callback_info info) {
+napi_value rosetta_js_3413(napi_env env, napi_callback_info info) {
     return rosetta_js::boundary(env, [&]() -> napi_value {
         rosetta_js::Call call(env, info, true);
         const bool subclass = rosetta_js::subclass_call(call, &rosetta_js::Info<datamunge::fda::TruncatedHierarchicalBSpline>::value); (void)subclass;

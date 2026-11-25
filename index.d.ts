@@ -83,6 +83,24 @@ export declare enum BCType {
 }
 
 /**
+ * Kind of one actual antipodal support decision.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto kind=dm::geometry::CaliperEventKind::AreaAdvance;
+ * std::print("{}\n",static_cast<int>(kind)); // 0
+ * ```
+ *
+ * Arguments of this type also accept the enumerator names as strings.
+ */
+export declare enum CaliperEventKind {
+    AreaAdvance = 0,
+    AreaStop = 1,
+    PairTest = 2,
+}
+
+/**
  * Selected predecessor of an actual positive DTW cell.
  * advance_a changes the first coordinate, advance_b the second. Finite ties
  * prefer diagonal, then advance_a, then advance_b. Unrepresentable accumulated
@@ -139,7 +157,31 @@ export declare enum HullPass {
 }
 
 /**
- * C++ enumeration `datamunge::geometry::Orientation`
+ * Actual nearest-query phase: visited point or post-near-subtree far-plane decision.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto t=dm::geometry::KDTree2D({{0,0}}).nearest_trace({1,1});
+ * std::print("{}\n",t.probes[0].action==dm::geometry::KDProbeAction::Visit); // true
+ * ```
+ *
+ * Arguments of this type also accept the enumerator names as strings.
+ */
+export declare enum KDProbeAction {
+    Visit = 0,
+    FarPlane = 1,
+}
+
+/**
+ * Exact orientation of three stored finite binary64 points.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto value=dm::geometry::Orientation::Collinear;
+ * std::print("{}\n",static_cast<int>(value)); // 0
+ * ```
  *
  * Arguments of this type also accept the enumerator names as strings.
  */
@@ -147,6 +189,24 @@ export declare enum Orientation {
     Collinear = 0,
     Clockwise = 1,
     CounterClockwise = 2,
+}
+
+/**
+ * Exact intersection-set type for two closed finite segments.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto value=dm::geometry::SegmentContact::None;
+ * std::print("{}\n",static_cast<int>(value)); // 0
+ * ```
+ *
+ * Arguments of this type also accept the enumerator names as strings.
+ */
+export declare enum SegmentContact {
+    None = 0,
+    Point = 1,
+    Overlap = 2,
 }
 
 /**
@@ -188,7 +248,33 @@ export declare enum ResampleFilter {
 }
 
 /**
- * C++ enumeration `datamunge::ode::StepMethod`
+ * Actual selected step kernel, distinguishing startup/shortened Adams tails.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::ode::ODEAttemptKind::rk4_tail==dm::ode::ODEAttemptKind::rk4_tail); // true
+ * ```
+ *
+ * Arguments of this type also accept the enumerator names as strings.
+ */
+export declare enum ODEAttemptKind {
+    fixed_step = 0,
+    rk45_trial = 1,
+    rk4_startup = 2,
+    adams_bashforth = 3,
+    adams_pece = 4,
+    rk4_tail = 5,
+}
+
+/**
+ * Original native explicit/adaptive/PECE method selectors.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * dm::ode::ODEOptions o;std::print("{}\n",o.method==dm::ode::StepMethod::RK4); // true
+ * ```
  *
  * Arguments of this type also accept the enumerator names as strings.
  */
@@ -946,6 +1032,3426 @@ export declare abstract class ResidualFunction {
 }
 
 /**
+ * Settings for NUTS.
+ */
+export declare class NUTSOptions {
+    constructor();
+    /**
+     * Number of post-warmup draws.
+     */
+    num_samples: number;
+    /**
+     * Number of warmup iterations (step-size adaptation).
+     */
+    num_warmup: number;
+    /**
+     * Caps the recursive trajectory-doubling at 2^max_tree_depth leapfrog steps per iteration.
+     */
+    max_tree_depth: number;
+    /**
+     * Leapfrog step size at the start of warmup.
+     */
+    initial_step_size: number;
+    /**
+     * Mean acceptance statistic the dual-averaging adaptation aims for.
+     */
+    target_accept_rate: number;
+    /**
+     * A trajectory is flagged as diverging once the Hamiltonian drifts by more than
+     * this from its initial value (Stan's default of 1000).
+     */
+    max_delta_error: number;
+    /**
+     * Random seed (chain k of sample_chains() uses seed + k).
+     */
+    seed: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Output of NUTS::sample().
+ */
+export declare class NUTSResult {
+    constructor();
+    /**
+     * Post-warmup draws, one vector<double> per sample.
+     */
+    samples: number[][];
+    /**
+     * Mean Metropolis acceptance statistic across all iterations (the same quantity
+     * the step-size adaptation targets).
+     */
+    accept_rate: number;
+    /**
+     * Step size used after warmup.
+     */
+    final_step_size: number;
+    /**
+     * Number of iterations, warmup included, whose trajectory diverged.
+     */
+    num_divergences: number;
+    /**
+     * Per post-warmup draw: 1 if that iteration's trajectory diverged, else 0.
+     */
+    divergent: number[];
+    /**
+     * Per post-warmup draw: number of trajectory doublings performed (tree depth).
+     */
+    tree_depth: number[];
+    /**
+     * Per post-warmup draw: number of leapfrog steps (gradient evaluations) used.
+     */
+    n_leapfrog: number[];
+    /**
+     * Per post-warmup draw: the Hamiltonian
+     *
+     * `H=-\log p(q)+\tfrac12|r|^2` at the
+     * start of the iteration, after momentum resampling (input to energy_bfmi()).
+     */
+    energy: number[];
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * The No-U-Turn Sampler (Hoffman & Gelman 2014, the efficient slice-sampling
+ * variant, Algorithm 3): Hamiltonian Monte Carlo with an automatically chosen
+ * trajectory length -- the leapfrog trajectory is grown by repeated doubling until
+ * it would start turning back on itself (a "U-turn"), removing the need to hand-tune
+ * a fixed number of leapfrog steps. Step size is still adapted via the same
+ * dual-averaging scheme as HMC. Uses an identity mass matrix.
+ */
+export declare class NUTS {
+    /**
+     * Stores the sampler settings.
+     * @param options Sampler settings. (default: `new NUTSOptions()`)
+     */
+    constructor(options?: NUTSOptions);
+    /**
+     * Runs one chain: warmup with step-size adaptation, then num_samples draws.
+     * @param log_posterior Log density (up to a constant) and its gradient.
+     * @param initial_params Starting point on the unconstrained scale.
+     * @returns Draws plus acceptance, step size and per-draw diagnostics.
+     */
+    sample(log_posterior: DifferentiableFunction, initial_params: number[]): NUTSResult;
+    /**
+     * The options this NUTS was configured with.
+     * @returns The stored options.
+     */
+    options(): NUTSOptions;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Base class for user-defined callbacks invoked by datamunge functions.
+ *
+ * Derive from this class and override `call()` to supply custom behavior
+ * wherever a `Callback*` is accepted.
+ *
+ * Subclass it in JavaScript (`class Mine extends Callback {...}`): methods of the subclass override the C++ virtual methods.
+ */
+export declare class Callback {
+    constructor();
+    /**
+     * Applies the callback to a single value.
+     * @param x Input value.
+     * @returns Transformed value; the default implementation returns `x` unchanged.
+     */
+    call(x: number): number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * A plotting color: 8-bit red, green, and blue channels plus an alpha opacity,
+ * the C++ counterpart of R's `rgb(r, g, b, alpha, maxColorValue = 255)`.
+ *
+ * Brace-initialize numeric channels: `dm::RGB{255, 0, 0}` is opaque red and
+ * `dm::RGB{255, 0, 0, 0.5}` is half-transparent red. A default-constructed RGB is the
+ * library's dark-slate ink `{31, 41, 55}`, fully opaque. Channels are not validated: keep
+ * them in [0, 255] (both the raster and SVG renderers clamp out-of-range channels), and
+ * keep alpha in [0, 1] (both renderers clamp it). Every plotting API takes RGBA (the same type as RGB) by value,
+ * and `dm::c(...)` of several RGBs builds a palette usable with `select()` and set_col().
+ * Color strings convert implicitly: names are case-insensitive black, white, red, green,
+ * blue, yellow, cyan, magenta, gray/grey and transparent; hex accepts #RRGGBB and
+ * #RRGGBBAA, with alpha last and scaled to [0, 1]. Malformed text throws before a
+ * plot is changed. RGB and RGBA remain the same type, preserving existing palettes
+ * and the binary layout of numeric colors. Parsing owns no reference to the string.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto gold = dm::RGB{255, 215, 0};
+ * const auto glass = dm::RGBA{37, 99, 235, 0.3};  // translucent blue
+ * const dm::RGB ink;                              // {31, 41, 55}, opaque
+ * std::print("{} {} {}\n", gold.r, glass.alpha, ink.r);  // 255 0.3 31
+ * const auto palette = dm::c(gold, glass);       // a dm::Vector<dm::RGB>
+ * ```
+ * @see dm::RGBA, dm::Plot::set_col(), dm::points()
+ */
+export declare class RGB {
+    /**
+     * Construct the default opaque dark-slate ink color.
+     *
+     * **Example**
+     *
+     * See the RGB class example.
+     */
+    constructor();
+    /**
+     * Construct numeric RGB channels and an optional normalized alpha.
+     * Channels and alpha are retained; renderers clamp them when drawing.
+     *
+     * **Example**
+     *
+     * See the RGB class example; RGB{255, 0, 0} and RGBA{255, 0, 0, 0.5} mix freely.
+     * @param red Red channel, conventionally 0-255.
+     * @param green Green channel, conventionally 0-255.
+     * @param blue Blue channel, conventionally 0-255.
+     * @param opacity Alpha in [0, 1], default 1 (opaque). (default: `1.0`)
+     */
+    constructor(red: number, green: number, blue: number, opacity?: number);
+    /**
+     * Preserve direct initialization with a red channel and default remaining channels.
+     * Explicit so a number cannot accidentally become a color argument.
+     *
+     * **Example**
+     *
+     * See the numeric constructor; RGB{255} keeps the other default channels.
+     * @param red Red channel; green remains 41, blue 55 and alpha 1.
+     */
+    constructor(red: number);
+    /**
+     * Preserve direct initialization with red/green and default blue/alpha.
+     *
+     * **Example**
+     *
+     * See the numeric constructor; RGB{255, 0} keeps the other default channels.
+     * @param red Red channel, conventionally 0-255.
+     * @param green Green channel, conventionally 0-255; blue remains 55 and alpha 1.
+     */
+    constructor(red: number, green: number);
+    /**
+     * Implicitly parse a color name, #RRGGBB or #RRGGBBAA string.
+     * Names and hexadecimal digits are case-insensitive. Hex alpha is the final
+     * byte divided by 255; omitted alpha is 1. Whitespace is not stripped. Named
+     * green is (0, 128, 0); transparent is black with alpha zero. The input is copied
+     * while parsing and is never borrowed by a plot or palette.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const dm::RGBA glass = std::string("#ff44ff55");
+     * const auto plt = dm::plot(dm::c(0, 1), dm::c(1, 2), "data", "#ff44ff55");
+     * std::print("{} {}\n", glass.r, dm::round(glass.alpha, 3)); // 255 0.333
+     * ```
+     * @param color Color text; supported names are listed in the class description.
+     * @throws {Error} `std::invalid_argument`: For empty text, unknown names or malformed hex.
+     */
+    constructor(color: string);
+    /**
+     * Accept a string literal with the same parsing rules as the string constructor.
+     *
+     * **Example**
+     *
+     * See the string constructor, whose plot call accepts a literal directly.
+     * @param color Null-terminated color text; must be non-null.
+     * @throws {Error} `std::invalid_argument`: For null, empty or malformed text.
+     */
+    constructor(color: string | null);
+    /**
+     * Red channel, 0-255 (default 31).
+     */
+    r: number;
+    /**
+     * Green channel, 0-255 (default 41).
+     */
+    g: number;
+    /**
+     * Blue channel, 0-255 (default 55).
+     */
+    b: number;
+    /**
+     * Opacity in [0, 1]; 1 (the default) is opaque, 0 is invisible.
+     */
+    alpha: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * One drawn layer of a plot (points, a line, bars, a box, a polygon, a label, or
+ * segments), as stored by RPlot's layer verbs and read back through Plot::series().
+ *
+ * A plain aggregate holding data coordinates and styling. Which fields matter depends on
+ * kind; each Kind value documents how it reads x, y, and the other fields. Layers are drawn
+ * in insertion order, after the reference lines, and every layer's coordinates widen the
+ * automatic axis ranges (bars also pull the y range down or up to 0). A nonempty label puts
+ * the layer in the automatic legend unless it is a Text layer. User code normally creates
+ * layers through RPlot verbs (points(), lines(), bars(), ...) and only reads this struct.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * auto plt = dm::Plot().points(dm::c(1.0, 2.0), dm::c(3.0, 4.0), "pts");
+ * const dm::graphics::DataSeries& s = plt.series()[0];
+ * std::print("{} {} {} {}\n", s.kind == dm::graphics::DataSeries::Kind::Scatter, s.x.size(),
+ *            s.label, s.marker_size);  // true 2 pts 4
+ * ```
+ * @see Plot::series(), RPlot::points(), RPlot::lines()
+ */
+export declare class DataSeries {
+    constructor();
+    /**
+     * How the layer is drawn (default Line).
+     */
+    kind: DataSeries_Kind;
+    /**
+     * Horizontal data coordinates; meaning depends on kind.
+     */
+    x: number[];
+    /**
+     * Vertical data coordinates; meaning depends on kind.
+     */
+    y: number[];
+    /**
+     * Legend text (or the drawn text for Kind::Text); empty omits it.
+     */
+    label: string;
+    /**
+     * Layer color, including alpha (default RGBA{}, dark slate).
+     */
+    color: RGB;
+    /**
+     * Line, Segment, and outline-Polygon width in pixels (default 2).
+     */
+    stroke_width: number;
+    /**
+     * Scatter marker radius, or Text font size, in pixels (default 4).
+     */
+    marker_size: number;
+    /**
+     * Bar or Box width in data units (default 0.8).
+     */
+    bar_width: number;
+    /**
+     * Polygon only: true fills it, false draws its outline (default false).
+     */
+    filled: boolean;
+    /**
+     * Optional scatter palette, recycled in input order; empty uses color for every point.
+     */
+    point_colors: RGB[];
+    static readonly Kind: typeof DataSeries_Kind;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * A straight reference line across the whole plotting area, as drawn by R's
+ * `abline(a, b)`, `abline(h =)` and `abline(v =)`.
+ *
+ * A sloped or horizontal line is y = value + slope * x evaluated at both ends of the visible
+ * x range; a vertical line sits at x = value and ignores slope. Reference lines are drawn
+ * beneath every DataSeries. Vertical lines widen the automatic x range to include them;
+ * sloped and horizontal lines never change the axis ranges. Created by RPlot::abline(),
+ * abline_h(), abline_v(), and qqline(); read back through Plot::reference_lines().
+ *
+ * **Example**
+ *
+ * ```cpp
+ * auto plt = dm::Plot(dm::c(0.0, 1.0), dm::c(0.0, 2.0)).abline(0.5, 2.0).abline_v(0.25);
+ * const auto& lines = plt.reference_lines();
+ * std::print("{} {} {}\n", lines[0].slope, lines[1].vertical, lines[1].value);  // 2 true 0.25
+ * ```
+ *
+ * **References**
+ *
+ * - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+ * @see RPlot::abline(), Plot::reference_lines()
+ */
+export declare class ABLine {
+    constructor();
+    /**
+     * True for a vertical line at x = value (default false).
+     */
+    vertical: boolean;
+    /**
+     * y-intercept for a sloped/horizontal line; x-position for a vertical line
+     */
+    value: number;
+    /**
+     * Change in y per unit x; ignored when vertical (default 0).
+     */
+    slope: number;
+    /**
+     * Line color (default opaque black).
+     */
+    color: RGB;
+    /**
+     * Line width in pixels (default 1).
+     */
+    stroke_width: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * One manually specified legend row, as drawn by R's `legend()`.
+ *
+ * When a plot has any manual entries, they replace the default auto-generated
+ * (one-row-per-labeled-series) legend. Each row is a color swatch followed by the label,
+ * stacked from the top-right corner of the plotting area in insertion order.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).legend({"data"}, {dm::RGB{0, 0, 255}});
+ * std::print("{} {}\n", plt.legend_entries()[0].label, plt.legend_entries()[0].color.b);  // data 255
+ * ```
+ *
+ * **References**
+ *
+ * - R `legend()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/legend.html
+ * @see RPlot::legend(), dm::legend(), Plot::legend_entries()
+ */
+export declare class LegendEntry {
+    constructor();
+    /**
+     * Row text.
+     */
+    label: string;
+    /**
+     * Swatch color, including alpha (default opaque black).
+     */
+    color: RGB;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Renderer-facing state shared by every 2-D plot: canvas, labels, axes, and series.
+ *
+ * User code works with the derived RPlot (spelled `dm::Plot`), whose setters return `RPlot&`;
+ * this base holds the data, the read-only accessors, and the output functions to_svg(),
+ * save(), and show(). The base-class setters below return `Plot&` and are what RPlot's
+ * same-named setters forward to; call the RPlot forms in user code so chains keep the RPlot
+ * type. A `const Plot&` is also what RLayout::add() accepts and RLayout::panel() returns.
+ *
+ * Every output function renders from the stored state, so it throws std::runtime_error for a
+ * plot with no data series (reference lines and legend rows alone are not enough) or a canvas
+ * too small for its margins. Plots are copyable values with no shared state; distinct plots may
+ * be used from different threads, but one plot must not be mutated while it is rendered.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const dm::graphics::Plot& base = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 4.0)).set_title("Base");
+ * std::print("{} {}x{}\n", base.title_text(), base.width(), base.height());  // Base 960x640
+ * ```
+ * @see RPlot, RLayout
+ */
+export declare class Plot {
+    constructor();
+    /**
+     * Base-class form of RPlot::size(): sets the canvas size in pixels (default 960x640).
+     * @param width Canvas width in pixels.
+     * @param height Canvas height in pixels.
+     * @returns This plot, for chaining.
+     * @see RPlot::size()
+     */
+    size(width: number, height: number): Plot;
+    /**
+     * Sets the resolution PNG and PDF output is rasterized at, like R's
+     * `png(res = )` and ggsave()'s `dpi =` (default 96).
+     *
+     * The layout, text and line widths keep their size relative to the plot; only the pixel
+     * count changes: a plot of width(units::inch{8}) saves as a 768-pixel-wide PNG at 96 dpi
+     * and a 2400-pixel-wide one at 300 dpi. A PNG records the resolution (its pHYs chunk) so
+     * other programs show it at its physical size; a PDF keeps its page size and gains detail.
+     * SVG output is vector and is unaffected.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).width(dm::units::inch{2}).dpi(300);
+     * std::print("{} {}\n", plt.width(), plt.dpi());   // 192 300
+     * ```
+     *
+     * **References**
+     *
+     * - R png() `res` argument: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/png.html
+     * - ggplot2 ggsave() `dpi` argument: https://ggplot2.tidyverse.org/reference/ggsave.html
+     * @param value Dots per inch; finite and positive.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If `value` is not finite and positive.
+     * @see width(units::Length), height(units::Length), save()
+     */
+    dpi(value: number): Plot;
+    /**
+     * The resolution PNG and PDF output is rasterized at (default 96).
+     * @returns Dots per inch.
+     */
+    dpi(): number;
+    /**
+     * Base-class form of RPlot::title(): sets the main heading; empty removes it.
+     * @param value Heading text (moved into the plot).
+     * @returns This plot, for chaining.
+     * @see RPlot::set_title()
+     */
+    title(value: string): Plot;
+    /**
+     * Sets an optional subtitle displayed beneath the title; owns the supplied text.
+     * @param value Subtitle text; empty removes it.
+     * @returns This plot, for chaining.
+     * @see RPlot::set_subtitle()
+     */
+    subtitle(value: string): Plot;
+    /**
+     * Base-class form of RPlot::x_label(): sets the horizontal-axis label.
+     * @param value Label text (moved into the plot).
+     * @returns This plot, for chaining.
+     * @see RPlot::set_xlab()
+     */
+    x_label(value: string): Plot;
+    /**
+     * Base-class form of RPlot::y_label(): sets the vertical-axis label.
+     * @param value Label text (moved into the plot).
+     * @returns This plot, for chaining.
+     * @see RPlot::set_ylab()
+     */
+    y_label(value: string): Plot;
+    /**
+     * Base-class form of RPlot::background(): sets the canvas fill color.
+     * @param color Fill for the whole canvas (default white).
+     * @returns This plot, for chaining.
+     * @see RPlot::background()
+     */
+    background(color: RGB): Plot;
+    /**
+     * Base-class form of RPlot::axis_color(): sets the axis-line and text color.
+     * @param color Color for axis lines, ticks, axis labels, title, and subtitle.
+     * @returns This plot, for chaining.
+     * @see RPlot::axis_color()
+     */
+    axis_color(color: RGB): Plot;
+    /**
+     * Base-class form of RPlot::grid_color(): sets the grid-line color.
+     * @param color Grid-line color (default light gray `{229, 231, 235}`).
+     * @returns This plot, for chaining.
+     * @see RPlot::grid_color()
+     */
+    grid_color(color: RGB): Plot;
+    /**
+     * Base-class form of RPlot::show_grid(): turns the background grid on or off.
+     * @param enabled True (the default) draws the grid. (default: `true`)
+     * @returns This plot, for chaining.
+     * @see RPlot::show_grid()
+     */
+    show_grid(enabled?: boolean): Plot;
+    /**
+     * Base-class form of RPlot::x_limits(): fixes the visible x range.
+     * @param min_x Left edge of the plotting area, in data units.
+     * @param max_x Right edge; must be greater than `min_x`.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: Unless `max_x > min_x` (NaN fails); the plot is unchanged.
+     * @see RPlot::x_limits()
+     */
+    x_limits(min_x: number, max_x: number): Plot;
+    /**
+     * Base-class form of RPlot::y_limits(): fixes the visible y range.
+     * @param min_y Bottom edge of the plotting area, in data units.
+     * @param max_y Top edge; must be greater than `min_y`.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: Unless `max_y > min_y` (NaN fails); the plot is unchanged.
+     * @see RPlot::y_limits()
+     */
+    y_limits(min_y: number, max_y: number): Plot;
+    /**
+     * Base-class form of RPlot::hide_axes(): hides or restores axes, ticks, grid, and axis labels.
+     * @param enabled True (the default) hides them. (default: `true`)
+     * @returns This plot, for chaining.
+     * @see RPlot::hide_axes()
+     */
+    hide_axes(enabled?: boolean): Plot;
+    /**
+     * Base-class form of RPlot::x_tick_labels(): labels the x axis at 0, 1, 2, ...
+     * @param labels Tick texts; empty restores the numeric ticks.
+     * @returns This plot, for chaining.
+     * @see RPlot::x_tick_labels()
+     */
+    x_tick_labels(labels: string[]): Plot;
+    /**
+     * Replaces the numeric x ticks with `labels` drawn at data positions `positions`.
+     * @param positions x data coordinates of the ticks.
+     * @param labels Tick texts, one per position.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If the two vectors differ in length.
+     * @see RPlot::x_ticks()
+     */
+    x_ticks(positions: number[], labels: string[]): Plot;
+    /**
+     * Replaces the numeric y ticks with `labels` drawn at y = 0, 1, 2, ...
+     * @param labels Tick texts; empty restores the numeric ticks.
+     * @returns This plot, for chaining.
+     * @see RPlot::y_tick_labels()
+     */
+    y_tick_labels(labels: string[]): Plot;
+    /**
+     * Replaces the numeric y ticks with `labels` drawn at data positions `positions`.
+     * @param positions y data coordinates of the ticks.
+     * @param labels Tick texts, one per position.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If the two vectors differ in length.
+     * @see RPlot::y_ticks()
+     */
+    y_ticks(positions: number[], labels: string[]): Plot;
+    /**
+     * Overrides the automatic outer margins (in pixels) around the plotting area, e.g. for
+     * small multi-panel tiles. The defaults leave room for a title, axis labels, and ticks;
+     * tight margins suit panels whose title and axis labels are empty.
+     * @param left Left margin in pixels (default 90).
+     * @param right Right margin in pixels (default 24).
+     * @param top Top margin in pixels (default 72, plus 24 when a subtitle is set).
+     * @param bottom Bottom margin in pixels (default 84).
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If any margin is negative or non-finite.
+     * @see RPlot::margins()
+     */
+    margins(left: number, right: number, top: number, bottom: number): Plot;
+    /**
+     * Sets the tick-label font size in pixels (default 12); the raster viewer draws ticks
+     * at half-size glyphs when this is below 12.
+     * @param pixels Font size in pixels.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If `pixels` is not positive and finite.
+     * @see RPlot::tick_font_size()
+     */
+    tick_font_size(pixels: number): Plot;
+    /**
+     * Places numeric ticks at round values (steps of 1, 2 or 5 times a power of ten, like
+     * R's `pretty()`) instead of six evenly spaced ticks across the range (default on).
+     * @param enabled True turns round ticks on; false restores six even ticks. (default: `true`)
+     * @returns This plot, for chaining.
+     * @see RPlot::pretty_ticks()
+     */
+    pretty_ticks(enabled?: boolean): Plot;
+    /**
+     * Returns the canvas width in pixels (default 960).
+     * @returns Width set by size().
+     */
+    width(): number;
+    /**
+     * Returns the canvas height in pixels (default 640).
+     * @returns Height set by size().
+     */
+    height(): number;
+    /**
+     * Borrows the main heading ("datamunge plot" until set) for the lifetime of this plot.
+     * @returns The current title; empty when the heading was cleared.
+     */
+    title_text(): string;
+    /**
+     * Borrows the subtitle for the lifetime of this plot.
+     * @returns The current subtitle; empty (the default) when none is drawn.
+     */
+    subtitle_text(): string;
+    /**
+     * Borrows the horizontal-axis label ("x" until set) for the lifetime of this plot.
+     * @returns The current x-axis label.
+     */
+    x_label_text(): string;
+    /**
+     * Borrows the vertical-axis label ("y" until set) for the lifetime of this plot.
+     * @returns The current y-axis label.
+     */
+    y_label_text(): string;
+    /**
+     * Borrows the drawn layers (points, lines, bars, ...) in the order they were added.
+     * @returns The series list; references are invalidated by adding another layer.
+     */
+    series(): DataSeries[];
+    /**
+     * Returns the canvas fill color set by background().
+     * @returns The background color (default white `{255, 255, 255}`).
+     */
+    background_color(): RGB;
+    /**
+     * Returns the axis and text color set by axis_color().
+     * @returns The axis color (default gray `{55, 65, 81}`).
+     */
+    axes_color(): RGB;
+    /**
+     * Returns the grid-line color set by grid_color().
+     * @returns The grid color (default light gray `{229, 231, 235}`).
+     */
+    major_grid_color(): RGB;
+    /**
+     * Reports whether the background grid is drawn (see show_grid()).
+     * @returns True (the default) when the grid is drawn.
+     */
+    grid_visible(): boolean;
+    /**
+     * Reports whether x_limits() fixed the x range.
+     * @returns False (the default) while the x range is fitted to the data.
+     */
+    has_x_limits(): boolean;
+    /**
+     * Reports whether y_limits() fixed the y range.
+     * @returns False (the default) while the y range is fitted to the data.
+     */
+    has_y_limits(): boolean;
+    /**
+     * Returns the fixed left x limit; meaningful only when has_x_limits() is true.
+     * @returns The stored lower x limit (0 until x_limits() is called).
+     */
+    x_min(): number;
+    /**
+     * Returns the fixed right x limit; meaningful only when has_x_limits() is true.
+     * @returns The stored upper x limit (1 until x_limits() is called).
+     */
+    x_max(): number;
+    /**
+     * Returns the fixed bottom y limit; meaningful only when has_y_limits() is true.
+     * @returns The stored lower y limit (0 until y_limits() is called).
+     */
+    y_min(): number;
+    /**
+     * Returns the fixed top y limit; meaningful only when has_y_limits() is true.
+     * @returns The stored upper y limit (1 until y_limits() is called).
+     */
+    y_max(): number;
+    /**
+     * Reports whether hide_axes() suppressed axes, ticks, grid, and axis labels.
+     * @returns False (the default) when axes are drawn.
+     */
+    axes_hidden(): boolean;
+    /**
+     * Borrows the custom x tick texts; empty means numeric ticks.
+     * @returns Labels set by x_tick_labels() or x_ticks().
+     */
+    x_tick_label_list(): string[];
+    /**
+     * Data positions of x_tick_label_list(); empty means 0, 1, 2, ...
+     * @returns Positions set by x_ticks(); cleared by x_tick_labels().
+     */
+    x_tick_position_list(): number[];
+    /**
+     * Borrows the custom y tick texts; empty means numeric ticks.
+     * @returns Labels set by y_tick_labels() or y_ticks().
+     */
+    y_tick_label_list(): string[];
+    /**
+     * Data positions of y_tick_label_list(); empty means 0, 1, 2, ...
+     * @returns Positions set by y_ticks(); cleared by y_tick_labels().
+     */
+    y_tick_position_list(): number[];
+    /**
+     * Borrows the reference lines added by abline(), abline_h(), abline_v(), and qqline().
+     * @returns Lines in insertion order; references are invalidated by adding another line.
+     */
+    reference_lines(): ABLine[];
+    /**
+     * Borrows the manual legend rows added by legend(); empty means an automatic legend.
+     * @returns Manual entries in insertion order.
+     */
+    legend_entries(): LegendEntry[];
+    /**
+     * True once margins() has been called; the renderer then uses the explicit margins.
+     * @returns False (the default) while the automatic margins apply.
+     */
+    has_custom_margins(): boolean;
+    /**
+     * Returns the left margin in pixels; used only when has_custom_margins() is true.
+     * @returns The stored left margin (default 90).
+     */
+    margin_left(): number;
+    /**
+     * Returns the right margin in pixels; used only when has_custom_margins() is true.
+     * @returns The stored right margin (default 24).
+     */
+    margin_right(): number;
+    /**
+     * Returns the top margin in pixels; used only when has_custom_margins() is true.
+     * @returns The stored top margin (default 72).
+     */
+    margin_top(): number;
+    /**
+     * Returns the bottom margin in pixels; used only when has_custom_margins() is true.
+     * @returns The stored bottom margin (default 84).
+     */
+    margin_bottom(): number;
+    /**
+     * Returns the tick-label font size set by tick_font_size().
+     * @returns Font size in pixels (default 12).
+     */
+    tick_font_px(): number;
+    /**
+     * Reports whether pretty_ticks() is on.
+     * @returns False (the default) for six evenly spaced numeric ticks.
+     */
+    pretty_ticks_enabled(): boolean;
+    /**
+     * Renders the plot as a standalone SVG document and returns it as a string.
+     *
+     * The document starts with an XML declaration and draws text as embedded Computer Modern
+     * glyph outlines, so it displays identically in any SVG viewer, with or without web fonts. The plot is not modified, and no file or display is used.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const auto svg = dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)).set_title("Tiny").to_svg();
+     * std::print("{}\n", svg.starts_with("<?xml"));  // true
+     * std::print("{}\n", svg.contains("Tiny"));      // true
+     * ```
+     * @returns The complete SVG text.
+     * @throws {Error} `std::runtime_error`: If the plot has no data series, or the canvas is smaller than its margins.
+     * @see save(), show()
+     */
+    to_svg(): string;
+    /**
+     * Writes the plot to `path`, choosing the format from the file extension
+     * (R's `svg()`/`png()`/`pdf()` devices followed by `dev.off()`, in one call).
+     *
+     * `.svg` or no extension writes the same text as to_svg(); `.png` writes the raster image
+     * the X11 viewer displays; `.pdf` wraps that raster in a single-page PDF. The extension is
+     * case-sensitive. An existing file is overwritten. Needs no display.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0)).set_title("Squares");
+     * plt.save("squares.svg");  // vector
+     * plt.save("squares.png");  // raster
+     * plt.save("squares.pdf");  // raster in a one-page PDF
+     * ```
+     * @param path Destination file; relative paths resolve against the working directory.
+     * @throws {Error} `std::invalid_argument`: For any other extension (e.g. `.jpg`).
+     * @throws {Error} `std::runtime_error`: If the file cannot be opened for writing, the plot has no data series, or the canvas is smaller than its margins.
+     * @see save_svg(), to_svg(), show()
+     */
+    save(path: string): void;
+    /**
+     * Writes to_svg() to `path` regardless of its extension.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).save_svg("diagonal.txt");  // SVG text
+     * ```
+     * @param path Destination file; an existing file is overwritten.
+     * @throws {Error} `std::runtime_error`: If the file cannot be opened for writing, or rendering fails as described for to_svg().
+     * @see save()
+     */
+    save_svg(path: string): void;
+    /**
+     * Renders the plot as PNG image bytes (the same raster save() writes for `.png`).
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const auto png = dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)).to_png();
+     * std::print("{}\n", png[1] == 'P');  // true: PNG signature
+     * ```
+     * @returns The complete PNG file contents.
+     * @throws {Error} `std::runtime_error`: If rendering fails as described for to_svg().
+     * @see save_png(), to_pdf(), to_svg()
+     */
+    to_png(): number[];
+    /**
+     * Renders the plot as a one-page PDF holding the raster image.
+     * @returns The complete PDF file contents.
+     * @throws {Error} `std::runtime_error`: If rendering fails as described for to_svg().
+     * @see save_pdf(), to_png()
+     */
+    to_pdf(): number[];
+    /**
+     * Writes to_png() to `path` regardless of its extension.
+     * @param path Destination file; an existing file is overwritten.
+     * @throws {Error} `std::runtime_error`: If the file cannot be written or rendering fails.
+     * @see save(), to_png()
+     */
+    save_png(path: string): void;
+    /**
+     * Writes to_pdf() to `path` regardless of its extension.
+     * @param path Destination file; an existing file is overwritten.
+     * @throws {Error} `std::runtime_error`: If the file cannot be written or rendering fails.
+     * @see save(), to_pdf()
+     */
+    save_pdf(path: string): void;
+    /**
+     * Same as show(); kept as an alias for older code.
+     * @param title_hint Window title; empty uses the plot's title. (default: `""`)
+     * @throws {Error} `std::runtime_error`: As for show().
+     * @see show()
+     */
+    view(title_hint?: string): void;
+    /**
+     * Opens the plot in an interactive X11 window and blocks until it is closed
+     * (like printing a plot in an interactive R session).
+     *
+     * The window has toolbar and keyboard zoom/pan (it re-renders from data bounds) and closes
+     * on q or Escape; the function returns only then. The window title is `title_hint`, or
+     * the plot's title (title_text()) when the hint is empty. Requires a build with X11 support and a reachable `DISPLAY`; use save()
+     * in headless code such as tests and CI.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const auto x = dm::runif(0, 1, 1000);
+     * const auto y = dm::sin(20 / (x + 0.25)) + dm::rnorm(0, 0.2, 1000);
+     * dm::Plot(x, y).set_title("Doppler").set_col("blue").show("Doppler signal");
+     * ```
+     * @param title_hint Window title; empty (the default) uses the plot's title. (default: `""`)
+     * @throws {Error} `std::runtime_error`: If X11 support was not compiled in, the display cannot be opened, its visual is unsupported, or the plot has no data series.
+     * @see save(), to_svg()
+     */
+    show(title_hint?: string): void;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * A single R-base-graphics-style plot, spelled `dm::Plot` in user code.
+ *
+ * Covers R's high-level plotting calls (`plot()`, `hist()`, `barplot()`, `boxplot()`, `pie()`,
+ * `curve()`, `qqnorm()`, ...) as constructors and static factories, plus the "add to the
+ * current plot" verbs R exposes as separate functions (`points()`, `lines()`, `abline()`,
+ * `legend()`, `text()`, ...) as chainable member functions. A plot is an ordinary value: it
+ * owns copies of its data, copies cheaply enough to pass around, and draws nothing until it
+ * is rendered with to_svg(), save(), or show().
+ *
+ * Two composition styles mix freely. Setters such as set_title() and verbs such as points()
+ * mutate the plot and return `RPlot&` for chaining; the pipe `plot | dm::points(...)` (see
+ * compose.hpp) appends a reusable layer to a copy. A fresh plot has the title
+ * "datamunge plot", axis labels "x" and "y", a 960x640 canvas, and a light grid.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto x = dm::seql(-2.0, 2.0, 9);
+ * auto plt = dm::Plot(x, x * x)
+ *                .set_title("Parabola")
+ *                .set_xlab("x")
+ *                .set_ylab("x squared");
+ * plt.lines(x, x * x, dm::RGB{220, 38, 38}).abline_h(0.0);
+ * plt.save("parabola.svg");
+ * ```
+ * @see dm::points(), dm::legend(), dm::Histogram, dm::Splom, RLayout
+ */
+export declare class RPlot extends Plot {
+    /**
+     * Constructs an empty plot with default labels and styling, ready for layers.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot();
+     * std::print("{} | {} | {}\n", plt.title_text(), plt.x_label_text(), plt.y_label_text());
+     * // datamunge plot | x | y
+     * ```
+     */
+    constructor();
+    /**
+     * Constructs a scatter plot of `y` against `x`, like R's `plot(x, y)`.
+     *
+     * Equivalent to `RPlot::plot(x, y)`: one unlabeled scatter series drawn in blue
+     * `{37, 99, 235}` with 4-pixel markers; axis ranges fit the data. The coordinates are
+     * copied (or moved from rvalues); `dm::Vector<double>` converts implicitly. Restyle the
+     * points afterwards with set_col().
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const auto iris = dm::datasets::iris();
+     * auto plt = dm::Plot(iris.get_column("Petal.Length").values(),
+     *                     iris.get_column("Petal.Width").values())
+     *                .set_col("blue");
+     * plt.save("petals.svg");
+     * ```
+     * @param x Horizontal coordinates, one per point.
+     * @param y Vertical coordinates, paired with `x` by position.
+     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or have different lengths.
+     * @see points(), set_col(), plot()
+     */
+    constructor(x: number[], y: number[]);
+    /**
+     * Returns a fresh empty plot; same as the default constructor `dm::Plot()`.
+     *
+     * Kept for language bindings, where a named factory reads better than a constructor.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot::create();
+     * std::print("{}\n", plt.series().size());  // 0
+     * ```
+     * @returns An empty plot with default labels and styling.
+     * @see RPlot()
+     */
+    static create(): RPlot;
+    /**
+     * Sets the canvas size in pixels (default 960 by 640), like the `width`/`height`
+     * of R's `png()` or `svg()` device.
+     *
+     * Not validated here: rendering throws std::runtime_error when the canvas leaves no room
+     * inside the margins (by default the canvas must exceed 114 by 156 pixels).
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).size(400, 300);
+     * std::print("{}x{}\n", plt.width(), plt.height());  // 400x300
+     * ```
+     * @param width Canvas width in pixels.
+     * @param height Canvas height in pixels.
+     * @returns This plot, for chaining.
+     * @see margins()
+     */
+    size(width: number, height: number): RPlot;
+    /**
+     * Sets the resolution PNG and PDF output is rasterized at, like R's
+     * `png(res = )` and ggsave()'s `dpi =` (default 96).
+     *
+     * The layout, text and line widths keep their size relative to the plot; only the pixel
+     * count changes: a plot of width(units::inch{8}) saves as a 768-pixel-wide PNG at 96 dpi
+     * and a 2400-pixel-wide one at 300 dpi. A PNG records the resolution (its pHYs chunk) so
+     * other programs show it at its physical size; a PDF keeps its page size and gains detail.
+     * SVG output is vector and is unaffected.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).width(dm::units::inch{2}).dpi(300);
+     * std::print("{} {}\n", plt.width(), plt.dpi());   // 192 300
+     * ```
+     *
+     * **References**
+     *
+     * - R png() `res` argument: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/png.html
+     * - ggplot2 ggsave() `dpi` argument: https://ggplot2.tidyverse.org/reference/ggsave.html
+     * @param value Dots per inch; finite and positive.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If `value` is not finite and positive.
+     * @see width(units::Length), height(units::Length), save()
+     */
+    dpi(value: number): RPlot;
+    /**
+     * Sets the main heading, like R's `main =`; an empty string removes it.
+     * @param value Heading text (copied).
+     * @returns This plot, for chaining.
+     * @see set_title()
+     */
+    title(value: string): RPlot;
+    /**
+     * Sets the subtitle and returns this plot for chaining RPlot verbs; same as set_subtitle().
+     * @param value Subtitle text drawn under the title; empty removes it.
+     * @returns This plot, for chaining.
+     * @see set_subtitle()
+     */
+    subtitle(value: string): RPlot;
+    /**
+     * Sets the horizontal-axis label; same as xlab() and set_xlab().
+     * @param value Label text (copied).
+     * @returns This plot, for chaining.
+     * @see set_xlab()
+     */
+    x_label(value: string): RPlot;
+    /**
+     * Sets the vertical-axis label; same as ylab() and set_ylab().
+     * @param value Label text (copied).
+     * @returns This plot, for chaining.
+     * @see set_ylab()
+     */
+    y_label(value: string): RPlot;
+    /**
+     * R-style alias for x_label(), like R's `xlab =`.
+     * @param value Label text (copied).
+     * @returns This plot, for chaining.
+     * @see set_xlab()
+     */
+    xlab(value: string): RPlot;
+    /**
+     * R-style alias for y_label(), like R's `ylab =`.
+     * @param value Label text (copied).
+     * @returns This plot, for chaining.
+     * @see set_ylab()
+     */
+    ylab(value: string): RPlot;
+    /**
+     * Sets the main heading drawn above the plotting area (R's `main =`).
+     *
+     * The plot owns a copy of the text. An empty string clears the heading; a fresh plot
+     * shows "datamunge plot" until this is called. Same as title().
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(2.0, 4.0, 8.0))
+     *                .set_title("Growth")
+     *                .set_subtitle("Doubling every step")
+     *                .set_xlab("Step")
+     *                .set_ylab("Count");
+     * std::print("{} / {}\n", plt.title_text(), plt.subtitle_text());
+     * // Growth / Doubling every step
+     * ```
+     * @param value Heading text.
+     * @returns This plot, for chaining.
+     * @see set_subtitle(), set_xlab(), set_ylab(), dm::title()
+     */
+    set_title(value: string): RPlot;
+    /**
+     * Sets the smaller second heading drawn beneath the title (unlike R's `sub =`,
+     * which sits below the x axis).
+     *
+     * The plot owns a copy of the text. Empty (the default) draws no subtitle and reserves no
+     * extra top margin. Same as subtitle().
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot().set_title("Iris Dataset").set_subtitle("Sepal Width vs Length");
+     * plt.set_subtitle("");  // remove it again
+     * ```
+     * @param value Subtitle text.
+     * @returns This plot, for chaining.
+     * @see set_title(), dm::subtitle()
+     */
+    set_subtitle(value: string): RPlot;
+    /**
+     * Sets the horizontal-axis label (R's `xlab =`).
+     *
+     * The plot owns a copy of the text; the default is "x" and an empty string hides the
+     * label. Same as xlab() and x_label().
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(3.0, 4.0)).set_xlab("Sepal Width");
+     * std::print("{}\n", plt.x_label_text());  // Sepal Width
+     * ```
+     * @param value Axis label text.
+     * @returns This plot, for chaining.
+     * @see set_ylab(), dm::xlab()
+     */
+    set_xlab(value: string): RPlot;
+    /**
+     * Sets the vertical-axis label (R's `ylab =`).
+     *
+     * The plot owns a copy of the text; the default is "y" and an empty string hides the
+     * label. Same as ylab() and y_label().
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(3.0, 4.0)).set_ylab("Sepal Length");
+     * std::print("{}\n", plt.y_label_text());  // Sepal Length
+     * ```
+     * @param value Axis label text.
+     * @returns This plot, for chaining.
+     * @see set_xlab(), dm::ylab()
+     */
+    set_ylab(value: string): RPlot;
+    /**
+     * Recolors every data series already on the plot (R's `col =` applied after the fact).
+     *
+     * Every existing series (points, lines, bars, ...) takes `color`, and per-point palettes
+     * from dm::points(...).set_col() or points_colored() are cleared, so the whole plot becomes
+     * one color. Only layers present now are affected: points added later keep their own
+     * colors. Reference lines (abline) and manual legend entries keep their explicit colors.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(3.0, 1.0, 2.0))
+     *                .set_col(dm::RGB{220, 100, 255});
+     * std::print("{}\n", plt.series()[0].color.r);  // 220
+     * ```
+     * @param color New color, including its alpha.
+     * @returns This plot, for chaining.
+     * @see set_col(std::string), dm::points()
+     */
+    set_col(color: RGB): RPlot;
+    /**
+     * Same as set_col(RGB) but takes a color name or hex string, like R's `col = "blue"`.
+     *
+     * Matching is case-insensitive. Names are black, white, red, green, blue, yellow, cyan,
+     * magenta, gray/grey, and transparent (a much smaller set than R's `colors()`). Green is
+     * RGB(0,128,0) as in CSS, and transparent is black with zero alpha. Hex strings are
+     * `#RRGGBB` or `#RRGGBBAA`, where AA is an alpha byte (`80` is about 0.5).
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const auto x = dm::runif(0, 1, 100);
+     * auto plt = dm::Plot(x, dm::rnorm(0, 1, 100)).set_col("blue");
+     * plt.set_col("#FF000080");  // half-transparent red
+     * const auto& col = plt.series()[0].color;
+     * std::print("{} {:.2f}\n", col.r, col.alpha);  // 255 0.50
+     * ```
+     * @param color Color name or hex string.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For unknown names or malformed hex; the plot is unchanged.
+     * @see set_col(RGB)
+     */
+    set_col(color: string): RPlot;
+    /**
+     * Parse a literal color without ambiguity between the string and RGBA overloads.
+     *
+     * **Example**
+     *
+     * See set_col(std::string), which accepts literals with this overload.
+     * @param color Null-terminated color name or hex text; must be non-null.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For null, empty or malformed color text; leaves the plot unchanged.
+     */
+    set_col(color: string | null): RPlot;
+    /**
+     * Sets the fill color of the whole canvas, like R's `par(bg =)`.
+     *
+     * The default is white `{255, 255, 255}`. The color fills the margins as well as the
+     * plotting area. Its alpha is ignored: the background is always drawn opaque.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0))
+     *                .background(dm::RGB{17, 24, 39})
+     *                .axis_color(dm::RGB{229, 231, 235})
+     *                .grid_color(dm::RGB{55, 65, 81});  // a dark theme
+     * std::print("{} {}\n", plt.background_color().r, plt.axes_color().r);  // 17 229
+     * ```
+     *
+     * **References**
+     *
+     * - R `par()` (`bg`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+     * @param color Canvas fill color.
+     * @returns This plot, for chaining.
+     * @see axis_color(), grid_color()
+     */
+    background(color: RGB): RPlot;
+    /**
+     * Sets the color of the axis lines and of all plot-level text: tick labels, axis
+     * labels, title, and subtitle (R's `col.axis`, `col.lab`, and `col.main` in one).
+     *
+     * The default is slate gray `{55, 65, 81}`. Legend text follows it too; text() labels and
+     * data layers keep their own colors.
+     *
+     * **Example**
+     *
+     * See background(), which builds a dark theme with all three color setters.
+     *
+     * **References**
+     *
+     * - R `par()` (`col.axis`, `col.lab`, `col.main`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+     * @param color Axis and text color.
+     * @returns This plot, for chaining.
+     * @see background(), grid_color()
+     */
+    axis_color(color: RGB): RPlot;
+    /**
+     * Sets the color of the background grid lines (default light gray `{229, 231, 235}`).
+     *
+     * Has no visible effect while the grid is off (show_grid(false)) or the axes are hidden.
+     *
+     * **Example**
+     *
+     * See background(), which builds a dark theme with all three color setters.
+     * @param color Grid-line color.
+     * @returns This plot, for chaining.
+     * @see show_grid(), background()
+     */
+    grid_color(color: RGB): RPlot;
+    /**
+     * Turns the light background grid on or off (on by default), like adding or
+     * omitting R's `grid()`.
+     *
+     * One vertical line per x tick and one horizontal line per y tick, so the grid always lines
+     * up with the tick labels (round values, evenly spaced ticks, or custom tick positions).
+     * Hidden axes hide the grid too.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).show_grid(false);
+     * std::print("{}\n", plt.grid_visible());  // false
+     * ```
+     *
+     * **References**
+     *
+     * - R `grid()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/grid.html
+     * @param enabled True (the default) draws the grid; false omits it. (default: `true`)
+     * @returns This plot, for chaining.
+     * @see grid_color(), hide_axes()
+     */
+    show_grid(enabled?: boolean): RPlot;
+    /**
+     * Fixes the visible x range, like R's `xlim = c(min_x, max_x)`.
+     *
+     * Without limits the x range is fitted to every layer (and vertical reference line), plus
+     * 5% padding on each side. With limits, the plotting area spans exactly [`min_x`, `max_x`]
+     * with no padding (R pads `xlim` by 4% unless `xaxs = "i"`). Data outside the range is not
+     * clipped and may be drawn over the margins.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0))
+     *                .x_limits(0.0, 4.0)
+     *                .y_limits(0.0, 10.0);
+     * std::print("{} {} {}\n", plt.has_x_limits(), plt.x_max(), plt.y_max());  // true 4 10
+     * ```
+     *
+     * **References**
+     *
+     * - R `plot.default()` (`xlim`, `ylim`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+     * @param min_x Left edge of the plotting area, in data units.
+     * @param max_x Right edge; must be greater than `min_x`.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: Unless `max_x > min_x` (NaN fails); the plot is unchanged.
+     * @see y_limits()
+     */
+    x_limits(min_x: number, max_x: number): RPlot;
+    /**
+     * Fixes the visible y range, like R's `ylim = c(min_y, max_y)`.
+     *
+     * Without limits the y range is fitted to every layer, plus 10% padding at each end (bar
+     * layers also include y = 0). With limits, the plotting area spans exactly
+     * [`min_y`, `max_y`]. Data outside the range is not clipped.
+     *
+     * **Example**
+     *
+     * See x_limits(), which sets both ranges.
+     *
+     * **References**
+     *
+     * - R `plot.default()` (`xlim`, `ylim`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+     * @param min_y Bottom edge of the plotting area, in data units.
+     * @param max_y Top edge; must be greater than `min_y`.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: Unless `max_y > min_y` (NaN fails); the plot is unchanged.
+     * @see x_limits()
+     */
+    y_limits(min_y: number, max_y: number): RPlot;
+    /**
+     * Short spelling of x_limits(), matching R's xlim plot argument.
+     * Fixes the horizontal plotting range without automatic padding. Data outside
+     * the range follows x_limits() rendering behavior; this does not filter layers.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::plot().points(dm::c(0, 1), dm::c(1, 2)).xlim(0, 1).ylim(-4, 4);
+     * std::print("{} {}\n", plt.x_max(), plt.y_min()); // 1 -4
+     * ```
+     * @param min_x Left edge in data units.
+     * @param max_x Right edge; must be greater than min_x.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: Unless max_x > min_x (NaN fails); the plot is unchanged.
+     * @see x_limits(), ylim()
+     */
+    xlim(min_x: number, max_x: number): RPlot;
+    /**
+     * Short spelling of y_limits(), matching R's ylim plot argument.
+     * Fixes the vertical plotting range without automatic padding; layers are retained.
+     *
+     * **Example**
+     *
+     * See xlim(), whose example uses both aliases.
+     * @param min_y Bottom edge in data units.
+     * @param max_y Top edge; must be greater than min_y.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: Unless max_y > min_y (NaN fails); the plot is unchanged.
+     * @see y_limits(), xlim()
+     */
+    ylim(min_y: number, max_y: number): RPlot;
+    /**
+     * Hides the axis lines, tick labels, grid, and axis labels, like R's `axes = FALSE,
+     * ann = FALSE` (the title and subtitle are still drawn).
+     *
+     * pie() turns this on. Margins are unchanged, so call margins() as well to let the data use
+     * the freed space.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).hide_axes();
+     * std::print("{}\n", plt.axes_hidden());  // true
+     * ```
+     *
+     * **References**
+     *
+     * - R `plot.default()` (`axes`, `ann`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+     * @param enabled True (the default) hides them; false shows them again. (default: `true`)
+     * @returns This plot, for chaining.
+     * @see show_grid(), margins()
+     */
+    hide_axes(enabled?: boolean): RPlot;
+    /**
+     * Replaces the numeric x ticks with `labels` at x = 0, 1, 2, ..., like R's
+     * `axis(1, at = 0:(n - 1), labels = labels)`.
+     *
+     * Matches the bar positions of barplot() and boxplot(). Clears any positions set by
+     * x_ticks(); an empty vector restores the numeric ticks.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot(dm::c(0.0, 1.0, 2.0), dm::c(5.0, 3.0, 4.0))
+     *                .x_tick_labels({"low", "mid", "high"});
+     * std::print("{}\n", plt.x_tick_label_list()[2]);  // high
+     * ```
+     *
+     * **References**
+     *
+     * - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html
+     * @param labels Tick texts, in order.
+     * @returns This plot, for chaining.
+     * @see x_ticks(), y_tick_labels()
+     */
+    x_tick_labels(labels: string[]): RPlot;
+    /**
+     * Replaces the numeric x ticks with `labels` drawn at data positions `positions`,
+     * like R's `axis(1, at = positions, labels = labels)`.
+     *
+     * Positions need not be sorted or inside the visible range. Two empty vectors restore the
+     * numeric ticks.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const auto x = dm::seql(0.0, 6.283, 50);
+     * auto plt = dm::Plot(x, dm::sin(x))
+     *                .x_ticks({0.0, 3.1416, 6.2832}, {"0", "pi", "2 pi"})
+     *                .y_ticks({-1.0, 0.0, 1.0}, {"min", "0", "max"});
+     * std::print("{}\n", plt.x_tick_position_list()[1]);  // 3.1416
+     * ```
+     *
+     * **References**
+     *
+     * - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html
+     * @param positions x data coordinates of the ticks.
+     * @param labels Tick texts, one per position.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If the two vectors differ in length; the plot is unchanged.
+     * @see x_tick_labels(), y_ticks()
+     */
+    x_ticks(positions: number[], labels: string[]): RPlot;
+    /**
+     * Replaces the numeric y ticks with `labels` at y = 0, 1, 2, ..., like R's
+     * `axis(2, at = 0:(n - 1), labels = labels)`.
+     *
+     * Clears any positions set by y_ticks(); an empty vector restores the numeric ticks.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot(dm::c(3.0, 5.0), dm::c(0.0, 1.0)).y_tick_labels({"no", "yes"});
+     * std::print("{}\n", plt.y_tick_label_list().size());  // 2
+     * ```
+     *
+     * **References**
+     *
+     * - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html
+     * @param labels Tick texts, in order.
+     * @returns This plot, for chaining.
+     * @see y_ticks(), x_tick_labels()
+     */
+    y_tick_labels(labels: string[]): RPlot;
+    /**
+     * Replaces the numeric y ticks with `labels` drawn at data positions `positions`,
+     * like R's `axis(2, at = positions, labels = labels)`.
+     *
+     * Two empty vectors restore the numeric ticks.
+     *
+     * **Example**
+     *
+     * See x_ticks(), which sets both axes.
+     *
+     * **References**
+     *
+     * - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html
+     * @param positions y data coordinates of the ticks.
+     * @param labels Tick texts, one per position.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If the two vectors differ in length; the plot is unchanged.
+     * @see y_tick_labels(), x_ticks()
+     */
+    y_ticks(positions: number[], labels: string[]): RPlot;
+    /**
+     * Overrides the automatic outer margins around the plotting area, in pixels, like
+     * R's `par(mai =)` (which uses inches and orders bottom, left, top, right).
+     *
+     * The automatic margins are left 90, right 24, top 72 (96 when a subtitle is set), and
+     * bottom 84; they leave room for the title, axis labels, and ticks. Explicit margins are used
+     * as given, with no extra room for a subtitle. Tight margins suit small multi-panel tiles
+     * whose title and axis labels are empty. Rendering throws std::runtime_error if the margins
+     * leave no plotting area.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto tile = dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0))
+     *                 .set_title("").set_xlab("").set_ylab("")
+     *                 .margins(30, 10, 10, 20)
+     *                 .tick_font_size(9);
+     * std::print("{} {}\n", tile.has_custom_margins(), tile.margin_left());  // true 30
+     * ```
+     *
+     * **References**
+     *
+     * - R `par()` (`mai`, `mar`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+     * @param left Left margin in pixels.
+     * @param right Right margin in pixels.
+     * @param top Top margin in pixels.
+     * @param bottom Bottom margin in pixels.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If any margin is negative or non-finite; the plot is unchanged.
+     * @see size(), tick_font_size(), RLayout
+     */
+    margins(left: number, right: number, top: number, bottom: number): RPlot;
+    /**
+     * Sets the tick-label font size in pixels (default 12), like R's `cex.axis`.
+     *
+     * In SVG output the size is used as given. The raster outputs (PNG, PDF, show()) draw tick
+     * labels with half-size glyphs when the size is below 12.
+     *
+     * **Example**
+     *
+     * See margins(), which shrinks the ticks for a small tile.
+     *
+     * **References**
+     *
+     * - R `par()` (`cex.axis`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+     * @param pixels Font size in pixels.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If `pixels` is not positive and finite; the plot is unchanged.
+     * @see margins()
+     */
+    tick_font_size(pixels: number): RPlot;
+    /**
+     * Places numeric ticks at round values (default on) instead of six evenly spaced
+     * ticks across the range, in the spirit of R's `pretty()`.
+     *
+     * The step is 1, 2, or 5 times a power of ten, chosen as the "nice number" nearest a fifth
+     * of the visible range (Heckbert's rule), and ticks are its multiples inside the range.
+     * That gives about four to seven ticks, close to R's `pretty()`: a padded range of -0.365
+     * to 7.665 gets ticks at 0, 2, 4 and 6. Custom tick labels take precedence. The background
+     * grid follows the ticks.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot(dm::c(0.0, 100.0), dm::c(0.0, 1.0)).pretty_ticks();
+     * std::print("{}\n", plt.to_svg().contains(">40</text>"));  // true: ticks 0, 20, ..., 100
+     * ```
+     *
+     * **References**
+     *
+     * - R `pretty()`: https://stat.ethz.ch/R-manual/R-devel/library/base/html/pretty.html
+     * - P. S. Heckbert (1990). "Nice Numbers for Graph Labels". In Graphics Gems, 61-63.
+     *   Academic Press. doi:10.1016/B978-0-08-050753-8.50020-8
+     * @param enabled True turns round ticks on; false restores six even ticks. (default: `true`)
+     * @returns This plot, for chaining.
+     * @see x_ticks(), show_grid()
+     */
+    pretty_ticks(enabled?: boolean): RPlot;
+    /**
+     * Builds a scatter, line, or line-plus-points plot of `y` against `x`, like R's
+     * `plot(x, y, type = "p" | "l" | "b")`.
+     *
+     * `"p"` (the default) adds one scatter series with 4-pixel markers; `"l"` adds one 2-pixel
+     * line joining the points in input order; `"b"` adds the line and then unlabeled points on
+     * top (R's `"b"` leaves gaps in the line around each point; this draws it through them). The
+     * title and axis labels keep their defaults. `RPlot(x, y)` is `plot(x, y)`.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const auto x = dm::seql(0.0, 4.0, 5);
+     * auto plt = dm::Plot::plot(x, x * x, "b", "x squared");
+     * std::print("{} series\n", plt.series().size());  // 2 series
+     * ```
+     *
+     * **References**
+     *
+     * - R `plot.default()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+     * @param x Horizontal coordinates, one per point.
+     * @param y Vertical coordinates, paired with `x` by position.
+     * @param type `"p"` (default), `"l"`, or `"b"`; case-sensitive. (default: `"p"`)
+     * @param label Legend text; empty (the default) keeps the plot out of the automatic legend. With `"b"` only the line carries it. (default: `""`)
+     * @param color Color of the points and line (default blue `{37, 99, 235}`).
+     * @returns A new plot holding the series.
+     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or differ in length, or `type` is not one of the three codes.
+     * @see RPlot(std::vector<double>, std::vector<double>), points(), lines()
+     */
+    static plot(x: number[], y: number[], type?: string, label?: string, color?: RGB): RPlot;
+    /**
+     * Builds a frequency histogram of `data` with `bins` equal-width bins, like R's
+     * `hist(x, breaks = bins)`.
+     *
+     * The bins split [min, max] of the data into equal widths (R instead treats `breaks` as a
+     * suggestion and uses `pretty()` boundaries). Bins include their left edge and exclude their
+     * right edge, except that the maximum goes in the final bin; R's default (`right = TRUE`) is
+     * the opposite, so a value on an inner boundary is counted one bin higher here. Constant
+     * data uses the range [value, value + 1]. Each bin is one bar of height equal to its count,
+     * centered on the bin with width equal to the bin width. The title is "Histogram", the x
+     * label "x", and the y label "Frequency". The data is consumed; the plot keeps only counts.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot::hist({1.0, 2.0, 2.0, 3.0, 3.0, 3.0, 4.0}, 3);
+     * const auto& bars = plt.series()[0];  // bins [1,2) [2,3) [3,4]
+     * std::print("{} {} {}\n", bars.y[0], bars.y[1], bars.y[2]);  // 1 2 4
+     * ```
+     *
+     * **References**
+     *
+     * - R `hist()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/hist.html
+     * @param data Observations; all must be finite.
+     * @param bins Number of bins (default 10). (default: `10`)
+     * @param label Legend text; empty (the default) shows no legend. (default: `""`)
+     * @param color Bar color (default light blue `{96, 165, 250}`).
+     * @returns A new plot holding one Bar series.
+     * @throws {Error} `std::invalid_argument`: For empty/non-finite data, zero bins, or a range/bin width that cannot be represented as a finite positive double.
+     * @see dm::Histogram, bars()
+     */
+    static hist(data: number[], bins?: number, label?: string, color?: RGB): RPlot;
+    /**
+     * Builds a bar chart with one bar per height, like R's
+     * `barplot(heights, names.arg = names)`.
+     *
+     * Bar i is centered at x = i (0, 1, 2, ...) and is 0.8 units wide (R puts default bars at
+     * 0.7, 1.9, 3.1, ...). Bars rise from 0, so negative heights point down, and the y range
+     * always includes 0. Nonempty `names` become x tick labels under the bars. The title and
+     * axis labels keep their defaults.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot::barplot({3.0, 5.0, 2.0}, {"a", "b", "c"}).set_title("Counts");
+     * std::print("{} {}\n", plt.series()[0].x[2], plt.x_tick_label_list()[2]);  // 2 c
+     * ```
+     *
+     * **References**
+     *
+     * - R `barplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/barplot.html
+     * @param heights Bar heights, in display order.
+     * @param names Tick labels, one per bar; empty (the default) keeps numeric ticks. (default: `[]`)
+     * @param label Legend text; empty (the default) shows no legend. (default: `""`)
+     * @param color Bar color (default green `{22, 163, 74}`).
+     * @returns A new plot holding one Bar series.
+     * @throws {Error} `std::invalid_argument`: If `heights` is empty or `names` is nonempty with a different length.
+     * @see bars(), x_tick_labels()
+     */
+    static barplot(heights: number[], names?: string[], label?: string, color?: RGB): RPlot;
+    /**
+     * Builds side-by-side box-and-whisker plots, one per group, like R's
+     * `boxplot(list(...), names = names)`.
+     *
+     * Group g is drawn at x = g (0, 1, 2, ...) as a 0.6-unit-wide box from the first to the
+     * third quartile with a line at the median. Quartiles are R's default "type 7" sample
+     * quantiles. Whiskers reach the most extreme values within 1.5 IQR of the box (Tukey's
+     * rule), and values beyond are drawn as outlier points. R's `boxplot()` instead uses
+     * Tukey's hinges (`fivenum()`), so for some sample sizes the box edges and the fences differ
+     * slightly from R: for 1, ..., 9, 40 this gives quartiles 3.25 and 7.75 where R draws
+     * hinges at 3 and 8. All boxes share `color`; the title and axis labels keep their defaults.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot::boxplot({{1, 2, 3, 4, 5, 6, 7, 8, 9, 40}, {2, 4, 6}}, {"a", "b"});
+     * const auto& y = plt.series()[0].y;  // whisker_lo, q1, median, q3, whisker_hi, outliers...
+     * std::print("{} {} {} {} {} | {}\n", y[0], y[1], y[2], y[3], y[4], y[5]);
+     * // 1 3.25 5.5 7.75 9 | 40
+     * plt.save("boxes.svg");
+     * ```
+     *
+     * **References**
+     *
+     * - J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley. (Box plot and the 1.5 IQR fences.)
+     * - R. McGill, J. W. Tukey, W. A. Larsen (1978). "Variations of Box Plots". The American
+     *   Statistician 32(1), 12-16. doi:10.1080/00031305.1978.10479236
+     * - R. J. Hyndman, Y. Fan (1996). "Sample Quantiles in Statistical Packages". The American
+     *   Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566 (quantile type 7.)
+     * - R `boxplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/boxplot.html
+     * - R `boxplot.stats()`: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/boxplot.stats.html
+     * @param groups One vector of observations per box; each must be nonempty.
+     * @param names Tick labels under the boxes; empty (the default) keeps numeric ticks. (default: `[]`)
+     * @param color Box, whisker, and outlier color (default light blue `{96, 165, 250}`).
+     * @returns A new plot holding one Box series per group (see DataSeries::Kind::Box for its layout).
+     * @throws {Error} `std::invalid_argument`: If `groups` or any group is empty, or `names` is nonempty with a different length.
+     * @see box(), x_tick_labels()
+     */
+    static boxplot(groups: number[][], names?: string[], color?: RGB): RPlot;
+    /**
+     * boxplot() with one color per box, like R's `boxplot(..., col = colors)`.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::graphics::RPlot::boxplot({{1, 2, 3}, {2, 4, 6}}, {"a", "b"},
+     *                                     std::vector<dm::RGB>{{78, 121, 167}, {242, 142, 43}});
+     * ```
+     * @param groups One vector of observations per box; each must be nonempty.
+     * @param names Tick labels under the boxes; empty keeps numeric ticks.
+     * @param colors Box colors, recycled when shorter than `groups`; must be nonempty.
+     * @returns A new plot holding one Box series per group.
+     * @throws {Error} `std::invalid_argument`: As boxplot(), or if `colors` is empty.
+     * @see boxplot(std::vector<std::vector<double>>, std::vector<std::string>, RGB)
+     */
+    static boxplot(groups: number[][], names: string[], colors: RGB[]): RPlot;
+    /**
+     * Builds a pie chart with one wedge per value, like R's
+     * `pie(x, labels = names, col = colors, clockwise = TRUE)`.
+     *
+     * Wedge i spans the fraction values[i] / sum(values) of the circle. Wedges start at 12
+     * o'clock and run clockwise (R's default starts at 3 o'clock and runs counter-clockwise).
+     * Each wedge is a filled unit-radius polygon with 24 arc segments. Names, when given, are
+     * drawn at radius 1.15 beside the middle of each wedge's arc and also label the wedges, so the
+     * automatic legend lists them. Colors are recycled; empty uses an 8-color built-in palette
+     * starting blue, red, green. The axes and grid are hidden and both ranges are fixed at
+     * [-1.4, 1.4]. The pie is drawn in data units, so it is round only when the plotting area is
+     * square, e.g. `.size(598, 640)` with the default margins; the default 960x640 canvas draws an
+     * ellipse.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot::pie({3.0, 2.0, 1.0}, {"rent", "food", "fun"}).size(598, 640);
+     * std::print("{}\n", plt.series().size());  // 6
+     * plt.save("budget.svg");
+     * ```
+     *
+     * **References**
+     *
+     * - R `pie()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/pie.html
+     * @param values Wedge sizes; nonnegative, with a positive sum.
+     * @param names Wedge labels; empty (the default) draws none. (default: `[]`)
+     * @param colors Wedge colors, recycled; empty (the default) uses the built-in palette. (default: `[]`)
+     * @returns A new plot holding one Polygon series per wedge plus one Text series per name.
+     * @throws {Error} `std::invalid_argument`: If `values` is empty, has a negative entry, or sums to 0, or `names` is nonempty with a different length.
+     * @see polygon(), text()
+     */
+    static pie(values: number[], names?: string[], colors?: RGB[]): RPlot;
+    /**
+     * Plots a function over [`from`, `to`] as a line, like R's `curve(expr, from, to, n)`.
+     *
+     * Evaluates `f.call(x)` at `n` evenly spaced points including both ends, in increasing
+     * order, and joins them with a 2-pixel line. `f` is used only during this call and is not
+     * retained. Non-finite results are stored as-is. Exceptions thrown by `f.call()` propagate.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * struct Square : dm::Callback {
+     *   double call(double x) override { return x * x; }
+     * };
+     * Square square;
+     * auto plt = dm::Plot::curve(square, -1.0, 1.0, 5);
+     * std::print("{}\n", plt.series()[0].y);  // [1, 0.25, 0, 0.25, 1]
+     * ```
+     *
+     * **References**
+     *
+     * - R `curve()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/curve.html
+     * @param f The function to draw: a dm::Callback subclass overriding `call(double)`.
+     * @param from Left end of the range.
+     * @param to Right end; must be greater than `from`.
+     * @param n Number of sample points, at least 2 (default 101, as in R). (default: `101`)
+     * @param label Legend text; empty (the default) shows no legend. (default: `""`)
+     * @param color Line color (default red `{220, 38, 38}`).
+     * @returns A new plot holding one Line series.
+     * @throws {Error} `std::invalid_argument`: If `n` is below 2 or `to` is not greater than `from`.
+     * @see lines()
+     */
+    static curve(f: Callback, from: number, to: number, n?: number, label?: string, color?: RGB): RPlot;
+    /**
+     * Builds a normal Q-Q plot: the sorted `data` against standard-normal quantiles,
+     * like R's `qqnorm(y)`.
+     *
+     * The i-th smallest value (i = 1..n) is plotted against the normal quantile of the plotting
+     * position (i - 0.5) / n. R's `ppoints()` uses that rule only for n > 10 and
+     * (i - 3/8) / (n + 1/4) for n <= 10, so the x coordinates differ from R for small samples.
+     * Points that fall on a straight line indicate normally distributed data; add the reference
+     * line with qqline(). The title is "Normal Q-Q", the axis labels "Theoretical Quantiles"
+     * and "Sample Quantiles".
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const std::vector<double> sample{3.0, 1.0, 2.0, 5.0, 4.0};
+     * auto plt = dm::Plot::qqnorm(sample).qqline(sample);
+     * std::print("{:.4f}\n", plt.series()[0].x[0]);  // -1.2816
+     * ```
+     *
+     * **References**
+     *
+     * - M. B. Wilk, R. Gnanadesikan (1968). "Probability plotting methods for the analysis of
+     *   data". Biometrika 55(1), 1-17. doi:10.1093/biomet/55.1.1
+     * - R `qqnorm()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html
+     * - R `ppoints()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ppoints.html
+     * @param data The sample; at least two values. Consumed (sorted in place).
+     * @param label Legend text (default "sample", so the automatic legend shows one row; pass "" to hide it). (default: `"sample"`)
+     * @param color Point color (default blue `{37, 99, 235}`).
+     * @returns A new plot holding one Scatter series.
+     * @throws {Error} `std::invalid_argument`: If `data` has fewer than two values.
+     * @see qqline()
+     */
+    static qqnorm(data: number[], label?: string, color?: RGB): RPlot;
+    /**
+     * Adds a scatter series to this plot, like R's `points(x, y, col = color)`.
+     *
+     * The coordinates are copied (or moved from rvalues) into a new series drawn above the
+     * existing ones; axis ranges grow to include it. A nonempty `label` adds a row to the
+     * automatic legend (shown only while no manual legend() entries exist).
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const auto x = dm::seql(0.0, 6.0, 13);
+     * auto plt = dm::Plot().set_title("sin and cos");
+     * plt.points(x, dm::sin(x), "sin", dm::RGB{37, 99, 235})
+     *    .points(x, dm::cos(x), "cos", dm::RGB{220, 38, 38}, 6.0);
+     * plt.save("trig.svg");  // automatic legend lists "sin" and "cos"
+     * ```
+     *
+     * **References**
+     *
+     * - R `points()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html
+     * @param x Horizontal coordinates, one per point.
+     * @param y Vertical coordinates, paired with `x` by position.
+     * @param label Legend text for this series; empty (the default) keeps it out of the legend. (default: `""`)
+     * @param color Marker color for every point (default blue `{37, 99, 235}`).
+     * @param marker_size Marker radius in pixels (default 4). (default: `4.0`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or have different lengths.
+     * @see points_colored(), dm::points(), set_col()
+     */
+    points(x: number[], y: number[], label?: string, color?: RGB, marker_size?: number): RPlot;
+    /**
+     * Same as points(x, y, label, color, marker_size) with an empty label, so the
+     * series stays out of the automatic legend.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot();
+     * plt.points(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0), dm::RGB{22, 163, 74}, 3.0);
+     * ```
+     * @param x Horizontal coordinates.
+     * @param y Vertical coordinates, paired with `x`.
+     * @param color Marker color for every point.
+     * @param marker_size Marker radius in pixels (default 4). (default: `4.0`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or have different lengths.
+     * @see points()
+     */
+    points(x: number[], y: number[], color: RGB, marker_size?: number): RPlot;
+    /**
+     * Preserve a three-argument literal label when colors also accept string literals.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot().points(dm::c(0, 1), dm::c(1, 2), "red");
+     * std::print("{}\n", plt.series()[0].label); // red
+     * ```
+     * @param x Horizontal coordinates.
+     * @param y Vertical coordinates, paired with x.
+     * @param label Legend label, including text that resembles a color; null means empty.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty or mismatched coordinate vectors.
+     */
+    points(x: number[], y: number[], label: string | null): RPlot;
+    /**
+     * Appends scatter points with a recycled per-point RGB(A) palette.
+     * Coordinates must have equal nonzero lengths; colors must not be empty.
+     * A partial palette cycle is allowed without a warning. Colors retain their own alpha.
+     * The series is unlabeled, so it never appears in the automatic legend.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const auto palette = dm::c(dm::RGB{255, 0, 0}, dm::RGB{0, 0, 255});
+     * auto plt = dm::Plot().points_colored(dm::c(1.0, 2.0, 3.0), dm::c(3.0, 2.0, 1.0), palette);
+     * std::print("{}\n", plt.series()[0].point_colors.size());  // 2 (red, blue, red)
+     * ```
+     *
+     * **References**
+     *
+     * - R `points()` (vector `col`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html
+     * @param x Horizontal coordinates.
+     * @param y Vertical coordinates, paired with `x`.
+     * @param colors Palette; point i uses `colors[i % colors.size()]`.
+     * @param marker_size Marker radius in pixels (default 4). (default: `4.0`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If the coordinate lengths or palette are invalid.
+     * @see dm::points() and Points::set_col(), the pipe-friendly form of this call.
+     */
+    points_colored(x: number[], y: number[], colors: RGB[], marker_size?: number): RPlot;
+    /**
+     * Adds a line joining the points in input order, like R's `lines(x, y, col = color,
+     * lwd = stroke_width)`; same as lines().
+     *
+     * The points are not sorted, so unsorted x draws a zigzag. The coordinates are copied (or
+     * moved from rvalues) into a new Line series drawn above existing layers; axis ranges grow
+     * to include it. A nonempty `label` adds a row to the automatic legend.
+     *
+     * **Example**
+     *
+     * See lines().
+     *
+     * **References**
+     *
+     * - R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html
+     * @param x Horizontal coordinates, one per vertex.
+     * @param y Vertical coordinates, paired with `x` by position.
+     * @param label Legend text; empty (the default) keeps it out of the legend. (default: `""`)
+     * @param color Line color (default red `{220, 38, 38}`).
+     * @param stroke_width Line width in pixels (default 2). (default: `2.0`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or have different lengths.
+     * @see lines(), plot()
+     */
+    line(x: number[], y: number[], label?: string, color?: RGB, stroke_width?: number): RPlot;
+    /**
+     * Adds a line joining the points in input order, like R's `lines(x, y, col = color,
+     * lwd = stroke_width)`.
+     *
+     * Same as line(). The points are not sorted, so unsorted x draws a zigzag. The coordinates
+     * are copied (or moved from rvalues) into a new Line series drawn above existing layers;
+     * axis ranges grow to include it. A nonempty `label` adds a row to the automatic legend.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const auto x = dm::seql(0.0, 6.0, 25);
+     * auto plt = dm::Plot(x, dm::sin(x) + dm::rnorm(0, 0.1, 25));
+     * plt.lines(x, dm::sin(x), "sin(x)", dm::RGB{220, 38, 38}, 3.0);
+     * std::print("{}\n", plt.series()[1].stroke_width);  // 3
+     * ```
+     *
+     * **References**
+     *
+     * - R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html
+     * @param x Horizontal coordinates, one per vertex.
+     * @param y Vertical coordinates, paired with `x` by position.
+     * @param label Legend text; empty (the default) keeps it out of the legend. (default: `""`)
+     * @param color Line color (default red `{220, 38, 38}`).
+     * @param stroke_width Line width in pixels (default 2). (default: `2.0`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or have different lengths.
+     * @see line(), lines(std::vector<double>, std::vector<double>, RGB, double), plot()
+     */
+    lines(x: number[], y: number[], label?: string, color?: RGB, stroke_width?: number): RPlot;
+    /**
+     * Unlabeled line shorthand: `lines(x, y, {r, g, b}, width)`.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot().lines(dm::c(0.0, 1.0, 2.0), dm::c(0.0, 1.0, 0.0), dm::RGB{0, 0, 0}, 1.0);
+     * std::print("{}\n", plt.series()[0].label.empty());  // true
+     * ```
+     * @param x Horizontal coordinates.
+     * @param y Vertical coordinates, paired with `x`.
+     * @param color Line color.
+     * @param stroke_width Line width in pixels (default 2). (default: `2.0`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or have different lengths.
+     * @see lines()
+     */
+    lines(x: number[], y: number[], color: RGB, stroke_width?: number): RPlot;
+    /**
+     * Preserve a three-argument literal label when colors also accept string literals.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot().lines(dm::c(0, 1), dm::c(1, 2), "red");
+     * std::print("{}\n", plt.series()[0].label); // red
+     * ```
+     * @param x Horizontal coordinates.
+     * @param y Vertical coordinates, paired with x.
+     * @param label Legend label, including text that resembles a color; null means empty.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty or mismatched coordinate vectors.
+     */
+    lines(x: number[], y: number[], label: string | null): RPlot;
+    /**
+     * Adds vertical bars centered at arbitrary x positions, the low-level form behind
+     * barplot() and hist() (R's `rect()` from 0 to each height).
+     *
+     * Bar i spans x[i] +/- bar_width / 2 and rises from 0 to y[i] (negative heights point
+     * down); the y range always includes 0. Bars are drawn 85% opaque in SVG output. A nonempty
+     * `label` adds a row to the automatic legend.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot().bars(dm::c(1.0, 2.5, 4.0), dm::c(3.0, -1.0, 2.0), "net",
+     *                            dm::RGB{22, 163, 74}, 1.0);
+     * std::print("{}\n", plt.series()[0].bar_width);  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - R `rect()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/rect.html
+     * @param x Bar centers, in data units.
+     * @param y Bar heights, paired with `x` by position.
+     * @param label Legend text; empty (the default) keeps it out of the legend. (default: `""`)
+     * @param color Bar color (default green `{22, 163, 74}`).
+     * @param bar_width Bar width in data units (default 0.8). (default: `0.80000000000000004`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or have different lengths.
+     * @see barplot(), hist()
+     */
+    bars(x: number[], y: number[], label?: string, color?: RGB, bar_width?: number): RPlot;
+    /**
+     * Adds one box-and-whisker from precomputed statistics at an arbitrary x position,
+     * the low-level form behind boxplot() (R's `bxp()`).
+     *
+     * Draws a box from `q1` to `q3` with a thicker line at `median`, whiskers out to
+     * `whisker_lo` and `whisker_hi` with end caps, and one dot per outlier. The values are
+     * not checked for order or finiteness. In SVG the box is filled at 35% opacity.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot().box(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, {8.0}).box(1.0, 2.0, 3.0, 3.5, 4.0, 6.0);
+     * std::print("{} {}\n", plt.series().size(), plt.series()[0].y.size());  // 2 6
+     * ```
+     *
+     * **References**
+     *
+     * - J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley.
+     * - R `bxp()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/bxp.html
+     * @param position Box center, in x data units.
+     * @param whisker_lo Lower whisker end.
+     * @param q1 Lower box edge (first quartile).
+     * @param median Median line.
+     * @param q3 Upper box edge (third quartile).
+     * @param whisker_hi Upper whisker end.
+     * @param outliers Values drawn as individual points (default none). (default: `[]`)
+     * @param color Box, whisker, and outlier color (default light blue `{96, 165, 250}`).
+     * @param width Box width in data units (default 0.6). (default: `0.59999999999999998`)
+     * @returns This plot, for chaining.
+     * @see boxplot()
+     */
+    box(position: number, whisker_lo: number, q1: number, median: number, q3: number, whisker_hi: number, outliers?: number[], color?: RGB, width?: number): RPlot;
+    /**
+     * Adds the reference line y = intercept + slope * x across the plotting area, like
+     * R's `abline(a = intercept, b = slope)`.
+     *
+     * The line runs between the left and right edges of the visible x range and is drawn
+     * beneath every data layer. It does not change the axis ranges, and it is not clipped to the
+     * plotting area, so a steep line can extend into the margins. Stored as an ABLine.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const auto x = dm::c(1.0, 2.0, 3.0, 4.0);
+     * auto plt = dm::Plot(x, dm::c(2.1, 3.9, 6.2, 7.8))
+     *                .abline(0.0, 2.0, dm::RGB{220, 38, 38})  // y = 2x
+     *                .abline_h(5.0)
+     *                .abline_v(2.5, dm::RGB{37, 99, 235}, 2.0);
+     * std::print("{}\n", plt.reference_lines().size());  // 3
+     * plt.save("ablines.svg");
+     * ```
+     *
+     * **References**
+     *
+     * - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+     *
+     * **Warning:** Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,
+     * `.pdf`, and show()) currently omit them.
+     * @param intercept y value at x = 0.
+     * @param slope Change in y per unit x.
+     * @param color Line color (default opaque black).
+     * @param stroke_width Line width in pixels (default 1). (default: `1.0`)
+     * @returns This plot, for chaining.
+     * @see abline_h(), abline_v(), qqline(), ABLine
+     */
+    abline(intercept: number, slope: number, color?: RGB, stroke_width?: number): RPlot;
+    /**
+     * Adds a horizontal reference line at y = `y_value`, like R's `abline(h = y_value)`.
+     *
+     * Same as `abline(y_value, 0.0, color, stroke_width)`: drawn beneath the data and not
+     * included in the axis ranges, so a value outside the visible y range is off the plot.
+     *
+     * **Example**
+     *
+     * See abline().
+     *
+     * **References**
+     *
+     * - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+     *
+     * **Warning:** Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,
+     * `.pdf`, and show()) currently omit them.
+     * @param y_value Height of the line, in data units.
+     * @param color Line color (default opaque black).
+     * @param stroke_width Line width in pixels (default 1). (default: `1.0`)
+     * @returns This plot, for chaining.
+     * @see abline(), abline_v()
+     */
+    abline_h(y_value: number, color?: RGB, stroke_width?: number): RPlot;
+    /**
+     * Adds a vertical reference line at x = `x_value`, like R's `abline(v = x_value)`.
+     *
+     * Spans the full height of the plotting area beneath the data. Unlike horizontal and
+     * sloped lines, it widens the automatic x range to include `x_value`.
+     *
+     * **Example**
+     *
+     * See abline().
+     *
+     * **References**
+     *
+     * - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
+     *
+     * **Warning:** Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,
+     * `.pdf`, and show()) currently omit them.
+     * @param x_value Horizontal position of the line, in data units.
+     * @param color Line color (default opaque black).
+     * @param stroke_width Line width in pixels (default 1). (default: `1.0`)
+     * @returns This plot, for chaining.
+     * @see abline(), abline_h()
+     */
+    abline_v(x_value: number, color?: RGB, stroke_width?: number): RPlot;
+    /**
+     * Adds the reference line of a normal Q-Q plot, like R's `qqline(y)`: the line
+     * through the first and third quartiles of `data` and of the standard normal.
+     *
+     * Pass the same data given to qqnorm(). The sample quartiles are R's default "type 7"
+     * quantiles, as in R's `qqline()` defaults (`probs = c(0.25, 0.75)`, `qtype = 7`). The
+     * slope is the sample IQR divided by the normal IQR (about 1.349), so for normal data it
+     * estimates the standard deviation and the intercept estimates the mean. Added through
+     * abline().
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const std::vector<double> sample{3.0, 1.0, 2.0, 5.0, 4.0};
+     * auto plt = dm::Plot::qqnorm(sample).qqline(sample);
+     * const auto& line = plt.reference_lines()[0];
+     * std::print("{:.4f} {:.4f}\n", line.value, line.slope);  // 3.0000 1.4826
+     * ```
+     *
+     * **References**
+     *
+     * - R `qqline()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html
+     * - R. J. Hyndman, Y. Fan (1996). "Sample Quantiles in Statistical Packages". The American
+     *   Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566
+     *
+     * **Warning:** Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,
+     * `.pdf`, and show()) currently omit them.
+     * @param data The sample; at least two values. Taken by value, so the caller's data is unchanged.
+     * @param color Line color (default red `{220, 38, 38}`).
+     * @param stroke_width Line width in pixels (default 1.5). (default: `1.5`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If `data` has fewer than two values.
+     * @see qqnorm(), abline()
+     */
+    qqline(data: number[], color?: RGB, stroke_width?: number): RPlot;
+    /**
+     * Adds manual legend rows, like R's `legend(legend = labels, col = colors)`.
+     *
+     * Each label is paired with the color at the same position and drawn as a swatch row in
+     * the legend box. Once any manual row exists, it replaces the automatic legend built from
+     * labeled series. Calling again appends more rows. Unlike dm::legend(), colors are not
+     * recycled here: the vectors must match in length. Empty vectors add nothing.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const auto up = dm::RGB{37, 99, 235};
+     * const auto down = dm::RGB{220, 38, 38};
+     * auto plt = dm::Plot();
+     * plt.points(dm::c(1.0, 2.0), dm::c(1.0, 2.0), up)
+     *    .points(dm::c(1.0, 2.0), dm::c(2.0, 1.0), down)
+     *    .legend({"rising", "falling"}, {up, down});
+     * std::print("{}\n", plt.legend_entries().size());  // 2
+     * ```
+     *
+     * **References**
+     *
+     * - R `legend()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/legend.html
+     * @param labels Row texts, in display order.
+     * @param colors Swatch colors, one per label.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If `labels` and `colors` differ in length.
+     * @see dm::legend() for the recycling, pipe-friendly layer.
+     */
+    legend(labels: string[], colors: RGB[]): RPlot;
+    /**
+     * Draws `label` centered on the data point (`x`, `y`), like R's
+     * `text(x, y, labels = label)`.
+     *
+     * The text is centered both horizontally and vertically on the point, like R's default
+     * `adj`. The point counts toward the automatic axis ranges, but the text's extent does not,
+     * so long labels near the edge can overflow. Text layers never appear in the legend, and
+     * set_col() recolors them along with the data.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 2.0))
+     *                .text(2.0, 4.4, "peak", dm::RGB{220, 38, 38}, 16.0);
+     * std::print("{} {}\n", plt.series()[1].label, plt.series()[1].marker_size);  // peak 16
+     * ```
+     *
+     * **References**
+     *
+     * - R `text()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/text.html
+     * @param x Horizontal position, in data units.
+     * @param y Vertical position, in data units.
+     * @param label The text to draw (XML-escaped in SVG output).
+     * @param color Text color (default near-black `{17, 24, 39}`).
+     * @param font_size Font size in pixels (default 14). (default: `14.0`)
+     * @returns This plot, for chaining.
+     * @see pie(), legend()
+     */
+    text(x: number, y: number, label: string, color?: RGB, font_size?: number): RPlot;
+    /**
+     * Draws the closed polygon through the vertices (x[i], y[i]), like R's
+     * `polygon(x, y, col = color)`.
+     *
+     * The last vertex joins the first automatically. Filled polygons (the default) are painted
+     * with `color` (plus a 1-pixel outline in SVG; the raster fill uses the even-odd rule);
+     * unfilled ones draw a 2-pixel outline only (R's default is unfilled). Translucent colors work well
+     * for shaded regions such as confidence bands. Vertices count toward the axis ranges.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::Plot()
+     *                .polygon({0.0, 1.0, 0.5}, {0.0, 0.0, 1.0}, dm::RGBA{37, 99, 235, 0.4})
+     *                .polygon({0.2, 0.8, 0.8, 0.2}, {0.1, 0.1, 0.4, 0.4}, dm::RGB{0, 0, 0}, false);
+     * std::print("{}\n", plt.series()[1].filled);  // false
+     * ```
+     *
+     * **References**
+     *
+     * - R `polygon()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/polygon.html
+     * @param x Vertex x coordinates, in order around the polygon.
+     * @param y Vertex y coordinates, paired with `x`.
+     * @param color Fill (and outline) color (default blue `{37, 99, 235}`).
+     * @param filled True (the default) fills; false draws the outline only. (default: `true`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or have different lengths.
+     * @see pie(), segments()
+     */
+    polygon(x: number[], y: number[], color?: RGB, filled?: boolean): RPlot;
+    /**
+     * Draws a grid of coloured rectangles, one per value of `z`, like R's `image(x, y, z)`.
+     *
+     * Cell (i, j) is centred on (x[i], y[j]) and reaches halfway to its neighbours (a half step
+     * beyond the outermost centres). Its colour is the palette entry for z[i][j] on a linear
+     * scale from `z_min` to `z_max`; NaN cells are left empty. Each cell is added as a filled
+     * polygon, so the grid should have at most tens of thousands of cells.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plt = dm::graphics::RPlot::create().image({0.0, 1.0}, {0.0, 1.0, 2.0}, {{1, 2, 3}, {4, 5, 6}});
+     * std::print("{}\n", plt.series().size());  // 6
+     * ```
+     *
+     * **References**
+     *
+     * - R `image()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/image.html
+     * @param x Cell centres along x, increasing (at least 2).
+     * @param y Cell centres along y, increasing (at least 2).
+     * @param z Values, z[i][j] at (x[i], y[j]); z.size() == x.size() and each row has y.size() entries.
+     * @param palette Colours from low to high (default terrain_colors(12)). (default: `[]`)
+     * @param z_min Value mapped to the first colour; NaN (the default) uses the smallest z.
+     * @param z_max Value mapped to the last colour; NaN (the default) uses the largest z.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If the sizes do not match, x or y is not increasing, or the palette is empty.
+     * @see terrain_colors(), polygon()
+     */
+    image(x: number[], y: number[], z: number[][], palette?: RGB[], z_min?: number, z_max?: number): RPlot;
+    /**
+     * Draws one straight segment from (x0[i], y0[i]) to (x1[i], y1[i]) for each i, like
+     * R's `segments(x0, y0, x1, y1)`.
+     *
+     * All segments share `color` and `stroke_width` and form one Segment layer; their end
+     * points count toward the axis ranges. Useful for error bars, residual sticks, and
+     * dendrograms.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const auto x = dm::c(1.0, 2.0, 3.0);
+     * const auto y = dm::c(2.0, 3.5, 3.0);
+     * auto plt = dm::Plot(x, y).segments(x, y - 0.5, x, y + 0.5);  // +/- 0.5 error bars
+     * std::print("{}\n", plt.series()[1].x.size());  // 6 (start, end, start, end, ...)
+     * ```
+     *
+     * **References**
+     *
+     * - R `segments()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/segments.html
+     * @param x0 Start x coordinates.
+     * @param y0 Start y coordinates.
+     * @param x1 End x coordinates.
+     * @param y1 End y coordinates.
+     * @param color Segment color (default opaque black).
+     * @param stroke_width Segment width in pixels (default 1). (default: `1.0`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If the four vectors differ in length or are empty.
+     * @see abline(), polygon()
+     */
+    segments(x0: number[], y0: number[], x1: number[], y1: number[], color?: RGB, stroke_width?: number): RPlot;
+    /**
+     * Adds a right-continuous step line.
+     *
+     * Each interval holds its left value until the next x. Requires strictly increasing x.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().steps({0, 1}, {2, 4});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
+     * @param x Horizontal coordinates.
+     * @param y Vertical coordinates.
+     * @param label Optional legend label. (default: `""`)
+     * @param color Mark color.
+     * @param stroke_width Stroke width in pixels. (default: `2.0`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    steps(x: number[], y: number[], label?: string, color?: RGB, stroke_width?: number): RPlot;
+    /**
+     * Adds vertical sticks from a baseline.
+     *
+     * One stick per (x, y) pair. Negative excursions are drawn below the baseline.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().stems({0, 1}, {-2, 4});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     * @param x Horizontal coordinates.
+     * @param y Vertical coordinates.
+     * @param baseline Baseline in y data units. (default: `0.0`)
+     * @param color Mark color.
+     * @param stroke_width Stroke width in pixels. (default: `2.0`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    stems(x: number[], y: number[], baseline?: number, color?: RGB, stroke_width?: number): RPlot;
+    /**
+     * Adds a stem and marker per observation.
+     *
+     * Markers sit at the observations and share the stem color.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().lollipop({0, 1}, {2, 4});
+     * std::print("{}\n", plot.series().size());  // 2
+     * ```
+     * @param x Horizontal coordinates.
+     * @param y Vertical coordinates.
+     * @param baseline Baseline in y data units. (default: `0.0`)
+     * @param color Mark color.
+     * @param marker_size Marker radius in pixels. (default: `4.0`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    lollipop(x: number[], y: number[], baseline?: number, color?: RGB, marker_size?: number): RPlot;
+    /**
+     * Fills the area between a curve and a baseline.
+     *
+     * Requires strictly increasing x and at least two samples. Supports excursions above and below the baseline.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().area({0, 1}, {2, 4});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - https://ggplot2.tidyverse.org/reference/geom_ribbon.html
+     * @param x Horizontal coordinates.
+     * @param y Vertical coordinates.
+     * @param baseline Baseline in y data units. (default: `0.0`)
+     * @param color Fill color, including opacity.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    area(x: number[], y: number[], baseline?: number, color?: RGB): RPlot;
+    /**
+     * Fills the band between lower and upper curves.
+     *
+     * Requires at least two strictly increasing x coordinates and lower <= upper at each x.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().ribbon({0, 1}, {1, 2}, {3, 4});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - https://ggplot2.tidyverse.org/reference/geom_ribbon.html
+     * @param x Horizontal coordinates.
+     * @param lower Lower endpoint at each x.
+     * @param upper Upper endpoint at each x.
+     * @param color Fill color, including opacity.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    ribbon(x: number[], lower: number[], upper: number[], color?: RGB): RPlot;
+    /**
+     * Adds vertical intervals with horizontal end caps.
+     *
+     * A zero cap width draws plain intervals. Lower endpoints must be <= upper endpoints.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().error_bars({1}, {2}, {4});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - https://ggplot2.tidyverse.org/reference/geom_linerange.html
+     * @param x Horizontal coordinates.
+     * @param lower Lower endpoint at each x.
+     * @param upper Upper endpoint at each x.
+     * @param cap_width Full cap width in x data units. (default: `0.12`)
+     * @param color Mark color.
+     * @param stroke_width Stroke width in pixels. (default: `2.0`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    error_bars(x: number[], lower: number[], upper: number[], cap_width?: number, color?: RGB, stroke_width?: number): RPlot;
+    /**
+     * Adds filled rectangles defined by data-space bounds.
+     *
+     * One rectangle per matched row. Lower bounds must be <= corresponding upper bounds.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().rectangles({0}, {1}, {2}, {3});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/rect.html
+     * @param left Left x bounds.
+     * @param bottom Lower y bounds.
+     * @param right Right x bounds.
+     * @param top Upper y bounds.
+     * @param label Optional legend label. (default: `""`)
+     * @param color Fill color, including opacity.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    rectangles(left: number[], bottom: number[], right: number[], top: number[], label?: string, color?: RGB): RPlot;
+    /**
+     * Adds horizontal bars anchored at x = 0.
+     *
+     * Positions are y centers. Negative values extend left of zero.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().horizontal_bars({0, 1}, {2, -4});
+     * std::print("{}\n", plot.series().size());  // 2
+     * ```
+     * @param positions Bar centers along y.
+     * @param values Bar ends along x.
+     * @param label Optional legend label. (default: `""`)
+     * @param color Mark color.
+     * @param bar_height Bar height in y data units. (default: `0.80000000000000004`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    horizontal_bars(positions: number[], values: number[], label?: string, color?: RGB, bar_height?: number): RPlot;
+    /**
+     * Adds adjacent bars for multiple series at each category.
+     *
+     * Uses equal subdivisions of the group width. All rows must match the category count.
+     * Labels, if supplied, must match the series count. An empty palette uses default colors.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().grouped_bars({0, 1}, {{1, 2}, {3, 4}});
+     * std::print("{}\n", plot.series().size());  // 2
+     * ```
+     *
+     * **References**
+     *
+     * - https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/barplot.html
+     * @param x Horizontal coordinates.
+     * @param values One row per series, one column per category.
+     * @param labels Optional series labels. (default: `[]`)
+     * @param colors Optional palette, recycled across series. (default: `[]`)
+     * @param group_width Total group width in x data units. (default: `0.80000000000000004`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    grouped_bars(x: number[], values: number[][], labels?: string[], colors?: RGB[], group_width?: number): RPlot;
+    /**
+     * Stacks positive and negative values separately from zero.
+     *
+     * All rows must match the category count. Labels, if supplied, must match the series count.
+     * An empty palette uses default colors.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().stacked_bars({0}, {{2}, {-1}});
+     * std::print("{}\n", plot.series().size());  // 2
+     * ```
+     *
+     * **References**
+     *
+     * - https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/barplot.html
+     * @param x Horizontal coordinates.
+     * @param values One row per series, one column per category.
+     * @param labels Optional series labels. (default: `[]`)
+     * @param colors Optional palette, recycled across series. (default: `[]`)
+     * @param bar_width Stack width in x data units. (default: `0.80000000000000004`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    stacked_bars(x: number[], values: number[][], labels?: string[], colors?: RGB[], bar_width?: number): RPlot;
+    /**
+     * Adds floating bars for cumulative changes.
+     *
+     * Bars span the previous and next total in input order, starting at zero.
+     * Requires strictly increasing x.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().waterfall({0, 1}, {4, -2});
+     * std::print("{}\n", plot.series().size());  // 2
+     * ```
+     * @param x Horizontal coordinates.
+     * @param changes Signed increments, in order.
+     * @param bar_width Bar width in x data units. (default: `0.80000000000000004`)
+     * @param increase Fill for nonnegative changes.
+     * @param decrease Fill for negative changes.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    waterfall(x: number[], changes: number[], bar_width?: number, increase?: RGB, decrease?: RGB): RPlot;
+    /**
+     * Adds an empirical cumulative distribution step line.
+     *
+     * Sorts the sample and combines ties into one jump. The curve spans the sample extrema.
+     * Its value after each jump is the fraction of observations at or below that sample value.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().ecdf({1, 1, 2});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ecdf.html
+     * @param sample Finite observations, in any order.
+     * @param label Optional legend label. (default: `""`)
+     * @param color Mark color.
+     * @param stroke_width Stroke width in pixels. (default: `2.0`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    ecdf(sample: number[], label?: string, color?: RGB, stroke_width?: number): RPlot;
+    /**
+     * Adds short vertical ticks at observed x values.
+     *
+     * Tick endpoints are in data coordinates and contribute to automatic limits.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().rug({1, 2});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/rug.html
+     * @param x Horizontal coordinates.
+     * @param bottom Starting y coordinate. (default: `0.0`)
+     * @param top Ending y coordinate, which must differ from bottom. (default: `0.050000000000000003`)
+     * @param color Mark color.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    rug(x: number[], bottom?: number, top?: number, color?: RGB): RPlot;
+    /**
+     * Adds a Gaussian kernel density estimate.
+     *
+     * Uses the GGPlot density bandwidth rule and 200 equally spaced evaluation points.
+     * Requires at least two observations.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().density({1, 2, 3});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/density.html
+     * @param sample Finite observations, in any order.
+     * @param label Optional legend label. (default: `""`)
+     * @param color Mark color.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    density(sample: number[], label?: string, color?: RGB): RPlot;
+    /**
+     * Adds a vertical mirrored kernel density for one sample.
+     *
+     * Uses the same estimator as density(). Each violin is scaled to its own peak.
+     * Requires at least two observations.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().violin(0, {1, 2, 3});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - https://ggplot2.tidyverse.org/reference/geom_violin.html
+     * @param position Center in x data units.
+     * @param sample Finite observations, in any order.
+     * @param width Full width at peak density, in x data units. (default: `0.80000000000000004`)
+     * @param color Fill color, including opacity.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    violin(position: number, sample: number[], width?: number, color?: RGB): RPlot;
+    /**
+     * Adds markers with independently specified radii.
+     *
+     * Marker areas grow with radius squared. A radius of zero omits the observation.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().bubbles({1, 2}, {3, 4}, {5, 9});
+     * std::print("{}\n", plot.series().size());  // 2
+     * ```
+     * @param x Horizontal coordinates.
+     * @param y Vertical coordinates.
+     * @param radii Nonnegative marker radii in pixels.
+     * @param label Optional legend label. (default: `""`)
+     * @param color Fill color, including opacity.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    bubbles(x: number[], y: number[], radii: number[], label?: string, color?: RGB): RPlot;
+    /**
+     * Adds one arrow for each data-space displacement vector.
+     *
+     * The two head strokes are computed in data coordinates, so axis scaling affects their
+     * displayed angles. Zero-length arrows are omitted.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().arrows({0}, {0}, {1}, {2});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/arrows.html
+     * @param x Horizontal coordinates.
+     * @param y Vertical coordinates.
+     * @param dx Horizontal displacements.
+     * @param dy Vertical displacements.
+     * @param head_fraction Backward head length as a fraction of the shaft, in [0, 1]. (default: `0.22`)
+     * @param color Mark color.
+     * @param stroke_width Stroke width in pixels. (default: `2.0`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     */
+    arrows(x: number[], y: number[], dx: number[], dy: number[], head_fraction?: number, color?: RGB, stroke_width?: number): RPlot;
+    /**
+     * Adds the contour of a sampled scalar field at a given level.
+     *
+     * Uses marching squares, mapping tile intersections to the supplied coordinates.
+     * A level with no intersections adds no marks. Requires two increasing coordinates per axis.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().contour({0, 1}, {0, 1}, {{0, 1}, {0, 1}}, 0.5);
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/contour.html
+     * @param x Horizontal coordinates.
+     * @param y Vertical coordinates.
+     * @param z Finite grid indexed as z[y index][x index].
+     * @param level Scalar contour level.
+     * @param color Mark color.
+     * @param stroke_width Stroke width in pixels. (default: `2.0`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: For empty, nonfinite, mismatched or invalid inputs.
+     * @throws {Error} `std::length_error`: If the grid geometry is unrepresentable.
+     */
+    contour(x: number[], y: number[], z: number[][], level: number, color?: RGB, stroke_width?: number): RPlot;
+    /**
+     * Draws open-to-close bodies with low-to-high wicks.
+     *
+     * Positions must strictly increase. If open equals close, draws a horizontal doji mark.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().candlesticks({0}, {2}, {4}, {1}, {3});
+     * std::print("{}\n", plot.series().size());  // 2
+     * ```
+     *
+     * **References**
+     *
+     * - https://plotly.com/python/candlestick-charts/
+     * @param x Positions in x data units.
+     * @param open Opening values.
+     * @param high Upper endpoints.
+     * @param low Lower endpoints.
+     * @param close Closing values.
+     * @param width Full body or tick span in x data units. (default: `0.59999999999999998`)
+     * @param rising Color when close is at or above open.
+     * @param falling Color when close is below open.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If data or geometry is empty, mismatched, nonfinite or invalid.
+     */
+    candlesticks(x: number[], open: number[], high: number[], low: number[], close: number[], width?: number, rising?: RGB, falling?: RGB): RPlot;
+    /**
+     * Draws low-to-high bars with a left opening tick and a right closing tick.
+     *
+     * Positions must strictly increase.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().ohlc({0}, {2}, {4}, {1}, {3});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - https://plotly.com/python/ohlc-charts/
+     * @param x Positions in x data units.
+     * @param open Opening values.
+     * @param high Upper endpoints.
+     * @param low Lower endpoints.
+     * @param close Closing values.
+     * @param width Full body or tick span in x data units. (default: `0.59999999999999998`)
+     * @param rising Color when close is at or above open.
+     * @param falling Color when close is below open.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If data or geometry is empty, mismatched, nonfinite or invalid.
+     */
+    ohlc(x: number[], open: number[], high: number[], low: number[], close: number[], width?: number, rising?: RGB, falling?: RGB): RPlot;
+    /**
+     * Connects two observations along each horizontal category row.
+     *
+     * Start and end may appear in either order. Both endpoints are retained when they coincide.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().dumbbell({0}, {2}, {4});
+     * std::print("{}\n", plot.series().size());  // 3
+     * ```
+     * @param positions Category centers on y.
+     * @param start First observations on x.
+     * @param end Second observations on x.
+     * @param first First marker color.
+     * @param second Second marker color.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If data or geometry is empty, mismatched, nonfinite or invalid.
+     */
+    dumbbell(positions: number[], start: number[], end: number[], first?: RGB, second?: RGB): RPlot;
+    /**
+     * Stacks one dot per observation at each distinct sample value.
+     *
+     * Exact ties stack vertically at integer heights starting at one. The sample is sorted internally.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().dot_stack({1, 1, 2});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     * @param sample Finite observations.
+     * @param color Marker color.
+     * @param marker_size Marker radius in pixels. (default: `4.0`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If data or geometry is empty, mismatched, nonfinite or invalid.
+     */
+    dot_stack(sample: number[], color?: RGB, marker_size?: number): RPlot;
+    /**
+     * Draws two nonnegative populations on opposite sides of zero.
+     *
+     * The first group extends left and the second group extends right. Set y tick labels for age bands.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().population_pyramid({0}, {3}, {4});
+     * std::print("{}\n", plot.series().size());  // 2
+     * ```
+     * @param positions Category centers on y.
+     * @param left Nonnegative first group magnitudes.
+     * @param right Nonnegative second group magnitudes.
+     * @param left_label Optional first group legend label. (default: `""`)
+     * @param right_label Optional second group legend label. (default: `""`)
+     * @param bar_height Bar height in y data units. (default: `0.80000000000000004`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: If data or geometry is empty, mismatched, nonfinite or invalid.
+     */
+    population_pyramid(positions: number[], left: number[], right: number[], left_label?: string, right_label?: string, bar_height?: number): RPlot;
+    /**
+     * Connects the centers of equal-width histogram bins.
+     *
+     * Uses the same counts and boundary convention as hist(). Adds zero-count endpoints one bin outside the first and last centers.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().frequency_polygon({0, 1, 2}, 2);
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - https://ggplot2.tidyverse.org/reference/geom_histogram.html
+     * @param sample Finite sample.
+     * @param bins Positive bin count. (default: `10`)
+     * @param color Layer color.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: On empty, mismatched, nonfinite or invalid input.
+     */
+    frequency_polygon(sample: number[], bins?: number, color?: RGB): RPlot;
+    /**
+     * Plots the empirical quantiles of two samples.
+     *
+     * Uses the shorter sample size as the number of equally spaced probabilities including 0 and 1. Interpolates between ordered values. Each sample must have at least two observations.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().qqplot({1, 2, 3}, {2, 4});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html
+     * @param x Sample for the horizontal axis.
+     * @param y Sample for the vertical axis.
+     * @param color Layer color.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: On empty, mismatched, nonfinite or invalid input.
+     */
+    qqplot(x: number[], y: number[], color?: RGB): RPlot;
+    /**
+     * Plots paired differences against paired means.
+     *
+     * Adds the mean difference and limits at mean difference ± 1.96 sample standard deviations. Requires two or more pairs.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().bland_altman({1, 2}, {1, 3});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - https://doi.org/10.1016/S0140-6736(86)90837-8
+     * @param first First measurements.
+     * @param second Second measurements, subtracted from the first.
+     * @param color Layer color.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: On empty, mismatched, nonfinite or invalid input.
+     */
+    bland_altman(first: number[], second: number[], color?: RGB): RPlot;
+    /**
+     * Plots sample autocorrelations as vertical stems.
+     *
+     * Full autocorrelation starts at lag zero. Partial autocorrelation starts at lag one. Uses the core time-series estimators.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().autocorrelation({1, 4, 2, 1}, 2);
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     *
+     * **References**
+     *
+     * - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/acf.html
+     * @param sample Finite, nonconstant series with at least two samples.
+     * @param max_lag Largest lag, less than the series length.
+     * @param partial Draw the partial autocorrelation when true. (default: `false`)
+     * @param color Layer color.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: On empty, mismatched, nonfinite or invalid input.
+     */
+    autocorrelation(sample: number[], max_lag: number, partial?: boolean, color?: RGB): RPlot;
+    /**
+     * Plots point estimates with horizontal intervals.
+     *
+     * Requires lower <= estimate <= upper for each row. Labels can be added with y_ticks() and a reference value with abline_v().
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().forest({0}, {1}, {0.5}, {2});
+     * std::print("{}\n", plot.series().size());  // 2
+     * ```
+     * @param positions Row positions along y.
+     * @param estimate Point estimates.
+     * @param lower Lower interval ends.
+     * @param upper Upper interval ends.
+     * @param color Layer color.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: On empty, mismatched, nonfinite or invalid input.
+     */
+    forest(positions: number[], estimate: number[], lower: number[], upper: number[], color?: RGB): RPlot;
+    /**
+     * Draws descending category shares and their cumulative share.
+     *
+     * Bars and cumulative line share a 0–100 percent scale. Stable sorting preserves input order among ties.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().pareto({1, 2, 3});
+     * std::print("{}\n", plot.series().size());  // 2
+     * ```
+     * @param counts Nonnegative finite weights, with a positive finite total.
+     * @param labels Optional category labels in input order. (default: `[]`)
+     * @param color Layer color.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: On empty, mismatched, nonfinite or invalid input.
+     */
+    pareto(counts: number[], labels?: string[], color?: RGB): RPlot;
+    /**
+     * Fills cumulative bands above a common zero baseline.
+     *
+     * Rows are series, and corresponding columns share x positions. Requires at least two strictly increasing x values and finite nonnegative heights.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().stacked_area({0, 1}, {{1, 2}, {3, 4}});
+     * std::print("{}\n", plot.series().size());  // 2
+     * ```
+     *
+     * **References**
+     *
+     * - https://ggplot2.tidyverse.org/reference/geom_ribbon.html
+     * @param x Ordered horizontal coordinates.
+     * @param values One row of heights per series.
+     * @param colors Optional palette, recycled. An empty palette uses built-in categorical colors. (default: `[]`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: On empty, mismatched, nonfinite or invalid input.
+     */
+    stacked_area(x: number[], values: number[][], colors?: RGB[]): RPlot;
+    /**
+     * Connects one normalized observation across parallel axes.
+     *
+     * Draws a [0, 1] vertical scale for each column. Caller chooses the normalization (for example per-column min–max).
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().parallel_coordinates({{0.1, 0.8}, {0.4, 0.9}});
+     * std::print("{}\n", plot.series().size());  // 3
+     * ```
+     * @param rows Observation rows, each with the same two or more values in [0, 1].
+     * @param labels Optional axis labels, one per column. (default: `[]`)
+     * @param color Observation-line color.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: On empty, mismatched, nonfinite or invalid input.
+     */
+    parallel_coordinates(rows: number[][], labels?: string[], color?: RGB): RPlot;
+    /**
+     * Plots nonnegative triples using barycentric coordinates.
+     *
+     * Each row is divided by its positive total. Components map to the left, right and top vertex in that order. Uses Cartesian axes hidden by the caller for a clean diagram.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().ternary({{1, 2, 3}});
+     * std::print("{}\n", plot.series().size());  // 2
+     * ```
+     * @param values One triple of finite nonnegative values per point.
+     * @param labels Optional labels for the three vertices. (default: `[]`)
+     * @param color Layer color.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: On empty, mismatched, nonfinite or invalid input.
+     */
+    ternary(values: number[][], labels?: string[], color?: RGB): RPlot;
+    /**
+     * Projects the rows and columns of a sampled height field.
+     *
+     * Uses an oblique projection (x − 0.5 y, z + 0.5 y). Draws all edges without hidden-line removal. Requires at least two strictly increasing coordinates per axis.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().wireframe({0, 1}, {0, 1}, {{0, 1}, {1, 0}});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     * @param x Column coordinates.
+     * @param y Row coordinates.
+     * @param z Finite grid indexed as z[row][column].
+     * @param color Layer color.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: On empty, mismatched, nonfinite or invalid input.
+     */
+    wireframe(x: number[], y: number[], z: number[][], color?: RGB): RPlot;
+    /**
+     * Partitions a rectangle into area-proportional tiles.
+     *
+     * Recursively splits the longer side, keeping input order and choosing the split nearest half the weight. Tiles occupy [0, 1] on both axes.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().treemap({1, 3});
+     * std::print("{}\n", plot.series().size());  // 2
+     * ```
+     * @param weights Strictly positive finite weights, with a finite sum.
+     * @param labels Optional centered labels in input order. (default: `[]`)
+     * @param colors Optional palette, recycled. An empty palette uses built-in categorical colors. (default: `[]`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: On empty, mismatched, nonfinite or invalid input.
+     */
+    treemap(weights: number[], labels?: string[], colors?: RGB[]): RPlot;
+    /**
+     * Connects nodes on a single horizontal baseline with semicircular arcs.
+     *
+     * Positions must strictly increase. Edges are pairs of zero-based indices. Self-loops are invalid.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().arc_diagram({0, 1}, {0}, {1});
+     * std::print("{}\n", plot.series().size());  // 2
+     * ```
+     * @param positions Node positions.
+     * @param from First endpoint index per edge.
+     * @param to Second endpoint index per edge.
+     * @param color Layer color.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: On empty, mismatched, nonfinite or invalid input.
+     */
+    arc_diagram(positions: number[], from: number[], to: number[], color?: RGB): RPlot;
+    /**
+     * Colors region polygons on one shared numeric scale.
+     *
+     * Coordinates are supplied in the desired projection. Each polygon is an outer ring. Provide separate rings with the same value for disconnected parts of a region.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().choropleth({{0, 1, 0}}, {{0, 0, 1}}, {2});
+     * std::print("{}\n", plot.series().size());  // 1
+     * ```
+     * @param x One horizontal coordinate vector per ring.
+     * @param y One vertical coordinate vector per ring.
+     * @param values One finite numeric value per ring.
+     * @param palette Optional low-to-high palette; empty uses viridis. (default: `[]`)
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: On empty, mismatched, nonfinite or invalid input.
+     */
+    choropleth(x: number[][], y: number[][], values: number[], palette?: RGB[]): RPlot;
+    /**
+     * Connects normalized values on evenly spaced radial spokes.
+     *
+     * The first spoke points up and the remaining spokes proceed clockwise. Draws a unit frame and quarter-scale guides. Values must be in [0, 1].
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto plot = dm::Plot().radar({0.2, 0.5, 0.8});
+     * std::print("{}\n", plot.series().size());  // 6
+     * ```
+     * @param values At least three normalized values.
+     * @param labels Optional labels, one per spoke. (default: `[]`)
+     * @param color Layer color.
+     * @returns This plot, for chaining.
+     * @throws {Error} `std::invalid_argument`: On empty, mismatched, nonfinite or invalid input.
+     */
+    radar(values: number[], labels?: string[], color?: RGB): RPlot;
+}
+
+/**
+ * Tiles independently built plots into one multi-panel figure, like R's
+ * `par(mfrow = c(rows, cols))` followed by one plot per panel.
+ *
+ * Create it with create(rows, cols), then add() up to rows * cols panels; they fill the grid
+ * row by row. Each panel is copied (and its SVG rendered) at add() time, so later changes to
+ * the original plot do not show and panels need not outlive the layout. Each cell is
+ * `width / cols` by `(height - band) / rows` pixels, where band is title_band_px when a
+ * figure title is set and 0 otherwise; every panel is scaled from its own canvas size into its
+ * cell. The figure background is white. Unused cells stay empty.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto x = dm::seql(0.0, 6.0, 30);
+ * auto fig = dm::graphics::RLayout::create(1, 2)
+ *                .size(1200, 500)
+ *                .title("Two views")
+ *                .add(dm::Plot(x, dm::sin(x)).set_title("sin"))
+ *                .add(dm::Plot(x, dm::cos(x)).set_title("cos"));
+ * std::print("{} panels in {}x{}\n", fig.panel_count(), fig.rows(), fig.cols());
+ * // 2 panels in 1x2
+ * fig.save("two_views.svg");
+ * ```
+ *
+ * **References**
+ *
+ * - R `par()` (`mfrow`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+ * @see RPlot, RPlot::margins(), dm::Splom
+ */
+export declare class RLayout {
+    constructor();
+    /**
+     * Creates an empty layout with `rows` by `cols` cells, like R's
+     * `par(mfrow = c(rows, cols))`.
+     *
+     * The figure starts at 960 by 640 pixels with no title.
+     *
+     * **Example**
+     *
+     * See RLayout.
+     *
+     * **References**
+     *
+     * - R `par()` (`mfrow`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
+     * @param rows Number of panel rows; must be positive.
+     * @param cols Number of panel columns; must be positive.
+     * @returns The empty layout.
+     * @throws {Error} `std::invalid_argument`: If `rows` or `cols` is 0.
+     * @see add()
+     */
+    static create(rows: number, cols: number): RLayout;
+    /**
+     * Copies `panel` into the next free cell, filling rows left to right, top to bottom.
+     *
+     * The panel's SVG is rendered immediately and stored with the copy, so rendering errors
+     * surface here and later edits to the original plot have no effect on the layout.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto fig = dm::graphics::RLayout::create(1, 1).add(dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)));
+     * try {
+     *   fig.add(dm::Plot(dm::c(1.0), dm::c(1.0)));
+     * } catch (const std::invalid_argument& e) {
+     *   std::print("{}\n", e.what());  // RLayout::add: layout is already full
+     * }
+     * ```
+     * @param panel The plot to add; any RPlot (or other Plot) converts.
+     * @returns This layout, for chaining.
+     * @throws {Error} `std::invalid_argument`: If all rows * cols cells are already filled.
+     * @throws {Error} `std::runtime_error`: If `panel` has no data series or its canvas is smaller than its margins.
+     * @see panel(), panel_count()
+     */
+    add(panel: Plot): RLayout;
+    /**
+     * Sets the size of the whole figure in pixels (default 960 by 640).
+     *
+     * Panels keep their own canvas sizes and are scaled into their cells, so text in a panel
+     * shrinks or grows with it; give panels a size close to their cell for readable labels.
+     *
+     * **Example**
+     *
+     * See RLayout.
+     * @param width Figure width in pixels.
+     * @param height Figure height in pixels, including the title band.
+     * @returns This layout, for chaining.
+     * @see title()
+     */
+    size(width: number, height: number): RLayout;
+    /**
+     * Sets the resolution PNG and PDF output is rasterized at, like R's
+     * `png(res = )` and ggsave()'s `dpi =` (default 96).
+     *
+     * The layout, text and line widths keep their size relative to the layout; only the pixel
+     * count changes: a layout of width(units::inch{8}) saves as a 768-pixel-wide PNG at 96 dpi
+     * and a 2400-pixel-wide one at 300 dpi. A PNG records the resolution (its pHYs chunk) so
+     * other programs show it at its physical size; a PDF keeps its page size and gains detail.
+     * SVG output is vector and is unaffected.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto grid = dm::graphics::RLayout::create(1, 2).width(dm::units::inch{6}).dpi(300);
+     * std::print("{} {}\n", grid.width(), grid.dpi());   // 576 300
+     * ```
+     *
+     * **References**
+     *
+     * - R png() `res` argument: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/png.html
+     * - ggplot2 ggsave() `dpi` argument: https://ggplot2.tidyverse.org/reference/ggsave.html
+     * @param value Dots per inch; finite and positive.
+     * @returns This layout, for chaining.
+     * @throws {Error} `std::invalid_argument`: If `value` is not finite and positive.
+     * @see width(units::Length), height(units::Length), save()
+     */
+    dpi(value: number): RLayout;
+    /**
+     * The resolution PNG and PDF output is rasterized at (default 96).
+     * @returns Dots per inch.
+     */
+    dpi(): number;
+    /**
+     * Sets an optional figure-level heading drawn in a band above the panels, like R's
+     * `mtext(main, outer = TRUE)`; an empty string (the default) reserves no band.
+     *
+     * **Example**
+     *
+     * See RLayout.
+     *
+     * **References**
+     *
+     * - R `mtext()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/mtext.html
+     * @param value Heading text; the band is title_band_px pixels tall.
+     * @returns This layout, for chaining.
+     * @see title_text()
+     */
+    title(value: string): RLayout;
+    /**
+     * Returns the number of panel rows given to create().
+     * @returns Row count (at least 1).
+     */
+    rows(): number;
+    /**
+     * Returns the number of panel columns given to create().
+     * @returns Column count (at least 1).
+     */
+    cols(): number;
+    /**
+     * Returns the figure width in pixels.
+     * @returns Width set by size() (default 960).
+     */
+    width(): number;
+    /**
+     * Returns the figure height in pixels.
+     * @returns Height set by size() (default 640).
+     */
+    height(): number;
+    /**
+     * Returns how many panels have been added.
+     * @returns Panel count, at most rows() * cols().
+     */
+    panel_count(): number;
+    /**
+     * Borrows the figure-level heading for the lifetime of this layout.
+     * @returns The title; empty (the default) when none is drawn.
+     */
+    title_text(): string;
+    /**
+     * Borrows the copy of the `index-th` added panel.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto fig = dm::graphics::RLayout::create(1, 2).add(dm::Plot(dm::c(1.0), dm::c(1.0)).set_title("A"));
+     * std::print("{}\n", fig.panel(0).title_text());  // A
+     * ```
+     * @param index Zero-based panel index, in the order panels were added.
+     * @returns The stored copy, valid until the next add() or the layout's destruction.
+     * @throws {Error} `std::out_of_range`: If `index` is not below panel_count().
+     */
+    panel(index: number): Plot;
+    /**
+     * Renders the multi-panel figure as a standalone SVG document and returns it as a string.
+     *
+     * Each panel becomes a nested `<svg>` scaled into its cell. A layout with no panels renders
+     * as an empty white figure. The layout is not modified.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto fig = dm::graphics::RLayout::create(2, 1).add(dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)));
+     * std::print("{}\n", fig.to_svg().starts_with("<?xml"));  // true
+     * ```
+     * @returns The complete SVG text.
+     * @see save()
+     */
+    to_svg(): string;
+    /**
+     * Saves the figure, choosing the format from the extension: `.svg` (or none) writes
+     * SVG, `.png` / `.pdf` write the same tiled raster the X11 viewer shows.
+     *
+     * The extension is case-sensitive and an existing file is overwritten. Raster panels are
+     * re-rendered from the stored copies and scaled into their cells.
+     *
+     * **Example**
+     *
+     * See RLayout.
+     * @param path Destination file.
+     * @throws {Error} `std::invalid_argument`: For any other extension.
+     * @throws {Error} `std::runtime_error`: If the file cannot be written.
+     * @see save_svg(), to_svg(), show()
+     */
+    save(path: string): void;
+    /**
+     * Writes to_svg() to `path` regardless of its extension.
+     * @param path Destination file; an existing file is overwritten.
+     * @throws {Error} `std::runtime_error`: If the file cannot be opened for writing.
+     * @see save()
+     */
+    save_svg(path: string): void;
+    /**
+     * Renders the tiled figure as PNG image bytes (the raster save() writes for `.png`).
+     * @returns The complete PNG file contents.
+     * @throws {Error} `std::runtime_error`: If a panel cannot be rendered.
+     * @see save_png(), to_svg()
+     */
+    to_png(): number[];
+    /**
+     * Renders the tiled figure as a one-page PDF holding the raster image.
+     * @returns The complete PDF file contents.
+     * @throws {Error} `std::runtime_error`: If a panel cannot be rendered.
+     * @see save_pdf(), to_png()
+     */
+    to_pdf(): number[];
+    /**
+     * Writes to_png() to `path` regardless of its extension.
+     * @param path Destination file; an existing file is overwritten.
+     * @throws {Error} `std::runtime_error`: If the file cannot be written or a panel cannot be rendered.
+     */
+    save_png(path: string): void;
+    /**
+     * Writes to_pdf() to `path` regardless of its extension.
+     * @param path Destination file; an existing file is overwritten.
+     * @throws {Error} `std::runtime_error`: If the file cannot be written or a panel cannot be rendered.
+     */
+    save_pdf(path: string): void;
+    /**
+     * Resizes every stored panel's canvas to its cell, so text keeps its pixel size
+     * instead of being scaled with the panel.
+     *
+     * Call it after size() and title() (the title band changes the cell height). Panels added
+     * later keep their own size until fit_panels() is called again. A cell whose shorter side is
+     * under min_panel_px gets a canvas scaled up to that side (same aspect ratio), so its text is
+     * drawn proportionally smaller instead of the margins overflowing the panel.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * auto fig = dm::graphics::RLayout::create(1, 2)
+     *                .add(dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)))
+     *                .add(dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)))
+     *                .size(1000, 400)
+     *                .fit_panels();
+     * std::print("{}x{}\n", fig.panel(0).width(), fig.panel(0).height());  // 500x400
+     * ```
+     * @returns This layout, for chaining.
+     * @see size()
+     */
+    fit_panels(): RLayout;
+    /**
+     * Opens the tiled figure in the interactive X11 viewer; the toolbar zoom/pan buttons
+     * act on every panel's data bounds at once, keyboard zoom/pan scales the whole image.
+     *
+     * Blocks until the window is closed (q or Escape). Use save() in headless code.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const auto x = dm::seql(0.0, 6.0, 30);
+     * dm::graphics::RLayout::create(1, 2)
+     *     .add(dm::Plot(x, dm::sin(x)))
+     *     .add(dm::Plot(x, dm::cos(x)))
+     *     .show("Trig");
+     * ```
+     * @param title_hint Window title; empty (the default) uses title_text(). (default: `""`)
+     * @throws {Error} `std::runtime_error`: If X11 support was not enabled at build time or no display is available.
+     * @throws {Error} `std::invalid_argument`: If no panel was added.
+     * @see save(), Plot::show()
+     */
+    show(title_hint?: string): void;
+    /**
+     * Same as show(); kept as an alias for older code.
+     * @param title_hint Window title; empty (the default) uses title_text(). (default: `""`)
+     * @throws {Error} `std::runtime_error`: As for show().
+     * @throws {Error} `std::invalid_argument`: If no panel was added.
+     * @see show()
+     */
+    view(title_hint?: string): void;
+    /**
+     * Height in pixels of the heading band reserved above the panels when a title is set.
+     */
+    static readonly title_band_px: number;
+    /**
+     * Smallest canvas side fit_panels() gives a panel; smaller cells get a larger canvas
+     * with the cell's aspect ratio, scaled down when drawn, so the margins still fit.
+     */
+    static readonly min_panel_px: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
  * Settings for GibbsSampler.
  */
 export declare class GibbsOptions {
@@ -1131,6 +4637,29 @@ export declare class HMC {
 }
 
 /**
+ * A fixed HMC proposal and its log acceptance diagnostic.
+ */
+export declare class HMCProposal {
+    constructor();
+    /**
+     * End of the leapfrog trajectory.
+     */
+    position: number[];
+    /**
+     * Momentum at the end of the trajectory, before any flip.
+     */
+    momentum: number[];
+    /**
+     * Final minus initial Hamiltonian energy.
+     */
+    energy_change: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
  * Settings for ImportanceSampling.
  */
 export declare class ImportanceSamplingOptions {
@@ -1247,125 +4776,6 @@ export declare class MAP {
      * @returns The stored options.
      */
     options(): MAPOptions;
-    /**
-     * Releases the native object now instead of when it is garbage collected; later calls fail.
-     */
-    close(): void;
-}
-
-/**
- * Settings for NUTS.
- */
-export declare class NUTSOptions {
-    constructor();
-    /**
-     * Number of post-warmup draws.
-     */
-    num_samples: number;
-    /**
-     * Number of warmup iterations (step-size adaptation).
-     */
-    num_warmup: number;
-    /**
-     * Caps the recursive trajectory-doubling at 2^max_tree_depth leapfrog steps per iteration.
-     */
-    max_tree_depth: number;
-    /**
-     * Leapfrog step size at the start of warmup.
-     */
-    initial_step_size: number;
-    /**
-     * Mean acceptance statistic the dual-averaging adaptation aims for.
-     */
-    target_accept_rate: number;
-    /**
-     * A trajectory is flagged as diverging once the Hamiltonian drifts by more than
-     * this from its initial value (Stan's default of 1000).
-     */
-    max_delta_error: number;
-    /**
-     * Random seed (chain k of sample_chains() uses seed + k).
-     */
-    seed: number;
-    /**
-     * Releases the native object now instead of when it is garbage collected; later calls fail.
-     */
-    close(): void;
-}
-
-/**
- * Output of NUTS::sample().
- */
-export declare class NUTSResult {
-    constructor();
-    /**
-     * Post-warmup draws, one vector<double> per sample.
-     */
-    samples: number[][];
-    /**
-     * Mean Metropolis acceptance statistic across all iterations (the same quantity
-     * the step-size adaptation targets).
-     */
-    accept_rate: number;
-    /**
-     * Step size used after warmup.
-     */
-    final_step_size: number;
-    /**
-     * Number of iterations, warmup included, whose trajectory diverged.
-     */
-    num_divergences: number;
-    /**
-     * Per post-warmup draw: 1 if that iteration's trajectory diverged, else 0.
-     */
-    divergent: number[];
-    /**
-     * Per post-warmup draw: number of trajectory doublings performed (tree depth).
-     */
-    tree_depth: number[];
-    /**
-     * Per post-warmup draw: number of leapfrog steps (gradient evaluations) used.
-     */
-    n_leapfrog: number[];
-    /**
-     * Per post-warmup draw: the Hamiltonian
-     *
-     * `H=-\log p(q)+\tfrac12|r|^2` at the
-     * start of the iteration, after momentum resampling (input to energy_bfmi()).
-     */
-    energy: number[];
-    /**
-     * Releases the native object now instead of when it is garbage collected; later calls fail.
-     */
-    close(): void;
-}
-
-/**
- * The No-U-Turn Sampler (Hoffman & Gelman 2014, the efficient slice-sampling
- * variant, Algorithm 3): Hamiltonian Monte Carlo with an automatically chosen
- * trajectory length -- the leapfrog trajectory is grown by repeated doubling until
- * it would start turning back on itself (a "U-turn"), removing the need to hand-tune
- * a fixed number of leapfrog steps. Step size is still adapted via the same
- * dual-averaging scheme as HMC. Uses an identity mass matrix.
- */
-export declare class NUTS {
-    /**
-     * Stores the sampler settings.
-     * @param options Sampler settings. (default: `new NUTSOptions()`)
-     */
-    constructor(options?: NUTSOptions);
-    /**
-     * Runs one chain: warmup with step-size adaptation, then num_samples draws.
-     * @param log_posterior Log density (up to a constant) and its gradient.
-     * @param initial_params Starting point on the unconstrained scale.
-     * @returns Draws plus acceptance, step size and per-draw diagnostics.
-     */
-    sample(log_posterior: DifferentiableFunction, initial_params: number[]): NUTSResult;
-    /**
-     * The options this NUTS was configured with.
-     * @returns The stored options.
-     */
-    options(): NUTSOptions;
     /**
      * Releases the native object now instead of when it is garbage collected; later calls fail.
      */
@@ -2828,13 +6238,26 @@ export declare class AlphaBetaGammaFilter {
 }
 
 /**
- * One state estimate + its covariance -- the common return shape for every "give me
- * the state at every timestep" result in this module (filtered sequences, smoothed
- * sequences, ensemble-filter output, ...).
+ * Owned state mean and covariance, shared by the native filter-family outputs.
+ * Units follow the model; covariance is state-unit products. No input references.
+ * Public edits are unchecked and do not mutate the producing filter.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const dm::filter::KalmanState s{{1},{{2}}};std::print("{} {}\n",s.x[0],s.P[0][0]); // 1 2
+ * ```
+ * @see KalmanFilter
  */
 export declare class KalmanState {
     constructor();
+    /**
+     * Owned state mean, length n.
+     */
     x: number[];
+    /**
+     * Owned n-by-n covariance, no exact PSD certificate under rounding.
+     */
     P: number[][];
     /**
      * Releases the native object now instead of when it is garbage collected; later calls fail.
@@ -2843,16 +6266,30 @@ export declare class KalmanState {
 }
 
 /**
- * The result of KalmanFilter::smooth(): the forward-pass (filtered, causal) estimates
- * alongside the RTS backward-pass (smoothed, uses the whole sequence) estimates.
- * smoothed.back() always exactly equals filtered.back() (the smoother has no future
- * data at the final step); every earlier smoothed covariance is <= the corresponding
- * filtered covariance (in the positive-semidefinite order) since it incorporates more
- * information.
+ * Owned actual forward-filter and RTS backward-smoothed trajectories.
+ * Equal lengths follow the input sequence. Final smoothed state/covariance equal
+ * final filtered values because no future data remain. In an exact valid linear
+ * Gaussian model, smoothing reduces conditional covariance; it need not reduce
+ * realized error at every time or on every observed sequence. Rounding can impair
+ * symmetry/PSD. No retained input views or prefix replay.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * dm::filter::KalmanFilter k({{1}},{{1}},{{1}},{{1}},{0},{{1}});
+ * std::print("{}\n",k.smooth({{1},{2}}).smoothed.size()); // 2
+ * ```
+ * @see KalmanFilter::smooth()
  */
 export declare class SmoothResult {
     constructor();
+    /**
+     * Actual causal posterior states from the forward pass.
+     */
     filtered: KalmanState[];
+    /**
+     * Actual RTS states using the complete sequence.
+     */
     smoothed: KalmanState[];
     /**
      * Releases the native object now instead of when it is garbage collected; later calls fail.
@@ -2861,46 +6298,148 @@ export declare class SmoothResult {
 }
 
 /**
- * The standard discrete-time linear Kalman filter: x_k = F x_{k-1} + w_k, z_k = H x_k
- * + v_k, w_k ~ N(0, Q), v_k ~ N(0, R) -- the minimum-mean-squared-error linear
- *   estimator for exactly this model. Stateful: holds the current (x, P) estimate,
- *   mutated in place by predict()/update(); F, H, Q, R are fixed for the filter's
- *   lifetime (construct a new filter if they change over time).
+ * Owned fixed-model linear covariance Kalman filter with optional full RTS smoothing.
+ * Models x_k=F*x_(k-1)+w and z_k=H*x_k+v with caller-supplied Q/R covariance.
+ * Inputs are copied; predict/update mutate this instance, independent copies
+ * evolve separately. Concurrent mutation requires synchronization. Shape checks
+ * do not establish finite values, covariance PSD, noise independence or valid
+ * probability assumptions: those remain caller preconditions. Uses explicit LU
+ * inverses and simplified covariance updates, not a Joseph/square-root method.
+ * Under a valid linear Gaussian model the mean is conditional MMSE; floating
+ * output is approximate. No universal realized-error or numerical PSD guarantee.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * dm::filter::KalmanFilter k({{1}},{{1}},{{1}},{{3}},{0},{{4}});
+ * k.predict();k.update({2});std::print("{}\n",k.state()[0]); // 1.25
+ * ```
+ *
+ * **References**
+ *
+ * - Kalman(1960), A New Approach to Linear Filtering and Prediction Problems,
+ *   https://doi.org/10.1115/1.3662552.
+ * - Rauch,Tung,Striebel(1965), Maximum likelihood estimates of linear dynamic
+ *   systems, https://doi.org/10.2514/3.3166.
+ * @see filter(), smooth(), KalmanState
  */
 export declare class KalmanFilter {
+    /**
+     * Copy a fixed linear model and initial state, validating matrix dimensions.
+     * No finite/covariance-definiteness checks are added; the caller supplies
+     * statistically valid finite matrices and invertible required innovation/prediction covariances.
+     * O(n*n+m*n+m*m) copied model/state storage for n state and m observation dimensions.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * const dm::filter::KalmanFilter k({{1}},{{1}},{{1}},{{1}},{0},{{2}});
+     * std::print("{}\n",k.covariance()[0][0]); // 2
+     * ```
+     * @param F Owned n-by-n transition matrix.
+     * @param H Owned m-by-n observation matrix.
+     * @param Q Owned n-by-n process covariance.
+     * @param R Owned m-by-m observation covariance.
+     * @param x0 Owned initial length-n state mean.
+     * @param P0 Owned initial n-by-n state covariance.
+     * @throws {Error} `std::invalid_argument`: On ragged/incompatible matrix shapes.
+     * @throws {Error} `std::bad_alloc`: On model/state allocation failure.
+     */
     constructor(F: number[][], H: number[][], Q: number[][], R: number[][], x0: number[], P0: number[][]);
     /**
-     * The time-update (prediction) step: x = F x, P = F P F^T + Q.
+     * Predict x=F*x and P=F*P*F^T+Q once, mutating the current state.
+     * Matrix arithmetic is ordinary floating point; nonfinite results propagate.
+     * O(n^3) dense work/O(n^2) temporaries; no rollback guarantee on exceptions.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * dm::filter::KalmanFilter k({{1}},{{1}},{{1}},{{1}},{2},{{4}});k.predict();
+     * std::print("{}\n",k.covariance()[0][0]); // 5
+     * ```
+     * @throws {Error} `std::bad_alloc`: On temporary allocation failure.
+     * @see update()
      */
     predict(): void;
     /**
-     * The measurement-update (correction) step given observation `z`: the standard
-     * innovation-covariance / Kalman-gain form (S = H P H^T + R, K = P H^T S^-1, x +=
-     * K(z - Hx), P = (I - KH) P) -- not the numerically-hardened Joseph form, matching
-     * this codebase's general preference for the textbook formula over a more robust
-     * but more complex alternative.
+     * Correct from z using innovation covariance, LU gain and simplified posterior covariance.
+     * Computes y=z-H*x,S=H*P*H^T+R,K=P*H^T*S^-1, then x+=K*y and
+     * P=(I-K*H)*P. Requires finite statistically valid inputs/invertible S;
+     * shape validation alone does not ensure those properties. Rounding may
+     * lose symmetry/PSD; not Joseph form. Mutates state without rollback guarantee.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * dm::filter::KalmanFilter k({{1}},{{1}},{{1}},{{3}},{0},{{5}});k.update({2});
+     * std::print("{}\n",k.state()[0]); // 1.25
+     * ```
+     * @param z Borrowed length-m observation, unchanged by this call.
+     * @throws {Error} `std::invalid_argument`: On observation dimension mismatch.
+     * @throws {Error} `std::runtime_error`: On LU failure under its implementation contract.
+     * @throws {Error} `std::bad_alloc`: On temporary allocation failure.
+     * @see predict()
      */
     update(z: number[]): void;
     /**
-     * C++ `datamunge::filter::KalmanFilter::state`
+     * Copy the current state mean without another filter update.
+     * @returns Owned length-n current mean.
+     * @throws {Error} `std::bad_alloc`: On copy allocation failure.
      */
     state(): number[];
     /**
-     * C++ `datamunge::filter::KalmanFilter::covariance`
+     * Copy the current covariance without recomputing a filter update.
+     * @returns Owned n-by-n current covariance.
+     * @throws {Error} `std::bad_alloc`: On copy allocation failure.
      */
     covariance(): number[][];
     /**
-     * Runs predict() then update(z) for every z in `measurements`, in order, mutating
-     * this filter's running state -- the ordinary causal (online) filtered estimate at
-     * every timestep.
+     * Predict then correct every observation in order, owning actual posterior states.
+     * Empty input returns empty and leaves state unchanged. Ends at the final
+     * posterior, so repeated calls continue this instance rather than restarting.
+     * O(T) dense filter steps plus O(T*n^2) owned output; input remains unchanged.
+     * A later invalid measurement can follow already committed predictions/updates;
+     * failure does not roll the whole sequence back.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * dm::filter::KalmanFilter k({{1}},{{1}},{{1}},{{1}},{0},{{1}});
+     * std::print("{}\n",k.filter({{1},{2}}).size()); // 2
+     * ```
+     * @param measurements Borrowed ordered length-m observations.
+     * @returns Owned actual causal mean/covariance at every completed step.
+     * @throws {Error} `std::invalid_argument`: On a measurement dimension mismatch.
+     * @throws {Error} `std::runtime_error`: On underlying LU failure.
+     * @throws {Error} `std::bad_alloc`: On temporary/output allocation failure.
+     * @see smooth()
      */
     filter(measurements: number[][]): KalmanState[];
     /**
-     * filter() followed by an RTS (Rauch-Tung-Striebel) backward smoothing pass, which
-     * uses the ENTIRE sequence (not just data up to each point) to refine every
-     * estimate -- always at least as accurate as the filtered estimate, at the cost of
-     * needing the full sequence in advance (not usable online). Leaves this filter's
-     * running (x, P) at its post-filter state, same as filter() would.
+     * Execute one actual forward pass and an RTS backward pass on the full sequence.
+     * Owns actual prediction/posterior arrays during execution, then returns
+     * causal and smoothed means/covariances. No repeated-prefix runs. Leaves this
+     * filter at its final forward posterior. Empty input returns empty unchanged.
+     * Exact-model conditional covariance reduces; realized error need not decrease
+     * on every sequence. Ordinary matrix arithmetic can lose symmetry/PSD.
+     * O(T) dense steps/backward solves, O(T*n^2) intermediate/output storage.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * dm::filter::KalmanFilter k({{1}},{{1}},{{1}},{{1}},{0},{{1}});
+     * const auto r=k.smooth({{1},{2}});std::print("{}\n",r.filtered.back().x==r.smoothed.back().x); // true
+     * ```
+     *
+     * **References**
+     *
+     * - Rauch,Tung,Striebel(1965), https://doi.org/10.2514/3.3166.
+     * @param measurements Borrowed full ordered length-m sequence.
+     * @returns Owned actual forward and full-sequence smoothed trajectories.
+     * @throws {Error} `std::invalid_argument`: On measurement dimension mismatch.
+     * @throws {Error} `std::runtime_error`: On underlying innovation/prediction LU failure.
+     * @throws {Error} `std::bad_alloc`: On intermediate/output allocation failure.
+     * @see filter(), SmoothResult
      */
     smooth(measurements: number[][]): SmoothResult;
     /**
@@ -3450,2406 +6989,6 @@ export declare class ConvexHullTrace {
 }
 
 /**
- * Base class for user-defined callbacks invoked by datamunge functions.
- *
- * Derive from this class and override `call()` to supply custom behavior
- * wherever a `Callback*` is accepted.
- *
- * Subclass it in JavaScript (`class Mine extends Callback {...}`): methods of the subclass override the C++ virtual methods.
- */
-export declare class Callback {
-    constructor();
-    /**
-     * Applies the callback to a single value.
-     * @param x Input value.
-     * @returns Transformed value; the default implementation returns `x` unchanged.
-     */
-    call(x: number): number;
-    /**
-     * Releases the native object now instead of when it is garbage collected; later calls fail.
-     */
-    close(): void;
-}
-
-/**
- * A plotting color: 8-bit red, green, and blue channels plus an alpha opacity,
- * the C++ counterpart of R's `rgb(r, g, b, alpha, maxColorValue = 255)`.
- *
- * Brace-initialize numeric channels: `dm::RGB{255, 0, 0}` is opaque red and
- * `dm::RGB{255, 0, 0, 0.5}` is half-transparent red. A default-constructed RGB is the
- * library's dark-slate ink `{31, 41, 55}`, fully opaque. Channels are not validated: keep
- * them in [0, 255] (both the raster and SVG renderers clamp out-of-range channels), and
- * keep alpha in [0, 1] (both renderers clamp it). Every plotting API takes RGBA (the same type as RGB) by value,
- * and `dm::c(...)` of several RGBs builds a palette usable with `select()` and set_col().
- * Color strings convert implicitly: names are case-insensitive black, white, red, green,
- * blue, yellow, cyan, magenta, gray/grey and transparent; hex accepts #RRGGBB and
- * #RRGGBBAA, with alpha last and scaled to [0, 1]. Malformed text throws before a
- * plot is changed. RGB and RGBA remain the same type, preserving existing palettes
- * and the binary layout of numeric colors. Parsing owns no reference to the string.
- *
- * **Example**
- *
- * ```cpp
- * const auto gold = dm::RGB{255, 215, 0};
- * const auto glass = dm::RGBA{37, 99, 235, 0.3};  // translucent blue
- * const dm::RGB ink;                              // {31, 41, 55}, opaque
- * std::print("{} {} {}\n", gold.r, glass.alpha, ink.r);  // 255 0.3 31
- * const auto palette = dm::c(gold, glass);       // a dm::Vector<dm::RGB>
- * ```
- * @see dm::RGBA, dm::Plot::set_col(), dm::points()
- */
-export declare class RGB {
-    /**
-     * Construct the default opaque dark-slate ink color.
-     *
-     * **Example**
-     *
-     * See the RGB class example.
-     */
-    constructor();
-    /**
-     * Construct numeric RGB channels and an optional normalized alpha.
-     * Channels and alpha are retained; renderers clamp them when drawing.
-     *
-     * **Example**
-     *
-     * See the RGB class example; RGB{255, 0, 0} and RGBA{255, 0, 0, 0.5} mix freely.
-     * @param red Red channel, conventionally 0-255.
-     * @param green Green channel, conventionally 0-255.
-     * @param blue Blue channel, conventionally 0-255.
-     * @param opacity Alpha in [0, 1], default 1 (opaque). (default: `1.0`)
-     */
-    constructor(red: number, green: number, blue: number, opacity?: number);
-    /**
-     * Preserve direct initialization with a red channel and default remaining channels.
-     * Explicit so a number cannot accidentally become a color argument.
-     *
-     * **Example**
-     *
-     * See the numeric constructor; RGB{255} keeps the other default channels.
-     * @param red Red channel; green remains 41, blue 55 and alpha 1.
-     */
-    constructor(red: number);
-    /**
-     * Preserve direct initialization with red/green and default blue/alpha.
-     *
-     * **Example**
-     *
-     * See the numeric constructor; RGB{255, 0} keeps the other default channels.
-     * @param red Red channel, conventionally 0-255.
-     * @param green Green channel, conventionally 0-255; blue remains 55 and alpha 1.
-     */
-    constructor(red: number, green: number);
-    /**
-     * Implicitly parse a color name, #RRGGBB or #RRGGBBAA string.
-     * Names and hexadecimal digits are case-insensitive. Hex alpha is the final
-     * byte divided by 255; omitted alpha is 1. Whitespace is not stripped. Named
-     * green is (0, 128, 0); transparent is black with alpha zero. The input is copied
-     * while parsing and is never borrowed by a plot or palette.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const dm::RGBA glass = std::string("#ff44ff55");
-     * const auto plt = dm::plot(dm::c(0, 1), dm::c(1, 2), "data", "#ff44ff55");
-     * std::print("{} {}\n", glass.r, dm::round(glass.alpha, 3)); // 255 0.333
-     * ```
-     * @param color Color text; supported names are listed in the class description.
-     * @throws {Error} `std::invalid_argument`: For empty text, unknown names or malformed hex.
-     */
-    constructor(color: string);
-    /**
-     * Accept a string literal with the same parsing rules as the string constructor.
-     *
-     * **Example**
-     *
-     * See the string constructor, whose plot call accepts a literal directly.
-     * @param color Null-terminated color text; must be non-null.
-     * @throws {Error} `std::invalid_argument`: For null, empty or malformed text.
-     */
-    constructor(color: string | null);
-    /**
-     * Red channel, 0-255 (default 31).
-     */
-    r: number;
-    /**
-     * Green channel, 0-255 (default 41).
-     */
-    g: number;
-    /**
-     * Blue channel, 0-255 (default 55).
-     */
-    b: number;
-    /**
-     * Opacity in [0, 1]; 1 (the default) is opaque, 0 is invisible.
-     */
-    alpha: number;
-    /**
-     * Releases the native object now instead of when it is garbage collected; later calls fail.
-     */
-    close(): void;
-}
-
-/**
- * One drawn layer of a plot (points, a line, bars, a box, a polygon, a label, or
- * segments), as stored by RPlot's layer verbs and read back through Plot::series().
- *
- * A plain aggregate holding data coordinates and styling. Which fields matter depends on
- * kind; each Kind value documents how it reads x, y, and the other fields. Layers are drawn
- * in insertion order, after the reference lines, and every layer's coordinates widen the
- * automatic axis ranges (bars also pull the y range down or up to 0). A nonempty label puts
- * the layer in the automatic legend unless it is a Text layer. User code normally creates
- * layers through RPlot verbs (points(), lines(), bars(), ...) and only reads this struct.
- *
- * **Example**
- *
- * ```cpp
- * auto plt = dm::Plot().points(dm::c(1.0, 2.0), dm::c(3.0, 4.0), "pts");
- * const dm::graphics::DataSeries& s = plt.series()[0];
- * std::print("{} {} {} {}\n", s.kind == dm::graphics::DataSeries::Kind::Scatter, s.x.size(),
- *            s.label, s.marker_size);  // true 2 pts 4
- * ```
- * @see Plot::series(), RPlot::points(), RPlot::lines()
- */
-export declare class DataSeries {
-    constructor();
-    /**
-     * How the layer is drawn (default Line).
-     */
-    kind: DataSeries_Kind;
-    /**
-     * Horizontal data coordinates; meaning depends on kind.
-     */
-    x: number[];
-    /**
-     * Vertical data coordinates; meaning depends on kind.
-     */
-    y: number[];
-    /**
-     * Legend text (or the drawn text for Kind::Text); empty omits it.
-     */
-    label: string;
-    /**
-     * Layer color, including alpha (default RGBA{}, dark slate).
-     */
-    color: RGB;
-    /**
-     * Line, Segment, and outline-Polygon width in pixels (default 2).
-     */
-    stroke_width: number;
-    /**
-     * Scatter marker radius, or Text font size, in pixels (default 4).
-     */
-    marker_size: number;
-    /**
-     * Bar or Box width in data units (default 0.8).
-     */
-    bar_width: number;
-    /**
-     * Polygon only: true fills it, false draws its outline (default false).
-     */
-    filled: boolean;
-    /**
-     * Optional scatter palette, recycled in input order; empty uses color for every point.
-     */
-    point_colors: RGB[];
-    static readonly Kind: typeof DataSeries_Kind;
-    /**
-     * Releases the native object now instead of when it is garbage collected; later calls fail.
-     */
-    close(): void;
-}
-
-/**
- * A straight reference line across the whole plotting area, as drawn by R's
- * `abline(a, b)`, `abline(h =)` and `abline(v =)`.
- *
- * A sloped or horizontal line is y = value + slope * x evaluated at both ends of the visible
- * x range; a vertical line sits at x = value and ignores slope. Reference lines are drawn
- * beneath every DataSeries. Vertical lines widen the automatic x range to include them;
- * sloped and horizontal lines never change the axis ranges. Created by RPlot::abline(),
- * abline_h(), abline_v(), and qqline(); read back through Plot::reference_lines().
- *
- * **Example**
- *
- * ```cpp
- * auto plt = dm::Plot(dm::c(0.0, 1.0), dm::c(0.0, 2.0)).abline(0.5, 2.0).abline_v(0.25);
- * const auto& lines = plt.reference_lines();
- * std::print("{} {} {}\n", lines[0].slope, lines[1].vertical, lines[1].value);  // 2 true 0.25
- * ```
- *
- * **References**
- *
- * - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
- * @see RPlot::abline(), Plot::reference_lines()
- */
-export declare class ABLine {
-    constructor();
-    /**
-     * True for a vertical line at x = value (default false).
-     */
-    vertical: boolean;
-    /**
-     * y-intercept for a sloped/horizontal line; x-position for a vertical line
-     */
-    value: number;
-    /**
-     * Change in y per unit x; ignored when vertical (default 0).
-     */
-    slope: number;
-    /**
-     * Line color (default opaque black).
-     */
-    color: RGB;
-    /**
-     * Line width in pixels (default 1).
-     */
-    stroke_width: number;
-    /**
-     * Releases the native object now instead of when it is garbage collected; later calls fail.
-     */
-    close(): void;
-}
-
-/**
- * One manually specified legend row, as drawn by R's `legend()`.
- *
- * When a plot has any manual entries, they replace the default auto-generated
- * (one-row-per-labeled-series) legend. Each row is a color swatch followed by the label,
- * stacked from the top-right corner of the plotting area in insertion order.
- *
- * **Example**
- *
- * ```cpp
- * auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).legend({"data"}, {dm::RGB{0, 0, 255}});
- * std::print("{} {}\n", plt.legend_entries()[0].label, plt.legend_entries()[0].color.b);  // data 255
- * ```
- *
- * **References**
- *
- * - R `legend()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/legend.html
- * @see RPlot::legend(), dm::legend(), Plot::legend_entries()
- */
-export declare class LegendEntry {
-    constructor();
-    /**
-     * Row text.
-     */
-    label: string;
-    /**
-     * Swatch color, including alpha (default opaque black).
-     */
-    color: RGB;
-    /**
-     * Releases the native object now instead of when it is garbage collected; later calls fail.
-     */
-    close(): void;
-}
-
-/**
- * Renderer-facing state shared by every 2-D plot: canvas, labels, axes, and series.
- *
- * User code works with the derived RPlot (spelled `dm::Plot`), whose setters return `RPlot&`;
- * this base holds the data, the read-only accessors, and the output functions to_svg(),
- * save(), and show(). The base-class setters below return `Plot&` and are what RPlot's
- * same-named setters forward to; call the RPlot forms in user code so chains keep the RPlot
- * type. A `const Plot&` is also what RLayout::add() accepts and RLayout::panel() returns.
- *
- * Every output function renders from the stored state, so it throws std::runtime_error for a
- * plot with no data series (reference lines and legend rows alone are not enough) or a canvas
- * too small for its margins. Plots are copyable values with no shared state; distinct plots may
- * be used from different threads, but one plot must not be mutated while it is rendered.
- *
- * **Example**
- *
- * ```cpp
- * const dm::graphics::Plot& base = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 4.0)).set_title("Base");
- * std::print("{} {}x{}\n", base.title_text(), base.width(), base.height());  // Base 960x640
- * ```
- * @see RPlot, RLayout
- */
-export declare class Plot {
-    constructor();
-    /**
-     * Base-class form of RPlot::size(): sets the canvas size in pixels (default 960x640).
-     * @param width Canvas width in pixels.
-     * @param height Canvas height in pixels.
-     * @returns This plot, for chaining.
-     * @see RPlot::size()
-     */
-    size(width: number, height: number): Plot;
-    /**
-     * Base-class form of RPlot::title(): sets the main heading; empty removes it.
-     * @param value Heading text (moved into the plot).
-     * @returns This plot, for chaining.
-     * @see RPlot::set_title()
-     */
-    title(value: string): Plot;
-    /**
-     * Sets an optional subtitle displayed beneath the title; owns the supplied text.
-     * @param value Subtitle text; empty removes it.
-     * @returns This plot, for chaining.
-     * @see RPlot::set_subtitle()
-     */
-    subtitle(value: string): Plot;
-    /**
-     * Base-class form of RPlot::x_label(): sets the horizontal-axis label.
-     * @param value Label text (moved into the plot).
-     * @returns This plot, for chaining.
-     * @see RPlot::set_xlab()
-     */
-    x_label(value: string): Plot;
-    /**
-     * Base-class form of RPlot::y_label(): sets the vertical-axis label.
-     * @param value Label text (moved into the plot).
-     * @returns This plot, for chaining.
-     * @see RPlot::set_ylab()
-     */
-    y_label(value: string): Plot;
-    /**
-     * Base-class form of RPlot::background(): sets the canvas fill color.
-     * @param color Fill for the whole canvas (default white).
-     * @returns This plot, for chaining.
-     * @see RPlot::background()
-     */
-    background(color: RGB): Plot;
-    /**
-     * Base-class form of RPlot::axis_color(): sets the axis-line and text color.
-     * @param color Color for axis lines, ticks, axis labels, title, and subtitle.
-     * @returns This plot, for chaining.
-     * @see RPlot::axis_color()
-     */
-    axis_color(color: RGB): Plot;
-    /**
-     * Base-class form of RPlot::grid_color(): sets the grid-line color.
-     * @param color Grid-line color (default light gray `{229, 231, 235}`).
-     * @returns This plot, for chaining.
-     * @see RPlot::grid_color()
-     */
-    grid_color(color: RGB): Plot;
-    /**
-     * Base-class form of RPlot::show_grid(): turns the background grid on or off.
-     * @param enabled True (the default) draws the grid. (default: `true`)
-     * @returns This plot, for chaining.
-     * @see RPlot::show_grid()
-     */
-    show_grid(enabled?: boolean): Plot;
-    /**
-     * Base-class form of RPlot::x_limits(): fixes the visible x range.
-     * @param min_x Left edge of the plotting area, in data units.
-     * @param max_x Right edge; must be greater than `min_x`.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: Unless `max_x > min_x` (NaN fails); the plot is unchanged.
-     * @see RPlot::x_limits()
-     */
-    x_limits(min_x: number, max_x: number): Plot;
-    /**
-     * Base-class form of RPlot::y_limits(): fixes the visible y range.
-     * @param min_y Bottom edge of the plotting area, in data units.
-     * @param max_y Top edge; must be greater than `min_y`.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: Unless `max_y > min_y` (NaN fails); the plot is unchanged.
-     * @see RPlot::y_limits()
-     */
-    y_limits(min_y: number, max_y: number): Plot;
-    /**
-     * Base-class form of RPlot::hide_axes(): hides or restores axes, ticks, grid, and axis labels.
-     * @param enabled True (the default) hides them. (default: `true`)
-     * @returns This plot, for chaining.
-     * @see RPlot::hide_axes()
-     */
-    hide_axes(enabled?: boolean): Plot;
-    /**
-     * Base-class form of RPlot::x_tick_labels(): labels the x axis at 0, 1, 2, ...
-     * @param labels Tick texts; empty restores the numeric ticks.
-     * @returns This plot, for chaining.
-     * @see RPlot::x_tick_labels()
-     */
-    x_tick_labels(labels: string[]): Plot;
-    /**
-     * Replaces the numeric x ticks with `labels` drawn at data positions `positions`.
-     * @param positions x data coordinates of the ticks.
-     * @param labels Tick texts, one per position.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If the two vectors differ in length.
-     * @see RPlot::x_ticks()
-     */
-    x_ticks(positions: number[], labels: string[]): Plot;
-    /**
-     * Replaces the numeric y ticks with `labels` drawn at y = 0, 1, 2, ...
-     * @param labels Tick texts; empty restores the numeric ticks.
-     * @returns This plot, for chaining.
-     * @see RPlot::y_tick_labels()
-     */
-    y_tick_labels(labels: string[]): Plot;
-    /**
-     * Replaces the numeric y ticks with `labels` drawn at data positions `positions`.
-     * @param positions y data coordinates of the ticks.
-     * @param labels Tick texts, one per position.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If the two vectors differ in length.
-     * @see RPlot::y_ticks()
-     */
-    y_ticks(positions: number[], labels: string[]): Plot;
-    /**
-     * Overrides the automatic outer margins (in pixels) around the plotting area, e.g. for
-     * small multi-panel tiles. The defaults leave room for a title, axis labels, and ticks;
-     * tight margins suit panels whose title and axis labels are empty.
-     * @param left Left margin in pixels (default 90).
-     * @param right Right margin in pixels (default 24).
-     * @param top Top margin in pixels (default 72, plus 24 when a subtitle is set).
-     * @param bottom Bottom margin in pixels (default 84).
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If any margin is negative or non-finite.
-     * @see RPlot::margins()
-     */
-    margins(left: number, right: number, top: number, bottom: number): Plot;
-    /**
-     * Sets the tick-label font size in pixels (default 12); the raster viewer draws ticks
-     * at half-size glyphs when this is below 12.
-     * @param pixels Font size in pixels.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If `pixels` is not positive and finite.
-     * @see RPlot::tick_font_size()
-     */
-    tick_font_size(pixels: number): Plot;
-    /**
-     * Places numeric ticks at round values (steps of 1, 2 or 5 times a power of ten, like
-     * R's `pretty()`) instead of six evenly spaced ticks across the range (default on).
-     * @param enabled True turns round ticks on; false restores six even ticks. (default: `true`)
-     * @returns This plot, for chaining.
-     * @see RPlot::pretty_ticks()
-     */
-    pretty_ticks(enabled?: boolean): Plot;
-    /**
-     * Returns the canvas width in pixels (default 960).
-     * @returns Width set by size().
-     */
-    width(): number;
-    /**
-     * Returns the canvas height in pixels (default 640).
-     * @returns Height set by size().
-     */
-    height(): number;
-    /**
-     * Borrows the main heading ("datamunge plot" until set) for the lifetime of this plot.
-     * @returns The current title; empty when the heading was cleared.
-     */
-    title_text(): string;
-    /**
-     * Borrows the subtitle for the lifetime of this plot.
-     * @returns The current subtitle; empty (the default) when none is drawn.
-     */
-    subtitle_text(): string;
-    /**
-     * Borrows the horizontal-axis label ("x" until set) for the lifetime of this plot.
-     * @returns The current x-axis label.
-     */
-    x_label_text(): string;
-    /**
-     * Borrows the vertical-axis label ("y" until set) for the lifetime of this plot.
-     * @returns The current y-axis label.
-     */
-    y_label_text(): string;
-    /**
-     * Borrows the drawn layers (points, lines, bars, ...) in the order they were added.
-     * @returns The series list; references are invalidated by adding another layer.
-     */
-    series(): DataSeries[];
-    /**
-     * Returns the canvas fill color set by background().
-     * @returns The background color (default white `{255, 255, 255}`).
-     */
-    background_color(): RGB;
-    /**
-     * Returns the axis and text color set by axis_color().
-     * @returns The axis color (default gray `{55, 65, 81}`).
-     */
-    axes_color(): RGB;
-    /**
-     * Returns the grid-line color set by grid_color().
-     * @returns The grid color (default light gray `{229, 231, 235}`).
-     */
-    major_grid_color(): RGB;
-    /**
-     * Reports whether the background grid is drawn (see show_grid()).
-     * @returns True (the default) when the grid is drawn.
-     */
-    grid_visible(): boolean;
-    /**
-     * Reports whether x_limits() fixed the x range.
-     * @returns False (the default) while the x range is fitted to the data.
-     */
-    has_x_limits(): boolean;
-    /**
-     * Reports whether y_limits() fixed the y range.
-     * @returns False (the default) while the y range is fitted to the data.
-     */
-    has_y_limits(): boolean;
-    /**
-     * Returns the fixed left x limit; meaningful only when has_x_limits() is true.
-     * @returns The stored lower x limit (0 until x_limits() is called).
-     */
-    x_min(): number;
-    /**
-     * Returns the fixed right x limit; meaningful only when has_x_limits() is true.
-     * @returns The stored upper x limit (1 until x_limits() is called).
-     */
-    x_max(): number;
-    /**
-     * Returns the fixed bottom y limit; meaningful only when has_y_limits() is true.
-     * @returns The stored lower y limit (0 until y_limits() is called).
-     */
-    y_min(): number;
-    /**
-     * Returns the fixed top y limit; meaningful only when has_y_limits() is true.
-     * @returns The stored upper y limit (1 until y_limits() is called).
-     */
-    y_max(): number;
-    /**
-     * Reports whether hide_axes() suppressed axes, ticks, grid, and axis labels.
-     * @returns False (the default) when axes are drawn.
-     */
-    axes_hidden(): boolean;
-    /**
-     * Borrows the custom x tick texts; empty means numeric ticks.
-     * @returns Labels set by x_tick_labels() or x_ticks().
-     */
-    x_tick_label_list(): string[];
-    /**
-     * Data positions of x_tick_label_list(); empty means 0, 1, 2, ...
-     * @returns Positions set by x_ticks(); cleared by x_tick_labels().
-     */
-    x_tick_position_list(): number[];
-    /**
-     * Borrows the custom y tick texts; empty means numeric ticks.
-     * @returns Labels set by y_tick_labels() or y_ticks().
-     */
-    y_tick_label_list(): string[];
-    /**
-     * Data positions of y_tick_label_list(); empty means 0, 1, 2, ...
-     * @returns Positions set by y_ticks(); cleared by y_tick_labels().
-     */
-    y_tick_position_list(): number[];
-    /**
-     * Borrows the reference lines added by abline(), abline_h(), abline_v(), and qqline().
-     * @returns Lines in insertion order; references are invalidated by adding another line.
-     */
-    reference_lines(): ABLine[];
-    /**
-     * Borrows the manual legend rows added by legend(); empty means an automatic legend.
-     * @returns Manual entries in insertion order.
-     */
-    legend_entries(): LegendEntry[];
-    /**
-     * True once margins() has been called; the renderer then uses the explicit margins.
-     * @returns False (the default) while the automatic margins apply.
-     */
-    has_custom_margins(): boolean;
-    /**
-     * Returns the left margin in pixels; used only when has_custom_margins() is true.
-     * @returns The stored left margin (default 90).
-     */
-    margin_left(): number;
-    /**
-     * Returns the right margin in pixels; used only when has_custom_margins() is true.
-     * @returns The stored right margin (default 24).
-     */
-    margin_right(): number;
-    /**
-     * Returns the top margin in pixels; used only when has_custom_margins() is true.
-     * @returns The stored top margin (default 72).
-     */
-    margin_top(): number;
-    /**
-     * Returns the bottom margin in pixels; used only when has_custom_margins() is true.
-     * @returns The stored bottom margin (default 84).
-     */
-    margin_bottom(): number;
-    /**
-     * Returns the tick-label font size set by tick_font_size().
-     * @returns Font size in pixels (default 12).
-     */
-    tick_font_px(): number;
-    /**
-     * Reports whether pretty_ticks() is on.
-     * @returns False (the default) for six evenly spaced numeric ticks.
-     */
-    pretty_ticks_enabled(): boolean;
-    /**
-     * Renders the plot as a standalone SVG document and returns it as a string.
-     *
-     * The document starts with an XML declaration and draws text as embedded Computer Modern
-     * glyph outlines, so it displays identically in any SVG viewer, with or without web fonts. The plot is not modified, and no file or display is used.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const auto svg = dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)).set_title("Tiny").to_svg();
-     * std::print("{}\n", svg.starts_with("<?xml"));  // true
-     * std::print("{}\n", svg.contains("Tiny"));      // true
-     * ```
-     * @returns The complete SVG text.
-     * @throws {Error} `std::runtime_error`: If the plot has no data series, or the canvas is smaller than its margins.
-     * @see save(), show()
-     */
-    to_svg(): string;
-    /**
-     * Writes the plot to `path`, choosing the format from the file extension
-     * (R's `svg()`/`png()`/`pdf()` devices followed by `dev.off()`, in one call).
-     *
-     * `.svg` or no extension writes the same text as to_svg(); `.png` writes the raster image
-     * the X11 viewer displays; `.pdf` wraps that raster in a single-page PDF. The extension is
-     * case-sensitive. An existing file is overwritten. Needs no display.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0)).set_title("Squares");
-     * plt.save("squares.svg");  // vector
-     * plt.save("squares.png");  // raster
-     * plt.save("squares.pdf");  // raster in a one-page PDF
-     * ```
-     * @param path Destination file; relative paths resolve against the working directory.
-     * @throws {Error} `std::invalid_argument`: For any other extension (e.g. `.jpg`).
-     * @throws {Error} `std::runtime_error`: If the file cannot be opened for writing, the plot has no data series, or the canvas is smaller than its margins.
-     * @see save_svg(), to_svg(), show()
-     */
-    save(path: string): void;
-    /**
-     * Writes to_svg() to `path` regardless of its extension.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).save_svg("diagonal.txt");  // SVG text
-     * ```
-     * @param path Destination file; an existing file is overwritten.
-     * @throws {Error} `std::runtime_error`: If the file cannot be opened for writing, or rendering fails as described for to_svg().
-     * @see save()
-     */
-    save_svg(path: string): void;
-    /**
-     * Renders the plot as PNG image bytes (the same raster save() writes for `.png`).
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const auto png = dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)).to_png();
-     * std::print("{}\n", png[1] == 'P');  // true: PNG signature
-     * ```
-     * @returns The complete PNG file contents.
-     * @throws {Error} `std::runtime_error`: If rendering fails as described for to_svg().
-     * @see save_png(), to_pdf(), to_svg()
-     */
-    to_png(): number[];
-    /**
-     * Renders the plot as a one-page PDF holding the raster image.
-     * @returns The complete PDF file contents.
-     * @throws {Error} `std::runtime_error`: If rendering fails as described for to_svg().
-     * @see save_pdf(), to_png()
-     */
-    to_pdf(): number[];
-    /**
-     * Writes to_png() to `path` regardless of its extension.
-     * @param path Destination file; an existing file is overwritten.
-     * @throws {Error} `std::runtime_error`: If the file cannot be written or rendering fails.
-     * @see save(), to_png()
-     */
-    save_png(path: string): void;
-    /**
-     * Writes to_pdf() to `path` regardless of its extension.
-     * @param path Destination file; an existing file is overwritten.
-     * @throws {Error} `std::runtime_error`: If the file cannot be written or rendering fails.
-     * @see save(), to_pdf()
-     */
-    save_pdf(path: string): void;
-    /**
-     * Same as show(); kept as an alias for older code.
-     * @param title_hint Window title; empty uses the plot's title. (default: `""`)
-     * @throws {Error} `std::runtime_error`: As for show().
-     * @see show()
-     */
-    view(title_hint?: string): void;
-    /**
-     * Opens the plot in an interactive X11 window and blocks until it is closed
-     * (like printing a plot in an interactive R session).
-     *
-     * The window has toolbar and keyboard zoom/pan (it re-renders from data bounds) and closes
-     * on q or Escape; the function returns only then. The window title is `title_hint`, or
-     * the plot's title (title_text()) when the hint is empty. Requires a build with X11 support and a reachable `DISPLAY`; use save()
-     * in headless code such as tests and CI.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const auto x = dm::runif(0, 1, 1000);
-     * const auto y = dm::sin(20 / (x + 0.25)) + dm::rnorm(0, 0.2, 1000);
-     * dm::Plot(x, y).set_title("Doppler").set_col("blue").show("Doppler signal");
-     * ```
-     * @param title_hint Window title; empty (the default) uses the plot's title. (default: `""`)
-     * @throws {Error} `std::runtime_error`: If X11 support was not compiled in, the display cannot be opened, its visual is unsupported, or the plot has no data series.
-     * @see save(), to_svg()
-     */
-    show(title_hint?: string): void;
-    /**
-     * Releases the native object now instead of when it is garbage collected; later calls fail.
-     */
-    close(): void;
-}
-
-/**
- * A single R-base-graphics-style plot, spelled `dm::Plot` in user code.
- *
- * Covers R's high-level plotting calls (`plot()`, `hist()`, `barplot()`, `boxplot()`, `pie()`,
- * `curve()`, `qqnorm()`, ...) as constructors and static factories, plus the "add to the
- * current plot" verbs R exposes as separate functions (`points()`, `lines()`, `abline()`,
- * `legend()`, `text()`, ...) as chainable member functions. A plot is an ordinary value: it
- * owns copies of its data, copies cheaply enough to pass around, and draws nothing until it
- * is rendered with to_svg(), save(), or show().
- *
- * Two composition styles mix freely. Setters such as set_title() and verbs such as points()
- * mutate the plot and return `RPlot&` for chaining; the pipe `plot | dm::points(...)` (see
- * compose.hpp) appends a reusable layer to a copy. A fresh plot has the title
- * "datamunge plot", axis labels "x" and "y", a 960x640 canvas, and a light grid.
- *
- * **Example**
- *
- * ```cpp
- * const auto x = dm::seql(-2.0, 2.0, 9);
- * auto plt = dm::Plot(x, x * x)
- *                .set_title("Parabola")
- *                .set_xlab("x")
- *                .set_ylab("x squared");
- * plt.lines(x, x * x, dm::RGB{220, 38, 38}).abline_h(0.0);
- * plt.save("parabola.svg");
- * ```
- * @see dm::points(), dm::legend(), dm::Histogram, dm::Splom, RLayout
- */
-export declare class RPlot extends Plot {
-    /**
-     * Constructs an empty plot with default labels and styling, ready for layers.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot();
-     * std::print("{} | {} | {}\n", plt.title_text(), plt.x_label_text(), plt.y_label_text());
-     * // datamunge plot | x | y
-     * ```
-     */
-    constructor();
-    /**
-     * Constructs a scatter plot of `y` against `x`, like R's `plot(x, y)`.
-     *
-     * Equivalent to `RPlot::plot(x, y)`: one unlabeled scatter series drawn in blue
-     * `{37, 99, 235}` with 4-pixel markers; axis ranges fit the data. The coordinates are
-     * copied (or moved from rvalues); `dm::Vector<double>` converts implicitly. Restyle the
-     * points afterwards with set_col().
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const auto iris = dm::datasets::iris();
-     * auto plt = dm::Plot(iris.get_column("Petal.Length").values(),
-     *                     iris.get_column("Petal.Width").values())
-     *                .set_col("blue");
-     * plt.save("petals.svg");
-     * ```
-     * @param x Horizontal coordinates, one per point.
-     * @param y Vertical coordinates, paired with `x` by position.
-     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or have different lengths.
-     * @see points(), set_col(), plot()
-     */
-    constructor(x: number[], y: number[]);
-    /**
-     * Returns a fresh empty plot; same as the default constructor `dm::Plot()`.
-     *
-     * Kept for language bindings, where a named factory reads better than a constructor.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot::create();
-     * std::print("{}\n", plt.series().size());  // 0
-     * ```
-     * @returns An empty plot with default labels and styling.
-     * @see RPlot()
-     */
-    static create(): RPlot;
-    /**
-     * Sets the canvas size in pixels (default 960 by 640), like the `width`/`height`
-     * of R's `png()` or `svg()` device.
-     *
-     * Not validated here: rendering throws std::runtime_error when the canvas leaves no room
-     * inside the margins (by default the canvas must exceed 114 by 156 pixels).
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).size(400, 300);
-     * std::print("{}x{}\n", plt.width(), plt.height());  // 400x300
-     * ```
-     * @param width Canvas width in pixels.
-     * @param height Canvas height in pixels.
-     * @returns This plot, for chaining.
-     * @see margins()
-     */
-    size(width: number, height: number): RPlot;
-    /**
-     * Sets the main heading, like R's `main =`; an empty string removes it.
-     * @param value Heading text (copied).
-     * @returns This plot, for chaining.
-     * @see set_title()
-     */
-    title(value: string): RPlot;
-    /**
-     * Sets the subtitle and returns this plot for chaining RPlot verbs; same as set_subtitle().
-     * @param value Subtitle text drawn under the title; empty removes it.
-     * @returns This plot, for chaining.
-     * @see set_subtitle()
-     */
-    subtitle(value: string): RPlot;
-    /**
-     * Sets the horizontal-axis label; same as xlab() and set_xlab().
-     * @param value Label text (copied).
-     * @returns This plot, for chaining.
-     * @see set_xlab()
-     */
-    x_label(value: string): RPlot;
-    /**
-     * Sets the vertical-axis label; same as ylab() and set_ylab().
-     * @param value Label text (copied).
-     * @returns This plot, for chaining.
-     * @see set_ylab()
-     */
-    y_label(value: string): RPlot;
-    /**
-     * R-style alias for x_label(), like R's `xlab =`.
-     * @param value Label text (copied).
-     * @returns This plot, for chaining.
-     * @see set_xlab()
-     */
-    xlab(value: string): RPlot;
-    /**
-     * R-style alias for y_label(), like R's `ylab =`.
-     * @param value Label text (copied).
-     * @returns This plot, for chaining.
-     * @see set_ylab()
-     */
-    ylab(value: string): RPlot;
-    /**
-     * Sets the main heading drawn above the plotting area (R's `main =`).
-     *
-     * The plot owns a copy of the text. An empty string clears the heading; a fresh plot
-     * shows "datamunge plot" until this is called. Same as title().
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(2.0, 4.0, 8.0))
-     *                .set_title("Growth")
-     *                .set_subtitle("Doubling every step")
-     *                .set_xlab("Step")
-     *                .set_ylab("Count");
-     * std::print("{} / {}\n", plt.title_text(), plt.subtitle_text());
-     * // Growth / Doubling every step
-     * ```
-     * @param value Heading text.
-     * @returns This plot, for chaining.
-     * @see set_subtitle(), set_xlab(), set_ylab(), dm::title()
-     */
-    set_title(value: string): RPlot;
-    /**
-     * Sets the smaller second heading drawn beneath the title (unlike R's `sub =`,
-     * which sits below the x axis).
-     *
-     * The plot owns a copy of the text. Empty (the default) draws no subtitle and reserves no
-     * extra top margin. Same as subtitle().
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot().set_title("Iris Dataset").set_subtitle("Sepal Width vs Length");
-     * plt.set_subtitle("");  // remove it again
-     * ```
-     * @param value Subtitle text.
-     * @returns This plot, for chaining.
-     * @see set_title(), dm::subtitle()
-     */
-    set_subtitle(value: string): RPlot;
-    /**
-     * Sets the horizontal-axis label (R's `xlab =`).
-     *
-     * The plot owns a copy of the text; the default is "x" and an empty string hides the
-     * label. Same as xlab() and x_label().
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(3.0, 4.0)).set_xlab("Sepal Width");
-     * std::print("{}\n", plt.x_label_text());  // Sepal Width
-     * ```
-     * @param value Axis label text.
-     * @returns This plot, for chaining.
-     * @see set_ylab(), dm::xlab()
-     */
-    set_xlab(value: string): RPlot;
-    /**
-     * Sets the vertical-axis label (R's `ylab =`).
-     *
-     * The plot owns a copy of the text; the default is "y" and an empty string hides the
-     * label. Same as ylab() and y_label().
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(3.0, 4.0)).set_ylab("Sepal Length");
-     * std::print("{}\n", plt.y_label_text());  // Sepal Length
-     * ```
-     * @param value Axis label text.
-     * @returns This plot, for chaining.
-     * @see set_xlab(), dm::ylab()
-     */
-    set_ylab(value: string): RPlot;
-    /**
-     * Recolors every data series already on the plot (R's `col =` applied after the fact).
-     *
-     * Every existing series (points, lines, bars, ...) takes `color`, and per-point palettes
-     * from dm::points(...).set_col() or points_colored() are cleared, so the whole plot becomes
-     * one color. Only layers present now are affected: points added later keep their own
-     * colors. Reference lines (abline) and manual legend entries keep their explicit colors.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(3.0, 1.0, 2.0))
-     *                .set_col(dm::RGB{220, 100, 255});
-     * std::print("{}\n", plt.series()[0].color.r);  // 220
-     * ```
-     * @param color New color, including its alpha.
-     * @returns This plot, for chaining.
-     * @see set_col(std::string), dm::points()
-     */
-    set_col(color: RGB): RPlot;
-    /**
-     * Same as set_col(RGB) but takes a color name or hex string, like R's `col = "blue"`.
-     *
-     * Matching is case-insensitive. Names are black, white, red, green, blue, yellow, cyan,
-     * magenta, gray/grey, and transparent (a much smaller set than R's `colors()`). Green is
-     * RGB(0,128,0) as in CSS, and transparent is black with zero alpha. Hex strings are
-     * `#RRGGBB` or `#RRGGBBAA`, where AA is an alpha byte (`80` is about 0.5).
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const auto x = dm::runif(0, 1, 100);
-     * auto plt = dm::Plot(x, dm::rnorm(0, 1, 100)).set_col("blue");
-     * plt.set_col("#FF000080");  // half-transparent red
-     * const auto& col = plt.series()[0].color;
-     * std::print("{} {:.2f}\n", col.r, col.alpha);  // 255 0.50
-     * ```
-     * @param color Color name or hex string.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: For unknown names or malformed hex; the plot is unchanged.
-     * @see set_col(RGB)
-     */
-    set_col(color: string): RPlot;
-    /**
-     * Parse a literal color without ambiguity between the string and RGBA overloads.
-     *
-     * **Example**
-     *
-     * See set_col(std::string), which accepts literals with this overload.
-     * @param color Null-terminated color name or hex text; must be non-null.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: For null, empty or malformed color text; leaves the plot unchanged.
-     */
-    set_col(color: string | null): RPlot;
-    /**
-     * Sets the fill color of the whole canvas, like R's `par(bg =)`.
-     *
-     * The default is white `{255, 255, 255}`. The color fills the margins as well as the
-     * plotting area. Its alpha is ignored: the background is always drawn opaque.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0))
-     *                .background(dm::RGB{17, 24, 39})
-     *                .axis_color(dm::RGB{229, 231, 235})
-     *                .grid_color(dm::RGB{55, 65, 81});  // a dark theme
-     * std::print("{} {}\n", plt.background_color().r, plt.axes_color().r);  // 17 229
-     * ```
-     *
-     * **References**
-     *
-     * - R `par()` (`bg`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
-     * @param color Canvas fill color.
-     * @returns This plot, for chaining.
-     * @see axis_color(), grid_color()
-     */
-    background(color: RGB): RPlot;
-    /**
-     * Sets the color of the axis lines and of all plot-level text: tick labels, axis
-     * labels, title, and subtitle (R's `col.axis`, `col.lab`, and `col.main` in one).
-     *
-     * The default is slate gray `{55, 65, 81}`. Legend text follows it too; text() labels and
-     * data layers keep their own colors.
-     *
-     * **Example**
-     *
-     * See background(), which builds a dark theme with all three color setters.
-     *
-     * **References**
-     *
-     * - R `par()` (`col.axis`, `col.lab`, `col.main`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
-     * @param color Axis and text color.
-     * @returns This plot, for chaining.
-     * @see background(), grid_color()
-     */
-    axis_color(color: RGB): RPlot;
-    /**
-     * Sets the color of the background grid lines (default light gray `{229, 231, 235}`).
-     *
-     * Has no visible effect while the grid is off (show_grid(false)) or the axes are hidden.
-     *
-     * **Example**
-     *
-     * See background(), which builds a dark theme with all three color setters.
-     * @param color Grid-line color.
-     * @returns This plot, for chaining.
-     * @see show_grid(), background()
-     */
-    grid_color(color: RGB): RPlot;
-    /**
-     * Turns the light background grid on or off (on by default), like adding or
-     * omitting R's `grid()`.
-     *
-     * One vertical line per x tick and one horizontal line per y tick, so the grid always lines
-     * up with the tick labels (round values, evenly spaced ticks, or custom tick positions).
-     * Hidden axes hide the grid too.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).show_grid(false);
-     * std::print("{}\n", plt.grid_visible());  // false
-     * ```
-     *
-     * **References**
-     *
-     * - R `grid()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/grid.html
-     * @param enabled True (the default) draws the grid; false omits it. (default: `true`)
-     * @returns This plot, for chaining.
-     * @see grid_color(), hide_axes()
-     */
-    show_grid(enabled?: boolean): RPlot;
-    /**
-     * Fixes the visible x range, like R's `xlim = c(min_x, max_x)`.
-     *
-     * Without limits the x range is fitted to every layer (and vertical reference line), plus
-     * 5% padding on each side. With limits, the plotting area spans exactly [`min_x`, `max_x`]
-     * with no padding (R pads `xlim` by 4% unless `xaxs = "i"`). Data outside the range is not
-     * clipped and may be drawn over the margins.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0))
-     *                .x_limits(0.0, 4.0)
-     *                .y_limits(0.0, 10.0);
-     * std::print("{} {} {}\n", plt.has_x_limits(), plt.x_max(), plt.y_max());  // true 4 10
-     * ```
-     *
-     * **References**
-     *
-     * - R `plot.default()` (`xlim`, `ylim`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
-     * @param min_x Left edge of the plotting area, in data units.
-     * @param max_x Right edge; must be greater than `min_x`.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: Unless `max_x > min_x` (NaN fails); the plot is unchanged.
-     * @see y_limits()
-     */
-    x_limits(min_x: number, max_x: number): RPlot;
-    /**
-     * Fixes the visible y range, like R's `ylim = c(min_y, max_y)`.
-     *
-     * Without limits the y range is fitted to every layer, plus 10% padding at each end (bar
-     * layers also include y = 0). With limits, the plotting area spans exactly
-     * [`min_y`, `max_y`]. Data outside the range is not clipped.
-     *
-     * **Example**
-     *
-     * See x_limits(), which sets both ranges.
-     *
-     * **References**
-     *
-     * - R `plot.default()` (`xlim`, `ylim`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
-     * @param min_y Bottom edge of the plotting area, in data units.
-     * @param max_y Top edge; must be greater than `min_y`.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: Unless `max_y > min_y` (NaN fails); the plot is unchanged.
-     * @see x_limits()
-     */
-    y_limits(min_y: number, max_y: number): RPlot;
-    /**
-     * Short spelling of x_limits(), matching R's xlim plot argument.
-     * Fixes the horizontal plotting range without automatic padding. Data outside
-     * the range follows x_limits() rendering behavior; this does not filter layers.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::plot().points(dm::c(0, 1), dm::c(1, 2)).xlim(0, 1).ylim(-4, 4);
-     * std::print("{} {}\n", plt.x_max(), plt.y_min()); // 1 -4
-     * ```
-     * @param min_x Left edge in data units.
-     * @param max_x Right edge; must be greater than min_x.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: Unless max_x > min_x (NaN fails); the plot is unchanged.
-     * @see x_limits(), ylim()
-     */
-    xlim(min_x: number, max_x: number): RPlot;
-    /**
-     * Short spelling of y_limits(), matching R's ylim plot argument.
-     * Fixes the vertical plotting range without automatic padding; layers are retained.
-     *
-     * **Example**
-     *
-     * See xlim(), whose example uses both aliases.
-     * @param min_y Bottom edge in data units.
-     * @param max_y Top edge; must be greater than min_y.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: Unless max_y > min_y (NaN fails); the plot is unchanged.
-     * @see y_limits(), xlim()
-     */
-    ylim(min_y: number, max_y: number): RPlot;
-    /**
-     * Hides the axis lines, tick labels, grid, and axis labels, like R's `axes = FALSE,
-     * ann = FALSE` (the title and subtitle are still drawn).
-     *
-     * pie() turns this on. Margins are unchanged, so call margins() as well to let the data use
-     * the freed space.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)).hide_axes();
-     * std::print("{}\n", plt.axes_hidden());  // true
-     * ```
-     *
-     * **References**
-     *
-     * - R `plot.default()` (`axes`, `ann`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
-     * @param enabled True (the default) hides them; false shows them again. (default: `true`)
-     * @returns This plot, for chaining.
-     * @see show_grid(), margins()
-     */
-    hide_axes(enabled?: boolean): RPlot;
-    /**
-     * Replaces the numeric x ticks with `labels` at x = 0, 1, 2, ..., like R's
-     * `axis(1, at = 0:(n - 1), labels = labels)`.
-     *
-     * Matches the bar positions of barplot() and boxplot(). Clears any positions set by
-     * x_ticks(); an empty vector restores the numeric ticks.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot(dm::c(0.0, 1.0, 2.0), dm::c(5.0, 3.0, 4.0))
-     *                .x_tick_labels({"low", "mid", "high"});
-     * std::print("{}\n", plt.x_tick_label_list()[2]);  // high
-     * ```
-     *
-     * **References**
-     *
-     * - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html
-     * @param labels Tick texts, in order.
-     * @returns This plot, for chaining.
-     * @see x_ticks(), y_tick_labels()
-     */
-    x_tick_labels(labels: string[]): RPlot;
-    /**
-     * Replaces the numeric x ticks with `labels` drawn at data positions `positions`,
-     * like R's `axis(1, at = positions, labels = labels)`.
-     *
-     * Positions need not be sorted or inside the visible range. Two empty vectors restore the
-     * numeric ticks.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const auto x = dm::seql(0.0, 6.283, 50);
-     * auto plt = dm::Plot(x, dm::sin(x))
-     *                .x_ticks({0.0, 3.1416, 6.2832}, {"0", "pi", "2 pi"})
-     *                .y_ticks({-1.0, 0.0, 1.0}, {"min", "0", "max"});
-     * std::print("{}\n", plt.x_tick_position_list()[1]);  // 3.1416
-     * ```
-     *
-     * **References**
-     *
-     * - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html
-     * @param positions x data coordinates of the ticks.
-     * @param labels Tick texts, one per position.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If the two vectors differ in length; the plot is unchanged.
-     * @see x_tick_labels(), y_ticks()
-     */
-    x_ticks(positions: number[], labels: string[]): RPlot;
-    /**
-     * Replaces the numeric y ticks with `labels` at y = 0, 1, 2, ..., like R's
-     * `axis(2, at = 0:(n - 1), labels = labels)`.
-     *
-     * Clears any positions set by y_ticks(); an empty vector restores the numeric ticks.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot(dm::c(3.0, 5.0), dm::c(0.0, 1.0)).y_tick_labels({"no", "yes"});
-     * std::print("{}\n", plt.y_tick_label_list().size());  // 2
-     * ```
-     *
-     * **References**
-     *
-     * - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html
-     * @param labels Tick texts, in order.
-     * @returns This plot, for chaining.
-     * @see y_ticks(), x_tick_labels()
-     */
-    y_tick_labels(labels: string[]): RPlot;
-    /**
-     * Replaces the numeric y ticks with `labels` drawn at data positions `positions`,
-     * like R's `axis(2, at = positions, labels = labels)`.
-     *
-     * Two empty vectors restore the numeric ticks.
-     *
-     * **Example**
-     *
-     * See x_ticks(), which sets both axes.
-     *
-     * **References**
-     *
-     * - R `axis()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/axis.html
-     * @param positions y data coordinates of the ticks.
-     * @param labels Tick texts, one per position.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If the two vectors differ in length; the plot is unchanged.
-     * @see y_tick_labels(), x_ticks()
-     */
-    y_ticks(positions: number[], labels: string[]): RPlot;
-    /**
-     * Overrides the automatic outer margins around the plotting area, in pixels, like
-     * R's `par(mai =)` (which uses inches and orders bottom, left, top, right).
-     *
-     * The automatic margins are left 90, right 24, top 72 (96 when a subtitle is set), and
-     * bottom 84; they leave room for the title, axis labels, and ticks. Explicit margins are used
-     * as given, with no extra room for a subtitle. Tight margins suit small multi-panel tiles
-     * whose title and axis labels are empty. Rendering throws std::runtime_error if the margins
-     * leave no plotting area.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto tile = dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0))
-     *                 .set_title("").set_xlab("").set_ylab("")
-     *                 .margins(30, 10, 10, 20)
-     *                 .tick_font_size(9);
-     * std::print("{} {}\n", tile.has_custom_margins(), tile.margin_left());  // true 30
-     * ```
-     *
-     * **References**
-     *
-     * - R `par()` (`mai`, `mar`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
-     * @param left Left margin in pixels.
-     * @param right Right margin in pixels.
-     * @param top Top margin in pixels.
-     * @param bottom Bottom margin in pixels.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If any margin is negative or non-finite; the plot is unchanged.
-     * @see size(), tick_font_size(), RLayout
-     */
-    margins(left: number, right: number, top: number, bottom: number): RPlot;
-    /**
-     * Sets the tick-label font size in pixels (default 12), like R's `cex.axis`.
-     *
-     * In SVG output the size is used as given. The raster outputs (PNG, PDF, show()) draw tick
-     * labels with half-size glyphs when the size is below 12.
-     *
-     * **Example**
-     *
-     * See margins(), which shrinks the ticks for a small tile.
-     *
-     * **References**
-     *
-     * - R `par()` (`cex.axis`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
-     * @param pixels Font size in pixels.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If `pixels` is not positive and finite; the plot is unchanged.
-     * @see margins()
-     */
-    tick_font_size(pixels: number): RPlot;
-    /**
-     * Places numeric ticks at round values (default on) instead of six evenly spaced
-     * ticks across the range, in the spirit of R's `pretty()`.
-     *
-     * The step is 1, 2, or 5 times a power of ten, chosen as the "nice number" nearest a fifth
-     * of the visible range (Heckbert's rule), and ticks are its multiples inside the range.
-     * That gives about four to seven ticks, close to R's `pretty()`: a padded range of -0.365
-     * to 7.665 gets ticks at 0, 2, 4 and 6. Custom tick labels take precedence. The background
-     * grid follows the ticks.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot(dm::c(0.0, 100.0), dm::c(0.0, 1.0)).pretty_ticks();
-     * std::print("{}\n", plt.to_svg().contains(">40</text>"));  // true: ticks 0, 20, ..., 100
-     * ```
-     *
-     * **References**
-     *
-     * - R `pretty()`: https://stat.ethz.ch/R-manual/R-devel/library/base/html/pretty.html
-     * - P. S. Heckbert (1990). "Nice Numbers for Graph Labels". In Graphics Gems, 61-63.
-     *   Academic Press. doi:10.1016/B978-0-08-050753-8.50020-8
-     * @param enabled True turns round ticks on; false restores six even ticks. (default: `true`)
-     * @returns This plot, for chaining.
-     * @see x_ticks(), show_grid()
-     */
-    pretty_ticks(enabled?: boolean): RPlot;
-    /**
-     * Builds a scatter, line, or line-plus-points plot of `y` against `x`, like R's
-     * `plot(x, y, type = "p" | "l" | "b")`.
-     *
-     * `"p"` (the default) adds one scatter series with 4-pixel markers; `"l"` adds one 2-pixel
-     * line joining the points in input order; `"b"` adds the line and then unlabeled points on
-     * top (R's `"b"` leaves gaps in the line around each point; this draws it through them). The
-     * title and axis labels keep their defaults. `RPlot(x, y)` is `plot(x, y)`.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const auto x = dm::seql(0.0, 4.0, 5);
-     * auto plt = dm::Plot::plot(x, x * x, "b", "x squared");
-     * std::print("{} series\n", plt.series().size());  // 2 series
-     * ```
-     *
-     * **References**
-     *
-     * - R `plot.default()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/plot.default.html
-     * @param x Horizontal coordinates, one per point.
-     * @param y Vertical coordinates, paired with `x` by position.
-     * @param type `"p"` (default), `"l"`, or `"b"`; case-sensitive. (default: `"p"`)
-     * @param label Legend text; empty (the default) keeps the plot out of the automatic legend. With `"b"` only the line carries it. (default: `""`)
-     * @param color Color of the points and line (default blue `{37, 99, 235}`).
-     * @returns A new plot holding the series.
-     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or differ in length, or `type` is not one of the three codes.
-     * @see RPlot(std::vector<double>, std::vector<double>), points(), lines()
-     */
-    static plot(x: number[], y: number[], type?: string, label?: string, color?: RGB): RPlot;
-    /**
-     * Builds a frequency histogram of `data` with `bins` equal-width bins, like R's
-     * `hist(x, breaks = bins)`.
-     *
-     * The bins split [min, max] of the data into equal widths (R instead treats `breaks` as a
-     * suggestion and uses `pretty()` boundaries). Bins include their left edge and exclude their
-     * right edge, except that the maximum goes in the final bin; R's default (`right = TRUE`) is
-     * the opposite, so a value on an inner boundary is counted one bin higher here. Constant
-     * data uses the range [value, value + 1]. Each bin is one bar of height equal to its count,
-     * centered on the bin with width equal to the bin width. The title is "Histogram", the x
-     * label "x", and the y label "Frequency". The data is consumed; the plot keeps only counts.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot::hist({1.0, 2.0, 2.0, 3.0, 3.0, 3.0, 4.0}, 3);
-     * const auto& bars = plt.series()[0];  // bins [1,2) [2,3) [3,4]
-     * std::print("{} {} {}\n", bars.y[0], bars.y[1], bars.y[2]);  // 1 2 4
-     * ```
-     *
-     * **References**
-     *
-     * - R `hist()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/hist.html
-     * @param data Observations; all must be finite.
-     * @param bins Number of bins (default 10). (default: `10`)
-     * @param label Legend text; empty (the default) shows no legend. (default: `""`)
-     * @param color Bar color (default light blue `{96, 165, 250}`).
-     * @returns A new plot holding one Bar series.
-     * @throws {Error} `std::invalid_argument`: For empty/non-finite data, zero bins, or a range/bin width that cannot be represented as a finite positive double.
-     * @see dm::Histogram, bars()
-     */
-    static hist(data: number[], bins?: number, label?: string, color?: RGB): RPlot;
-    /**
-     * Builds a bar chart with one bar per height, like R's
-     * `barplot(heights, names.arg = names)`.
-     *
-     * Bar i is centered at x = i (0, 1, 2, ...) and is 0.8 units wide (R puts default bars at
-     * 0.7, 1.9, 3.1, ...). Bars rise from 0, so negative heights point down, and the y range
-     * always includes 0. Nonempty `names` become x tick labels under the bars. The title and
-     * axis labels keep their defaults.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot::barplot({3.0, 5.0, 2.0}, {"a", "b", "c"}).set_title("Counts");
-     * std::print("{} {}\n", plt.series()[0].x[2], plt.x_tick_label_list()[2]);  // 2 c
-     * ```
-     *
-     * **References**
-     *
-     * - R `barplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/barplot.html
-     * @param heights Bar heights, in display order.
-     * @param names Tick labels, one per bar; empty (the default) keeps numeric ticks. (default: `[]`)
-     * @param label Legend text; empty (the default) shows no legend. (default: `""`)
-     * @param color Bar color (default green `{22, 163, 74}`).
-     * @returns A new plot holding one Bar series.
-     * @throws {Error} `std::invalid_argument`: If `heights` is empty or `names` is nonempty with a different length.
-     * @see bars(), x_tick_labels()
-     */
-    static barplot(heights: number[], names?: string[], label?: string, color?: RGB): RPlot;
-    /**
-     * Builds side-by-side box-and-whisker plots, one per group, like R's
-     * `boxplot(list(...), names = names)`.
-     *
-     * Group g is drawn at x = g (0, 1, 2, ...) as a 0.6-unit-wide box from the first to the
-     * third quartile with a line at the median. Quartiles are R's default "type 7" sample
-     * quantiles. Whiskers reach the most extreme values within 1.5 IQR of the box (Tukey's
-     * rule), and values beyond are drawn as outlier points. R's `boxplot()` instead uses
-     * Tukey's hinges (`fivenum()`), so for some sample sizes the box edges and the fences differ
-     * slightly from R: for 1, ..., 9, 40 this gives quartiles 3.25 and 7.75 where R draws
-     * hinges at 3 and 8. All boxes share `color`; the title and axis labels keep their defaults.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot::boxplot({{1, 2, 3, 4, 5, 6, 7, 8, 9, 40}, {2, 4, 6}}, {"a", "b"});
-     * const auto& y = plt.series()[0].y;  // whisker_lo, q1, median, q3, whisker_hi, outliers...
-     * std::print("{} {} {} {} {} | {}\n", y[0], y[1], y[2], y[3], y[4], y[5]);
-     * // 1 3.25 5.5 7.75 9 | 40
-     * plt.save("boxes.svg");
-     * ```
-     *
-     * **References**
-     *
-     * - J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley. (Box plot and the 1.5 IQR fences.)
-     * - R. McGill, J. W. Tukey, W. A. Larsen (1978). "Variations of Box Plots". The American
-     *   Statistician 32(1), 12-16. doi:10.1080/00031305.1978.10479236
-     * - R. J. Hyndman, Y. Fan (1996). "Sample Quantiles in Statistical Packages". The American
-     *   Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566 (quantile type 7.)
-     * - R `boxplot()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/boxplot.html
-     * - R `boxplot.stats()`: https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/boxplot.stats.html
-     * @param groups One vector of observations per box; each must be nonempty.
-     * @param names Tick labels under the boxes; empty (the default) keeps numeric ticks. (default: `[]`)
-     * @param color Box, whisker, and outlier color (default light blue `{96, 165, 250}`).
-     * @returns A new plot holding one Box series per group (see DataSeries::Kind::Box for its layout).
-     * @throws {Error} `std::invalid_argument`: If `groups` or any group is empty, or `names` is nonempty with a different length.
-     * @see box(), x_tick_labels()
-     */
-    static boxplot(groups: number[][], names?: string[], color?: RGB): RPlot;
-    /**
-     * boxplot() with one color per box, like R's `boxplot(..., col = colors)`.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::graphics::RPlot::boxplot({{1, 2, 3}, {2, 4, 6}}, {"a", "b"},
-     *                                     std::vector<dm::RGB>{{78, 121, 167}, {242, 142, 43}});
-     * ```
-     * @param groups One vector of observations per box; each must be nonempty.
-     * @param names Tick labels under the boxes; empty keeps numeric ticks.
-     * @param colors Box colors, recycled when shorter than `groups`; must be nonempty.
-     * @returns A new plot holding one Box series per group.
-     * @throws {Error} `std::invalid_argument`: As boxplot(), or if `colors` is empty.
-     * @see boxplot(std::vector<std::vector<double>>, std::vector<std::string>, RGB)
-     */
-    static boxplot(groups: number[][], names: string[], colors: RGB[]): RPlot;
-    /**
-     * Builds a pie chart with one wedge per value, like R's
-     * `pie(x, labels = names, col = colors, clockwise = TRUE)`.
-     *
-     * Wedge i spans the fraction values[i] / sum(values) of the circle. Wedges start at 12
-     * o'clock and run clockwise (R's default starts at 3 o'clock and runs counter-clockwise).
-     * Each wedge is a filled unit-radius polygon with 24 arc segments. Names, when given, are
-     * drawn at radius 1.15 beside the middle of each wedge's arc and also label the wedges, so the
-     * automatic legend lists them. Colors are recycled; empty uses an 8-color built-in palette
-     * starting blue, red, green. The axes and grid are hidden and both ranges are fixed at
-     * [-1.4, 1.4]. The pie is drawn in data units, so it is round only when the plotting area is
-     * square, e.g. `.size(598, 640)` with the default margins; the default 960x640 canvas draws an
-     * ellipse.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot::pie({3.0, 2.0, 1.0}, {"rent", "food", "fun"}).size(598, 640);
-     * std::print("{}\n", plt.series().size());  // 6
-     * plt.save("budget.svg");
-     * ```
-     *
-     * **References**
-     *
-     * - R `pie()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/pie.html
-     * @param values Wedge sizes; nonnegative, with a positive sum.
-     * @param names Wedge labels; empty (the default) draws none. (default: `[]`)
-     * @param colors Wedge colors, recycled; empty (the default) uses the built-in palette. (default: `[]`)
-     * @returns A new plot holding one Polygon series per wedge plus one Text series per name.
-     * @throws {Error} `std::invalid_argument`: If `values` is empty, has a negative entry, or sums to 0, or `names` is nonempty with a different length.
-     * @see polygon(), text()
-     */
-    static pie(values: number[], names?: string[], colors?: RGB[]): RPlot;
-    /**
-     * Plots a function over [`from`, `to`] as a line, like R's `curve(expr, from, to, n)`.
-     *
-     * Evaluates `f.call(x)` at `n` evenly spaced points including both ends, in increasing
-     * order, and joins them with a 2-pixel line. `f` is used only during this call and is not
-     * retained. Non-finite results are stored as-is. Exceptions thrown by `f.call()` propagate.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * struct Square : dm::Callback {
-     *   double call(double x) override { return x * x; }
-     * };
-     * Square square;
-     * auto plt = dm::Plot::curve(square, -1.0, 1.0, 5);
-     * std::print("{}\n", plt.series()[0].y);  // [1, 0.25, 0, 0.25, 1]
-     * ```
-     *
-     * **References**
-     *
-     * - R `curve()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/curve.html
-     * @param f The function to draw: a dm::Callback subclass overriding `call(double)`.
-     * @param from Left end of the range.
-     * @param to Right end; must be greater than `from`.
-     * @param n Number of sample points, at least 2 (default 101, as in R). (default: `101`)
-     * @param label Legend text; empty (the default) shows no legend. (default: `""`)
-     * @param color Line color (default red `{220, 38, 38}`).
-     * @returns A new plot holding one Line series.
-     * @throws {Error} `std::invalid_argument`: If `n` is below 2 or `to` is not greater than `from`.
-     * @see lines()
-     */
-    static curve(f: Callback, from: number, to: number, n?: number, label?: string, color?: RGB): RPlot;
-    /**
-     * Builds a normal Q-Q plot: the sorted `data` against standard-normal quantiles,
-     * like R's `qqnorm(y)`.
-     *
-     * The i-th smallest value (i = 1..n) is plotted against the normal quantile of the plotting
-     * position (i - 0.5) / n. R's `ppoints()` uses that rule only for n > 10 and
-     * (i - 3/8) / (n + 1/4) for n <= 10, so the x coordinates differ from R for small samples.
-     * Points that fall on a straight line indicate normally distributed data; add the reference
-     * line with qqline(). The title is "Normal Q-Q", the axis labels "Theoretical Quantiles"
-     * and "Sample Quantiles".
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const std::vector<double> sample{3.0, 1.0, 2.0, 5.0, 4.0};
-     * auto plt = dm::Plot::qqnorm(sample).qqline(sample);
-     * std::print("{:.4f}\n", plt.series()[0].x[0]);  // -1.2816
-     * ```
-     *
-     * **References**
-     *
-     * - M. B. Wilk, R. Gnanadesikan (1968). "Probability plotting methods for the analysis of
-     *   data". Biometrika 55(1), 1-17. doi:10.1093/biomet/55.1.1
-     * - R `qqnorm()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html
-     * - R `ppoints()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ppoints.html
-     * @param data The sample; at least two values. Consumed (sorted in place).
-     * @param label Legend text (default "sample", so the automatic legend shows one row; pass "" to hide it). (default: `"sample"`)
-     * @param color Point color (default blue `{37, 99, 235}`).
-     * @returns A new plot holding one Scatter series.
-     * @throws {Error} `std::invalid_argument`: If `data` has fewer than two values.
-     * @see qqline()
-     */
-    static qqnorm(data: number[], label?: string, color?: RGB): RPlot;
-    /**
-     * Adds a scatter series to this plot, like R's `points(x, y, col = color)`.
-     *
-     * The coordinates are copied (or moved from rvalues) into a new series drawn above the
-     * existing ones; axis ranges grow to include it. A nonempty `label` adds a row to the
-     * automatic legend (shown only while no manual legend() entries exist).
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const auto x = dm::seql(0.0, 6.0, 13);
-     * auto plt = dm::Plot().set_title("sin and cos");
-     * plt.points(x, dm::sin(x), "sin", dm::RGB{37, 99, 235})
-     *    .points(x, dm::cos(x), "cos", dm::RGB{220, 38, 38}, 6.0);
-     * plt.save("trig.svg");  // automatic legend lists "sin" and "cos"
-     * ```
-     *
-     * **References**
-     *
-     * - R `points()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html
-     * @param x Horizontal coordinates, one per point.
-     * @param y Vertical coordinates, paired with `x` by position.
-     * @param label Legend text for this series; empty (the default) keeps it out of the legend. (default: `""`)
-     * @param color Marker color for every point (default blue `{37, 99, 235}`).
-     * @param marker_size Marker radius in pixels (default 4). (default: `4.0`)
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or have different lengths.
-     * @see points_colored(), dm::points(), set_col()
-     */
-    points(x: number[], y: number[], label?: string, color?: RGB, marker_size?: number): RPlot;
-    /**
-     * Same as points(x, y, label, color, marker_size) with an empty label, so the
-     * series stays out of the automatic legend.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot();
-     * plt.points(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 9.0), dm::RGB{22, 163, 74}, 3.0);
-     * ```
-     * @param x Horizontal coordinates.
-     * @param y Vertical coordinates, paired with `x`.
-     * @param color Marker color for every point.
-     * @param marker_size Marker radius in pixels (default 4). (default: `4.0`)
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or have different lengths.
-     * @see points()
-     */
-    points(x: number[], y: number[], color: RGB, marker_size?: number): RPlot;
-    /**
-     * Preserve a three-argument literal label when colors also accept string literals.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot().points(dm::c(0, 1), dm::c(1, 2), "red");
-     * std::print("{}\n", plt.series()[0].label); // red
-     * ```
-     * @param x Horizontal coordinates.
-     * @param y Vertical coordinates, paired with x.
-     * @param label Legend label, including text that resembles a color; null means empty.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: For empty or mismatched coordinate vectors.
-     */
-    points(x: number[], y: number[], label: string | null): RPlot;
-    /**
-     * Appends scatter points with a recycled per-point RGB(A) palette.
-     * Coordinates must have equal nonzero lengths; colors must not be empty.
-     * A partial palette cycle is allowed without a warning. Colors retain their own alpha.
-     * The series is unlabeled, so it never appears in the automatic legend.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const auto palette = dm::c(dm::RGB{255, 0, 0}, dm::RGB{0, 0, 255});
-     * auto plt = dm::Plot().points_colored(dm::c(1.0, 2.0, 3.0), dm::c(3.0, 2.0, 1.0), palette);
-     * std::print("{}\n", plt.series()[0].point_colors.size());  // 2 (red, blue, red)
-     * ```
-     *
-     * **References**
-     *
-     * - R `points()` (vector `col`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/points.html
-     * @param x Horizontal coordinates.
-     * @param y Vertical coordinates, paired with `x`.
-     * @param colors Palette; point i uses `colors[i % colors.size()]`.
-     * @param marker_size Marker radius in pixels (default 4). (default: `4.0`)
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If the coordinate lengths or palette are invalid.
-     * @see dm::points() and Points::set_col(), the pipe-friendly form of this call.
-     */
-    points_colored(x: number[], y: number[], colors: RGB[], marker_size?: number): RPlot;
-    /**
-     * Adds a line joining the points in input order, like R's `lines(x, y, col = color,
-     * lwd = stroke_width)`; same as lines().
-     *
-     * The points are not sorted, so unsorted x draws a zigzag. The coordinates are copied (or
-     * moved from rvalues) into a new Line series drawn above existing layers; axis ranges grow
-     * to include it. A nonempty `label` adds a row to the automatic legend.
-     *
-     * **Example**
-     *
-     * See lines().
-     *
-     * **References**
-     *
-     * - R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html
-     * @param x Horizontal coordinates, one per vertex.
-     * @param y Vertical coordinates, paired with `x` by position.
-     * @param label Legend text; empty (the default) keeps it out of the legend. (default: `""`)
-     * @param color Line color (default red `{220, 38, 38}`).
-     * @param stroke_width Line width in pixels (default 2). (default: `2.0`)
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or have different lengths.
-     * @see lines(), plot()
-     */
-    line(x: number[], y: number[], label?: string, color?: RGB, stroke_width?: number): RPlot;
-    /**
-     * Adds a line joining the points in input order, like R's `lines(x, y, col = color,
-     * lwd = stroke_width)`.
-     *
-     * Same as line(). The points are not sorted, so unsorted x draws a zigzag. The coordinates
-     * are copied (or moved from rvalues) into a new Line series drawn above existing layers;
-     * axis ranges grow to include it. A nonempty `label` adds a row to the automatic legend.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const auto x = dm::seql(0.0, 6.0, 25);
-     * auto plt = dm::Plot(x, dm::sin(x) + dm::rnorm(0, 0.1, 25));
-     * plt.lines(x, dm::sin(x), "sin(x)", dm::RGB{220, 38, 38}, 3.0);
-     * std::print("{}\n", plt.series()[1].stroke_width);  // 3
-     * ```
-     *
-     * **References**
-     *
-     * - R `lines()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/lines.html
-     * @param x Horizontal coordinates, one per vertex.
-     * @param y Vertical coordinates, paired with `x` by position.
-     * @param label Legend text; empty (the default) keeps it out of the legend. (default: `""`)
-     * @param color Line color (default red `{220, 38, 38}`).
-     * @param stroke_width Line width in pixels (default 2). (default: `2.0`)
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or have different lengths.
-     * @see line(), lines(std::vector<double>, std::vector<double>, RGB, double), plot()
-     */
-    lines(x: number[], y: number[], label?: string, color?: RGB, stroke_width?: number): RPlot;
-    /**
-     * Unlabeled line shorthand: `lines(x, y, {r, g, b}, width)`.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot().lines(dm::c(0.0, 1.0, 2.0), dm::c(0.0, 1.0, 0.0), dm::RGB{0, 0, 0}, 1.0);
-     * std::print("{}\n", plt.series()[0].label.empty());  // true
-     * ```
-     * @param x Horizontal coordinates.
-     * @param y Vertical coordinates, paired with `x`.
-     * @param color Line color.
-     * @param stroke_width Line width in pixels (default 2). (default: `2.0`)
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or have different lengths.
-     * @see lines()
-     */
-    lines(x: number[], y: number[], color: RGB, stroke_width?: number): RPlot;
-    /**
-     * Preserve a three-argument literal label when colors also accept string literals.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot().lines(dm::c(0, 1), dm::c(1, 2), "red");
-     * std::print("{}\n", plt.series()[0].label); // red
-     * ```
-     * @param x Horizontal coordinates.
-     * @param y Vertical coordinates, paired with x.
-     * @param label Legend label, including text that resembles a color; null means empty.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: For empty or mismatched coordinate vectors.
-     */
-    lines(x: number[], y: number[], label: string | null): RPlot;
-    /**
-     * Adds vertical bars centered at arbitrary x positions, the low-level form behind
-     * barplot() and hist() (R's `rect()` from 0 to each height).
-     *
-     * Bar i spans x[i] +/- bar_width / 2 and rises from 0 to y[i] (negative heights point
-     * down); the y range always includes 0. Bars are drawn 85% opaque in SVG output. A nonempty
-     * `label` adds a row to the automatic legend.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot().bars(dm::c(1.0, 2.5, 4.0), dm::c(3.0, -1.0, 2.0), "net",
-     *                            dm::RGB{22, 163, 74}, 1.0);
-     * std::print("{}\n", plt.series()[0].bar_width);  // 1
-     * ```
-     *
-     * **References**
-     *
-     * - R `rect()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/rect.html
-     * @param x Bar centers, in data units.
-     * @param y Bar heights, paired with `x` by position.
-     * @param label Legend text; empty (the default) keeps it out of the legend. (default: `""`)
-     * @param color Bar color (default green `{22, 163, 74}`).
-     * @param bar_width Bar width in data units (default 0.8). (default: `0.80000000000000004`)
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or have different lengths.
-     * @see barplot(), hist()
-     */
-    bars(x: number[], y: number[], label?: string, color?: RGB, bar_width?: number): RPlot;
-    /**
-     * Adds one box-and-whisker from precomputed statistics at an arbitrary x position,
-     * the low-level form behind boxplot() (R's `bxp()`).
-     *
-     * Draws a box from `q1` to `q3` with a thicker line at `median`, whiskers out to
-     * `whisker_lo` and `whisker_hi` with end caps, and one dot per outlier. The values are
-     * not checked for order or finiteness. In SVG the box is filled at 35% opacity.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot().box(0.0, 1.0, 2.0, 3.0, 4.0, 5.0, {8.0}).box(1.0, 2.0, 3.0, 3.5, 4.0, 6.0);
-     * std::print("{} {}\n", plt.series().size(), plt.series()[0].y.size());  // 2 6
-     * ```
-     *
-     * **References**
-     *
-     * - J. W. Tukey (1977). Exploratory Data Analysis. Addison-Wesley.
-     * - R `bxp()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/bxp.html
-     * @param position Box center, in x data units.
-     * @param whisker_lo Lower whisker end.
-     * @param q1 Lower box edge (first quartile).
-     * @param median Median line.
-     * @param q3 Upper box edge (third quartile).
-     * @param whisker_hi Upper whisker end.
-     * @param outliers Values drawn as individual points (default none). (default: `[]`)
-     * @param color Box, whisker, and outlier color (default light blue `{96, 165, 250}`).
-     * @param width Box width in data units (default 0.6). (default: `0.59999999999999998`)
-     * @returns This plot, for chaining.
-     * @see boxplot()
-     */
-    box(position: number, whisker_lo: number, q1: number, median: number, q3: number, whisker_hi: number, outliers?: number[], color?: RGB, width?: number): RPlot;
-    /**
-     * Adds the reference line y = intercept + slope * x across the plotting area, like
-     * R's `abline(a = intercept, b = slope)`.
-     *
-     * The line runs between the left and right edges of the visible x range and is drawn
-     * beneath every data layer. It does not change the axis ranges, and it is not clipped to the
-     * plotting area, so a steep line can extend into the margins. Stored as an ABLine.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const auto x = dm::c(1.0, 2.0, 3.0, 4.0);
-     * auto plt = dm::Plot(x, dm::c(2.1, 3.9, 6.2, 7.8))
-     *                .abline(0.0, 2.0, dm::RGB{220, 38, 38})  // y = 2x
-     *                .abline_h(5.0)
-     *                .abline_v(2.5, dm::RGB{37, 99, 235}, 2.0);
-     * std::print("{}\n", plt.reference_lines().size());  // 3
-     * plt.save("ablines.svg");
-     * ```
-     *
-     * **References**
-     *
-     * - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
-     *
-     * **Warning:** Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,
-     * `.pdf`, and show()) currently omit them.
-     * @param intercept y value at x = 0.
-     * @param slope Change in y per unit x.
-     * @param color Line color (default opaque black).
-     * @param stroke_width Line width in pixels (default 1). (default: `1.0`)
-     * @returns This plot, for chaining.
-     * @see abline_h(), abline_v(), qqline(), ABLine
-     */
-    abline(intercept: number, slope: number, color?: RGB, stroke_width?: number): RPlot;
-    /**
-     * Adds a horizontal reference line at y = `y_value`, like R's `abline(h = y_value)`.
-     *
-     * Same as `abline(y_value, 0.0, color, stroke_width)`: drawn beneath the data and not
-     * included in the axis ranges, so a value outside the visible y range is off the plot.
-     *
-     * **Example**
-     *
-     * See abline().
-     *
-     * **References**
-     *
-     * - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
-     *
-     * **Warning:** Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,
-     * `.pdf`, and show()) currently omit them.
-     * @param y_value Height of the line, in data units.
-     * @param color Line color (default opaque black).
-     * @param stroke_width Line width in pixels (default 1). (default: `1.0`)
-     * @returns This plot, for chaining.
-     * @see abline(), abline_v()
-     */
-    abline_h(y_value: number, color?: RGB, stroke_width?: number): RPlot;
-    /**
-     * Adds a vertical reference line at x = `x_value`, like R's `abline(v = x_value)`.
-     *
-     * Spans the full height of the plotting area beneath the data. Unlike horizontal and
-     * sloped lines, it widens the automatic x range to include `x_value`.
-     *
-     * **Example**
-     *
-     * See abline().
-     *
-     * **References**
-     *
-     * - R `abline()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/abline.html
-     *
-     * **Warning:** Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,
-     * `.pdf`, and show()) currently omit them.
-     * @param x_value Horizontal position of the line, in data units.
-     * @param color Line color (default opaque black).
-     * @param stroke_width Line width in pixels (default 1). (default: `1.0`)
-     * @returns This plot, for chaining.
-     * @see abline(), abline_h()
-     */
-    abline_v(x_value: number, color?: RGB, stroke_width?: number): RPlot;
-    /**
-     * Adds the reference line of a normal Q-Q plot, like R's `qqline(y)`: the line
-     * through the first and third quartiles of `data` and of the standard normal.
-     *
-     * Pass the same data given to qqnorm(). The sample quartiles are R's default "type 7"
-     * quantiles, as in R's `qqline()` defaults (`probs = c(0.25, 0.75)`, `qtype = 7`). The
-     * slope is the sample IQR divided by the normal IQR (about 1.349), so for normal data it
-     * estimates the standard deviation and the intercept estimates the mean. Added through
-     * abline().
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const std::vector<double> sample{3.0, 1.0, 2.0, 5.0, 4.0};
-     * auto plt = dm::Plot::qqnorm(sample).qqline(sample);
-     * const auto& line = plt.reference_lines()[0];
-     * std::print("{:.4f} {:.4f}\n", line.value, line.slope);  // 3.0000 1.4826
-     * ```
-     *
-     * **References**
-     *
-     * - R `qqline()`: https://stat.ethz.ch/R-manual/R-devel/library/stats/html/qqnorm.html
-     * - R. J. Hyndman, Y. Fan (1996). "Sample Quantiles in Statistical Packages". The American
-     *   Statistician 50(4), 361-365. doi:10.1080/00031305.1996.10473566
-     *
-     * **Warning:** Only to_svg() and `.svg` saves draw reference lines. The raster outputs (`.png`,
-     * `.pdf`, and show()) currently omit them.
-     * @param data The sample; at least two values. Taken by value, so the caller's data is unchanged.
-     * @param color Line color (default red `{220, 38, 38}`).
-     * @param stroke_width Line width in pixels (default 1.5). (default: `1.5`)
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If `data` has fewer than two values.
-     * @see qqnorm(), abline()
-     */
-    qqline(data: number[], color?: RGB, stroke_width?: number): RPlot;
-    /**
-     * Adds manual legend rows, like R's `legend(legend = labels, col = colors)`.
-     *
-     * Each label is paired with the color at the same position and drawn as a swatch row in
-     * the legend box. Once any manual row exists, it replaces the automatic legend built from
-     * labeled series. Calling again appends more rows. Unlike dm::legend(), colors are not
-     * recycled here: the vectors must match in length. Empty vectors add nothing.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const auto up = dm::RGB{37, 99, 235};
-     * const auto down = dm::RGB{220, 38, 38};
-     * auto plt = dm::Plot();
-     * plt.points(dm::c(1.0, 2.0), dm::c(1.0, 2.0), up)
-     *    .points(dm::c(1.0, 2.0), dm::c(2.0, 1.0), down)
-     *    .legend({"rising", "falling"}, {up, down});
-     * std::print("{}\n", plt.legend_entries().size());  // 2
-     * ```
-     *
-     * **References**
-     *
-     * - R `legend()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/legend.html
-     * @param labels Row texts, in display order.
-     * @param colors Swatch colors, one per label.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If `labels` and `colors` differ in length.
-     * @see dm::legend() for the recycling, pipe-friendly layer.
-     */
-    legend(labels: string[], colors: RGB[]): RPlot;
-    /**
-     * Draws `label` centered on the data point (`x`, `y`), like R's
-     * `text(x, y, labels = label)`.
-     *
-     * The text is centered both horizontally and vertically on the point, like R's default
-     * `adj`. The point counts toward the automatic axis ranges, but the text's extent does not,
-     * so long labels near the edge can overflow. Text layers never appear in the legend, and
-     * set_col() recolors them along with the data.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot(dm::c(1.0, 2.0, 3.0), dm::c(1.0, 4.0, 2.0))
-     *                .text(2.0, 4.4, "peak", dm::RGB{220, 38, 38}, 16.0);
-     * std::print("{} {}\n", plt.series()[1].label, plt.series()[1].marker_size);  // peak 16
-     * ```
-     *
-     * **References**
-     *
-     * - R `text()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/text.html
-     * @param x Horizontal position, in data units.
-     * @param y Vertical position, in data units.
-     * @param label The text to draw (XML-escaped in SVG output).
-     * @param color Text color (default near-black `{17, 24, 39}`).
-     * @param font_size Font size in pixels (default 14). (default: `14.0`)
-     * @returns This plot, for chaining.
-     * @see pie(), legend()
-     */
-    text(x: number, y: number, label: string, color?: RGB, font_size?: number): RPlot;
-    /**
-     * Draws the closed polygon through the vertices (x[i], y[i]), like R's
-     * `polygon(x, y, col = color)`.
-     *
-     * The last vertex joins the first automatically. Filled polygons (the default) are painted
-     * with `color` (plus a 1-pixel outline in SVG; the raster fill uses the even-odd rule);
-     * unfilled ones draw a 2-pixel outline only (R's default is unfilled). Translucent colors work well
-     * for shaded regions such as confidence bands. Vertices count toward the axis ranges.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::Plot()
-     *                .polygon({0.0, 1.0, 0.5}, {0.0, 0.0, 1.0}, dm::RGBA{37, 99, 235, 0.4})
-     *                .polygon({0.2, 0.8, 0.8, 0.2}, {0.1, 0.1, 0.4, 0.4}, dm::RGB{0, 0, 0}, false);
-     * std::print("{}\n", plt.series()[1].filled);  // false
-     * ```
-     *
-     * **References**
-     *
-     * - R `polygon()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/polygon.html
-     * @param x Vertex x coordinates, in order around the polygon.
-     * @param y Vertex y coordinates, paired with `x`.
-     * @param color Fill (and outline) color (default blue `{37, 99, 235}`).
-     * @param filled True (the default) fills; false draws the outline only. (default: `true`)
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If the coordinates are empty or have different lengths.
-     * @see pie(), segments()
-     */
-    polygon(x: number[], y: number[], color?: RGB, filled?: boolean): RPlot;
-    /**
-     * Draws a grid of coloured rectangles, one per value of `z`, like R's `image(x, y, z)`.
-     *
-     * Cell (i, j) is centred on (x[i], y[j]) and reaches halfway to its neighbours (a half step
-     * beyond the outermost centres). Its colour is the palette entry for z[i][j] on a linear
-     * scale from `z_min` to `z_max`; NaN cells are left empty. Each cell is added as a filled
-     * polygon, so the grid should have at most tens of thousands of cells.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto plt = dm::graphics::RPlot::create().image({0.0, 1.0}, {0.0, 1.0, 2.0}, {{1, 2, 3}, {4, 5, 6}});
-     * std::print("{}\n", plt.series().size());  // 6
-     * ```
-     *
-     * **References**
-     *
-     * - R `image()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/image.html
-     * @param x Cell centres along x, increasing (at least 2).
-     * @param y Cell centres along y, increasing (at least 2).
-     * @param z Values, z[i][j] at (x[i], y[j]); z.size() == x.size() and each row has y.size() entries.
-     * @param palette Colours from low to high (default terrain_colors(12)). (default: `[]`)
-     * @param z_min Value mapped to the first colour; NaN (the default) uses the smallest z.
-     * @param z_max Value mapped to the last colour; NaN (the default) uses the largest z.
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If the sizes do not match, x or y is not increasing, or the palette is empty.
-     * @see terrain_colors(), polygon()
-     */
-    image(x: number[], y: number[], z: number[][], palette?: RGB[], z_min?: number, z_max?: number): RPlot;
-    /**
-     * Draws one straight segment from (x0[i], y0[i]) to (x1[i], y1[i]) for each i, like
-     * R's `segments(x0, y0, x1, y1)`.
-     *
-     * All segments share `color` and `stroke_width` and form one Segment layer; their end
-     * points count toward the axis ranges. Useful for error bars, residual sticks, and
-     * dendrograms.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const auto x = dm::c(1.0, 2.0, 3.0);
-     * const auto y = dm::c(2.0, 3.5, 3.0);
-     * auto plt = dm::Plot(x, y).segments(x, y - 0.5, x, y + 0.5);  // +/- 0.5 error bars
-     * std::print("{}\n", plt.series()[1].x.size());  // 6 (start, end, start, end, ...)
-     * ```
-     *
-     * **References**
-     *
-     * - R `segments()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/segments.html
-     * @param x0 Start x coordinates.
-     * @param y0 Start y coordinates.
-     * @param x1 End x coordinates.
-     * @param y1 End y coordinates.
-     * @param color Segment color (default opaque black).
-     * @param stroke_width Segment width in pixels (default 1). (default: `1.0`)
-     * @returns This plot, for chaining.
-     * @throws {Error} `std::invalid_argument`: If the four vectors differ in length or are empty.
-     * @see abline(), polygon()
-     */
-    segments(x0: number[], y0: number[], x1: number[], y1: number[], color?: RGB, stroke_width?: number): RPlot;
-}
-
-/**
- * Tiles independently built plots into one multi-panel figure, like R's
- * `par(mfrow = c(rows, cols))` followed by one plot per panel.
- *
- * Create it with create(rows, cols), then add() up to rows * cols panels; they fill the grid
- * row by row. Each panel is copied (and its SVG rendered) at add() time, so later changes to
- * the original plot do not show and panels need not outlive the layout. Each cell is
- * `width / cols` by `(height - band) / rows` pixels, where band is title_band_px when a
- * figure title is set and 0 otherwise; every panel is scaled from its own canvas size into its
- * cell. The figure background is white. Unused cells stay empty.
- *
- * **Example**
- *
- * ```cpp
- * const auto x = dm::seql(0.0, 6.0, 30);
- * auto fig = dm::graphics::RLayout::create(1, 2)
- *                .size(1200, 500)
- *                .title("Two views")
- *                .add(dm::Plot(x, dm::sin(x)).set_title("sin"))
- *                .add(dm::Plot(x, dm::cos(x)).set_title("cos"));
- * std::print("{} panels in {}x{}\n", fig.panel_count(), fig.rows(), fig.cols());
- * // 2 panels in 1x2
- * fig.save("two_views.svg");
- * ```
- *
- * **References**
- *
- * - R `par()` (`mfrow`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
- * @see RPlot, RPlot::margins(), dm::Splom
- */
-export declare class RLayout {
-    constructor();
-    /**
-     * Creates an empty layout with `rows` by `cols` cells, like R's
-     * `par(mfrow = c(rows, cols))`.
-     *
-     * The figure starts at 960 by 640 pixels with no title.
-     *
-     * **Example**
-     *
-     * See RLayout.
-     *
-     * **References**
-     *
-     * - R `par()` (`mfrow`): https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/par.html
-     * @param rows Number of panel rows; must be positive.
-     * @param cols Number of panel columns; must be positive.
-     * @returns The empty layout.
-     * @throws {Error} `std::invalid_argument`: If `rows` or `cols` is 0.
-     * @see add()
-     */
-    static create(rows: number, cols: number): RLayout;
-    /**
-     * Copies `panel` into the next free cell, filling rows left to right, top to bottom.
-     *
-     * The panel's SVG is rendered immediately and stored with the copy, so rendering errors
-     * surface here and later edits to the original plot have no effect on the layout.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto fig = dm::graphics::RLayout::create(1, 1).add(dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)));
-     * try {
-     *   fig.add(dm::Plot(dm::c(1.0), dm::c(1.0)));
-     * } catch (const std::invalid_argument& e) {
-     *   std::print("{}\n", e.what());  // RLayout::add: layout is already full
-     * }
-     * ```
-     * @param panel The plot to add; any RPlot (or other Plot) converts.
-     * @returns This layout, for chaining.
-     * @throws {Error} `std::invalid_argument`: If all rows * cols cells are already filled.
-     * @throws {Error} `std::runtime_error`: If `panel` has no data series or its canvas is smaller than its margins.
-     * @see panel(), panel_count()
-     */
-    add(panel: Plot): RLayout;
-    /**
-     * Sets the size of the whole figure in pixels (default 960 by 640).
-     *
-     * Panels keep their own canvas sizes and are scaled into their cells, so text in a panel
-     * shrinks or grows with it; give panels a size close to their cell for readable labels.
-     *
-     * **Example**
-     *
-     * See RLayout.
-     * @param width Figure width in pixels.
-     * @param height Figure height in pixels, including the title band.
-     * @returns This layout, for chaining.
-     * @see title()
-     */
-    size(width: number, height: number): RLayout;
-    /**
-     * Sets an optional figure-level heading drawn in a band above the panels, like R's
-     * `mtext(main, outer = TRUE)`; an empty string (the default) reserves no band.
-     *
-     * **Example**
-     *
-     * See RLayout.
-     *
-     * **References**
-     *
-     * - R `mtext()`: https://stat.ethz.ch/R-manual/R-devel/library/graphics/html/mtext.html
-     * @param value Heading text; the band is title_band_px pixels tall.
-     * @returns This layout, for chaining.
-     * @see title_text()
-     */
-    title(value: string): RLayout;
-    /**
-     * Returns the number of panel rows given to create().
-     * @returns Row count (at least 1).
-     */
-    rows(): number;
-    /**
-     * Returns the number of panel columns given to create().
-     * @returns Column count (at least 1).
-     */
-    cols(): number;
-    /**
-     * Returns the figure width in pixels.
-     * @returns Width set by size() (default 960).
-     */
-    width(): number;
-    /**
-     * Returns the figure height in pixels.
-     * @returns Height set by size() (default 640).
-     */
-    height(): number;
-    /**
-     * Returns how many panels have been added.
-     * @returns Panel count, at most rows() * cols().
-     */
-    panel_count(): number;
-    /**
-     * Borrows the figure-level heading for the lifetime of this layout.
-     * @returns The title; empty (the default) when none is drawn.
-     */
-    title_text(): string;
-    /**
-     * Borrows the copy of the `index-th` added panel.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto fig = dm::graphics::RLayout::create(1, 2).add(dm::Plot(dm::c(1.0), dm::c(1.0)).set_title("A"));
-     * std::print("{}\n", fig.panel(0).title_text());  // A
-     * ```
-     * @param index Zero-based panel index, in the order panels were added.
-     * @returns The stored copy, valid until the next add() or the layout's destruction.
-     * @throws {Error} `std::out_of_range`: If `index` is not below panel_count().
-     */
-    panel(index: number): Plot;
-    /**
-     * Renders the multi-panel figure as a standalone SVG document and returns it as a string.
-     *
-     * Each panel becomes a nested `<svg>` scaled into its cell. A layout with no panels renders
-     * as an empty white figure. The layout is not modified.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto fig = dm::graphics::RLayout::create(2, 1).add(dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)));
-     * std::print("{}\n", fig.to_svg().starts_with("<?xml"));  // true
-     * ```
-     * @returns The complete SVG text.
-     * @see save()
-     */
-    to_svg(): string;
-    /**
-     * Saves the figure, choosing the format from the extension: `.svg` (or none) writes
-     * SVG, `.png` / `.pdf` write the same tiled raster the X11 viewer shows.
-     *
-     * The extension is case-sensitive and an existing file is overwritten. Raster panels are
-     * re-rendered from the stored copies and scaled into their cells.
-     *
-     * **Example**
-     *
-     * See RLayout.
-     * @param path Destination file.
-     * @throws {Error} `std::invalid_argument`: For any other extension.
-     * @throws {Error} `std::runtime_error`: If the file cannot be written.
-     * @see save_svg(), to_svg(), show()
-     */
-    save(path: string): void;
-    /**
-     * Writes to_svg() to `path` regardless of its extension.
-     * @param path Destination file; an existing file is overwritten.
-     * @throws {Error} `std::runtime_error`: If the file cannot be opened for writing.
-     * @see save()
-     */
-    save_svg(path: string): void;
-    /**
-     * Renders the tiled figure as PNG image bytes (the raster save() writes for `.png`).
-     * @returns The complete PNG file contents.
-     * @throws {Error} `std::runtime_error`: If a panel cannot be rendered.
-     * @see save_png(), to_svg()
-     */
-    to_png(): number[];
-    /**
-     * Renders the tiled figure as a one-page PDF holding the raster image.
-     * @returns The complete PDF file contents.
-     * @throws {Error} `std::runtime_error`: If a panel cannot be rendered.
-     * @see save_pdf(), to_png()
-     */
-    to_pdf(): number[];
-    /**
-     * Writes to_png() to `path` regardless of its extension.
-     * @param path Destination file; an existing file is overwritten.
-     * @throws {Error} `std::runtime_error`: If the file cannot be written or a panel cannot be rendered.
-     */
-    save_png(path: string): void;
-    /**
-     * Writes to_pdf() to `path` regardless of its extension.
-     * @param path Destination file; an existing file is overwritten.
-     * @throws {Error} `std::runtime_error`: If the file cannot be written or a panel cannot be rendered.
-     */
-    save_pdf(path: string): void;
-    /**
-     * Resizes every stored panel's canvas to its cell, so text keeps its pixel size
-     * instead of being scaled with the panel.
-     *
-     * Call it after size() and title() (the title band changes the cell height). Panels added
-     * later keep their own size until fit_panels() is called again. A cell whose shorter side is
-     * under min_panel_px gets a canvas scaled up to that side (same aspect ratio), so its text is
-     * drawn proportionally smaller instead of the margins overflowing the panel.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * auto fig = dm::graphics::RLayout::create(1, 2)
-     *                .add(dm::Plot(dm::c(1.0, 2.0), dm::c(2.0, 1.0)))
-     *                .add(dm::Plot(dm::c(1.0, 2.0), dm::c(1.0, 2.0)))
-     *                .size(1000, 400)
-     *                .fit_panels();
-     * std::print("{}x{}\n", fig.panel(0).width(), fig.panel(0).height());  // 500x400
-     * ```
-     * @returns This layout, for chaining.
-     * @see size()
-     */
-    fit_panels(): RLayout;
-    /**
-     * Opens the tiled figure in the interactive X11 viewer; the toolbar zoom/pan buttons
-     * act on every panel's data bounds at once, keyboard zoom/pan scales the whole image.
-     *
-     * Blocks until the window is closed (q or Escape). Use save() in headless code.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * const auto x = dm::seql(0.0, 6.0, 30);
-     * dm::graphics::RLayout::create(1, 2)
-     *     .add(dm::Plot(x, dm::sin(x)))
-     *     .add(dm::Plot(x, dm::cos(x)))
-     *     .show("Trig");
-     * ```
-     * @param title_hint Window title; empty (the default) uses title_text(). (default: `""`)
-     * @throws {Error} `std::runtime_error`: If X11 support was not enabled at build time or no display is available.
-     * @throws {Error} `std::invalid_argument`: If no panel was added.
-     * @see save(), Plot::show()
-     */
-    show(title_hint?: string): void;
-    /**
-     * Same as show(); kept as an alias for older code.
-     * @param title_hint Window title; empty (the default) uses title_text(). (default: `""`)
-     * @throws {Error} `std::runtime_error`: As for show().
-     * @throws {Error} `std::invalid_argument`: If no panel was added.
-     * @see show()
-     */
-    view(title_hint?: string): void;
-    /**
-     * Height in pixels of the heading band reserved above the panels when a title is set.
-     */
-    static readonly title_band_px: number;
-    /**
-     * Smallest canvas side fit_panels() gives a panel; smaller cells get a larger canvas
-     * with the cell's aspect ratio, scaled down when drawn, so the margins still fit.
-     */
-    static readonly min_panel_px: number;
-    /**
-     * Releases the native object now instead of when it is garbage collected; later calls fail.
-     */
-    close(): void;
-}
-
-/**
  * Owned unrestricted scalar DTW result, preserving the original three-field layout.
  * Distance is the unnormalized sum of absolute differences along the returned
  * inclusive path. Default construction is an uncomputed placeholder. Copies own
@@ -6000,33 +7139,46 @@ export declare class DTWTrace {
 }
 
 /**
- * A 2D k-d tree for nearest-neighbor / range queries over a fixed point set, built
- * once (via a median-splitting, alternating-axis partition) at construction --
- * doesn't support incremental insertion/removal after that.
+ * Owned actual point or branch decision from the producing nearest traversal.
+ * Visit.measure is point distance; FarPlane.measure is absolute split-coordinate
+ * difference. Only FarPlane has a meaningful child index/explore_far flag.
+ * best indices use size_t max before any candidate; best distance initially infinity.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto t=dm::geometry::KDTree2D({{0,0}}).nearest_trace({1,0});
+ * std::print("{} {}\n",t.probes[0].original_index,t.probes[0].best_index_after); // 0 0
+ * ```
+ * @see KDNearestTrace
  */
-export declare class KDTree2D {
-    constructor(points: Point2D[]);
+export declare class KDNearestProbe {
+    constructor();
     /**
-     * C++ `datamunge::geometry::KDTree2D::empty`
+     * Actual operation kind.
      */
-    empty(): boolean;
+    action: KDProbeAction;
     /**
-     * C++ `datamunge::geometry::KDTree2D::size`
+     * Current node's original input identity.
      */
-    size(): number;
+    original_index: number;
     /**
-     * The closest point to `query`. Throws std::logic_error if the tree is empty.
+     * Actual far-child input identity, size_t max on Visit.
      */
-    nearest(query: Point2D): Point2D;
+    child_index: number;
     /**
-     * The `k` closest points to `query`, nearest first. Returns fewer than `k`
-     * points if the tree itself has fewer than `k`.
+     * Actual split axis0:x,1:y.
      */
-    k_nearest(query: Point2D, k: number): Point2D[];
+    axis: number;
+    best_index_before: number;
     /**
-     * All points within `radius` (inclusive) of `query`, in no particular order.
+     * Actual incumbent id after operation.
      */
-    points_in_radius(query: Point2D, radius: number): Point2D[];
+    best_index_after: number;
+    /**
+     * Actual nonnull far-child traversal decision, false on Visit.
+     */
+    explore_far: boolean;
     /**
      * Releases the native object now instead of when it is garbage collected; later calls fail.
      */
@@ -6034,11 +7186,244 @@ export declare class KDTree2D {
 }
 
 /**
- * C++ class `datamunge::geometry::Circle`
+ * Selected actual nearest-query work, not input copying, comparisons or elapsed time.
+ * One point-distance computation per visited node; plane tests only for nonnull
+ * far children. Pruned subtrees need not contain only one point.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::KDTree2D({{0,0}}).nearest_trace({1,0}).work.visited_nodes); // 1
+ * ```
+ * @see KDNearestTrace
+ */
+export declare class KDSearchWork {
+    constructor();
+    /**
+     * Actual entered nodes/point-distance computations.
+     */
+    visited_nodes: number;
+    /**
+     * Actual nonnull far-child lower-bound decisions.
+     */
+    plane_tests: number;
+    /**
+     * Actual nonnull far children excluded by plane bound.
+     */
+    pruned_subtrees: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Owned original points, actual answer and chronological nearest-query operations.
+ * Trace copies original points in input order and captures actual visits/far
+ * decisions, without replay. Adds O(n+records) copy/storage beyond query work;
+ * no tree/input references survive. Long-double distances are rounded metrics,
+ * not exact-real nearest oracles for arbitrarily close inputs.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto t=dm::geometry::KDTree2D({{0,0},{3,4}}).nearest_trace({1,0});
+ * std::print("{} {}\n",t.original_index,t.distance); // 0 1
+ * ```
+ * @see KDTree2D::nearest_trace()
+ */
+export declare class KDNearestTrace {
+    constructor();
+    /**
+     * Owned finite query.
+     */
+    query: Point2D;
+    /**
+     * Owned actual selected stored point.
+     */
+    point: Point2D;
+    /**
+     * Actual selected original identity, including duplicate points.
+     */
+    original_index: number;
+    /**
+     * Owned complete original points, input order.
+     */
+    points: Point2D[];
+    /**
+     * Actual selected query work, excluding copies/validation.
+     */
+    work: KDSearchWork;
+    /**
+     * Actual chronological point/plane decisions.
+     */
+    probes: KDNearestProbe[];
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Own a balanced alternating-axis median tree for planar nearest/k/radius queries.
+ * Finite points required. Stable deterministic build ties use other coordinate,
+ * then original input index; each node retains original identity. Nearest and
+ * k-nearest equal computed distances prefer earliest input index, including
+ * duplicates. Distances use widened coordinate subtraction and hypot, avoiding
+ * the old double square overflow/underflow; they remain rounded machine values.
+ * Construction expected O(n log(n+1)) work/O(n) owned storage; tree height O(log n).
+ * Queries can visit every node: no universal average O(log n) guarantee without
+ * distribution assumptions. No insertion/removal. Const queries use local state
+ * and share no mutable state; original caller data are not retained.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const dm::geometry::KDTree2D tree({{0,0},{3,4}});
+ * std::print("{}\n",tree.nearest({1,0}).x); // 0
+ * ```
+ *
+ * **References**
+ *
+ * - Bentley(1975), Multidimensional binary search trees used for associative searching, https://doi.org/10.1145/361002.361007.
+ * @see nearest_trace(), k_nearest(), points_in_radius()
+ */
+export declare class KDTree2D {
+    /**
+     * Validate/admit points and build the owned balanced median tree.
+     * The legacy by-value parameter copy occurs before validation; finite/input
+     * admission precedes internal indexed-record/node allocation. Complete point
+     * cap counts records, excluding call-boundary copy/capacity/byte/RAM overhead.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * std::print("{}\n",dm::geometry::KDTree2D({{0,0}},1).size()); // 1
+     * ```
+     * @param points Owned value argument, possibly empty; duplicates allowed.
+     * @param max_points Complete optional point ceiling, default million, zero off. (default: `1000000`)
+     * @throws {Error} `std::invalid_argument`: On a nonfinite coordinate.
+     * @throws {Error} `std::length_error`: On signed-length/container/optional point limits.
+     * @throws {Error} `std::bad_alloc`: On allocation failure.
+     */
+    constructor(points: Point2D[], max_points?: number);
+    /**
+     * Report whether the original point set is empty.
+     * @returns True exactly for zero stored points.
+     */
+    empty(): boolean;
+    /**
+     * Count stored points, including distinct identities at equal coordinates.
+     * @returns Original owned point count.
+     */
+    size(): number;
+    /**
+     * Return a nearest stored point under widened rounded hypot distance.
+     * Equal computed distances prefer the earliest original input. O(n) worst
+     * visited work/O(log n) recursion storage; no allocation/history/input copying.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * std::print("{}\n",dm::geometry::KDTree2D({{0,0},{2,0}}).nearest({1,0}).x); // 0
+     * ```
+     * @param query Borrowed finite query, unchanged.
+     * @returns Owned selected original coordinate, not a reference.
+     * @throws {Error} `std::invalid_argument`: On nonfinite query, even for an empty tree.
+     * @throws {Error} `std::logic_error`: On empty tree.
+     * @throws {Error} `std::overflow_error`: If widened distance is nonfinite on this platform.
+     * @see nearest_trace()
+     */
+    nearest(query: Point2D): Point2D;
+    /**
+     * Return up to k closest coordinates, ordered by widened distance then original id.
+     * Duplicate coordinates retain multiplicity. k=0/empty returns empty after finite
+     * query validation. O(n log(min(k,n)+1)) worst work, O(k+log n) working storage.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * std::print("{}\n",dm::geometry::KDTree2D({{0,0},{2,0}}).k_nearest({1,0},5).size()); // 2
+     * ```
+     * @param query Borrowed finite query.
+     * @param k Requested result count, clamped to tree size before heap use.
+     * @returns Owned nearest-first coordinates, possibly fewer than k.
+     * @throws {Error} `std::invalid_argument`: On nonfinite query.
+     * @throws {Error} `std::overflow_error`: On nonfinite widened distance.
+     * @throws {Error} `std::bad_alloc`: On heap/result allocation failure.
+     * @see nearest(), points_in_radius()
+     */
+    k_nearest(query: Point2D, k: number): Point2D[];
+    /**
+     * Return all stored coordinates with widened distance<=radius, in tree traversal order.
+     * Inclusive boundary, duplicate multiplicity. Negative/NaN radius rejects;
+     * positive infinity includes every point without requiring a finite norm.
+     * O(n) worst work, O(log n) recursion plus O(results) owned output.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * std::print("{}\n",dm::geometry::KDTree2D({{0,0},{2,0}}).points_in_radius({1,0},1).size()); // 2
+     * ```
+     * @param query Borrowed finite query, validated even for empty tree.
+     * @param radius Nonnegative radius in coordinate units, positive infinity allowed.
+     * @returns Owned matching coordinates, no guaranteed distance sorting.
+     * @throws {Error} `std::invalid_argument`: On nonfinite query or negative/NaN radius.
+     * @throws {Error} `std::overflow_error`: On nonfinite widened distance for a finite-radius query.
+     * @throws {Error} `std::bad_alloc`: On result allocation failure.
+     * @see k_nearest()
+     */
+    points_in_radius(query: Point2D, radius: number): Point2D[];
+    /**
+     * Own the original cloud and record actual nearest traversal operations once.
+     * Same answer/arithmetic/ties as nearest(). Complete point copies add O(n);
+     * each point/plane record is admitted before its distance/decision. Default
+     * million-record cap, zero off; excludes vector capacity/byte/RAM overhead.
+     * Failed call exposes no partial trace and never mutates the tree.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * std::print("{}\n",dm::geometry::KDTree2D({{0,0}}).nearest_trace({1,0}).work.visited_nodes); // 1
+     * ```
+     * @param query Borrowed finite query.
+     * @param max_entries Actual point/plane record ceiling, default million, zero off. (default: `1000000`)
+     * @returns Owned original cloud, actual nearest answer/work/chronology.
+     * @throws {Error} `std::invalid_argument`: On nonfinite query.
+     * @throws {Error} `std::logic_error`: On empty tree.
+     * @throws {Error} `std::length_error`: On enabled history ceiling/container/work overflow.
+     * @throws {Error} `std::overflow_error`: On nonfinite widened distance.
+     * @throws {Error} `std::bad_alloc`: On capture allocation failure.
+     * @see KDNearestProbe
+     */
+    nearest_trace(query: Point2D, max_entries?: number): KDNearestTrace;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Owned planar center and nonnegative radius in coordinate units.
+ * Storage alone does not validate geometry; checked producers require finiteness.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * auto c=dm::geometry::min_enclosing_circle({{0,0},{2,0}});
+ * std::print("{} {}\n",c.center.x,c.radius); // 1 1
+ * ```
+ * @see min_enclosing_circle()
  */
 export declare class Circle {
     constructor();
+    /**
+     * Owned circle center.
+     */
     center: Point2D;
+    /**
+     * Nonnegative radius for valid native results.
+     */
     radius: number;
     /**
      * Releases the native object now instead of when it is garbage collected; later calls fail.
@@ -6047,12 +7432,351 @@ export declare class Circle {
 }
 
 /**
- * C++ class `datamunge::geometry::DiameterResult`
+ * Actual containment test and optional immediate boundary rebuild.
+ * Depth0 tests the next outer point,1 tests a preceding point under one fixed
+ * boundary point,2 tests under two. A failed test immediately rebuilds from
+ * one/two/three points respectively. Later nested events can rebuild again.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * auto t=dm::geometry::min_enclosing_circle_trace({{0,0},{2,0}});
+ * std::print("{}\n",t.events.size()); // 2
+ * ```
+ * @see EnclosingCircleTrace
+ */
+export declare class EnclosingCircleEvent {
+    constructor();
+    /**
+     * Actual nested-loop depth,0 through2.
+     */
+    depth: number;
+    /**
+     * Original identity of the tested point.
+     */
+    input_index: number;
+    /**
+     * Actual tolerance-aware containment result.
+     */
+    contained: boolean;
+    /**
+     * Actual circle before this test.
+     */
+    before: Circle;
+    /**
+     * Circle immediately after this test/rebuild.
+     */
+    after: Circle;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Owned original/order data and actual seeded incremental history.
+ * Capture units count original points, shuffled point copies, permutation IDs
+ * and event records. Scalar final/initial circle fields are not additional units.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * auto t=dm::geometry::min_enclosing_circle_trace({{0,0},{2,0}});
+ * std::print("{}\n",t.result.radius); // 1
+ * ```
+ * @see min_enclosing_circle_trace()
+ */
+export declare class EnclosingCircleTrace {
+    constructor();
+    /**
+     * Owned original finite coordinates.
+     */
+    input: Point2D[];
+    /**
+     * Actual MT19937-64 seed42 processing order.
+     */
+    shuffled: Point2D[];
+    /**
+     * Original identity at every shuffled position.
+     */
+    permutation: number[];
+    /**
+     * Singleton circle at the first shuffled point.
+     */
+    initial: Circle;
+    /**
+     * Actual final tolerance-aware enclosing circle.
+     */
+    result: Circle;
+    /**
+     * Actual tests and immediate rebuilds.
+     */
+    events: EnclosingCircleEvent[];
+    /**
+     * Actual admitted capture units.
+     */
+    captured_entries: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Tolerance-aware distances and containment diagnostics for a supplied circle.
+ * Residual is hypot(point-center)-radius. A point passes when residual is at
+ * most1e-9*max(1,radius). Counts describe tolerance, not exact support identities.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * auto a=dm::geometry::enclosing_circle_check({{1,0},1},{{0,0},{2,0}});
+ * std::print("{} {}\n",a.outside,a.near_boundary); // 0 2
+ * ```
+ * @see enclosing_circle_check()
+ */
+export declare class EnclosingCircleCheck {
+    constructor();
+    /**
+     * Owned signed radial residuals, original input order.
+     */
+    residuals: number[];
+    /**
+     * Residuals greater than the same containment tolerance.
+     */
+    outside: number;
+    near_boundary: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Owned actual exact predicates and optional approximate unique point.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const dm::geometry::SegmentIntersectionRun value{};
+ * std::print("{}\n",value.orientation_tests); // 0
+ * ```
+ */
+export declare class SegmentIntersectionRun {
+    constructor();
+    contact: SegmentContact;
+    /**
+     * Actual exact signs for p-q-r, p-q-s, r-s-p, r-s-q.
+     */
+    orientations: number[];
+    /**
+     * Actual sign calls, exactly four.
+     */
+    orientation_tests: number;
+    /**
+     * Actual closed bounding-box checks for zero-orientation candidates.
+     */
+    bounding_tests: number;
+    /**
+     * Point or lexicographically lower overlap endpoint; zero sentinel for None/unconstructed proper contact.
+     */
+    first: Point2D;
+    /**
+     * Same unique point or lexicographically upper overlap endpoint.
+     */
+    second: Point2D;
+    /**
+     * Actual point/overlap coordinates populated.
+     */
+    point_constructed: boolean;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Actual candidate-ear decision at one stage of the remaining ring.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::triangulate_polygon_trace({{0,0},{2,0},{2,2},{0,2}}).candidates[0].clipped); // true
+ * ```
+ */
+export declare class PolygonEarCandidate {
+    constructor();
+    /**
+     * Remaining vertices before this candidate.
+     */
+    ring_size: number;
+    /**
+     * Original previous/current/next vertex ids.
+     */
+    triangle: Triangle;
+    /**
+     * Exact local orientation in normalized CCW ring.
+     */
+    orientation: number;
+    /**
+     * Actual other-vertex containment queries before the first blocker.
+     */
+    containment_tests: number;
+    /**
+     * True when another remaining vertex lies on or inside the candidate triangle.
+     */
+    has_blocker: boolean;
+    /**
+     * First actual blocking original id, meaningful only when has_blocker.
+     */
+    blocker: number;
+    /**
+     * True when this actual candidate is removed and emitted.
+     */
+    clipped: boolean;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * One actual emitted ear and its resulting remaining original ids.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::triangulate_polygon_trace({{0,0},{2,0},{2,2},{0,2}}).clips[0].remaining.size()); // 3
+ * ```
+ */
+export declare class PolygonEarClip {
+    constructor();
+    /**
+     * Actual emitted original-index triangle.
+     */
+    triangle: Triangle;
+    /**
+     * Actual ring after erasing that ear's center vertex.
+     */
+    remaining: number[];
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Predicate-work and retained-history policies, independently disabled by zero.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const dm::geometry::PolygonTriangulationOptions o;std::print("{}\n",o.max_predicates); // 1000000
+ * ```
+ */
+export declare class PolygonTriangulationOptions {
+    constructor();
+    max_predicates: number;
+    max_trace_entries: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Owned triangulation and selected actual predicate/candidate counts.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::triangulate_polygon_run({{0,0},{2,0},{2,2},{0,2}}).triangles.size()); // 2
+ * ```
+ */
+export declare class PolygonTriangulationRun {
+    constructor();
+    /**
+     * Original vertex ids; n-2 nondegenerate triangles for valid n>=3.
+     */
+    triangles: Triangle[];
+    /**
+     * True if an n>3 clockwise ring was actually reversed.
+     */
+    reversed: boolean;
+    /**
+     * Actual exact orientation calls, including input validation.
+     */
+    orientations: number;
+    /**
+     * Actual candidate centers inspected during clipping.
+     */
+    candidates: number;
+    /**
+     * Actual other-point closed-triangle queries.
+     */
+    containment_tests: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Owned actual ear decisions and post-erasure ring histories.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::triangulate_polygon_trace({{0,0},{2,0},{2,2},{0,2}}).initial_ring.size()); // 4
+ * ```
+ */
+export declare class PolygonTriangulationTrace {
+    constructor();
+    /**
+     * Output and counts from the producing run.
+     */
+    run: PolygonTriangulationRun;
+    /**
+     * Actual initial original-index ring after optional reversal.
+     */
+    initial_ring: number[];
+    /**
+     * Actual tests, including rejected reflex/blocked vertices.
+     */
+    candidates: PolygonEarCandidate[];
+    /**
+     * Actual emitted ears and post-erasure rings; final triangle is in run.triangles.
+     */
+    clips: PolygonEarClip[];
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Owned actual farthest endpoints and finite Euclidean separation.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const dm::geometry::DiameterResult value{};
+ * std::print("{}\n",value.distance); // 0
+ * ```
  */
 export declare class DiameterResult {
     constructor();
+    /**
+     * First actual canonical hull endpoint.
+     */
     a: Point2D;
+    /**
+     * Second actual canonical hull endpoint.
+     */
     b: Point2D;
+    /**
+     * Finite Euclidean separation in coordinate units.
+     */
     distance: number;
     /**
      * Releases the native object now instead of when it is garbage collected; later calls fail.
@@ -6061,18 +7785,117 @@ export declare class DiameterResult {
 }
 
 /**
- * C++ class `datamunge::geometry::MinimumBoundingRectangle`
+ * Complete input, actual-event and retained-event policies; zero disables a cap.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const dm::geometry::DiameterOptions value{};
+ * std::print("{}\n",value.max_points); // 1000000
+ * ```
  */
-export declare class MinimumBoundingRectangle {
+export declare class DiameterOptions {
     constructor();
     /**
-     * The four corners, in order (so consecutive corners are adjacent, matching this
-     * module's polygon convention elsewhere).
+     * Complete original point count.
      */
-    corners: Point2D[];
-    width: number;
-    height: number;
-    area: number;
+    max_points: number;
+    /**
+     * Actual area comparisons plus farthest-pair tests.
+     */
+    max_events: number;
+    /**
+     * Actual retained area/pair events.
+     */
+    max_trace_entries: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * One actual support-pointer decision or farthest-pair test.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const dm::geometry::CaliperEvent value{};
+ * std::print("{}\n",value.area_sign); // 0
+ * ```
+ */
+export declare class CaliperEvent {
+    constructor();
+    /**
+     * Actual producing branch.
+     */
+    kind: CaliperEventKind;
+    /**
+     * Edge start for area tests, first candidate endpoint for pair tests.
+     */
+    first: number;
+    /**
+     * Current antipode or second actual candidate endpoint.
+     */
+    second: number;
+    /**
+     * Next proposed antipode; zero outside area tests.
+     */
+    next: number;
+    /**
+     * Exact sign of next minus current baseline area; zero for pair tests.
+     */
+    area_sign: number;
+    /**
+     * Actual tested pair distance; zero outside pair tests.
+     */
+    distance: number;
+    /**
+     * Whether this actual candidate became the strictly larger best distance.
+     */
+    improved: boolean;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Owned actual hull/diameter and selected rotating-pointer work.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const dm::geometry::DiameterRun value{};
+ * std::print("{}\n",value.pointer_advances); // 0
+ * ```
+ */
+export declare class DiameterRun {
+    constructor();
+    /**
+     * Actual winning pair, first encountered wins equal represented distances.
+     */
+    result: DiameterResult;
+    /**
+     * Owned canonical CCW hull used by this execution.
+     */
+    hull: Point2D[];
+    /**
+     * Actual exact baseline-area comparisons.
+     */
+    area_tests: number;
+    /**
+     * Actual widened Euclidean candidate tests.
+     */
+    pair_tests: number;
+    /**
+     * Actual committed forward antipode changes.
+     */
+    pointer_advances: number;
+    /**
+     * Actual optional chronological support/pair events.
+     */
+    events: CaliperEvent[];
     /**
      * Releases the native object now instead of when it is garbage collected; later calls fail.
      */
@@ -6265,21 +8088,36 @@ export declare class LinalgMatrix {
 }
 
 /**
- * Right-hand side of a first-order ODE system dy/dt = f(t, y): R x R^n -> R^n.
- * Director-enabled only in the Python binding, matching datamunge::filter::VectorFunction
- * (the closest existing precedent -- a vector<double>-returning pure-virtual director):
- * every other SWIG backend either has no director support at all, or -- confirmed by a
- * real compile failure while wiring this class up in R -- cannot generate a working
- * director wrapper for a virtual method that returns std::vector<double>. Every other
- * binding can only use ODESolver::solve_builtin()'s fixed set of named systems, since a
- * live user-supplied RHS requires exactly that subclassing.
+ * Caller-defined derivative callback dy/dt=f(t,y), without retained solver-owned references.
+ * The solver requires finite matching-dimensional returns and guards stages/call
+ * budgets before invoking it. User callback exceptions/effects propagate and are
+ * not rolled back. Thread safety belongs to the callback implementation.
+ * Configured SWIG director support is backend-specific; named builtin systems
+ * remain available independently of subclassing support. No all-binding claim.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * struct F:dm::ode::RHS{std::vector<double>evaluate(double,const std::vector<double>&y)override{return {-y[0]};}};F f;std::print("{}\n",f.evaluate(0,{1})[0]); // -1
+ * ```
  *
  * Subclass it in JavaScript (`class Mine extends RHS {...}`): methods of the subclass override the C++ virtual methods.
+ * @see ODESolver
  */
 export declare abstract class RHS {
     constructor();
     /**
-     * C++ `datamunge::ode::RHS::evaluate`
+     * Evaluate a complete derivative vector at one actual time/state.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * struct F:dm::ode::RHS{std::vector<double>evaluate(double,const std::vector<double>&y)override{return {-y[0]};}};F f;std::print("{}\n",f.evaluate(0,{2})[0]); // -2
+     * ```
+     * @param t Actual finite stage time supplied by solver.
+     * @param y Actual finite fixed-dimensional stage,borrowed only for this call.
+     * @returns Owned finite derivative vector with the same dimension as y.
+     * @see ODESolver::solve()
      */
     evaluate(t: number, y: number[]): number[];
     /**
@@ -6289,28 +8127,31 @@ export declare abstract class RHS {
 }
 
 /**
- * C++ class `datamunge::ode::ODEOptions`
+ * Original-order numerical controls for all native forward methods.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * dm::ode::ODEOptions o;std::print("{}\n",o.step_size); // 0.01
+ * ```
+ * @see ODESolver
  */
 export declare class ODEOptions {
     constructor();
+    /**
+     * Original selected known method.
+     */
     method: StepMethod;
     /**
-     * Order (2-4) for AdamsBashforth/AdamsMoulton; ignored by every other method.
+     * Adams order clamped to2..4, ignored by one-step methods.
      */
     multistep_order: number;
     /**
-     * Fixed step size for every method except RK45, where it is only the *initial* step
-     * (subsequent steps are chosen adaptively).
+     * Finite positive fixed step or initial RK45 trial step.
      */
     step_size: number;
-    /**
-     * RK45-only: local error tolerances driving adaptive step-size control.
-     */
     abs_tol: number;
     rel_tol: number;
-    /**
-     * RK45-only: hard cap on step size; 0 means unbounded (capped only by t_end - t_start).
-     */
     max_step: number;
     /**
      * Releases the native object now instead of when it is garbage collected; later calls fail.
@@ -6319,28 +8160,84 @@ export declare class ODEOptions {
 }
 
 /**
- * One numerically integrated trajectory: t[i] paired with y[i] (the full state vector
- * at that time), in increasing-time order, always including both endpoints. `t` and `y`
- * are public fields for direct C++ use, but are not exposed to language bindings (a
- * container-typed struct *field getter* -- even a plain vector<double>, not just a
- * nested vector<vector<double>> -- hits a swig-jse R-backend codegen bug that a
- * same-shaped plain *method* return does not) -- time_at()/state_at()/size() are the
- * cross-language-safe way to read it.
+ * Optional actual work, retained solution and trace policies, all0values disable their quota.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * dm::ode::ODEExecutionLimits l;std::print("{}\n",l.max_attempts); // 1000000
+ * ```
+ * @see ODESolver
+ */
+export declare class ODEExecutionLimits {
+    constructor();
+    max_attempts: number;
+    max_evaluations: number;
+    max_solution_entries: number;
+    max_trace_entries: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Owned actual forward trajectory including initial and exact requested final time.
+ * Public vectors are mutable by C++ callers; accessors retain the original
+ * cross-language-friendly shape without promising every binding installation.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * dm::ode::ODESolution s;std::print("{}\n",s.size()); // 0
+ * ```
+ * @see ODESolver
  */
 export declare class ODESolution {
     constructor();
+    /**
+     * Actual accepted complete updates, excluding rejected RK45 trials.
+     */
     steps_taken: number;
     function_evaluations: number;
     /**
-     * C++ `datamunge::ode::ODESolution::size`
+     * Read actual retained time/state sample count.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * dm::ode::ODESolution s;std::print("{}\n",s.size()); // 0
+     * ```
+     * @returns t.size(), without mutation.
+     * @see time_at(), state_at()
      */
     size(): number;
     /**
-     * C++ `datamunge::ode::ODESolution::time_at`
+     * Copy one actual retained sample time, checking its index.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * dm::ode::ODESolution s;s.t={0};std::print("{}\n",s.time_at(0)); // 0
+     * ```
+     * @param index Original retained sample position.
+     * @returns Actual time value, without mutation.
+     * @throws {Error} `std::out_of_range`: If index is outside t.
+     * @see state_at()
      */
     time_at(index: number): number;
     /**
-     * The full state vector at t[index].
+     * Borrow one actual retained full state, checking its index.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * dm::ode::ODESolution s;s.y={{1}};std::print("{}\n",s.state_at(0)); // [1]
+     * ```
+     * @param index Original retained sample position.
+     * @returns Read-only state reference, valid until this solution is mutated/destroyed.
+     * @throws {Error} `std::out_of_range`: If index is outside y.
+     * @see time_at()
      */
     state_at(index: number): number[];
     /**
@@ -6350,41 +8247,453 @@ export declare class ODESolution {
 }
 
 /**
- * Numerically integrates dy/dt = f(t, y) forward from t_start to t_end (t_end must be
- * greater than t_start; this project's "basic" ODE support does not handle backward
- * integration) given an initial state y0, via one of: explicit Euler, the explicit
- * midpoint rule (RK2), classical Runge-Kutta (RK4), adaptive Dormand-Prince
- * Runge-Kutta 4(5) (RK45), explicit Adams-Bashforth (order 2-4), or
- * Adams-Bashforth-Moulton predictor-corrector (order 2-4 -- the "implicit" linear
- * multistep option; this project uses a PECE predictor-corrector rather than a full
- * Newton-iteration implicit solve, avoiding the need for a Jacobian). Every multistep
- * method self-starts using classical RK4 for its first few steps.
+ * Actual finite RHS input state/time and returned derivative, copied from the executing callback.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * dm::ode::ODEEvaluation e;std::print("{}\n",e.time); // 0
+ * ```
+ * @see ODESolver
+ */
+export declare class ODEEvaluation {
+    constructor();
+    /**
+     * Actual finite callback evaluation time.
+     */
+    time: number;
+    /**
+     * Owned actual finite input state.
+     */
+    state: number[];
+    /**
+     * Owned actual returned finite matching-dimensional derivative.
+     */
+    derivative: number[];
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Actual step proposal, acceptance and callback range, not a replay.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * dm::ode::ODEAttempt a;std::print("{}\n",a.accepted); // false
+ * ```
+ * @see ODESolver
+ */
+export declare class ODEAttempt {
+    constructor();
+    /**
+     * Actual kernel used for this trial.
+     */
+    kind: ODEAttemptKind;
+    /**
+     * Actual accepted time before the attempt.
+     */
+    time_before: number;
+    /**
+     * Actual finite positive selected step.
+     */
+    step: number;
+    /**
+     * Owned actual unchanged old state.
+     */
+    before: number[];
+    /**
+     * Owned actual finite proposed new state, including rejected RK45 proposals.
+     */
+    proposed: number[];
+    /**
+     * Actual committed time when accepted, old time when rejected.
+     */
+    time_after: number;
+    error_norm: number;
+    /**
+     * Actual widened error normalization fallback.
+     */
+    error_widened: boolean;
+    accepted: boolean;
+    /**
+     * Inclusive actual callback index before the attempt.
+     */
+    evaluation_begin: number;
+    evaluation_end: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Owned original controls/state and actual callback/attempt/accepted-solution histories.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * dm::ode::ODETrace t;std::print("{}\n",t.evaluations.size()); // 0
+ * ```
+ * @see ODESolver
+ */
+export declare class ODETrace {
+    constructor();
+    /**
+     * Original numerical controls.
+     */
+    options: ODEOptions;
+    /**
+     * Original selected policies, excluded from logical scalar quota.
+     */
+    limits: ODEExecutionLimits;
+    /**
+     * Owned original finite initial state.
+     */
+    initial_state: number[];
+    /**
+     * Original finite start time.
+     */
+    start: number;
+    /**
+     * Original finite strictly later end time.
+     */
+    end: number;
+    /**
+     * Actual complete accepted trajectory.
+     */
+    solution: ODESolution;
+    /**
+     * Every actual successful finite callback, including rejected trials/history initialization.
+     */
+    evaluations: ODEEvaluation[];
+    /**
+     * Every actual fixed/startup/Adams/adaptive proposal and decision.
+     */
+    attempts: ODEAttempt[];
+    captured_entries: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Owned-options forward solver with canonical one-step/adaptive/PECE paths.
+ * Different solver objects own their options; concurrency also depends on the
+ * caller's RHS thread safety. Methods use local work buffers and no global state.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * dm::ode::ODESolver s;auto r=s.solve_builtin("exponential_decay",{1.},{1.},0.,.01);std::print("{}\n",r.t.back()); // 0.01
+ * ```
+ *
+ * **References**
+ *
+ * - NIST DLMF3.7(v), Runge-Kutta Method, https://dlmf.nist.gov/3.7.v.
+ * - J. R. Dormand and P. J. Prince(1980), A family of embedded Runge-Kutta formulae, doi:10.1016/0771-050X(80)90013-3. Native controller does not reuse FSAL and rejects nonconforming tiny trials.
+ * @see RHS, ODETrace
  */
 export declare class ODESolver {
     /**
-     * @param options (default: `new ODEOptions()`)
+     * Own and validate the complete original numerical options.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * dm::ode::ODESolver s;std::print("{}\n",s.options().step_size); // 0.01
+     * ```
+     *
+     * **References**
+     *
+     * - NIST DLMF3.7(v), Runge-Kutta Method, https://dlmf.nist.gov/3.7.v.
+     * - J. R. Dormand and P. J. Prince(1980), A family of embedded Runge-Kutta formulae, doi:10.1016/0771-050X(80)90013-3. Native controller does not reuse FSAL and rejects nonconforming tiny trials.
+     * @param options Known method and finite admissible controls, defaults RK4/h.01. (default: `new ODEOptions()`)
+     * @throws {Error} `std::invalid_argument`: If any complete method/numerical control fails.
+     * @see options()
      */
     constructor(options?: ODEOptions);
     /**
-     * C++ `datamunge::ode::ODESolver::solve`
+     * Integrate one complete checked forward initial-value problem.
+     * Complete finite nonempty y0 and finite forward span t_end>t_start with
+     * representable difference are checked before callbacks. Known method, finite
+     * positive step/abs_tol, finite rel_tol>=0 and max_step>=0 are validated, including
+     * inactive numeric controls. Each callback receives a finite fixed-dimensional
+     * stage and must return finite matching dimension; exceptions propagate.
+     * Steps must advance representable time; tiny/nonadvancing steps throw rather
+     * than loop. No absolute1e-14 endpoint skip; successful output reaches t_end.
+     * Adams uses original RK4 startup and clamped order2..4; a shortened final step
+     * uses RK4 instead of applying constant-grid coefficients to unequal spacing.
+     * RK45 does not reuse FSAL and accepts only scaled error<=1, not a tiny-step bypass.
+     * Local error control is not a certified global error, stability or energy bound.
+     * State/control/input references are not retained. Callback effects before a
+     * later error/quota failure persist; no partial solution/trace is returned.
+     * Default work policies:1000000 attempts,7000000 RHS calls,1000000 retained
+     * solution scalar entries; limits overloads allow0 to disable each policy.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * struct F:dm::ode::RHS{std::vector<double>evaluate(double,const std::vector<double>&y)override{return {-y[0]};}};F f;dm::ode::ODESolver s({dm::ode::StepMethod::Euler,4,.25});std::print("{}\n",s.solve(f,{1.},0.,.25).y.back()[0]); // 0.75
+     * ```
+     *
+     * **References**
+     *
+     * - NIST DLMF3.7(v), Runge-Kutta Method, https://dlmf.nist.gov/3.7.v.
+     * - J. R. Dormand and P. J. Prince(1980), A family of embedded Runge-Kutta formulae, doi:10.1016/0771-050X(80)90013-3. Native controller does not reuse FSAL and rejects nonconforming tiny trials.
+     * @param rhs Live derivative callback, finite matching-dimensional outputs required.
+     * @param y0 Original finite nonempty fixed-dimensional state.
+     * @param t_start Original finite initial time.
+     * @param t_end Original finite strictly later terminal time.
+     * @returns Owned actual ODESolution, including both requested endpoint times on success.
+     * @throws {Error} `std::invalid_argument`: If complete controls/state/builtin or callback dimension fails.
+     * @throws {Error} `std::length_error`: If complete/actual count geometry or selected policies fail.
+     * @throws {Error} `std::overflow_error`: If a stage/derivative/proposal or advancing time is not representable.
+     * @throws {Error} `std::bad_alloc`: If owned storage allocation fails.
+     * @see ODEAttempt, ODEEvaluation
      */
     solve(rhs: RHS, y0: number[], t_start: number, t_end: number): ODESolution;
     /**
-     * Same as solve(), but the RHS is one of a fixed set of named systems instead of a
-     * live user-supplied one -- the only way every language binding (not just the ones
-     * with SWIG director support) can use this solver. `params` is interpreted
-     * positionally per system (missing entries fall back to the defaults below):
-     * - "exponential_decay": dy/dt = -k y.                     params = {k=1}, y0 size 1.
-     * - "logistic_growth":   dy/dt = r y (1 - y/K).            params = {r=1, K=1}, y0 size 1.
-     * - "harmonic_oscillator": (x,v), dx/dt=v, dv/dt=-omega^2 x. params = {omega=1}, y0 size 2.
-     * - "van_der_pol":       (x,v), dx/dt=v, dv/dt=mu(1-x^2)v-x. params = {mu=1}, y0 size 2.
-     * - "lorenz": (x,y,z), the classic chaotic system.         params = {sigma=10, rho=28, beta=8/3}, y0 size 3.
-     *   Throws std::invalid_argument for an unknown system name.
+     * Integrate one complete checked forward initial-value problem.
+     * Complete finite nonempty y0 and finite forward span t_end>t_start with
+     * representable difference are checked before callbacks. Known method, finite
+     * positive step/abs_tol, finite rel_tol>=0 and max_step>=0 are validated, including
+     * inactive numeric controls. Each callback receives a finite fixed-dimensional
+     * stage and must return finite matching dimension; exceptions propagate.
+     * Steps must advance representable time; tiny/nonadvancing steps throw rather
+     * than loop. No absolute1e-14 endpoint skip; successful output reaches t_end.
+     * Adams uses original RK4 startup and clamped order2..4; a shortened final step
+     * uses RK4 instead of applying constant-grid coefficients to unequal spacing.
+     * RK45 does not reuse FSAL and accepts only scaled error<=1, not a tiny-step bypass.
+     * Local error control is not a certified global error, stability or energy bound.
+     * State/control/input references are not retained. Callback effects before a
+     * later error/quota failure persist; no partial solution/trace is returned.
+     * Default work policies:1000000 attempts,7000000 RHS calls,1000000 retained
+     * solution scalar entries; limits overloads allow0 to disable each policy.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * struct F:dm::ode::RHS{std::vector<double>evaluate(double,const std::vector<double>&y)override{return {-y[0]};}};F f;dm::ode::ODESolver s;std::print("{}\n",s.solve_with_limits(f,{1.},0.,.01,{}).t.back()); // 0.01
+     * ```
+     *
+     * **References**
+     *
+     * - NIST DLMF3.7(v), Runge-Kutta Method, https://dlmf.nist.gov/3.7.v.
+     * - J. R. Dormand and P. J. Prince(1980), A family of embedded Runge-Kutta formulae, doi:10.1016/0771-050X(80)90013-3. Native controller does not reuse FSAL and rejects nonconforming tiny trials.
+     * @param rhs Live derivative callback, finite matching-dimensional outputs required.
+     * @param y0 Original finite nonempty fixed-dimensional state.
+     * @param t_start Original finite initial time.
+     * @param t_end Original finite strictly later terminal time.
+     * @param limits Actual work/output/history policies, defaults documented above;0 disables each. (default: `new ODEExecutionLimits()`)
+     * @returns Owned actual ODESolution, including both requested endpoint times on success.
+     * @throws {Error} `std::invalid_argument`: If complete controls/state/builtin or callback dimension fails.
+     * @throws {Error} `std::length_error`: If complete/actual count geometry or selected policies fail.
+     * @throws {Error} `std::overflow_error`: If a stage/derivative/proposal or advancing time is not representable.
+     * @throws {Error} `std::bad_alloc`: If owned storage allocation fails.
+     * @see ODEAttempt, ODEEvaluation
+     */
+    solve_with_limits(rhs: RHS, y0: number[], t_start: number, t_end: number, limits?: ODEExecutionLimits): ODESolution;
+    /**
+     * Capture actual canonical forward ODE callback and step histories.
+     * Complete finite nonempty y0 and finite forward span t_end>t_start with
+     * representable difference are checked before callbacks. Known method, finite
+     * positive step/abs_tol, finite rel_tol>=0 and max_step>=0 are validated, including
+     * inactive numeric controls. Each callback receives a finite fixed-dimensional
+     * stage and must return finite matching dimension; exceptions propagate.
+     * Steps must advance representable time; tiny/nonadvancing steps throw rather
+     * than loop. No absolute1e-14 endpoint skip; successful output reaches t_end.
+     * Adams uses original RK4 startup and clamped order2..4; a shortened final step
+     * uses RK4 instead of applying constant-grid coefficients to unequal spacing.
+     * RK45 does not reuse FSAL and accepts only scaled error<=1, not a tiny-step bypass.
+     * Local error control is not a certified global error, stability or energy bound.
+     * State/control/input references are not retained. Callback effects before a
+     * later error/quota failure persist; no partial solution/trace is returned.
+     * Default work policies:1000000 attempts,7000000 RHS calls,1000000 retained
+     * solution scalar entries; limits overloads allow0 to disable each policy.
+     * Trace units root8+D(options6,times2,initialD), each accepted solution
+     * sample1+D, each callback2+2D, each actual attempt1+2D. Default1000000,
+     * 0 disables; admission precedes each retained copy/append. This is not RAM.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * struct F:dm::ode::RHS{std::vector<double>evaluate(double,const std::vector<double>&y)override{return {-y[0]};}};F f;dm::ode::ODESolver s;std::print("{}\n",s.trace(f,{1.},0.,.01).evaluations.size()); // 4
+     * ```
+     *
+     * **References**
+     *
+     * - NIST DLMF3.7(v), Runge-Kutta Method, https://dlmf.nist.gov/3.7.v.
+     * - J. R. Dormand and P. J. Prince(1980), A family of embedded Runge-Kutta formulae, doi:10.1016/0771-050X(80)90013-3. Native controller does not reuse FSAL and rejects nonconforming tiny trials.
+     * @param rhs Live derivative callback, finite matching-dimensional outputs required.
+     * @param y0 Original finite nonempty fixed-dimensional state.
+     * @param t_start Original finite initial time.
+     * @param t_end Original finite strictly later terminal time.
+     * @param limits Actual work/output/history policies, defaults documented above;0 disables each. (default: `new ODEExecutionLimits()`)
+     * @returns Owned actual ODETrace, including both requested endpoint times on success.
+     * @throws {Error} `std::invalid_argument`: If complete controls/state/builtin or callback dimension fails.
+     * @throws {Error} `std::length_error`: If complete/actual count geometry or selected policies fail.
+     * @throws {Error} `std::overflow_error`: If a stage/derivative/proposal or advancing time is not representable.
+     * @throws {Error} `std::bad_alloc`: If owned storage allocation fails.
+     * @see ODEAttempt, ODEEvaluation
+     */
+    trace(rhs: RHS, y0: number[], t_start: number, t_end: number, limits?: ODEExecutionLimits): ODETrace;
+    /**
+     * Integrate one complete checked forward initial-value problem.
+     * Complete finite nonempty y0 and finite forward span t_end>t_start with
+     * representable difference are checked before callbacks. Known method, finite
+     * positive step/abs_tol, finite rel_tol>=0 and max_step>=0 are validated, including
+     * inactive numeric controls. Each callback receives a finite fixed-dimensional
+     * stage and must return finite matching dimension; exceptions propagate.
+     * Steps must advance representable time; tiny/nonadvancing steps throw rather
+     * than loop. No absolute1e-14 endpoint skip; successful output reaches t_end.
+     * Adams uses original RK4 startup and clamped order2..4; a shortened final step
+     * uses RK4 instead of applying constant-grid coefficients to unequal spacing.
+     * RK45 does not reuse FSAL and accepts only scaled error<=1, not a tiny-step bypass.
+     * Local error control is not a certified global error, stability or energy bound.
+     * State/control/input references are not retained. Callback effects before a
+     * later error/quota failure persist; no partial solution/trace is returned.
+     * Builtins:exponential_decay(k=1,dim1),logistic_growth(r=1,K=1,dim1),
+     * harmonic_oscillator(omega=1,dim2),van_der_pol(mu=1,dim2),
+     * lorenz(sigma=10,rho=28,beta=8/3,dim3).Missing parameters use defaults;
+     * finite extras ignored. All supplied parameters finite, logistic K>0, finite
+     * omega squared required. Exact state dimension is checked before integration.
+     * Default work policies:1000000 attempts,7000000 RHS calls,1000000 retained
+     * solution scalar entries; limits overloads allow0 to disable each policy.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * dm::ode::ODESolver s;std::print("{}\n",s.solve_builtin("exponential_decay",{1.},{1.},0.,.01).function_evaluations); // 4
+     * ```
+     *
+     * **References**
+     *
+     * - NIST DLMF3.7(v), Runge-Kutta Method, https://dlmf.nist.gov/3.7.v.
+     * - J. R. Dormand and P. J. Prince(1980), A family of embedded Runge-Kutta formulae, doi:10.1016/0771-050X(80)90013-3. Native controller does not reuse FSAL and rejects nonconforming tiny trials.
+     * @param system Existing builtin identifier, exact spellings above.
+     * @param params Complete finite positional parameters, missing entries defaulted.
+     * @param y0 Original finite nonempty fixed-dimensional state.
+     * @param t_start Original finite initial time.
+     * @param t_end Original finite strictly later terminal time.
+     * @returns Owned actual ODESolution, including both requested endpoint times on success.
+     * @throws {Error} `std::invalid_argument`: If complete controls/state/builtin or callback dimension fails.
+     * @throws {Error} `std::length_error`: If complete/actual count geometry or selected policies fail.
+     * @throws {Error} `std::overflow_error`: If a stage/derivative/proposal or advancing time is not representable.
+     * @throws {Error} `std::bad_alloc`: If owned storage allocation fails.
+     * @see ODEAttempt, ODEEvaluation
      */
     solve_builtin(system: string, params: number[], y0: number[], t_start: number, t_end: number): ODESolution;
     /**
-     * The options this ODESolver was configured with.
-     * @returns The stored options.
+     * Integrate one complete checked forward initial-value problem.
+     * Complete finite nonempty y0 and finite forward span t_end>t_start with
+     * representable difference are checked before callbacks. Known method, finite
+     * positive step/abs_tol, finite rel_tol>=0 and max_step>=0 are validated, including
+     * inactive numeric controls. Each callback receives a finite fixed-dimensional
+     * stage and must return finite matching dimension; exceptions propagate.
+     * Steps must advance representable time; tiny/nonadvancing steps throw rather
+     * than loop. No absolute1e-14 endpoint skip; successful output reaches t_end.
+     * Adams uses original RK4 startup and clamped order2..4; a shortened final step
+     * uses RK4 instead of applying constant-grid coefficients to unequal spacing.
+     * RK45 does not reuse FSAL and accepts only scaled error<=1, not a tiny-step bypass.
+     * Local error control is not a certified global error, stability or energy bound.
+     * State/control/input references are not retained. Callback effects before a
+     * later error/quota failure persist; no partial solution/trace is returned.
+     * Builtins:exponential_decay(k=1,dim1),logistic_growth(r=1,K=1,dim1),
+     * harmonic_oscillator(omega=1,dim2),van_der_pol(mu=1,dim2),
+     * lorenz(sigma=10,rho=28,beta=8/3,dim3).Missing parameters use defaults;
+     * finite extras ignored. All supplied parameters finite, logistic K>0, finite
+     * omega squared required. Exact state dimension is checked before integration.
+     * Default work policies:1000000 attempts,7000000 RHS calls,1000000 retained
+     * solution scalar entries; limits overloads allow0 to disable each policy.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * dm::ode::ODESolver s;std::print("{}\n",s.solve_builtin_with_limits("exponential_decay",{1.},{1.},0.,.01,{}).size()); // 2
+     * ```
+     *
+     * **References**
+     *
+     * - NIST DLMF3.7(v), Runge-Kutta Method, https://dlmf.nist.gov/3.7.v.
+     * - J. R. Dormand and P. J. Prince(1980), A family of embedded Runge-Kutta formulae, doi:10.1016/0771-050X(80)90013-3. Native controller does not reuse FSAL and rejects nonconforming tiny trials.
+     * @param system Existing builtin identifier, exact spellings above.
+     * @param params Complete finite positional parameters, missing entries defaulted.
+     * @param y0 Original finite nonempty fixed-dimensional state.
+     * @param t_start Original finite initial time.
+     * @param t_end Original finite strictly later terminal time.
+     * @param limits Actual work/output/history policies, defaults documented above;0 disables each. (default: `new ODEExecutionLimits()`)
+     * @returns Owned actual ODESolution, including both requested endpoint times on success.
+     * @throws {Error} `std::invalid_argument`: If complete controls/state/builtin or callback dimension fails.
+     * @throws {Error} `std::length_error`: If complete/actual count geometry or selected policies fail.
+     * @throws {Error} `std::overflow_error`: If a stage/derivative/proposal or advancing time is not representable.
+     * @throws {Error} `std::bad_alloc`: If owned storage allocation fails.
+     * @see ODEAttempt, ODEEvaluation
+     */
+    solve_builtin_with_limits(system: string, params: number[], y0: number[], t_start: number, t_end: number, limits?: ODEExecutionLimits): ODESolution;
+    /**
+     * Capture actual canonical forward ODE callback and step histories.
+     * Complete finite nonempty y0 and finite forward span t_end>t_start with
+     * representable difference are checked before callbacks. Known method, finite
+     * positive step/abs_tol, finite rel_tol>=0 and max_step>=0 are validated, including
+     * inactive numeric controls. Each callback receives a finite fixed-dimensional
+     * stage and must return finite matching dimension; exceptions propagate.
+     * Steps must advance representable time; tiny/nonadvancing steps throw rather
+     * than loop. No absolute1e-14 endpoint skip; successful output reaches t_end.
+     * Adams uses original RK4 startup and clamped order2..4; a shortened final step
+     * uses RK4 instead of applying constant-grid coefficients to unequal spacing.
+     * RK45 does not reuse FSAL and accepts only scaled error<=1, not a tiny-step bypass.
+     * Local error control is not a certified global error, stability or energy bound.
+     * State/control/input references are not retained. Callback effects before a
+     * later error/quota failure persist; no partial solution/trace is returned.
+     * Builtins:exponential_decay(k=1,dim1),logistic_growth(r=1,K=1,dim1),
+     * harmonic_oscillator(omega=1,dim2),van_der_pol(mu=1,dim2),
+     * lorenz(sigma=10,rho=28,beta=8/3,dim3).Missing parameters use defaults;
+     * finite extras ignored. All supplied parameters finite, logistic K>0, finite
+     * omega squared required. Exact state dimension is checked before integration.
+     * Default work policies:1000000 attempts,7000000 RHS calls,1000000 retained
+     * solution scalar entries; limits overloads allow0 to disable each policy.
+     * Trace units root8+D(options6,times2,initialD), each accepted solution
+     * sample1+D, each callback2+2D, each actual attempt1+2D. Default1000000,
+     * 0 disables; admission precedes each retained copy/append. This is not RAM.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * dm::ode::ODESolver s;std::print("{}\n",s.trace_builtin("exponential_decay",{1.},{1.},0.,.01).attempts.size()); // 1
+     * ```
+     *
+     * **References**
+     *
+     * - NIST DLMF3.7(v), Runge-Kutta Method, https://dlmf.nist.gov/3.7.v.
+     * - J. R. Dormand and P. J. Prince(1980), A family of embedded Runge-Kutta formulae, doi:10.1016/0771-050X(80)90013-3. Native controller does not reuse FSAL and rejects nonconforming tiny trials.
+     * @param system Existing builtin identifier, exact spellings above.
+     * @param params Complete finite positional parameters, missing entries defaulted.
+     * @param y0 Original finite nonempty fixed-dimensional state.
+     * @param t_start Original finite initial time.
+     * @param t_end Original finite strictly later terminal time.
+     * @param limits Actual work/output/history policies, defaults documented above;0 disables each. (default: `new ODEExecutionLimits()`)
+     * @returns Owned actual ODETrace, including both requested endpoint times on success.
+     * @throws {Error} `std::invalid_argument`: If complete controls/state/builtin or callback dimension fails.
+     * @throws {Error} `std::length_error`: If complete/actual count geometry or selected policies fail.
+     * @throws {Error} `std::overflow_error`: If a stage/derivative/proposal or advancing time is not representable.
+     * @throws {Error} `std::bad_alloc`: If owned storage allocation fails.
+     * @see ODEAttempt, ODEEvaluation
+     */
+    trace_builtin(system: string, params: number[], y0: number[], t_start: number, t_end: number, limits?: ODEExecutionLimits): ODETrace;
+    /**
+     * Borrow the owned validated numerical options without mutation.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * dm::ode::ODESolver s;std::print("{}\n",s.options().multistep_order); // 4
+     * ```
+     * @returns Read-only reference valid until this solver is destroyed.
+     * @see ODEOptions
      */
     options(): ODEOptions;
     /**
@@ -8185,7 +10494,7 @@ export declare class GAOptions {
 
 /**
  * GeneticAlgorithm on the ArbitraryFunction callback interface.
- * Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best visited point and can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate.
+ * Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best member of the final population. Retaining at least one elite ensures that this member ties the best visited loss. The solver can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate.
  * The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed;
  * coordinates mutate in place and can retain a partial state if a callback throws.
  * Calls use local optimizer state and propagate callback exceptions; sharing a mutable
@@ -8220,7 +10529,7 @@ export declare class GeneticAlgorithm {
     constructor(options?: GAOptions);
     /**
      * Run GeneticAlgorithm from the supplied point using the configured finite budget.
-     * Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best visited point and can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate.
+     * Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best member of the final population. Retaining at least one elite ensures that this member ties the best visited loss. The solver can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate.
      *
      * **Example**
      *
@@ -8577,6 +10886,274 @@ export declare class InteriorPoint {
      * Releases the native object now instead of when it is garbage collected; later calls fail.
      */
     close(): void;
+}
+
+/**
+ * The Gaussian-process posterior of the objective at one point.
+ */
+export declare class SurrogatePrediction {
+    constructor();
+    /**
+     * Posterior mean, in the units of the objective.
+     */
+    mean: number;
+    /**
+     * Posterior standard deviation of the noise-free objective.
+     */
+    sd: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Joint noise-free Gaussian process posterior for an ordered set of queries.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const dm::optim::GaussianJointPosterior posterior;
+ * std::print("{}\n", posterior.mean.size()); // 0
+ * ```
+ * @see RBFGaussianProcessSurrogate::joint_posterior()
+ */
+export declare class GaussianJointPosterior {
+    constructor();
+    /**
+     * Latent means in objective units, in query order.
+     */
+    mean: number[];
+    /**
+     * Row-major latent covariance in squared objective units.
+     */
+    covariance: number[];
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Settings of an RBFGaussianProcessSurrogate built from options.
+ *
+ * With `normalize_values`, the values are centred at their mean (the prior mean) and divided
+ * by their standard deviation before fitting, so the kernel hyperparameters are on a fixed
+ * scale whatever the objective's units. With `fit_hyperparameters`, the length scale (and the
+ * signal variance, in closed form) maximise the marginal likelihood at every fit().
+ */
+export declare class GaussianProcessSurrogateOptions {
+    constructor();
+    /**
+     * Kernel length scale
+     *
+     * `\ell` (the starting point is ignored when fitting).
+     */
+    length_scale: number;
+    /**
+     * Prior variance
+     *
+     * `s` of the (normalised) objective.
+     */
+    signal_variance: number;
+    /**
+     * Observation-noise variance added to the kernel diagonal. When fitting, the ratio
+     * noise / signal_variance (the nugget) is what stays fixed.
+     */
+    noise: number;
+    /**
+     * Centre and scale the values before fitting.
+     */
+    normalize_values: boolean;
+    /**
+     * Maximise the marginal likelihood over
+     *
+     * `\ell` (and `s`) at every fit().
+     */
+    fit_hyperparameters: boolean;
+    /**
+     * Also maximise over the nugget ratio, from
+     *
+     * `10^{-8}` to 1 (for noisy objectives).
+     */
+    fit_noise: boolean;
+    /**
+     * Smallest length scale searched; 0 means 0.01 times the widest coordinate range of the data.
+     */
+    min_length_scale: number;
+    /**
+     * Largest length scale searched; 0 means 10 times the widest coordinate range of the data.
+     */
+    max_length_scale: number;
+    /**
+     * Acquisition function.
+     */
+    acquisition: Acquisition;
+    /**
+     * Margin
+     *
+     * `\xi` for expected or probability of improvement, in objective units.
+     */
+    exploration: number;
+    /**
+     * Width
+     *
+     * `\kappa` of the lower confidence bound.
+     */
+    kappa: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Exact Gaussian-process regression surrogate with the squared-exponential kernel
+ *
+ * `s\exp(-\lVert x-x'\rVert^2/2\ell^2)`.
+ *
+ * fit() Cholesky-factors `K+\sigma_n^2I=LL^\top` once and solves for
+ * `\alpha=(K+\sigma_n^2I)^{-1}(y-m)`; predict() then needs one forward substitution per point:
+ * mean `m+k_*^\top\alpha` and variance `s-\lVert L^{-1}k_*\rVert^2`.
+ *
+ * The two-argument constructor keeps the original fixed setup: zero prior mean, unit signal
+ * variance, no normalisation or fitting, expected improvement. The options constructor adds
+ * value normalisation, marginal-likelihood fitting of the hyperparameters and other acquisitions.
+ * The kernel is isotropic, so the inputs should be on comparable scales.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * dm::optim::RBFGaussianProcessSurrogate gp(1.0, 0.0);
+ * gp.fit({{0.0}, {2.0}}, {1.0, -1.0});
+ * const auto p = gp.predict({1.0});
+ * std::print("{:.4f} {:.4f}\n", p.mean, p.sd);  // 0.0000 0.5933
+ * ```
+ *
+ * **References**
+ *
+ * - C. E. Rasmussen and C. K. I. Williams (2006). *Gaussian Processes for Machine Learning*,
+ *   chapters 2 and 5. MIT Press.
+ *
+ * Subclass it in JavaScript (`class Mine extends RBFGaussianProcessSurrogate {...}`): methods of the subclass override the C++ virtual methods.
+ * @see BayesianOptimization, expected_improvement()
+ */
+export declare class RBFGaussianProcessSurrogate extends BayesianSurrogate {
+    /**
+     * Fixed-hyperparameter surrogate with expected improvement.
+     *
+     * `\ell>0`.
+     *
+     * `\ge0`).
+     * @param length_scale Kernel length scale (default: `1.0`)
+     * @param noise Noise variance added to the diagonal ( (default: `9.9999999999999995E-7`)
+     * @throws {Error} `std::invalid_argument`: If `length_scale` is not positive or `noise` is negative.
+     */
+    constructor(length_scale?: number, noise?: number);
+    /**
+     * Surrogate configured by options.
+     * @param options Hyperparameters, normalisation, fitting and acquisition.
+     * @throws {Error} `std::invalid_argument`: If a hyperparameter or length-scale bound is out of range.
+     */
+    constructor(options: GaussianProcessSurrogateOptions);
+    /**
+     * The options this surrogate was built with.
+     * @returns The stored options.
+     */
+    options(): GaussianProcessSurrogateOptions;
+    /**
+     * Fits the GP to the observations (refitting hyperparameters when configured).
+     * @param points Training points, all of one dimension.
+     * @param values Objective values.
+     * @throws {Error} `std::invalid_argument`: If the data are empty, mismatched or of mixed dimension.
+     */
+    fit(points: number[][], values: number[]): void;
+    /**
+     * The configured acquisition at `point`.
+     * @param point Candidate point.
+     * @param incumbent Smallest observed value.
+     * @returns The acquisition value (0 before fitting).
+     * @throws {Error} `std::invalid_argument`: If `point` has the wrong dimension.
+     */
+    acquisition(point: number[], incumbent: number): number;
+    /**
+     * Posterior mean and standard deviation at `point`.
+     * @param point Query point.
+     * @returns The prediction, in the objective's units.
+     * @throws {Error} `std::logic_error`: Before fit().
+     * @throws {Error} `std::invalid_argument`: If `point` has the wrong dimension.
+     */
+    predict(point: number[]): SurrogatePrediction;
+    /**
+     * Return the joint noise-free posterior over ordered query points.
+     * Observation noise conditions the training fit and is excluded from
+     * query covariance. Identical queries have the same latent variable.
+     * An empty query list after fitting gives an empty posterior.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * dm::optim::RBFGaussianProcessSurrogate gp(1.0, 0.1);
+     * gp.fit({{0.0}}, {1.0});
+     * const auto joint = gp.joint_posterior({{0.2}, {0.4}});
+     * std::print("{}\n", joint.covariance.size()); // 4
+     * ```
+     * @param queries Finite coordinates matching the training dimension.
+     * @returns Owned means and square row-major covariance.
+     * @throws {Error} `std::logic_error`: The model has yet to be fitted.
+     * @throws {Error} `std::invalid_argument`: A query has nonfinite coordinates or the wrong shape.
+     * @throws {Error} `std::length_error`: Posterior matrix size exceeds representable range.
+     * @see predict(), joint_bayesian_search()
+     */
+    joint_posterior(queries: number[][]): GaussianJointPosterior;
+    /**
+     * Log marginal likelihood of the values at the hyperparameters in use.
+     *
+     * The density of the raw values under the GP with the prior mean (and scale, when
+     * normalising) treated as known, so it includes the `-n\log(\text{scale})` Jacobian.
+     *
+     * `\log p(y)`; 0 before fit().
+     */
+    log_marginal_likelihood(): number;
+    /**
+     * The length scale in use (fitted, after fit(), when fitting is on).
+     *
+     * `\ell`.
+     */
+    length_scale(): number;
+    /**
+     * The noise variance in use, in normalised units when normalising.
+     *
+     * `\sigma_n^2`.
+     */
+    noise(): number;
+    /**
+     * The signal variance in use, in normalised units when normalising.
+     *
+     * `s`.
+     */
+    signal_variance(): number;
+    /**
+     * The prior mean: the mean of the values when normalising, else 0.
+     *
+     * `m`.
+     */
+    prior_mean(): number;
+    /**
+     * The value scale: the standard deviation of the values when normalising, else 1.
+     * @returns The scale.
+     */
+    value_scale(): number;
+    /**
+     * The training points from the last fit() (empty before fitting).
+     * @returns The stored training points.
+     */
+    points(): number[][];
+    /**
+     * The training values from the last fit() (empty before fitting).
+     * @returns The stored training values.
+     */
+    values(): number[];
 }
 
 /**
@@ -9744,225 +12321,6 @@ export declare class RMSProp {
 }
 
 /**
- * The Gaussian-process posterior of the objective at one point.
- */
-export declare class SurrogatePrediction {
-    constructor();
-    /**
-     * Posterior mean, in the units of the objective.
-     */
-    mean: number;
-    /**
-     * Posterior standard deviation of the noise-free objective.
-     */
-    sd: number;
-    /**
-     * Releases the native object now instead of when it is garbage collected; later calls fail.
-     */
-    close(): void;
-}
-
-/**
- * Settings of an RBFGaussianProcessSurrogate built from options.
- *
- * With `normalize_values`, the values are centred at their mean (the prior mean) and divided
- * by their standard deviation before fitting, so the kernel hyperparameters are on a fixed
- * scale whatever the objective's units. With `fit_hyperparameters`, the length scale (and the
- * signal variance, in closed form) maximise the marginal likelihood at every fit().
- */
-export declare class GaussianProcessSurrogateOptions {
-    constructor();
-    /**
-     * Kernel length scale
-     *
-     * `\ell` (the starting point is ignored when fitting).
-     */
-    length_scale: number;
-    /**
-     * Prior variance
-     *
-     * `s` of the (normalised) objective.
-     */
-    signal_variance: number;
-    /**
-     * Observation-noise variance added to the kernel diagonal. When fitting, the ratio
-     * noise / signal_variance (the nugget) is what stays fixed.
-     */
-    noise: number;
-    /**
-     * Centre and scale the values before fitting.
-     */
-    normalize_values: boolean;
-    /**
-     * Maximise the marginal likelihood over
-     *
-     * `\ell` (and `s`) at every fit().
-     */
-    fit_hyperparameters: boolean;
-    /**
-     * Also maximise over the nugget ratio, from
-     *
-     * `10^{-8}` to 1 (for noisy objectives).
-     */
-    fit_noise: boolean;
-    /**
-     * Smallest length scale searched; 0 means 0.01 times the widest coordinate range of the data.
-     */
-    min_length_scale: number;
-    /**
-     * Largest length scale searched; 0 means 10 times the widest coordinate range of the data.
-     */
-    max_length_scale: number;
-    /**
-     * Acquisition function.
-     */
-    acquisition: Acquisition;
-    /**
-     * Margin
-     *
-     * `\xi` for expected or probability of improvement, in objective units.
-     */
-    exploration: number;
-    /**
-     * Width
-     *
-     * `\kappa` of the lower confidence bound.
-     */
-    kappa: number;
-    /**
-     * Releases the native object now instead of when it is garbage collected; later calls fail.
-     */
-    close(): void;
-}
-
-/**
- * Exact Gaussian-process regression surrogate with the squared-exponential kernel
- *
- * `s\exp(-\lVert x-x'\rVert^2/2\ell^2)`.
- *
- * fit() Cholesky-factors `K+\sigma_n^2I=LL^\top` once and solves for
- * `\alpha=(K+\sigma_n^2I)^{-1}(y-m)`; predict() then needs one forward substitution per point:
- * mean `m+k_*^\top\alpha` and variance `s-\lVert L^{-1}k_*\rVert^2`.
- *
- * The two-argument constructor keeps the original fixed setup: zero prior mean, unit signal
- * variance, no normalisation or fitting, expected improvement. The options constructor adds
- * value normalisation, marginal-likelihood fitting of the hyperparameters and other acquisitions.
- * The kernel is isotropic, so the inputs should be on comparable scales.
- *
- * **Example**
- *
- * ```cpp
- * dm::optim::RBFGaussianProcessSurrogate gp(1.0, 0.0);
- * gp.fit({{0.0}, {2.0}}, {1.0, -1.0});
- * const auto p = gp.predict({1.0});
- * std::print("{:.4f} {:.4f}\n", p.mean, p.sd);  // 0.0000 0.5933
- * ```
- *
- * **References**
- *
- * - C. E. Rasmussen and C. K. I. Williams (2006). *Gaussian Processes for Machine Learning*,
- *   chapters 2 and 5. MIT Press.
- *
- * Subclass it in JavaScript (`class Mine extends RBFGaussianProcessSurrogate {...}`): methods of the subclass override the C++ virtual methods.
- * @see BayesianOptimization, expected_improvement()
- */
-export declare class RBFGaussianProcessSurrogate extends BayesianSurrogate {
-    /**
-     * Fixed-hyperparameter surrogate with expected improvement.
-     *
-     * `\ell>0`.
-     *
-     * `\ge0`).
-     * @param length_scale Kernel length scale (default: `1.0`)
-     * @param noise Noise variance added to the diagonal ( (default: `9.9999999999999995E-7`)
-     * @throws {Error} `std::invalid_argument`: If `length_scale` is not positive or `noise` is negative.
-     */
-    constructor(length_scale?: number, noise?: number);
-    /**
-     * Surrogate configured by options.
-     * @param options Hyperparameters, normalisation, fitting and acquisition.
-     * @throws {Error} `std::invalid_argument`: If a hyperparameter or length-scale bound is out of range.
-     */
-    constructor(options: GaussianProcessSurrogateOptions);
-    /**
-     * The options this surrogate was built with.
-     * @returns The stored options.
-     */
-    options(): GaussianProcessSurrogateOptions;
-    /**
-     * Fits the GP to the observations (refitting hyperparameters when configured).
-     * @param points Training points, all of one dimension.
-     * @param values Objective values.
-     * @throws {Error} `std::invalid_argument`: If the data are empty, mismatched or of mixed dimension.
-     */
-    fit(points: number[][], values: number[]): void;
-    /**
-     * The configured acquisition at `point`.
-     * @param point Candidate point.
-     * @param incumbent Smallest observed value.
-     * @returns The acquisition value (0 before fitting).
-     * @throws {Error} `std::invalid_argument`: If `point` has the wrong dimension.
-     */
-    acquisition(point: number[], incumbent: number): number;
-    /**
-     * Posterior mean and standard deviation at `point`.
-     * @param point Query point.
-     * @returns The prediction, in the objective's units.
-     * @throws {Error} `std::logic_error`: Before fit().
-     * @throws {Error} `std::invalid_argument`: If `point` has the wrong dimension.
-     */
-    predict(point: number[]): SurrogatePrediction;
-    /**
-     * Log marginal likelihood of the values at the hyperparameters in use.
-     *
-     * The density of the raw values under the GP with the prior mean (and scale, when
-     * normalising) treated as known, so it includes the `-n\log(\text{scale})` Jacobian.
-     *
-     * `\log p(y)`; 0 before fit().
-     */
-    log_marginal_likelihood(): number;
-    /**
-     * The length scale in use (fitted, after fit(), when fitting is on).
-     *
-     * `\ell`.
-     */
-    length_scale(): number;
-    /**
-     * The noise variance in use, in normalised units when normalising.
-     *
-     * `\sigma_n^2`.
-     */
-    noise(): number;
-    /**
-     * The signal variance in use, in normalised units when normalising.
-     *
-     * `s`.
-     */
-    signal_variance(): number;
-    /**
-     * The prior mean: the mean of the values when normalising, else 0.
-     *
-     * `m`.
-     */
-    prior_mean(): number;
-    /**
-     * The value scale: the standard deviation of the values when normalising, else 1.
-     * @returns The scale.
-     */
-    value_scale(): number;
-    /**
-     * The training points from the last fit() (empty before fitting).
-     * @returns The stored training points.
-     */
-    points(): number[][];
-    /**
-     * The training values from the last fit() (empty before fitting).
-     * @returns The stored training values.
-     */
-    values(): number[];
-}
-
-/**
  * Configuration for SGD; fields retain their documented native defaults.
  * Supply finite values in the supported ranges. Controls are copied at construction;
  * validation, stopping and loss scaling belong to optimize().
@@ -10650,53 +13008,6 @@ export declare class WhaleOptimization {
 }
 
 /**
- * C++ class `datamunge::fda::BSplineBasis`
- */
-export declare class BSplineBasis {
-    /**
-     * Degree-0 basis with knots {0, 1}: one constant function on [0, 1].
-     *
-     * Exists so containers (and binding-generated vectors) of bases can be default
-     * constructed; assign a real basis before use.
-     *
-     * **Example**
-     *
-     * ```cpp
-     * dm::fda::BSplineBasis b;
-     * std::print("{} {}\n", b.degree(), b.basis_size()); // 0 1
-     * ```
-     */
-    constructor();
-    constructor(degree: number, knots: number[]);
-    /**
-     * C++ `datamunge::fda::BSplineBasis::open_uniform`
-     * @param min_x (default: `0.0`)
-     * @param max_x (default: `1.0`)
-     */
-    static open_uniform(degree: number, basis_size: number, min_x?: number, max_x?: number): BSplineBasis;
-    /**
-     * C++ `datamunge::fda::BSplineBasis::degree`
-     */
-    degree(): number;
-    /**
-     * C++ `datamunge::fda::BSplineBasis::basis_size`
-     */
-    basis_size(): number;
-    /**
-     * C++ `datamunge::fda::BSplineBasis::knots`
-     */
-    knots(): number[];
-    /**
-     * C++ `datamunge::fda::BSplineBasis::domain`
-     */
-    domain(): [number, number];
-    /**
-     * Releases the native object now instead of when it is garbage collected; later calls fail.
-     */
-    close(): void;
-}
-
-/**
  * Owned hypothesis-test result, analogous to R's htest list.
  * Each test documents which fields it populates and what its interval estimates.
  * Unused numeric fields retain zero; this default is storage, not a claim of zero effect.
@@ -10762,6 +13073,143 @@ export declare class HypothesisTestResult {
      * Owned human-readable method, including relevant approximation labels.
      */
     method: string;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * C++ class `datamunge::fda::BSplineBasis`
+ */
+export declare class BSplineBasis {
+    /**
+     * Degree-0 basis with knots {0, 1}: one constant function on [0, 1].
+     *
+     * Exists so containers (and binding-generated vectors) of bases can be default
+     * constructed; assign a real basis before use.
+     *
+     * **Example**
+     *
+     * ```cpp
+     * dm::fda::BSplineBasis b;
+     * std::print("{} {}\n", b.degree(), b.basis_size()); // 0 1
+     * ```
+     */
+    constructor();
+    constructor(degree: number, knots: number[]);
+    /**
+     * C++ `datamunge::fda::BSplineBasis::open_uniform`
+     * @param min_x (default: `0.0`)
+     * @param max_x (default: `1.0`)
+     */
+    static open_uniform(degree: number, basis_size: number, min_x?: number, max_x?: number): BSplineBasis;
+    /**
+     * C++ `datamunge::fda::BSplineBasis::degree`
+     */
+    degree(): number;
+    /**
+     * C++ `datamunge::fda::BSplineBasis::basis_size`
+     */
+    basis_size(): number;
+    /**
+     * C++ `datamunge::fda::BSplineBasis::knots`
+     */
+    knots(): number[];
+    /**
+     * C++ `datamunge::fda::BSplineBasis::domain`
+     */
+    domain(): [number, number];
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * One Games–Howell contrast between two independent groups.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto row = dm::stats::games_howell({1, 2, 3, 4}, {2, 2}).front();
+ * std::print("{:.0f}\n", row.difference); // 2
+ * ```
+ * @see games_howell()
+ */
+export declare class GamesHowellComparison {
+    constructor();
+    /**
+     * Zero-based index of the later group in the input.
+     */
+    group1: number;
+    /**
+     * Zero-based index of the earlier group in the input.
+     */
+    group2: number;
+    /**
+     * Mean of group1 minus mean of group2, in observation units.
+     */
+    difference: number;
+    /**
+     * Pair-specific Welch–Satterthwaite degrees of freedom.
+     */
+    degrees_of_freedom: number;
+    /**
+     * Lower approximate simultaneous confidence bound.
+     */
+    lower: number;
+    /**
+     * Upper approximate simultaneous confidence bound.
+     */
+    upper: number;
+    /**
+     * Studentized-range upper tail for the pair within the whole family.
+     */
+    p_adjusted: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * One pair in Dunn's multiple comparisons of pooled mean ranks.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto row = dm::stats::dunn_test({1, 2, 4, 5}, {2, 2}).front();
+ * std::print("{:.0f}\n", row.rank_difference); // 2
+ * ```
+ * @see dunn_test()
+ */
+export declare class DunnComparison {
+    constructor();
+    /**
+     * Zero-based index of the later group in the input.
+     */
+    group1: number;
+    /**
+     * Zero-based index of the earlier group in the input.
+     */
+    group2: number;
+    /**
+     * Pooled mean rank of group1 minus that of group2.
+     */
+    rank_difference: number;
+    /**
+     * Signed normal z statistic.
+     */
+    statistic: number;
+    /**
+     * Two-sided asymptotic p-value without adjustment.
+     */
+    p_value: number;
+    /**
+     * p-value adjusted over the returned comparisons.
+     */
+    p_adjusted: number;
     /**
      * Releases the native object now instead of when it is garbage collected; later calls fail.
      */
@@ -11142,6 +13590,103 @@ export declare class ExponentialSmoothing {
      * Point forecasts for the next `horizon` periods.
      */
     forecast(horizon: number): number[];
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Confidence bounds for a difference of two independent binomial proportions.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto ci = dm::stats::newcombe_difference_interval(3, 10, 1, 10);
+ * std::print("{:.1f}\n", ci.difference); // 0.2
+ * ```
+ * @see newcombe_difference_interval()
+ */
+export declare class ProportionDifferenceInterval {
+    constructor();
+    /**
+     * Observed first proportion minus second proportion.
+     */
+    difference: number;
+    /**
+     * Lower Newcombe confidence bound.
+     */
+    lower: number;
+    /**
+     * Upper Newcombe confidence bound.
+     */
+    upper: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Confidence bounds on the ratio of two independent binomial risks.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto ci = dm::stats::risk_ratio_score_interval(10, 20, 5, 20);
+ * std::print("{}\n", *ci.estimate); // 2
+ * ```
+ *
+ * **References**
+ *
+ * - P. A. R. Koopman (1984), https://doi.org/10.2307/2531405
+ * @see risk_ratio_score_interval()
+ */
+export declare class RiskRatioInterval {
+    constructor();
+    /**
+     * First observed proportion divided by the second, absent for two zero counts.
+     */
+    estimate: number | null;
+    /**
+     * Lower score bound, zero when the first count is zero.
+     */
+    lower: number;
+    /**
+     * Upper score bound, positive infinity when the second count is zero.
+     */
+    upper: number;
+    /**
+     * Releases the native object now instead of when it is garbage collected; later calls fail.
+     */
+    close(): void;
+}
+
+/**
+ * Exact Poisson rate or rate-ratio interval and its observed estimate.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto ci = dm::stats::poisson_rate_interval(5, 2);
+ * std::print("{:.1f}\n", *ci.estimate); // 2.5
+ * ```
+ * @see poisson_rate_interval(), poisson_rate_ratio_interval()
+ */
+export declare class PoissonRateInterval {
+    constructor();
+    /**
+     * Observed rate or ratio, absent for a ratio of two zero rates.
+     */
+    estimate: number | null;
+    /**
+     * Lower exact confidence bound.
+     */
+    lower: number;
+    /**
+     * Upper exact confidence bound, possibly positive infinity.
+     */
+    upper: number;
     /**
      * Releases the native object now instead of when it is garbage collected; later calls fail.
      */
@@ -12084,7 +14629,7 @@ export declare class GGPlot {
  * - numeric vs numeric above the diagonal: the points with a local linear smooth of the mean and
  *   a 95% prediction band, one per group; point colors follow set_col() or group_by();
  * - numeric vs numeric below the diagonal: bivariate kernel density contours, one set per group;
- * - string vs numeric: one violin per level with the median and interquartile range marked;
+ * - string vs numeric: one raincloud per level (half violin, box plot, and jittered points);
  * - string vs string: a mosaic shaded by chi-squared Pearson residuals, with its p-value.
  *
  * Values are copied at construction, so the frame need not outlive the matrix. Rows with a
@@ -12179,7 +14724,7 @@ export declare class Splom {
      * frame. Groups are its sorted distinct non-missing values, and group k takes
      * `palette[k % palette.size()]`. Each group gets its own points, diagonal density, smooth
      * and prediction band, and density contours; rows with a missing group are left out of
-     * those panels. When the column is also a panel variable its violins, bars, and mosaic axis
+     * those panels. When the column is also a panel variable its rainclouds, bars, and mosaic axis
      * share the colors. Pass "" to clear the grouping. Clears point_colors().
      *
      * **Example**
@@ -12212,7 +14757,7 @@ export declare class Splom {
      */
     point_colors(colors: RGB[]): Splom;
     /**
-     * Sets the fills cycled over categorical levels in violins and stacked bars.
+     * Sets the fills cycled over categorical levels in rainclouds and stacked bars.
      *
      * An empty vector restores the default palette. group_by() and the factor form of
      * set_col() override it for their own column. Scatter points are unaffected.
@@ -12276,7 +14821,7 @@ export declare class Splom {
      */
     bins(value: number): Splom;
     /**
-     * Toggles the light background grid of the scatter and violin panels (default on).
+     * Toggles the light background grid of the scatter and raincloud panels (default on).
      *
      * **Example**
      *
@@ -19400,6 +21945,103 @@ export declare function resultant(a: Polynomial, b: Polynomial): number;
  */
 export declare function discriminant(p: Polynomial): number;
 /**
+ * `n` colours from green through yellow and brown to near-white, as R's `terrain.colors(n)`.
+ * @param n Number of colours (at least 1).
+ * @returns The palette, low to high.
+ * @throws {Error} `std::invalid_argument`: If `n` is 0.
+ */
+export declare function terrain_colors(n: number): RGB[];
+/**
+ * `n` colours from dark blue through white to dark red, a diverging palette for signed
+ * values such as correlations (ColorBrewer's RdBu, reversed so that low is blue).
+ *
+ * Interpolates linearly between the seven RdBu anchor colours; an odd `n` puts pure
+ * near-white (247, 247, 247) in the middle, so with `z_min = -z_max` in RPlot::image() zero
+ * maps to white.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto pal = dm::graphics::diverging_colors(3);
+ * std::print("{} {} {}\n", pal[0].r, pal[1].g, pal[2].r);  // 33 247 178
+ * ```
+ *
+ * **References**
+ *
+ * - C. Brewer, ColorBrewer 2.0 (RdBu scheme): https://colorbrewer2.org
+ * @param n Number of colours (at least 1; 1 gives the white midpoint).
+ * @returns The palette, low (blue) to high (red).
+ * @throws {Error} `std::invalid_argument`: If `n` is 0.
+ * @see terrain_colors(), RPlot::image()
+ */
+export declare function diverging_colors(n: number): RGB[];
+/**
+ * `n` colours of the viridis scale, from dark purple through blue and green to yellow,
+ * matching R's `viridisLite::viridis(n)` at n = 10.
+ *
+ * Viridis is perceptually uniform, so equal steps in value look like equal steps in colour,
+ * and it stays readable in greyscale and for the common forms of colour blindness. Colours are
+ * interpolated linearly between viridis(10)'s ten anchors.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto pal = dm::graphics::viridis_colors(10);
+ * std::print("{} {} {}\n", pal[0].r, pal[5].g, pal[9].b);  // 68 158 37
+ * ```
+ *
+ * **References**
+ *
+ * - S. van der Walt and N. Smith (2015). "mpl colourmaps" (viridis): https://bids.github.io/colormap/
+ * - viridisLite: https://sjmgarnier.github.io/viridisLite/
+ * @param n Number of colours (at least 1).
+ * @returns The palette, low (purple) to high (yellow).
+ * @throws {Error} `std::invalid_argument`: If `n` is 0.
+ * @see value_colors(), terrain_colors()
+ */
+export declare function viridis_colors(n: number): RGB[];
+/**
+ * One colour per value on a continuous scale, for colouring scatter points by a
+ * numeric variable (ggplot2's `scale_colour_viridis_c()`).
+ *
+ * Each value is mapped linearly from [`z_min`, `z_max`] to the palette and rounded to the
+ * nearest entry; values outside are clamped, NaN values get grey (190, 190, 190), and a zero
+ * range maps everything to the middle colour. Pass the result to RPlot::points_colored().
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto cols = dm::graphics::value_colors({0.0, 0.5, 1.0}, dm::graphics::viridis_colors(3));
+ * std::print("{} {} {}\n", cols[0].r, cols[1].r, cols[2].r);  // 68 35 253
+ * ```
+ * @param values Values to colour.
+ * @param palette Colours from low to high (default viridis_colors(256)). (default: `[]`)
+ * @param z_min Value of the first colour; NaN (the default) uses the smallest value.
+ * @param z_max Value of the last colour; NaN (the default) uses the largest value.
+ * @returns One colour per value.
+ * @see viridis_colors(), RPlot::points_colored()
+ */
+export declare function value_colors(values: number[], palette?: RGB[], z_min?: number, z_max?: number): RGB[];
+/**
+ * Integrate one HMC proposal with fixed step size and caller-provided momentum.
+ * The mass matrix is the identity. The caller can apply the Metropolis
+ * correction by accepting when log(uniform) is less than -energy_change.
+ *
+ * ```cpp
+ * dm::bayes::AutodiffModel density([](auto&, const auto& q) { return -.5 * q[0] * q[0]; });
+ * auto proposal = dm::bayes::hmc_proposal(density, {1.0}, {0.0}, .1, 10);
+ * ```
+ * @param log_posterior Differentiable log density, up to an additive constant.
+ * @param position Finite initial position on the unconstrained scale.
+ * @param momentum Finite initial momentum with the same dimension.
+ * @param step_size Positive finite leapfrog step size.
+ * @param num_steps Positive number of leapfrog steps.
+ * @returns Proposed position and momentum and their signed energy change. Nonfinite proposed energy is reported as computed for divergence diagnostics.
+ * @throws {Error} `std::invalid_argument`: Invalid dimensions, inputs or step size.
+ * @see HMC, leapfrog_gaussian_acceptance()
+ */
+export declare function hmc_proposal(log_posterior: DifferentiableFunction, position: number[], momentum: number[], step_size: number, num_steps: number): HMCProposal;
+/**
  * Exact expected Metropolis acceptance of one HMC proposal (fixed step size and
  * number of leapfrog steps, unit mass) on a one-dimensional
  *
@@ -19805,20 +22447,24 @@ export declare function kmeans_segment(img: Image, k: number, max_iterations?: n
  */
 export declare function data_home(): string;
 /**
- * The names fetch() accepts, sorted: "california_housing", "cifar10", "cifar100",
- * "diamonds", "fashion_mnist", "karate_club", "mnist", "rebot_devarm", "sudoku".
+ * Sorted canonical names accepted by fetch(), including audited UCI tables.
+ *
+ * UCI aliases are listed by datasets::uci_catalog().
  *
  * **Example**
  *
  * ```cpp
  * for (const auto& name : dm::datasets::downloadable()) std::print("{}\n", name);
  * ```
+ * @returns An owned list of names, with no network or filesystem access.
  */
 export declare function downloadable(): string[];
 /**
  * Makes sure a downloadable dataset is on disk and returns where it is.
  *
- * For the tabular datasets ("diamonds", "california_housing") this is the CSV file. For the
+ * For tabular datasets this is the CSV file. UCI names such as "uci_53"
+ * and "uci_iris" point to the same cache. UCI verifies size and SHA-256 on
+ * every access and stages complete bytes before publishing them. For the
  * image datasets it is a directory: "mnist" and "fashion_mnist" hold the four uncompressed
  * IDX files (`train-images-idx3-ubyte`, ...); "cifar10" holds `data_batch_1..5.bin` and
  * `test_batch.bin`; "cifar100" holds `train.bin` and `test.bin` (the binary versions);
@@ -19846,8 +22492,8 @@ export declare function downloadable(): string[];
  * **References**
  *
  * - Seeed reBot-DevArm source: https://github.com/Seeed-Projects/reBot-DevArm
- * @param name One of downloadable().
- * @param directory Where the files live; empty means `data_home() + "/" + name`. Files already present there are used as they are, except DevArm and karate_club's verified files. (default: `""`)
+ * @param name One of downloadable() or a registered UCI alias.
+ * @param directory Where the files live; empty means `data_home() + "/" + name`. Files already present there are used as they are, except UCI, DevArm and karate_club's verified files. (default: `""`)
  * @returns The local path of the CSV file or the dataset directory.
  * @throws {Error} `std::invalid_argument`: for an unknown name.
  * @throws {Error} `std::runtime_error`: if files are missing and downloading is disabled or fails, or a download does not match its checksum.
@@ -20200,84 +22846,6 @@ export declare function convex_hull_trace(points: Point2D[], options?: ConvexHul
  */
 export declare function sample_gaussian_points(count?: number, seed?: number, max_points?: number): Point2D[];
 /**
- * `n` colours from green through yellow and brown to near-white, as R's `terrain.colors(n)`.
- * @param n Number of colours (at least 1).
- * @returns The palette, low to high.
- * @throws {Error} `std::invalid_argument`: If `n` is 0.
- */
-export declare function terrain_colors(n: number): RGB[];
-/**
- * `n` colours from dark blue through white to dark red, a diverging palette for signed
- * values such as correlations (ColorBrewer's RdBu, reversed so that low is blue).
- *
- * Interpolates linearly between the seven RdBu anchor colours; an odd `n` puts pure
- * near-white (247, 247, 247) in the middle, so with `z_min = -z_max` in RPlot::image() zero
- * maps to white.
- *
- * **Example**
- *
- * ```cpp
- * const auto pal = dm::graphics::diverging_colors(3);
- * std::print("{} {} {}\n", pal[0].r, pal[1].g, pal[2].r);  // 33 247 178
- * ```
- *
- * **References**
- *
- * - C. Brewer, ColorBrewer 2.0 (RdBu scheme): https://colorbrewer2.org
- * @param n Number of colours (at least 1; 1 gives the white midpoint).
- * @returns The palette, low (blue) to high (red).
- * @throws {Error} `std::invalid_argument`: If `n` is 0.
- * @see terrain_colors(), RPlot::image()
- */
-export declare function diverging_colors(n: number): RGB[];
-/**
- * `n` colours of the viridis scale, from dark purple through blue and green to yellow,
- * matching R's `viridisLite::viridis(n)` at n = 10.
- *
- * Viridis is perceptually uniform, so equal steps in value look like equal steps in colour,
- * and it stays readable in greyscale and for the common forms of colour blindness. Colours are
- * interpolated linearly between viridis(10)'s ten anchors.
- *
- * **Example**
- *
- * ```cpp
- * const auto pal = dm::graphics::viridis_colors(10);
- * std::print("{} {} {}\n", pal[0].r, pal[5].g, pal[9].b);  // 68 158 37
- * ```
- *
- * **References**
- *
- * - S. van der Walt and N. Smith (2015). "mpl colourmaps" (viridis): https://bids.github.io/colormap/
- * - viridisLite: https://sjmgarnier.github.io/viridisLite/
- * @param n Number of colours (at least 1).
- * @returns The palette, low (purple) to high (yellow).
- * @throws {Error} `std::invalid_argument`: If `n` is 0.
- * @see value_colors(), terrain_colors()
- */
-export declare function viridis_colors(n: number): RGB[];
-/**
- * One colour per value on a continuous scale, for colouring scatter points by a
- * numeric variable (ggplot2's `scale_colour_viridis_c()`).
- *
- * Each value is mapped linearly from [`z_min`, `z_max`] to the palette and rounded to the
- * nearest entry; values outside are clamped, NaN values get grey (190, 190, 190), and a zero
- * range maps everything to the middle colour. Pass the result to RPlot::points_colored().
- *
- * **Example**
- *
- * ```cpp
- * const auto cols = dm::graphics::value_colors({0.0, 0.5, 1.0}, dm::graphics::viridis_colors(3));
- * std::print("{} {} {}\n", cols[0].r, cols[1].r, cols[2].r);  // 68 35 253
- * ```
- * @param values Values to colour.
- * @param palette Colours from low to high (default viridis_colors(256)). (default: `[]`)
- * @param z_min Value of the first colour; NaN (the default) uses the smallest value.
- * @param z_max Value of the last colour; NaN (the default) uses the largest value.
- * @returns One colour per value.
- * @see viridis_colors(), RPlot::points_colored()
- */
-export declare function value_colors(values: number[], palette?: RGB[], z_min?: number, z_max?: number): RGB[];
-/**
  * Compute the complete logical capture size without allocating a DTW matrix.
  * Checks positive lengths, int path-index representability and size_t geometry.
  * A representable count does not promise that the corresponding buffers fit memory.
@@ -20438,50 +23006,165 @@ export declare function plot_dtw_alignment(a: number[], b: number[], result: DTW
  */
 export declare function discrete_frechet_distance(p: Point2D[], q: Point2D[]): number;
 /**
- * C++ `datamunge::geometry::detail::circle_from_one_point`
- */
-export declare function circle_from_one_point(p: Point2D): Circle;
-/**
- * C++ `datamunge::geometry::detail::circle_from_two_points`
- */
-export declare function circle_from_two_points(a: Point2D, b: Point2D): Circle;
-/**
- * C++ `datamunge::geometry::detail::circle_from_three_points`
- */
-export declare function circle_from_three_points(a: Point2D, b: Point2D, c: Point2D): Circle;
-/**
- * C++ `datamunge::geometry::detail::circle_contains`
- */
-export declare function circle_contains(circle: Circle, p: Point2D): boolean;
-/**
- * The smallest circle enclosing every point in `points` (Welzl's algorithm, the
- * classical "incremental with boundary point sets" formulation: a point violating the
- * current circle must lie on the boundary of the true minimal circle, so it's fixed
- * in place and the problem re-solved for the remaining points). Points are shuffled
- * first (fixed seed, for determinism) since the algorithm's expected running time
- * depends on processing order; this implementation skips the further "move-to-front"
- * optimization real Welzl uses for guaranteed expected-linear time; O(n^3) worst case
- * here is still polynomial and far simpler to get right, matching this module's usual
- * complexity/simplicity tradeoff. Throws std::invalid_argument for an empty input.
+ * Compute a seeded incremental enclosing circle using three nested loops.
+ * Fixed MT19937-64 seed42 and std::shuffle preserve ordinary processing order
+ * on the same standard library. One/two/three-point boundary rebuilds use
+ * translated long-double geometry, exact orientation for collinearity, and
+ * overflow checks. Collinear triples use the farthest-pair diameter.
+ * Containment tolerance is1e-9*max(1,radius), so the returned circle is a
+ * numerical approximation, not an exact enclosure/minimality certificate.
+ * O(n^3) worst-case tests, O(n) copied driver storage. No expected-linear
+ * guarantee for this particular loop implementation or timing claim.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * auto c=dm::geometry::min_enclosing_circle({{0,0},{2,0},{1,0}});
+ * std::print("{} {}\n",c.center.x,c.radius); // 1 1
+ * ```
+ *
+ * **References**
+ *
+ * - E. Welzl (1991), Smallest enclosing disks (balls and ellipsoids), LNCS555,359–370, doi:10.1007/BFb0038202 (boundary-set framework; explicit nested-loop variant here).
+ * @param points Nonempty finite points; duplicates and collinearity allowed.
+ * @returns Owned finite center/radius.
+ * @throws {Error} `std::invalid_argument`: If input is empty or nonfinite.
+ * @throws {Error} `std::overflow_error`: If rebuilt center/radius is unrepresentable.
+ * @see min_enclosing_circle_trace(), enclosing_circle_check()
  */
 export declare function min_enclosing_circle(points: Point2D[]): Circle;
 /**
- * True if `point` lies strictly inside the simple polygon `vertices` (given in
- * either winding order), via the standard even-odd ray-casting rule (Franklin's
- * PNPOLY). Behavior for a point exactly on an edge is unspecified (as it is for every
- * ray-casting implementation) -- it may be reported as inside or outside depending on
- * which edge and floating-point rounding.
+ * Capture actual containment/rebuild events of the ordinary producer.
+ * No replay. Three copies/identity units per input are pre-admitted, then one
+ * per actual test. No partial trace escapes a quota failure. History storage
+ * is proportional to admitted entries; zero disables the optional cap.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * auto t=dm::geometry::min_enclosing_circle_trace({{0,0},{2,0}});
+ * std::print("{}\n",t.captured_entries); // 8
+ * ```
+ * @param points Nonempty finite points, retained by value in original order.
+ * @param max_entries Capture cap, default1000000; zero disables. (default: `1000000`)
+ * @returns Owned actual order, events and final circle.
+ * @throws {Error} `std::invalid_argument`: If input is empty or nonfinite.
+ * @throws {Error} `std::overflow_error`: If circle geometry is unrepresentable.
+ * @throws {Error} `std::length_error`: If quota/count geometry exceeds its limit.
+ * @throws {Error} `std::bad_alloc`: If allocation fails.
+ * @see EnclosingCircleTrace
  */
-export declare function point_in_polygon(point: Point2D, vertices: Point2D[]): boolean;
+export declare function min_enclosing_circle_trace(points: Point2D[], max_entries?: number): EnclosingCircleTrace;
 /**
- * The polygon's signed area via the shoelace formula: positive for
- * counterclockwise-ordered vertices, negative for clockwise.
+ * Check supplied points using the producer's radial containment tolerance.
+ * O(n) work/storage. No mutation, fitting or exact support/minimality assertion.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::enclosing_circle_check({{1,0},1},{{0,0},{2,0}}).outside); // 0
+ * ```
+ * @param circle Finite center and finite nonnegative radius.
+ * @param points Finite points, empty allowed.
+ * @returns Owned original-order residuals and tolerance-aware counts.
+ * @throws {Error} `std::invalid_argument`: If any geometry is invalid/nonfinite.
+ * @throws {Error} `std::overflow_error`: If a residual cannot be represented as double.
+ * @see min_enclosing_circle()
  */
-export declare function signed_polygon_area(vertices: Point2D[]): number;
+export declare function enclosing_circle_check(circle: Circle, points: Point2D[]): EnclosingCircleCheck;
 /**
- * The polygon's (unsigned) area, regardless of vertex winding order.
+ * Generate the original eighty-point normal cloud.
+ * Uses std::mt19937 seed2718281 and normal_distribution(0,2), drawing x then y.
+ * Distribution implementation can differ across standard libraries.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::enclosing_circle_demo().size()); // 80
+ * ```
+ * @returns Owned original80 finite coordinates.
+ * @see min_enclosing_circle()
  */
-export declare function polygon_area(vertices: Point2D[]): number;
+export declare function enclosing_circle_demo(): Point2D[];
+/**
+ * Sample a supplied circle's boundary for plotting, with a closing duplicate.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::circle_boundary({{0,0},1},4).size()); // 5
+ * ```
+ * @param circle Finite center/nonnegative finite radius.
+ * @param segments Positive segment count, default100, at most1000000. (default: `100`)
+ * @returns Owned segments+1 points, last equal to first.
+ * @throws {Error} `std::invalid_argument`: If circle is invalid or segment count is zero.
+ * @throws {Error} `std::length_error`: If segment count exceeds1000000.
+ * @throws {Error} `std::overflow_error`: If a boundary coordinate is unrepresentable.
+ * @see Circle
+ */
+export declare function circle_boundary(circle: Circle, segments?: number): Point2D[];
+/**
+ * Construct a singleton zero-radius circle with finite-point validation.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::detail::circle_from_one_point({1,2}).radius); // 0
+ * ```
+ * @param p Finite point.
+ * @returns Owned singleton circle.
+ * @throws {Error} `std::invalid_argument`: If p is nonfinite.
+ * @see min_enclosing_circle()
+ */
+export declare function circle_from_one_point(p: Point2D): Circle;
+/**
+ * Construct a two-point diameter circle using checked wide midpoint arithmetic.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::detail::circle_from_two_points({0,0},{2,0}).radius); // 1
+ * ```
+ * @param a First finite endpoint.
+ * @param b Second finite endpoint.
+ * @returns Owned midpoint circle; duplicates give zero radius.
+ * @throws {Error} `std::invalid_argument`: If a coordinate is nonfinite.
+ * @throws {Error} `std::overflow_error`: If radius/center is unrepresentable.
+ * @see min_enclosing_circle()
+ */
+export declare function circle_from_two_points(a: Point2D, b: Point2D): Circle;
+/**
+ * Construct a translated circumcircle or a farthest-pair collinear diameter.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::detail::circle_from_three_points({0,0},{4,0},{0,3}).radius); // 2.5
+ * ```
+ * @param a First finite boundary point.
+ * @param b Second finite boundary point.
+ * @param c Third finite boundary point.
+ * @returns Owned checked circle through noncollinear boundary points, or collinear diameter.
+ * @throws {Error} `std::invalid_argument`: If a coordinate is nonfinite.
+ * @throws {Error} `std::overflow_error`: If circle arithmetic is unrepresentable.
+ * @see min_enclosing_circle()
+ */
+export declare function circle_from_three_points(a: Point2D, b: Point2D, c: Point2D): Circle;
+/**
+ * Test a point with the same tolerance used by the incremental producer.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::detail::circle_contains({{0,0},1},{1,0})); // true
+ * ```
+ * @param circle Finite center and finite nonnegative radius.
+ * @param p Finite query point.
+ * @returns Distance<=radius+1e-9*max(1,radius).
+ * @throws {Error} `std::invalid_argument`: If circle or point is invalid.
+ * @see enclosing_circle_check()
+ */
+export declare function circle_contains(circle: Circle, p: Point2D): boolean;
 /**
  * The centroid (center of mass, assuming uniform density) of the polygon's ENCLOSED
  * AREA -- not the average of its vertex coordinates, which is a different point for
@@ -20497,31 +23180,144 @@ export declare function polygon_centroid(vertices: Point2D[]): Point2D;
  */
 export declare function is_convex_polygon(vertices: Point2D[]): boolean;
 /**
- * C++ `datamunge::geometry::orientation`
+ * Return the exact orientation enum of three stored finite binary64 points.
+ * Delegates to the canonical bounded dyadic integer predicate, without epsilon or overflow-prone floating products. Constant bounded work/storage; inputs unchanged.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",int(dm::geometry::orientation({0,0},{1,0},{0,1}))); // 2
+ * ```
+ *
+ * **References**
+ *
+ * - Exact determinant motivation: Shewchuk (1997), https://www.cs.cmu.edu/~quake/robust.html ; standard closed-segment orientation and collinear bounding-box test.
+ * @param a First finite point.
+ * @param b Second finite point.
+ * @param c Third finite point.
+ * @returns Exact collinear, clockwise or counterclockwise enum.
+ * @throws {Error} `std::invalid_argument`: Nonfinite coordinate.
+ * @see orientation_sign()
  */
 export declare function orientation(a: Point2D, b: Point2D, c: Point2D): Orientation;
 /**
- * C++ `datamunge::geometry::detail::on_segment`
+ * Classify exact closed-segment contact and construct its unique point or overlap bounds.
+ * Evaluates four canonical exact orientation signs. Opposite nonzero signs on both baselines identify a proper crossing; zero signs use closed coordinate bounds. Collinear endpoint/point-segment cases return Point; nonzero interval overlaps return Overlap with lexicographically ordered endpoint bounds. Proper crossing coordinates use a widened quotient of exactly accumulated determinants, then convex interpolation and final double narrowing. The contact decision is exact for represented finite coordinates; a constructed interior point is approximate, not a correctly rounded rational certificate. Trace and run use the same fixed-size producing record, with no replay or dynamic history. Constant bounded work/storage, no shared state; borrowed inputs unchanged.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * auto t=dm::geometry::segment_intersection_run({0,0},{2,2},{0,2},{2,0});
+ * std::print("{} {} {}\n",int(t.contact),t.first.x,t.first.y); // 1 1 1
+ * ```
+ *
+ * **References**
+ *
+ * - Exact determinant motivation: Shewchuk (1997), https://www.cs.cmu.edu/~quake/robust.html ; standard closed-segment orientation and collinear bounding-box test.
+ * @param p First segment start.
+ * @param q First segment end.
+ * @param r Second segment start.
+ * @param s Second segment end.
+ * @returns Owned exact contact, actual predicates, and approximate point/exact overlap endpoint coordinates.
+ * @throws {Error} `std::invalid_argument`: Nonfinite coordinate.
+ * @throws {Error} `std::overflow_error`: A nonzero construction quotient or final point is outside the finite represented range.
+ * @see segments_intersect(), cross_difference_ratio()
  */
-export declare function on_segment(p: Point2D, q: Point2D, r: Point2D): boolean;
+export declare function segment_intersection_run(p: Point2D, q: Point2D, r: Point2D, s: Point2D): SegmentIntersectionRun;
 /**
- * True if segments p1-q1 and p2-q2 intersect (including touching at an endpoint, or
- * overlapping collinear segments) -- the standard CLRS-style orientation-based test.
+ * Classify exact closed-segment contact and construct its unique point or overlap bounds.
+ * Evaluates four canonical exact orientation signs. Opposite nonzero signs on both baselines identify a proper crossing; zero signs use closed coordinate bounds. Collinear endpoint/point-segment cases return Point; nonzero interval overlaps return Overlap with lexicographically ordered endpoint bounds. Proper crossing coordinates use a widened quotient of exactly accumulated determinants, then convex interpolation and final double narrowing. The contact decision is exact for represented finite coordinates; a constructed interior point is approximate, not a correctly rounded rational certificate. Trace and run use the same fixed-size producing record, with no replay or dynamic history. Constant bounded work/storage, no shared state; borrowed inputs unchanged.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * auto t=dm::geometry::segment_intersection_trace({0,0},{2,2},{0,2},{2,0});
+ * std::print("{} {} {}\n",int(t.contact),t.first.x,t.first.y); // 1 1 1
+ * ```
+ *
+ * **References**
+ *
+ * - Exact determinant motivation: Shewchuk (1997), https://www.cs.cmu.edu/~quake/robust.html ; standard closed-segment orientation and collinear bounding-box test.
+ * @param p First segment start.
+ * @param q First segment end.
+ * @param r Second segment start.
+ * @param s Second segment end.
+ * @returns Owned exact contact, actual predicates, and approximate point/exact overlap endpoint coordinates.
+ * @throws {Error} `std::invalid_argument`: Nonfinite coordinate.
+ * @throws {Error} `std::overflow_error`: A nonzero construction quotient or final point is outside the finite represented range.
+ * @see segments_intersect(), cross_difference_ratio()
+ */
+export declare function segment_intersection_trace(p: Point2D, q: Point2D, r: Point2D, s: Point2D): SegmentIntersectionRun;
+/**
+ * Decide exact nonempty closed-segment contact through the preserved signature.
+ * Uses the same four-sign classifier without constructing any approximate coordinates; endpoint touching, collinear overlap and zero-length-segment contact are included. Constant bounded work/storage; no epsilon.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::segments_intersect({0,0},{2,0},{2,0},{3,0})); // true
+ * ```
+ *
+ * **References**
+ *
+ * - Exact determinant motivation: Shewchuk (1997), https://www.cs.cmu.edu/~quake/robust.html ; standard closed-segment orientation and collinear bounding-box test.
+ * @param p1 First segment start.
+ * @param q1 First segment end.
+ * @param p2 Second segment start.
+ * @param q2 Second segment end.
+ * @returns True exactly when the represented closed segments have nonempty intersection.
+ * @throws {Error} `std::invalid_argument`: Any nonfinite coordinate.
+ * @see segment_intersection_run()
  */
 export declare function segments_intersect(p1: Point2D, q1: Point2D, p2: Point2D, q2: Point2D): boolean;
 /**
- * The intersection point of INFINITE lines through (p1, p2) and through (p3, p4), if
- * one exists (writes it to `out` and returns true) -- false for parallel or
- * (exactly) coincident lines. Unlike segments_intersect(), this treats both inputs as
- * unbounded lines, not segments.
+ * Construct the approximate unique intersection of two infinite supporting lines.
+ * Uses exact determinant parallelism and a widened exact-determinant quotient before final coordinate construction. Returns false for parallel, coincident or degenerate supporting lines, even when finite segments overlap. Does not restrict line parameters to [0,1]. On false/error leaves out unchanged. Constructed coordinates are approximate and must be finite doubles; classification is exact for represented inputs. Constant bounded work/storage.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * dm::geometry::Point2D out;bool ok=dm::geometry::line_intersection_point({0,0},{2,2},{0,2},{2,0},out);
+ * std::print("{} {}\n",ok,out.x); // true 1
+ * ```
+ *
+ * **References**
+ *
+ * - Exact determinant motivation: Shewchuk (1997), https://www.cs.cmu.edu/~quake/robust.html ; standard closed-segment orientation and collinear bounding-box test.
+ * @param p1 First line first point.
+ * @param p2 First line second point.
+ * @param p3 Second line first point.
+ * @param p4 Second line second point.
+ * @param out Borrowed output, assigned only on successful construction.
+ * @returns True when a finite approximate unique intersection was constructed.
+ * @throws {Error} `std::invalid_argument`: Nonfinite coordinate.
+ * @throws {Error} `std::overflow_error`: Nonzero quotient or final coordinate exceeds finite represented range.
+ * @see segment_intersection_point()
  */
 export declare function line_intersection_point(p1: Point2D, p2: Point2D, p3: Point2D, p4: Point2D, out: Point2D): boolean;
 /**
- * The (single) intersection point of segments p1-q1 and p2-q2, if one exists (writes
- * it to `out` and returns true). Returns false whenever segments_intersect() would
- * (non-intersecting segments) AND for the collinear-overlapping case that
- * segments_intersect() reports as true -- there, infinitely many points satisfy the
- * intersection, so no single Point2D can represent it.
+ * Construct the unique point of closed-segment contact through the preserved signature.
+ * Returns false for disjoint or nonzero-overlap intersections and leaves out unchanged. Correctly returns true for a single collinear endpoint or zero-length contact, fixing the historical determinant-zero shortcut. Proper crossing construction is approximate after exact classification. Constant bounded work/storage.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * dm::geometry::Point2D out;bool ok=dm::geometry::segment_intersection_point({0,0},{2,0},{2,0},{3,0},out);
+ * std::print("{} {}\n",ok,out.x); // true 2
+ * ```
+ *
+ * **References**
+ *
+ * - Exact determinant motivation: Shewchuk (1997), https://www.cs.cmu.edu/~quake/robust.html ; standard closed-segment orientation and collinear bounding-box test.
+ * @param p1 First segment start.
+ * @param q1 First segment end.
+ * @param p2 Second segment start.
+ * @param q2 Second segment end.
+ * @param out Borrowed output, assigned only for unique-point success.
+ * @returns True exactly for a successfully constructed unique-point contact.
+ * @throws {Error} `std::invalid_argument`: Nonfinite coordinate.
+ * @throws {Error} `std::overflow_error`: Construction quotient or final point outside finite represented range.
+ * @see segment_intersection_run()
  */
 export declare function segment_intersection_point(p1: Point2D, q1: Point2D, p2: Point2D, q2: Point2D, out: Point2D): boolean;
 /**
@@ -20539,45 +23335,157 @@ export declare function inside_clip_edge(p: Point2D, edge_a: Point2D, edge_b: Po
  */
 export declare function clip_polygon(subject: Point2D[], clip: Point2D[]): Point2D[];
 /**
- * C++ `datamunge::geometry::detail::point_in_triangle`
+ * Legacy unvalidated double-sign triangle containment primitive; robust triangulation uses exact signs.
+ * @param p Query point.
+ * @param a First triangle vertex.
+ * @param b Second triangle vertex.
+ * @param c Third triangle vertex.
+ * @returns Original rounded-sign closed-triangle test, without finite or degeneracy guarantees.
  */
 export declare function point_in_triangle(p: Point2D, a: Point2D, b: Point2D, c: Point2D): boolean;
 /**
- * Triangulates a SIMPLE polygon (convex or not, but not self-intersecting) by ear
- * clipping: repeatedly finds a "ear" -- a convex vertex whose neighbor-triangle
- * contains no other polygon vertex -- clips it off as one output triangle, and
- * repeats on the remaining (n-1)-vertex polygon. O(n^3) worst case (each of the O(n)
- * clipped ears requires an O(n) scan to verify, each vertex check O(1)) -- unlike
- * delaunay_triangulation() (which only sees an unordered point SET), this respects
- * the polygon's actual boundary, so it correctly handles concave (non-convex) shapes.
- * Every triangle's vertices are indices into `polygon`. Works for any winding order
- * (detects and internally corrects clockwise input). Returns empty for fewer than 3
- * vertices; a triangle input returns itself unchanged.
+ * Triangulate a finite simple polygon using exact orientation-based ear decisions.
+ * Rejects duplicate vertices, zero area, overlapping adjacent edges and every
+ * nonadjacent edge intersection/touch. A repeated closing vertex is a duplicate.
+ * Collinear forward boundary vertices are allowed. Uses the exact turn at the
+ * lexicographically least vertex for simple-polygon winding, avoiding area
+ * cancellation. O(n^2) validation and O(n^3) worst-case ear search, O(n) working
+ * storage. n<3 returns empty after finite validation. For n=3 the historical
+ * vertex order is retained; larger clockwise rings are reversed internally.
+ * Input is borrowed unchanged; no references or mutable global state survive.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::triangulate_polygon({{0,0},{2,0},{2,2},{0,2}}).size()); // 2
+ * ```
+ *
+ * **References**
+ *
+ * - D. Eberly, Triangulation by Ear Clipping, https://www.geometrictools.com/Documentation/TriangulationByEarClipping.pdf .
+ *   This implementation uses exact finite-binary64 orientation predicates.
+ * @param polygon Finite simple boundary in either winding, without duplicate closing vertex.
+ * @returns Owned original-index triangles; valid n>=3 produces exactly n-2.
+ * @throws {Error} `std::invalid_argument`: If coordinates or polygon geometry are invalid.
+ * @throws {Error} `std::length_error`: If default predicate policy or representable storage is exceeded.
+ * @throws {Error} `std::runtime_error`: If exact ear search cannot finish a validated polygon.
  */
 export declare function triangulate_polygon(polygon: Point2D[]): Triangle[];
 /**
- * The diameter of a point set: the farthest pair of points, by Euclidean distance.
- * The farthest pair is always a pair of convex hull vertices, so this computes the
- * hull first (convex_hull()) and then searches only among its (typically far fewer)
- * vertices -- brute-force O(h^2) over the hull rather than the classical O(h)
- * two-pointer rotating-calipers walk, the same "correct and simple over asymptotically
- * optimal" tradeoff this module already makes for closest_pair(). Throws
- * std::invalid_argument for fewer than 2 distinct points.
+ * Execute checked ear clipping and return selected actual operation counts.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::triangulate_polygon_run({{0,0},{1,0},{0,1}}).triangles.size()); // 1
+ * ```
+ * @param polygon Complete finite simple boundary, unchanged.
+ * @param options Predicate/history policies; history cap is unused without capture. (default: `new PolygonTriangulationOptions()`)
+ * @returns Owned triangles and actual predicate/candidate counts.
+ * @throws {Error} `std::invalid_argument`: If coordinates or geometry are invalid.
+ * @throws {Error} `std::length_error`: If predicate policy or storage is exceeded.
+ * @throws {Error} `std::runtime_error`: If validated ear search cannot finish.
+ */
+export declare function triangulate_polygon_run(polygon: Point2D[], options?: PolygonTriangulationOptions): PolygonTriangulationRun;
+/**
+ * Observe actual ear tests and post-erasure rings from the shared producer.
+ * History can grow quadratically in candidate records plus ring copies;
+ * limits count logical records/ids, not allocator overhead or peak bytes.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::triangulate_polygon_trace({{0,0},{2,0},{2,2},{0,2}}).clips.size()); // 1
+ * ```
+ * @param polygon Complete finite simple boundary, unchanged.
+ * @param options Predicate and retained-entry policies, checked at actual call/copy sites. (default: `new PolygonTriangulationOptions()`)
+ * @returns Owned output, actual candidates and actual post-clip rings.
+ * @throws {Error} `std::invalid_argument`: If coordinates or geometry are invalid.
+ * @throws {Error} `std::length_error`: If predicate/history policy or storage is exceeded.
+ * @throws {Error} `std::runtime_error`: If validated ear search cannot finish.
+ */
+export declare function triangulate_polygon_trace(polygon: Point2D[], options?: PolygonTriangulationOptions): PolygonTriangulationTrace;
+/**
+ * Find the farthest hull pair using actual rotating antipodes.
+ * Computes the canonical exact-orientation convex hull first, then advances a CCW antipodal pointer while the next point has strictly greater baseline area, using cross_difference_sign() without rounded cross-product subtraction. Tests both edge endpoints against the current antipode; equal areas also test the next antipode. Two-point/collinear hulls need one pair test. Distance uses widened hypot and narrows only the final finite scalar. Ties retain the first encountered represented distance, so an equally far pair can differ from the historical exhaustive scan. Hull O(N log N), caliper walk O(H) area/pair tests plus the exact predicate constant; working/output O(N+H), optional O(H) events. Complete finite inputs required; at least two distinct points. Inputs unchanged and results owned. Counters exclude hull construction/validation and predicate internal arithmetic.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * auto r=dm::geometry::polygon_diameter_run({{0,0},{3,0},{3,4},{0,4}});
+ * std::print("{}\n",r.result.distance); // 5
+ * ```
+ *
+ * **References**
+ *
+ * - Toussaint (1983), Solving geometric problems with the rotating calipers, https://www-cgrl.cs.mcgill.ca/~godfried/publications/calipers.pdf.
+ * @param points Complete finite planar points; duplicate/interior points allowed.
+ * @param options Input, actual-event and retained-event bounds. (default: `new DiameterOptions()`)
+ * @returns Owned canonical hull, actual farthest pair and selected pointer work.
+ * @throws {Error} `std::invalid_argument`: Nonfinite or fewer than two distinct points.
+ * @throws {Error} `std::length_error`: Input, actual event, history or capacity policy exceeded.
+ * @throws {Error} `std::overflow_error`: Farthest distance cannot be represented as finite double.
+ * @see polygon_diameter(), cross_difference_sign()
+ */
+export declare function polygon_diameter_run(points: Point2D[], options?: DiameterOptions): DiameterRun;
+/**
+ * Find the farthest hull pair using actual rotating antipodes and retain their events.
+ * Computes the canonical exact-orientation convex hull first, then advances a CCW antipodal pointer while the next point has strictly greater baseline area, using cross_difference_sign() without rounded cross-product subtraction. Tests both edge endpoints against the current antipode; equal areas also test the next antipode. Two-point/collinear hulls need one pair test. Distance uses widened hypot and narrows only the final finite scalar. Ties retain the first encountered represented distance, so an equally far pair can differ from the historical exhaustive scan. Hull O(N log N), caliper walk O(H) area/pair tests plus the exact predicate constant; working/output O(N+H), optional O(H) events. Complete finite inputs required; at least two distinct points. Inputs unchanged and results owned. Counters exclude hull construction/validation and predicate internal arithmetic.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * auto r=dm::geometry::polygon_diameter_trace({{0,0},{3,0},{3,4},{0,4}});
+ * std::print("{}\n",r.result.distance); // 5
+ * ```
+ *
+ * **References**
+ *
+ * - Toussaint (1983), Solving geometric problems with the rotating calipers, https://www-cgrl.cs.mcgill.ca/~godfried/publications/calipers.pdf.
+ * @param points Complete finite planar points; duplicate/interior points allowed.
+ * @param options Input, actual-event and retained-event bounds. (default: `new DiameterOptions()`)
+ * @returns Owned canonical hull, actual farthest pair and selected pointer work.
+ * @throws {Error} `std::invalid_argument`: Nonfinite or fewer than two distinct points.
+ * @throws {Error} `std::length_error`: Input, actual event, history or capacity policy exceeded.
+ * @throws {Error} `std::overflow_error`: Farthest distance cannot be represented as finite double.
+ * @see polygon_diameter(), cross_difference_sign()
+ */
+export declare function polygon_diameter_trace(points: Point2D[], options?: DiameterOptions): DiameterRun;
+/**
+ * Return the actual farthest pair through the preserved diameter signature.
+ * Uses the shared checked O(H) rotating antipodes instead of the former O(H^2) exhaustive pair scan. Retains any valid farthest pair; default execution policies apply.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::polygon_diameter({{0,0},{3,4}}).distance); // 5
+ * ```
+ *
+ * **References**
+ *
+ * - Toussaint (1983), Solving geometric problems with the rotating calipers, https://www-cgrl.cs.mcgill.ca/~godfried/publications/calipers.pdf.
+ * @param points Complete finite points with at least two distinct locations.
+ * @returns Owned endpoints and finite Euclidean diameter.
+ * @throws {Error} `std::invalid_argument`: Invalid/degenerate input.
+ * @throws {Error} `std::length_error`: Default policy exceeded.
+ * @throws {Error} `std::overflow_error`: Unrepresentable distance.
+ * @see polygon_diameter_run()
  */
 export declare function polygon_diameter(points: Point2D[]): DiameterResult;
 /**
- * The minimum-AREA bounding rectangle of a point set (not necessarily axis-aligned).
- * By a classical theorem, the optimal rectangle always has one side collinear with a
- * convex hull edge -- so this computes the hull, then for each hull edge, measures the
- * bounding rectangle aligned with that edge's direction (projecting every hull point
- * onto the edge direction and its perpendicular), keeping the smallest-area result.
- * O(h^2) (h = hull size): the classical rotating-calipers formulation does this in
- * O(h) via incrementally-advanced support points, but re-projecting from scratch for
- * every edge is far simpler to get right and, again, this module's established
- * complexity/simplicity tradeoff. Throws std::invalid_argument if the hull has fewer
- * than 3 vertices (no well-defined minimum-area rectangle for a degenerate point set).
+ * Generate the original fifty-point Gaussian diameter fixture in the canonical library.
+ * Uses mt19937(seed31337), one standard-normal distribution, then x=3*next and y=2*next in original order. Distribution realization follows the C++ standard-library implementation; it is a controlled synthetic input, not a real-data sample.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * std::print("{}\n",dm::geometry::diameter_example_cloud().size()); // 50
+ * ```
+ * @param seed MT seed, default31337. (default: `31337`)
+ * @returns Owned original50 planar observations.
+ * @see polygon_diameter_trace()
  */
-export declare function minimum_bounding_rectangle(points: Point2D[]): MinimumBoundingRectangle;
+export declare function diameter_example_cloud(seed?: number): Point2D[];
 /**
  * C++ `datamunge::geometry::detail::point_to_line_distance`
  */
@@ -20748,6 +23656,114 @@ export declare function expected_improvement(mean: number, sd: number, incumbent
  */
 export declare function probability_of_improvement(mean: number, sd: number, incumbent: number, exploration?: number): number;
 /**
+ * Adjust a vector of p-values for multiple comparisons, matching R's p.adjust().
+ *
+ * - Bonferroni: p[i] * n, capped at 1 -- simplest and most conservative FWER control.
+ * - Holm: step-down Bonferroni (Holm-Bonferroni) -- uniformly more powerful than
+ *   plain Bonferroni while still controlling FWER, no extra assumptions.
+ * - Hochberg: step-up FWER control -- more powerful than Holm, but assumes the test
+ *   statistics are independent (or positively dependent).
+ * - Hommel: step-up FWER control, uniformly more powerful than Hochberg under the
+ *   same independence assumption; the most expensive to compute (O(n^2)). For n == 2
+ *   this degenerates to (and is computed as) Hochberg, matching R.
+ * - BH (Benjamini-Hochberg, aka "fdr" in R): controls the false discovery rate under
+ *   independence or positive regression dependence -- the standard choice for large-
+ *   scale testing (e.g. genomics, many simultaneous hypothesis tests).
+ * - BY (Benjamini-Yekutieli): controls the FDR under arbitrary dependence; more
+ *   conservative than BH.
+ * - None: returns the input p-values unchanged.
+ *
+ * As in R, a single p-value (n <= 1) is always returned unchanged regardless of
+ * `method`.
+ * @param method (default: `PAdjustMethod.BH`)
+ */
+export declare function p_adjust(p: number[], method?: PAdjustMethod | keyof typeof PAdjustMethod): number[];
+/**
+ * p_adjust() with the method given by name, like R's `p.adjust(p, method = "holm")`.
+ *
+ * Equivalent to `p_adjust(p, p_adjust_method(method))`; see p_adjust_method() for the accepted
+ * names. The input is unchanged and the result keeps its order.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto adj = dm::stats::p_adjust({0.01, 0.02, 0.04}, "bonferroni");
+ * std::print("{:.2f} {:.2f} {:.2f}\n", adj[0], adj[1], adj[2]);   // 0.03 0.06 0.12
+ * ```
+ *
+ * **References**
+ *
+ * - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html
+ * @param p p-values in [0, 1].
+ * @param method Method name, e.g. "bonferroni", "holm", "BH".
+ * @returns The adjusted p-values, in input order.
+ * @throws {Error} `std::invalid_argument`: An unknown method name.
+ * @see p_adjust(const std::vector<double>&, PAdjustMethod), p_adjust_method()
+ */
+export declare function p_adjust(p: number[], method: string): number[];
+/**
+ * Parses an adjustment method name, like R's p.adjust.methods.
+ *
+ * Case-insensitive. Accepts R's names "holm", "hochberg", "hommel", "bonferroni", "BH", "BY",
+ * "fdr" (an alias of BH, as in R) and "none". Tukey's HSD is not a p-value adjustment (it
+ * needs the group means, sizes and pooled variance), so it is not accepted here.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const bool holm = dm::stats::p_adjust_method("Holm") == dm::stats::PAdjustMethod::Holm;
+ * std::print("{}\n", holm);   // true
+ * ```
+ *
+ * **References**
+ *
+ * - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html
+ * @param name Method name.
+ * @returns The matching PAdjustMethod.
+ * @throws {Error} `std::invalid_argument`: An unknown name; the message lists the accepted names.
+ * @see p_adjust()
+ */
+export declare function p_adjust_method(name: string): PAdjustMethod;
+/**
+ * Westfall-Young single-step minP adjustment (Westfall & Young, 1993) -- a resampling-
+ * based FWER correction that accounts for the actual dependence structure between
+ * tests (unlike the analytic methods above, which either assume independence or make
+ * no assumption at all).
+ *
+ * `resampled_p` is a B x m matrix: row b holds the m p-values recomputed on the
+ * b-th permutation or bootstrap resample (generated by the caller -- this function is
+ * purely the combinatorial engine, not the resampling scheme itself). `sorted_p` is
+ * the m original p-values sorted ascending, and column k of every row in `resampled_p`
+ * must correspond to the same hypothesis as sorted_p[k] (i.e. the caller sorts once and
+ * reorders both consistently before calling).
+ *
+ * Single-step: every hypothesis is compared against the same reference distribution --
+ * the per-resample minimum p-value taken over *all* m hypotheses -- so adjusted p[k] =
+ * (fraction of resamples whose overall minimum p-value <= sorted_p[k]). This is
+ * automatically monotonic in sorted_p and valid under subset pivotality, but less
+ * powerful than the step-down refinement below since it never narrows the comparison
+ * set as hypotheses are resolved.
+ *
+ * Returned in the same (ascending sorted_p) order as the input; the caller is
+ * responsible for mapping back to original hypothesis order if needed.
+ */
+export declare function westfall_young_adjust(resampled_p: number[][], sorted_p: number[]): number[];
+/**
+ * Romano-Wolf step-down resampling adjustment (Romano & Wolf, 2005) -- like
+ * westfall_young_adjust, but more powerful: at each step k (in ascending sorted_p
+ * order), the reference distribution is the per-resample minimum p-value taken only
+ * over the *remaining* hypotheses k..m-1, narrowing by one hypothesis at each step
+ * rather than always using all m. This is the step-down generalization that controls
+ * FWER without requiring subset pivotality. Monotonicity (adjusted p[k] >= adjusted
+ * p[k-1]) is enforced explicitly, since narrowing the comparison set at each step means
+ * it isn't automatic the way it is for the single-step procedure above.
+ *
+ * Same input/output conventions as westfall_young_adjust: `resampled_p` is a B x m
+ * matrix with column k aligned to sorted_p[k], and the result is returned in the same
+ * sorted order.
+ */
+export declare function romano_wolf_adjust(resampled_p: number[][], sorted_p: number[]): number[];
+/**
  * Classical equal-variance one-way ANOVA, like R oneway.test(var.equal=TRUE).
  *
  * Tests equality of group means with between/within mean-square ratio. Independent normal
@@ -20772,6 +23788,126 @@ export declare function probability_of_improvement(mean: number, sd: number, inc
  * @see HypothesisTestResult
  */
 export declare function one_way_anova(values: number[], group_sizes: number[]): HypothesisTestResult;
+/**
+ * Welch's one-way test of equal means in independent normal groups with unequal variances.
+ *
+ * Weights means by inverse estimated sampling variances and uses an approximate F reference.
+ * Inputs are unchanged. Work is linear in observations with O(k) storage for k groups.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto fit = dm::stats::welch_anova({1, 2, 4, 3, 6, 9, 12, 15, 3, 4, 5, 5}, {3, 5, 4});
+ * std::print("{:.4f}\n", fit.statistic); // 4.1238
+ * ```
+ *
+ * **References**
+ *
+ * - Welch (1951), On the Comparison of Several Mean Values, doi:10.2307/2332579.
+ * @param values Finite observations concatenated by group.
+ * @param group_sizes At least two groups of size two or larger, each with positive variance.
+ * @returns F statistic, numerator and denominator degrees of freedom, and upper-tail p-value.
+ * @throws {Error} `std::invalid_argument`: Invalid sizes, nonfinite observations, zero variance or overflow.
+ * @see one_way_anova(), games_howell()
+ */
+export declare function welch_anova(values: number[], group_sizes: number[]): HypothesisTestResult;
+/**
+ * Compares all independent normal group means using Games–Howell intervals and p-values.
+ *
+ * Allows unequal group sizes and variances. Uses a pair-specific variance and degrees of freedom
+ * with a studentized range over all groups. Inputs are unchanged.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto rows = dm::stats::games_howell({1, 2, 4, 3, 6, 9, 12, 15, 3, 4, 5, 5}, {3, 5, 4});
+ * std::print("{:.5f}\n", rows.front().p_adjusted); // 0.07077
+ * ```
+ *
+ * **References**
+ *
+ * - Games and Howell (1976), Pairwise Multiple Comparison Procedures with Unequal N's and/or
+ *   Variances, doi:10.3102/10769986001002113.
+ * @param values Finite observations concatenated by group.
+ * @param group_sizes At least two groups of size two or larger, each with positive variance.
+ * @param confidence_level Desired simultaneous coverage in (0,1), default 0.95. (default: `0.94999999999999996`)
+ * @returns Owned comparisons in order (1,0), (2,0), (2,1), and so on.
+ * @throws {Error} `std::invalid_argument`: Invalid inputs, numerical overflow or an unresolved critical value.
+ * @see welch_anova(), studentized_range_cdf()
+ */
+export declare function games_howell(values: number[], group_sizes: number[], confidence_level?: number): GamesHowellComparison[];
+/**
+ * Tests group scale with Levene's mean or Brown–Forsythe's median centering.
+ *
+ * Runs one-way ANOVA on absolute within-group deviations. Independent observations
+ * and comparable group distribution shapes support interpreting the result as a scale test.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto fit = dm::stats::levene_test({1, 2, 4, 3, 6, 9, 12, 15, 3, 4, 5, 5}, {3, 5, 4});
+ * std::print("{:.3f}\n", fit.statistic); // 3.550
+ * ```
+ *
+ * **References**
+ *
+ * - Brown and Forsythe (1974), Robust Tests for the Equality of Variances,
+ *   doi:10.1080/01621459.1974.10482955.
+ * - https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.levene.html
+ * @param values Finite observations concatenated by group.
+ * @param group_sizes At least two groups of size two or larger partitioning values.
+ * @param median_center Use group medians when true (default), or group means when false. (default: `true`)
+ * @returns F statistic, two degrees of freedom and an approximate upper-tail p-value.
+ * @throws {Error} `std::invalid_argument`: Invalid inputs, zero residual deviation variance or overflow.
+ * @see bartlett_test(), fligner_killeen_test()
+ */
+export declare function levene_test(values: number[], group_sizes: number[], median_center?: boolean): HypothesisTestResult;
+/**
+ * Bartlett's test of equal variances for independent normal groups.
+ *
+ * Compares the pooled log variance with the weighted group log variances and
+ * applies Bartlett's finite-sample correction. Inputs are unchanged.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto fit = dm::stats::bartlett_test({1, 2, 4, 3, 6, 9, 12, 15, 3, 4, 5, 5}, {3, 5, 4});
+ * std::print("{:.3f}\n", fit.statistic); // 6.496
+ * ```
+ *
+ * **References**
+ *
+ * - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/bartlett.test.html
+ * @param values Finite observations concatenated by group.
+ * @param group_sizes At least two groups of size two or larger, each with positive variance.
+ * @returns K-squared statistic, k-1 degrees of freedom and approximate chi-square upper tail.
+ * @throws {Error} `std::invalid_argument`: Invalid inputs, zero group variance or overflow.
+ * @see levene_test(), fligner_killeen_test()
+ */
+export declare function bartlett_test(values: number[], group_sizes: number[]): HypothesisTestResult;
+/**
+ * Fligner–Killeen scale test using normal scores of median-centered absolute deviations.
+ *
+ * Ranks the pooled deviations with midranks for ties. The chi-square reference
+ * assumes independent groups and is asymptotic.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto fit = dm::stats::fligner_killeen_test({1, 2, 4, 3, 6, 9, 12, 15, 3, 4, 5, 5}, {3, 5, 4});
+ * std::print("{:.3f}\n", fit.statistic); // 4.128
+ * ```
+ *
+ * **References**
+ *
+ * - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/fligner.test.html
+ * @param values Finite observations concatenated by group.
+ * @param group_sizes At least two groups of size two or larger partitioning values.
+ * @returns Chi-square statistic, k-1 degrees of freedom and the approximate upper-tail p-value.
+ * @throws {Error} `std::invalid_argument`: Invalid inputs, zero variation in scores or overflow.
+ * @see levene_test(), bartlett_test()
+ */
+export declare function fligner_killeen_test(values: number[], group_sizes: number[]): HypothesisTestResult;
 /**
  * Tie-corrected Kruskal-Wallis rank test, like R kruskal.test().
  *
@@ -20799,6 +23935,32 @@ export declare function one_way_anova(values: number[], group_sizes: number[]): 
  */
 export declare function kruskal_wallis_test(values: number[], group_sizes: number[]): HypothesisTestResult;
 /**
+ * Performs Dunn pairwise comparisons on ranks pooled across all groups.
+ *
+ * Tied observations get average ranks, and their reduced pooled rank variance
+ * enters the normal approximation. The standard interpretation assumes
+ * independent groups. A location interpretation uses a common-shape shift model.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto rows = dm::stats::dunn_test({1, 2, 4, 5, 7, 8}, {2, 2, 2});
+ * std::print("{}\n", rows.size()); // 3
+ * ```
+ *
+ * **References**
+ *
+ * - Dunn (1964), Multiple Comparisons Using Rank Sums, doi:10.2307/1266041.
+ * - https://cran.r-project.org/web/packages/dunn.test/index.html
+ * @param values Finite observations, concatenated by group.
+ * @param group_sizes At least two positive counts that partition values.
+ * @param adjustment Multiplicity method for the whole pairwise family, Holm by default. (default: `PAdjustMethod.Holm`)
+ * @returns Owned comparisons in order (1,0), (2,0), (2,1), and so on.
+ * @throws {Error} `std::invalid_argument`: Invalid groups or zero pooled rank variation.
+ * @see kruskal_wallis_test(), p_adjust()
+ */
+export declare function dunn_test(values: number[], group_sizes: number[], adjustment?: PAdjustMethod | keyof typeof PAdjustMethod): DunnComparison[];
+/**
  * Pearson chi-square test of specified category probabilities, like R chisq.test().
  *
  * Uses sum((observed-expected)^2/expected) and chi-square(k-1); the probabilities are fixed, not
@@ -20823,6 +23985,33 @@ export declare function kruskal_wallis_test(values: number[], group_sizes: numbe
  * @see HypothesisTestResult
  */
 export declare function chi_squared_goodness_of_fit(observed: number[], expected_probabilities?: number[]): HypothesisTestResult;
+/**
+ * Cressie–Read power-divergence goodness-of-fit test for specified probabilities.
+ *
+ * Power 1 gives Pearson's statistic, 0 the likelihood-ratio G statistic,
+ * and -1 its reverse. A zero observed count is treated by continuity and
+ * yields an infinite divergence when power is at most -1.
+ * Uses an asymptotic chi-square reference.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto fit = dm::stats::power_divergence_test({25, 15}, {.5, .5}, 1);
+ * std::print("{:.1f}\n", fit.statistic); // 2.5
+ * ```
+ *
+ * **References**
+ *
+ * - https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.power_divergence.html
+ * @param observed At least two finite nonnegative counts with positive finite total.
+ * @param expected_probabilities Positive finite probabilities summing to one, or empty for uniform. (default: `[]`)
+ * @param power Finite divergence power, default 0. (default: `0.0`)
+ * @param estimated_parameters Degrees of freedom to subtract from k-1, default zero. (default: `0`)
+ * @returns Divergence statistic, degrees of freedom and upper-tail p-value.
+ * @throws {Error} `std::invalid_argument`: Invalid counts, probabilities, power or degrees of freedom.
+ * @see chi_squared_goodness_of_fit()
+ */
+export declare function power_divergence_test(observed: number[], expected_probabilities?: number[], power?: number, estimated_parameters?: number): HypothesisTestResult;
 /**
  * Pearson chi-square test for a contingency table, like R chisq.test().
  *
@@ -20957,6 +24146,31 @@ export declare function kendall_tau(x: number[], y: number[]): KendallTau;
  */
 export declare function fisher_exact_test_2x2(a: number, b: number, c: number, d: number, alternative?: Alternative | keyof typeof Alternative): HypothesisTestResult;
 /**
+ * One-sample Kolmogorov–Smirnov test against a supplied continuous CDF.
+ *
+ * Uses the same asymptotic reference as the normal and uniform convenience tests.
+ * The CDF must be fully specified independently of the observations. Values are
+ * checked for range and monotonicity only at the sorted sample points.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto d = dm::stats::ks_test_one_sample({0.2, 0.6}, [](double x) { return x; });
+ * ```
+ *
+ * **References**
+ *
+ * - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html
+ * @param sample At least two finite observations.
+ * @param cdf Nonempty continuous-null CDF callable, returning values in [0,1].
+ * @param alternative TwoSided (default), Less if the empirical CDF is below the reference, or Greater if above. (default: `Alternative.TwoSided`)
+ * @returns KS discrepancy, sample size in parameter1, and approximate p-value. Exceptions from the CDF propagate.
+ * @throws {Error} `std::invalid_argument`: If inputs violate the stated constraints.
+ * @throws {Error} `std::bad_alloc`: If allocation fails.
+ * @see ks_test_one_sample_normal(), ks_test_two_sample()
+ */
+export declare function ks_test_one_sample(sample: number[], cdf: ((a1: number) => number), alternative?: Alternative | keyof typeof Alternative): HypothesisTestResult;
+/**
  * One-sample KS test against a fully specified continuous normal CDF.
  *
  * Two-sided p-values use the Stephens corrected asymptotic Kolmogorov reference; one-sided
@@ -21060,68 +24274,6 @@ export declare function ks_test_two_sample(x: number[], y: number[], alternative
  */
 export declare function shapiro_francia_test(x: number[]): HypothesisTestResult;
 /**
- * Adjust a vector of p-values for multiple comparisons, matching R's p.adjust().
- *
- * - Bonferroni: p[i] * n, capped at 1 -- simplest and most conservative FWER control.
- * - Holm: step-down Bonferroni (Holm-Bonferroni) -- uniformly more powerful than
- *   plain Bonferroni while still controlling FWER, no extra assumptions.
- * - Hochberg: step-up FWER control -- more powerful than Holm, but assumes the test
- *   statistics are independent (or positively dependent).
- * - Hommel: step-up FWER control, uniformly more powerful than Hochberg under the
- *   same independence assumption; the most expensive to compute (O(n^2)). For n == 2
- *   this degenerates to (and is computed as) Hochberg, matching R.
- * - BH (Benjamini-Hochberg, aka "fdr" in R): controls the false discovery rate under
- *   independence or positive regression dependence -- the standard choice for large-
- *   scale testing (e.g. genomics, many simultaneous hypothesis tests).
- * - BY (Benjamini-Yekutieli): controls the FDR under arbitrary dependence; more
- *   conservative than BH.
- * - None: returns the input p-values unchanged.
- *
- * As in R, a single p-value (n <= 1) is always returned unchanged regardless of
- * `method`.
- * @param method (default: `PAdjustMethod.BH`)
- */
-export declare function p_adjust(p: number[], method?: PAdjustMethod | keyof typeof PAdjustMethod): number[];
-/**
- * Westfall-Young single-step minP adjustment (Westfall & Young, 1993) -- a resampling-
- * based FWER correction that accounts for the actual dependence structure between
- * tests (unlike the analytic methods above, which either assume independence or make
- * no assumption at all).
- *
- * `resampled_p` is a B x m matrix: row b holds the m p-values recomputed on the
- * b-th permutation or bootstrap resample (generated by the caller -- this function is
- * purely the combinatorial engine, not the resampling scheme itself). `sorted_p` is
- * the m original p-values sorted ascending, and column k of every row in `resampled_p`
- * must correspond to the same hypothesis as sorted_p[k] (i.e. the caller sorts once and
- * reorders both consistently before calling).
- *
- * Single-step: every hypothesis is compared against the same reference distribution --
- * the per-resample minimum p-value taken over *all* m hypotheses -- so adjusted p[k] =
- * (fraction of resamples whose overall minimum p-value <= sorted_p[k]). This is
- * automatically monotonic in sorted_p and valid under subset pivotality, but less
- * powerful than the step-down refinement below since it never narrows the comparison
- * set as hypotheses are resolved.
- *
- * Returned in the same (ascending sorted_p) order as the input; the caller is
- * responsible for mapping back to original hypothesis order if needed.
- */
-export declare function westfall_young_adjust(resampled_p: number[][], sorted_p: number[]): number[];
-/**
- * Romano-Wolf step-down resampling adjustment (Romano & Wolf, 2005) -- like
- * westfall_young_adjust, but more powerful: at each step k (in ascending sorted_p
- * order), the reference distribution is the per-resample minimum p-value taken only
- * over the *remaining* hypotheses k..m-1, narrowing by one hypothesis at each step
- * rather than always using all m. This is the step-down generalization that controls
- * FWER without requiring subset pivotality. Monotonicity (adjusted p[k] >= adjusted
- * p[k-1]) is enforced explicitly, since narrowing the comparison set at each step means
- * it isn't automatic the way it is for the single-step procedure above.
- *
- * Same input/output conventions as westfall_young_adjust: `resampled_p` is a B x m
- * matrix with column k aligned to sorted_p[k], and the result is returned in the same
- * sorted order.
- */
-export declare function romano_wolf_adjust(resampled_p: number[][], sorted_p: number[]): number[];
-/**
  * One-proportion score test with an uncorrected Wilson confidence interval.
  *
  * Tests a fixed Bernoulli success probability using the signed null-standard-error z statistic;
@@ -21210,6 +24362,133 @@ export declare function proportion_test_two_sample(successes1: number, n1: numbe
  * @see HypothesisTestResult
  */
 export declare function binomial_test(successes: number, n: number, p?: number, alternative?: Alternative | keyof typeof Alternative, conf_level?: number): HypothesisTestResult;
+/**
+ * Combines separate Wilson score intervals to estimate a difference in proportions.
+ *
+ * Implements Newcombe's uncorrected method 10 for two independent binomial samples.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto ci = dm::stats::newcombe_difference_interval(0, 10, 0, 10);
+ * std::print("{:.4f} {:.4f}\n", ci.lower, ci.upper); // -0.2775 0.2775
+ * ```
+ *
+ * **References**
+ *
+ * - Newcombe (1998), Interval estimation for the difference between independent proportions,
+ *   https://pubmed.ncbi.nlm.nih.gov/9595617/.
+ * @param successes1 Successes in the first sample, from zero to n1.
+ * @param n1 Positive size of the first sample.
+ * @param successes2 Successes in the second sample, from zero to n2.
+ * @param n2 Positive size of the second sample.
+ * @param confidence_level Two-sided nominal confidence level in (0,1), default .95. (default: `0.94999999999999996`)
+ * @returns Difference and bounds on the probability scale.
+ * @throws {Error} `std::invalid_argument`: Invalid counts or confidence level.
+ * @see proportion_test_two_sample()
+ */
+export declare function newcombe_difference_interval(successes1: number, n1: number, successes2: number, n2: number, confidence_level?: number): ProportionDifferenceInterval;
+/**
+ * Inverts the uncorrected Koopman two-binomial score test for a risk ratio.
+ *
+ * At each candidate ratio, the binomial likelihood is maximized subject
+ * to that ratio. The fitted risks determine the score variance. This is a
+ * two-sided, asymptotic interval. The estimate is positive infinity when
+ * only the denominator risk is zero. When both counts are zero, the
+ * estimate is absent and the interval is [0, +infinity].
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto ci = dm::stats::risk_ratio_score_interval(0, 20, 4, 20);
+ * std::print("{} {:.3f}\n", ci.lower, ci.upper); // 0 0.870
+ * ```
+ *
+ * **References**
+ *
+ * - P. A. R. Koopman (1984), https://doi.org/10.2307/2531405
+ * @param successes1 Successes in the first sample, from zero to n1.
+ * @param n1 Positive first sample size.
+ * @param successes2 Successes in the second sample, from zero to n2.
+ * @param n2 Positive second sample size.
+ * @param confidence_level Two-sided nominal confidence level in (0,1), default .95. (default: `0.94999999999999996`)
+ * @returns Risk ratio estimate and lower and upper score bounds.
+ * @throws {Error} `std::invalid_argument`: Invalid counts or confidence level.
+ * @see newcombe_difference_interval(), RiskRatioInterval
+ */
+export declare function risk_ratio_score_interval(successes1: number, n1: number, successes2: number, n2: number, confidence_level?: number): RiskRatioInterval;
+/**
+ * Inverts Poisson count tails for a Garwood interval on one event rate.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto ci = dm::stats::poisson_rate_interval(0, 5);
+ * std::print("{:.3f}\n", ci.upper); // 0.738
+ * ```
+ *
+ * **References**
+ *
+ * - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/poisson.test.html
+ * @param events Number of observed events, including zero.
+ * @param exposure Positive finite exposure in caller-selected units.
+ * @param confidence_level Two-sided nominal coverage in (0,1), default .95. (default: `0.94999999999999996`)
+ * @returns Observed rate and interval in events per unit of exposure.
+ * @throws {Error} `std::invalid_argument`: Invalid exposure or confidence level.
+ * @see poisson_rate_ratio_interval()
+ */
+export declare function poisson_rate_interval(events: number, exposure: number, confidence_level?: number): PoissonRateInterval;
+/**
+ * Computes an exact conditional interval for a ratio of two independent Poisson rates.
+ *
+ * Conditional on the combined count, the first count is binomial. Transforms
+ * its Clopper–Pearson bounds to a rate ratio using the two exposures.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto ci = dm::stats::poisson_rate_ratio_interval(10, 20, 5, 20);
+ * std::print("{:.0f}\n", *ci.estimate); // 2
+ * ```
+ *
+ * **References**
+ *
+ * - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/poisson.test.html
+ * @param events1 Number of events from the first exposure.
+ * @param exposure1 Positive finite first exposure.
+ * @param events2 Number of events from the second exposure.
+ * @param exposure2 Positive finite second exposure, in the same units.
+ * @param confidence_level Two-sided nominal coverage in (0,1), default .95. (default: `0.94999999999999996`)
+ * @returns First rate divided by the second and its interval. Zero events in both exposures give an absent estimate and the interval [0,+infinity].
+ * @throws {Error} `std::invalid_argument`: Invalid exposure or confidence level.
+ * @see poisson_rate_interval()
+ */
+export declare function poisson_rate_ratio_interval(events1: number, exposure1: number, events2: number, exposure2: number, confidence_level?: number): PoissonRateInterval;
+/**
+ * Cochran–Armitage score test for a linear trend in independent binomial proportions.
+ *
+ * A positive statistic indicates that success is associated with larger
+ * category scores. The standard normal null reference is asymptotic.
+ *
+ * **Example**
+ *
+ * ```cpp
+ * const auto fit = dm::stats::cochran_armitage_test({2, 5, 8}, {10, 10, 10});
+ * std::print("{:.3f}\n", fit.statistic); // 2.683
+ * ```
+ *
+ * **References**
+ *
+ * - https://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.trend.test.html
+ * @param successes One success count per category, at most the corresponding trial count.
+ * @param trials Positive trial counts for at least two categories.
+ * @param scores Finite numeric category scores, or empty to use 1, 2, ... in input order. (default: `[]`)
+ * @param alternative Tail of the signed statistic, two-sided by default. (default: `Alternative.TwoSided`)
+ * @returns Signed z statistic and approximate p-value.
+ * @throws {Error} `std::invalid_argument`: Invalid input, constant scores, or a constant outcome.
+ * @see proportion_test_two_sample()
+ */
+export declare function cochran_armitage_test(successes: number[], trials: number[], scores?: number[], alternative?: Alternative | keyof typeof Alternative): HypothesisTestResult;
 /**
  * One-sample Student t-test of a population mean, like R t.test().
  *

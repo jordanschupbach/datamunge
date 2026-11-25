@@ -2,16 +2,34 @@
 % Please edit documentation in R/datamunger.R
 \name{circle_from_one_point}
 \alias{circle_from_one_point}
-\title{C++ function \verb{datamunge::geometry::detail::circle_from_one_point}}
+\title{Construct a singleton zero-radius circle with finite-point validation.}
 \usage{
 circle_from_one_point(p)
 }
 \arguments{
-\item{p}{\code{Point2D}}
+\item{p}{\code{Point2D}. Finite point.}
 }
 \value{
-\code{Circle}
+\code{Circle}: Owned singleton circle.
 }
 \description{
-C++ function \verb{datamunge::geometry::detail::circle_from_one_point}
+Construct a singleton zero-radius circle with finite-point validation.
+}
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{std::print("\{\}\\n",dm::geometry::detail::circle_from_one_point(\{1,2\}).radius); // 0
+}\if{html}{\out{</div>}}
+}
+
+\section{Errors}{
+
+Signals an R error (from the C++ exception):
+\itemize{
+\item \code{std::invalid_argument}: If p is nonfinite.
+}
+}
+
+\seealso{
+min_enclosing_circle()
 }

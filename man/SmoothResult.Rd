@@ -2,9 +2,9 @@
 % Please edit documentation in R/datamunger.R
 \name{SmoothResult}
 \alias{SmoothResult}
-\title{The result of KalmanFilter::smooth(): the forward-pass (filtered, causal) estimates alongside the RTS backward-pass (smoothed, uses the whole sequence) estimates.}
+\title{Owned actual forward-filter and RTS backward-smoothed trajectories.}
 \description{
-smoothed.back() always exactly equals filtered.back() (the smoother has no future data at the final step); every earlier smoothed covariance is <= the corresponding filtered covariance (in the positive-semidefinite order) since it incorporates more information.
+Equal lengths follow the input sequence. Final smoothed state/covariance equal final filtered values because no future data remain. In an exact valid linear Gaussian model, smoothing reduces conditional covariance; it need not reduce realized error at every time or on every observed sequence. Rounding can impair symmetry/PSD. No retained input views or prefix replay.
 }
 \section{Constructor}{
 
@@ -14,8 +14,19 @@ smoothed.back() always exactly equals filtered.back() (the smoother has no futur
 \section{Fields}{
 
 \itemize{
-\item \verb{$filtered} (\verb{list of KalmanState})
-\item \verb{$smoothed} (\verb{list of KalmanState})
+\item \verb{$filtered} (\verb{list of KalmanState}): Actual causal posterior states from the forward pass.
+\item \verb{$smoothed} (\verb{list of KalmanState}): Actual RTS states using the complete sequence.
 }
 }
 
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{dm::filter::KalmanFilter k(\{\{1\}\},\{\{1\}\},\{\{1\}\},\{\{1\}\},\{0\},\{\{1\}\});
+std::print("\{\}\\n",k.smooth(\{\{1\},\{2\}\}).smoothed.size()); // 2
+}\if{html}{\out{</div>}}
+}
+
+\seealso{
+KalmanFilter::smooth()
+}

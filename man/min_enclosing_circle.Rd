@@ -2,16 +2,41 @@
 % Please edit documentation in R/datamunger.R
 \name{min_enclosing_circle}
 \alias{min_enclosing_circle}
-\title{The smallest circle enclosing every point in \code{points} (Welzl's algorithm, the classical "incremental with boundary point sets" formulation: a point violating the current circle must lie on the boundary of the true minimal circle, so it's fixed in place and the problem re-solved for the remaining points).}
+\title{Compute a seeded incremental enclosing circle using three nested loops.}
 \usage{
 min_enclosing_circle(points)
 }
 \arguments{
-\item{points}{\verb{list of Point2D}}
+\item{points}{\verb{list of Point2D}. Nonempty finite points; duplicates and collinearity allowed.}
 }
 \value{
-\code{Circle}
+\code{Circle}: Owned finite center/radius.
 }
 \description{
-Points are shuffled first (fixed seed, for determinism) since the algorithm's expected running time depends on processing order; this implementation skips the further "move-to-front" optimization real Welzl uses for guaranteed expected-linear time; O(n^3) worst case here is still polynomial and far simpler to get right, matching this module's usual complexity/simplicity tradeoff. Throws std::invalid_argument for an empty input.
+Fixed MT19937-64 seed42 and std::shuffle preserve ordinary processing order on the same standard library. One/two/three-point boundary rebuilds use translated long-double geometry, exact orientation for collinearity, and overflow checks. Collinear triples use the farthest-pair diameter. Containment tolerance is1e-9*max(1,radius), so the returned circle is a numerical approximation, not an exact enclosure/minimality certificate. O(n^3) worst-case tests, O(n) copied driver storage. No expected-linear guarantee for this particular loop implementation or timing claim.
+}
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{auto c=dm::geometry::min_enclosing_circle(\{\{0,0\},\{2,0\},\{1,0\}\});
+std::print("\{\} \{\}\\n",c.center.x,c.radius); // 1 1
+}\if{html}{\out{</div>}}
+}
+
+\section{Errors}{
+
+Signals an R error (from the C++ exception):
+\itemize{
+\item \code{std::invalid_argument}: If input is empty or nonfinite.
+\item \code{std::overflow_error}: If rebuilt center/radius is unrepresentable.
+}
+}
+
+\references{
+\itemize{
+\item E. Welzl (1991), Smallest enclosing disks (balls and ellipsoids), LNCS555,359–370, doi:10.1007/BFb0038202 (boundary-set framework; explicit nested-loop variant here).
+}
+}
+\seealso{
+min_enclosing_circle_trace(), enclosing_circle_check()
 }

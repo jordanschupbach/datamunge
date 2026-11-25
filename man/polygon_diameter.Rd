@@ -2,16 +2,41 @@
 % Please edit documentation in R/datamunger.R
 \name{polygon_diameter}
 \alias{polygon_diameter}
-\title{The diameter of a point set: the farthest pair of points, by Euclidean distance.}
+\title{Return the actual farthest pair through the preserved diameter signature.}
 \usage{
 polygon_diameter(points)
 }
 \arguments{
-\item{points}{\verb{list of Point2D}}
+\item{points}{\verb{list of Point2D}. Complete finite points with at least two distinct locations.}
 }
 \value{
-\code{DiameterResult}
+\code{DiameterResult}: Owned endpoints and finite Euclidean diameter.
 }
 \description{
-The farthest pair is always a pair of convex hull vertices, so this computes the hull first (convex_hull()) and then searches only among its (typically far fewer) vertices -- brute-force O(h^2) over the hull rather than the classical O(h) two-pointer rotating-calipers walk, the same "correct and simple over asymptotically optimal" tradeoff this module already makes for closest_pair(). Throws std::invalid_argument for fewer than 2 distinct points.
+Uses the shared checked O(H) rotating antipodes instead of the former O(H^2) exhaustive pair scan. Retains any valid farthest pair; default execution policies apply.
+}
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{std::print("\{\}\\n",dm::geometry::polygon_diameter(\{\{0,0\},\{3,4\}\}).distance); // 5
+}\if{html}{\out{</div>}}
+}
+
+\section{Errors}{
+
+Signals an R error (from the C++ exception):
+\itemize{
+\item \code{std::invalid_argument}: Invalid/degenerate input.
+\item \code{std::length_error}: Default policy exceeded.
+\item \code{std::overflow_error}: Unrepresentable distance.
+}
+}
+
+\references{
+\itemize{
+\item Toussaint (1983), Solving geometric problems with the rotating calipers, https://www-cgrl.cs.mcgill.ca/~godfried/publications/calipers.pdf.
+}
+}
+\seealso{
+polygon_diameter_run()
 }

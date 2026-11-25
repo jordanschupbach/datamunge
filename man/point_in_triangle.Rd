@@ -2,22 +2,22 @@
 % Please edit documentation in R/datamunger.R
 \name{point_in_triangle}
 \alias{point_in_triangle}
-\title{C++ function \verb{datamunge::geometry::detail::point_in_triangle}}
+\title{Legacy unvalidated double-sign triangle containment primitive; robust triangulation uses exact signs.}
 \usage{
 point_in_triangle(p, a, b, c)
 }
 \arguments{
-\item{p}{\code{Point2D}}
+\item{p}{\code{Point2D}. Query point.}
 
-\item{a}{\code{Point2D}}
+\item{a}{\code{Point2D}. First triangle vertex.}
 
-\item{b}{\code{Point2D}}
+\item{b}{\code{Point2D}. Second triangle vertex.}
 
-\item{c}{\code{Point2D}}
+\item{c}{\code{Point2D}. Third triangle vertex.}
 }
 \value{
-\code{logical}
+\code{logical}: Original rounded-sign closed-triangle test, without finite or degeneracy guarantees.
 }
 \description{
-C++ function \verb{datamunge::geometry::detail::point_in_triangle}
+Legacy unvalidated double-sign triangle containment primitive; robust triangulation uses exact signs.
 }

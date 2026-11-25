@@ -44,6 +44,14 @@ of R's \code{png()} or \code{svg()} device.
 \item \code{height}: Canvas height in pixels.
 \item Returns: This plot, for chaining.
 }
+\item \verb{$dpi(value)} -> \code{RPlot}
+
+Sets the resolution PNG and PDF output is rasterized at, like R's
+\code{png(res = )} and ggsave()'s \verb{dpi =} (default 96).
+\itemize{
+\item \code{value}: Dots per inch; finite and positive.
+\item Returns: This plot, for chaining.
+}
 \item \verb{$title(value)} -> \code{RPlot}
 
 Sets the main heading, like R's \verb{main =}; an empty string removes it.
@@ -472,6 +480,394 @@ R's \code{segments(x0, y0, x1, y1)}.
 \item \code{y1}: End y coordinates.
 \item \code{color}: Segment color (default opaque black).
 \item \code{stroke_width}: Segment width in pixels (default 1).
+\item Returns: This plot, for chaining.
+}
+\item \verb{$steps(x, y, label = "", color = <default>, stroke_width = 2.0)} -> \code{RPlot}
+
+Adds a right-continuous step line.
+\itemize{
+\item \code{x}: Horizontal coordinates.
+\item \code{y}: Vertical coordinates.
+\item \code{label}: Optional legend label.
+\item \code{color}: Mark color.
+\item \code{stroke_width}: Stroke width in pixels.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$stems(x, y, baseline = 0.0, color = <default>, stroke_width = 2.0)} -> \code{RPlot}
+
+Adds vertical sticks from a baseline.
+\itemize{
+\item \code{x}: Horizontal coordinates.
+\item \code{y}: Vertical coordinates.
+\item \code{baseline}: Baseline in y data units.
+\item \code{color}: Mark color.
+\item \code{stroke_width}: Stroke width in pixels.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$lollipop(x, y, baseline = 0.0, color = <default>, marker_size = 4.0)} -> \code{RPlot}
+
+Adds a stem and marker per observation.
+\itemize{
+\item \code{x}: Horizontal coordinates.
+\item \code{y}: Vertical coordinates.
+\item \code{baseline}: Baseline in y data units.
+\item \code{color}: Mark color.
+\item \code{marker_size}: Marker radius in pixels.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$area(x, y, baseline = 0.0, color = <default>)} -> \code{RPlot}
+
+Fills the area between a curve and a baseline.
+\itemize{
+\item \code{x}: Horizontal coordinates.
+\item \code{y}: Vertical coordinates.
+\item \code{baseline}: Baseline in y data units.
+\item \code{color}: Fill color, including opacity.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$ribbon(x, lower, upper, color = <default>)} -> \code{RPlot}
+
+Fills the band between lower and upper curves.
+\itemize{
+\item \code{x}: Horizontal coordinates.
+\item \code{lower}: Lower endpoint at each x.
+\item \code{upper}: Upper endpoint at each x.
+\item \code{color}: Fill color, including opacity.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$error_bars(x, lower, upper, cap_width = 0.12, color = <default>, stroke_width = 2.0)} -> \code{RPlot}
+
+Adds vertical intervals with horizontal end caps.
+\itemize{
+\item \code{x}: Horizontal coordinates.
+\item \code{lower}: Lower endpoint at each x.
+\item \code{upper}: Upper endpoint at each x.
+\item \code{cap_width}: Full cap width in x data units.
+\item \code{color}: Mark color.
+\item \code{stroke_width}: Stroke width in pixels.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$rectangles(left, bottom, right, top, label = "", color = <default>)} -> \code{RPlot}
+
+Adds filled rectangles defined by data-space bounds.
+\itemize{
+\item \code{left}: Left x bounds.
+\item \code{bottom}: Lower y bounds.
+\item \code{right}: Right x bounds.
+\item \code{top}: Upper y bounds.
+\item \code{label}: Optional legend label.
+\item \code{color}: Fill color, including opacity.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$horizontal_bars(positions, values, label = "", color = <default>, bar_height = 0.80000000000000004)} -> \code{RPlot}
+
+Adds horizontal bars anchored at x = 0.
+\itemize{
+\item \code{positions}: Bar centers along y.
+\item \code{values}: Bar ends along x.
+\item \code{label}: Optional legend label.
+\item \code{color}: Mark color.
+\item \code{bar_height}: Bar height in y data units.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$grouped_bars(x, values, labels = c(), colors = list(), group_width = 0.80000000000000004)} -> \code{RPlot}
+
+Adds adjacent bars for multiple series at each category.
+\itemize{
+\item \code{x}: Horizontal coordinates.
+\item \code{values}: One row per series, one column per category.
+\item \code{labels}: Optional series labels.
+\item \code{colors}: Optional palette, recycled across series.
+\item \code{group_width}: Total group width in x data units.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$stacked_bars(x, values, labels = c(), colors = list(), bar_width = 0.80000000000000004)} -> \code{RPlot}
+
+Stacks positive and negative values separately from zero.
+\itemize{
+\item \code{x}: Horizontal coordinates.
+\item \code{values}: One row per series, one column per category.
+\item \code{labels}: Optional series labels.
+\item \code{colors}: Optional palette, recycled across series.
+\item \code{bar_width}: Stack width in x data units.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$waterfall(x, changes, bar_width = 0.80000000000000004, increase = <default>, decrease = <default>)} -> \code{RPlot}
+
+Adds floating bars for cumulative changes.
+\itemize{
+\item \code{x}: Horizontal coordinates.
+\item \code{changes}: Signed increments, in order.
+\item \code{bar_width}: Bar width in x data units.
+\item \code{increase}: Fill for nonnegative changes.
+\item \code{decrease}: Fill for negative changes.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$ecdf(sample, label = "", color = <default>, stroke_width = 2.0)} -> \code{RPlot}
+
+Adds an empirical cumulative distribution step line.
+\itemize{
+\item \code{sample}: Finite observations, in any order.
+\item \code{label}: Optional legend label.
+\item \code{color}: Mark color.
+\item \code{stroke_width}: Stroke width in pixels.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$rug(x, bottom = 0.0, top = 0.050000000000000003, color = <default>)} -> \code{RPlot}
+
+Adds short vertical ticks at observed x values.
+\itemize{
+\item \code{x}: Horizontal coordinates.
+\item \code{bottom}: Starting y coordinate.
+\item \code{top}: Ending y coordinate, which must differ from bottom.
+\item \code{color}: Mark color.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$density(sample, label = "", color = <default>)} -> \code{RPlot}
+
+Adds a Gaussian kernel density estimate.
+\itemize{
+\item \code{sample}: Finite observations, in any order.
+\item \code{label}: Optional legend label.
+\item \code{color}: Mark color.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$violin(position, sample, width = 0.80000000000000004, color = <default>)} -> \code{RPlot}
+
+Adds a vertical mirrored kernel density for one sample.
+\itemize{
+\item \code{position}: Center in x data units.
+\item \code{sample}: Finite observations, in any order.
+\item \code{width}: Full width at peak density, in x data units.
+\item \code{color}: Fill color, including opacity.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$bubbles(x, y, radii, label = "", color = <default>)} -> \code{RPlot}
+
+Adds markers with independently specified radii.
+\itemize{
+\item \code{x}: Horizontal coordinates.
+\item \code{y}: Vertical coordinates.
+\item \code{radii}: Nonnegative marker radii in pixels.
+\item \code{label}: Optional legend label.
+\item \code{color}: Fill color, including opacity.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$arrows(x, y, dx, dy, head_fraction = 0.22, color = <default>, stroke_width = 2.0)} -> \code{RPlot}
+
+Adds one arrow for each data-space displacement vector.
+\itemize{
+\item \code{x}: Horizontal coordinates.
+\item \code{y}: Vertical coordinates.
+\item \code{dx}: Horizontal displacements.
+\item \code{dy}: Vertical displacements.
+\item \code{head_fraction}: Backward head length as a fraction of the shaft, in [0, 1].
+\item \code{color}: Mark color.
+\item \code{stroke_width}: Stroke width in pixels.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$contour(x, y, z, level, color = <default>, stroke_width = 2.0)} -> \code{RPlot}
+
+Adds the contour of a sampled scalar field at a given level.
+\itemize{
+\item \code{x}: Horizontal coordinates.
+\item \code{y}: Vertical coordinates.
+\item \code{z}: Finite grid indexed as z[y index][x index].
+\item \code{level}: Scalar contour level.
+\item \code{color}: Mark color.
+\item \code{stroke_width}: Stroke width in pixels.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$candlesticks(x, open, high, low, close, width = 0.59999999999999998, rising = <default>, falling = <default>)} -> \code{RPlot}
+
+Draws open-to-close bodies with low-to-high wicks.
+\itemize{
+\item \code{x}: Positions in x data units.
+\item \code{open}: Opening values.
+\item \code{high}: Upper endpoints.
+\item \code{low}: Lower endpoints.
+\item \code{close}: Closing values.
+\item \code{width}: Full body or tick span in x data units.
+\item \code{rising}: Color when close is at or above open.
+\item \code{falling}: Color when close is below open.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$ohlc(x, open, high, low, close, width = 0.59999999999999998, rising = <default>, falling = <default>)} -> \code{RPlot}
+
+Draws low-to-high bars with a left opening tick and a right closing tick.
+\itemize{
+\item \code{x}: Positions in x data units.
+\item \code{open}: Opening values.
+\item \code{high}: Upper endpoints.
+\item \code{low}: Lower endpoints.
+\item \code{close}: Closing values.
+\item \code{width}: Full body or tick span in x data units.
+\item \code{rising}: Color when close is at or above open.
+\item \code{falling}: Color when close is below open.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$dumbbell(positions, start, end, first = <default>, second = <default>)} -> \code{RPlot}
+
+Connects two observations along each horizontal category row.
+\itemize{
+\item \code{positions}: Category centers on y.
+\item \code{start}: First observations on x.
+\item \code{end}: Second observations on x.
+\item \code{first}: First marker color.
+\item \code{second}: Second marker color.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$dot_stack(sample, color = <default>, marker_size = 4.0)} -> \code{RPlot}
+
+Stacks one dot per observation at each distinct sample value.
+\itemize{
+\item \code{sample}: Finite observations.
+\item \code{color}: Marker color.
+\item \code{marker_size}: Marker radius in pixels.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$population_pyramid(positions, left, right, left_label = "", right_label = "", bar_height = 0.80000000000000004)} -> \code{RPlot}
+
+Draws two nonnegative populations on opposite sides of zero.
+\itemize{
+\item \code{positions}: Category centers on y.
+\item \code{left}: Nonnegative first group magnitudes.
+\item \code{right}: Nonnegative second group magnitudes.
+\item \code{left_label}: Optional first group legend label.
+\item \code{right_label}: Optional second group legend label.
+\item \code{bar_height}: Bar height in y data units.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$frequency_polygon(sample, bins = 10, color = <default>)} -> \code{RPlot}
+
+Connects the centers of equal-width histogram bins.
+\itemize{
+\item \code{sample}: Finite sample.
+\item \code{bins}: Positive bin count.
+\item \code{color}: Layer color.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$qqplot(x, y, color = <default>)} -> \code{RPlot}
+
+Plots the empirical quantiles of two samples.
+\itemize{
+\item \code{x}: Sample for the horizontal axis.
+\item \code{y}: Sample for the vertical axis.
+\item \code{color}: Layer color.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$bland_altman(first, second, color = <default>)} -> \code{RPlot}
+
+Plots paired differences against paired means.
+\itemize{
+\item \code{first}: First measurements.
+\item \code{second}: Second measurements, subtracted from the first.
+\item \code{color}: Layer color.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$autocorrelation(sample, max_lag, partial = FALSE, color = <default>)} -> \code{RPlot}
+
+Plots sample autocorrelations as vertical stems.
+\itemize{
+\item \code{sample}: Finite, nonconstant series with at least two samples.
+\item \code{max_lag}: Largest lag, less than the series length.
+\item \code{partial}: Draw the partial autocorrelation when true.
+\item \code{color}: Layer color.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$forest(positions, estimate, lower, upper, color = <default>)} -> \code{RPlot}
+
+Plots point estimates with horizontal intervals.
+\itemize{
+\item \code{positions}: Row positions along y.
+\item \code{estimate}: Point estimates.
+\item \code{lower}: Lower interval ends.
+\item \code{upper}: Upper interval ends.
+\item \code{color}: Layer color.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$pareto(counts, labels = c(), color = <default>)} -> \code{RPlot}
+
+Draws descending category shares and their cumulative share.
+\itemize{
+\item \code{counts}: Nonnegative finite weights, with a positive finite total.
+\item \code{labels}: Optional category labels in input order.
+\item \code{color}: Layer color.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$stacked_area(x, values, colors = list())} -> \code{RPlot}
+
+Fills cumulative bands above a common zero baseline.
+\itemize{
+\item \code{x}: Ordered horizontal coordinates.
+\item \code{values}: One row of heights per series.
+\item \code{colors}: Optional palette, recycled. An empty palette uses built-in categorical colors.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$parallel_coordinates(rows, labels = c(), color = <default>)} -> \code{RPlot}
+
+Connects one normalized observation across parallel axes.
+\itemize{
+\item \code{rows}: Observation rows, each with the same two or more values in [0, 1].
+\item \code{labels}: Optional axis labels, one per column.
+\item \code{color}: Observation-line color.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$ternary(values, labels = c(), color = <default>)} -> \code{RPlot}
+
+Plots nonnegative triples using barycentric coordinates.
+\itemize{
+\item \code{values}: One triple of finite nonnegative values per point.
+\item \code{labels}: Optional labels for the three vertices.
+\item \code{color}: Layer color.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$wireframe(x, y, z, color = <default>)} -> \code{RPlot}
+
+Projects the rows and columns of a sampled height field.
+\itemize{
+\item \code{x}: Column coordinates.
+\item \code{y}: Row coordinates.
+\item \code{z}: Finite grid indexed as z[row][column].
+\item \code{color}: Layer color.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$treemap(weights, labels = c(), colors = list())} -> \code{RPlot}
+
+Partitions a rectangle into area-proportional tiles.
+\itemize{
+\item \code{weights}: Strictly positive finite weights, with a finite sum.
+\item \code{labels}: Optional centered labels in input order.
+\item \code{colors}: Optional palette, recycled. An empty palette uses built-in categorical colors.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$arc_diagram(positions, from, to, color = <default>)} -> \code{RPlot}
+
+Connects nodes on a single horizontal baseline with semicircular arcs.
+\itemize{
+\item \code{positions}: Node positions.
+\item \code{from}: First endpoint index per edge.
+\item \code{to}: Second endpoint index per edge.
+\item \code{color}: Layer color.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$choropleth(x, y, values, palette = list())} -> \code{RPlot}
+
+Colors region polygons on one shared numeric scale.
+\itemize{
+\item \code{x}: One horizontal coordinate vector per ring.
+\item \code{y}: One vertical coordinate vector per ring.
+\item \code{values}: One finite numeric value per ring.
+\item \code{palette}: Optional low-to-high palette; empty uses viridis.
+\item Returns: This plot, for chaining.
+}
+\item \verb{$radar(values, labels = c(), color = <default>)} -> \code{RPlot}
+
+Connects normalized values on evenly spaced radial spokes.
+\itemize{
+\item \code{values}: At least three normalized values.
+\item \code{labels}: Optional labels, one per spoke.
+\item \code{color}: Layer color.
 \item Returns: This plot, for chaining.
 }
 }

@@ -2,18 +2,36 @@
 % Please edit documentation in R/datamunger.R
 \name{circle_contains}
 \alias{circle_contains}
-\title{C++ function \verb{datamunge::geometry::detail::circle_contains}}
+\title{Test a point with the same tolerance used by the incremental producer.}
 \usage{
 circle_contains(circle, p)
 }
 \arguments{
-\item{circle}{\code{Circle}}
+\item{circle}{\code{Circle}. Finite center and finite nonnegative radius.}
 
-\item{p}{\code{Point2D}}
+\item{p}{\code{Point2D}. Finite query point.}
 }
 \value{
-\code{logical}
+\code{logical}: Distance<=radius+1e-9*max(1,radius).
 }
 \description{
-C++ function \verb{datamunge::geometry::detail::circle_contains}
+Test a point with the same tolerance used by the incremental producer.
+}
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{std::print("\{\}\\n",dm::geometry::detail::circle_contains(\{\{0,0\},1\},\{1,0\})); // true
+}\if{html}{\out{</div>}}
+}
+
+\section{Errors}{
+
+Signals an R error (from the C++ exception):
+\itemize{
+\item \code{std::invalid_argument}: If circle or point is invalid.
+}
+}
+
+\seealso{
+enclosing_circle_check()
 }

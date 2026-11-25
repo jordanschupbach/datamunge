@@ -2,9 +2,9 @@
 % Please edit documentation in R/datamunger.R
 \name{ODESolution}
 \alias{ODESolution}
-\title{One numerically integrated trajectory: t[i] paired with y[i] (the full state vector at that time), in increasing-time order, always including both endpoints.}
+\title{Owned actual forward trajectory including initial and exact requested final time.}
 \description{
-\code{t} and \code{y} are public fields for direct C++ use, but are not exposed to language bindings (a container-typed struct \emph{field getter} -- even a plain vector\if{html}{\out{<double>}}, not just a nested vector<vector\if{html}{\out{<double>}}> -- hits a swig-jse R-backend codegen bug that a same-shaped plain \emph{method} return does not) -- time_at()/state_at()/size() are the cross-language-safe way to read it.
+Public vectors are mutable by C++ callers; accessors retain the original cross-language-friendly shape without promising every binding installation.
 }
 \section{Constructor}{
 
@@ -14,7 +14,7 @@
 \section{Fields}{
 
 \itemize{
-\item \verb{$steps_taken} (\code{integer})
+\item \verb{$steps_taken} (\code{integer}): Actual accepted complete updates, excluding rejected RK45 trials.
 \item \verb{$function_evaluations} (\code{integer})
 }
 }
@@ -23,10 +23,35 @@
 
 \itemize{
 \item \verb{$size()} -> \code{integer}
+
+Read actual retained time/state sample count.
+\itemize{
+\item Returns: t.size(), without mutation.
+}
 \item \verb{$time_at(index)} -> \code{numeric}
+
+Copy one actual retained sample time, checking its index.
+\itemize{
+\item \code{index}: Original retained sample position.
+\item Returns: Actual time value, without mutation.
+}
 \item \verb{$state_at(index)} -> \verb{numeric vector}
 
-The full state vector at t[index].
+Borrow one actual retained full state, checking its index.
+\itemize{
+\item \code{index}: Original retained sample position.
+\item Returns: Read-only state reference, valid until this solution is mutated/destroyed.
+}
 }
 }
 
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{dm::ode::ODESolution s;std::print("\{\}\\n",s.size()); // 0
+}\if{html}{\out{</div>}}
+}
+
+\seealso{
+ODESolver
+}

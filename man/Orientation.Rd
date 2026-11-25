@@ -3,7 +3,7 @@
 \docType{data}
 \name{Orientation}
 \alias{Orientation}
-\title{C++ enumeration \verb{datamunge::geometry::Orientation}}
+\title{Exact orientation of three stored finite binary64 points.}
 \format{
 A list of enumerator names, which arguments of this type accept: \code{"Collinear"}, \code{"Clockwise"}, \code{"CounterClockwise"}.
 }
@@ -11,6 +11,14 @@ A list of enumerator names, which arguments of this type accept: \code{"Collinea
 Orientation
 }
 \description{
-C++ enumeration \verb{datamunge::geometry::Orientation}
+Exact orientation of three stored finite binary64 points.
 }
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{const auto value=dm::geometry::Orientation::Collinear;
+std::print("\{\}\\n",static_cast<int>(value)); // 0
+}\if{html}{\out{</div>}}
+}
+
 \keyword{datasets}

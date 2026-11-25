@@ -2,9 +2,9 @@
 % Please edit documentation in R/datamunger.R
 \name{ODEOptions}
 \alias{ODEOptions}
-\title{C++ class \verb{datamunge::ode::ODEOptions}}
+\title{Original-order numerical controls for all native forward methods.}
 \description{
-C++ class \verb{datamunge::ode::ODEOptions}
+Original-order numerical controls for all native forward methods.
 }
 \section{Constructor}{
 
@@ -14,13 +14,22 @@ C++ class \verb{datamunge::ode::ODEOptions}
 \section{Fields}{
 
 \itemize{
-\item \verb{$method} (\code{character (StepMethod)})
-\item \verb{$multistep_order} (\code{integer}): Order (2-4) for AdamsBashforth/AdamsMoulton; ignored by every other method.
-\item \verb{$step_size} (\code{numeric}): Fixed step size for every method except RK45, where it is only the \emph{initial} step
-(subsequent steps are chosen adaptively).
-\item \verb{$abs_tol} (\code{numeric}): RK45-only: local error tolerances driving adaptive step-size control.
+\item \verb{$method} (\code{character (StepMethod)}): Original selected known method.
+\item \verb{$multistep_order} (\code{integer}): Adams order clamped to2..4, ignored by one-step methods.
+\item \verb{$step_size} (\code{numeric}): Finite positive fixed step or initial RK45 trial step.
+\item \verb{$abs_tol} (\code{numeric})
 \item \verb{$rel_tol} (\code{numeric})
-\item \verb{$max_step} (\code{numeric}): RK45-only: hard cap on step size; 0 means unbounded (capped only by t_end - t_start).
+\item \verb{$max_step} (\code{numeric})
 }
 }
 
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{dm::ode::ODEOptions o;std::print("\{\}\\n",o.step_size); // 0.01
+}\if{html}{\out{</div>}}
+}
+
+\seealso{
+ODESolver
+}

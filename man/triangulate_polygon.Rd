@@ -2,16 +2,39 @@
 % Please edit documentation in R/datamunger.R
 \name{triangulate_polygon}
 \alias{triangulate_polygon}
-\title{Triangulates a SIMPLE polygon (convex or not, but not self-intersecting) by ear clipping: repeatedly finds a "ear" -- a convex vertex whose neighbor-triangle contains no other polygon vertex -- clips it off as one output triangle, and repeats on the remaining (n-1)-vertex polygon.}
+\title{Triangulate a finite simple polygon using exact orientation-based ear decisions.}
 \usage{
 triangulate_polygon(polygon)
 }
 \arguments{
-\item{polygon}{\verb{list of Point2D}}
+\item{polygon}{\verb{list of Point2D}. Finite simple boundary in either winding, without duplicate closing vertex.}
 }
 \value{
-\verb{list of Triangle}
+\verb{list of Triangle}: Owned original-index triangles; valid n>=3 produces exactly n-2.
 }
 \description{
-O(n^3) worst case (each of the O(n) clipped ears requires an O(n) scan to verify, each vertex check O(1)) -- unlike delaunay_triangulation() (which only sees an unordered point SET), this respects the polygon's actual boundary, so it correctly handles concave (non-convex) shapes. Every triangle's vertices are indices into \code{polygon}. Works for any winding order (detects and internally corrects clockwise input). Returns empty for fewer than 3 vertices; a triangle input returns itself unchanged.
+Rejects duplicate vertices, zero area, overlapping adjacent edges and every nonadjacent edge intersection/touch. A repeated closing vertex is a duplicate. Collinear forward boundary vertices are allowed. Uses the exact turn at the lexicographically least vertex for simple-polygon winding, avoiding area cancellation. O(n^2) validation and O(n^3) worst-case ear search, O(n) working storage. n<3 returns empty after finite validation. For n=3 the historical vertex order is retained; larger clockwise rings are reversed internally. Input is borrowed unchanged; no references or mutable global state survive.
+}
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{std::print("\{\}\\n",dm::geometry::triangulate_polygon(\{\{0,0\},\{2,0\},\{2,2\},\{0,2\}\}).size()); // 2
+}\if{html}{\out{</div>}}
+}
+
+\section{Errors}{
+
+Signals an R error (from the C++ exception):
+\itemize{
+\item \code{std::invalid_argument}: If coordinates or polygon geometry are invalid.
+\item \code{std::length_error}: If default predicate policy or representable storage is exceeded.
+\item \code{std::runtime_error}: If exact ear search cannot finish a validated polygon.
+}
+}
+
+\references{
+\itemize{
+\item D. Eberly, Triangulation by Ear Clipping, https://www.geometrictools.com/Documentation/TriangulationByEarClipping.pdf .
+This implementation uses exact finite-binary64 orientation predicates.
+}
 }

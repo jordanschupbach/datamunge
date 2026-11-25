@@ -2,9 +2,9 @@
 % Please edit documentation in R/datamunger.R
 \name{KalmanState}
 \alias{KalmanState}
-\title{One state estimate + its covariance -- the common return shape for every "give me the state at every timestep" result in this module (filtered sequences, smoothed sequences, ensemble-filter output, ...).}
+\title{Owned state mean and covariance, shared by the native filter-family outputs.}
 \description{
-One state estimate + its covariance -- the common return shape for every "give me the state at every timestep" result in this module (filtered sequences, smoothed sequences, ensemble-filter output, ...).
+Units follow the model; covariance is state-unit products. No input references. Public edits are unchecked and do not mutate the producing filter.
 }
 \section{Constructor}{
 
@@ -14,8 +14,18 @@ One state estimate + its covariance -- the common return shape for every "give m
 \section{Fields}{
 
 \itemize{
-\item \verb{$x} (\verb{numeric vector})
-\item \verb{$P} (\verb{list of numeric vector})
+\item \verb{$x} (\verb{numeric vector}): Owned state mean, length n.
+\item \verb{$P} (\verb{list of numeric vector}): Owned n-by-n covariance, no exact PSD certificate under rounding.
 }
 }
 
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{const dm::filter::KalmanState s\{\{1\},\{\{2\}\}\};std::print("\{\} \{\}\\n",s.x[0],s.P[0][0]); // 1 2
+}\if{html}{\out{</div>}}
+}
+
+\seealso{
+KalmanFilter
+}

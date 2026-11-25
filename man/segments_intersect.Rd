@@ -2,22 +2,45 @@
 % Please edit documentation in R/datamunger.R
 \name{segments_intersect}
 \alias{segments_intersect}
-\title{True if segments p1-q1 and p2-q2 intersect (including touching at an endpoint, or overlapping collinear segments) -- the standard CLRS-style orientation-based test.}
+\title{Decide exact nonempty closed-segment contact through the preserved signature.}
 \usage{
 segments_intersect(p1, q1, p2, q2)
 }
 \arguments{
-\item{p1}{\code{Point2D}}
+\item{p1}{\code{Point2D}. First segment start.}
 
-\item{q1}{\code{Point2D}}
+\item{q1}{\code{Point2D}. First segment end.}
 
-\item{p2}{\code{Point2D}}
+\item{p2}{\code{Point2D}. Second segment start.}
 
-\item{q2}{\code{Point2D}}
+\item{q2}{\code{Point2D}. Second segment end.}
 }
 \value{
-\code{logical}
+\code{logical}: True exactly when the represented closed segments have nonempty intersection.
 }
 \description{
-True if segments p1-q1 and p2-q2 intersect (including touching at an endpoint, or overlapping collinear segments) -- the standard CLRS-style orientation-based test.
+Uses the same four-sign classifier without constructing any approximate coordinates; endpoint touching, collinear overlap and zero-length-segment contact are included. Constant bounded work/storage; no epsilon.
+}
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{std::print("\{\}\\n",dm::geometry::segments_intersect(\{0,0\},\{2,0\},\{2,0\},\{3,0\})); // true
+}\if{html}{\out{</div>}}
+}
+
+\section{Errors}{
+
+Signals an R error (from the C++ exception):
+\itemize{
+\item \code{std::invalid_argument}: Any nonfinite coordinate.
+}
+}
+
+\references{
+\itemize{
+\item Exact determinant motivation: Shewchuk (1997), https://www.cs.cmu.edu/~quake/robust.html ; standard closed-segment orientation and collinear bounding-box test.
+}
+}
+\seealso{
+segment_intersection_run()
 }

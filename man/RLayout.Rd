@@ -34,6 +34,20 @@ Sets the size of the whole figure in pixels (default 960 by 640).
 \item \code{height}: Figure height in pixels, including the title band.
 \item Returns: This layout, for chaining.
 }
+\item \verb{$dpi(value)} -> \code{RLayout}
+\verb{$dpi()} -> \code{numeric}
+
+Sets the resolution PNG and PDF output is rasterized at, like R's
+\code{png(res = )} and ggsave()'s \verb{dpi =} (default 96).
+\itemize{
+\item \code{value}: Dots per inch; finite and positive.
+\item Returns: This layout, for chaining.
+}
+
+The resolution PNG and PDF output is rasterized at (default 96).
+\itemize{
+\item Returns: Dots per inch.
+}
 \item \verb{$title(value)} -> \code{RLayout}
 
 Sets an optional figure-level heading drawn in a band above the panels, like R's

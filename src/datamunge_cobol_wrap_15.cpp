@@ -416,6 +416,28 @@ inline void* cast_k_inequality_constrained_function(void* object, const rc::Clas
 inline const rc::Class class_k_inequality_constrained_function{"INEQUALITY-CONSTRAINED-FUNCTION (datamunge::optim::InequalityConstrainedFunction)", &cast_k_inequality_constrained_function};
 inline void* cast_k_residual_function(void* object, const rc::Class* to);
 inline const rc::Class class_k_residual_function{"RESIDUAL-FUNCTION (datamunge::optim::ResidualFunction)", &cast_k_residual_function};
+inline void* cast_k_nuts_options(void* object, const rc::Class* to);
+inline const rc::Class class_k_nuts_options{"NUTS-OPTIONS (datamunge::bayes::NUTSOptions)", &cast_k_nuts_options};
+inline void* cast_k_nuts_result(void* object, const rc::Class* to);
+inline const rc::Class class_k_nuts_result{"NUTS-RESULT (datamunge::bayes::NUTSResult)", &cast_k_nuts_result};
+inline void* cast_k_nuts(void* object, const rc::Class* to);
+inline const rc::Class class_k_nuts{"NUTS (datamunge::bayes::NUTS)", &cast_k_nuts};
+inline void* cast_k_callback(void* object, const rc::Class* to);
+inline const rc::Class class_k_callback{"CALLBACK (datamunge::Callback)", &cast_k_callback};
+inline void* cast_k_rgb(void* object, const rc::Class* to);
+inline const rc::Class class_k_rgb{"RGB (datamunge::graphics::RGB)", &cast_k_rgb};
+inline void* cast_k_data_series(void* object, const rc::Class* to);
+inline const rc::Class class_k_data_series{"DATA-SERIES (datamunge::graphics::DataSeries)", &cast_k_data_series};
+inline void* cast_k_ab_line(void* object, const rc::Class* to);
+inline const rc::Class class_k_ab_line{"AB-LINE (datamunge::graphics::ABLine)", &cast_k_ab_line};
+inline void* cast_k_legend_entry(void* object, const rc::Class* to);
+inline const rc::Class class_k_legend_entry{"LEGEND-ENTRY (datamunge::graphics::LegendEntry)", &cast_k_legend_entry};
+inline void* cast_k_plot(void* object, const rc::Class* to);
+inline const rc::Class class_k_plot{"PLOT (datamunge::graphics::Plot)", &cast_k_plot};
+inline void* cast_k_r_plot(void* object, const rc::Class* to);
+inline const rc::Class class_k_r_plot{"R-PLOT (datamunge::graphics::RPlot)", &cast_k_r_plot};
+inline void* cast_k_r_layout(void* object, const rc::Class* to);
+inline const rc::Class class_k_r_layout{"R-LAYOUT (datamunge::graphics::RLayout)", &cast_k_r_layout};
 inline void* cast_k_gibbs_options(void* object, const rc::Class* to);
 inline const rc::Class class_k_gibbs_options{"GIBBS-OPTIONS (datamunge::bayes::GibbsOptions)", &cast_k_gibbs_options};
 inline void* cast_k_gibbs_result(void* object, const rc::Class* to);
@@ -428,6 +450,8 @@ inline void* cast_k_hmc_result(void* object, const rc::Class* to);
 inline const rc::Class class_k_hmc_result{"HMC-RESULT (datamunge::bayes::HMCResult)", &cast_k_hmc_result};
 inline void* cast_k_hmc(void* object, const rc::Class* to);
 inline const rc::Class class_k_hmc{"HMC (datamunge::bayes::HMC)", &cast_k_hmc};
+inline void* cast_k_hmc_proposal(void* object, const rc::Class* to);
+inline const rc::Class class_k_hmc_proposal{"HMC-PROPOSAL (datamunge::bayes::HMCProposal)", &cast_k_hmc_proposal};
 inline void* cast_k_importance_sampling_options(void* object, const rc::Class* to);
 inline const rc::Class class_k_importance_sampling_options{"IMPORTANCE-SAMPLING-OPTIONS (datamunge::bayes::ImportanceSamplingOptions)", &cast_k_importance_sampling_options};
 inline void* cast_k_importance_sampling_result(void* object, const rc::Class* to);
@@ -438,12 +462,6 @@ inline void* cast_k_map_options(void* object, const rc::Class* to);
 inline const rc::Class class_k_map_options{"MAP-OPTIONS (datamunge::bayes::MAPOptions)", &cast_k_map_options};
 inline void* cast_k_map(void* object, const rc::Class* to);
 inline const rc::Class class_k_map{"MAP (datamunge::bayes::MAP)", &cast_k_map};
-inline void* cast_k_nuts_options(void* object, const rc::Class* to);
-inline const rc::Class class_k_nuts_options{"NUTS-OPTIONS (datamunge::bayes::NUTSOptions)", &cast_k_nuts_options};
-inline void* cast_k_nuts_result(void* object, const rc::Class* to);
-inline const rc::Class class_k_nuts_result{"NUTS-RESULT (datamunge::bayes::NUTSResult)", &cast_k_nuts_result};
-inline void* cast_k_nuts(void* object, const rc::Class* to);
-inline const rc::Class class_k_nuts{"NUTS (datamunge::bayes::NUTS)", &cast_k_nuts};
 inline void* cast_k_rwm_options(void* object, const rc::Class* to);
 inline const rc::Class class_k_rwm_options{"RWM-OPTIONS (datamunge::bayes::RWMOptions)", &cast_k_rwm_options};
 inline void* cast_k_rwm_result(void* object, const rc::Class* to);
@@ -548,22 +566,6 @@ inline void* cast_k_convex_hull_analysis(void* object, const rc::Class* to);
 inline const rc::Class class_k_convex_hull_analysis{"CONVEX-HULL-ANALYSIS (datamunge::geometry::ConvexHullAnalysis)", &cast_k_convex_hull_analysis};
 inline void* cast_k_convex_hull_trace(void* object, const rc::Class* to);
 inline const rc::Class class_k_convex_hull_trace{"CONVEX-HULL-TRACE (datamunge::geometry::ConvexHullTrace)", &cast_k_convex_hull_trace};
-inline void* cast_k_callback(void* object, const rc::Class* to);
-inline const rc::Class class_k_callback{"CALLBACK (datamunge::Callback)", &cast_k_callback};
-inline void* cast_k_rgb(void* object, const rc::Class* to);
-inline const rc::Class class_k_rgb{"RGB (datamunge::graphics::RGB)", &cast_k_rgb};
-inline void* cast_k_data_series(void* object, const rc::Class* to);
-inline const rc::Class class_k_data_series{"DATA-SERIES (datamunge::graphics::DataSeries)", &cast_k_data_series};
-inline void* cast_k_ab_line(void* object, const rc::Class* to);
-inline const rc::Class class_k_ab_line{"AB-LINE (datamunge::graphics::ABLine)", &cast_k_ab_line};
-inline void* cast_k_legend_entry(void* object, const rc::Class* to);
-inline const rc::Class class_k_legend_entry{"LEGEND-ENTRY (datamunge::graphics::LegendEntry)", &cast_k_legend_entry};
-inline void* cast_k_plot(void* object, const rc::Class* to);
-inline const rc::Class class_k_plot{"PLOT (datamunge::graphics::Plot)", &cast_k_plot};
-inline void* cast_k_r_plot(void* object, const rc::Class* to);
-inline const rc::Class class_k_r_plot{"R-PLOT (datamunge::graphics::RPlot)", &cast_k_r_plot};
-inline void* cast_k_r_layout(void* object, const rc::Class* to);
-inline const rc::Class class_k_r_layout{"R-LAYOUT (datamunge::graphics::RLayout)", &cast_k_r_layout};
 inline void* cast_k_dtw_result(void* object, const rc::Class* to);
 inline const rc::Class class_k_dtw_result{"DTW-RESULT (datamunge::geometry::DTWResult)", &cast_k_dtw_result};
 inline void* cast_k_dtw_work(void* object, const rc::Class* to);
@@ -572,14 +574,42 @@ inline void* cast_k_dtw_computation(void* object, const rc::Class* to);
 inline const rc::Class class_k_dtw_computation{"DTW-COMPUTATION (datamunge::geometry::DTWComputation)", &cast_k_dtw_computation};
 inline void* cast_k_dtw_trace(void* object, const rc::Class* to);
 inline const rc::Class class_k_dtw_trace{"DTW-TRACE (datamunge::geometry::DTWTrace)", &cast_k_dtw_trace};
+inline void* cast_k_kd_nearest_probe(void* object, const rc::Class* to);
+inline const rc::Class class_k_kd_nearest_probe{"KD-NEAREST-PROBE (datamunge::geometry::KDNearestProbe)", &cast_k_kd_nearest_probe};
+inline void* cast_k_kd_search_work(void* object, const rc::Class* to);
+inline const rc::Class class_k_kd_search_work{"KD-SEARCH-WORK (datamunge::geometry::KDSearchWork)", &cast_k_kd_search_work};
+inline void* cast_k_kd_nearest_trace(void* object, const rc::Class* to);
+inline const rc::Class class_k_kd_nearest_trace{"KD-NEAREST-TRACE (datamunge::geometry::KDNearestTrace)", &cast_k_kd_nearest_trace};
 inline void* cast_k_kd_tree2d(void* object, const rc::Class* to);
 inline const rc::Class class_k_kd_tree2d{"KD-TREE2D (datamunge::geometry::KDTree2D)", &cast_k_kd_tree2d};
 inline void* cast_k_circle(void* object, const rc::Class* to);
 inline const rc::Class class_k_circle{"CIRCLE (datamunge::geometry::Circle)", &cast_k_circle};
+inline void* cast_k_enclosing_circle_event(void* object, const rc::Class* to);
+inline const rc::Class class_k_enclosing_circle_event{"ENCLOSING-CIRCLE-EVENT (datamunge::geometry::EnclosingCircleEvent)", &cast_k_enclosing_circle_event};
+inline void* cast_k_enclosing_circle_trace(void* object, const rc::Class* to);
+inline const rc::Class class_k_enclosing_circle_trace{"ENCLOSING-CIRCLE-TRACE (datamunge::geometry::EnclosingCircleTrace)", &cast_k_enclosing_circle_trace};
+inline void* cast_k_enclosing_circle_check(void* object, const rc::Class* to);
+inline const rc::Class class_k_enclosing_circle_check{"ENCLOSING-CIRCLE-CHECK (datamunge::geometry::EnclosingCircleCheck)", &cast_k_enclosing_circle_check};
+inline void* cast_k_segment_intersection_run(void* object, const rc::Class* to);
+inline const rc::Class class_k_segment_intersection_run{"SEGMENT-INTERSECTION-RUN (datamunge::geometry::SegmentIntersectionRun)", &cast_k_segment_intersection_run};
+inline void* cast_k_polygon_ear_candidate(void* object, const rc::Class* to);
+inline const rc::Class class_k_polygon_ear_candidate{"POLYGON-EAR-CANDIDATE (datamunge::geometry::PolygonEarCandidate)", &cast_k_polygon_ear_candidate};
+inline void* cast_k_polygon_ear_clip(void* object, const rc::Class* to);
+inline const rc::Class class_k_polygon_ear_clip{"POLYGON-EAR-CLIP (datamunge::geometry::PolygonEarClip)", &cast_k_polygon_ear_clip};
+inline void* cast_k_polygon_triangulation_options(void* object, const rc::Class* to);
+inline const rc::Class class_k_polygon_triangulation_options{"POLYGON-TRIANGULATION-OPTIONS (datamunge::geometry::PolygonTriangulationOptions)", &cast_k_polygon_triangulation_options};
+inline void* cast_k_polygon_triangulation_run(void* object, const rc::Class* to);
+inline const rc::Class class_k_polygon_triangulation_run{"POLYGON-TRIANGULATION-RUN (datamunge::geometry::PolygonTriangulationRun)", &cast_k_polygon_triangulation_run};
+inline void* cast_k_polygon_triangulation_trace(void* object, const rc::Class* to);
+inline const rc::Class class_k_polygon_triangulation_trace{"POLYGON-TRIANGULATION-TRACE (datamunge::geometry::PolygonTriangulationTrace)", &cast_k_polygon_triangulation_trace};
 inline void* cast_k_diameter_result(void* object, const rc::Class* to);
 inline const rc::Class class_k_diameter_result{"DIAMETER-RESULT (datamunge::geometry::DiameterResult)", &cast_k_diameter_result};
-inline void* cast_k_minimum_bounding_rectangle(void* object, const rc::Class* to);
-inline const rc::Class class_k_minimum_bounding_rectangle{"MINIMUM-BOUNDING-RECTANGLE (datamunge::geometry::MinimumBoundingRectangle)", &cast_k_minimum_bounding_rectangle};
+inline void* cast_k_diameter_options(void* object, const rc::Class* to);
+inline const rc::Class class_k_diameter_options{"DIAMETER-OPTIONS (datamunge::geometry::DiameterOptions)", &cast_k_diameter_options};
+inline void* cast_k_caliper_event(void* object, const rc::Class* to);
+inline const rc::Class class_k_caliper_event{"CALIPER-EVENT (datamunge::geometry::CaliperEvent)", &cast_k_caliper_event};
+inline void* cast_k_diameter_run(void* object, const rc::Class* to);
+inline const rc::Class class_k_diameter_run{"DIAMETER-RUN (datamunge::geometry::DiameterRun)", &cast_k_diameter_run};
 inline void* cast_k_voronoi_diagram(void* object, const rc::Class* to);
 inline const rc::Class class_k_voronoi_diagram{"VORONOI-DIAGRAM (datamunge::geometry::VoronoiDiagram)", &cast_k_voronoi_diagram};
 inline void* cast_k_linalg_matrix(void* object, const rc::Class* to);
@@ -588,8 +618,16 @@ inline void* cast_k_rhs(void* object, const rc::Class* to);
 inline const rc::Class class_k_rhs{"RHS (datamunge::ode::RHS)", &cast_k_rhs};
 inline void* cast_k_ode_options(void* object, const rc::Class* to);
 inline const rc::Class class_k_ode_options{"ODE-OPTIONS (datamunge::ode::ODEOptions)", &cast_k_ode_options};
+inline void* cast_k_ode_execution_limits(void* object, const rc::Class* to);
+inline const rc::Class class_k_ode_execution_limits{"ODE-EXECUTION-LIMITS (datamunge::ode::ODEExecutionLimits)", &cast_k_ode_execution_limits};
 inline void* cast_k_ode_solution(void* object, const rc::Class* to);
 inline const rc::Class class_k_ode_solution{"ODE-SOLUTION (datamunge::ode::ODESolution)", &cast_k_ode_solution};
+inline void* cast_k_ode_evaluation(void* object, const rc::Class* to);
+inline const rc::Class class_k_ode_evaluation{"ODE-EVALUATION (datamunge::ode::ODEEvaluation)", &cast_k_ode_evaluation};
+inline void* cast_k_ode_attempt(void* object, const rc::Class* to);
+inline const rc::Class class_k_ode_attempt{"ODE-ATTEMPT (datamunge::ode::ODEAttempt)", &cast_k_ode_attempt};
+inline void* cast_k_ode_trace(void* object, const rc::Class* to);
+inline const rc::Class class_k_ode_trace{"ODE-TRACE (datamunge::ode::ODETrace)", &cast_k_ode_trace};
 inline void* cast_k_ode_solver(void* object, const rc::Class* to);
 inline const rc::Class class_k_ode_solver{"ODE-SOLVER (datamunge::ode::ODESolver)", &cast_k_ode_solver};
 inline void* cast_k_acor_options(void* object, const rc::Class* to);
@@ -688,6 +726,14 @@ inline void* cast_k_interior_point_options(void* object, const rc::Class* to);
 inline const rc::Class class_k_interior_point_options{"INTERIOR-POINT-OPTIONS (datamunge::optim::InteriorPointOptions)", &cast_k_interior_point_options};
 inline void* cast_k_interior_point(void* object, const rc::Class* to);
 inline const rc::Class class_k_interior_point{"INTERIOR-POINT (datamunge::optim::InteriorPoint)", &cast_k_interior_point};
+inline void* cast_k_surrogate_prediction(void* object, const rc::Class* to);
+inline const rc::Class class_k_surrogate_prediction{"SURROGATE-PREDICTION (datamunge::optim::SurrogatePrediction)", &cast_k_surrogate_prediction};
+inline void* cast_k_gaussian_joint_posterior(void* object, const rc::Class* to);
+inline const rc::Class class_k_gaussian_joint_posterior{"GAUSSIAN-JOINT-POSTERIOR (datamunge::optim::GaussianJointPosterior)", &cast_k_gaussian_joint_posterior};
+inline void* cast_k_gaussian_process_surrogate_options(void* object, const rc::Class* to);
+inline const rc::Class class_k_gaussian_process_surrogate_options{"GAUSSIAN-PROCESS-SURROGATE-OPTIONS (datamunge::optim::GaussianProcessSurrogateOptions)", &cast_k_gaussian_process_surrogate_options};
+inline void* cast_k_rbf_gaussian_process_surrogate(void* object, const rc::Class* to);
+inline const rc::Class class_k_rbf_gaussian_process_surrogate{"RBF-GAUSSIAN-PROCESS-SURROGATE (datamunge::optim::RBFGaussianProcessSurrogate)", &cast_k_rbf_gaussian_process_surrogate};
 inline void* cast_k_lbfgs_options(void* object, const rc::Class* to);
 inline const rc::Class class_k_lbfgs_options{"LBFGS-OPTIONS (datamunge::optim::LBFGSOptions)", &cast_k_lbfgs_options};
 inline void* cast_k_lbfgs(void* object, const rc::Class* to);
@@ -732,12 +778,6 @@ inline void* cast_k_rms_prop_options(void* object, const rc::Class* to);
 inline const rc::Class class_k_rms_prop_options{"RMS-PROP-OPTIONS (datamunge::optim::RMSPropOptions)", &cast_k_rms_prop_options};
 inline void* cast_k_rms_prop(void* object, const rc::Class* to);
 inline const rc::Class class_k_rms_prop{"RMS-PROP (datamunge::optim::RMSProp)", &cast_k_rms_prop};
-inline void* cast_k_surrogate_prediction(void* object, const rc::Class* to);
-inline const rc::Class class_k_surrogate_prediction{"SURROGATE-PREDICTION (datamunge::optim::SurrogatePrediction)", &cast_k_surrogate_prediction};
-inline void* cast_k_gaussian_process_surrogate_options(void* object, const rc::Class* to);
-inline const rc::Class class_k_gaussian_process_surrogate_options{"GAUSSIAN-PROCESS-SURROGATE-OPTIONS (datamunge::optim::GaussianProcessSurrogateOptions)", &cast_k_gaussian_process_surrogate_options};
-inline void* cast_k_rbf_gaussian_process_surrogate(void* object, const rc::Class* to);
-inline const rc::Class class_k_rbf_gaussian_process_surrogate{"RBF-GAUSSIAN-PROCESS-SURROGATE (datamunge::optim::RBFGaussianProcessSurrogate)", &cast_k_rbf_gaussian_process_surrogate};
 inline void* cast_k_sgd_options(void* object, const rc::Class* to);
 inline const rc::Class class_k_sgd_options{"SGD-OPTIONS (datamunge::optim::SGDOptions)", &cast_k_sgd_options};
 inline void* cast_k_sgd(void* object, const rc::Class* to);
@@ -766,10 +806,14 @@ inline void* cast_k_whale_optimization_options(void* object, const rc::Class* to
 inline const rc::Class class_k_whale_optimization_options{"WHALE-OPTIMIZATION-OPTIONS (datamunge::optim::WhaleOptimizationOptions)", &cast_k_whale_optimization_options};
 inline void* cast_k_whale_optimization(void* object, const rc::Class* to);
 inline const rc::Class class_k_whale_optimization{"WHALE-OPTIMIZATION (datamunge::optim::WhaleOptimization)", &cast_k_whale_optimization};
-inline void* cast_k_b_spline_basis(void* object, const rc::Class* to);
-inline const rc::Class class_k_b_spline_basis{"B-SPLINE-BASIS (datamunge::fda::BSplineBasis)", &cast_k_b_spline_basis};
 inline void* cast_k_hypothesis_test_result(void* object, const rc::Class* to);
 inline const rc::Class class_k_hypothesis_test_result{"HYPOTHESIS-TEST-RESULT (datamunge::stats::HypothesisTestResult)", &cast_k_hypothesis_test_result};
+inline void* cast_k_b_spline_basis(void* object, const rc::Class* to);
+inline const rc::Class class_k_b_spline_basis{"B-SPLINE-BASIS (datamunge::fda::BSplineBasis)", &cast_k_b_spline_basis};
+inline void* cast_k_games_howell_comparison(void* object, const rc::Class* to);
+inline const rc::Class class_k_games_howell_comparison{"GAMES-HOWELL-COMPARISON (datamunge::stats::GamesHowellComparison)", &cast_k_games_howell_comparison};
+inline void* cast_k_dunn_comparison(void* object, const rc::Class* to);
+inline const rc::Class class_k_dunn_comparison{"DUNN-COMPARISON (datamunge::stats::DunnComparison)", &cast_k_dunn_comparison};
 inline void* cast_k_arima_options(void* object, const rc::Class* to);
 inline const rc::Class class_k_arima_options{"ARIMA-OPTIONS (datamunge::stats::ARIMAOptions)", &cast_k_arima_options};
 inline void* cast_k_arima(void* object, const rc::Class* to);
@@ -780,6 +824,12 @@ inline void* cast_k_exponential_smoothing_options(void* object, const rc::Class*
 inline const rc::Class class_k_exponential_smoothing_options{"EXPONENTIAL-SMOOTHING-OPTIONS (datamunge::stats::ExponentialSmoothingOptions)", &cast_k_exponential_smoothing_options};
 inline void* cast_k_exponential_smoothing(void* object, const rc::Class* to);
 inline const rc::Class class_k_exponential_smoothing{"EXPONENTIAL-SMOOTHING (datamunge::stats::ExponentialSmoothing)", &cast_k_exponential_smoothing};
+inline void* cast_k_proportion_difference_interval(void* object, const rc::Class* to);
+inline const rc::Class class_k_proportion_difference_interval{"PROPORTION-DIFFERENCE-INTERVAL (datamunge::stats::ProportionDifferenceInterval)", &cast_k_proportion_difference_interval};
+inline void* cast_k_risk_ratio_interval(void* object, const rc::Class* to);
+inline const rc::Class class_k_risk_ratio_interval{"RISK-RATIO-INTERVAL (datamunge::stats::RiskRatioInterval)", &cast_k_risk_ratio_interval};
+inline void* cast_k_poisson_rate_interval(void* object, const rc::Class* to);
+inline const rc::Class class_k_poisson_rate_interval{"POISSON-RATE-INTERVAL (datamunge::stats::PoissonRateInterval)", &cast_k_poisson_rate_interval};
 inline void* cast_k_bspline(void* object, const rc::Class* to);
 inline const rc::Class class_k_bspline{"BSPLINE (datamunge::Bspline)", &cast_k_bspline};
 inline void* cast_k_b_spline_regression(void* object, const rc::Class* to);
@@ -878,6 +928,8 @@ inline void* cast_k_var(void* object, const rc::Class* to);
 inline const rc::Class class_k_var{"VAR (datamunge::Var)", &cast_k_var};
 inline void* cast_k_tape(void* object, const rc::Class* to);
 inline const rc::Class class_k_tape{"TAPE (datamunge::Tape)", &cast_k_tape};
+inline void* cast_k_mlp_classifier_search(void* object, const rc::Class* to);
+inline const rc::Class class_k_mlp_classifier_search{"MLP-CLASSIFIER-SEARCH (datamunge::MLPClassifierSearch)", &cast_k_mlp_classifier_search};
 inline void* cast_k_cad_solid(void* object, const rc::Class* to);
 inline const rc::Class class_k_cad_solid{"CAD-SOLID (datamunge::cad::Solid)", &cast_k_cad_solid};
 inline void* cast_k_cad_scene(void* object, const rc::Class* to);
@@ -924,16 +976,24 @@ inline void* cast_v_vector_llong(void* object, const rc::Class* to);
 inline const rc::Class class_v_vector_llong{"VECTOR-LLONG (std::vector<long long>)", &cast_v_vector_llong};
 inline void* cast_v_vector_vector_llong(void* object, const rc::Class* to);
 inline const rc::Class class_v_vector_vector_llong{"VECTOR-VECTOR-LLONG (std::vector<std::vector<long long>>)", &cast_v_vector_vector_llong};
+inline void* cast_v_vector_rgb(void* object, const rc::Class* to);
+inline const rc::Class class_v_vector_rgb{"VECTOR-RGB (std::vector<datamunge::graphics::RGB>)", &cast_v_vector_rgb};
+inline void* cast_v_vector_data_series(void* object, const rc::Class* to);
+inline const rc::Class class_v_vector_data_series{"VECTOR-DATA-SERIES (std::vector<datamunge::graphics::DataSeries>)", &cast_v_vector_data_series};
+inline void* cast_v_vector_ab_line(void* object, const rc::Class* to);
+inline const rc::Class class_v_vector_ab_line{"VECTOR-AB-LINE (std::vector<datamunge::graphics::ABLine>)", &cast_v_vector_ab_line};
+inline void* cast_v_vector_legend_entry(void* object, const rc::Class* to);
+inline const rc::Class class_v_vector_legend_entry{"VECTOR-LEGEND-ENTRY (std::vector<datamunge::graphics::LegendEntry>)", &cast_v_vector_legend_entry};
 inline void* cast_v_vector_uchar(void* object, const rc::Class* to);
 inline const rc::Class class_v_vector_uchar{"VECTOR-UCHAR (std::vector<unsigned char>)", &cast_v_vector_uchar};
+inline void* cast_v_vector_ulong(void* object, const rc::Class* to);
+inline const rc::Class class_v_vector_ulong{"VECTOR-ULONG (std::vector<unsigned long>)", &cast_v_vector_ulong};
 inline void* cast_v_vector_triangle(void* object, const rc::Class* to);
 inline const rc::Class class_v_vector_triangle{"VECTOR-TRIANGLE (std::vector<datamunge::geometry::Triangle>)", &cast_v_vector_triangle};
 inline void* cast_v_vector_pair_ulong_ulong(void* object, const rc::Class* to);
 inline const rc::Class class_v_vector_pair_ulong_ulong{"VECTOR-PAIR-ULONG-ULONG (std::vector<std::pair<unsigned long, unsigned long>>)", &cast_v_vector_pair_ulong_ulong};
 inline void* cast_v_vector_point2d(void* object, const rc::Class* to);
 inline const rc::Class class_v_vector_point2d{"VECTOR-POINT2D (std::vector<datamunge::geometry::Point2D>)", &cast_v_vector_point2d};
-inline void* cast_v_vector_ulong(void* object, const rc::Class* to);
-inline const rc::Class class_v_vector_ulong{"VECTOR-ULONG (std::vector<unsigned long>)", &cast_v_vector_ulong};
 inline void* cast_v_vector_delaunay_insertion(void* object, const rc::Class* to);
 inline const rc::Class class_v_vector_delaunay_insertion{"VECTOR-DELAUNAY-INSERTION (std::vector<datamunge::geometry::DelaunayInsertion>)", &cast_v_vector_delaunay_insertion};
 inline void* cast_v_vector_alpha_beta_state(void* object, const rc::Class* to);
@@ -946,18 +1006,26 @@ inline void* cast_v_vector_hull_indexed_point(void* object, const rc::Class* to)
 inline const rc::Class class_v_vector_hull_indexed_point{"VECTOR-HULL-INDEXED-POINT (std::vector<datamunge::geometry::HullIndexedPoint>)", &cast_v_vector_hull_indexed_point};
 inline void* cast_v_vector_hull_event(void* object, const rc::Class* to);
 inline const rc::Class class_v_vector_hull_event{"VECTOR-HULL-EVENT (std::vector<datamunge::geometry::HullEvent>)", &cast_v_vector_hull_event};
-inline void* cast_v_vector_rgb(void* object, const rc::Class* to);
-inline const rc::Class class_v_vector_rgb{"VECTOR-RGB (std::vector<datamunge::graphics::RGB>)", &cast_v_vector_rgb};
-inline void* cast_v_vector_data_series(void* object, const rc::Class* to);
-inline const rc::Class class_v_vector_data_series{"VECTOR-DATA-SERIES (std::vector<datamunge::graphics::DataSeries>)", &cast_v_vector_data_series};
-inline void* cast_v_vector_ab_line(void* object, const rc::Class* to);
-inline const rc::Class class_v_vector_ab_line{"VECTOR-AB-LINE (std::vector<datamunge::graphics::ABLine>)", &cast_v_vector_ab_line};
-inline void* cast_v_vector_legend_entry(void* object, const rc::Class* to);
-inline const rc::Class class_v_vector_legend_entry{"VECTOR-LEGEND-ENTRY (std::vector<datamunge::graphics::LegendEntry>)", &cast_v_vector_legend_entry};
 inline void* cast_v_vector_dtw_predecessor(void* object, const rc::Class* to);
 inline const rc::Class class_v_vector_dtw_predecessor{"VECTOR-DTW-PREDECESSOR (std::vector<datamunge::geometry::DTWPredecessor>)", &cast_v_vector_dtw_predecessor};
+inline void* cast_v_vector_kd_nearest_probe(void* object, const rc::Class* to);
+inline const rc::Class class_v_vector_kd_nearest_probe{"VECTOR-KD-NEAREST-PROBE (std::vector<datamunge::geometry::KDNearestProbe>)", &cast_v_vector_kd_nearest_probe};
+inline void* cast_v_vector_enclosing_circle_event(void* object, const rc::Class* to);
+inline const rc::Class class_v_vector_enclosing_circle_event{"VECTOR-ENCLOSING-CIRCLE-EVENT (std::vector<datamunge::geometry::EnclosingCircleEvent>)", &cast_v_vector_enclosing_circle_event};
+inline void* cast_v_array_int_4(void* object, const rc::Class* to);
+inline const rc::Class class_v_array_int_4{"ARRAY-INT-4 (std::array<int, 4>)", &cast_v_array_int_4};
+inline void* cast_v_vector_polygon_ear_candidate(void* object, const rc::Class* to);
+inline const rc::Class class_v_vector_polygon_ear_candidate{"VECTOR-POLYGON-EAR-CANDIDATE (std::vector<datamunge::geometry::PolygonEarCandidate>)", &cast_v_vector_polygon_ear_candidate};
+inline void* cast_v_vector_polygon_ear_clip(void* object, const rc::Class* to);
+inline const rc::Class class_v_vector_polygon_ear_clip{"VECTOR-POLYGON-EAR-CLIP (std::vector<datamunge::geometry::PolygonEarClip>)", &cast_v_vector_polygon_ear_clip};
+inline void* cast_v_vector_caliper_event(void* object, const rc::Class* to);
+inline const rc::Class class_v_vector_caliper_event{"VECTOR-CALIPER-EVENT (std::vector<datamunge::geometry::CaliperEvent>)", &cast_v_vector_caliper_event};
 inline void* cast_v_vector_vector_point2d(void* object, const rc::Class* to);
 inline const rc::Class class_v_vector_vector_point2d{"VECTOR-VECTOR-POINT2D (std::vector<std::vector<datamunge::geometry::Point2D>>)", &cast_v_vector_vector_point2d};
+inline void* cast_v_vector_ode_evaluation(void* object, const rc::Class* to);
+inline const rc::Class class_v_vector_ode_evaluation{"VECTOR-ODE-EVALUATION (std::vector<datamunge::ode::ODEEvaluation>)", &cast_v_vector_ode_evaluation};
+inline void* cast_v_vector_ode_attempt(void* object, const rc::Class* to);
+inline const rc::Class class_v_vector_ode_attempt{"VECTOR-ODE-ATTEMPT (std::vector<datamunge::ode::ODEAttempt>)", &cast_v_vector_ode_attempt};
 inline void* cast_v_vector_b_spline_basis(void* object, const rc::Class* to);
 inline const rc::Class class_v_vector_b_spline_basis{"VECTOR-B-SPLINE-BASIS (std::vector<datamunge::fda::BSplineBasis>)", &cast_v_vector_b_spline_basis};
 inline void* cast_v_vector_pair_int_double(void* object, const rc::Class* to);
@@ -992,6 +1060,10 @@ inline void* cast_v_vector_pair_int_int(void* object, const rc::Class* to);
 inline const rc::Class class_v_vector_pair_int_int{"VECTOR-PAIR-INT-INT (std::vector<std::pair<int, int>>)", &cast_v_vector_pair_int_int};
 inline void* cast_v_vector_flow_vector(void* object, const rc::Class* to);
 inline const rc::Class class_v_vector_flow_vector{"VECTOR-FLOW-VECTOR (std::vector<datamunge::cv::FlowVector>)", &cast_v_vector_flow_vector};
+inline void* cast_v_vector_games_howell_comparison(void* object, const rc::Class* to);
+inline const rc::Class class_v_vector_games_howell_comparison{"VECTOR-GAMES-HOWELL-COMPARISON (std::vector<datamunge::stats::GamesHowellComparison>)", &cast_v_vector_games_howell_comparison};
+inline void* cast_v_vector_dunn_comparison(void* object, const rc::Class* to);
+inline const rc::Class class_v_vector_dunn_comparison{"VECTOR-DUNN-COMPARISON (std::vector<datamunge::stats::DunnComparison>)", &cast_v_vector_dunn_comparison};
 inline void* cast_k_expr(void* object, const rc::Class* to) {
     if (to == &class_k_expr) return object;
     return nullptr;
@@ -1170,6 +1242,86 @@ inline void* cast_k_residual_function(void* object, const rc::Class* to) {
 inline rc::Resolved resolve_k_residual_function(::datamunge::optim::ResidualFunction* object) {
     return {object, &class_k_residual_function};
 }
+inline void* cast_k_nuts_options(void* object, const rc::Class* to) {
+    if (to == &class_k_nuts_options) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_nuts_options(::datamunge::bayes::NUTSOptions* object) {
+    return {object, &class_k_nuts_options};
+}
+inline void* cast_k_nuts_result(void* object, const rc::Class* to) {
+    if (to == &class_k_nuts_result) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_nuts_result(::datamunge::bayes::NUTSResult* object) {
+    return {object, &class_k_nuts_result};
+}
+inline void* cast_k_nuts(void* object, const rc::Class* to) {
+    if (to == &class_k_nuts) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_nuts(::datamunge::bayes::NUTS* object) {
+    return {object, &class_k_nuts};
+}
+inline void* cast_k_callback(void* object, const rc::Class* to) {
+    if (to == &class_k_callback) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_callback(::datamunge::Callback* object) {
+    return {object, &class_k_callback};
+}
+inline void* cast_k_rgb(void* object, const rc::Class* to) {
+    if (to == &class_k_rgb) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_rgb(::datamunge::graphics::RGB* object) {
+    return {object, &class_k_rgb};
+}
+inline void* cast_k_data_series(void* object, const rc::Class* to) {
+    if (to == &class_k_data_series) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_data_series(::datamunge::graphics::DataSeries* object) {
+    return {object, &class_k_data_series};
+}
+inline void* cast_k_ab_line(void* object, const rc::Class* to) {
+    if (to == &class_k_ab_line) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_ab_line(::datamunge::graphics::ABLine* object) {
+    return {object, &class_k_ab_line};
+}
+inline void* cast_k_legend_entry(void* object, const rc::Class* to) {
+    if (to == &class_k_legend_entry) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_legend_entry(::datamunge::graphics::LegendEntry* object) {
+    return {object, &class_k_legend_entry};
+}
+inline void* cast_k_plot(void* object, const rc::Class* to) {
+    if (to == &class_k_plot) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_plot(::datamunge::graphics::Plot* object) {
+    if (auto* derived = dynamic_cast<::datamunge::graphics::RPlot*>(object)) return {derived, &class_k_r_plot};
+    return {object, &class_k_plot};
+}
+inline void* cast_k_r_plot(void* object, const rc::Class* to) {
+    if (to == &class_k_r_plot) return object;
+    auto* self = static_cast<::datamunge::graphics::RPlot*>(object);
+    if (to == &class_k_plot) return static_cast<::datamunge::graphics::Plot*>(self);
+    return nullptr;
+}
+inline rc::Resolved resolve_k_r_plot(::datamunge::graphics::RPlot* object) {
+    return {object, &class_k_r_plot};
+}
+inline void* cast_k_r_layout(void* object, const rc::Class* to) {
+    if (to == &class_k_r_layout) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_r_layout(::datamunge::graphics::RLayout* object) {
+    return {object, &class_k_r_layout};
+}
 inline void* cast_k_gibbs_options(void* object, const rc::Class* to) {
     if (to == &class_k_gibbs_options) return object;
     return nullptr;
@@ -1212,6 +1364,13 @@ inline void* cast_k_hmc(void* object, const rc::Class* to) {
 inline rc::Resolved resolve_k_hmc(::datamunge::bayes::HMC* object) {
     return {object, &class_k_hmc};
 }
+inline void* cast_k_hmc_proposal(void* object, const rc::Class* to) {
+    if (to == &class_k_hmc_proposal) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_hmc_proposal(::datamunge::bayes::HMCProposal* object) {
+    return {object, &class_k_hmc_proposal};
+}
 inline void* cast_k_importance_sampling_options(void* object, const rc::Class* to) {
     if (to == &class_k_importance_sampling_options) return object;
     return nullptr;
@@ -1246,27 +1405,6 @@ inline void* cast_k_map(void* object, const rc::Class* to) {
 }
 inline rc::Resolved resolve_k_map(::datamunge::bayes::MAP* object) {
     return {object, &class_k_map};
-}
-inline void* cast_k_nuts_options(void* object, const rc::Class* to) {
-    if (to == &class_k_nuts_options) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_k_nuts_options(::datamunge::bayes::NUTSOptions* object) {
-    return {object, &class_k_nuts_options};
-}
-inline void* cast_k_nuts_result(void* object, const rc::Class* to) {
-    if (to == &class_k_nuts_result) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_k_nuts_result(::datamunge::bayes::NUTSResult* object) {
-    return {object, &class_k_nuts_result};
-}
-inline void* cast_k_nuts(void* object, const rc::Class* to) {
-    if (to == &class_k_nuts) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_k_nuts(::datamunge::bayes::NUTS* object) {
-    return {object, &class_k_nuts};
 }
 inline void* cast_k_rwm_options(void* object, const rc::Class* to) {
     if (to == &class_k_rwm_options) return object;
@@ -1632,65 +1770,6 @@ inline void* cast_k_convex_hull_trace(void* object, const rc::Class* to) {
 inline rc::Resolved resolve_k_convex_hull_trace(::datamunge::geometry::ConvexHullTrace* object) {
     return {object, &class_k_convex_hull_trace};
 }
-inline void* cast_k_callback(void* object, const rc::Class* to) {
-    if (to == &class_k_callback) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_k_callback(::datamunge::Callback* object) {
-    return {object, &class_k_callback};
-}
-inline void* cast_k_rgb(void* object, const rc::Class* to) {
-    if (to == &class_k_rgb) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_k_rgb(::datamunge::graphics::RGB* object) {
-    return {object, &class_k_rgb};
-}
-inline void* cast_k_data_series(void* object, const rc::Class* to) {
-    if (to == &class_k_data_series) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_k_data_series(::datamunge::graphics::DataSeries* object) {
-    return {object, &class_k_data_series};
-}
-inline void* cast_k_ab_line(void* object, const rc::Class* to) {
-    if (to == &class_k_ab_line) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_k_ab_line(::datamunge::graphics::ABLine* object) {
-    return {object, &class_k_ab_line};
-}
-inline void* cast_k_legend_entry(void* object, const rc::Class* to) {
-    if (to == &class_k_legend_entry) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_k_legend_entry(::datamunge::graphics::LegendEntry* object) {
-    return {object, &class_k_legend_entry};
-}
-inline void* cast_k_plot(void* object, const rc::Class* to) {
-    if (to == &class_k_plot) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_k_plot(::datamunge::graphics::Plot* object) {
-    if (auto* derived = dynamic_cast<::datamunge::graphics::RPlot*>(object)) return {derived, &class_k_r_plot};
-    return {object, &class_k_plot};
-}
-inline void* cast_k_r_plot(void* object, const rc::Class* to) {
-    if (to == &class_k_r_plot) return object;
-    auto* self = static_cast<::datamunge::graphics::RPlot*>(object);
-    if (to == &class_k_plot) return static_cast<::datamunge::graphics::Plot*>(self);
-    return nullptr;
-}
-inline rc::Resolved resolve_k_r_plot(::datamunge::graphics::RPlot* object) {
-    return {object, &class_k_r_plot};
-}
-inline void* cast_k_r_layout(void* object, const rc::Class* to) {
-    if (to == &class_k_r_layout) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_k_r_layout(::datamunge::graphics::RLayout* object) {
-    return {object, &class_k_r_layout};
-}
 inline void* cast_k_dtw_result(void* object, const rc::Class* to) {
     if (to == &class_k_dtw_result) return object;
     return nullptr;
@@ -1719,6 +1798,27 @@ inline void* cast_k_dtw_trace(void* object, const rc::Class* to) {
 inline rc::Resolved resolve_k_dtw_trace(::datamunge::geometry::DTWTrace* object) {
     return {object, &class_k_dtw_trace};
 }
+inline void* cast_k_kd_nearest_probe(void* object, const rc::Class* to) {
+    if (to == &class_k_kd_nearest_probe) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_kd_nearest_probe(::datamunge::geometry::KDNearestProbe* object) {
+    return {object, &class_k_kd_nearest_probe};
+}
+inline void* cast_k_kd_search_work(void* object, const rc::Class* to) {
+    if (to == &class_k_kd_search_work) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_kd_search_work(::datamunge::geometry::KDSearchWork* object) {
+    return {object, &class_k_kd_search_work};
+}
+inline void* cast_k_kd_nearest_trace(void* object, const rc::Class* to) {
+    if (to == &class_k_kd_nearest_trace) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_kd_nearest_trace(::datamunge::geometry::KDNearestTrace* object) {
+    return {object, &class_k_kd_nearest_trace};
+}
 inline void* cast_k_kd_tree2d(void* object, const rc::Class* to) {
     if (to == &class_k_kd_tree2d) return object;
     return nullptr;
@@ -1733,6 +1833,69 @@ inline void* cast_k_circle(void* object, const rc::Class* to) {
 inline rc::Resolved resolve_k_circle(::datamunge::geometry::Circle* object) {
     return {object, &class_k_circle};
 }
+inline void* cast_k_enclosing_circle_event(void* object, const rc::Class* to) {
+    if (to == &class_k_enclosing_circle_event) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_enclosing_circle_event(::datamunge::geometry::EnclosingCircleEvent* object) {
+    return {object, &class_k_enclosing_circle_event};
+}
+inline void* cast_k_enclosing_circle_trace(void* object, const rc::Class* to) {
+    if (to == &class_k_enclosing_circle_trace) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_enclosing_circle_trace(::datamunge::geometry::EnclosingCircleTrace* object) {
+    return {object, &class_k_enclosing_circle_trace};
+}
+inline void* cast_k_enclosing_circle_check(void* object, const rc::Class* to) {
+    if (to == &class_k_enclosing_circle_check) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_enclosing_circle_check(::datamunge::geometry::EnclosingCircleCheck* object) {
+    return {object, &class_k_enclosing_circle_check};
+}
+inline void* cast_k_segment_intersection_run(void* object, const rc::Class* to) {
+    if (to == &class_k_segment_intersection_run) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_segment_intersection_run(::datamunge::geometry::SegmentIntersectionRun* object) {
+    return {object, &class_k_segment_intersection_run};
+}
+inline void* cast_k_polygon_ear_candidate(void* object, const rc::Class* to) {
+    if (to == &class_k_polygon_ear_candidate) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_polygon_ear_candidate(::datamunge::geometry::PolygonEarCandidate* object) {
+    return {object, &class_k_polygon_ear_candidate};
+}
+inline void* cast_k_polygon_ear_clip(void* object, const rc::Class* to) {
+    if (to == &class_k_polygon_ear_clip) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_polygon_ear_clip(::datamunge::geometry::PolygonEarClip* object) {
+    return {object, &class_k_polygon_ear_clip};
+}
+inline void* cast_k_polygon_triangulation_options(void* object, const rc::Class* to) {
+    if (to == &class_k_polygon_triangulation_options) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_polygon_triangulation_options(::datamunge::geometry::PolygonTriangulationOptions* object) {
+    return {object, &class_k_polygon_triangulation_options};
+}
+inline void* cast_k_polygon_triangulation_run(void* object, const rc::Class* to) {
+    if (to == &class_k_polygon_triangulation_run) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_polygon_triangulation_run(::datamunge::geometry::PolygonTriangulationRun* object) {
+    return {object, &class_k_polygon_triangulation_run};
+}
+inline void* cast_k_polygon_triangulation_trace(void* object, const rc::Class* to) {
+    if (to == &class_k_polygon_triangulation_trace) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_polygon_triangulation_trace(::datamunge::geometry::PolygonTriangulationTrace* object) {
+    return {object, &class_k_polygon_triangulation_trace};
+}
 inline void* cast_k_diameter_result(void* object, const rc::Class* to) {
     if (to == &class_k_diameter_result) return object;
     return nullptr;
@@ -1740,12 +1903,26 @@ inline void* cast_k_diameter_result(void* object, const rc::Class* to) {
 inline rc::Resolved resolve_k_diameter_result(::datamunge::geometry::DiameterResult* object) {
     return {object, &class_k_diameter_result};
 }
-inline void* cast_k_minimum_bounding_rectangle(void* object, const rc::Class* to) {
-    if (to == &class_k_minimum_bounding_rectangle) return object;
+inline void* cast_k_diameter_options(void* object, const rc::Class* to) {
+    if (to == &class_k_diameter_options) return object;
     return nullptr;
 }
-inline rc::Resolved resolve_k_minimum_bounding_rectangle(::datamunge::geometry::MinimumBoundingRectangle* object) {
-    return {object, &class_k_minimum_bounding_rectangle};
+inline rc::Resolved resolve_k_diameter_options(::datamunge::geometry::DiameterOptions* object) {
+    return {object, &class_k_diameter_options};
+}
+inline void* cast_k_caliper_event(void* object, const rc::Class* to) {
+    if (to == &class_k_caliper_event) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_caliper_event(::datamunge::geometry::CaliperEvent* object) {
+    return {object, &class_k_caliper_event};
+}
+inline void* cast_k_diameter_run(void* object, const rc::Class* to) {
+    if (to == &class_k_diameter_run) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_diameter_run(::datamunge::geometry::DiameterRun* object) {
+    return {object, &class_k_diameter_run};
 }
 inline void* cast_k_voronoi_diagram(void* object, const rc::Class* to) {
     if (to == &class_k_voronoi_diagram) return object;
@@ -1775,12 +1952,40 @@ inline void* cast_k_ode_options(void* object, const rc::Class* to) {
 inline rc::Resolved resolve_k_ode_options(::datamunge::ode::ODEOptions* object) {
     return {object, &class_k_ode_options};
 }
+inline void* cast_k_ode_execution_limits(void* object, const rc::Class* to) {
+    if (to == &class_k_ode_execution_limits) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_ode_execution_limits(::datamunge::ode::ODEExecutionLimits* object) {
+    return {object, &class_k_ode_execution_limits};
+}
 inline void* cast_k_ode_solution(void* object, const rc::Class* to) {
     if (to == &class_k_ode_solution) return object;
     return nullptr;
 }
 inline rc::Resolved resolve_k_ode_solution(::datamunge::ode::ODESolution* object) {
     return {object, &class_k_ode_solution};
+}
+inline void* cast_k_ode_evaluation(void* object, const rc::Class* to) {
+    if (to == &class_k_ode_evaluation) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_ode_evaluation(::datamunge::ode::ODEEvaluation* object) {
+    return {object, &class_k_ode_evaluation};
+}
+inline void* cast_k_ode_attempt(void* object, const rc::Class* to) {
+    if (to == &class_k_ode_attempt) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_ode_attempt(::datamunge::ode::ODEAttempt* object) {
+    return {object, &class_k_ode_attempt};
+}
+inline void* cast_k_ode_trace(void* object, const rc::Class* to) {
+    if (to == &class_k_ode_trace) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_ode_trace(::datamunge::ode::ODETrace* object) {
+    return {object, &class_k_ode_trace};
 }
 inline void* cast_k_ode_solver(void* object, const rc::Class* to) {
     if (to == &class_k_ode_solver) return object;
@@ -2126,6 +2331,36 @@ inline void* cast_k_interior_point(void* object, const rc::Class* to) {
 inline rc::Resolved resolve_k_interior_point(::datamunge::optim::InteriorPoint* object) {
     return {object, &class_k_interior_point};
 }
+inline void* cast_k_surrogate_prediction(void* object, const rc::Class* to) {
+    if (to == &class_k_surrogate_prediction) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_surrogate_prediction(::datamunge::optim::SurrogatePrediction* object) {
+    return {object, &class_k_surrogate_prediction};
+}
+inline void* cast_k_gaussian_joint_posterior(void* object, const rc::Class* to) {
+    if (to == &class_k_gaussian_joint_posterior) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_gaussian_joint_posterior(::datamunge::optim::GaussianJointPosterior* object) {
+    return {object, &class_k_gaussian_joint_posterior};
+}
+inline void* cast_k_gaussian_process_surrogate_options(void* object, const rc::Class* to) {
+    if (to == &class_k_gaussian_process_surrogate_options) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_gaussian_process_surrogate_options(::datamunge::optim::GaussianProcessSurrogateOptions* object) {
+    return {object, &class_k_gaussian_process_surrogate_options};
+}
+inline void* cast_k_rbf_gaussian_process_surrogate(void* object, const rc::Class* to) {
+    if (to == &class_k_rbf_gaussian_process_surrogate) return object;
+    auto* self = static_cast<::datamunge::optim::RBFGaussianProcessSurrogate*>(object);
+    if (to == &class_k_bayesian_surrogate) return static_cast<::datamunge::optim::BayesianSurrogate*>(self);
+    return nullptr;
+}
+inline rc::Resolved resolve_k_rbf_gaussian_process_surrogate(::datamunge::optim::RBFGaussianProcessSurrogate* object) {
+    return {object, &class_k_rbf_gaussian_process_surrogate};
+}
 inline void* cast_k_lbfgs_options(void* object, const rc::Class* to) {
     if (to == &class_k_lbfgs_options) return object;
     return nullptr;
@@ -2280,29 +2515,6 @@ inline void* cast_k_rms_prop(void* object, const rc::Class* to) {
 inline rc::Resolved resolve_k_rms_prop(::datamunge::optim::RMSProp* object) {
     return {object, &class_k_rms_prop};
 }
-inline void* cast_k_surrogate_prediction(void* object, const rc::Class* to) {
-    if (to == &class_k_surrogate_prediction) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_k_surrogate_prediction(::datamunge::optim::SurrogatePrediction* object) {
-    return {object, &class_k_surrogate_prediction};
-}
-inline void* cast_k_gaussian_process_surrogate_options(void* object, const rc::Class* to) {
-    if (to == &class_k_gaussian_process_surrogate_options) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_k_gaussian_process_surrogate_options(::datamunge::optim::GaussianProcessSurrogateOptions* object) {
-    return {object, &class_k_gaussian_process_surrogate_options};
-}
-inline void* cast_k_rbf_gaussian_process_surrogate(void* object, const rc::Class* to) {
-    if (to == &class_k_rbf_gaussian_process_surrogate) return object;
-    auto* self = static_cast<::datamunge::optim::RBFGaussianProcessSurrogate*>(object);
-    if (to == &class_k_bayesian_surrogate) return static_cast<::datamunge::optim::BayesianSurrogate*>(self);
-    return nullptr;
-}
-inline rc::Resolved resolve_k_rbf_gaussian_process_surrogate(::datamunge::optim::RBFGaussianProcessSurrogate* object) {
-    return {object, &class_k_rbf_gaussian_process_surrogate};
-}
 inline void* cast_k_sgd_options(void* object, const rc::Class* to) {
     if (to == &class_k_sgd_options) return object;
     return nullptr;
@@ -2401,6 +2613,13 @@ inline void* cast_k_whale_optimization(void* object, const rc::Class* to) {
 inline rc::Resolved resolve_k_whale_optimization(::datamunge::optim::WhaleOptimization* object) {
     return {object, &class_k_whale_optimization};
 }
+inline void* cast_k_hypothesis_test_result(void* object, const rc::Class* to) {
+    if (to == &class_k_hypothesis_test_result) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_hypothesis_test_result(::datamunge::stats::HypothesisTestResult* object) {
+    return {object, &class_k_hypothesis_test_result};
+}
 inline void* cast_k_b_spline_basis(void* object, const rc::Class* to) {
     if (to == &class_k_b_spline_basis) return object;
     return nullptr;
@@ -2408,12 +2627,19 @@ inline void* cast_k_b_spline_basis(void* object, const rc::Class* to) {
 inline rc::Resolved resolve_k_b_spline_basis(::datamunge::fda::BSplineBasis* object) {
     return {object, &class_k_b_spline_basis};
 }
-inline void* cast_k_hypothesis_test_result(void* object, const rc::Class* to) {
-    if (to == &class_k_hypothesis_test_result) return object;
+inline void* cast_k_games_howell_comparison(void* object, const rc::Class* to) {
+    if (to == &class_k_games_howell_comparison) return object;
     return nullptr;
 }
-inline rc::Resolved resolve_k_hypothesis_test_result(::datamunge::stats::HypothesisTestResult* object) {
-    return {object, &class_k_hypothesis_test_result};
+inline rc::Resolved resolve_k_games_howell_comparison(::datamunge::stats::GamesHowellComparison* object) {
+    return {object, &class_k_games_howell_comparison};
+}
+inline void* cast_k_dunn_comparison(void* object, const rc::Class* to) {
+    if (to == &class_k_dunn_comparison) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_dunn_comparison(::datamunge::stats::DunnComparison* object) {
+    return {object, &class_k_dunn_comparison};
 }
 inline void* cast_k_arima_options(void* object, const rc::Class* to) {
     if (to == &class_k_arima_options) return object;
@@ -2449,6 +2675,27 @@ inline void* cast_k_exponential_smoothing(void* object, const rc::Class* to) {
 }
 inline rc::Resolved resolve_k_exponential_smoothing(::datamunge::stats::ExponentialSmoothing* object) {
     return {object, &class_k_exponential_smoothing};
+}
+inline void* cast_k_proportion_difference_interval(void* object, const rc::Class* to) {
+    if (to == &class_k_proportion_difference_interval) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_proportion_difference_interval(::datamunge::stats::ProportionDifferenceInterval* object) {
+    return {object, &class_k_proportion_difference_interval};
+}
+inline void* cast_k_risk_ratio_interval(void* object, const rc::Class* to) {
+    if (to == &class_k_risk_ratio_interval) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_risk_ratio_interval(::datamunge::stats::RiskRatioInterval* object) {
+    return {object, &class_k_risk_ratio_interval};
+}
+inline void* cast_k_poisson_rate_interval(void* object, const rc::Class* to) {
+    if (to == &class_k_poisson_rate_interval) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_poisson_rate_interval(::datamunge::stats::PoissonRateInterval* object) {
+    return {object, &class_k_poisson_rate_interval};
 }
 inline void* cast_k_bspline(void* object, const rc::Class* to) {
     if (to == &class_k_bspline) return object;
@@ -2793,6 +3040,13 @@ inline void* cast_k_tape(void* object, const rc::Class* to) {
 inline rc::Resolved resolve_k_tape(::datamunge::Tape* object) {
     return {object, &class_k_tape};
 }
+inline void* cast_k_mlp_classifier_search(void* object, const rc::Class* to) {
+    if (to == &class_k_mlp_classifier_search) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_k_mlp_classifier_search(::datamunge::MLPClassifierSearch* object) {
+    return {object, &class_k_mlp_classifier_search};
+}
 inline void* cast_k_cad_solid(void* object, const rc::Class* to) {
     if (to == &class_k_cad_solid) return object;
     return nullptr;
@@ -2954,12 +3208,47 @@ inline void* cast_v_vector_vector_llong(void* object, const rc::Class* to) {
 inline rc::Resolved resolve_v_vector_vector_llong(std::vector<std::vector<long long>>* object) {
     return {object, &class_v_vector_vector_llong};
 }
+inline void* cast_v_vector_rgb(void* object, const rc::Class* to) {
+    if (to == &class_v_vector_rgb) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_v_vector_rgb(std::vector<datamunge::graphics::RGB>* object) {
+    return {object, &class_v_vector_rgb};
+}
+inline void* cast_v_vector_data_series(void* object, const rc::Class* to) {
+    if (to == &class_v_vector_data_series) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_v_vector_data_series(std::vector<datamunge::graphics::DataSeries>* object) {
+    return {object, &class_v_vector_data_series};
+}
+inline void* cast_v_vector_ab_line(void* object, const rc::Class* to) {
+    if (to == &class_v_vector_ab_line) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_v_vector_ab_line(std::vector<datamunge::graphics::ABLine>* object) {
+    return {object, &class_v_vector_ab_line};
+}
+inline void* cast_v_vector_legend_entry(void* object, const rc::Class* to) {
+    if (to == &class_v_vector_legend_entry) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_v_vector_legend_entry(std::vector<datamunge::graphics::LegendEntry>* object) {
+    return {object, &class_v_vector_legend_entry};
+}
 inline void* cast_v_vector_uchar(void* object, const rc::Class* to) {
     if (to == &class_v_vector_uchar) return object;
     return nullptr;
 }
 inline rc::Resolved resolve_v_vector_uchar(std::vector<unsigned char>* object) {
     return {object, &class_v_vector_uchar};
+}
+inline void* cast_v_vector_ulong(void* object, const rc::Class* to) {
+    if (to == &class_v_vector_ulong) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_v_vector_ulong(std::vector<unsigned long>* object) {
+    return {object, &class_v_vector_ulong};
 }
 inline void* cast_v_vector_triangle(void* object, const rc::Class* to) {
     if (to == &class_v_vector_triangle) return object;
@@ -2981,13 +3270,6 @@ inline void* cast_v_vector_point2d(void* object, const rc::Class* to) {
 }
 inline rc::Resolved resolve_v_vector_point2d(std::vector<datamunge::geometry::Point2D>* object) {
     return {object, &class_v_vector_point2d};
-}
-inline void* cast_v_vector_ulong(void* object, const rc::Class* to) {
-    if (to == &class_v_vector_ulong) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_v_vector_ulong(std::vector<unsigned long>* object) {
-    return {object, &class_v_vector_ulong};
 }
 inline void* cast_v_vector_delaunay_insertion(void* object, const rc::Class* to) {
     if (to == &class_v_vector_delaunay_insertion) return object;
@@ -3031,34 +3313,6 @@ inline void* cast_v_vector_hull_event(void* object, const rc::Class* to) {
 inline rc::Resolved resolve_v_vector_hull_event(std::vector<datamunge::geometry::HullEvent>* object) {
     return {object, &class_v_vector_hull_event};
 }
-inline void* cast_v_vector_rgb(void* object, const rc::Class* to) {
-    if (to == &class_v_vector_rgb) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_v_vector_rgb(std::vector<datamunge::graphics::RGB>* object) {
-    return {object, &class_v_vector_rgb};
-}
-inline void* cast_v_vector_data_series(void* object, const rc::Class* to) {
-    if (to == &class_v_vector_data_series) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_v_vector_data_series(std::vector<datamunge::graphics::DataSeries>* object) {
-    return {object, &class_v_vector_data_series};
-}
-inline void* cast_v_vector_ab_line(void* object, const rc::Class* to) {
-    if (to == &class_v_vector_ab_line) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_v_vector_ab_line(std::vector<datamunge::graphics::ABLine>* object) {
-    return {object, &class_v_vector_ab_line};
-}
-inline void* cast_v_vector_legend_entry(void* object, const rc::Class* to) {
-    if (to == &class_v_vector_legend_entry) return object;
-    return nullptr;
-}
-inline rc::Resolved resolve_v_vector_legend_entry(std::vector<datamunge::graphics::LegendEntry>* object) {
-    return {object, &class_v_vector_legend_entry};
-}
 inline void* cast_v_vector_dtw_predecessor(void* object, const rc::Class* to) {
     if (to == &class_v_vector_dtw_predecessor) return object;
     return nullptr;
@@ -3066,12 +3320,68 @@ inline void* cast_v_vector_dtw_predecessor(void* object, const rc::Class* to) {
 inline rc::Resolved resolve_v_vector_dtw_predecessor(std::vector<datamunge::geometry::DTWPredecessor>* object) {
     return {object, &class_v_vector_dtw_predecessor};
 }
+inline void* cast_v_vector_kd_nearest_probe(void* object, const rc::Class* to) {
+    if (to == &class_v_vector_kd_nearest_probe) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_v_vector_kd_nearest_probe(std::vector<datamunge::geometry::KDNearestProbe>* object) {
+    return {object, &class_v_vector_kd_nearest_probe};
+}
+inline void* cast_v_vector_enclosing_circle_event(void* object, const rc::Class* to) {
+    if (to == &class_v_vector_enclosing_circle_event) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_v_vector_enclosing_circle_event(std::vector<datamunge::geometry::EnclosingCircleEvent>* object) {
+    return {object, &class_v_vector_enclosing_circle_event};
+}
+inline void* cast_v_array_int_4(void* object, const rc::Class* to) {
+    if (to == &class_v_array_int_4) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_v_array_int_4(std::array<int, 4>* object) {
+    return {object, &class_v_array_int_4};
+}
+inline void* cast_v_vector_polygon_ear_candidate(void* object, const rc::Class* to) {
+    if (to == &class_v_vector_polygon_ear_candidate) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_v_vector_polygon_ear_candidate(std::vector<datamunge::geometry::PolygonEarCandidate>* object) {
+    return {object, &class_v_vector_polygon_ear_candidate};
+}
+inline void* cast_v_vector_polygon_ear_clip(void* object, const rc::Class* to) {
+    if (to == &class_v_vector_polygon_ear_clip) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_v_vector_polygon_ear_clip(std::vector<datamunge::geometry::PolygonEarClip>* object) {
+    return {object, &class_v_vector_polygon_ear_clip};
+}
+inline void* cast_v_vector_caliper_event(void* object, const rc::Class* to) {
+    if (to == &class_v_vector_caliper_event) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_v_vector_caliper_event(std::vector<datamunge::geometry::CaliperEvent>* object) {
+    return {object, &class_v_vector_caliper_event};
+}
 inline void* cast_v_vector_vector_point2d(void* object, const rc::Class* to) {
     if (to == &class_v_vector_vector_point2d) return object;
     return nullptr;
 }
 inline rc::Resolved resolve_v_vector_vector_point2d(std::vector<std::vector<datamunge::geometry::Point2D>>* object) {
     return {object, &class_v_vector_vector_point2d};
+}
+inline void* cast_v_vector_ode_evaluation(void* object, const rc::Class* to) {
+    if (to == &class_v_vector_ode_evaluation) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_v_vector_ode_evaluation(std::vector<datamunge::ode::ODEEvaluation>* object) {
+    return {object, &class_v_vector_ode_evaluation};
+}
+inline void* cast_v_vector_ode_attempt(void* object, const rc::Class* to) {
+    if (to == &class_v_vector_ode_attempt) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_v_vector_ode_attempt(std::vector<datamunge::ode::ODEAttempt>* object) {
+    return {object, &class_v_vector_ode_attempt};
 }
 inline void* cast_v_vector_b_spline_basis(void* object, const rc::Class* to) {
     if (to == &class_v_vector_b_spline_basis) return object;
@@ -3192,6 +3502,20 @@ inline void* cast_v_vector_flow_vector(void* object, const rc::Class* to) {
 inline rc::Resolved resolve_v_vector_flow_vector(std::vector<datamunge::cv::FlowVector>* object) {
     return {object, &class_v_vector_flow_vector};
 }
+inline void* cast_v_vector_games_howell_comparison(void* object, const rc::Class* to) {
+    if (to == &class_v_vector_games_howell_comparison) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_v_vector_games_howell_comparison(std::vector<datamunge::stats::GamesHowellComparison>* object) {
+    return {object, &class_v_vector_games_howell_comparison};
+}
+inline void* cast_v_vector_dunn_comparison(void* object, const rc::Class* to) {
+    if (to == &class_v_vector_dunn_comparison) return object;
+    return nullptr;
+}
+inline rc::Resolved resolve_v_vector_dunn_comparison(std::vector<datamunge::stats::DunnComparison>* object) {
+    return {object, &class_v_vector_dunn_comparison};
+}
 [[maybe_unused]] inline ::datamunge::algebra::MonomialOrder enum_monomial_order(std::int32_t value, const char* what) {
     switch (value) {
     case 0:
@@ -3231,6 +3555,16 @@ inline rc::Resolved resolve_v_vector_flow_vector(std::vector<datamunge::cv::Flow
     }
     rc::fail(rc::argument, std::string(what) + ": " + std::to_string(value) + " is not a BC-TYPE value");
 }
+[[maybe_unused]] inline ::datamunge::geometry::CaliperEventKind enum_caliper_event_kind(std::int32_t value, const char* what) {
+    switch (value) {
+    case 0:
+    case 1:
+    case 2:
+        return static_cast<::datamunge::geometry::CaliperEventKind>(value);
+    default: break;
+    }
+    rc::fail(rc::argument, std::string(what) + ": " + std::to_string(value) + " is not a CALIPER-EVENT-KIND value");
+}
 [[maybe_unused]] inline ::datamunge::geometry::DTWPredecessor enum_dtw_predecessor(std::int32_t value, const char* what) {
     switch (value) {
     case 0:
@@ -3262,6 +3596,15 @@ inline rc::Resolved resolve_v_vector_flow_vector(std::vector<datamunge::cv::Flow
     }
     rc::fail(rc::argument, std::string(what) + ": " + std::to_string(value) + " is not a HULL-PASS value");
 }
+[[maybe_unused]] inline ::datamunge::geometry::KDProbeAction enum_kd_probe_action(std::int32_t value, const char* what) {
+    switch (value) {
+    case 0:
+    case 1:
+        return static_cast<::datamunge::geometry::KDProbeAction>(value);
+    default: break;
+    }
+    rc::fail(rc::argument, std::string(what) + ": " + std::to_string(value) + " is not a KD-PROBE-ACTION value");
+}
 [[maybe_unused]] inline ::datamunge::geometry::Orientation enum_orientation(std::int32_t value, const char* what) {
     switch (value) {
     case 0:
@@ -3271,6 +3614,16 @@ inline rc::Resolved resolve_v_vector_flow_vector(std::vector<datamunge::cv::Flow
     default: break;
     }
     rc::fail(rc::argument, std::string(what) + ": " + std::to_string(value) + " is not a ORIENTATION value");
+}
+[[maybe_unused]] inline ::datamunge::geometry::SegmentContact enum_segment_contact(std::int32_t value, const char* what) {
+    switch (value) {
+    case 0:
+    case 1:
+    case 2:
+        return static_cast<::datamunge::geometry::SegmentContact>(value);
+    default: break;
+    }
+    rc::fail(rc::argument, std::string(what) + ": " + std::to_string(value) + " is not a SEGMENT-CONTACT value");
 }
 [[maybe_unused]] inline ::datamunge::graphics::DataSeries::Kind enum_data_series_kind(std::int32_t value, const char* what) {
     switch (value) {
@@ -3305,6 +3658,19 @@ inline rc::Resolved resolve_v_vector_flow_vector(std::vector<datamunge::cv::Flow
     default: break;
     }
     rc::fail(rc::argument, std::string(what) + ": " + std::to_string(value) + " is not a RESAMPLE-FILTER value");
+}
+[[maybe_unused]] inline ::datamunge::ode::ODEAttemptKind enum_ode_attempt_kind(std::int32_t value, const char* what) {
+    switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+        return static_cast<::datamunge::ode::ODEAttemptKind>(value);
+    default: break;
+    }
+    rc::fail(rc::argument, std::string(what) + ": " + std::to_string(value) + " is not a ODE-ATTEMPT-KIND value");
 }
 [[maybe_unused]] inline ::datamunge::ode::StepMethod enum_step_method(std::int32_t value, const char* what) {
     switch (value) {
@@ -3393,6 +3759,18 @@ rc::store<std::uint64_t>(args, temps.borrow<std::vector<double>>(&(p0), &resolve
 rc::store<std::uint64_t>((args + 8), temps.borrow<std::vector<double>>(&(p1), &resolve_v_vector_double));
         rc::invoke(program, args, "the COBOL program in DM-HRRCHCL-B-SPLN-RFN-REGION-VECTOR-DOU-PVM8L-FACTORY");
         return (rc::boolean(rc::load<std::uint8_t>((args + 16)), "DM-HRRCHC-B-SPLN-RFN-RGN-VCTR-DOU-PVM8L-FCTRY-ARGS-RSLT") ? std::optional<datamunge::fda::TensorBSpline>(rc::consume<::datamunge::fda::TensorBSpline>(rc::load<std::uint64_t>(((args + 16) + 1)), class_k_tensor_b_spline, "DM-HRRCHC-B-SPLN-RFN-RGN-VCTR-DOU-PVM8L-FCTRY-ARGS-RSLT")) : std::optional<datamunge::fda::TensorBSpline>());
+    };
+}
+[[maybe_unused]] inline std::function<double (double)> callback_37(void* program) {
+    if (!program) return {};
+    return [program](double p0) -> double {
+        std::lock_guard<std::recursive_mutex> hold(rc::program_mutex());
+        rc::Temporaries temps;
+        rc::Buffer buffer(16);
+        unsigned char* args = buffer.data();
+rc::store<double>(args, static_cast<double>(p0));
+        rc::invoke(program, args, "the COBOL program in DM-KS-TEST-ONE-SAMPLE-CDF");
+        return static_cast<double>(rc::load<double>((args + 8)));
     };
 }
 struct director_k_arbitrary_function final : ::datamunge::optim::ArbitraryFunction {
@@ -3739,6 +4117,22 @@ rc::store<std::uint64_t>((args + 8), temps.borrow<std::vector<double>>(&(p0), &r
         return rc::consume<std::vector<std::vector<double>>>(rc::load<std::uint64_t>((args + 16)), class_v_vector_vector_double, "DM-RESIDUAL-FUNCTION-JACOBIAN-ARGS-RESULT");
     }
 };
+struct director_k_callback final : ::datamunge::Callback {
+    template<class... A> explicit director_k_callback(A&&... arguments) : ::datamunge::Callback(std::forward<A>(arguments)...) {}
+    void* programs[1] = {};
+    std::uint64_t self_id = 0;
+    double call(double p0) override {
+        if (!programs[0]) return ::datamunge::Callback::call(std::move(p0));
+        std::lock_guard<std::recursive_mutex> hold(rc::program_mutex());
+        rc::Temporaries temps;
+        rc::Buffer buffer(24);
+        unsigned char* args = buffer.data();
+        rc::store<std::uint64_t>(args, rc::open(self_id) ? self_id : temps.borrow<::datamunge::Callback>(static_cast<const ::datamunge::Callback*>(this), &resolve_k_callback));
+rc::store<double>((args + 8), static_cast<double>(p0));
+        rc::invoke(programs[0], args, "the COBOL override of datamunge::Callback::call");
+        return static_cast<double>(rc::load<double>((args + 16)));
+    }
+};
 struct director_k_scalar_field1d final : ::datamunge::fem::ScalarField1D {
     template<class... A> explicit director_k_scalar_field1d(A&&... arguments) : ::datamunge::fem::ScalarField1D(std::forward<A>(arguments)...) {}
     void* programs[1] = {};
@@ -3786,22 +4180,6 @@ struct director_k_vector_function final : ::datamunge::filter::VectorFunction {
 rc::store<std::uint64_t>((args + 8), temps.borrow<std::vector<double>>(&(p0), &resolve_v_vector_double));
         rc::invoke(programs[0], args, "the COBOL override of datamunge::filter::VectorFunction::evaluate");
         return rc::consume<std::vector<double>>(rc::load<std::uint64_t>((args + 16)), class_v_vector_double, "DM-VECTOR-FUNCTION-EVALUATE-ARGS-RESULT");
-    }
-};
-struct director_k_callback final : ::datamunge::Callback {
-    template<class... A> explicit director_k_callback(A&&... arguments) : ::datamunge::Callback(std::forward<A>(arguments)...) {}
-    void* programs[1] = {};
-    std::uint64_t self_id = 0;
-    double call(double p0) override {
-        if (!programs[0]) return ::datamunge::Callback::call(std::move(p0));
-        std::lock_guard<std::recursive_mutex> hold(rc::program_mutex());
-        rc::Temporaries temps;
-        rc::Buffer buffer(24);
-        unsigned char* args = buffer.data();
-        rc::store<std::uint64_t>(args, rc::open(self_id) ? self_id : temps.borrow<::datamunge::Callback>(static_cast<const ::datamunge::Callback*>(this), &resolve_k_callback));
-rc::store<double>((args + 8), static_cast<double>(p0));
-        rc::invoke(programs[0], args, "the COBOL override of datamunge::Callback::call");
-        return static_cast<double>(rc::load<double>((args + 16)));
     }
 };
 struct director_k_rhs final : ::datamunge::ode::RHS {
@@ -3961,513 +4339,715 @@ raw->self_id = id;
 rc::store<std::uint64_t>((record + 24), id);
     });
 }
-// std::uint64_t datamunge::bayes::GibbsOptions::seed (write)
-extern "C" int dm_gibbs_options_seed_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::bayes::GibbsOptions::seed", [&] {
-auto& self = rc::object<::datamunge::bayes::GibbsOptions>(rc::load<std::uint64_t>(record), class_k_gibbs_options, "DM-GIBBS-OPTIONS-SEED-SELF");
-rc::assign(self.seed, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-GIBBS-OPTIONS-SEED-VALUE"), "DM-GIBBS-OPTIONS-SEED-VALUE");
+// double datamunge::bayes::NUTSOptions::target_accept_rate (write)
+extern "C" int dm_nuts_options_target_accept_rate_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::bayes::NUTSOptions::target_accept_rate", [&] {
+auto& self = rc::object<::datamunge::bayes::NUTSOptions>(rc::load<std::uint64_t>(record), class_k_nuts_options, "DM-NUTS-OPTIONS-TARGET-ACCEPT-RATE-SELF");
+rc::assign(self.target_accept_rate, static_cast<double>(rc::load<double>((record + 8))), "DM-NUTS-OPTIONS-TARGET-ACCEPT-RATE-VALUE");
     });
 }
-// std::size_t datamunge::bayes::HMCOptions::num_warmup (write)
-extern "C" int dm_hmc_options_num_warmup_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::bayes::HMCOptions::num_warmup", [&] {
-auto& self = rc::object<::datamunge::bayes::HMCOptions>(rc::load<std::uint64_t>(record), class_k_hmc_options, "DM-HMC-OPTIONS-NUM-WARMUP-SELF");
-rc::assign(self.num_warmup, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-HMC-OPTIONS-NUM-WARMUP-VALUE"), "DM-HMC-OPTIONS-NUM-WARMUP-VALUE");
-    });
-}
-// double datamunge::bayes::HMCResult::final_step_size (read)
-extern "C" int dm_hmc_result_final_step_size_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::bayes::HMCResult::final_step_size", [&] {
+// std::vector<int> datamunge::bayes::NUTSResult::tree_depth (read)
+extern "C" int dm_nuts_result_tree_depth_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::bayes::NUTSResult::tree_depth", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::bayes::HMCResult>(self_id, class_k_hmc_result, "DM-HMC-RESULT-FINAL-STEP-SIZE-SELF");
-rc::store<double>((record + 8), static_cast<double>(self.final_step_size));
+auto& self = rc::object<::datamunge::bayes::NUTSResult>(self_id, class_k_nuts_result, "DM-NUTS-RESULT-TREE-DEPTH-SELF");
+rc::store<std::uint64_t>((record + 8), rc::borrow<std::vector<int>>(&(self.tree_depth), &resolve_v_vector_int, rc::keep_of(self_id)));
     });
 }
-// double datamunge::bayes::ImportanceSamplingResult::effective_sample_size (read)
-extern "C" int dm_importance_sampling_result_effective_sample_size_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::bayes::ImportanceSamplingResult::effective_sample_size", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::bayes::ImportanceSamplingResult>(self_id, class_k_importance_sampling_result, "DM-IMPORTANCE-SAMPLING-RESULT-EFFECTIVE-SAMPLE-SIZE-SELF");
-rc::store<double>((record + 8), static_cast<double>(self.effective_sample_size));
-    });
-}
-// std::size_t datamunge::bayes::MAPOptions::history_size (write)
-extern "C" int dm_map_options_history_size_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::bayes::MAPOptions::history_size", [&] {
-auto& self = rc::object<::datamunge::bayes::MAPOptions>(rc::load<std::uint64_t>(record), class_k_map_options, "DM-MAP-OPTIONS-HISTORY-SIZE-SELF");
-rc::assign(self.history_size, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-MAP-OPTIONS-HISTORY-SIZE-VALUE"), "DM-MAP-OPTIONS-HISTORY-SIZE-VALUE");
-    });
-}
-// double datamunge::bayes::NUTSOptions::max_delta_error (write)
-extern "C" int dm_nuts_options_max_delta_error_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::bayes::NUTSOptions::max_delta_error", [&] {
-auto& self = rc::object<::datamunge::bayes::NUTSOptions>(rc::load<std::uint64_t>(record), class_k_nuts_options, "DM-NUTS-OPTIONS-MAX-DELTA-ERROR-SELF");
-rc::assign(self.max_delta_error, static_cast<double>(rc::load<double>((record + 8))), "DM-NUTS-OPTIONS-MAX-DELTA-ERROR-VALUE");
-    });
-}
-// std::vector<double> datamunge::bayes::NUTSResult::energy (read)
-extern "C" int dm_nuts_result_energy_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::bayes::NUTSResult::energy", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::bayes::NUTSResult>(self_id, class_k_nuts_result, "DM-NUTS-RESULT-ENERGY-SELF");
-rc::store<std::uint64_t>((record + 8), rc::borrow<std::vector<double>>(&(self.energy), &resolve_v_vector_double, rc::keep_of(self_id)));
-    });
-}
-// std::uint64_t datamunge::bayes::RWMOptions::seed (write)
-extern "C" int dm_rwm_options_seed_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::bayes::RWMOptions::seed", [&] {
-auto& self = rc::object<::datamunge::bayes::RWMOptions>(rc::load<std::uint64_t>(record), class_k_rwm_options, "DM-RWM-OPTIONS-SEED-SELF");
-rc::assign(self.seed, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-RWM-OPTIONS-SEED-VALUE"), "DM-RWM-OPTIONS-SEED-VALUE");
-    });
-}
-// datamunge::image::Pixel::Pixel() -> PIXEL handle
-extern "C" int dm_pixel_new(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::image::Pixel::Pixel", [&] {
-rc::store<std::uint64_t>(record, rc::adopt<::datamunge::image::Pixel>(std::make_unique<::datamunge::image::Pixel>(), &resolve_k_pixel));
-    });
-}
-// datamunge::image::Image::Image() -> IMAGE handle
-extern "C" int dm_image_new(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::image::Image::Image", [&] {
-rc::store<std::uint64_t>(record, rc::adopt<::datamunge::image::Image>(std::make_unique<::datamunge::image::Image>(), &resolve_k_image));
-    });
-}
-// datamunge::image::Image::fill(const Pixel & p) -> void
-extern "C" int dm_image_fill(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::image::Image::fill", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::image::Image>(self_id, class_k_image, "DM-IMAGE-FILL-SELF");
-auto& a0 = rc::object<::datamunge::image::Pixel>(rc::load<std::uint64_t>((record + 8)), class_k_pixel, "DM-IMAGE-FILL-P");
-self.fill(a0);
-    });
-}
-// double datamunge::cv::KeyPoint::response (read)
-extern "C" int dm_key_point_response_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::cv::KeyPoint::response", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::cv::KeyPoint>(self_id, class_k_key_point, "DM-KEY-POINT-RESPONSE-SELF");
-rc::store<double>((record + 8), static_cast<double>(self.response));
-    });
-}
-// double datamunge::cv::HoughLine::rho (read)
-extern "C" int dm_hough_line_rho_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::cv::HoughLine::rho", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::cv::HoughLine>(self_id, class_k_hough_line, "DM-HOUGH-LINE-RHO-SELF");
-rc::store<double>((record + 8), static_cast<double>(self.rho));
-    });
-}
-// int datamunge::cv::HoughCircle::cy (write)
-extern "C" int dm_hough_circle_cy_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::cv::HoughCircle::cy", [&] {
-auto& self = rc::object<::datamunge::cv::HoughCircle>(rc::load<std::uint64_t>(record), class_k_hough_circle, "DM-HOUGH-CIRCLE-CY-SELF");
-rc::assign(self.cy, rc::integer<int>(rc::load<std::int32_t>((record + 8)), "DM-HOUGH-CIRCLE-CY-VALUE"), "DM-HOUGH-CIRCLE-CY-VALUE");
-    });
-}
-// int datamunge::cv::LabelMap::width (write)
-extern "C" int dm_label_map_width_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::cv::LabelMap::width", [&] {
-auto& self = rc::object<::datamunge::cv::LabelMap>(rc::load<std::uint64_t>(record), class_k_label_map, "DM-LABEL-MAP-WIDTH-SELF");
-rc::assign(self.width, rc::integer<int>(rc::load<std::int32_t>((record + 8)), "DM-LABEL-MAP-WIDTH-VALUE"), "DM-LABEL-MAP-WIDTH-VALUE");
-    });
-}
-// datamunge::datasets::ImageLoader::ImageLoader(const std::string & dataset, const std::string & split = "train", const std::string & directory = "") -> IMAGE-LOADER handle
-extern "C" int dm_image_loader_new(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::datasets::ImageLoader::ImageLoader", [&] {
-switch (rc::given(record, 1, 3)) {
-case 1: {
-auto a0 = rc::text((record + 4), 256, (record + 4) + 256, "DM-IMAGE-LOADER-NEW-DATASET");
-rc::store<std::uint64_t>((record + 784), rc::adopt<::datamunge::datasets::ImageLoader>(std::make_unique<::datamunge::datasets::ImageLoader>(a0), &resolve_k_image_loader));
-break;
-}
-case 2: {
-auto a0 = rc::text((record + 4), 256, (record + 4) + 256, "DM-IMAGE-LOADER-NEW-DATASET");
-auto a1 = rc::text((record + 264), 256, (record + 264) + 256, "DM-IMAGE-LOADER-NEW-SPLIT");
-rc::store<std::uint64_t>((record + 784), rc::adopt<::datamunge::datasets::ImageLoader>(std::make_unique<::datamunge::datasets::ImageLoader>(a0, a1), &resolve_k_image_loader));
-break;
-}
-case 3: {
-auto a0 = rc::text((record + 4), 256, (record + 4) + 256, "DM-IMAGE-LOADER-NEW-DATASET");
-auto a1 = rc::text((record + 264), 256, (record + 264) + 256, "DM-IMAGE-LOADER-NEW-SPLIT");
-auto a2 = rc::text((record + 524), 256, (record + 524) + 256, "DM-IMAGE-LOADER-NEW-DIRECTORY");
-rc::store<std::uint64_t>((record + 784), rc::adopt<::datamunge::datasets::ImageLoader>(std::make_unique<::datamunge::datasets::ImageLoader>(a0, a1, a2), &resolve_k_image_loader));
-break;
-}
-default: break;
-}
-    });
-}
-// datamunge::fem::BoundaryCondition1D::BoundaryCondition1D() -> BOUNDARY-CONDITION1D handle
-extern "C" int dm_boundary_condition1d_new(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::fem::BoundaryCondition1D::BoundaryCondition1D", [&] {
-rc::store<std::uint64_t>(record, rc::adopt<::datamunge::fem::BoundaryCondition1D>(std::make_unique<::datamunge::fem::BoundaryCondition1D>(), &resolve_k_boundary_condition1d));
-    });
-}
-// datamunge::fem::FEM1DTimeSeries::num_steps() const -> std::size_t
-extern "C" int dm_fem1d_time_series_num_steps(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::fem::FEM1DTimeSeries::num_steps", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::fem::FEM1DTimeSeries>(self_id, class_k_fem1d_time_series, "DM-FEM1D-TIME-SERIES-NUM-STEPS-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.num_steps()));
-    });
-}
-// double datamunge::geometry::Point2D::y (read)
-extern "C" int dm_point2d_y_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::geometry::Point2D::y", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::geometry::Point2D>(self_id, class_k_point2d, "DM-POINT2D-Y-SELF");
-rc::store<double>((record + 8), static_cast<double>(self.y));
-    });
-}
-// std::size_t datamunge::geometry::DelaunayWork::seed_orientation_tests (read)
-extern "C" int dm_delaunay_work_seed_orientation_tests_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::geometry::DelaunayWork::seed_orientation_tests", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::geometry::DelaunayWork>(self_id, class_k_delaunay_work, "DM-DELAUNAY-WORK-SEED-ORIENTATION-TESTS-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.seed_orientation_tests));
-    });
-}
-// std::size_t datamunge::geometry::DelaunayWork::created_faces (write)
-extern "C" int dm_delaunay_work_created_faces_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::geometry::DelaunayWork::created_faces", [&] {
-auto& self = rc::object<::datamunge::geometry::DelaunayWork>(rc::load<std::uint64_t>(record), class_k_delaunay_work, "DM-DELAUNAY-WORK-CREATED-FACES-SELF");
-rc::assign(self.created_faces, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-DELAUNAY-WORK-CREATED-FACES-VALUE"), "DM-DELAUNAY-WORK-CREATED-FACES-VALUE");
-    });
-}
-// std::vector<Point2D> datamunge::geometry::DelaunayTrace::points (read)
-extern "C" int dm_delaunay_trace_points_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::geometry::DelaunayTrace::points", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::geometry::DelaunayTrace>(self_id, class_k_delaunay_trace, "DM-DELAUNAY-TRACE-POINTS-SELF");
-rc::store<std::uint64_t>((record + 8), rc::borrow<std::vector<datamunge::geometry::Point2D>>(&(self.points), &resolve_v_vector_point2d, rc::keep_of(self_id)));
-    });
-}
-// datamunge::geometry::DelaunayAnalysis::DelaunayAnalysis() -> DELAUNAY-ANALYSIS handle
-extern "C" int dm_delaunay_analysis_new(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::geometry::DelaunayAnalysis::DelaunayAnalysis", [&] {
-rc::store<std::uint64_t>(record, rc::adopt<::datamunge::geometry::DelaunayAnalysis>(std::make_unique<::datamunge::geometry::DelaunayAnalysis>(), &resolve_k_delaunay_analysis));
-    });
-}
-// std::size_t datamunge::geometry::DelaunayAnalysis::circle_tests (read)
-extern "C" int dm_delaunay_analysis_circle_tests_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::geometry::DelaunayAnalysis::circle_tests", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::geometry::DelaunayAnalysis>(self_id, class_k_delaunay_analysis, "DM-DELAUNAY-ANALYSIS-CIRCLE-TESTS-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.circle_tests));
-    });
-}
-// static datamunge::fem::FEM2D::solve_builtin(const Mesh2D & mesh, double k, const std::string & source, const std::vector<double> & source_params, const std::vector<int> & dirichlet_nodes, const std::vector<double> & dirichlet_values) -> FEM2DResult
-extern "C" int dm_fem2d_solve_builtin(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::fem::FEM2D::solve_builtin", [&] {
-auto& a0 = rc::object<::datamunge::fem::Mesh2D>(rc::load<std::uint64_t>(record), class_k_mesh2d, "DM-FEM2D-SOLVE-BUILTIN-MESH");
-auto a1 = static_cast<double>(rc::load<double>((record + 8)));
-auto a2 = rc::text((record + 16), 256, (record + 16) + 256, "DM-FEM2D-SOLVE-BUILTIN-SOURCE");
-auto& a3 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 276)), class_v_vector_double, "DM-FEM2D-SOLVE-BUILTIN-SOURCE-PARAMS");
-auto& a4 = rc::object<std::vector<int>>(rc::load<std::uint64_t>((record + 284)), class_v_vector_int, "DM-FEM2D-SOLVE-BUILTIN-DIRICHLET-NODES");
-auto& a5 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 292)), class_v_vector_double, "DM-FEM2D-SOLVE-BUILTIN-DIRICHLET-VALUES");
-rc::store<std::uint64_t>((record + 300), rc::adopt<::datamunge::fem::FEM2DResult>(std::make_unique<::datamunge::fem::FEM2DResult>(::datamunge::fem::FEM2D::solve_builtin(a0, std::move(a1), a2, a3, a4, a5)), &resolve_k_fem2d_result));
-    });
-}
-// std::vector<KalmanState> datamunge::filter::SmoothResult::filtered (read)
-extern "C" int dm_smooth_result_filtered_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::filter::SmoothResult::filtered", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::filter::SmoothResult>(self_id, class_k_smooth_result, "DM-SMOOTH-RESULT-FILTERED-SELF");
-rc::store<std::uint64_t>((record + 8), rc::borrow<std::vector<datamunge::filter::KalmanState>>(&(self.filtered), &resolve_v_vector_kalman_state, rc::keep_of(self_id)));
-    });
-}
-// datamunge::filter::EnsembleKalmanFilter::EnsembleKalmanFilter(VectorFunction & f, VectorFunction & h, std::vector<std::vector<double>> Q, std::vector<std::vector<double>> R, std::vector<double> x0, std::vector<std::vector<double>> P0, int ensemble_size = 100, unsigned int seed = 42) -> ENSEMBLE-KALMAN-FILTER handle
-extern "C" int dm_ensemble_kalman_filter_new(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::filter::EnsembleKalmanFilter::EnsembleKalmanFilter", [&] {
-switch (rc::given(record, 6, 8)) {
-case 6: {
-auto& a0 = rc::object<::datamunge::filter::VectorFunction>(rc::load<std::uint64_t>((record + 4)), class_k_vector_function, "DM-ENSEMBLE-KALMAN-FILTER-NEW-F");
-auto& a1 = rc::object<::datamunge::filter::VectorFunction>(rc::load<std::uint64_t>((record + 12)), class_k_vector_function, "DM-ENSEMBLE-KALMAN-FILTER-NEW-H");
-auto& a2 = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>((record + 20)), class_v_vector_vector_double, "DM-ENSEMBLE-KALMAN-FILTER-NEW-Q");
-auto& a3 = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>((record + 28)), class_v_vector_vector_double, "DM-ENSEMBLE-KALMAN-FILTER-NEW-R");
-auto& a4 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 36)), class_v_vector_double, "DM-ENSEMBLE-KALMAN-FILTER-NEW-X0");
-auto& a5 = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>((record + 44)), class_v_vector_vector_double, "DM-ENSEMBLE-KALMAN-FILTER-NEW-P0");
-rc::store<std::uint64_t>((record + 60), rc::adopt<::datamunge::filter::EnsembleKalmanFilter>(std::make_unique<::datamunge::filter::EnsembleKalmanFilter>(a0, a1, a2, a3, a4, a5), &resolve_k_ensemble_kalman_filter));
-break;
-}
-case 7: {
-auto& a0 = rc::object<::datamunge::filter::VectorFunction>(rc::load<std::uint64_t>((record + 4)), class_k_vector_function, "DM-ENSEMBLE-KALMAN-FILTER-NEW-F");
-auto& a1 = rc::object<::datamunge::filter::VectorFunction>(rc::load<std::uint64_t>((record + 12)), class_k_vector_function, "DM-ENSEMBLE-KALMAN-FILTER-NEW-H");
-auto& a2 = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>((record + 20)), class_v_vector_vector_double, "DM-ENSEMBLE-KALMAN-FILTER-NEW-Q");
-auto& a3 = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>((record + 28)), class_v_vector_vector_double, "DM-ENSEMBLE-KALMAN-FILTER-NEW-R");
-auto& a4 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 36)), class_v_vector_double, "DM-ENSEMBLE-KALMAN-FILTER-NEW-X0");
-auto& a5 = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>((record + 44)), class_v_vector_vector_double, "DM-ENSEMBLE-KALMAN-FILTER-NEW-P0");
-auto a6 = rc::integer<int>(rc::load<std::int32_t>((record + 52)), "DM-ENSEMBLE-KALMAN-FILTER-NEW-ENSEMBLE-SIZE");
-rc::store<std::uint64_t>((record + 60), rc::adopt<::datamunge::filter::EnsembleKalmanFilter>(std::make_unique<::datamunge::filter::EnsembleKalmanFilter>(a0, a1, a2, a3, a4, a5, std::move(a6)), &resolve_k_ensemble_kalman_filter));
-break;
-}
-case 8: {
-auto& a0 = rc::object<::datamunge::filter::VectorFunction>(rc::load<std::uint64_t>((record + 4)), class_k_vector_function, "DM-ENSEMBLE-KALMAN-FILTER-NEW-F");
-auto& a1 = rc::object<::datamunge::filter::VectorFunction>(rc::load<std::uint64_t>((record + 12)), class_k_vector_function, "DM-ENSEMBLE-KALMAN-FILTER-NEW-H");
-auto& a2 = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>((record + 20)), class_v_vector_vector_double, "DM-ENSEMBLE-KALMAN-FILTER-NEW-Q");
-auto& a3 = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>((record + 28)), class_v_vector_vector_double, "DM-ENSEMBLE-KALMAN-FILTER-NEW-R");
-auto& a4 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 36)), class_v_vector_double, "DM-ENSEMBLE-KALMAN-FILTER-NEW-X0");
-auto& a5 = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>((record + 44)), class_v_vector_vector_double, "DM-ENSEMBLE-KALMAN-FILTER-NEW-P0");
-auto a6 = rc::integer<int>(rc::load<std::int32_t>((record + 52)), "DM-ENSEMBLE-KALMAN-FILTER-NEW-ENSEMBLE-SIZE");
-auto a7 = rc::integer<unsigned int>(rc::load<std::uint32_t>((record + 56)), "DM-ENSEMBLE-KALMAN-FILTER-NEW-SEED");
-rc::store<std::uint64_t>((record + 60), rc::adopt<::datamunge::filter::EnsembleKalmanFilter>(std::make_unique<::datamunge::filter::EnsembleKalmanFilter>(a0, a1, a2, a3, a4, a5, std::move(a6), std::move(a7)), &resolve_k_ensemble_kalman_filter));
-break;
-}
-default: break;
-}
-    });
-}
-// std::vector<HullIndexedPoint> datamunge::geometry::ConvexHullTrace::sorted (write)
-extern "C" int dm_convex_hull_trace_sorted_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::geometry::ConvexHullTrace::sorted", [&] {
-auto& self = rc::object<::datamunge::geometry::ConvexHullTrace>(rc::load<std::uint64_t>(record), class_k_convex_hull_trace, "DM-CONVEX-HULL-TRACE-SORTED-SELF");
-rc::assign(self.sorted, rc::object<std::vector<datamunge::geometry::HullIndexedPoint>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_hull_indexed_point, "DM-CONVEX-HULL-TRACE-SORTED-VALUE"), "DM-CONVEX-HULL-TRACE-SORTED-VALUE");
-    });
-}
-// datamunge::graphics::RGB::RGB(const char * color) -> RGB handle
-extern "C" int dm_rgb_new_string_2(unsigned char* record, unsigned char* status) {
+// datamunge::graphics::RGB::RGB(int red, int green) -> RGB handle
+extern "C" int dm_rgb_new_int_int(unsigned char* record, unsigned char* status) {
     return rc::guard(status, "datamunge::graphics::RGB::RGB", [&] {
-auto a0 = rc::text(record, 256, record + 256, "DM-RGB-NEW-STRING-2-COLOR");
-rc::store<std::uint64_t>((record + 260), rc::adopt<::datamunge::graphics::RGB>(std::make_unique<::datamunge::graphics::RGB>(a0.c_str()), &resolve_k_rgb));
+auto a0 = rc::integer<int>(rc::load<std::int32_t>(record), "DM-RGB-NEW-INT-INT-RED");
+auto a1 = rc::integer<int>(rc::load<std::int32_t>((record + 4)), "DM-RGB-NEW-INT-INT-GREEN");
+rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::graphics::RGB>(std::make_unique<::datamunge::graphics::RGB>(std::move(a0), std::move(a1)), &resolve_k_rgb));
     });
 }
-// std::vector<double> datamunge::graphics::DataSeries::x (write)
-extern "C" int dm_data_series_x_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::graphics::DataSeries::x", [&] {
-auto& self = rc::object<::datamunge::graphics::DataSeries>(rc::load<std::uint64_t>(record), class_k_data_series, "DM-DATA-SERIES-X-SELF");
-rc::assign(self.x, rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_double, "DM-DATA-SERIES-X-VALUE"), "DM-DATA-SERIES-X-VALUE");
+// std::vector<double> datamunge::graphics::DataSeries::y (write)
+extern "C" int dm_data_series_y_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::graphics::DataSeries::y", [&] {
+auto& self = rc::object<::datamunge::graphics::DataSeries>(rc::load<std::uint64_t>(record), class_k_data_series, "DM-DATA-SERIES-Y-SELF");
+rc::assign(self.y, rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_double, "DM-DATA-SERIES-Y-VALUE"), "DM-DATA-SERIES-Y-VALUE");
     });
 }
-// bool datamunge::graphics::DataSeries::filled (write)
-extern "C" int dm_data_series_filled_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::graphics::DataSeries::filled", [&] {
-auto& self = rc::object<::datamunge::graphics::DataSeries>(rc::load<std::uint64_t>(record), class_k_data_series, "DM-DATA-SERIES-FILLED-SELF");
-rc::assign(self.filled, rc::boolean(rc::load<std::uint8_t>((record + 8)), "DM-DATA-SERIES-FILLED-VALUE"), "DM-DATA-SERIES-FILLED-VALUE");
+// bool datamunge::graphics::ABLine::vertical (write)
+extern "C" int dm_ab_line_vertical_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::graphics::ABLine::vertical", [&] {
+auto& self = rc::object<::datamunge::graphics::ABLine>(rc::load<std::uint64_t>(record), class_k_ab_line, "DM-AB-LINE-VERTICAL-SELF");
+rc::assign(self.vertical, rc::boolean(rc::load<std::uint8_t>((record + 8)), "DM-AB-LINE-VERTICAL-VALUE"), "DM-AB-LINE-VERTICAL-VALUE");
     });
 }
-// RGBA datamunge::graphics::LegendEntry::color (read)
-extern "C" int dm_legend_entry_color_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::graphics::LegendEntry::color", [&] {
+// datamunge::graphics::Plot::size(std::size_t width, std::size_t height) -> Plot &
+extern "C" int dm_plot_size(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::graphics::Plot::size", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::graphics::LegendEntry>(self_id, class_k_legend_entry, "DM-LEGEND-ENTRY-COLOR-SELF");
-rc::store<std::uint64_t>((record + 8), rc::borrow<::datamunge::graphics::RGB>(&(self.color), &resolve_k_rgb, rc::keep_of(self_id)));
+auto& self = rc::object<::datamunge::graphics::Plot>(self_id, class_k_plot, "DM-PLOT-SIZE-SELF");
+auto a0 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-PLOT-SIZE-WIDTH");
+auto a1 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 16)), "DM-PLOT-SIZE-HEIGHT");
+rc::store<std::uint64_t>((record + 24), rc::borrow<::datamunge::graphics::Plot>(&(self.size(std::move(a0), std::move(a1))), &resolve_k_plot, rc::keep_of(self_id)));
     });
 }
-// datamunge::graphics::Plot::y_tick_labels(std::vector<std::string> labels) -> Plot &
-extern "C" int dm_plot_y_tick_labels(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::graphics::Plot::y_tick_labels", [&] {
+// datamunge::graphics::Plot::pretty_ticks(bool enabled = true) -> Plot &
+extern "C" int dm_plot_pretty_ticks(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::graphics::Plot::pretty_ticks", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::graphics::Plot>(self_id, class_k_plot, "DM-PLOT-Y-TICK-LABELS-SELF");
-auto& a0 = rc::object<std::vector<std::__cxx11::basic_string<char>>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_string, "DM-PLOT-Y-TICK-LABELS-LABELS");
-rc::store<std::uint64_t>((record + 16), rc::borrow<::datamunge::graphics::Plot>(&(self.y_tick_labels(a0)), &resolve_k_plot, rc::keep_of(self_id)));
-    });
-}
-// datamunge::graphics::Plot::major_grid_color() const -> RGBA
-extern "C" int dm_plot_major_grid_color(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::graphics::Plot::major_grid_color", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::graphics::Plot>(self_id, class_k_plot, "DM-PLOT-MAJOR-GRID-COLOR-SELF");
-rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::graphics::RGB>(std::make_unique<::datamunge::graphics::RGB>(self.major_grid_color()), &resolve_k_rgb));
-    });
-}
-// datamunge::graphics::Plot::pretty_ticks_enabled() const -> bool
-extern "C" int dm_plot_pretty_ticks_enabled_2(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::graphics::Plot::pretty_ticks_enabled", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::graphics::Plot>(self_id, class_k_plot, "DM-PLOT-PRETTY-TICKS-ENABLED-2-SELF");
-rc::store<std::uint8_t>((record + 8), (self.pretty_ticks_enabled()) ? 1 : 0);
-    });
-}
-// datamunge::graphics::RPlot::subtitle(std::string value) -> RPlot &
-extern "C" int dm_r_plot_subtitle(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::graphics::RPlot::subtitle", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::graphics::RPlot>(self_id, class_k_r_plot, "DM-R-PLOT-SUBTITLE-SELF");
-auto a0 = rc::text((record + 8), 256, (record + 8) + 256, "DM-R-PLOT-SUBTITLE-VALUE");
-rc::store<std::uint64_t>((record + 268), rc::borrow<::datamunge::graphics::RPlot>(&(self.subtitle(std::move(a0))), &resolve_k_r_plot, rc::keep_of(self_id)));
-    });
-}
-// datamunge::graphics::RPlot::show_grid(bool enabled = true) -> RPlot &
-extern "C" int dm_r_plot_show_grid(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::graphics::RPlot::show_grid", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::graphics::RPlot>(self_id, class_k_r_plot, "DM-R-PLOT-SHOW-GRID-SELF");
+auto& self = rc::object<::datamunge::graphics::Plot>(self_id, class_k_plot, "DM-PLOT-PRETTY-TICKS-SELF");
 switch (rc::given((record + 8), 0, 1)) {
 case 0: {
-rc::store<std::uint64_t>((record + 13), rc::borrow<::datamunge::graphics::RPlot>(&(self.show_grid()), &resolve_k_r_plot, rc::keep_of(self_id)));
+rc::store<std::uint64_t>((record + 13), rc::borrow<::datamunge::graphics::Plot>(&(self.pretty_ticks()), &resolve_k_plot, rc::keep_of(self_id)));
 break;
 }
 case 1: {
-auto a0 = rc::boolean(rc::load<std::uint8_t>((record + 12)), "DM-R-PLOT-SHOW-GRID-ENABLED");
-rc::store<std::uint64_t>((record + 13), rc::borrow<::datamunge::graphics::RPlot>(&(self.show_grid(std::move(a0))), &resolve_k_r_plot, rc::keep_of(self_id)));
+auto a0 = rc::boolean(rc::load<std::uint8_t>((record + 12)), "DM-PLOT-PRETTY-TICKS-ENABLED");
+rc::store<std::uint64_t>((record + 13), rc::borrow<::datamunge::graphics::Plot>(&(self.pretty_ticks(std::move(a0))), &resolve_k_plot, rc::keep_of(self_id)));
 break;
 }
 default: break;
 }
     });
 }
-// static datamunge::graphics::RPlot::qqnorm(std::vector<double> data, std::string label = "sample", RGBA color = ...) -> RPlot
-extern "C" int dm_r_plot_qqnorm(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::graphics::RPlot::qqnorm", [&] {
-switch (rc::given(record, 1, 3)) {
-case 1: {
-auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 4)), class_v_vector_double, "DM-R-PLOT-QQNORM-DATA");
-rc::store<std::uint64_t>((record + 280), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(::datamunge::graphics::RPlot::qqnorm(a0)), &resolve_k_r_plot));
-break;
-}
-case 2: {
-auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 4)), class_v_vector_double, "DM-R-PLOT-QQNORM-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-R-PLOT-QQNORM-LABEL");
-rc::store<std::uint64_t>((record + 280), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(::datamunge::graphics::RPlot::qqnorm(a0, std::move(a1))), &resolve_k_r_plot));
-break;
-}
-case 3: {
-auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 4)), class_v_vector_double, "DM-R-PLOT-QQNORM-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-R-PLOT-QQNORM-LABEL");
-auto& a2 = rc::object<::datamunge::graphics::RGB>(rc::load<std::uint64_t>((record + 272)), class_k_rgb, "DM-R-PLOT-QQNORM-COLOR");
-rc::store<std::uint64_t>((record + 280), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(::datamunge::graphics::RPlot::qqnorm(a0, std::move(a1), a2)), &resolve_k_r_plot));
-break;
-}
-default: break;
-}
-    });
-}
-// datamunge::graphics::RPlot::abline_v(double x_value, RGBA color = ..., double stroke_width = 1.0) -> RPlot &
-extern "C" int dm_r_plot_abline_v(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::graphics::RPlot::abline_v", [&] {
+// datamunge::graphics::Plot::reference_lines() const -> const std::vector<ABLine> &
+extern "C" int dm_plot_reference_lines(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::graphics::Plot::reference_lines", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::graphics::RPlot>(self_id, class_k_r_plot, "DM-R-PLOT-ABLINE-V-SELF");
-switch (rc::given((record + 8), 1, 3)) {
-case 1: {
-auto a0 = static_cast<double>(rc::load<double>((record + 12)));
-rc::store<std::uint64_t>((record + 36), rc::borrow<::datamunge::graphics::RPlot>(&(self.abline_v(std::move(a0))), &resolve_k_r_plot, rc::keep_of(self_id)));
-break;
-}
-case 2: {
-auto a0 = static_cast<double>(rc::load<double>((record + 12)));
-auto& a1 = rc::object<::datamunge::graphics::RGB>(rc::load<std::uint64_t>((record + 20)), class_k_rgb, "DM-R-PLOT-ABLINE-V-COLOR");
-rc::store<std::uint64_t>((record + 36), rc::borrow<::datamunge::graphics::RPlot>(&(self.abline_v(std::move(a0), a1)), &resolve_k_r_plot, rc::keep_of(self_id)));
-break;
-}
-case 3: {
-auto a0 = static_cast<double>(rc::load<double>((record + 12)));
-auto& a1 = rc::object<::datamunge::graphics::RGB>(rc::load<std::uint64_t>((record + 20)), class_k_rgb, "DM-R-PLOT-ABLINE-V-COLOR");
-auto a2 = static_cast<double>(rc::load<double>((record + 28)));
-rc::store<std::uint64_t>((record + 36), rc::borrow<::datamunge::graphics::RPlot>(&(self.abline_v(std::move(a0), a1, std::move(a2))), &resolve_k_r_plot, rc::keep_of(self_id)));
-break;
-}
-default: break;
-}
+auto& self = rc::object<::datamunge::graphics::Plot>(self_id, class_k_plot, "DM-PLOT-REFERENCE-LINES-SELF");
+rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<datamunge::graphics::ABLine>>(std::make_unique<std::vector<datamunge::graphics::ABLine>>(self.reference_lines()), &resolve_v_vector_ab_line));
     });
 }
-// datamunge::graphics::RLayout::cols() const -> std::size_t
-extern "C" int dm_r_layout_cols(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::graphics::RLayout::cols", [&] {
+// datamunge::graphics::RPlot::dpi(double value) -> RPlot &
+extern "C" int dm_r_plot_dpi(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::graphics::RPlot::dpi", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::graphics::RLayout>(self_id, class_k_r_layout, "DM-R-LAYOUT-COLS-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.cols()));
-    });
-}
-// datamunge::graphics::RLayout::to_pdf() const -> std::vector<std::uint8_t>
-extern "C" int dm_r_layout_to_pdf(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::graphics::RLayout::to_pdf", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::graphics::RLayout>(self_id, class_k_r_layout, "DM-R-LAYOUT-TO-PDF-SELF");
-rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<unsigned char>>(std::make_unique<std::vector<unsigned char>>(self.to_pdf()), &resolve_v_vector_uchar));
-    });
-}
-// std::vector<int> datamunge::geometry::DTWResult::path_b (read)
-extern "C" int dm_dtw_result_path_b_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::geometry::DTWResult::path_b", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::geometry::DTWResult>(self_id, class_k_dtw_result, "DM-DTW-RESULT-PATH-B-SELF");
-rc::store<std::uint64_t>((record + 8), rc::borrow<std::vector<int>>(&(self.path_b), &resolve_v_vector_int, rc::keep_of(self_id)));
-    });
-}
-// DTWWork datamunge::geometry::DTWComputation::work (write)
-extern "C" int dm_dtw_computation_work_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::geometry::DTWComputation::work", [&] {
-auto& self = rc::object<::datamunge::geometry::DTWComputation>(rc::load<std::uint64_t>(record), class_k_dtw_computation, "DM-DTW-COMPUTATION-WORK-SELF");
-rc::assign(self.work, rc::object<::datamunge::geometry::DTWWork>(rc::load<std::uint64_t>((record + 8)), class_k_dtw_work, "DM-DTW-COMPUTATION-WORK-VALUE"), "DM-DTW-COMPUTATION-WORK-VALUE");
-    });
-}
-// datamunge::geometry::KDTree2D::empty() const -> bool
-extern "C" int dm_kd_tree2d_empty(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::geometry::KDTree2D::empty", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::geometry::KDTree2D>(self_id, class_k_kd_tree2d, "DM-KD-TREE2D-EMPTY-SELF");
-rc::store<std::uint8_t>((record + 8), (self.empty()) ? 1 : 0);
-    });
-}
-// Point2D datamunge::geometry::DiameterResult::a (read)
-extern "C" int dm_diameter_result_a_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::geometry::DiameterResult::a", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::geometry::DiameterResult>(self_id, class_k_diameter_result, "DM-DIAMETER-RESULT-A-SELF");
-rc::store<std::uint64_t>((record + 8), rc::borrow<::datamunge::geometry::Point2D>(&(self.a), &resolve_k_point2d, rc::keep_of(self_id)));
-    });
-}
-// double datamunge::geometry::MinimumBoundingRectangle::area (write)
-extern "C" int dm_minimum_bounding_rectangle_area_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::geometry::MinimumBoundingRectangle::area", [&] {
-auto& self = rc::object<::datamunge::geometry::MinimumBoundingRectangle>(rc::load<std::uint64_t>(record), class_k_minimum_bounding_rectangle, "DM-MINIMUM-BOUNDING-RECTANGLE-AREA-SELF");
-rc::assign(self.area, static_cast<double>(rc::load<double>((record + 8))), "DM-MINIMUM-BOUNDING-RECTANGLE-AREA-VALUE");
-    });
-}
-// datamunge::ode::RHS::evaluate(double t, const std::vector<double> & y) -> std::vector<double>
-extern "C" int dm_rhs_evaluate(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::ode::RHS::evaluate", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::ode::RHS>(self_id, class_k_rhs, "DM-RHS-EVALUATE-SELF");
+auto& self = rc::object<::datamunge::graphics::RPlot>(self_id, class_k_r_plot, "DM-R-PLOT-DPI-SELF");
 auto a0 = static_cast<double>(rc::load<double>((record + 8)));
-auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 16)), class_v_vector_double, "DM-RHS-EVALUATE-Y");
-rc::store<std::uint64_t>((record + 24), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(self.evaluate(std::move(a0), a1)), &resolve_v_vector_double));
+rc::store<std::uint64_t>((record + 16), rc::borrow<::datamunge::graphics::RPlot>(&(self.dpi(std::move(a0))), &resolve_k_r_plot, rc::keep_of(self_id)));
     });
 }
-// std::size_t datamunge::ode::ODESolution::function_evaluations (read)
-extern "C" int dm_ode_solution_function_evaluations_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::ode::ODESolution::function_evaluations", [&] {
+// datamunge::graphics::RPlot::background(RGBA color) -> RPlot &
+extern "C" int dm_r_plot_background(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::graphics::RPlot::background", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::ode::ODESolution>(self_id, class_k_ode_solution, "DM-ODE-SOLUTION-FUNCTION-EVALUATIONS-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.function_evaluations));
+auto& self = rc::object<::datamunge::graphics::RPlot>(self_id, class_k_r_plot, "DM-R-PLOT-BACKGROUND-SELF");
+auto& a0 = rc::object<::datamunge::graphics::RGB>(rc::load<std::uint64_t>((record + 8)), class_k_rgb, "DM-R-PLOT-BACKGROUND-COLOR");
+rc::store<std::uint64_t>((record + 16), rc::borrow<::datamunge::graphics::RPlot>(&(self.background(a0)), &resolve_k_r_plot, rc::keep_of(self_id)));
     });
 }
-// std::size_t datamunge::optim::ACOROptions::max_iterations (read)
-extern "C" int dm_acor_options_max_iterations_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::ACOROptions::max_iterations", [&] {
+// static datamunge::graphics::RPlot::plot(std::vector<double> x, std::vector<double> y, std::string type = "p", std::string label = "", RGBA color = ...) -> RPlot
+extern "C" int dm_r_plot_plot(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::graphics::RPlot::plot", [&] {
+switch (rc::given(record, 2, 5)) {
+case 2: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 4)), class_v_vector_double, "DM-R-PLOT-PLOT-X");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-R-PLOT-PLOT-Y");
+rc::store<std::uint64_t>((record + 548), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(::datamunge::graphics::RPlot::plot(a0, a1)), &resolve_k_r_plot));
+break;
+}
+case 3: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 4)), class_v_vector_double, "DM-R-PLOT-PLOT-X");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-R-PLOT-PLOT-Y");
+auto a2 = rc::text((record + 20), 256, (record + 20) + 256, "DM-R-PLOT-PLOT-TYPE");
+rc::store<std::uint64_t>((record + 548), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(::datamunge::graphics::RPlot::plot(a0, a1, std::move(a2))), &resolve_k_r_plot));
+break;
+}
+case 4: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 4)), class_v_vector_double, "DM-R-PLOT-PLOT-X");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-R-PLOT-PLOT-Y");
+auto a2 = rc::text((record + 20), 256, (record + 20) + 256, "DM-R-PLOT-PLOT-TYPE");
+auto a3 = rc::text((record + 280), 256, (record + 280) + 256, "DM-R-PLOT-PLOT-LABEL");
+rc::store<std::uint64_t>((record + 548), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(::datamunge::graphics::RPlot::plot(a0, a1, std::move(a2), std::move(a3))), &resolve_k_r_plot));
+break;
+}
+case 5: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 4)), class_v_vector_double, "DM-R-PLOT-PLOT-X");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-R-PLOT-PLOT-Y");
+auto a2 = rc::text((record + 20), 256, (record + 20) + 256, "DM-R-PLOT-PLOT-TYPE");
+auto a3 = rc::text((record + 280), 256, (record + 280) + 256, "DM-R-PLOT-PLOT-LABEL");
+auto& a4 = rc::object<::datamunge::graphics::RGB>(rc::load<std::uint64_t>((record + 540)), class_k_rgb, "DM-R-PLOT-PLOT-COLOR");
+rc::store<std::uint64_t>((record + 548), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(::datamunge::graphics::RPlot::plot(a0, a1, std::move(a2), std::move(a3), a4)), &resolve_k_r_plot));
+break;
+}
+default: break;
+}
+    });
+}
+// datamunge::graphics::RPlot::steps(const std::vector<double> & x, const std::vector<double> & y, std::string label = "", RGBA color = ..., double stroke_width = 2.0) -> RPlot &
+extern "C" int dm_r_plot_steps(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::graphics::RPlot::steps", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::ACOROptions>(self_id, class_k_acor_options, "DM-ACOR-OPTIONS-MAX-ITERATIONS-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.max_iterations));
+auto& self = rc::object<::datamunge::graphics::RPlot>(self_id, class_k_r_plot, "DM-R-PLOT-STEPS-SELF");
+switch (rc::given((record + 8), 2, 5)) {
+case 2: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-R-PLOT-STEPS-X");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 20)), class_v_vector_double, "DM-R-PLOT-STEPS-Y");
+rc::store<std::uint64_t>((record + 304), rc::borrow<::datamunge::graphics::RPlot>(&(self.steps(a0, a1)), &resolve_k_r_plot, rc::keep_of(self_id)));
+break;
+}
+case 3: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-R-PLOT-STEPS-X");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 20)), class_v_vector_double, "DM-R-PLOT-STEPS-Y");
+auto a2 = rc::text((record + 28), 256, (record + 28) + 256, "DM-R-PLOT-STEPS-LABEL");
+rc::store<std::uint64_t>((record + 304), rc::borrow<::datamunge::graphics::RPlot>(&(self.steps(a0, a1, std::move(a2))), &resolve_k_r_plot, rc::keep_of(self_id)));
+break;
+}
+case 4: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-R-PLOT-STEPS-X");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 20)), class_v_vector_double, "DM-R-PLOT-STEPS-Y");
+auto a2 = rc::text((record + 28), 256, (record + 28) + 256, "DM-R-PLOT-STEPS-LABEL");
+auto& a3 = rc::object<::datamunge::graphics::RGB>(rc::load<std::uint64_t>((record + 288)), class_k_rgb, "DM-R-PLOT-STEPS-COLOR");
+rc::store<std::uint64_t>((record + 304), rc::borrow<::datamunge::graphics::RPlot>(&(self.steps(a0, a1, std::move(a2), a3)), &resolve_k_r_plot, rc::keep_of(self_id)));
+break;
+}
+case 5: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-R-PLOT-STEPS-X");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 20)), class_v_vector_double, "DM-R-PLOT-STEPS-Y");
+auto a2 = rc::text((record + 28), 256, (record + 28) + 256, "DM-R-PLOT-STEPS-LABEL");
+auto& a3 = rc::object<::datamunge::graphics::RGB>(rc::load<std::uint64_t>((record + 288)), class_k_rgb, "DM-R-PLOT-STEPS-COLOR");
+auto a4 = static_cast<double>(rc::load<double>((record + 296)));
+rc::store<std::uint64_t>((record + 304), rc::borrow<::datamunge::graphics::RPlot>(&(self.steps(a0, a1, std::move(a2), a3, std::move(a4))), &resolve_k_r_plot, rc::keep_of(self_id)));
+break;
+}
+default: break;
+}
     });
 }
-// double datamunge::optim::AdamOptions::beta1 (write)
-extern "C" int dm_adam_options_beta1_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::AdamOptions::beta1", [&] {
-auto& self = rc::object<::datamunge::optim::AdamOptions>(rc::load<std::uint64_t>(record), class_k_adam_options, "DM-ADAM-OPTIONS-BETA1-SELF");
-rc::assign(self.beta1, static_cast<double>(rc::load<double>((record + 8))), "DM-ADAM-OPTIONS-BETA1-VALUE");
-    });
-}
-// double datamunge::optim::AdaGradOptions::epsilon (read)
-extern "C" int dm_ada_grad_options_epsilon_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::AdaGradOptions::epsilon", [&] {
+// datamunge::graphics::RPlot::contour(const std::vector<double> & x, const std::vector<double> & y, const std::vector<std::vector<double>> & z, double level, RGBA color = ..., double stroke_width = 2.0) -> RPlot &
+extern "C" int dm_r_plot_contour(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::graphics::RPlot::contour", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::AdaGradOptions>(self_id, class_k_ada_grad_options, "DM-ADA-GRAD-OPTIONS-EPSILON-SELF");
-rc::store<double>((record + 8), static_cast<double>(self.epsilon));
+auto& self = rc::object<::datamunge::graphics::RPlot>(self_id, class_k_r_plot, "DM-R-PLOT-CONTOUR-SELF");
+switch (rc::given((record + 8), 4, 6)) {
+case 4: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-R-PLOT-CONTOUR-X");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 20)), class_v_vector_double, "DM-R-PLOT-CONTOUR-Y");
+auto& a2 = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>((record + 28)), class_v_vector_vector_double, "DM-R-PLOT-CONTOUR-Z");
+auto a3 = static_cast<double>(rc::load<double>((record + 36)));
+rc::store<std::uint64_t>((record + 60), rc::borrow<::datamunge::graphics::RPlot>(&(self.contour(a0, a1, a2, std::move(a3))), &resolve_k_r_plot, rc::keep_of(self_id)));
+break;
+}
+case 5: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-R-PLOT-CONTOUR-X");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 20)), class_v_vector_double, "DM-R-PLOT-CONTOUR-Y");
+auto& a2 = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>((record + 28)), class_v_vector_vector_double, "DM-R-PLOT-CONTOUR-Z");
+auto a3 = static_cast<double>(rc::load<double>((record + 36)));
+auto& a4 = rc::object<::datamunge::graphics::RGB>(rc::load<std::uint64_t>((record + 44)), class_k_rgb, "DM-R-PLOT-CONTOUR-COLOR");
+rc::store<std::uint64_t>((record + 60), rc::borrow<::datamunge::graphics::RPlot>(&(self.contour(a0, a1, a2, std::move(a3), a4)), &resolve_k_r_plot, rc::keep_of(self_id)));
+break;
+}
+case 6: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-R-PLOT-CONTOUR-X");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 20)), class_v_vector_double, "DM-R-PLOT-CONTOUR-Y");
+auto& a2 = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>((record + 28)), class_v_vector_vector_double, "DM-R-PLOT-CONTOUR-Z");
+auto a3 = static_cast<double>(rc::load<double>((record + 36)));
+auto& a4 = rc::object<::datamunge::graphics::RGB>(rc::load<std::uint64_t>((record + 44)), class_k_rgb, "DM-R-PLOT-CONTOUR-COLOR");
+auto a5 = static_cast<double>(rc::load<double>((record + 52)));
+rc::store<std::uint64_t>((record + 60), rc::borrow<::datamunge::graphics::RPlot>(&(self.contour(a0, a1, a2, std::move(a3), a4, std::move(a5))), &resolve_k_r_plot, rc::keep_of(self_id)));
+break;
+}
+default: break;
+}
     });
 }
-// std::size_t datamunge::optim::AdaDeltaOptions::max_iterations (read)
-extern "C" int dm_ada_delta_options_max_iterations_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::AdaDeltaOptions::max_iterations", [&] {
+// datamunge::graphics::RPlot::arc_diagram(const std::vector<double> & positions, const std::vector<std::size_t> & from, const std::vector<std::size_t> & to, RGBA color = ...) -> RPlot &
+extern "C" int dm_r_plot_arc_diagram(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::graphics::RPlot::arc_diagram", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::AdaDeltaOptions>(self_id, class_k_ada_delta_options, "DM-ADA-DELTA-OPTIONS-MAX-ITERATIONS-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.max_iterations));
+auto& self = rc::object<::datamunge::graphics::RPlot>(self_id, class_k_r_plot, "DM-R-PLOT-ARC-DIAGRAM-SELF");
+switch (rc::given((record + 8), 3, 4)) {
+case 3: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-R-PLOT-ARC-DIAGRAM-POSITIONS");
+auto& a1 = rc::object<std::vector<unsigned long>>(rc::load<std::uint64_t>((record + 20)), class_v_vector_ulong, "DM-R-PLOT-ARC-DIAGRAM-FROM");
+auto& a2 = rc::object<std::vector<unsigned long>>(rc::load<std::uint64_t>((record + 28)), class_v_vector_ulong, "DM-R-PLOT-ARC-DIAGRAM-TO");
+rc::store<std::uint64_t>((record + 44), rc::borrow<::datamunge::graphics::RPlot>(&(self.arc_diagram(a0, a1, a2)), &resolve_k_r_plot, rc::keep_of(self_id)));
+break;
+}
+case 4: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-R-PLOT-ARC-DIAGRAM-POSITIONS");
+auto& a1 = rc::object<std::vector<unsigned long>>(rc::load<std::uint64_t>((record + 20)), class_v_vector_ulong, "DM-R-PLOT-ARC-DIAGRAM-FROM");
+auto& a2 = rc::object<std::vector<unsigned long>>(rc::load<std::uint64_t>((record + 28)), class_v_vector_ulong, "DM-R-PLOT-ARC-DIAGRAM-TO");
+auto& a3 = rc::object<::datamunge::graphics::RGB>(rc::load<std::uint64_t>((record + 36)), class_k_rgb, "DM-R-PLOT-ARC-DIAGRAM-COLOR");
+rc::store<std::uint64_t>((record + 44), rc::borrow<::datamunge::graphics::RPlot>(&(self.arc_diagram(a0, a1, a2, a3)), &resolve_k_r_plot, rc::keep_of(self_id)));
+break;
+}
+default: break;
+}
     });
 }
-// double datamunge::optim::AMSGradOptions::epsilon (write)
-extern "C" int dm_ams_grad_options_epsilon_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::AMSGradOptions::epsilon", [&] {
-auto& self = rc::object<::datamunge::optim::AMSGradOptions>(rc::load<std::uint64_t>(record), class_k_ams_grad_options, "DM-AMS-GRAD-OPTIONS-EPSILON-SELF");
-rc::assign(self.epsilon, static_cast<double>(rc::load<double>((record + 8))), "DM-AMS-GRAD-OPTIONS-EPSILON-VALUE");
+// datamunge::graphics::RLayout::view(const std::string & title_hint = "") const -> void
+extern "C" int dm_r_layout_view(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::graphics::RLayout::view", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::graphics::RLayout>(self_id, class_k_r_layout, "DM-R-LAYOUT-VIEW-SELF");
+switch (rc::given((record + 8), 0, 1)) {
+case 0: {
+self.view();
+break;
+}
+case 1: {
+auto a0 = rc::text((record + 12), 256, (record + 12) + 256, "DM-R-LAYOUT-VIEW-TITLE-HINT");
+self.view(a0);
+break;
+}
+default: break;
+}
+    });
+}
+// std::vector<double> datamunge::bayes::GibbsResult::final_step_sizes (read)
+extern "C" int dm_gibbs_result_final_step_sizes_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::bayes::GibbsResult::final_step_sizes", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::bayes::GibbsResult>(self_id, class_k_gibbs_result, "DM-GIBBS-RESULT-FINAL-STEP-SIZES-SELF");
+rc::store<std::uint64_t>((record + 8), rc::borrow<std::vector<double>>(&(self.final_step_sizes), &resolve_v_vector_double, rc::keep_of(self_id)));
+    });
+}
+// std::uint64_t datamunge::bayes::HMCOptions::seed (write)
+extern "C" int dm_hmc_options_seed_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::bayes::HMCOptions::seed", [&] {
+auto& self = rc::object<::datamunge::bayes::HMCOptions>(rc::load<std::uint64_t>(record), class_k_hmc_options, "DM-HMC-OPTIONS-SEED-SELF");
+rc::assign(self.seed, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-HMC-OPTIONS-SEED-VALUE"), "DM-HMC-OPTIONS-SEED-VALUE");
+    });
+}
+// double datamunge::bayes::HMCProposal::energy_change (write)
+extern "C" int dm_hmc_proposal_energy_change_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::bayes::HMCProposal::energy_change", [&] {
+auto& self = rc::object<::datamunge::bayes::HMCProposal>(rc::load<std::uint64_t>(record), class_k_hmc_proposal, "DM-HMC-PROPOSAL-ENERGY-CHANGE-SELF");
+rc::assign(self.energy_change, static_cast<double>(rc::load<double>((record + 8))), "DM-HMC-PROPOSAL-ENERGY-CHANGE-VALUE");
+    });
+}
+// double datamunge::bayes::ImportanceSamplingResult::log_evidence (write)
+extern "C" int dm_importance_sampling_result_log_evidence_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::bayes::ImportanceSamplingResult::log_evidence", [&] {
+auto& self = rc::object<::datamunge::bayes::ImportanceSamplingResult>(rc::load<std::uint64_t>(record), class_k_importance_sampling_result, "DM-IMPORTANCE-SAMPLING-RESULT-LOG-EVIDENCE-SELF");
+rc::assign(self.log_evidence, static_cast<double>(rc::load<double>((record + 8))), "DM-IMPORTANCE-SAMPLING-RESULT-LOG-EVIDENCE-VALUE");
+    });
+}
+// std::size_t datamunge::bayes::RWMOptions::num_samples (read)
+extern "C" int dm_rwm_options_num_samples_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::bayes::RWMOptions::num_samples", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::bayes::RWMOptions>(self_id, class_k_rwm_options, "DM-RWM-OPTIONS-NUM-SAMPLES-SELF");
+rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.num_samples));
+    });
+}
+// std::vector<std::vector<double>> datamunge::bayes::RWMResult::samples (read)
+extern "C" int dm_rwm_result_samples_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::bayes::RWMResult::samples", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::bayes::RWMResult>(self_id, class_k_rwm_result, "DM-RWM-RESULT-SAMPLES-SELF");
+rc::store<std::uint64_t>((record + 8), rc::borrow<std::vector<std::vector<double>>>(&(self.samples), &resolve_v_vector_vector_double, rc::keep_of(self_id)));
+    });
+}
+// std::uint8_t datamunge::image::Pixel::b (write)
+extern "C" int dm_pixel_b_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::image::Pixel::b", [&] {
+auto& self = rc::object<::datamunge::image::Pixel>(rc::load<std::uint64_t>(record), class_k_pixel, "DM-PIXEL-B-SELF");
+rc::assign(self.b, rc::integer<unsigned char>(rc::load<std::uint8_t>((record + 8)), "DM-PIXEL-B-VALUE"), "DM-PIXEL-B-VALUE");
+    });
+}
+// datamunge::image::HSV::HSV() -> HSV handle
+extern "C" int dm_hsv_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::image::HSV::HSV", [&] {
+rc::store<std::uint64_t>(record, rc::adopt<::datamunge::image::HSV>(std::make_unique<::datamunge::image::HSV>(), &resolve_k_hsv));
+    });
+}
+// int datamunge::cv::KeyPoint::x (write)
+extern "C" int dm_key_point_x_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::cv::KeyPoint::x", [&] {
+auto& self = rc::object<::datamunge::cv::KeyPoint>(rc::load<std::uint64_t>(record), class_k_key_point, "DM-KEY-POINT-X-SELF");
+rc::assign(self.x, rc::integer<int>(rc::load<std::int32_t>((record + 8)), "DM-KEY-POINT-X-VALUE"), "DM-KEY-POINT-X-VALUE");
+    });
+}
+// std::vector<double> datamunge::cv::detail::StructureTensorField::sxx (read)
+extern "C" int dm_structure_tensor_field_sxx_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::cv::detail::StructureTensorField::sxx", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::cv::detail::StructureTensorField>(self_id, class_k_structure_tensor_field, "DM-STRUCTURE-TENSOR-FIELD-SXX-SELF");
+rc::store<std::uint64_t>((record + 8), rc::borrow<std::vector<double>>(&(self.sxx), &resolve_v_vector_double, rc::keep_of(self_id)));
+    });
+}
+// int datamunge::cv::HoughCircle::radius (read)
+extern "C" int dm_hough_circle_radius_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::cv::HoughCircle::radius", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::cv::HoughCircle>(self_id, class_k_hough_circle, "DM-HOUGH-CIRCLE-RADIUS-SELF");
+rc::store<std::int32_t>((record + 8), static_cast<std::int32_t>(self.radius));
+    });
+}
+// int datamunge::cv::LabelMap::height (read)
+extern "C" int dm_label_map_height_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::cv::LabelMap::height", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::cv::LabelMap>(self_id, class_k_label_map, "DM-LABEL-MAP-HEIGHT-SELF");
+rc::store<std::int32_t>((record + 8), static_cast<std::int32_t>(self.height));
+    });
+}
+// std::vector<int> datamunge::datasets::ImageBatch::shape (write)
+extern "C" int dm_image_batch_shape_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::datasets::ImageBatch::shape", [&] {
+auto& self = rc::object<::datamunge::datasets::ImageBatch>(rc::load<std::uint64_t>(record), class_k_image_batch, "DM-IMAGE-BATCH-SHAPE-SELF");
+rc::assign(self.shape, rc::object<std::vector<int>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_int, "DM-IMAGE-BATCH-SHAPE-VALUE"), "DM-IMAGE-BATCH-SHAPE-VALUE");
+    });
+}
+// datamunge::datasets::ImageLoader::drop_last() const -> bool
+extern "C" int dm_image_loader_drop_last(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::datasets::ImageLoader::drop_last", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::datasets::ImageLoader>(self_id, class_k_image_loader, "DM-IMAGE-LOADER-DROP-LAST-SELF");
+rc::store<std::uint8_t>((record + 8), (self.drop_last()) ? 1 : 0);
+    });
+}
+// datamunge::datasets::ImageLoader::next() -> ImageBatch
+extern "C" int dm_image_loader_next(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::datasets::ImageLoader::next", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::datasets::ImageLoader>(self_id, class_k_image_loader, "DM-IMAGE-LOADER-NEXT-SELF");
+rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::datasets::ImageBatch>(std::make_unique<::datamunge::datasets::ImageBatch>(self.next()), &resolve_k_image_batch));
+    });
+}
+// BCType datamunge::fem::BoundaryCondition1D::type (write)
+extern "C" int dm_boundary_condition1d_type_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::fem::BoundaryCondition1D::type", [&] {
+auto& self = rc::object<::datamunge::fem::BoundaryCondition1D>(rc::load<std::uint64_t>(record), class_k_boundary_condition1d, "DM-BOUNDARY-CONDITION1D-TYPE-SELF");
+rc::assign(self.type, enum_bc_type(rc::load<std::int32_t>((record + 8)), "DM-BOUNDARY-CONDITION1D-TYPE-VALUE"), "DM-BOUNDARY-CONDITION1D-TYPE-VALUE");
+    });
+}
+// datamunge::fem::FEM1D::FEM1D() -> FEM1D handle
+extern "C" int dm_fem1d_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::fem::FEM1D::FEM1D", [&] {
+rc::store<std::uint64_t>(record, rc::adopt<::datamunge::fem::FEM1D>(std::make_unique<::datamunge::fem::FEM1D>(), &resolve_k_fem1d));
+    });
+}
+// double datamunge::geometry::Point2D::x (write)
+extern "C" int dm_point2d_x_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::Point2D::x", [&] {
+auto& self = rc::object<::datamunge::geometry::Point2D>(rc::load<std::uint64_t>(record), class_k_point2d, "DM-POINT2D-X-SELF");
+rc::assign(self.x, static_cast<double>(rc::load<double>((record + 8))), "DM-POINT2D-X-VALUE");
+    });
+}
+// datamunge::geometry::DelaunayWork::DelaunayWork() -> DELAUNAY-WORK handle
+extern "C" int dm_delaunay_work_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::DelaunayWork::DelaunayWork", [&] {
+rc::store<std::uint64_t>(record, rc::adopt<::datamunge::geometry::DelaunayWork>(std::make_unique<::datamunge::geometry::DelaunayWork>(), &resolve_k_delaunay_work));
+    });
+}
+// std::size_t datamunge::geometry::DelaunayWork::boundary_edges (read)
+extern "C" int dm_delaunay_work_boundary_edges_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::DelaunayWork::boundary_edges", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::geometry::DelaunayWork>(self_id, class_k_delaunay_work, "DM-DELAUNAY-WORK-BOUNDARY-EDGES-SELF");
+rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.boundary_edges));
+    });
+}
+// std::vector<Triangle> datamunge::geometry::DelaunayInsertion::removed (write)
+extern "C" int dm_delaunay_insertion_removed_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::DelaunayInsertion::removed", [&] {
+auto& self = rc::object<::datamunge::geometry::DelaunayInsertion>(rc::load<std::uint64_t>(record), class_k_delaunay_insertion, "DM-DELAUNAY-INSERTION-REMOVED-SELF");
+rc::assign(self.removed, rc::object<std::vector<datamunge::geometry::Triangle>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_triangle, "DM-DELAUNAY-INSERTION-REMOVED-VALUE"), "DM-DELAUNAY-INSERTION-REMOVED-VALUE");
+    });
+}
+// std::vector<Triangle> datamunge::geometry::DelaunayTrace::triangles (write)
+extern "C" int dm_delaunay_trace_triangles_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::DelaunayTrace::triangles", [&] {
+auto& self = rc::object<::datamunge::geometry::DelaunayTrace>(rc::load<std::uint64_t>(record), class_k_delaunay_trace, "DM-DELAUNAY-TRACE-TRIANGLES-SELF");
+rc::assign(self.triangles, rc::object<std::vector<datamunge::geometry::Triangle>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_triangle, "DM-DELAUNAY-TRACE-TRIANGLES-VALUE"), "DM-DELAUNAY-TRACE-TRIANGLES-VALUE");
+    });
+}
+// std::size_t datamunge::geometry::DelaunayAnalysis::interior_violations (read)
+extern "C" int dm_delaunay_analysis_interior_violations_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::DelaunayAnalysis::interior_violations", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::geometry::DelaunayAnalysis>(self_id, class_k_delaunay_analysis, "DM-DELAUNAY-ANALYSIS-INTERIOR-VIOLATIONS-SELF");
+rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.interior_violations));
+    });
+}
+// datamunge::filter::AlphaBetaState::AlphaBetaState() -> ALPHA-BETA-STATE handle
+extern "C" int dm_alpha_beta_state_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::filter::AlphaBetaState::AlphaBetaState", [&] {
+rc::store<std::uint64_t>(record, rc::adopt<::datamunge::filter::AlphaBetaState>(std::make_unique<::datamunge::filter::AlphaBetaState>(), &resolve_k_alpha_beta_state));
+    });
+}
+// datamunge::filter::AlphaBetaGammaState::AlphaBetaGammaState() -> ALPHA-BETA-GAMMA-STATE handle
+extern "C" int dm_alpha_beta_gamma_state_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::filter::AlphaBetaGammaState::AlphaBetaGammaState", [&] {
+rc::store<std::uint64_t>(record, rc::adopt<::datamunge::filter::AlphaBetaGammaState>(std::make_unique<::datamunge::filter::AlphaBetaGammaState>(), &resolve_k_alpha_beta_gamma_state));
+    });
+}
+// datamunge::filter::AlphaBetaGammaFilter::alpha() const -> double
+extern "C" int dm_alpha_beta_gamma_filter_alpha(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::filter::AlphaBetaGammaFilter::alpha", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::filter::AlphaBetaGammaFilter>(self_id, class_k_alpha_beta_gamma_filter, "DM-ALPHA-BETA-GAMMA-FILTER-ALPHA-SELF");
+rc::store<double>((record + 8), static_cast<double>(self.alpha()));
+    });
+}
+// std::vector<KalmanState> datamunge::filter::SmoothResult::smoothed (read)
+extern "C" int dm_smooth_result_smoothed_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::filter::SmoothResult::smoothed", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::filter::SmoothResult>(self_id, class_k_smooth_result, "DM-SMOOTH-RESULT-SMOOTHED-SELF");
+rc::store<std::uint64_t>((record + 8), rc::borrow<std::vector<datamunge::filter::KalmanState>>(&(self.smoothed), &resolve_v_vector_kalman_state, rc::keep_of(self_id)));
+    });
+}
+// datamunge::filter::EnsembleKalmanFilter::filter(const std::vector<std::vector<double>> & measurements) -> std::vector<KalmanState>
+extern "C" int dm_ensemble_kalman_filter_filter(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::filter::EnsembleKalmanFilter::filter", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::filter::EnsembleKalmanFilter>(self_id, class_k_ensemble_kalman_filter, "DM-ENSEMBLE-KALMAN-FILTER-FILTER-SELF");
+auto& a0 = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_vector_double, "DM-ENSEMBLE-KALMAN-FILTER-FILTER-MEASUREMENTS");
+rc::store<std::uint64_t>((record + 16), rc::adopt<std::vector<datamunge::filter::KalmanState>>(std::make_unique<std::vector<datamunge::filter::KalmanState>>(self.filter(a0)), &resolve_v_vector_kalman_state));
+    });
+}
+// datamunge::filter::ParticleFilter::update(const std::vector<double> & z) -> void
+extern "C" int dm_particle_filter_update(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::filter::ParticleFilter::update", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::filter::ParticleFilter>(self_id, class_k_particle_filter, "DM-PARTICLE-FILTER-UPDATE-SELF");
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_double, "DM-PARTICLE-FILTER-UPDATE-Z");
+self.update(a0);
+    });
+}
+// Point2D datamunge::geometry::BoundingBox::min (read)
+extern "C" int dm_bounding_box_min_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::BoundingBox::min", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::geometry::BoundingBox>(self_id, class_k_bounding_box, "DM-BOUNDING-BOX-MIN-SELF");
+rc::store<std::uint64_t>((record + 8), rc::borrow<::datamunge::geometry::Point2D>(&(self.min), &resolve_k_point2d, rc::keep_of(self_id)));
+    });
+}
+// double datamunge::geometry::ClosestPairResult::distance (write)
+extern "C" int dm_closest_pair_result_distance_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::ClosestPairResult::distance", [&] {
+auto& self = rc::object<::datamunge::geometry::ClosestPairResult>(rc::load<std::uint64_t>(record), class_k_closest_pair_result, "DM-CLOSEST-PAIR-RESULT-DISTANCE-SELF");
+rc::assign(self.distance, static_cast<double>(rc::load<double>((record + 8))), "DM-CLOSEST-PAIR-RESULT-DISTANCE-VALUE");
+    });
+}
+// std::size_t datamunge::geometry::ConvexHullWork::input_points (write)
+extern "C" int dm_convex_hull_work_input_points_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::ConvexHullWork::input_points", [&] {
+auto& self = rc::object<::datamunge::geometry::ConvexHullWork>(rc::load<std::uint64_t>(record), class_k_convex_hull_work, "DM-CONVEX-HULL-WORK-INPUT-POINTS-SELF");
+rc::assign(self.input_points, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-CONVEX-HULL-WORK-INPUT-POINTS-VALUE"), "DM-CONVEX-HULL-WORK-INPUT-POINTS-VALUE");
+    });
+}
+// std::size_t datamunge::geometry::ConvexHullWork::max_stack (read)
+extern "C" int dm_convex_hull_work_max_stack_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::ConvexHullWork::max_stack", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::geometry::ConvexHullWork>(self_id, class_k_convex_hull_work, "DM-CONVEX-HULL-WORK-MAX-STACK-SELF");
+rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.max_stack));
+    });
+}
+// std::size_t datamunge::geometry::HullEvent::b (write)
+extern "C" int dm_hull_event_b_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::HullEvent::b", [&] {
+auto& self = rc::object<::datamunge::geometry::HullEvent>(rc::load<std::uint64_t>(record), class_k_hull_event, "DM-HULL-EVENT-B-SELF");
+rc::assign(self.b, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-HULL-EVENT-B-VALUE"), "DM-HULL-EVENT-B-VALUE");
+    });
+}
+// ConvexHullAnalysis datamunge::geometry::ConvexHullTrace::analysis (read)
+extern "C" int dm_convex_hull_trace_analysis_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::ConvexHullTrace::analysis", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::geometry::ConvexHullTrace>(self_id, class_k_convex_hull_trace, "DM-CONVEX-HULL-TRACE-ANALYSIS-SELF");
+rc::store<std::uint64_t>((record + 8), rc::borrow<::datamunge::geometry::ConvexHullAnalysis>(&(self.analysis), &resolve_k_convex_hull_analysis, rc::keep_of(self_id)));
+    });
+}
+// std::vector<int> datamunge::geometry::DTWResult::path_a (write)
+extern "C" int dm_dtw_result_path_a_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::DTWResult::path_a", [&] {
+auto& self = rc::object<::datamunge::geometry::DTWResult>(rc::load<std::uint64_t>(record), class_k_dtw_result, "DM-DTW-RESULT-PATH-A-SELF");
+rc::assign(self.path_a, rc::object<std::vector<int>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_int, "DM-DTW-RESULT-PATH-A-VALUE"), "DM-DTW-RESULT-PATH-A-VALUE");
+    });
+}
+// std::vector<double> datamunge::geometry::DTWTrace::a (read)
+extern "C" int dm_dtw_trace_a_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::DTWTrace::a", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::geometry::DTWTrace>(self_id, class_k_dtw_trace, "DM-DTW-TRACE-A-SELF");
+rc::store<std::uint64_t>((record + 8), rc::borrow<std::vector<double>>(&(self.a), &resolve_v_vector_double, rc::keep_of(self_id)));
+    });
+}
+// std::size_t datamunge::geometry::DTWTrace::captured_entries (write)
+extern "C" int dm_dtw_trace_captured_entries_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::DTWTrace::captured_entries", [&] {
+auto& self = rc::object<::datamunge::geometry::DTWTrace>(rc::load<std::uint64_t>(record), class_k_dtw_trace, "DM-DTW-TRACE-CAPTURED-ENTRIES-SELF");
+rc::assign(self.captured_entries, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-DTW-TRACE-CAPTURED-ENTRIES-VALUE"), "DM-DTW-TRACE-CAPTURED-ENTRIES-VALUE");
+    });
+}
+// long double datamunge::geometry::KDNearestProbe::best_distance_before (write)
+extern "C" int dm_kd_nearest_probe_best_distance_before_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::KDNearestProbe::best_distance_before", [&] {
+auto& self = rc::object<::datamunge::geometry::KDNearestProbe>(rc::load<std::uint64_t>(record), class_k_kd_nearest_probe, "DM-KD-NEAREST-PROBE-BEST-DISTANCE-BEFORE-SELF");
+rc::assign(self.best_distance_before, static_cast<long double>(rc::load<double>((record + 8))), "DM-KD-NEAREST-PROBE-BEST-DISTANCE-BEFORE-VALUE");
+    });
+}
+// Point2D datamunge::geometry::KDNearestTrace::point (write)
+extern "C" int dm_kd_nearest_trace_point_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::KDNearestTrace::point", [&] {
+auto& self = rc::object<::datamunge::geometry::KDNearestTrace>(rc::load<std::uint64_t>(record), class_k_kd_nearest_trace, "DM-KD-NEAREST-TRACE-POINT-SELF");
+rc::assign(self.point, rc::object<::datamunge::geometry::Point2D>(rc::load<std::uint64_t>((record + 8)), class_k_point2d, "DM-KD-NEAREST-TRACE-POINT-VALUE"), "DM-KD-NEAREST-TRACE-POINT-VALUE");
+    });
+}
+// datamunge::geometry::Circle::Circle() -> CIRCLE handle
+extern "C" int dm_circle_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::Circle::Circle", [&] {
+rc::store<std::uint64_t>(record, rc::adopt<::datamunge::geometry::Circle>(std::make_unique<::datamunge::geometry::Circle>(), &resolve_k_circle));
+    });
+}
+// bool datamunge::geometry::EnclosingCircleEvent::contained (read)
+extern "C" int dm_enclosing_circle_event_contained_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::EnclosingCircleEvent::contained", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::geometry::EnclosingCircleEvent>(self_id, class_k_enclosing_circle_event, "DM-ENCLOSING-CIRCLE-EVENT-CONTAINED-SELF");
+rc::store<std::uint8_t>((record + 8), (self.contained) ? 1 : 0);
+    });
+}
+// std::vector<std::size_t> datamunge::geometry::EnclosingCircleTrace::permutation (write)
+extern "C" int dm_enclosing_circle_trace_permutation_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::EnclosingCircleTrace::permutation", [&] {
+auto& self = rc::object<::datamunge::geometry::EnclosingCircleTrace>(rc::load<std::uint64_t>(record), class_k_enclosing_circle_trace, "DM-ENCLOSING-CIRCLE-TRACE-PERMUTATION-SELF");
+rc::assign(self.permutation, rc::object<std::vector<unsigned long>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_ulong, "DM-ENCLOSING-CIRCLE-TRACE-PERMUTATION-VALUE"), "DM-ENCLOSING-CIRCLE-TRACE-PERMUTATION-VALUE");
+    });
+}
+// SegmentContact datamunge::geometry::SegmentIntersectionRun::contact (write)
+extern "C" int dm_segment_intersection_run_contact_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::SegmentIntersectionRun::contact", [&] {
+auto& self = rc::object<::datamunge::geometry::SegmentIntersectionRun>(rc::load<std::uint64_t>(record), class_k_segment_intersection_run, "DM-SEGMENT-INTERSECTION-RUN-CONTACT-SELF");
+rc::assign(self.contact, enum_segment_contact(rc::load<std::int32_t>((record + 8)), "DM-SEGMENT-INTERSECTION-RUN-CONTACT-VALUE"), "DM-SEGMENT-INTERSECTION-RUN-CONTACT-VALUE");
+    });
+}
+// std::size_t datamunge::geometry::PolygonEarCandidate::ring_size (read)
+extern "C" int dm_polygon_ear_candidate_ring_size_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::PolygonEarCandidate::ring_size", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::geometry::PolygonEarCandidate>(self_id, class_k_polygon_ear_candidate, "DM-POLYGON-EAR-CANDIDATE-RING-SIZE-SELF");
+rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.ring_size));
+    });
+}
+// Triangle datamunge::geometry::PolygonEarClip::triangle (write)
+extern "C" int dm_polygon_ear_clip_triangle_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::PolygonEarClip::triangle", [&] {
+auto& self = rc::object<::datamunge::geometry::PolygonEarClip>(rc::load<std::uint64_t>(record), class_k_polygon_ear_clip, "DM-POLYGON-EAR-CLIP-TRIANGLE-SELF");
+rc::assign(self.triangle, rc::object<::datamunge::geometry::Triangle>(rc::load<std::uint64_t>((record + 8)), class_k_triangle, "DM-POLYGON-EAR-CLIP-TRIANGLE-VALUE"), "DM-POLYGON-EAR-CLIP-TRIANGLE-VALUE");
+    });
+}
+// std::size_t datamunge::geometry::PolygonTriangulationRun::candidates (write)
+extern "C" int dm_polygon_triangulation_run_candidates_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::PolygonTriangulationRun::candidates", [&] {
+auto& self = rc::object<::datamunge::geometry::PolygonTriangulationRun>(rc::load<std::uint64_t>(record), class_k_polygon_triangulation_run, "DM-POLYGON-TRIANGULATION-RUN-CANDIDATES-SELF");
+rc::assign(self.candidates, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-POLYGON-TRIANGULATION-RUN-CANDIDATES-VALUE"), "DM-POLYGON-TRIANGULATION-RUN-CANDIDATES-VALUE");
+    });
+}
+// Point2D datamunge::geometry::DiameterResult::b (write)
+extern "C" int dm_diameter_result_b_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::DiameterResult::b", [&] {
+auto& self = rc::object<::datamunge::geometry::DiameterResult>(rc::load<std::uint64_t>(record), class_k_diameter_result, "DM-DIAMETER-RESULT-B-SELF");
+rc::assign(self.b, rc::object<::datamunge::geometry::Point2D>(rc::load<std::uint64_t>((record + 8)), class_k_point2d, "DM-DIAMETER-RESULT-B-VALUE"), "DM-DIAMETER-RESULT-B-VALUE");
+    });
+}
+// std::size_t datamunge::geometry::CaliperEvent::second (read)
+extern "C" int dm_caliper_event_second_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::CaliperEvent::second", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::geometry::CaliperEvent>(self_id, class_k_caliper_event, "DM-CALIPER-EVENT-SECOND-SELF");
+rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.second));
+    });
+}
+// std::vector<Point2D> datamunge::geometry::DiameterRun::hull (write)
+extern "C" int dm_diameter_run_hull_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::DiameterRun::hull", [&] {
+auto& self = rc::object<::datamunge::geometry::DiameterRun>(rc::load<std::uint64_t>(record), class_k_diameter_run, "DM-DIAMETER-RUN-HULL-SELF");
+rc::assign(self.hull, rc::object<std::vector<datamunge::geometry::Point2D>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_point2d, "DM-DIAMETER-RUN-HULL-VALUE"), "DM-DIAMETER-RUN-HULL-VALUE");
+    });
+}
+// datamunge::LinalgMatrix::transpose() const -> LinalgMatrix
+extern "C" int dm_linalg_matrix_transpose(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::LinalgMatrix::transpose", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::LinalgMatrix>(self_id, class_k_linalg_matrix, "DM-LINALG-MATRIX-TRANSPOSE-SELF");
+rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::LinalgMatrix>(std::make_unique<::datamunge::LinalgMatrix>(self.transpose()), &resolve_k_linalg_matrix));
+    });
+}
+// double datamunge::ode::ODEOptions::step_size (write)
+extern "C" int dm_ode_options_step_size_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::ode::ODEOptions::step_size", [&] {
+auto& self = rc::object<::datamunge::ode::ODEOptions>(rc::load<std::uint64_t>(record), class_k_ode_options, "DM-ODE-OPTIONS-STEP-SIZE-SELF");
+rc::assign(self.step_size, static_cast<double>(rc::load<double>((record + 8))), "DM-ODE-OPTIONS-STEP-SIZE-VALUE");
+    });
+}
+// std::size_t datamunge::ode::ODEExecutionLimits::max_solution_entries (read)
+extern "C" int dm_ode_execution_limits_max_solution_entries_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::ode::ODEExecutionLimits::max_solution_entries", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::ode::ODEExecutionLimits>(self_id, class_k_ode_execution_limits, "DM-ODE-EXECUTION-LIMITS-MAX-SOLUTION-ENTRIES-SELF");
+rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.max_solution_entries));
+    });
+}
+// std::vector<double> datamunge::ode::ODEEvaluation::derivative (read)
+extern "C" int dm_ode_evaluation_derivative_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::ode::ODEEvaluation::derivative", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::ode::ODEEvaluation>(self_id, class_k_ode_evaluation, "DM-ODE-EVALUATION-DERIVATIVE-SELF");
+rc::store<std::uint64_t>((record + 8), rc::borrow<std::vector<double>>(&(self.derivative), &resolve_v_vector_double, rc::keep_of(self_id)));
+    });
+}
+// bool datamunge::ode::ODEAttempt::error_widened (write)
+extern "C" int dm_ode_attempt_error_widened_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::ode::ODEAttempt::error_widened", [&] {
+auto& self = rc::object<::datamunge::ode::ODEAttempt>(rc::load<std::uint64_t>(record), class_k_ode_attempt, "DM-ODE-ATTEMPT-ERROR-WIDENED-SELF");
+rc::assign(self.error_widened, rc::boolean(rc::load<std::uint8_t>((record + 8)), "DM-ODE-ATTEMPT-ERROR-WIDENED-VALUE"), "DM-ODE-ATTEMPT-ERROR-WIDENED-VALUE");
+    });
+}
+// ODESolution datamunge::ode::ODETrace::solution (read)
+extern "C" int dm_ode_trace_solution_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::ode::ODETrace::solution", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::ode::ODETrace>(self_id, class_k_ode_trace, "DM-ODE-TRACE-SOLUTION-SELF");
+rc::store<std::uint64_t>((record + 8), rc::borrow<::datamunge::ode::ODESolution>(&(self.solution), &resolve_k_ode_solution, rc::keep_of(self_id)));
+    });
+}
+// datamunge::optim::ACOROptions::ACOROptions() -> ACOR-OPTIONS handle
+extern "C" int dm_acor_options_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::ACOROptions::ACOROptions", [&] {
+rc::store<std::uint64_t>(record, rc::adopt<::datamunge::optim::ACOROptions>(std::make_unique<::datamunge::optim::ACOROptions>(), &resolve_k_acor_options));
+    });
+}
+// double datamunge::optim::ACOROptions::convergence_speed (write)
+extern "C" int dm_acor_options_convergence_speed_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::ACOROptions::convergence_speed", [&] {
+auto& self = rc::object<::datamunge::optim::ACOROptions>(rc::load<std::uint64_t>(record), class_k_acor_options, "DM-ACOR-OPTIONS-CONVERGENCE-SPEED-SELF");
+rc::assign(self.convergence_speed, static_cast<double>(rc::load<double>((record + 8))), "DM-ACOR-OPTIONS-CONVERGENCE-SPEED-VALUE");
+    });
+}
+// double datamunge::optim::AdamOptions::step_size (read)
+extern "C" int dm_adam_options_step_size_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::AdamOptions::step_size", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::optim::AdamOptions>(self_id, class_k_adam_options, "DM-ADAM-OPTIONS-STEP-SIZE-SELF");
+rc::store<double>((record + 8), static_cast<double>(self.step_size));
+    });
+}
+// double datamunge::optim::AdamOptions::tolerance (read)
+extern "C" int dm_adam_options_tolerance_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::AdamOptions::tolerance", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::optim::AdamOptions>(self_id, class_k_adam_options, "DM-ADAM-OPTIONS-TOLERANCE-SELF");
+rc::store<double>((record + 8), static_cast<double>(self.tolerance));
+    });
+}
+// double datamunge::optim::AdaGradOptions::tolerance (read)
+extern "C" int dm_ada_grad_options_tolerance_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::AdaGradOptions::tolerance", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::optim::AdaGradOptions>(self_id, class_k_ada_grad_options, "DM-ADA-GRAD-OPTIONS-TOLERANCE-SELF");
+rc::store<double>((record + 8), static_cast<double>(self.tolerance));
+    });
+}
+// datamunge::optim::AdaDelta::optimize(DifferentiableFunction & function, std::vector<double> & coordinates) const -> double
+extern "C" int dm_ada_delta_optimize(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::AdaDelta::optimize", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::optim::AdaDelta>(self_id, class_k_ada_delta, "DM-ADA-DELTA-OPTIMIZE-SELF");
+auto& a0 = rc::object<::datamunge::optim::DifferentiableFunction>(rc::load<std::uint64_t>((record + 8)), class_k_differentiable_function, "DM-ADA-DELTA-OPTIMIZE-FUNCTION");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 16)), class_v_vector_double, "DM-ADA-DELTA-OPTIMIZE-COORDINATES");
+rc::store<double>((record + 24), static_cast<double>(self.optimize(a0, a1)));
     });
 }
 // double datamunge::optim::ArtificialBeeColonyOptions::tolerance (write)
@@ -4477,334 +5057,334 @@ auto& self = rc::object<::datamunge::optim::ArtificialBeeColonyOptions>(rc::load
 rc::assign(self.tolerance, static_cast<double>(rc::load<double>((record + 8))), "DM-ARTIFICIAL-BEE-COLONY-OPTIONS-TOLERANCE-VALUE");
     });
 }
-// double datamunge::optim::AugmentedLagrangianOptions::tolerance (read)
-extern "C" int dm_augmented_lagrangian_options_tolerance_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::AugmentedLagrangianOptions::tolerance", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::AugmentedLagrangianOptions>(self_id, class_k_augmented_lagrangian_options, "DM-AUGMENTED-LAGRANGIAN-OPTIONS-TOLERANCE-SELF");
-rc::store<double>((record + 8), static_cast<double>(self.tolerance));
+// std::size_t datamunge::optim::AugmentedLagrangianOptions::inner_iterations (write)
+extern "C" int dm_augmented_lagrangian_options_inner_iterations_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::AugmentedLagrangianOptions::inner_iterations", [&] {
+auto& self = rc::object<::datamunge::optim::AugmentedLagrangianOptions>(rc::load<std::uint64_t>(record), class_k_augmented_lagrangian_options, "DM-AUGMENTED-LAGRANGIAN-OPTIONS-INNER-ITERATIONS-SELF");
+rc::assign(self.inner_iterations, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-AUGMENTED-LAGRANGIAN-OPTIONS-INNER-ITERATIONS-VALUE"), "DM-AUGMENTED-LAGRANGIAN-OPTIONS-INNER-ITERATIONS-VALUE");
     });
 }
-// std::size_t datamunge::optim::BayesianOptimizationOptions::max_iterations (write)
-extern "C" int dm_bayesian_optimization_options_max_iterations_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::BayesianOptimizationOptions::max_iterations", [&] {
-auto& self = rc::object<::datamunge::optim::BayesianOptimizationOptions>(rc::load<std::uint64_t>(record), class_k_bayesian_optimization_options, "DM-BAYESIAN-OPTIMIZATION-OPTIONS-MAX-ITERATIONS-SELF");
-rc::assign(self.max_iterations, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-BAYESIAN-OPTIMIZATION-OPTIONS-MAX-ITERATIONS-VALUE"), "DM-BAYESIAN-OPTIMIZATION-OPTIONS-MAX-ITERATIONS-VALUE");
+// std::size_t datamunge::optim::BayesianOptimizationOptions::candidates (write)
+extern "C" int dm_bayesian_optimization_options_candidates_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::BayesianOptimizationOptions::candidates", [&] {
+auto& self = rc::object<::datamunge::optim::BayesianOptimizationOptions>(rc::load<std::uint64_t>(record), class_k_bayesian_optimization_options, "DM-BAYESIAN-OPTIMIZATION-OPTIONS-CANDIDATES-SELF");
+rc::assign(self.candidates, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-BAYESIAN-OPTIMIZATION-OPTIONS-CANDIDATES-VALUE"), "DM-BAYESIAN-OPTIMIZATION-OPTIONS-CANDIDATES-VALUE");
     });
 }
-// std::vector<double> datamunge::optim::BayesianOptimizationResult::acquisition_values (read)
-extern "C" int dm_bayesian_optimization_result_acquisition_values_get(unsigned char* record, unsigned char* status) {
+// std::vector<double> datamunge::optim::BayesianOptimizationResult::acquisition_values (write)
+extern "C" int dm_bayesian_optimization_result_acquisition_values_set(unsigned char* record, unsigned char* status) {
     return rc::guard(status, "datamunge::optim::BayesianOptimizationResult::acquisition_values", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::BayesianOptimizationResult>(self_id, class_k_bayesian_optimization_result, "DM-BAYESIAN-OPTIMIZATION-RESULT-ACQUISITION-VALUES-SELF");
-rc::store<std::uint64_t>((record + 8), rc::borrow<std::vector<double>>(&(self.acquisition_values), &resolve_v_vector_double, rc::keep_of(self_id)));
+auto& self = rc::object<::datamunge::optim::BayesianOptimizationResult>(rc::load<std::uint64_t>(record), class_k_bayesian_optimization_result, "DM-BAYESIAN-OPTIMIZATION-RESULT-ACQUISITION-VALUES-SELF");
+rc::assign(self.acquisition_values, rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_double, "DM-BYSN-OPTIMIZATION-RESULT-ACQUISITION-VALUES-VALUE"), "DM-BYSN-OPTIMIZATION-RESULT-ACQUISITION-VALUES-VALUE");
     });
 }
-// std::size_t datamunge::optim::ConjugateGradientOptions::max_line_search_trials (read)
-extern "C" int dm_conjugate_gradient_options_max_line_search_trials_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::ConjugateGradientOptions::max_line_search_trials", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::ConjugateGradientOptions>(self_id, class_k_conjugate_gradient_options, "DM-CONJUGATE-GRADIENT-OPTIONS-MAX-LINE-SEARCH-TRIALS-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.max_line_search_trials));
-    });
-}
-// std::uint64_t datamunge::optim::CMAESOptions::seed (read)
-extern "C" int dm_cmaes_options_seed_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::CMAESOptions::seed", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::CMAESOptions>(self_id, class_k_cmaes_options, "DM-CMAES-OPTIONS-SEED-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.seed));
-    });
-}
-// std::size_t datamunge::optim::CoordinateDescentOptions::max_line_search_trials (read)
-extern "C" int dm_coordinate_descent_options_max_line_search_trials_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::CoordinateDescentOptions::max_line_search_trials", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::CoordinateDescentOptions>(self_id, class_k_coordinate_descent_options, "DM-COORDINATE-DESCENT-OPTIONS-MAX-LINE-SEARCH-TRIALS-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.max_line_search_trials));
-    });
-}
-// std::size_t datamunge::optim::CrossEntropyMethodOptions::max_iterations (write)
-extern "C" int dm_cross_entropy_method_options_max_iterations_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::CrossEntropyMethodOptions::max_iterations", [&] {
-auto& self = rc::object<::datamunge::optim::CrossEntropyMethodOptions>(rc::load<std::uint64_t>(record), class_k_cross_entropy_method_options, "DM-CROSS-ENTROPY-METHOD-OPTIONS-MAX-ITERATIONS-SELF");
-rc::assign(self.max_iterations, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-CROSS-ENTROPY-METHOD-OPTIONS-MAX-ITERATIONS-VALUE"), "DM-CROSS-ENTROPY-METHOD-OPTIONS-MAX-ITERATIONS-VALUE");
-    });
-}
-// std::size_t datamunge::optim::CuckooSearchOptions::max_iterations (read)
-extern "C" int dm_cuckoo_search_options_max_iterations_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::CuckooSearchOptions::max_iterations", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::CuckooSearchOptions>(self_id, class_k_cuckoo_search_options, "DM-CUCKOO-SEARCH-OPTIONS-MAX-ITERATIONS-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.max_iterations));
-    });
-}
-// double datamunge::optim::DEOptions::differential_weight (read)
-extern "C" int dm_de_options_differential_weight_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::DEOptions::differential_weight", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::DEOptions>(self_id, class_k_de_options, "DM-DE-OPTIONS-DIFFERENTIAL-WEIGHT-SELF");
-rc::store<double>((record + 8), static_cast<double>(self.differential_weight));
-    });
-}
-// datamunge::optim::DifferentialEvolution::options() const -> const DEOptions &
-extern "C" int dm_differential_evolution_options(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::DifferentialEvolution::options", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::DifferentialEvolution>(self_id, class_k_differential_evolution, "DM-DIFFERENTIAL-EVOLUTION-OPTIONS-SELF");
-rc::store<std::uint64_t>((record + 8), rc::borrow<::datamunge::optim::DEOptions>(&(self.options()), &resolve_k_de_options, rc::keep_of(self_id)));
-    });
-}
-// std::uint64_t datamunge::optim::EstimationOfDistributionOptions::seed (read)
-extern "C" int dm_estimation_of_distribution_options_seed_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::EstimationOfDistributionOptions::seed", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::EstimationOfDistributionOptions>(self_id, class_k_estimation_of_distribution_options, "DM-ESTIMATION-OF-DISTRIBUTION-OPTIONS-SEED-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.seed));
-    });
-}
-// std::size_t datamunge::optim::EvolutionStrategyOptions::max_generations (write)
-extern "C" int dm_evolution_strategy_options_max_generations_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::EvolutionStrategyOptions::max_generations", [&] {
-auto& self = rc::object<::datamunge::optim::EvolutionStrategyOptions>(rc::load<std::uint64_t>(record), class_k_evolution_strategy_options, "DM-EVOLUTION-STRATEGY-OPTIONS-MAX-GENERATIONS-SELF");
-rc::assign(self.max_generations, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-EVOLUTION-STRATEGY-OPTIONS-MAX-GENERATIONS-VALUE"), "DM-EVOLUTION-STRATEGY-OPTIONS-MAX-GENERATIONS-VALUE");
-    });
-}
-// double datamunge::optim::FireflyAlgorithmOptions::randomization_step (write)
-extern "C" int dm_firefly_algorithm_options_randomization_step_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::FireflyAlgorithmOptions::randomization_step", [&] {
-auto& self = rc::object<::datamunge::optim::FireflyAlgorithmOptions>(rc::load<std::uint64_t>(record), class_k_firefly_algorithm_options, "DM-FIREFLY-ALGORITHM-OPTIONS-RANDOMIZATION-STEP-SELF");
-rc::assign(self.randomization_step, static_cast<double>(rc::load<double>((record + 8))), "DM-FIREFLY-ALGORITHM-OPTIONS-RANDOMIZATION-STEP-VALUE");
-    });
-}
-// std::size_t datamunge::optim::FISTAOptions::max_iterations (write)
-extern "C" int dm_fista_options_max_iterations_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::FISTAOptions::max_iterations", [&] {
-auto& self = rc::object<::datamunge::optim::FISTAOptions>(rc::load<std::uint64_t>(record), class_k_fista_options, "DM-FISTA-OPTIONS-MAX-ITERATIONS-SELF");
-rc::assign(self.max_iterations, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-FISTA-OPTIONS-MAX-ITERATIONS-VALUE"), "DM-FISTA-OPTIONS-MAX-ITERATIONS-VALUE");
-    });
-}
-// double datamunge::optim::GAOptions::mutation_std_dev (read)
-extern "C" int dm_ga_options_mutation_std_dev_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::GAOptions::mutation_std_dev", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::GAOptions>(self_id, class_k_ga_options, "DM-GA-OPTIONS-MUTATION-STD-DEV-SELF");
-rc::store<double>((record + 8), static_cast<double>(self.mutation_std_dev));
-    });
-}
-// double datamunge::optim::GAOptions::tolerance (write)
-extern "C" int dm_ga_options_tolerance_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::GAOptions::tolerance", [&] {
-auto& self = rc::object<::datamunge::optim::GAOptions>(rc::load<std::uint64_t>(record), class_k_ga_options, "DM-GA-OPTIONS-TOLERANCE-SELF");
-rc::assign(self.tolerance, static_cast<double>(rc::load<double>((record + 8))), "DM-GA-OPTIONS-TOLERANCE-VALUE");
-    });
-}
-// datamunge::optim::GradientDescent::GradientDescent(GradientDescentOptions options = {}) -> GRADIENT-DESCENT handle
-extern "C" int dm_gradient_descent_new(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::GradientDescent::GradientDescent", [&] {
+// datamunge::optim::ConjugateGradient::ConjugateGradient(ConjugateGradientOptions options = {}) -> CONJUGATE-GRADIENT handle
+extern "C" int dm_conjugate_gradient_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::ConjugateGradient::ConjugateGradient", [&] {
 switch (rc::given(record, 0, 1)) {
 case 0: {
-rc::store<std::uint64_t>((record + 12), rc::adopt<::datamunge::optim::GradientDescent>(std::make_unique<::datamunge::optim::GradientDescent>(), &resolve_k_gradient_descent));
+rc::store<std::uint64_t>((record + 12), rc::adopt<::datamunge::optim::ConjugateGradient>(std::make_unique<::datamunge::optim::ConjugateGradient>(), &resolve_k_conjugate_gradient));
 break;
 }
 case 1: {
-auto& a0 = rc::object<::datamunge::optim::GradientDescentOptions>(rc::load<std::uint64_t>((record + 4)), class_k_gradient_descent_options, "DM-GRADIENT-DESCENT-NEW-OPTIONS");
-rc::store<std::uint64_t>((record + 12), rc::adopt<::datamunge::optim::GradientDescent>(std::make_unique<::datamunge::optim::GradientDescent>(a0), &resolve_k_gradient_descent));
+auto& a0 = rc::object<::datamunge::optim::ConjugateGradientOptions>(rc::load<std::uint64_t>((record + 4)), class_k_conjugate_gradient_options, "DM-CONJUGATE-GRADIENT-NEW-OPTIONS");
+rc::store<std::uint64_t>((record + 12), rc::adopt<::datamunge::optim::ConjugateGradient>(std::make_unique<::datamunge::optim::ConjugateGradient>(a0), &resolve_k_conjugate_gradient));
 break;
 }
 default: break;
 }
     });
 }
-// std::size_t datamunge::optim::HarmonySearchOptions::population_size (write)
-extern "C" int dm_harmony_search_options_population_size_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::HarmonySearchOptions::population_size", [&] {
-auto& self = rc::object<::datamunge::optim::HarmonySearchOptions>(rc::load<std::uint64_t>(record), class_k_harmony_search_options, "DM-HARMONY-SEARCH-OPTIONS-POPULATION-SIZE-SELF");
-rc::assign(self.population_size, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-HARMONY-SEARCH-OPTIONS-POPULATION-SIZE-VALUE"), "DM-HARMONY-SEARCH-OPTIONS-POPULATION-SIZE-VALUE");
-    });
-}
-// datamunge::optim::InteriorPointOptions::InteriorPointOptions() -> INTERIOR-POINT-OPTIONS handle
-extern "C" int dm_interior_point_options_new(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::InteriorPointOptions::InteriorPointOptions", [&] {
-rc::store<std::uint64_t>(record, rc::adopt<::datamunge::optim::InteriorPointOptions>(std::make_unique<::datamunge::optim::InteriorPointOptions>(), &resolve_k_interior_point_options));
-    });
-}
-// datamunge::optim::InteriorPoint::options() const -> const InteriorPointOptions &
-extern "C" int dm_interior_point_options(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::InteriorPoint::options", [&] {
+// double datamunge::optim::CoordinateDescentOptions::armijo_c1 (read)
+extern "C" int dm_coordinate_descent_options_armijo_c1_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::CoordinateDescentOptions::armijo_c1", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::InteriorPoint>(self_id, class_k_interior_point, "DM-INTERIOR-POINT-OPTIONS-SELF");
-rc::store<std::uint64_t>((record + 8), rc::borrow<::datamunge::optim::InteriorPointOptions>(&(self.options()), &resolve_k_interior_point_options, rc::keep_of(self_id)));
+auto& self = rc::object<::datamunge::optim::CoordinateDescentOptions>(self_id, class_k_coordinate_descent_options, "DM-COORDINATE-DESCENT-OPTIONS-ARMIJO-C1-SELF");
+rc::store<double>((record + 8), static_cast<double>(self.armijo_c1));
     });
 }
-// datamunge::optim::LBFGS::optimize(DifferentiableFunction & function, std::vector<double> & coordinates) const -> double
-extern "C" int dm_lbfgs_optimize(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::LBFGS::optimize", [&] {
+// double datamunge::optim::CrossEntropyMethodOptions::elite_ratio (write)
+extern "C" int dm_cross_entropy_method_options_elite_ratio_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::CrossEntropyMethodOptions::elite_ratio", [&] {
+auto& self = rc::object<::datamunge::optim::CrossEntropyMethodOptions>(rc::load<std::uint64_t>(record), class_k_cross_entropy_method_options, "DM-CROSS-ENTROPY-METHOD-OPTIONS-ELITE-RATIO-SELF");
+rc::assign(self.elite_ratio, static_cast<double>(rc::load<double>((record + 8))), "DM-CROSS-ENTROPY-METHOD-OPTIONS-ELITE-RATIO-VALUE");
+    });
+}
+// std::size_t datamunge::optim::CuckooSearchOptions::population_size (read)
+extern "C" int dm_cuckoo_search_options_population_size_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::CuckooSearchOptions::population_size", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::LBFGS>(self_id, class_k_lbfgs, "DM-LBFGS-OPTIMIZE-SELF");
-auto& a0 = rc::object<::datamunge::optim::DifferentiableFunction>(rc::load<std::uint64_t>((record + 8)), class_k_differentiable_function, "DM-LBFGS-OPTIMIZE-FUNCTION");
-auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 16)), class_v_vector_double, "DM-LBFGS-OPTIMIZE-COORDINATES");
-rc::store<double>((record + 24), static_cast<double>(self.optimize(a0, a1)));
+auto& self = rc::object<::datamunge::optim::CuckooSearchOptions>(self_id, class_k_cuckoo_search_options, "DM-CUCKOO-SEARCH-OPTIONS-POPULATION-SIZE-SELF");
+rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.population_size));
     });
 }
-// double datamunge::optim::NelderMeadOptions::tolerance (write)
-extern "C" int dm_nelder_mead_options_tolerance_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::NelderMeadOptions::tolerance", [&] {
-auto& self = rc::object<::datamunge::optim::NelderMeadOptions>(rc::load<std::uint64_t>(record), class_k_nelder_mead_options, "DM-NELDER-MEAD-OPTIONS-TOLERANCE-SELF");
-rc::assign(self.tolerance, static_cast<double>(rc::load<double>((record + 8))), "DM-NELDER-MEAD-OPTIONS-TOLERANCE-VALUE");
+// std::uint64_t datamunge::optim::CuckooSearchOptions::seed (write)
+extern "C" int dm_cuckoo_search_options_seed_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::CuckooSearchOptions::seed", [&] {
+auto& self = rc::object<::datamunge::optim::CuckooSearchOptions>(rc::load<std::uint64_t>(record), class_k_cuckoo_search_options, "DM-CUCKOO-SEARCH-OPTIONS-SEED-SELF");
+rc::assign(self.seed, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-CUCKOO-SEARCH-OPTIONS-SEED-VALUE"), "DM-CUCKOO-SEARCH-OPTIONS-SEED-VALUE");
     });
 }
-// datamunge::optim::NesterovAcceleratedGradient::options() const -> const NesterovAcceleratedGradientOptions &
-extern "C" int dm_nesterov_accelerated_gradient_options(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::NesterovAcceleratedGradient::options", [&] {
+// double datamunge::optim::DEOptions::tolerance (read)
+extern "C" int dm_de_options_tolerance_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::DEOptions::tolerance", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::NesterovAcceleratedGradient>(self_id, class_k_nesterov_accelerated_gradient, "DM-NESTEROV-ACCELERATED-GRADIENT-OPTIONS-SELF");
-rc::store<std::uint64_t>((record + 8), rc::borrow<::datamunge::optim::NesterovAcceleratedGradientOptions>(&(self.options()), &resolve_k_nesterov_accelerated_gradient_options, rc::keep_of(self_id)));
-    });
-}
-// datamunge::optim::Nadam::optimize(DifferentiableFunction & function, std::vector<double> & coordinates) const -> double
-extern "C" int dm_nadam_optimize(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::Nadam::optimize", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::Nadam>(self_id, class_k_nadam, "DM-NADAM-OPTIMIZE-SELF");
-auto& a0 = rc::object<::datamunge::optim::DifferentiableFunction>(rc::load<std::uint64_t>((record + 8)), class_k_differentiable_function, "DM-NADAM-OPTIMIZE-FUNCTION");
-auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 16)), class_v_vector_double, "DM-NADAM-OPTIMIZE-COORDINATES");
-rc::store<double>((record + 24), static_cast<double>(self.optimize(a0, a1)));
-    });
-}
-// std::uint64_t datamunge::optim::ParallelTemperingOptions::seed (write)
-extern "C" int dm_parallel_tempering_options_seed_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::ParallelTemperingOptions::seed", [&] {
-auto& self = rc::object<::datamunge::optim::ParallelTemperingOptions>(rc::load<std::uint64_t>(record), class_k_parallel_tempering_options, "DM-PARALLEL-TEMPERING-OPTIONS-SEED-SELF");
-rc::assign(self.seed, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-PARALLEL-TEMPERING-OPTIONS-SEED-VALUE"), "DM-PARALLEL-TEMPERING-OPTIONS-SEED-VALUE");
-    });
-}
-// std::string datamunge::optim::PSOOptions::topology (write)
-extern "C" int dm_pso_options_topology_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::PSOOptions::topology", [&] {
-auto& self = rc::object<::datamunge::optim::PSOOptions>(rc::load<std::uint64_t>(record), class_k_pso_options, "DM-PSO-OPTIONS-TOPOLOGY-SELF");
-rc::assign(self.topology, rc::text((record + 8), 256, (record + 8) + 256, "DM-PSO-OPTIONS-TOPOLOGY-VALUE"), "DM-PSO-OPTIONS-TOPOLOGY-VALUE");
-    });
-}
-// double datamunge::optim::ProximalGradientOptions::step_size (write)
-extern "C" int dm_proximal_gradient_options_step_size_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::ProximalGradientOptions::step_size", [&] {
-auto& self = rc::object<::datamunge::optim::ProximalGradientOptions>(rc::load<std::uint64_t>(record), class_k_proximal_gradient_options, "DM-PROXIMAL-GRADIENT-OPTIONS-STEP-SIZE-SELF");
-rc::assign(self.step_size, static_cast<double>(rc::load<double>((record + 8))), "DM-PROXIMAL-GRADIENT-OPTIONS-STEP-SIZE-VALUE");
-    });
-}
-// std::size_t datamunge::optim::RandomizedBlockCoordinateDescentOptions::max_iterations (write)
-extern "C" int dm_rndmzd_blck_crdnt_descent_options_max_iterations_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::RandomizedBlockCoordinateDescentOptions::max_iterations", [&] {
-auto& self = rc::object<::datamunge::optim::RandomizedBlockCoordinateDescentOptions>(rc::load<std::uint64_t>(record), class_k_randomized_block_coordinate_descent_options, "DM-RNDMZD-BLCK-CRDNT-DESCENT-OPTIONS-MAX-ITERATIONS-SELF");
-rc::assign(self.max_iterations, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-RNDMZD-BLCK-CRDNT-DSCNT-OPTIONS-MAX-ITERATIONS-VALUE"), "DM-RNDMZD-BLCK-CRDNT-DSCNT-OPTIONS-MAX-ITERATIONS-VALUE");
-    });
-}
-// double datamunge::optim::RMSPropOptions::decay_rate (write)
-extern "C" int dm_rms_prop_options_decay_rate_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::RMSPropOptions::decay_rate", [&] {
-auto& self = rc::object<::datamunge::optim::RMSPropOptions>(rc::load<std::uint64_t>(record), class_k_rms_prop_options, "DM-RMS-PROP-OPTIONS-DECAY-RATE-SELF");
-rc::assign(self.decay_rate, static_cast<double>(rc::load<double>((record + 8))), "DM-RMS-PROP-OPTIONS-DECAY-RATE-VALUE");
-    });
-}
-// double datamunge::optim::SurrogatePrediction::sd (read)
-extern "C" int dm_surrogate_prediction_sd_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::SurrogatePrediction::sd", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::SurrogatePrediction>(self_id, class_k_surrogate_prediction, "DM-SURROGATE-PREDICTION-SD-SELF");
-rc::store<double>((record + 8), static_cast<double>(self.sd));
-    });
-}
-// bool datamunge::optim::GaussianProcessSurrogateOptions::fit_noise (read)
-extern "C" int dm_gaussian_process_surrogate_options_fit_noise_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::GaussianProcessSurrogateOptions::fit_noise", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::GaussianProcessSurrogateOptions>(self_id, class_k_gaussian_process_surrogate_options, "DM-GAUSSIAN-PROCESS-SURROGATE-OPTIONS-FIT-NOISE-SELF");
-rc::store<std::uint8_t>((record + 8), (self.fit_noise) ? 1 : 0);
-    });
-}
-// datamunge::optim::RBFGaussianProcessSurrogate::RBFGaussianProcessSurrogate(double length_scale = 1.0, double noise = 9.9999999999999995E-7) -> RBF-GAUSSIAN-PROCESS-SURROGATE handle with COBOL overrides
-extern "C" int dm_rbf_gaussian_process_surrogate_extend_double_double(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::RBFGaussianProcessSurrogate::RBFGaussianProcessSurrogate (COBOL subclass)", [&] {
-void* programs[2] = {rc::program_of(record), rc::program_of((record + 8))};
-std::unique_ptr<director_k_rbf_gaussian_process_surrogate> object;
-switch (rc::given((record + 16), 0, 2)) {
-case 0: {
-object = std::make_unique<director_k_rbf_gaussian_process_surrogate>();
-break;
-}
-case 1: {
-auto a0 = static_cast<double>(rc::load<double>((record + 20)));
-object = std::make_unique<director_k_rbf_gaussian_process_surrogate>(std::move(a0));
-break;
-}
-case 2: {
-auto a0 = static_cast<double>(rc::load<double>((record + 20)));
-auto a1 = static_cast<double>(rc::load<double>((record + 28)));
-object = std::make_unique<director_k_rbf_gaussian_process_surrogate>(std::move(a0), std::move(a1));
-break;
-}
-default: break;
-}
-for (std::size_t j = 0; j < 2; ++j) object->programs[j] = programs[j];
-auto* raw = object.get();
-const auto id = rc::adopt<::datamunge::optim::RBFGaussianProcessSurrogate>(std::unique_ptr<::datamunge::optim::RBFGaussianProcessSurrogate>(object.release()), &resolve_k_rbf_gaussian_process_surrogate);
-raw->self_id = id;
-rc::store<std::uint64_t>((record + 36), id);
-    });
-}
-// double datamunge::optim::SimulatedAnnealingOptions::initial_temperature (read)
-extern "C" int dm_simulated_annealing_options_initial_temperature_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::SimulatedAnnealingOptions::initial_temperature", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::SimulatedAnnealingOptions>(self_id, class_k_simulated_annealing_options, "DM-SIMULATED-ANNEALING-OPTIONS-INITIAL-TEMPERATURE-SELF");
-rc::store<double>((record + 8), static_cast<double>(self.initial_temperature));
-    });
-}
-// std::size_t datamunge::optim::SAGAOptions::max_iterations (read)
-extern "C" int dm_saga_options_max_iterations_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::SAGAOptions::max_iterations", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::SAGAOptions>(self_id, class_k_saga_options, "DM-SAGA-OPTIONS-MAX-ITERATIONS-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.max_iterations));
-    });
-}
-// std::size_t datamunge::optim::SVRGOptions::max_epochs (write)
-extern "C" int dm_svrg_options_max_epochs_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::SVRGOptions::max_epochs", [&] {
-auto& self = rc::object<::datamunge::optim::SVRGOptions>(rc::load<std::uint64_t>(record), class_k_svrg_options, "DM-SVRG-OPTIONS-MAX-EPOCHS-SELF");
-rc::assign(self.max_epochs, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-SVRG-OPTIONS-MAX-EPOCHS-VALUE"), "DM-SVRG-OPTIONS-MAX-EPOCHS-VALUE");
-    });
-}
-// datamunge::optim::SQP::optimize(EqualityConstrainedFunction & function, std::vector<double> & coordinates) const -> double
-extern "C" int dm_sqp_optimize(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::SQP::optimize", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::SQP>(self_id, class_k_sqp, "DM-SQP-OPTIMIZE-SELF");
-auto& a0 = rc::object<::datamunge::optim::EqualityConstrainedFunction>(rc::load<std::uint64_t>((record + 8)), class_k_equality_constrained_function, "DM-SQP-OPTIMIZE-FUNCTION");
-auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 16)), class_v_vector_double, "DM-SQP-OPTIMIZE-COORDINATES");
-rc::store<double>((record + 24), static_cast<double>(self.optimize(a0, a1)));
-    });
-}
-// double datamunge::optim::WhaleOptimizationOptions::tolerance (read)
-extern "C" int dm_whale_optimization_options_tolerance_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::optim::WhaleOptimizationOptions::tolerance", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::optim::WhaleOptimizationOptions>(self_id, class_k_whale_optimization_options, "DM-WHALE-OPTIMIZATION-OPTIONS-TOLERANCE-SELF");
+auto& self = rc::object<::datamunge::optim::DEOptions>(self_id, class_k_de_options, "DM-DE-OPTIONS-TOLERANCE-SELF");
 rc::store<double>((record + 8), static_cast<double>(self.tolerance));
     });
 }
-// datamunge::stats::HypothesisTestResult::HypothesisTestResult() -> HYPOTHESIS-TEST-RESULT handle
-extern "C" int dm_hypothesis_test_result_new(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::stats::HypothesisTestResult::HypothesisTestResult", [&] {
-rc::store<std::uint64_t>(record, rc::adopt<::datamunge::stats::HypothesisTestResult>(std::make_unique<::datamunge::stats::HypothesisTestResult>(), &resolve_k_hypothesis_test_result));
+// double datamunge::optim::EstimationOfDistributionOptions::covariance_regularization (read)
+extern "C" int dm_estmtn_of_dstrbtn_options_covariance_regularization_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::EstimationOfDistributionOptions::covariance_regularization", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::optim::EstimationOfDistributionOptions>(self_id, class_k_estimation_of_distribution_options, "DM-ESTMTN-OF-DSTRBTN-OPTIONS-COVARIANCE-REGULARIZATION-SELF");
+rc::store<double>((record + 8), static_cast<double>(self.covariance_regularization));
     });
 }
-// double datamunge::stats::HypothesisTestResult::estimate1 (write)
-extern "C" int dm_hypothesis_test_result_estimate1_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::stats::HypothesisTestResult::estimate1", [&] {
-auto& self = rc::object<::datamunge::stats::HypothesisTestResult>(rc::load<std::uint64_t>(record), class_k_hypothesis_test_result, "DM-HYPOTHESIS-TEST-RESULT-ESTIMATE1-SELF");
-rc::assign(self.estimate1, static_cast<double>(rc::load<double>((record + 8))), "DM-HYPOTHESIS-TEST-RESULT-ESTIMATE1-VALUE");
+// std::size_t datamunge::optim::EvolutionStrategyOptions::offspring_size (write)
+extern "C" int dm_evolution_strategy_options_offspring_size_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::EvolutionStrategyOptions::offspring_size", [&] {
+auto& self = rc::object<::datamunge::optim::EvolutionStrategyOptions>(rc::load<std::uint64_t>(record), class_k_evolution_strategy_options, "DM-EVOLUTION-STRATEGY-OPTIONS-OFFSPRING-SIZE-SELF");
+rc::assign(self.offspring_size, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-EVOLUTION-STRATEGY-OPTIONS-OFFSPRING-SIZE-VALUE"), "DM-EVOLUTION-STRATEGY-OPTIONS-OFFSPRING-SIZE-VALUE");
+    });
+}
+// std::size_t datamunge::optim::FireflyAlgorithmOptions::population_size (write)
+extern "C" int dm_firefly_algorithm_options_population_size_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::FireflyAlgorithmOptions::population_size", [&] {
+auto& self = rc::object<::datamunge::optim::FireflyAlgorithmOptions>(rc::load<std::uint64_t>(record), class_k_firefly_algorithm_options, "DM-FIREFLY-ALGORITHM-OPTIONS-POPULATION-SIZE-SELF");
+rc::assign(self.population_size, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-FIREFLY-ALGORITHM-OPTIONS-POPULATION-SIZE-VALUE"), "DM-FIREFLY-ALGORITHM-OPTIONS-POPULATION-SIZE-VALUE");
+    });
+}
+// datamunge::optim::FireflyAlgorithm::FireflyAlgorithm(FireflyAlgorithmOptions options = {}) -> FIREFLY-ALGORITHM handle
+extern "C" int dm_firefly_algorithm_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::FireflyAlgorithm::FireflyAlgorithm", [&] {
+switch (rc::given(record, 0, 1)) {
+case 0: {
+rc::store<std::uint64_t>((record + 12), rc::adopt<::datamunge::optim::FireflyAlgorithm>(std::make_unique<::datamunge::optim::FireflyAlgorithm>(), &resolve_k_firefly_algorithm));
+break;
+}
+case 1: {
+auto& a0 = rc::object<::datamunge::optim::FireflyAlgorithmOptions>(rc::load<std::uint64_t>((record + 4)), class_k_firefly_algorithm_options, "DM-FIREFLY-ALGORITHM-NEW-OPTIONS");
+rc::store<std::uint64_t>((record + 12), rc::adopt<::datamunge::optim::FireflyAlgorithm>(std::make_unique<::datamunge::optim::FireflyAlgorithm>(a0), &resolve_k_firefly_algorithm));
+break;
+}
+default: break;
+}
+    });
+}
+// std::string datamunge::optim::GAOptions::selection_strategy (write)
+extern "C" int dm_ga_options_selection_strategy_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::GAOptions::selection_strategy", [&] {
+auto& self = rc::object<::datamunge::optim::GAOptions>(rc::load<std::uint64_t>(record), class_k_ga_options, "DM-GA-OPTIONS-SELECTION-STRATEGY-SELF");
+rc::assign(self.selection_strategy, rc::text((record + 8), 256, (record + 8) + 256, "DM-GA-OPTIONS-SELECTION-STRATEGY-VALUE"), "DM-GA-OPTIONS-SELECTION-STRATEGY-VALUE");
+    });
+}
+// datamunge::optim::GeneticAlgorithm::optimize(ArbitraryFunction & function, std::vector<double> & coordinates, const std::vector<double> & lower_bound, const std::vector<double> & upper_bound) const -> double
+extern "C" int dm_genetic_algorithm_optimize(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::GeneticAlgorithm::optimize", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::optim::GeneticAlgorithm>(self_id, class_k_genetic_algorithm, "DM-GENETIC-ALGORITHM-OPTIMIZE-SELF");
+auto& a0 = rc::object<::datamunge::optim::ArbitraryFunction>(rc::load<std::uint64_t>((record + 8)), class_k_arbitrary_function, "DM-GENETIC-ALGORITHM-OPTIMIZE-FUNCTION");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 16)), class_v_vector_double, "DM-GENETIC-ALGORITHM-OPTIMIZE-COORDINATES");
+auto& a2 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 24)), class_v_vector_double, "DM-GENETIC-ALGORITHM-OPTIMIZE-LOWER-BOUND");
+auto& a3 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 32)), class_v_vector_double, "DM-GENETIC-ALGORITHM-OPTIMIZE-UPPER-BOUND");
+rc::store<double>((record + 40), static_cast<double>(self.optimize(a0, a1, a2, a3)));
+    });
+}
+// double datamunge::optim::HarmonySearchOptions::bandwidth_fraction (write)
+extern "C" int dm_harmony_search_options_bandwidth_fraction_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::HarmonySearchOptions::bandwidth_fraction", [&] {
+auto& self = rc::object<::datamunge::optim::HarmonySearchOptions>(rc::load<std::uint64_t>(record), class_k_harmony_search_options, "DM-HARMONY-SEARCH-OPTIONS-BANDWIDTH-FRACTION-SELF");
+rc::assign(self.bandwidth_fraction, static_cast<double>(rc::load<double>((record + 8))), "DM-HARMONY-SEARCH-OPTIONS-BANDWIDTH-FRACTION-VALUE");
+    });
+}
+// std::size_t datamunge::optim::InteriorPointOptions::max_outer_iterations (read)
+extern "C" int dm_interior_point_options_max_outer_iterations_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::InteriorPointOptions::max_outer_iterations", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::optim::InteriorPointOptions>(self_id, class_k_interior_point_options, "DM-INTERIOR-POINT-OPTIONS-MAX-OUTER-ITERATIONS-SELF");
+rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.max_outer_iterations));
+    });
+}
+// std::vector<double> datamunge::optim::GaussianJointPosterior::covariance (write)
+extern "C" int dm_gaussian_joint_posterior_covariance_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::GaussianJointPosterior::covariance", [&] {
+auto& self = rc::object<::datamunge::optim::GaussianJointPosterior>(rc::load<std::uint64_t>(record), class_k_gaussian_joint_posterior, "DM-GAUSSIAN-JOINT-POSTERIOR-COVARIANCE-SELF");
+rc::assign(self.covariance, rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_double, "DM-GAUSSIAN-JOINT-POSTERIOR-COVARIANCE-VALUE"), "DM-GAUSSIAN-JOINT-POSTERIOR-COVARIANCE-VALUE");
+    });
+}
+// double datamunge::optim::GaussianProcessSurrogateOptions::max_length_scale (write)
+extern "C" int dm_gaussian_process_surrogate_options_max_length_scale_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::GaussianProcessSurrogateOptions::max_length_scale", [&] {
+auto& self = rc::object<::datamunge::optim::GaussianProcessSurrogateOptions>(rc::load<std::uint64_t>(record), class_k_gaussian_process_surrogate_options, "DM-GAUSSIAN-PROCESS-SURROGATE-OPTIONS-MAX-LENGTH-SCALE-SELF");
+rc::assign(self.max_length_scale, static_cast<double>(rc::load<double>((record + 8))), "DM-GSSN-PRCSS-SURROGATE-OPTIONS-MAX-LENGTH-SCALE-VALUE");
+    });
+}
+// datamunge::optim::RBFGaussianProcessSurrogate::predict(const std::vector<double> & point) const -> SurrogatePrediction
+extern "C" int dm_rbf_gaussian_process_surrogate_predict(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::RBFGaussianProcessSurrogate::predict", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::optim::RBFGaussianProcessSurrogate>(self_id, class_k_rbf_gaussian_process_surrogate, "DM-RBF-GAUSSIAN-PROCESS-SURROGATE-PREDICT-SELF");
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_double, "DM-RBF-GAUSSIAN-PROCESS-SURROGATE-PREDICT-POINT");
+rc::store<std::uint64_t>((record + 16), rc::adopt<::datamunge::optim::SurrogatePrediction>(std::make_unique<::datamunge::optim::SurrogatePrediction>(self.predict(a0)), &resolve_k_surrogate_prediction));
+    });
+}
+// std::size_t datamunge::optim::LBFGSOptions::history_size (read)
+extern "C" int dm_lbfgs_options_history_size_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::LBFGSOptions::history_size", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::optim::LBFGSOptions>(self_id, class_k_lbfgs_options, "DM-LBFGS-OPTIONS-HISTORY-SIZE-SELF");
+rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.history_size));
+    });
+}
+// std::size_t datamunge::optim::LevenbergMarquardtOptions::max_iterations (write)
+extern "C" int dm_levenberg_marquardt_options_max_iterations_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::LevenbergMarquardtOptions::max_iterations", [&] {
+auto& self = rc::object<::datamunge::optim::LevenbergMarquardtOptions>(rc::load<std::uint64_t>(record), class_k_levenberg_marquardt_options, "DM-LEVENBERG-MARQUARDT-OPTIONS-MAX-ITERATIONS-SELF");
+rc::assign(self.max_iterations, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-LEVENBERG-MARQUARDT-OPTIONS-MAX-ITERATIONS-VALUE"), "DM-LEVENBERG-MARQUARDT-OPTIONS-MAX-ITERATIONS-VALUE");
+    });
+}
+// double datamunge::optim::NelderMeadOptions::tolerance (read)
+extern "C" int dm_nelder_mead_options_tolerance_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::NelderMeadOptions::tolerance", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::optim::NelderMeadOptions>(self_id, class_k_nelder_mead_options, "DM-NELDER-MEAD-OPTIONS-TOLERANCE-SELF");
+rc::store<double>((record + 8), static_cast<double>(self.tolerance));
+    });
+}
+// datamunge::optim::NesterovAcceleratedGradient::optimize(DifferentiableFunction & function, std::vector<double> & coordinates) const -> double
+extern "C" int dm_nesterov_accelerated_gradient_optimize(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::NesterovAcceleratedGradient::optimize", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::optim::NesterovAcceleratedGradient>(self_id, class_k_nesterov_accelerated_gradient, "DM-NESTEROV-ACCELERATED-GRADIENT-OPTIMIZE-SELF");
+auto& a0 = rc::object<::datamunge::optim::DifferentiableFunction>(rc::load<std::uint64_t>((record + 8)), class_k_differentiable_function, "DM-NESTEROV-ACCELERATED-GRADIENT-OPTIMIZE-FUNCTION");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 16)), class_v_vector_double, "DM-NESTEROV-ACCELERATED-GRADIENT-OPTIMIZE-COORDINATES");
+rc::store<double>((record + 24), static_cast<double>(self.optimize(a0, a1)));
+    });
+}
+// double datamunge::optim::NewtonOptions::damping (write)
+extern "C" int dm_newton_options_damping_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::NewtonOptions::damping", [&] {
+auto& self = rc::object<::datamunge::optim::NewtonOptions>(rc::load<std::uint64_t>(record), class_k_newton_options, "DM-NEWTON-OPTIONS-DAMPING-SELF");
+rc::assign(self.damping, static_cast<double>(rc::load<double>((record + 8))), "DM-NEWTON-OPTIONS-DAMPING-VALUE");
+    });
+}
+// std::size_t datamunge::optim::ParallelTemperingOptions::max_sweeps (read)
+extern "C" int dm_parallel_tempering_options_max_sweeps_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::ParallelTemperingOptions::max_sweeps", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::optim::ParallelTemperingOptions>(self_id, class_k_parallel_tempering_options, "DM-PARALLEL-TEMPERING-OPTIONS-MAX-SWEEPS-SELF");
+rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.max_sweeps));
+    });
+}
+// double datamunge::optim::PSOOptions::cognitive_coefficient (write)
+extern "C" int dm_pso_options_cognitive_coefficient_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::PSOOptions::cognitive_coefficient", [&] {
+auto& self = rc::object<::datamunge::optim::PSOOptions>(rc::load<std::uint64_t>(record), class_k_pso_options, "DM-PSO-OPTIONS-COGNITIVE-COEFFICIENT-SELF");
+rc::assign(self.cognitive_coefficient, static_cast<double>(rc::load<double>((record + 8))), "DM-PSO-OPTIONS-COGNITIVE-COEFFICIENT-VALUE");
+    });
+}
+// datamunge::optim::PSO::PSO(PSOOptions options = {}) -> PSO handle
+extern "C" int dm_pso_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::PSO::PSO", [&] {
+switch (rc::given(record, 0, 1)) {
+case 0: {
+rc::store<std::uint64_t>((record + 12), rc::adopt<::datamunge::optim::PSO>(std::make_unique<::datamunge::optim::PSO>(), &resolve_k_pso));
+break;
+}
+case 1: {
+auto& a0 = rc::object<::datamunge::optim::PSOOptions>(rc::load<std::uint64_t>((record + 4)), class_k_pso_options, "DM-PSO-NEW-OPTIONS");
+rc::store<std::uint64_t>((record + 12), rc::adopt<::datamunge::optim::PSO>(std::make_unique<::datamunge::optim::PSO>(a0), &resolve_k_pso));
+break;
+}
+default: break;
+}
+    });
+}
+// double datamunge::optim::RandomizedBlockCoordinateDescentOptions::tolerance (read)
+extern "C" int dm_rndmzd_block_coordinate_descent_options_tolerance_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::RandomizedBlockCoordinateDescentOptions::tolerance", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::optim::RandomizedBlockCoordinateDescentOptions>(self_id, class_k_randomized_block_coordinate_descent_options, "DM-RNDMZD-BLOCK-COORDINATE-DESCENT-OPTIONS-TOLERANCE-SELF");
+rc::store<double>((record + 8), static_cast<double>(self.tolerance));
+    });
+}
+// double datamunge::optim::RMSPropOptions::step_size (write)
+extern "C" int dm_rms_prop_options_step_size_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::RMSPropOptions::step_size", [&] {
+auto& self = rc::object<::datamunge::optim::RMSPropOptions>(rc::load<std::uint64_t>(record), class_k_rms_prop_options, "DM-RMS-PROP-OPTIONS-STEP-SIZE-SELF");
+rc::assign(self.step_size, static_cast<double>(rc::load<double>((record + 8))), "DM-RMS-PROP-OPTIONS-STEP-SIZE-VALUE");
+    });
+}
+// datamunge::optim::RMSProp::options() const -> const RMSPropOptions &
+extern "C" int dm_rms_prop_options(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::RMSProp::options", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::optim::RMSProp>(self_id, class_k_rms_prop, "DM-RMS-PROP-OPTIONS-SELF");
+rc::store<std::uint64_t>((record + 8), rc::borrow<::datamunge::optim::RMSPropOptions>(&(self.options()), &resolve_k_rms_prop_options, rc::keep_of(self_id)));
+    });
+}
+// datamunge::optim::SimulatedAnnealingOptions::SimulatedAnnealingOptions() -> SIMULATED-ANNEALING-OPTIONS handle
+extern "C" int dm_simulated_annealing_options_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::SimulatedAnnealingOptions::SimulatedAnnealingOptions", [&] {
+rc::store<std::uint64_t>(record, rc::adopt<::datamunge::optim::SimulatedAnnealingOptions>(std::make_unique<::datamunge::optim::SimulatedAnnealingOptions>(), &resolve_k_simulated_annealing_options));
+    });
+}
+// datamunge::optim::SAGAOptions::SAGAOptions() -> SAGA-OPTIONS handle
+extern "C" int dm_saga_options_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::SAGAOptions::SAGAOptions", [&] {
+rc::store<std::uint64_t>(record, rc::adopt<::datamunge::optim::SAGAOptions>(std::make_unique<::datamunge::optim::SAGAOptions>(), &resolve_k_saga_options));
+    });
+}
+// datamunge::optim::SAGA::optimize(DifferentiableSeparableFunction & function, std::vector<double> & coordinates) const -> double
+extern "C" int dm_saga_optimize(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::SAGA::optimize", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::optim::SAGA>(self_id, class_k_saga, "DM-SAGA-OPTIMIZE-SELF");
+auto& a0 = rc::object<::datamunge::optim::DifferentiableSeparableFunction>(rc::load<std::uint64_t>((record + 8)), class_k_differentiable_separable_function, "DM-SAGA-OPTIMIZE-FUNCTION");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 16)), class_v_vector_double, "DM-SAGA-OPTIMIZE-COORDINATES");
+rc::store<double>((record + 24), static_cast<double>(self.optimize(a0, a1)));
+    });
+}
+// std::size_t datamunge::optim::SQPOptions::max_iterations (write)
+extern "C" int dm_sqp_options_max_iterations_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::SQPOptions::max_iterations", [&] {
+auto& self = rc::object<::datamunge::optim::SQPOptions>(rc::load<std::uint64_t>(record), class_k_sqp_options, "DM-SQP-OPTIONS-MAX-ITERATIONS-SELF");
+rc::assign(self.max_iterations, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-SQP-OPTIONS-MAX-ITERATIONS-VALUE"), "DM-SQP-OPTIONS-MAX-ITERATIONS-VALUE");
+    });
+}
+// datamunge::optim::WhaleOptimizationOptions::WhaleOptimizationOptions() -> WHALE-OPTIMIZATION-OPTIONS handle
+extern "C" int dm_whale_optimization_options_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::WhaleOptimizationOptions::WhaleOptimizationOptions", [&] {
+rc::store<std::uint64_t>(record, rc::adopt<::datamunge::optim::WhaleOptimizationOptions>(std::make_unique<::datamunge::optim::WhaleOptimizationOptions>(), &resolve_k_whale_optimization_options));
+    });
+}
+// datamunge::optim::WhaleOptimization::options() const -> const WhaleOptimizationOptions &
+extern "C" int dm_whale_optimization_options(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::optim::WhaleOptimization::options", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::optim::WhaleOptimization>(self_id, class_k_whale_optimization, "DM-WHALE-OPTIMIZATION-OPTIONS-SELF");
+rc::store<std::uint64_t>((record + 8), rc::borrow<::datamunge::optim::WhaleOptimizationOptions>(&(self.options()), &resolve_k_whale_optimization_options, rc::keep_of(self_id)));
+    });
+}
+// double datamunge::stats::HypothesisTestResult::conf_int_lower (write)
+extern "C" int dm_hypothesis_test_result_conf_int_lower_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::stats::HypothesisTestResult::conf_int_lower", [&] {
+auto& self = rc::object<::datamunge::stats::HypothesisTestResult>(rc::load<std::uint64_t>(record), class_k_hypothesis_test_result, "DM-HYPOTHESIS-TEST-RESULT-CONF-INT-LOWER-SELF");
+rc::assign(self.conf_int_lower, static_cast<double>(rc::load<double>((record + 8))), "DM-HYPOTHESIS-TEST-RESULT-CONF-INT-LOWER-VALUE");
+    });
+}
+// datamunge::stats::GamesHowellComparison::GamesHowellComparison() -> GAMES-HOWELL-COMPARISON handle
+extern "C" int dm_games_howell_comparison_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::stats::GamesHowellComparison::GamesHowellComparison", [&] {
+rc::store<std::uint64_t>(record, rc::adopt<::datamunge::stats::GamesHowellComparison>(std::make_unique<::datamunge::stats::GamesHowellComparison>(), &resolve_k_games_howell_comparison));
+    });
+}
+// double datamunge::stats::GamesHowellComparison::p_adjusted (write)
+extern "C" int dm_games_howell_comparison_p_adjusted_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::stats::GamesHowellComparison::p_adjusted", [&] {
+auto& self = rc::object<::datamunge::stats::GamesHowellComparison>(rc::load<std::uint64_t>(record), class_k_games_howell_comparison, "DM-GAMES-HOWELL-COMPARISON-P-ADJUSTED-SELF");
+rc::assign(self.p_adjusted, static_cast<double>(rc::load<double>((record + 8))), "DM-GAMES-HOWELL-COMPARISON-P-ADJUSTED-VALUE");
     });
 }
 // std::size_t datamunge::stats::ARIMAOptions::p (write)
@@ -4821,20 +5401,19 @@ auto& self = rc::object<::datamunge::stats::ARIMAOptions>(rc::load<std::uint64_t
 rc::assign(self.de_population_size, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-ARIMA-OPTIONS-DE-POPULATION-SIZE-VALUE"), "DM-ARIMA-OPTIONS-DE-POPULATION-SIZE-VALUE");
     });
 }
-// datamunge::stats::ARIMA::log_likelihood() const -> double
-extern "C" int dm_arima_log_likelihood(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::stats::ARIMA::log_likelihood", [&] {
+// datamunge::stats::ARIMA::sigma2() const -> double
+extern "C" int dm_arima_sigma2(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::stats::ARIMA::sigma2", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::stats::ARIMA>(self_id, class_k_arima, "DM-ARIMA-LOG-LIKELIHOOD-SELF");
-rc::store<double>((record + 8), static_cast<double>(self.log_likelihood()));
+auto& self = rc::object<::datamunge::stats::ARIMA>(self_id, class_k_arima, "DM-ARIMA-SIGMA2-SELF");
+rc::store<double>((record + 8), static_cast<double>(self.sigma2()));
     });
 }
-// long long datamunge::stats::KendallTau::ties_y (read)
-extern "C" int dm_kendall_tau_ties_y_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::stats::KendallTau::ties_y", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::stats::KendallTau>(self_id, class_k_kendall_tau, "DM-KENDALL-TAU-TIES-Y-SELF");
-rc::store<std::int64_t>((record + 8), static_cast<std::int64_t>(self.ties_y));
+// long long datamunge::stats::KendallTau::discordant (write)
+extern "C" int dm_kendall_tau_discordant_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::stats::KendallTau::discordant", [&] {
+auto& self = rc::object<::datamunge::stats::KendallTau>(rc::load<std::uint64_t>(record), class_k_kendall_tau, "DM-KENDALL-TAU-DISCORDANT-SELF");
+rc::assign(self.discordant, rc::integer<long long>(rc::load<std::int64_t>((record + 8)), "DM-KENDALL-TAU-DISCORDANT-VALUE"), "DM-KENDALL-TAU-DISCORDANT-VALUE");
     });
 }
 // SeasonalType datamunge::stats::ExponentialSmoothingOptions::seasonal (write)
@@ -4852,1052 +5431,1059 @@ auto& self = rc::object<::datamunge::stats::ExponentialSmoothing>(self_id, class
 rc::store<std::uint64_t>((record + 8), rc::borrow<::datamunge::stats::ExponentialSmoothingOptions>(&(self.options()), &resolve_k_exponential_smoothing_options, rc::keep_of(self_id)));
     });
 }
-// datamunge::BSplineRegression::fitted() const -> Vector<>
-extern "C" int dm_b_spline_regression_fitted(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::BSplineRegression::fitted", [&] {
+// double datamunge::stats::ProportionDifferenceInterval::upper (read)
+extern "C" int dm_proportion_difference_interval_upper_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::stats::ProportionDifferenceInterval::upper", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::BSplineRegression>(self_id, class_k_b_spline_regression, "DM-B-SPLINE-REGRESSION-FITTED-SELF");
-rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(self.fitted()), &resolve_v_vector_double));
+auto& self = rc::object<::datamunge::stats::ProportionDifferenceInterval>(self_id, class_k_proportion_difference_interval, "DM-PROPORTION-DIFFERENCE-INTERVAL-UPPER-SELF");
+rc::store<double>((record + 8), static_cast<double>(self.upper));
     });
 }
-// datamunge::PSplineRegression::PSplineRegression(const Vector<> & x, const Vector<> & y, const Vector<> & knots, double lambda, std::size_t degree = 3, std::size_t penalty_order = 2) -> P-SPLINE-REGRESSION handle
-extern "C" int dm_p_spl_rgr_new_vct_dbl_vct_dbl_vctr_dbl_dbl_ulng_ulng(unsigned char* record, unsigned char* status) {
+// double datamunge::stats::PoissonRateInterval::lower (write)
+extern "C" int dm_poisson_rate_interval_lower_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::stats::PoissonRateInterval::lower", [&] {
+auto& self = rc::object<::datamunge::stats::PoissonRateInterval>(rc::load<std::uint64_t>(record), class_k_poisson_rate_interval, "DM-POISSON-RATE-INTERVAL-LOWER-SELF");
+rc::assign(self.lower, static_cast<double>(rc::load<double>((record + 8))), "DM-POISSON-RATE-INTERVAL-LOWER-VALUE");
+    });
+}
+// datamunge::PSplineRegression::PSplineRegression(const Vector<> & x, const Vector<> & y, std::size_t n_basis) -> P-SPLINE-REGRESSION handle
+extern "C" int dm_p_spline_regression_new(unsigned char* record, unsigned char* status) {
     return rc::guard(status, "datamunge::PSplineRegression::PSplineRegression", [&] {
-switch (rc::given(record, 4, 6)) {
-case 4: {
-auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 4)), class_v_vector_double, "DM-P-SPL-RGR-NEW-VCT-DBL-VCT-DBL-VCT-DBL-DBL-ULN-ULNG-X");
-auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-P-SPL-RGR-NEW-VCT-DBL-VCT-DBL-VCT-DBL-DBL-ULN-ULNG-Y");
-auto& a2 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 20)), class_v_vector_double, "DM-P-SPL-RGR-NEW-VCT-DBL-VCT-DBL-VCTR-DBL-DBL-ULN-SR9I8");
-auto a3 = static_cast<double>(rc::load<double>((record + 28)));
-rc::store<std::uint64_t>((record + 52), rc::adopt<::datamunge::PSplineRegression>(std::make_unique<::datamunge::PSplineRegression>(a0, a1, a2, std::move(a3)), &resolve_k_p_spline_regression));
-break;
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>(record), class_v_vector_double, "DM-P-SPLINE-REGRESSION-NEW-X");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_double, "DM-P-SPLINE-REGRESSION-NEW-Y");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 16)), "DM-P-SPLINE-REGRESSION-NEW-N-BASIS");
+rc::store<std::uint64_t>((record + 24), rc::adopt<::datamunge::PSplineRegression>(std::make_unique<::datamunge::PSplineRegression>(a0, a1, std::move(a2)), &resolve_k_p_spline_regression));
+    });
 }
-case 5: {
-auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 4)), class_v_vector_double, "DM-P-SPL-RGR-NEW-VCT-DBL-VCT-DBL-VCT-DBL-DBL-ULN-ULNG-X");
-auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-P-SPL-RGR-NEW-VCT-DBL-VCT-DBL-VCT-DBL-DBL-ULN-ULNG-Y");
-auto& a2 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 20)), class_v_vector_double, "DM-P-SPL-RGR-NEW-VCT-DBL-VCT-DBL-VCTR-DBL-DBL-ULN-SR9I8");
-auto a3 = static_cast<double>(rc::load<double>((record + 28)));
-auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 36)), "DM-P-SPL-RGR-NEW-VCT-DBL-VCT-DBL-VCTR-DBL-DBL-ULN-PSTLG");
-rc::store<std::uint64_t>((record + 52), rc::adopt<::datamunge::PSplineRegression>(std::make_unique<::datamunge::PSplineRegression>(a0, a1, a2, std::move(a3), std::move(a4)), &resolve_k_p_spline_regression));
-break;
-}
-case 6: {
-auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 4)), class_v_vector_double, "DM-P-SPL-RGR-NEW-VCT-DBL-VCT-DBL-VCT-DBL-DBL-ULN-ULNG-X");
-auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-P-SPL-RGR-NEW-VCT-DBL-VCT-DBL-VCT-DBL-DBL-ULN-ULNG-Y");
-auto& a2 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 20)), class_v_vector_double, "DM-P-SPL-RGR-NEW-VCT-DBL-VCT-DBL-VCTR-DBL-DBL-ULN-SR9I8");
-auto a3 = static_cast<double>(rc::load<double>((record + 28)));
-auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 36)), "DM-P-SPL-RGR-NEW-VCT-DBL-VCT-DBL-VCTR-DBL-DBL-ULN-PSTLG");
-auto a5 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 44)), "DM-P-SPL-RGR-NEW-VCT-DBL-VCT-DBL-VCTR-DBL-DBL-ULN-3IJDE");
-rc::store<std::uint64_t>((record + 52), rc::adopt<::datamunge::PSplineRegression>(std::make_unique<::datamunge::PSplineRegression>(a0, a1, a2, std::move(a3), std::move(a4), std::move(a5)), &resolve_k_p_spline_regression));
-break;
-}
-default: break;
+// datamunge::PSplineRegression::domain() const -> std::pair<double, double>
+extern "C" int dm_p_spline_regression_domain(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::PSplineRegression::domain", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::PSplineRegression>(self_id, class_k_p_spline_regression, "DM-P-SPLINE-REGRESSION-DOMAIN-SELF");
+{
+auto&& t0_ = self.domain();
+rc::store<double>((record + 8), static_cast<double>(std::get<0>(t0_)));
+rc::store<double>(((record + 8) + 8), static_cast<double>(std::get<1>(t0_)));
 }
     });
 }
-// datamunge::DataFrame::join(const DataFrame & right, const std::string & left_key, const std::string & right_key, const std::string & join_type = "inner", const std::string & left_suffix = "_x", const std::string & right_suffix = "_y") const -> DataFrame *
-extern "C" int dm_data_frame_join(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::DataFrame::join", [&] {
+// datamunge::DataFrame::mutate_string_encoded(const std::string & column_name, const std::string & encoded_values, const std::vector<int> & valid_mask = {}) const -> DataFrame *
+extern "C" int dm_data_frame_mutate_string_encoded(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::DataFrame::mutate_string_encoded", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::DataFrame>(self_id, class_k_data_frame, "DM-DATA-FRAME-JOIN-SELF");
-switch (rc::given((record + 8), 3, 6)) {
+auto& self = rc::object<::datamunge::DataFrame>(self_id, class_k_data_frame, "DM-DATA-FRAME-MUTATE-STRING-ENCODED-SELF");
+switch (rc::given((record + 8), 2, 3)) {
+case 2: {
+auto a0 = rc::text((record + 12), 256, (record + 12) + 256, "DM-DATA-FRAME-MUTATE-STRING-ENCODED-COLUMN-NAME");
+auto a1 = rc::text((record + 272), 256, (record + 272) + 256, "DM-DATA-FRAME-MUTATE-STRING-ENCODED-ENCODED-VALUES");
+rc::store<std::uint64_t>((record + 540), rc::borrow<::datamunge::DataFrame>(self.mutate_string_encoded(a0, a1), &resolve_k_data_frame, rc::keep_of(self_id)));
+break;
+}
 case 3: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 12)), class_k_data_frame, "DM-DATA-FRAME-JOIN-RIGHT");
-auto a1 = rc::text((record + 20), 256, (record + 20) + 256, "DM-DATA-FRAME-JOIN-LEFT-KEY");
-auto a2 = rc::text((record + 280), 256, (record + 280) + 256, "DM-DATA-FRAME-JOIN-RIGHT-KEY");
-rc::store<std::uint64_t>((record + 1320), rc::borrow<::datamunge::DataFrame>(self.join(a0, a1, a2), &resolve_k_data_frame, rc::keep_of(self_id)));
-break;
-}
-case 4: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 12)), class_k_data_frame, "DM-DATA-FRAME-JOIN-RIGHT");
-auto a1 = rc::text((record + 20), 256, (record + 20) + 256, "DM-DATA-FRAME-JOIN-LEFT-KEY");
-auto a2 = rc::text((record + 280), 256, (record + 280) + 256, "DM-DATA-FRAME-JOIN-RIGHT-KEY");
-auto a3 = rc::text((record + 540), 256, (record + 540) + 256, "DM-DATA-FRAME-JOIN-JOIN-TYPE");
-rc::store<std::uint64_t>((record + 1320), rc::borrow<::datamunge::DataFrame>(self.join(a0, a1, a2, a3), &resolve_k_data_frame, rc::keep_of(self_id)));
-break;
-}
-case 5: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 12)), class_k_data_frame, "DM-DATA-FRAME-JOIN-RIGHT");
-auto a1 = rc::text((record + 20), 256, (record + 20) + 256, "DM-DATA-FRAME-JOIN-LEFT-KEY");
-auto a2 = rc::text((record + 280), 256, (record + 280) + 256, "DM-DATA-FRAME-JOIN-RIGHT-KEY");
-auto a3 = rc::text((record + 540), 256, (record + 540) + 256, "DM-DATA-FRAME-JOIN-JOIN-TYPE");
-auto a4 = rc::text((record + 800), 256, (record + 800) + 256, "DM-DATA-FRAME-JOIN-LEFT-SUFFIX");
-rc::store<std::uint64_t>((record + 1320), rc::borrow<::datamunge::DataFrame>(self.join(a0, a1, a2, a3, a4), &resolve_k_data_frame, rc::keep_of(self_id)));
-break;
-}
-case 6: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 12)), class_k_data_frame, "DM-DATA-FRAME-JOIN-RIGHT");
-auto a1 = rc::text((record + 20), 256, (record + 20) + 256, "DM-DATA-FRAME-JOIN-LEFT-KEY");
-auto a2 = rc::text((record + 280), 256, (record + 280) + 256, "DM-DATA-FRAME-JOIN-RIGHT-KEY");
-auto a3 = rc::text((record + 540), 256, (record + 540) + 256, "DM-DATA-FRAME-JOIN-JOIN-TYPE");
-auto a4 = rc::text((record + 800), 256, (record + 800) + 256, "DM-DATA-FRAME-JOIN-LEFT-SUFFIX");
-auto a5 = rc::text((record + 1060), 256, (record + 1060) + 256, "DM-DATA-FRAME-JOIN-RIGHT-SUFFIX");
-rc::store<std::uint64_t>((record + 1320), rc::borrow<::datamunge::DataFrame>(self.join(a0, a1, a2, a3, a4, a5), &resolve_k_data_frame, rc::keep_of(self_id)));
+auto a0 = rc::text((record + 12), 256, (record + 12) + 256, "DM-DATA-FRAME-MUTATE-STRING-ENCODED-COLUMN-NAME");
+auto a1 = rc::text((record + 272), 256, (record + 272) + 256, "DM-DATA-FRAME-MUTATE-STRING-ENCODED-ENCODED-VALUES");
+auto& a2 = rc::object<std::vector<int>>(rc::load<std::uint64_t>((record + 532)), class_v_vector_int, "DM-DATA-FRAME-MUTATE-STRING-ENCODED-VALID-MASK");
+rc::store<std::uint64_t>((record + 540), rc::borrow<::datamunge::DataFrame>(self.mutate_string_encoded(a0, a1, a2), &resolve_k_data_frame, rc::keep_of(self_id)));
 break;
 }
 default: break;
 }
     });
 }
-// datamunge::GGPlot::labs(const std::string & title = "", const std::string & x = "", const std::string & y = "") -> GGPlot &
-extern "C" int dm_gg_plot_labs(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::GGPlot::labs", [&] {
+// datamunge::DataFrame::count(const std::vector<std::string> & key_columns, const std::string & count_column_name = "n") const -> DataFrame *
+extern "C" int dm_data_frame_count(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::DataFrame::count", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::GGPlot>(self_id, class_k_gg_plot, "DM-GG-PLOT-LABS-SELF");
-switch (rc::given((record + 8), 0, 3)) {
-case 0: {
-rc::store<std::uint64_t>((record + 792), rc::borrow<::datamunge::GGPlot>(&(self.labs()), &resolve_k_gg_plot, rc::keep_of(self_id)));
-break;
-}
+auto& self = rc::object<::datamunge::DataFrame>(self_id, class_k_data_frame, "DM-DATA-FRAME-COUNT-SELF");
+switch (rc::given((record + 8), 1, 2)) {
 case 1: {
-auto a0 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GG-PLOT-LABS-TITLE");
-rc::store<std::uint64_t>((record + 792), rc::borrow<::datamunge::GGPlot>(&(self.labs(a0)), &resolve_k_gg_plot, rc::keep_of(self_id)));
+auto& a0 = rc::object<std::vector<std::__cxx11::basic_string<char>>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_string, "DM-DATA-FRAME-COUNT-KEY-COLUMNS");
+rc::store<std::uint64_t>((record + 280), rc::borrow<::datamunge::DataFrame>(self.count(a0), &resolve_k_data_frame, rc::keep_of(self_id)));
 break;
 }
 case 2: {
-auto a0 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GG-PLOT-LABS-TITLE");
-auto a1 = rc::text((record + 272), 256, (record + 272) + 256, "DM-GG-PLOT-LABS-X");
-rc::store<std::uint64_t>((record + 792), rc::borrow<::datamunge::GGPlot>(&(self.labs(a0, a1)), &resolve_k_gg_plot, rc::keep_of(self_id)));
-break;
-}
-case 3: {
-auto a0 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GG-PLOT-LABS-TITLE");
-auto a1 = rc::text((record + 272), 256, (record + 272) + 256, "DM-GG-PLOT-LABS-X");
-auto a2 = rc::text((record + 532), 256, (record + 532) + 256, "DM-GG-PLOT-LABS-Y");
-rc::store<std::uint64_t>((record + 792), rc::borrow<::datamunge::GGPlot>(&(self.labs(a0, a1, a2)), &resolve_k_gg_plot, rc::keep_of(self_id)));
+auto& a0 = rc::object<std::vector<std::__cxx11::basic_string<char>>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_string, "DM-DATA-FRAME-COUNT-KEY-COLUMNS");
+auto a1 = rc::text((record + 20), 256, (record + 20) + 256, "DM-DATA-FRAME-COUNT-COUNT-COLUMN-NAME");
+rc::store<std::uint64_t>((record + 280), rc::borrow<::datamunge::DataFrame>(self.count(a0, a1), &resolve_k_data_frame, rc::keep_of(self_id)));
 break;
 }
 default: break;
 }
     });
 }
-// datamunge::Splom::panel(std::size_t row, std::size_t col) const -> datamunge::graphics::RPlot
-extern "C" int dm_splom_panel(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::Splom::panel", [&] {
+// datamunge::DataFrame::string_at(const std::string & column_name, std::size_t row_index) const -> std::string
+extern "C" int dm_data_frame_string_at(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::DataFrame::string_at", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::Splom>(self_id, class_k_splom, "DM-SPLOM-PANEL-SELF");
-auto a0 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-SPLOM-PANEL-ROW");
-auto a1 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 16)), "DM-SPLOM-PANEL-COL");
-rc::store<std::uint64_t>((record + 24), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(self.panel(std::move(a0), std::move(a1))), &resolve_k_r_plot));
+auto& self = rc::object<::datamunge::DataFrame>(self_id, class_k_data_frame, "DM-DATA-FRAME-STRING-AT-SELF");
+auto a0 = rc::text((record + 8), 256, (record + 8) + 256, "DM-DATA-FRAME-STRING-AT-COLUMN-NAME");
+auto a1 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 268)), "DM-DATA-FRAME-STRING-AT-ROW-INDEX");
+rc::put_text((record + 276), 16384, (record + 276) + 16384, self.string_at(a0, std::move(a1)), "DM-DATA-FRAME-STRING-AT-RESULT");
     });
 }
-// datamunge::LM::confidence_interval_lower(double level = 0.94999999999999996) const -> std::vector<double>
-extern "C" int dm_lm_confidence_interval_lower(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::LM::confidence_interval_lower", [&] {
+// datamunge::ShapeLayer::shape_type() const -> std::string
+extern "C" int dm_shape_layer_shape_type(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::ShapeLayer::shape_type", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::LM>(self_id, class_k_lm, "DM-LM-CONFIDENCE-INTERVAL-LOWER-SELF");
+auto& self = rc::object<::datamunge::ShapeLayer>(self_id, class_k_shape_layer, "DM-SHAPE-LAYER-SHAPE-TYPE-SELF");
+rc::put_text((record + 8), 16384, (record + 8) + 16384, self.shape_type(), "DM-SHAPE-LAYER-SHAPE-TYPE-RESULT");
+    });
+}
+// datamunge::GGPlot::geom_col(datamunge::graphics::RGB color = ...) -> GGPlot &
+extern "C" int dm_gg_plot_geom_col(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::GGPlot::geom_col", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::GGPlot>(self_id, class_k_gg_plot, "DM-GG-PLOT-GEOM-COL-SELF");
 switch (rc::given((record + 8), 0, 1)) {
 case 0: {
-rc::store<std::uint64_t>((record + 20), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(self.confidence_interval_lower()), &resolve_v_vector_double));
+rc::store<std::uint64_t>((record + 20), rc::borrow<::datamunge::GGPlot>(&(self.geom_col()), &resolve_k_gg_plot, rc::keep_of(self_id)));
 break;
 }
 case 1: {
-auto a0 = static_cast<double>(rc::load<double>((record + 12)));
-rc::store<std::uint64_t>((record + 20), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(self.confidence_interval_lower(std::move(a0))), &resolve_v_vector_double));
+auto& a0 = rc::object<::datamunge::graphics::RGB>(rc::load<std::uint64_t>((record + 12)), class_k_rgb, "DM-GG-PLOT-GEOM-COL-COLOR");
+rc::store<std::uint64_t>((record + 20), rc::borrow<::datamunge::GGPlot>(&(self.geom_col(a0)), &resolve_k_gg_plot, rc::keep_of(self_id)));
 break;
 }
 default: break;
 }
     });
 }
-// datamunge::LMM::standard_errors() const -> std::vector<double>
-extern "C" int dm_lmm_standard_errors(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::LMM::standard_errors", [&] {
+// datamunge::GGPlot::scale_color_manual(const std::vector<datamunge::graphics::RGB> & values) -> GGPlot &
+extern "C" int dm_gg_plot_scale_color_manual(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::GGPlot::scale_color_manual", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::LMM>(self_id, class_k_lmm, "DM-LMM-STANDARD-ERRORS-SELF");
-rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(self.standard_errors()), &resolve_v_vector_double));
+auto& self = rc::object<::datamunge::GGPlot>(self_id, class_k_gg_plot, "DM-GG-PLOT-SCALE-COLOR-MANUAL-SELF");
+auto& a0 = rc::object<std::vector<datamunge::graphics::RGB>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_rgb, "DM-GG-PLOT-SCALE-COLOR-MANUAL-VALUES");
+rc::store<std::uint64_t>((record + 16), rc::borrow<::datamunge::GGPlot>(&(self.scale_color_manual(a0)), &resolve_k_gg_plot, rc::keep_of(self_id)));
     });
 }
-// datamunge::LMM::bic() const -> double
-extern "C" int dm_lmm_bic(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::LMM::bic", [&] {
+// datamunge::Splom::set_title(const std::string & value) -> Splom &
+extern "C" int dm_splom_set_title(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::Splom::set_title", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::LMM>(self_id, class_k_lmm, "DM-LMM-BIC-SELF");
-rc::store<double>((record + 8), static_cast<double>(self.bic()));
+auto& self = rc::object<::datamunge::Splom>(self_id, class_k_splom, "DM-SPLOM-SET-TITLE-SELF");
+auto a0 = rc::text((record + 8), 256, (record + 8) + 256, "DM-SPLOM-SET-TITLE-VALUE");
+rc::store<std::uint64_t>((record + 268), rc::borrow<::datamunge::Splom>(&(self.set_title(a0)), &resolve_k_splom, rc::keep_of(self_id)));
     });
 }
-// datamunge::GLMM::num_groups() const -> std::size_t
-extern "C" int dm_glmm_num_groups(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::GLMM::num_groups", [&] {
+// datamunge::Splom::span(double value) -> Splom &
+extern "C" int dm_splom_span(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::Splom::span", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::GLMM>(self_id, class_k_glmm, "DM-GLMM-NUM-GROUPS-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.num_groups()));
+auto& self = rc::object<::datamunge::Splom>(self_id, class_k_splom, "DM-SPLOM-SPAN-SELF");
+auto a0 = static_cast<double>(rc::load<double>((record + 8)));
+rc::store<std::uint64_t>((record + 16), rc::borrow<::datamunge::Splom>(&(self.span(std::move(a0))), &resolve_k_splom, rc::keep_of(self_id)));
     });
 }
-// datamunge::GLMM::aic() const -> double
-extern "C" int dm_glmm_aic(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::GLMM::aic", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::GLMM>(self_id, class_k_glmm, "DM-GLMM-AIC-SELF");
-rc::store<double>((record + 8), static_cast<double>(self.aic()));
-    });
-}
-// datamunge::INLAMixedModel::random_effect_names() const -> std::vector<std::string>
-extern "C" int dm_inla_mixed_model_random_effect_names(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::INLAMixedModel::random_effect_names", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::INLAMixedModel>(self_id, class_k_inla_mixed_model, "DM-INLA-MIXED-MODEL-RANDOM-EFFECT-NAMES-SELF");
-rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<std::__cxx11::basic_string<char>>>(std::make_unique<std::vector<std::__cxx11::basic_string<char>>>(self.random_effect_names()), &resolve_v_vector_string));
-    });
-}
-// datamunge::LDA::LDA(const DataFrame & data, const std::string & formula, const std::vector<double> & priors = {}) -> LDA handle
-extern "C" int dm_lda_new(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::LDA::LDA", [&] {
+// datamunge::LM::LM(const DataFrame & data, const std::string & formula, const std::string & weights_column = "") -> LM handle
+extern "C" int dm_lm_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::LM::LM", [&] {
 switch (rc::given(record, 2, 3)) {
 case 2: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-LDA-NEW-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-LDA-NEW-FORMULA");
-rc::store<std::uint64_t>((record + 280), rc::adopt<::datamunge::LDA>(std::make_unique<::datamunge::LDA>(a0, a1), &resolve_k_lda));
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-LM-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-LM-NEW-FORMULA");
+rc::store<std::uint64_t>((record + 532), rc::adopt<::datamunge::LM>(std::make_unique<::datamunge::LM>(a0, a1), &resolve_k_lm));
 break;
 }
 case 3: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-LDA-NEW-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-LDA-NEW-FORMULA");
-auto& a2 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 272)), class_v_vector_double, "DM-LDA-NEW-PRIORS");
-rc::store<std::uint64_t>((record + 280), rc::adopt<::datamunge::LDA>(std::make_unique<::datamunge::LDA>(a0, a1, a2), &resolve_k_lda));
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-LM-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-LM-NEW-FORMULA");
+auto a2 = rc::text((record + 272), 256, (record + 272) + 256, "DM-LM-NEW-WEIGHTS-COLUMN");
+rc::store<std::uint64_t>((record + 532), rc::adopt<::datamunge::LM>(std::make_unique<::datamunge::LM>(a0, a1, a2), &resolve_k_lm));
 break;
 }
 default: break;
 }
     });
 }
-// datamunge::SVM::confusion_matrix() const -> DataFrame *
-extern "C" int dm_svm_confusion_matrix(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::SVM::confusion_matrix", [&] {
+// datamunge::LM::save_diagnostic_plots(const std::string & path_prefix) const -> void
+extern "C" int dm_lm_save_diagnostic_plots(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::LM::save_diagnostic_plots", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::SVM>(self_id, class_k_svm, "DM-SVM-CONFUSION-MATRIX-SELF");
-rc::store<std::uint64_t>((record + 8), rc::borrow<::datamunge::DataFrame>(self.confusion_matrix(), &resolve_k_data_frame, rc::keep_of(self_id)));
+auto& self = rc::object<::datamunge::LM>(self_id, class_k_lm, "DM-LM-SAVE-DIAGNOSTIC-PLOTS-SELF");
+auto a0 = rc::text((record + 8), 256, (record + 8) + 256, "DM-LM-SAVE-DIAGNOSTIC-PLOTS-PATH-PREFIX");
+self.save_diagnostic_plots(a0);
     });
 }
-// datamunge::DecisionTreeClassifier::summary() const -> std::string
-extern "C" int dm_decision_tree_classifier_summary(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::DecisionTreeClassifier::summary", [&] {
+// datamunge::LMM::fitted_values() const -> std::vector<double>
+extern "C" int dm_lmm_fitted_values(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::LMM::fitted_values", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::DecisionTreeClassifier>(self_id, class_k_decision_tree_classifier, "DM-DECISION-TREE-CLASSIFIER-SUMMARY-SELF");
-rc::put_text((record + 8), 16384, (record + 8) + 16384, self.summary(), "DM-DECISION-TREE-CLASSIFIER-SUMMARY-RESULT");
-    });
-}
-// datamunge::DecisionTreeRegressor::leaf_count() const -> std::size_t
-extern "C" int dm_decision_tree_regressor_leaf_count(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::DecisionTreeRegressor::leaf_count", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::DecisionTreeRegressor>(self_id, class_k_decision_tree_regressor, "DM-DECISION-TREE-REGRESSOR-LEAF-COUNT-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.leaf_count()));
-    });
-}
-// datamunge::DecisionTreeRegressor::print_summary() const -> void
-extern "C" int dm_decision_tree_regressor_print_summary(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::DecisionTreeRegressor::print_summary", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::DecisionTreeRegressor>(self_id, class_k_decision_tree_regressor, "DM-DECISION-TREE-REGRESSOR-PRINT-SUMMARY-SELF");
-self.print_summary();
-    });
-}
-// datamunge::RandomForestClassifier::max_features_used() const -> std::size_t
-extern "C" int dm_random_forest_classifier_max_features_used(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::RandomForestClassifier::max_features_used", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::RandomForestClassifier>(self_id, class_k_random_forest_classifier, "DM-RANDOM-FOREST-CLASSIFIER-MAX-FEATURES-USED-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.max_features_used()));
-    });
-}
-// datamunge::RandomForestClassifier::plot_classification(const DataFrame & data, const std::string & x_feature, const std::string & y_feature) const -> datamunge::graphics::RPlot
-extern "C" int dm_random_forest_classifier_plot_classification(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::RandomForestClassifier::plot_classification", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::RandomForestClassifier>(self_id, class_k_random_forest_classifier, "DM-RANDOM-FOREST-CLASSIFIER-PLOT-CLASSIFICATION-SELF");
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 8)), class_k_data_frame, "DM-RANDOM-FOREST-CLASSIFIER-PLOT-CLASSIFICATION-DATA");
-auto a1 = rc::text((record + 16), 256, (record + 16) + 256, "DM-RNDM-FOREST-CLASSIFIER-PLOT-CLASSIFICATION-X-FEATURE");
-auto a2 = rc::text((record + 276), 256, (record + 276) + 256, "DM-RNDM-FOREST-CLASSIFIER-PLOT-CLASSIFICATION-Y-FEATURE");
-rc::store<std::uint64_t>((record + 536), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(self.plot_classification(a0, a1, a2)), &resolve_k_r_plot));
-    });
-}
-// datamunge::RandomForestRegressor::plot_predicted_vs_actual() const -> datamunge::graphics::RPlot
-extern "C" int dm_random_forest_regressor_plot_predicted_vs_actual(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::RandomForestRegressor::plot_predicted_vs_actual", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::RandomForestRegressor>(self_id, class_k_random_forest_regressor, "DM-RANDOM-FOREST-REGRESSOR-PLOT-PREDICTED-VS-ACTUAL-SELF");
-rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(self.plot_predicted_vs_actual()), &resolve_k_r_plot));
-    });
-}
-// datamunge::ElasticNet::fitted_values() const -> std::vector<double>
-extern "C" int dm_elastic_net_fitted_values(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::ElasticNet::fitted_values", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::ElasticNet>(self_id, class_k_elastic_net, "DM-ELASTIC-NET-FITTED-VALUES-SELF");
+auto& self = rc::object<::datamunge::LMM>(self_id, class_k_lmm, "DM-LMM-FITTED-VALUES-SELF");
 rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(self.fitted_values()), &resolve_v_vector_double));
     });
 }
-// datamunge::Ridge::lambda_was_selected() const -> bool
-extern "C" int dm_ridge_lambda_was_selected(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::Ridge::lambda_was_selected", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::Ridge>(self_id, class_k_ridge, "DM-RIDGE-LAMBDA-WAS-SELECTED-SELF");
-rc::store<std::uint8_t>((record + 8), (self.lambda_was_selected()) ? 1 : 0);
-    });
-}
-// datamunge::Ridge::rmse() const -> double
-extern "C" int dm_ridge_rmse(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::Ridge::rmse", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::Ridge>(self_id, class_k_ridge, "DM-RIDGE-RMSE-SELF");
-rc::store<double>((record + 8), static_cast<double>(self.rmse()));
-    });
-}
-// datamunge::Ridge::plot_residuals_vs_fitted() const -> datamunge::graphics::RPlot
-extern "C" int dm_ridge_plot_residuals_vs_fitted(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::Ridge::plot_residuals_vs_fitted", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::Ridge>(self_id, class_k_ridge, "DM-RIDGE-PLOT-RESIDUALS-VS-FITTED-SELF");
-rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(self.plot_residuals_vs_fitted()), &resolve_k_r_plot));
-    });
-}
-// datamunge::Lasso::summary() const -> std::string
-extern "C" int dm_lasso_summary(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::Lasso::summary", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::Lasso>(self_id, class_k_lasso, "DM-LASSO-SUMMARY-SELF");
-rc::put_text((record + 8), 16384, (record + 8) + 16384, self.summary(), "DM-LASSO-SUMMARY-RESULT");
-    });
-}
-// datamunge::KNNClassifier::observations() const -> std::size_t
-extern "C" int dm_knn_classifier_observations(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::KNNClassifier::observations", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::KNNClassifier>(self_id, class_k_knn_classifier, "DM-KNN-CLASSIFIER-OBSERVATIONS-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.observations()));
-    });
-}
-// datamunge::KNNClassifier::predict_frame(const DataFrame & newdata) const -> DataFrame *
-extern "C" int dm_knn_classifier_predict_frame(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::KNNClassifier::predict_frame", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::KNNClassifier>(self_id, class_k_knn_classifier, "DM-KNN-CLASSIFIER-PREDICT-FRAME-SELF");
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 8)), class_k_data_frame, "DM-KNN-CLASSIFIER-PREDICT-FRAME-NEWDATA");
-rc::store<std::uint64_t>((record + 16), rc::borrow<::datamunge::DataFrame>(self.predict_frame(a0), &resolve_k_data_frame, rc::keep_of(self_id)));
-    });
-}
-// datamunge::KNNRegressor::summary() const -> std::string
-extern "C" int dm_knn_regressor_summary(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::KNNRegressor::summary", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::KNNRegressor>(self_id, class_k_knn_regressor, "DM-KNN-REGRESSOR-SUMMARY-SELF");
-rc::put_text((record + 8), 16384, (record + 8) + 16384, self.summary(), "DM-KNN-REGRESSOR-SUMMARY-RESULT");
-    });
-}
-// datamunge::KMeans::observations() const -> std::size_t
-extern "C" int dm_k_means_observations(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::KMeans::observations", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::KMeans>(self_id, class_k_k_means, "DM-K-MEANS-OBSERVATIONS-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.observations()));
-    });
-}
-// datamunge::PCA::PCA(const DataFrame & data, const std::vector<std::string> & feature_columns, bool center = true, bool scale = true) -> PCA handle
-extern "C" int dm_pca_new(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::PCA::PCA", [&] {
-switch (rc::given(record, 2, 4)) {
+// datamunge::GLMM::GLMM(const DataFrame & data, const std::string & formula, const std::string & family = "binomial", std::size_t max_iterations = 20, double tol = 9.9999999999999995E-7, std::size_t de_population_size = 30, std::size_t de_max_generations = 150, double theta_bound = 5.0, std::size_t seed = 42) -> GLMM handle
+extern "C" int dm_glmm_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::GLMM::GLMM", [&] {
+switch (rc::given(record, 2, 9)) {
 case 2: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-PCA-NEW-DATA");
-auto& a1 = rc::object<std::vector<std::__cxx11::basic_string<char>>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_string, "DM-PCA-NEW-FEATURE-COLUMNS");
-rc::store<std::uint64_t>((record + 22), rc::adopt<::datamunge::PCA>(std::make_unique<::datamunge::PCA>(a0, a1), &resolve_k_pca));
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-GLMM-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GLMM-NEW-FORMULA");
+rc::store<std::uint64_t>((record + 580), rc::adopt<::datamunge::GLMM>(std::make_unique<::datamunge::GLMM>(a0, a1), &resolve_k_glmm));
 break;
 }
 case 3: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-PCA-NEW-DATA");
-auto& a1 = rc::object<std::vector<std::__cxx11::basic_string<char>>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_string, "DM-PCA-NEW-FEATURE-COLUMNS");
-auto a2 = rc::boolean(rc::load<std::uint8_t>((record + 20)), "DM-PCA-NEW-CENTER");
-rc::store<std::uint64_t>((record + 22), rc::adopt<::datamunge::PCA>(std::make_unique<::datamunge::PCA>(a0, a1, std::move(a2)), &resolve_k_pca));
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-GLMM-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GLMM-NEW-FORMULA");
+auto a2 = rc::text((record + 272), 256, (record + 272) + 256, "DM-GLMM-NEW-FAMILY");
+rc::store<std::uint64_t>((record + 580), rc::adopt<::datamunge::GLMM>(std::make_unique<::datamunge::GLMM>(a0, a1, a2), &resolve_k_glmm));
 break;
 }
 case 4: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-PCA-NEW-DATA");
-auto& a1 = rc::object<std::vector<std::__cxx11::basic_string<char>>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_string, "DM-PCA-NEW-FEATURE-COLUMNS");
-auto a2 = rc::boolean(rc::load<std::uint8_t>((record + 20)), "DM-PCA-NEW-CENTER");
-auto a3 = rc::boolean(rc::load<std::uint8_t>((record + 21)), "DM-PCA-NEW-SCALE");
-rc::store<std::uint64_t>((record + 22), rc::adopt<::datamunge::PCA>(std::make_unique<::datamunge::PCA>(a0, a1, std::move(a2), std::move(a3)), &resolve_k_pca));
-break;
-}
-default: break;
-}
-    });
-}
-// datamunge::MDS::embedding_frame() const -> DataFrame *
-extern "C" int dm_mds_embedding_frame(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::MDS::embedding_frame", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::MDS>(self_id, class_k_mds, "DM-MDS-EMBEDDING-FRAME-SELF");
-rc::store<std::uint64_t>((record + 8), rc::borrow<::datamunge::DataFrame>(self.embedding_frame(), &resolve_k_data_frame, rc::keep_of(self_id)));
-    });
-}
-// datamunge::Isomap::n_components() const -> std::size_t
-extern "C" int dm_isomap_n_components(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::Isomap::n_components", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::Isomap>(self_id, class_k_isomap, "DM-ISOMAP-N-COMPONENTS-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.n_components()));
-    });
-}
-// datamunge::Isomap::dimension(std::size_t index) const -> std::vector<double>
-extern "C" int dm_isomap_dimension(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::Isomap::dimension", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::Isomap>(self_id, class_k_isomap, "DM-ISOMAP-DIMENSION-SELF");
-auto a0 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-ISOMAP-DIMENSION-INDEX");
-rc::store<std::uint64_t>((record + 16), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(self.dimension(std::move(a0))), &resolve_v_vector_double));
-    });
-}
-// datamunge::LLE::dimension(std::size_t index) const -> std::vector<double>
-extern "C" int dm_lle_dimension(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::LLE::dimension", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::LLE>(self_id, class_k_lle, "DM-LLE-DIMENSION-SELF");
-auto a0 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-LLE-DIMENSION-INDEX");
-rc::store<std::uint64_t>((record + 16), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(self.dimension(std::move(a0))), &resolve_v_vector_double));
-    });
-}
-// datamunge::TSNE::TSNE(const DataFrame & data, const std::string & encoded_feature_columns, std::size_t n_components = 2, double perplexity = 30.0, std::size_t max_iterations = 1000, double learning_rate = 200.0, double early_exaggeration = 12.0, std::size_t early_exaggeration_iterations = 250, double initial_momentum = 0.5, double final_momentum = 0.80000000000000004, std::size_t momentum_switch_iteration = 250, const std::string & metric = "euclidean", std::uint64_t seed = 42) -> TSNE handle
-extern "C" int dm_tsne_new_data_frame_string_ulong_double_ulong_tp9ki(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::TSNE::TSNE", [&] {
-switch (rc::given(record, 2, 13)) {
-case 2: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-TSN-NEW-DATA-FRM-STRNG-ULONG-DOUBLE-ULONG-TP9KI-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9K-ENCDD-FTR-CLMNS");
-rc::store<std::uint64_t>((record + 612), rc::adopt<::datamunge::TSNE>(std::make_unique<::datamunge::TSNE>(a0, a1), &resolve_k_tsne));
-break;
-}
-case 3: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-TSN-NEW-DATA-FRM-STRNG-ULONG-DOUBLE-ULONG-TP9KI-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9K-ENCDD-FTR-CLMNS");
-auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-N-CMPNNTS");
-rc::store<std::uint64_t>((record + 612), rc::adopt<::datamunge::TSNE>(std::make_unique<::datamunge::TSNE>(a0, a1, std::move(a2)), &resolve_k_tsne));
-break;
-}
-case 4: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-TSN-NEW-DATA-FRM-STRNG-ULONG-DOUBLE-ULONG-TP9KI-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9K-ENCDD-FTR-CLMNS");
-auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-N-CMPNNTS");
-auto a3 = static_cast<double>(rc::load<double>((record + 280)));
-rc::store<std::uint64_t>((record + 612), rc::adopt<::datamunge::TSNE>(std::make_unique<::datamunge::TSNE>(a0, a1, std::move(a2), std::move(a3)), &resolve_k_tsne));
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-GLMM-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GLMM-NEW-FORMULA");
+auto a2 = rc::text((record + 272), 256, (record + 272) + 256, "DM-GLMM-NEW-FAMILY");
+auto a3 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 532)), "DM-GLMM-NEW-MAX-ITERATIONS");
+rc::store<std::uint64_t>((record + 580), rc::adopt<::datamunge::GLMM>(std::make_unique<::datamunge::GLMM>(a0, a1, a2, std::move(a3)), &resolve_k_glmm));
 break;
 }
 case 5: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-TSN-NEW-DATA-FRM-STRNG-ULONG-DOUBLE-ULONG-TP9KI-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9K-ENCDD-FTR-CLMNS");
-auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-N-CMPNNTS");
-auto a3 = static_cast<double>(rc::load<double>((record + 280)));
-auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-MAX-ITRTNS");
-rc::store<std::uint64_t>((record + 612), rc::adopt<::datamunge::TSNE>(std::make_unique<::datamunge::TSNE>(a0, a1, std::move(a2), std::move(a3), std::move(a4)), &resolve_k_tsne));
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-GLMM-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GLMM-NEW-FORMULA");
+auto a2 = rc::text((record + 272), 256, (record + 272) + 256, "DM-GLMM-NEW-FAMILY");
+auto a3 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 532)), "DM-GLMM-NEW-MAX-ITERATIONS");
+auto a4 = static_cast<double>(rc::load<double>((record + 540)));
+rc::store<std::uint64_t>((record + 580), rc::adopt<::datamunge::GLMM>(std::make_unique<::datamunge::GLMM>(a0, a1, a2, std::move(a3), std::move(a4)), &resolve_k_glmm));
 break;
 }
 case 6: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-TSN-NEW-DATA-FRM-STRNG-ULONG-DOUBLE-ULONG-TP9KI-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9K-ENCDD-FTR-CLMNS");
-auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-N-CMPNNTS");
-auto a3 = static_cast<double>(rc::load<double>((record + 280)));
-auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-MAX-ITRTNS");
-auto a5 = static_cast<double>(rc::load<double>((record + 296)));
-rc::store<std::uint64_t>((record + 612), rc::adopt<::datamunge::TSNE>(std::make_unique<::datamunge::TSNE>(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5)), &resolve_k_tsne));
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-GLMM-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GLMM-NEW-FORMULA");
+auto a2 = rc::text((record + 272), 256, (record + 272) + 256, "DM-GLMM-NEW-FAMILY");
+auto a3 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 532)), "DM-GLMM-NEW-MAX-ITERATIONS");
+auto a4 = static_cast<double>(rc::load<double>((record + 540)));
+auto a5 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 548)), "DM-GLMM-NEW-DE-POPULATION-SIZE");
+rc::store<std::uint64_t>((record + 580), rc::adopt<::datamunge::GLMM>(std::make_unique<::datamunge::GLMM>(a0, a1, a2, std::move(a3), std::move(a4), std::move(a5)), &resolve_k_glmm));
 break;
 }
 case 7: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-TSN-NEW-DATA-FRM-STRNG-ULONG-DOUBLE-ULONG-TP9KI-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9K-ENCDD-FTR-CLMNS");
-auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-N-CMPNNTS");
-auto a3 = static_cast<double>(rc::load<double>((record + 280)));
-auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-MAX-ITRTNS");
-auto a5 = static_cast<double>(rc::load<double>((record + 296)));
-auto a6 = static_cast<double>(rc::load<double>((record + 304)));
-rc::store<std::uint64_t>((record + 612), rc::adopt<::datamunge::TSNE>(std::make_unique<::datamunge::TSNE>(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6)), &resolve_k_tsne));
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-GLMM-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GLMM-NEW-FORMULA");
+auto a2 = rc::text((record + 272), 256, (record + 272) + 256, "DM-GLMM-NEW-FAMILY");
+auto a3 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 532)), "DM-GLMM-NEW-MAX-ITERATIONS");
+auto a4 = static_cast<double>(rc::load<double>((record + 540)));
+auto a5 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 548)), "DM-GLMM-NEW-DE-POPULATION-SIZE");
+auto a6 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 556)), "DM-GLMM-NEW-DE-MAX-GENERATIONS");
+rc::store<std::uint64_t>((record + 580), rc::adopt<::datamunge::GLMM>(std::make_unique<::datamunge::GLMM>(a0, a1, a2, std::move(a3), std::move(a4), std::move(a5), std::move(a6)), &resolve_k_glmm));
 break;
 }
 case 8: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-TSN-NEW-DATA-FRM-STRNG-ULONG-DOUBLE-ULONG-TP9KI-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9K-ENCDD-FTR-CLMNS");
-auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-N-CMPNNTS");
-auto a3 = static_cast<double>(rc::load<double>((record + 280)));
-auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-MAX-ITRTNS");
-auto a5 = static_cast<double>(rc::load<double>((record + 296)));
-auto a6 = static_cast<double>(rc::load<double>((record + 304)));
-auto a7 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 312)), "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9-ERL-EXGGR-ITRTNS");
-rc::store<std::uint64_t>((record + 612), rc::adopt<::datamunge::TSNE>(std::make_unique<::datamunge::TSNE>(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6), std::move(a7)), &resolve_k_tsne));
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-GLMM-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GLMM-NEW-FORMULA");
+auto a2 = rc::text((record + 272), 256, (record + 272) + 256, "DM-GLMM-NEW-FAMILY");
+auto a3 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 532)), "DM-GLMM-NEW-MAX-ITERATIONS");
+auto a4 = static_cast<double>(rc::load<double>((record + 540)));
+auto a5 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 548)), "DM-GLMM-NEW-DE-POPULATION-SIZE");
+auto a6 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 556)), "DM-GLMM-NEW-DE-MAX-GENERATIONS");
+auto a7 = static_cast<double>(rc::load<double>((record + 564)));
+rc::store<std::uint64_t>((record + 580), rc::adopt<::datamunge::GLMM>(std::make_unique<::datamunge::GLMM>(a0, a1, a2, std::move(a3), std::move(a4), std::move(a5), std::move(a6), std::move(a7)), &resolve_k_glmm));
 break;
 }
 case 9: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-TSN-NEW-DATA-FRM-STRNG-ULONG-DOUBLE-ULONG-TP9KI-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9K-ENCDD-FTR-CLMNS");
-auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-N-CMPNNTS");
-auto a3 = static_cast<double>(rc::load<double>((record + 280)));
-auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-MAX-ITRTNS");
-auto a5 = static_cast<double>(rc::load<double>((record + 296)));
-auto a6 = static_cast<double>(rc::load<double>((record + 304)));
-auto a7 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 312)), "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9-ERL-EXGGR-ITRTNS");
-auto a8 = static_cast<double>(rc::load<double>((record + 320)));
-rc::store<std::uint64_t>((record + 612), rc::adopt<::datamunge::TSNE>(std::make_unique<::datamunge::TSNE>(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6), std::move(a7), std::move(a8)), &resolve_k_tsne));
-break;
-}
-case 10: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-TSN-NEW-DATA-FRM-STRNG-ULONG-DOUBLE-ULONG-TP9KI-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9K-ENCDD-FTR-CLMNS");
-auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-N-CMPNNTS");
-auto a3 = static_cast<double>(rc::load<double>((record + 280)));
-auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-MAX-ITRTNS");
-auto a5 = static_cast<double>(rc::load<double>((record + 296)));
-auto a6 = static_cast<double>(rc::load<double>((record + 304)));
-auto a7 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 312)), "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9-ERL-EXGGR-ITRTNS");
-auto a8 = static_cast<double>(rc::load<double>((record + 320)));
-auto a9 = static_cast<double>(rc::load<double>((record + 328)));
-rc::store<std::uint64_t>((record + 612), rc::adopt<::datamunge::TSNE>(std::make_unique<::datamunge::TSNE>(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6), std::move(a7), std::move(a8), std::move(a9)), &resolve_k_tsne));
-break;
-}
-case 11: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-TSN-NEW-DATA-FRM-STRNG-ULONG-DOUBLE-ULONG-TP9KI-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9K-ENCDD-FTR-CLMNS");
-auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-N-CMPNNTS");
-auto a3 = static_cast<double>(rc::load<double>((record + 280)));
-auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-MAX-ITRTNS");
-auto a5 = static_cast<double>(rc::load<double>((record + 296)));
-auto a6 = static_cast<double>(rc::load<double>((record + 304)));
-auto a7 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 312)), "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9-ERL-EXGGR-ITRTNS");
-auto a8 = static_cast<double>(rc::load<double>((record + 320)));
-auto a9 = static_cast<double>(rc::load<double>((record + 328)));
-auto a10 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 336)), "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9-MMNT-SWTCH-ITRTN");
-rc::store<std::uint64_t>((record + 612), rc::adopt<::datamunge::TSNE>(std::make_unique<::datamunge::TSNE>(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6), std::move(a7), std::move(a8), std::move(a9), std::move(a10)), &resolve_k_tsne));
-break;
-}
-case 12: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-TSN-NEW-DATA-FRM-STRNG-ULONG-DOUBLE-ULONG-TP9KI-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9K-ENCDD-FTR-CLMNS");
-auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-N-CMPNNTS");
-auto a3 = static_cast<double>(rc::load<double>((record + 280)));
-auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-MAX-ITRTNS");
-auto a5 = static_cast<double>(rc::load<double>((record + 296)));
-auto a6 = static_cast<double>(rc::load<double>((record + 304)));
-auto a7 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 312)), "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9-ERL-EXGGR-ITRTNS");
-auto a8 = static_cast<double>(rc::load<double>((record + 320)));
-auto a9 = static_cast<double>(rc::load<double>((record + 328)));
-auto a10 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 336)), "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9-MMNT-SWTCH-ITRTN");
-auto a11 = rc::text((record + 344), 256, (record + 344) + 256, "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULONG-TP9KI-METRIC");
-rc::store<std::uint64_t>((record + 612), rc::adopt<::datamunge::TSNE>(std::make_unique<::datamunge::TSNE>(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6), std::move(a7), std::move(a8), std::move(a9), std::move(a10), a11), &resolve_k_tsne));
-break;
-}
-case 13: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-TSN-NEW-DATA-FRM-STRNG-ULONG-DOUBLE-ULONG-TP9KI-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9K-ENCDD-FTR-CLMNS");
-auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-N-CMPNNTS");
-auto a3 = static_cast<double>(rc::load<double>((record + 280)));
-auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULNG-TP9K-MAX-ITRTNS");
-auto a5 = static_cast<double>(rc::load<double>((record + 296)));
-auto a6 = static_cast<double>(rc::load<double>((record + 304)));
-auto a7 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 312)), "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9-ERL-EXGGR-ITRTNS");
-auto a8 = static_cast<double>(rc::load<double>((record + 320)));
-auto a9 = static_cast<double>(rc::load<double>((record + 328)));
-auto a10 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 336)), "DM-TSN-NEW-DAT-FRM-STR-ULN-DBL-ULN-TP9-MMNT-SWTCH-ITRTN");
-auto a11 = rc::text((record + 344), 256, (record + 344) + 256, "DM-TSN-NEW-DATA-FRM-STRNG-ULNG-DBL-ULONG-TP9KI-METRIC");
-auto a12 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 604)), "DM-TSN-NEW-DATA-FRM-STRNG-ULONG-DOUBLE-ULONG-TP9KI-SEED");
-rc::store<std::uint64_t>((record + 612), rc::adopt<::datamunge::TSNE>(std::make_unique<::datamunge::TSNE>(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6), std::move(a7), std::move(a8), std::move(a9), std::move(a10), a11, std::move(a12)), &resolve_k_tsne));
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-GLMM-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GLMM-NEW-FORMULA");
+auto a2 = rc::text((record + 272), 256, (record + 272) + 256, "DM-GLMM-NEW-FAMILY");
+auto a3 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 532)), "DM-GLMM-NEW-MAX-ITERATIONS");
+auto a4 = static_cast<double>(rc::load<double>((record + 540)));
+auto a5 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 548)), "DM-GLMM-NEW-DE-POPULATION-SIZE");
+auto a6 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 556)), "DM-GLMM-NEW-DE-MAX-GENERATIONS");
+auto a7 = static_cast<double>(rc::load<double>((record + 564)));
+auto a8 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 572)), "DM-GLMM-NEW-SEED");
+rc::store<std::uint64_t>((record + 580), rc::adopt<::datamunge::GLMM>(std::make_unique<::datamunge::GLMM>(a0, a1, a2, std::move(a3), std::move(a4), std::move(a5), std::move(a6), std::move(a7), std::move(a8)), &resolve_k_glmm));
 break;
 }
 default: break;
 }
     });
 }
-// datamunge::KernelRegression::predictor_names() const -> std::vector<std::string>
-extern "C" int dm_kernel_regression_predictor_names(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::KernelRegression::predictor_names", [&] {
+// datamunge::RandomForestRegressor::fitted_values() const -> std::vector<double>
+extern "C" int dm_random_forest_regressor_fitted_values(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::RandomForestRegressor::fitted_values", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::KernelRegression>(self_id, class_k_kernel_regression, "DM-KERNEL-REGRESSION-PREDICTOR-NAMES-SELF");
-rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<std::__cxx11::basic_string<char>>>(std::make_unique<std::vector<std::__cxx11::basic_string<char>>>(self.predictor_names()), &resolve_v_vector_string));
+auto& self = rc::object<::datamunge::RandomForestRegressor>(self_id, class_k_random_forest_regressor, "DM-RANDOM-FOREST-REGRESSOR-FITTED-VALUES-SELF");
+rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(self.fitted_values()), &resolve_v_vector_double));
     });
 }
-// datamunge::KernelRegression::plot_predicted_vs_actual() const -> datamunge::graphics::RPlot
-extern "C" int dm_kernel_regression_plot_predicted_vs_actual(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::KernelRegression::plot_predicted_vs_actual", [&] {
+// datamunge::ElasticNet::formula_text() const -> std::string
+extern "C" int dm_elastic_net_formula_text(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::ElasticNet::formula_text", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::KernelRegression>(self_id, class_k_kernel_regression, "DM-KERNEL-REGRESSION-PLOT-PREDICTED-VS-ACTUAL-SELF");
-rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(self.plot_predicted_vs_actual()), &resolve_k_r_plot));
+auto& self = rc::object<::datamunge::ElasticNet>(self_id, class_k_elastic_net, "DM-ELASTIC-NET-FORMULA-TEXT-SELF");
+rc::put_text((record + 8), 16384, (record + 8) + 16384, self.formula_text(), "DM-ELASTIC-NET-FORMULA-TEXT-RESULT");
     });
 }
-// datamunge::GaussianProcessRegression::length_scale_was_selected() const -> bool
-extern "C" int dm_gssn_process_regression_length_scale_was_selected(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::GaussianProcessRegression::length_scale_was_selected", [&] {
+// datamunge::ElasticNet::intercept() const -> double
+extern "C" int dm_elastic_net_intercept(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::ElasticNet::intercept", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::GaussianProcessRegression>(self_id, class_k_gaussian_process_regression, "DM-GSSN-PROCESS-REGRESSION-LENGTH-SCALE-WAS-SELECTED-SELF");
-rc::store<std::uint8_t>((record + 8), (self.length_scale_was_selected()) ? 1 : 0);
+auto& self = rc::object<::datamunge::ElasticNet>(self_id, class_k_elastic_net, "DM-ELASTIC-NET-INTERCEPT-SELF");
+rc::store<double>((record + 8), static_cast<double>(self.intercept()));
     });
 }
-// datamunge::GaussianProcessRegression::predict(const DataFrame & newdata) const -> std::vector<double>
-extern "C" int dm_gaussian_process_regression_predict(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::GaussianProcessRegression::predict", [&] {
+// datamunge::ElasticNet::plot_cv_curve() const -> datamunge::graphics::RPlot
+extern "C" int dm_elastic_net_plot_cv_curve(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::ElasticNet::plot_cv_curve", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::GaussianProcessRegression>(self_id, class_k_gaussian_process_regression, "DM-GAUSSIAN-PROCESS-REGRESSION-PREDICT-SELF");
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 8)), class_k_data_frame, "DM-GAUSSIAN-PROCESS-REGRESSION-PREDICT-NEWDATA");
-rc::store<std::uint64_t>((record + 16), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(self.predict(a0)), &resolve_v_vector_double));
+auto& self = rc::object<::datamunge::ElasticNet>(self_id, class_k_elastic_net, "DM-ELASTIC-NET-PLOT-CV-CURVE-SELF");
+rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(self.plot_cv_curve()), &resolve_k_r_plot));
     });
 }
-// datamunge::NaiveBayesClassifier::training_accuracy() const -> double
-extern "C" int dm_naive_bayes_classifier_training_accuracy(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::NaiveBayesClassifier::training_accuracy", [&] {
+// datamunge::Ridge::cv_mean_squared_error() const -> std::vector<double>
+extern "C" int dm_ridge_cv_mean_squared_error(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::Ridge::cv_mean_squared_error", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::NaiveBayesClassifier>(self_id, class_k_naive_bayes_classifier, "DM-NAIVE-BAYES-CLASSIFIER-TRAINING-ACCURACY-SELF");
+auto& self = rc::object<::datamunge::Ridge>(self_id, class_k_ridge, "DM-RIDGE-CV-MEAN-SQUARED-ERROR-SELF");
+rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(self.cv_mean_squared_error()), &resolve_v_vector_double));
+    });
+}
+// datamunge::Lasso::observations() const -> std::size_t
+extern "C" int dm_lasso_observations(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::Lasso::observations", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::Lasso>(self_id, class_k_lasso, "DM-LASSO-OBSERVATIONS-SELF");
+rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.observations()));
+    });
+}
+// datamunge::Lasso::fitted_values() const -> std::vector<double>
+extern "C" int dm_lasso_fitted_values(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::Lasso::fitted_values", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::Lasso>(self_id, class_k_lasso, "DM-LASSO-FITTED-VALUES-SELF");
+rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(self.fitted_values()), &resolve_v_vector_double));
+    });
+}
+// datamunge::KNNClassifier::training_accuracy() const -> double
+extern "C" int dm_knn_classifier_training_accuracy(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::KNNClassifier::training_accuracy", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::KNNClassifier>(self_id, class_k_knn_classifier, "DM-KNN-CLASSIFIER-TRAINING-ACCURACY-SELF");
 rc::store<double>((record + 8), static_cast<double>(self.training_accuracy()));
     });
 }
-// datamunge::GLM::GLM(const DataFrame & data, const std::string & formula, const std::string & family = "gaussian", const std::string & weights_column = "", std::size_t max_iter = 25, double tol = 1.0E-8) -> GLM handle
-extern "C" int dm_glm_new(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::GLM::GLM", [&] {
-switch (rc::given(record, 2, 6)) {
+// datamunge::KNNClassifier::plot_classification(const DataFrame & data, const std::string & x_feature, const std::string & y_feature) const -> datamunge::graphics::RPlot
+extern "C" int dm_knn_classifier_plot_classification(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::KNNClassifier::plot_classification", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::KNNClassifier>(self_id, class_k_knn_classifier, "DM-KNN-CLASSIFIER-PLOT-CLASSIFICATION-SELF");
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 8)), class_k_data_frame, "DM-KNN-CLASSIFIER-PLOT-CLASSIFICATION-DATA");
+auto a1 = rc::text((record + 16), 256, (record + 16) + 256, "DM-KNN-CLASSIFIER-PLOT-CLASSIFICATION-X-FEATURE");
+auto a2 = rc::text((record + 276), 256, (record + 276) + 256, "DM-KNN-CLASSIFIER-PLOT-CLASSIFICATION-Y-FEATURE");
+rc::store<std::uint64_t>((record + 536), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(self.plot_classification(a0, a1, a2)), &resolve_k_r_plot));
+    });
+}
+// datamunge::KMeans::feature_names() const -> std::vector<std::string>
+extern "C" int dm_k_means_feature_names(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::KMeans::feature_names", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::KMeans>(self_id, class_k_k_means, "DM-K-MEANS-FEATURE-NAMES-SELF");
+rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<std::__cxx11::basic_string<char>>>(std::make_unique<std::vector<std::__cxx11::basic_string<char>>>(self.feature_names()), &resolve_v_vector_string));
+    });
+}
+// datamunge::PCA::PCA(const DataFrame & data, const std::string & encoded_feature_columns, bool center = true, bool scale = true) -> PCA handle
+extern "C" int dm_pca_new_data_frame_string_bool_bool(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::PCA::PCA", [&] {
+switch (rc::given(record, 2, 4)) {
 case 2: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-GLM-NEW-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GLM-NEW-FORMULA");
-rc::store<std::uint64_t>((record + 808), rc::adopt<::datamunge::GLM>(std::make_unique<::datamunge::GLM>(a0, a1), &resolve_k_glm));
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-PCA-NEW-DATA-FRAME-STRING-BOOL-BOOL-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-PCA-NEW-DATA-FRM-STRNG-BOOL-BOOL-ENCDD-FTR-COLUMNS");
+rc::store<std::uint64_t>((record + 274), rc::adopt<::datamunge::PCA>(std::make_unique<::datamunge::PCA>(a0, a1), &resolve_k_pca));
 break;
 }
 case 3: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-GLM-NEW-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GLM-NEW-FORMULA");
-auto a2 = rc::text((record + 272), 256, (record + 272) + 256, "DM-GLM-NEW-FAMILY");
-rc::store<std::uint64_t>((record + 808), rc::adopt<::datamunge::GLM>(std::make_unique<::datamunge::GLM>(a0, a1, a2), &resolve_k_glm));
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-PCA-NEW-DATA-FRAME-STRING-BOOL-BOOL-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-PCA-NEW-DATA-FRM-STRNG-BOOL-BOOL-ENCDD-FTR-COLUMNS");
+auto a2 = rc::boolean(rc::load<std::uint8_t>((record + 272)), "DM-PCA-NEW-DATA-FRAME-STRING-BOOL-BOOL-CENTER");
+rc::store<std::uint64_t>((record + 274), rc::adopt<::datamunge::PCA>(std::make_unique<::datamunge::PCA>(a0, a1, std::move(a2)), &resolve_k_pca));
 break;
 }
 case 4: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-GLM-NEW-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GLM-NEW-FORMULA");
-auto a2 = rc::text((record + 272), 256, (record + 272) + 256, "DM-GLM-NEW-FAMILY");
-auto a3 = rc::text((record + 532), 256, (record + 532) + 256, "DM-GLM-NEW-WEIGHTS-COLUMN");
-rc::store<std::uint64_t>((record + 808), rc::adopt<::datamunge::GLM>(std::make_unique<::datamunge::GLM>(a0, a1, a2, a3), &resolve_k_glm));
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-PCA-NEW-DATA-FRAME-STRING-BOOL-BOOL-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-PCA-NEW-DATA-FRM-STRNG-BOOL-BOOL-ENCDD-FTR-COLUMNS");
+auto a2 = rc::boolean(rc::load<std::uint8_t>((record + 272)), "DM-PCA-NEW-DATA-FRAME-STRING-BOOL-BOOL-CENTER");
+auto a3 = rc::boolean(rc::load<std::uint8_t>((record + 273)), "DM-PCA-NEW-DATA-FRAME-STRING-BOOL-BOOL-SCALE");
+rc::store<std::uint64_t>((record + 274), rc::adopt<::datamunge::PCA>(std::make_unique<::datamunge::PCA>(a0, a1, std::move(a2), std::move(a3)), &resolve_k_pca));
+break;
+}
+default: break;
+}
+    });
+}
+// datamunge::MDS::plot_embedding(std::size_t dimension_x = 0, std::size_t dimension_y = 1) const -> datamunge::graphics::RPlot
+extern "C" int dm_mds_plot_embedding(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::MDS::plot_embedding", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::MDS>(self_id, class_k_mds, "DM-MDS-PLOT-EMBEDDING-SELF");
+switch (rc::given((record + 8), 0, 2)) {
+case 0: {
+rc::store<std::uint64_t>((record + 28), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(self.plot_embedding()), &resolve_k_r_plot));
+break;
+}
+case 1: {
+auto a0 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 12)), "DM-MDS-PLOT-EMBEDDING-DIMENSION-X");
+rc::store<std::uint64_t>((record + 28), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(self.plot_embedding(std::move(a0))), &resolve_k_r_plot));
+break;
+}
+case 2: {
+auto a0 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 12)), "DM-MDS-PLOT-EMBEDDING-DIMENSION-X");
+auto a1 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 20)), "DM-MDS-PLOT-EMBEDDING-DIMENSION-Y");
+rc::store<std::uint64_t>((record + 28), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(self.plot_embedding(std::move(a0), std::move(a1))), &resolve_k_r_plot));
+break;
+}
+default: break;
+}
+    });
+}
+// datamunge::LLE::observations() const -> std::size_t
+extern "C" int dm_lle_observations(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::LLE::observations", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::LLE>(self_id, class_k_lle, "DM-LLE-OBSERVATIONS-SELF");
+rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.observations()));
+    });
+}
+// datamunge::LLE::summary() const -> std::string
+extern "C" int dm_lle_summary(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::LLE::summary", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::LLE>(self_id, class_k_lle, "DM-LLE-SUMMARY-SELF");
+rc::put_text((record + 8), 16384, (record + 8) + 16384, self.summary(), "DM-LLE-SUMMARY-RESULT");
+    });
+}
+// datamunge::TSNE::achieved_perplexity() const -> std::vector<double>
+extern "C" int dm_tsne_achieved_perplexity(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::TSNE::achieved_perplexity", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::TSNE>(self_id, class_k_tsne, "DM-TSNE-ACHIEVED-PERPLEXITY-SELF");
+rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(self.achieved_perplexity()), &resolve_v_vector_double));
+    });
+}
+// datamunge::LaplacianEigenmaps::LaplacianEigenmaps(const DataFrame & data, const std::vector<std::string> & feature_columns, std::size_t n_components = 2, std::size_t n_neighbors = 10, double heat_kernel_t = 1.0) -> LAPLACIAN-EIGENMAPS handle
+extern "C" int dm_laplacian_eigenmaps_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::LaplacianEigenmaps::LaplacianEigenmaps", [&] {
+switch (rc::given(record, 2, 5)) {
+case 2: {
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-LAPLACIAN-EIGENMAPS-NEW-DATA");
+auto& a1 = rc::object<std::vector<std::__cxx11::basic_string<char>>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_string, "DM-LAPLACIAN-EIGENMAPS-NEW-FEATURE-COLUMNS");
+rc::store<std::uint64_t>((record + 44), rc::adopt<::datamunge::LaplacianEigenmaps>(std::make_unique<::datamunge::LaplacianEigenmaps>(a0, a1), &resolve_k_laplacian_eigenmaps));
+break;
+}
+case 3: {
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-LAPLACIAN-EIGENMAPS-NEW-DATA");
+auto& a1 = rc::object<std::vector<std::__cxx11::basic_string<char>>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_string, "DM-LAPLACIAN-EIGENMAPS-NEW-FEATURE-COLUMNS");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 20)), "DM-LAPLACIAN-EIGENMAPS-NEW-N-COMPONENTS");
+rc::store<std::uint64_t>((record + 44), rc::adopt<::datamunge::LaplacianEigenmaps>(std::make_unique<::datamunge::LaplacianEigenmaps>(a0, a1, std::move(a2)), &resolve_k_laplacian_eigenmaps));
+break;
+}
+case 4: {
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-LAPLACIAN-EIGENMAPS-NEW-DATA");
+auto& a1 = rc::object<std::vector<std::__cxx11::basic_string<char>>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_string, "DM-LAPLACIAN-EIGENMAPS-NEW-FEATURE-COLUMNS");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 20)), "DM-LAPLACIAN-EIGENMAPS-NEW-N-COMPONENTS");
+auto a3 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 28)), "DM-LAPLACIAN-EIGENMAPS-NEW-N-NEIGHBORS");
+rc::store<std::uint64_t>((record + 44), rc::adopt<::datamunge::LaplacianEigenmaps>(std::make_unique<::datamunge::LaplacianEigenmaps>(a0, a1, std::move(a2), std::move(a3)), &resolve_k_laplacian_eigenmaps));
 break;
 }
 case 5: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-GLM-NEW-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GLM-NEW-FORMULA");
-auto a2 = rc::text((record + 272), 256, (record + 272) + 256, "DM-GLM-NEW-FAMILY");
-auto a3 = rc::text((record + 532), 256, (record + 532) + 256, "DM-GLM-NEW-WEIGHTS-COLUMN");
-auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 792)), "DM-GLM-NEW-MAX-ITER");
-rc::store<std::uint64_t>((record + 808), rc::adopt<::datamunge::GLM>(std::make_unique<::datamunge::GLM>(a0, a1, a2, a3, std::move(a4)), &resolve_k_glm));
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-LAPLACIAN-EIGENMAPS-NEW-DATA");
+auto& a1 = rc::object<std::vector<std::__cxx11::basic_string<char>>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_string, "DM-LAPLACIAN-EIGENMAPS-NEW-FEATURE-COLUMNS");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 20)), "DM-LAPLACIAN-EIGENMAPS-NEW-N-COMPONENTS");
+auto a3 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 28)), "DM-LAPLACIAN-EIGENMAPS-NEW-N-NEIGHBORS");
+auto a4 = static_cast<double>(rc::load<double>((record + 36)));
+rc::store<std::uint64_t>((record + 44), rc::adopt<::datamunge::LaplacianEigenmaps>(std::make_unique<::datamunge::LaplacianEigenmaps>(a0, a1, std::move(a2), std::move(a3), std::move(a4)), &resolve_k_laplacian_eigenmaps));
+break;
+}
+default: break;
+}
+    });
+}
+// datamunge::KernelPCA::plot_embedding_grouped(const std::vector<std::string> & group_labels, std::size_t dimension_x = 0, std::size_t dimension_y = 1) const -> datamunge::graphics::RPlot
+extern "C" int dm_kernel_pca_plot_embedding_grouped(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::KernelPCA::plot_embedding_grouped", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::KernelPCA>(self_id, class_k_kernel_pca, "DM-KERNEL-PCA-PLOT-EMBEDDING-GROUPED-SELF");
+switch (rc::given((record + 8), 1, 3)) {
+case 1: {
+auto& a0 = rc::object<std::vector<std::__cxx11::basic_string<char>>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_string, "DM-KERNEL-PCA-PLOT-EMBEDDING-GROUPED-GROUP-LABELS");
+rc::store<std::uint64_t>((record + 36), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(self.plot_embedding_grouped(a0)), &resolve_k_r_plot));
+break;
+}
+case 2: {
+auto& a0 = rc::object<std::vector<std::__cxx11::basic_string<char>>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_string, "DM-KERNEL-PCA-PLOT-EMBEDDING-GROUPED-GROUP-LABELS");
+auto a1 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 20)), "DM-KERNEL-PCA-PLOT-EMBEDDING-GROUPED-DIMENSION-X");
+rc::store<std::uint64_t>((record + 36), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(self.plot_embedding_grouped(a0, std::move(a1))), &resolve_k_r_plot));
+break;
+}
+case 3: {
+auto& a0 = rc::object<std::vector<std::__cxx11::basic_string<char>>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_string, "DM-KERNEL-PCA-PLOT-EMBEDDING-GROUPED-GROUP-LABELS");
+auto a1 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 20)), "DM-KERNEL-PCA-PLOT-EMBEDDING-GROUPED-DIMENSION-X");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 28)), "DM-KERNEL-PCA-PLOT-EMBEDDING-GROUPED-DIMENSION-Y");
+rc::store<std::uint64_t>((record + 36), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(self.plot_embedding_grouped(a0, std::move(a1), std::move(a2))), &resolve_k_r_plot));
+break;
+}
+default: break;
+}
+    });
+}
+// datamunge::UMAP::summary() const -> std::string
+extern "C" int dm_umap_summary(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::UMAP::summary", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::UMAP>(self_id, class_k_umap, "DM-UMAP-SUMMARY-SELF");
+rc::put_text((record + 8), 16384, (record + 8) + 16384, self.summary(), "DM-UMAP-SUMMARY-RESULT");
+    });
+}
+// datamunge::AgglomerativeClustering::observations() const -> std::size_t
+extern "C" int dm_agglomerative_clustering_observations(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::AgglomerativeClustering::observations", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::AgglomerativeClustering>(self_id, class_k_agglomerative_clustering, "DM-AGGLOMERATIVE-CLUSTERING-OBSERVATIONS-SELF");
+rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.observations()));
+    });
+}
+// datamunge::AgglomerativeClustering::cut(std::size_t n_clusters) const -> std::vector<std::size_t>
+extern "C" int dm_agglomerative_clustering_cut(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::AgglomerativeClustering::cut", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::AgglomerativeClustering>(self_id, class_k_agglomerative_clustering, "DM-AGGLOMERATIVE-CLUSTERING-CUT-SELF");
+auto a0 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-AGGLOMERATIVE-CLUSTERING-CUT-N-CLUSTERS");
+rc::store<std::uint64_t>((record + 16), rc::adopt<std::vector<unsigned long>>(std::make_unique<std::vector<unsigned long>>(self.cut(std::move(a0))), &resolve_v_vector_ulong));
+    });
+}
+// datamunge::AgglomerativeClustering::print_summary() const -> void
+extern "C" int dm_agglomerative_clustering_print_summary(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::AgglomerativeClustering::print_summary", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::AgglomerativeClustering>(self_id, class_k_agglomerative_clustering, "DM-AGGLOMERATIVE-CLUSTERING-PRINT-SUMMARY-SELF");
+self.print_summary();
+    });
+}
+// datamunge::DBSCAN::n_noise() const -> std::size_t
+extern "C" int dm_dbscan_n_noise(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::DBSCAN::n_noise", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::DBSCAN>(self_id, class_k_dbscan, "DM-DBSCAN-N-NOISE-SELF");
+rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.n_noise()));
+    });
+}
+// datamunge::GBMClassifier::predictor_names() const -> std::vector<std::string>
+extern "C" int dm_gbm_classifier_predictor_names(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::GBMClassifier::predictor_names", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::GBMClassifier>(self_id, class_k_gbm_classifier, "DM-GBM-CLASSIFIER-PREDICTOR-NAMES-SELF");
+rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<std::__cxx11::basic_string<char>>>(std::make_unique<std::vector<std::__cxx11::basic_string<char>>>(self.predictor_names()), &resolve_v_vector_string));
+    });
+}
+// datamunge::GBMClassifier::summary() const -> std::string
+extern "C" int dm_gbm_classifier_summary(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::GBMClassifier::summary", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::GBMClassifier>(self_id, class_k_gbm_classifier, "DM-GBM-CLASSIFIER-SUMMARY-SELF");
+rc::put_text((record + 8), 16384, (record + 8) + 16384, self.summary(), "DM-GBM-CLASSIFIER-SUMMARY-RESULT");
+    });
+}
+// datamunge::GBMClassifier::plot_decision_regions(const std::string & x_feature, const std::string & y_feature, std::size_t grid_resolution = 60) const -> datamunge::graphics::RPlot
+extern "C" int dm_gbm_classifier_plot_decision_regions(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::GBMClassifier::plot_decision_regions", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::GBMClassifier>(self_id, class_k_gbm_classifier, "DM-GBM-CLASSIFIER-PLOT-DECISION-REGIONS-SELF");
+switch (rc::given((record + 8), 2, 3)) {
+case 2: {
+auto a0 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GBM-CLASSIFIER-PLOT-DECISION-REGIONS-X-FEATURE");
+auto a1 = rc::text((record + 272), 256, (record + 272) + 256, "DM-GBM-CLASSIFIER-PLOT-DECISION-REGIONS-Y-FEATURE");
+rc::store<std::uint64_t>((record + 540), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(self.plot_decision_regions(a0, a1)), &resolve_k_r_plot));
+break;
+}
+case 3: {
+auto a0 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GBM-CLASSIFIER-PLOT-DECISION-REGIONS-X-FEATURE");
+auto a1 = rc::text((record + 272), 256, (record + 272) + 256, "DM-GBM-CLASSIFIER-PLOT-DECISION-REGIONS-Y-FEATURE");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 532)), "DM-GBM-CLASSIFIER-PLOT-DECISION-REGIONS-GRID-RESOLUTION");
+rc::store<std::uint64_t>((record + 540), rc::adopt<::datamunge::graphics::RPlot>(std::make_unique<::datamunge::graphics::RPlot>(self.plot_decision_regions(a0, a1, std::move(a2))), &resolve_k_r_plot));
+break;
+}
+default: break;
+}
+    });
+}
+// datamunge::XGBoostClassifier::feature_importance() const -> std::vector<double>
+extern "C" int dm_xg_boost_classifier_feature_importance(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::XGBoostClassifier::feature_importance", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::XGBoostClassifier>(self_id, class_k_xg_boost_classifier, "DM-XG-BOOST-CLASSIFIER-FEATURE-IMPORTANCE-SELF");
+rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(self.feature_importance()), &resolve_v_vector_double));
+    });
+}
+// datamunge::XGBoostRegressor::XGBoostRegressor(const DataFrame & data, const std::string & formula, std::size_t n_trees = 100, double learning_rate = 0.29999999999999999, std::size_t max_depth = 6, double lambda = 1.0, double alpha = 0.0, double gamma = 0.0, double min_child_weight = 1.0, std::size_t min_samples_leaf = 1, double subsample = 1.0, double colsample_bytree = 1.0, std::uint64_t seed = 42) -> XG-BOOST-REGRESSOR handle
+extern "C" int dm_xg_boost_regressor_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::XGBoostRegressor::XGBoostRegressor", [&] {
+switch (rc::given(record, 2, 13)) {
+case 2: {
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-XG-BOOST-REGRESSOR-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-XG-BOOST-REGRESSOR-NEW-FORMULA");
+rc::store<std::uint64_t>((record + 360), rc::adopt<::datamunge::XGBoostRegressor>(std::make_unique<::datamunge::XGBoostRegressor>(a0, a1), &resolve_k_xg_boost_regressor));
+break;
+}
+case 3: {
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-XG-BOOST-REGRESSOR-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-XG-BOOST-REGRESSOR-NEW-FORMULA");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-XG-BOOST-REGRESSOR-NEW-N-TREES");
+rc::store<std::uint64_t>((record + 360), rc::adopt<::datamunge::XGBoostRegressor>(std::make_unique<::datamunge::XGBoostRegressor>(a0, a1, std::move(a2)), &resolve_k_xg_boost_regressor));
+break;
+}
+case 4: {
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-XG-BOOST-REGRESSOR-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-XG-BOOST-REGRESSOR-NEW-FORMULA");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-XG-BOOST-REGRESSOR-NEW-N-TREES");
+auto a3 = static_cast<double>(rc::load<double>((record + 280)));
+rc::store<std::uint64_t>((record + 360), rc::adopt<::datamunge::XGBoostRegressor>(std::make_unique<::datamunge::XGBoostRegressor>(a0, a1, std::move(a2), std::move(a3)), &resolve_k_xg_boost_regressor));
+break;
+}
+case 5: {
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-XG-BOOST-REGRESSOR-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-XG-BOOST-REGRESSOR-NEW-FORMULA");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-XG-BOOST-REGRESSOR-NEW-N-TREES");
+auto a3 = static_cast<double>(rc::load<double>((record + 280)));
+auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-XG-BOOST-REGRESSOR-NEW-MAX-DEPTH");
+rc::store<std::uint64_t>((record + 360), rc::adopt<::datamunge::XGBoostRegressor>(std::make_unique<::datamunge::XGBoostRegressor>(a0, a1, std::move(a2), std::move(a3), std::move(a4)), &resolve_k_xg_boost_regressor));
 break;
 }
 case 6: {
-auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-GLM-NEW-DATA");
-auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-GLM-NEW-FORMULA");
-auto a2 = rc::text((record + 272), 256, (record + 272) + 256, "DM-GLM-NEW-FAMILY");
-auto a3 = rc::text((record + 532), 256, (record + 532) + 256, "DM-GLM-NEW-WEIGHTS-COLUMN");
-auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 792)), "DM-GLM-NEW-MAX-ITER");
-auto a5 = static_cast<double>(rc::load<double>((record + 800)));
-rc::store<std::uint64_t>((record + 808), rc::adopt<::datamunge::GLM>(std::make_unique<::datamunge::GLM>(a0, a1, a2, a3, std::move(a4), std::move(a5)), &resolve_k_glm));
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-XG-BOOST-REGRESSOR-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-XG-BOOST-REGRESSOR-NEW-FORMULA");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-XG-BOOST-REGRESSOR-NEW-N-TREES");
+auto a3 = static_cast<double>(rc::load<double>((record + 280)));
+auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-XG-BOOST-REGRESSOR-NEW-MAX-DEPTH");
+auto a5 = static_cast<double>(rc::load<double>((record + 296)));
+rc::store<std::uint64_t>((record + 360), rc::adopt<::datamunge::XGBoostRegressor>(std::make_unique<::datamunge::XGBoostRegressor>(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5)), &resolve_k_xg_boost_regressor));
+break;
+}
+case 7: {
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-XG-BOOST-REGRESSOR-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-XG-BOOST-REGRESSOR-NEW-FORMULA");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-XG-BOOST-REGRESSOR-NEW-N-TREES");
+auto a3 = static_cast<double>(rc::load<double>((record + 280)));
+auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-XG-BOOST-REGRESSOR-NEW-MAX-DEPTH");
+auto a5 = static_cast<double>(rc::load<double>((record + 296)));
+auto a6 = static_cast<double>(rc::load<double>((record + 304)));
+rc::store<std::uint64_t>((record + 360), rc::adopt<::datamunge::XGBoostRegressor>(std::make_unique<::datamunge::XGBoostRegressor>(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6)), &resolve_k_xg_boost_regressor));
+break;
+}
+case 8: {
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-XG-BOOST-REGRESSOR-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-XG-BOOST-REGRESSOR-NEW-FORMULA");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-XG-BOOST-REGRESSOR-NEW-N-TREES");
+auto a3 = static_cast<double>(rc::load<double>((record + 280)));
+auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-XG-BOOST-REGRESSOR-NEW-MAX-DEPTH");
+auto a5 = static_cast<double>(rc::load<double>((record + 296)));
+auto a6 = static_cast<double>(rc::load<double>((record + 304)));
+auto a7 = static_cast<double>(rc::load<double>((record + 312)));
+rc::store<std::uint64_t>((record + 360), rc::adopt<::datamunge::XGBoostRegressor>(std::make_unique<::datamunge::XGBoostRegressor>(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6), std::move(a7)), &resolve_k_xg_boost_regressor));
+break;
+}
+case 9: {
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-XG-BOOST-REGRESSOR-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-XG-BOOST-REGRESSOR-NEW-FORMULA");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-XG-BOOST-REGRESSOR-NEW-N-TREES");
+auto a3 = static_cast<double>(rc::load<double>((record + 280)));
+auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-XG-BOOST-REGRESSOR-NEW-MAX-DEPTH");
+auto a5 = static_cast<double>(rc::load<double>((record + 296)));
+auto a6 = static_cast<double>(rc::load<double>((record + 304)));
+auto a7 = static_cast<double>(rc::load<double>((record + 312)));
+auto a8 = static_cast<double>(rc::load<double>((record + 320)));
+rc::store<std::uint64_t>((record + 360), rc::adopt<::datamunge::XGBoostRegressor>(std::make_unique<::datamunge::XGBoostRegressor>(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6), std::move(a7), std::move(a8)), &resolve_k_xg_boost_regressor));
+break;
+}
+case 10: {
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-XG-BOOST-REGRESSOR-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-XG-BOOST-REGRESSOR-NEW-FORMULA");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-XG-BOOST-REGRESSOR-NEW-N-TREES");
+auto a3 = static_cast<double>(rc::load<double>((record + 280)));
+auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-XG-BOOST-REGRESSOR-NEW-MAX-DEPTH");
+auto a5 = static_cast<double>(rc::load<double>((record + 296)));
+auto a6 = static_cast<double>(rc::load<double>((record + 304)));
+auto a7 = static_cast<double>(rc::load<double>((record + 312)));
+auto a8 = static_cast<double>(rc::load<double>((record + 320)));
+auto a9 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 328)), "DM-XG-BOOST-REGRESSOR-NEW-MIN-SAMPLES-LEAF");
+rc::store<std::uint64_t>((record + 360), rc::adopt<::datamunge::XGBoostRegressor>(std::make_unique<::datamunge::XGBoostRegressor>(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6), std::move(a7), std::move(a8), std::move(a9)), &resolve_k_xg_boost_regressor));
+break;
+}
+case 11: {
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-XG-BOOST-REGRESSOR-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-XG-BOOST-REGRESSOR-NEW-FORMULA");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-XG-BOOST-REGRESSOR-NEW-N-TREES");
+auto a3 = static_cast<double>(rc::load<double>((record + 280)));
+auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-XG-BOOST-REGRESSOR-NEW-MAX-DEPTH");
+auto a5 = static_cast<double>(rc::load<double>((record + 296)));
+auto a6 = static_cast<double>(rc::load<double>((record + 304)));
+auto a7 = static_cast<double>(rc::load<double>((record + 312)));
+auto a8 = static_cast<double>(rc::load<double>((record + 320)));
+auto a9 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 328)), "DM-XG-BOOST-REGRESSOR-NEW-MIN-SAMPLES-LEAF");
+auto a10 = static_cast<double>(rc::load<double>((record + 336)));
+rc::store<std::uint64_t>((record + 360), rc::adopt<::datamunge::XGBoostRegressor>(std::make_unique<::datamunge::XGBoostRegressor>(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6), std::move(a7), std::move(a8), std::move(a9), std::move(a10)), &resolve_k_xg_boost_regressor));
+break;
+}
+case 12: {
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-XG-BOOST-REGRESSOR-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-XG-BOOST-REGRESSOR-NEW-FORMULA");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-XG-BOOST-REGRESSOR-NEW-N-TREES");
+auto a3 = static_cast<double>(rc::load<double>((record + 280)));
+auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-XG-BOOST-REGRESSOR-NEW-MAX-DEPTH");
+auto a5 = static_cast<double>(rc::load<double>((record + 296)));
+auto a6 = static_cast<double>(rc::load<double>((record + 304)));
+auto a7 = static_cast<double>(rc::load<double>((record + 312)));
+auto a8 = static_cast<double>(rc::load<double>((record + 320)));
+auto a9 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 328)), "DM-XG-BOOST-REGRESSOR-NEW-MIN-SAMPLES-LEAF");
+auto a10 = static_cast<double>(rc::load<double>((record + 336)));
+auto a11 = static_cast<double>(rc::load<double>((record + 344)));
+rc::store<std::uint64_t>((record + 360), rc::adopt<::datamunge::XGBoostRegressor>(std::make_unique<::datamunge::XGBoostRegressor>(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6), std::move(a7), std::move(a8), std::move(a9), std::move(a10), std::move(a11)), &resolve_k_xg_boost_regressor));
+break;
+}
+case 13: {
+auto& a0 = rc::object<::datamunge::DataFrame>(rc::load<std::uint64_t>((record + 4)), class_k_data_frame, "DM-XG-BOOST-REGRESSOR-NEW-DATA");
+auto a1 = rc::text((record + 12), 256, (record + 12) + 256, "DM-XG-BOOST-REGRESSOR-NEW-FORMULA");
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 272)), "DM-XG-BOOST-REGRESSOR-NEW-N-TREES");
+auto a3 = static_cast<double>(rc::load<double>((record + 280)));
+auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 288)), "DM-XG-BOOST-REGRESSOR-NEW-MAX-DEPTH");
+auto a5 = static_cast<double>(rc::load<double>((record + 296)));
+auto a6 = static_cast<double>(rc::load<double>((record + 304)));
+auto a7 = static_cast<double>(rc::load<double>((record + 312)));
+auto a8 = static_cast<double>(rc::load<double>((record + 320)));
+auto a9 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 328)), "DM-XG-BOOST-REGRESSOR-NEW-MIN-SAMPLES-LEAF");
+auto a10 = static_cast<double>(rc::load<double>((record + 336)));
+auto a11 = static_cast<double>(rc::load<double>((record + 344)));
+auto a12 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 352)), "DM-XG-BOOST-REGRESSOR-NEW-SEED");
+rc::store<std::uint64_t>((record + 360), rc::adopt<::datamunge::XGBoostRegressor>(std::make_unique<::datamunge::XGBoostRegressor>(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6), std::move(a7), std::move(a8), std::move(a9), std::move(a10), std::move(a11), std::move(a12)), &resolve_k_xg_boost_regressor));
 break;
 }
 default: break;
 }
     });
 }
-// datamunge::Tensor::slice(std::size_t axis, std::size_t start, std::size_t stop, std::size_t step = 1) const -> Tensor *
-extern "C" int dm_tensor_slice(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::Tensor::slice", [&] {
+// datamunge::Var::divide_scalar(double scalar) const -> Var
+extern "C" int dm_var_divide_scalar(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::Var::divide_scalar", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::Tensor>(self_id, class_k_tensor, "DM-TENSOR-SLICE-SELF");
-switch (rc::given((record + 8), 3, 4)) {
-case 3: {
-auto a0 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 12)), "DM-TENSOR-SLICE-AXIS");
-auto a1 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 20)), "DM-TENSOR-SLICE-START");
-auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 28)), "DM-TENSOR-SLICE-STOP");
-rc::store<std::uint64_t>((record + 44), rc::borrow<::datamunge::Tensor>(self.slice(std::move(a0), std::move(a1), std::move(a2)), &resolve_k_tensor, rc::keep_of(self_id)));
-break;
-}
-case 4: {
-auto a0 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 12)), "DM-TENSOR-SLICE-AXIS");
-auto a1 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 20)), "DM-TENSOR-SLICE-START");
-auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 28)), "DM-TENSOR-SLICE-STOP");
-auto a3 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 36)), "DM-TENSOR-SLICE-STEP");
-rc::store<std::uint64_t>((record + 44), rc::borrow<::datamunge::Tensor>(self.slice(std::move(a0), std::move(a1), std::move(a2), std::move(a3)), &resolve_k_tensor, rc::keep_of(self_id)));
-break;
-}
-default: break;
-}
-    });
-}
-// datamunge::Tensor::mean_axis(std::size_t axis, bool keepdims = false) const -> Tensor *
-extern "C" int dm_tensor_mean_axis(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::Tensor::mean_axis", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::Tensor>(self_id, class_k_tensor, "DM-TENSOR-MEAN-AXIS-SELF");
-switch (rc::given((record + 8), 1, 2)) {
-case 1: {
-auto a0 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 12)), "DM-TENSOR-MEAN-AXIS-AXIS");
-rc::store<std::uint64_t>((record + 21), rc::borrow<::datamunge::Tensor>(self.mean_axis(std::move(a0)), &resolve_k_tensor, rc::keep_of(self_id)));
-break;
-}
-case 2: {
-auto a0 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 12)), "DM-TENSOR-MEAN-AXIS-AXIS");
-auto a1 = rc::boolean(rc::load<std::uint8_t>((record + 20)), "DM-TENSOR-MEAN-AXIS-KEEPDIMS");
-rc::store<std::uint64_t>((record + 21), rc::borrow<::datamunge::Tensor>(self.mean_axis(std::move(a0), std::move(a1)), &resolve_k_tensor, rc::keep_of(self_id)));
-break;
-}
-default: break;
-}
-    });
-}
-// datamunge::Dual::value() const -> double
-extern "C" int dm_dual_value(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::Dual::value", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::Dual>(self_id, class_k_dual, "DM-DUAL-VALUE-SELF");
-rc::store<double>((record + 8), static_cast<double>(self.value()));
-    });
-}
-// datamunge::Dual::pow(double exponent) const -> Dual
-extern "C" int dm_dual_pow(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::Dual::pow", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::Dual>(self_id, class_k_dual, "DM-DUAL-POW-SELF");
+auto& self = rc::object<::datamunge::Var>(self_id, class_k_var, "DM-VAR-DIVIDE-SCALAR-SELF");
 auto a0 = static_cast<double>(rc::load<double>((record + 8)));
-rc::store<std::uint64_t>((record + 16), rc::adopt<::datamunge::Dual>(std::make_unique<::datamunge::Dual>(self.pow(std::move(a0))), &resolve_k_dual));
+rc::store<std::uint64_t>((record + 16), rc::adopt<::datamunge::Var>(std::make_unique<::datamunge::Var>(self.divide_scalar(std::move(a0))), &resolve_k_var));
     });
 }
-// datamunge::HyperDual::add(const HyperDual & other) const -> HyperDual
-extern "C" int dm_hyper_dual_add(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::HyperDual::add", [&] {
+// datamunge::MLPClassifierSearch::test_rows() const -> std::size_t
+extern "C" int dm_mlp_classifier_search_test_rows(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::MLPClassifierSearch::test_rows", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::HyperDual>(self_id, class_k_hyper_dual, "DM-HYPER-DUAL-ADD-SELF");
-auto& a0 = rc::object<::datamunge::HyperDual>(rc::load<std::uint64_t>((record + 8)), class_k_hyper_dual, "DM-HYPER-DUAL-ADD-OTHER");
-rc::store<std::uint64_t>((record + 16), rc::adopt<::datamunge::HyperDual>(std::make_unique<::datamunge::HyperDual>(self.add(a0)), &resolve_k_hyper_dual));
+auto& self = rc::object<::datamunge::MLPClassifierSearch>(self_id, class_k_mlp_classifier_search, "DM-MLP-CLASSIFIER-SEARCH-TEST-ROWS-SELF");
+rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.test_rows()));
     });
 }
-// datamunge::HyperDual::tan() const -> HyperDual
-extern "C" int dm_hyper_dual_tan(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::HyperDual::tan", [&] {
+// datamunge::cad::Solid::filleted(const std::vector<int> & edges, double radius) const -> Solid
+extern "C" int dm_cad_solid_filleted(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::cad::Solid::filleted", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::HyperDual>(self_id, class_k_hyper_dual, "DM-HYPER-DUAL-TAN-SELF");
-rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::HyperDual>(std::make_unique<::datamunge::HyperDual>(self.tan()), &resolve_k_hyper_dual));
-    });
-}
-// datamunge::Var::log() const -> Var
-extern "C" int dm_var_log(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::Var::log", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::Var>(self_id, class_k_var, "DM-VAR-LOG-SELF");
-rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::Var>(std::make_unique<::datamunge::Var>(self.log()), &resolve_k_var));
-    });
-}
-// static datamunge::cad::Solid::sphere(double radius) -> Solid
-extern "C" int dm_cad_solid_sphere(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::cad::Solid::sphere", [&] {
-auto a0 = static_cast<double>(rc::load<double>(record));
-rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::cad::Solid>(std::make_unique<::datamunge::cad::Solid>(::datamunge::cad::Solid::sphere(std::move(a0))), &resolve_k_cad_solid));
-    });
-}
-// datamunge::cad::Solid::faces() const -> std::vector<int>
-extern "C" int dm_cad_solid_faces(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::cad::Solid::faces", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::cad::Solid>(self_id, class_k_cad_solid, "DM-CAD-SOLID-FACES-SELF");
-rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<int>>(std::make_unique<std::vector<int>>(self.faces()), &resolve_v_vector_int));
-    });
-}
-// datamunge::cad::View::render(const std::string & path) const -> void
-extern "C" int dm_cad_scene_render(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::cad::View::render", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::cad::View>(self_id, class_k_cad_scene, "DM-CAD-SCENE-RENDER-SELF");
-auto a0 = rc::text((record + 8), 256, (record + 8) + 256, "DM-CAD-SCENE-RENDER-PATH");
-self.render(a0);
-    });
-}
-// std::size_t datamunge::fda::SplineSolveOptions::max_iterations (write)
-extern "C" int dm_spline_solve_options_max_iterations_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::fda::SplineSolveOptions::max_iterations", [&] {
-auto& self = rc::object<::datamunge::fda::SplineSolveOptions>(rc::load<std::uint64_t>(record), class_k_spline_solve_options, "DM-SPLINE-SOLVE-OPTIONS-MAX-ITERATIONS-SELF");
-rc::assign(self.max_iterations, rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 8)), "DM-SPLINE-SOLVE-OPTIONS-MAX-ITERATIONS-VALUE"), "DM-SPLINE-SOLVE-OPTIONS-MAX-ITERATIONS-VALUE");
-    });
-}
-// datamunge::fda::TensorBSpline::set_coefficient(const std::vector<int> & index, double value) -> void
-extern "C" int dm_tensor_b_spline_set_coefficient(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::fda::TensorBSpline::set_coefficient", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::fda::TensorBSpline>(self_id, class_k_tensor_b_spline, "DM-TENSOR-B-SPLINE-SET-COEFFICIENT-SELF");
-auto& a0 = rc::object<std::vector<int>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_int, "DM-TENSOR-B-SPLINE-SET-COEFFICIENT-INDEX");
+auto& self = rc::object<::datamunge::cad::Solid>(self_id, class_k_cad_solid, "DM-CAD-SOLID-FILLETED-SELF");
+auto& a0 = rc::object<std::vector<int>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_int, "DM-CAD-SOLID-FILLETED-EDGES");
 auto a1 = static_cast<double>(rc::load<double>((record + 16)));
-self.set_coefficient(a0, std::move(a1));
+rc::store<std::uint64_t>((record + 24), rc::adopt<::datamunge::cad::Solid>(std::make_unique<::datamunge::cad::Solid>(self.filleted(a0, std::move(a1))), &resolve_k_cad_solid));
     });
 }
-// datamunge::fda::detail::OrthantCellTree::child(int cell, int slot) const -> int
-extern "C" int dm_orthant_cell_tree_child(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::fda::detail::OrthantCellTree::child", [&] {
+// datamunge::cad::View::camera(double x, double y, double z, double target_x, double target_y, double target_z) -> void
+extern "C" int dm_cad_scene_camera(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::cad::View::camera", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::fda::detail::OrthantCellTree>(self_id, class_k_orthant_cell_tree, "DM-ORTHANT-CELL-TREE-CHILD-SELF");
-auto a0 = rc::integer<int>(rc::load<std::int32_t>((record + 8)), "DM-ORTHANT-CELL-TREE-CHILD-CELL");
-auto a1 = rc::integer<int>(rc::load<std::int32_t>((record + 12)), "DM-ORTHANT-CELL-TREE-CHILD-SLOT");
-rc::store<std::int32_t>((record + 16), static_cast<std::int32_t>(self.child(std::move(a0), std::move(a1))));
+auto& self = rc::object<::datamunge::cad::View>(self_id, class_k_cad_scene, "DM-CAD-SCENE-CAMERA-SELF");
+auto a0 = static_cast<double>(rc::load<double>((record + 8)));
+auto a1 = static_cast<double>(rc::load<double>((record + 16)));
+auto a2 = static_cast<double>(rc::load<double>((record + 24)));
+auto a3 = static_cast<double>(rc::load<double>((record + 32)));
+auto a4 = static_cast<double>(rc::load<double>((record + 40)));
+auto a5 = static_cast<double>(rc::load<double>((record + 48)));
+self.camera(std::move(a0), std::move(a1), std::move(a2), std::move(a3), std::move(a4), std::move(a5));
     });
 }
-// datamunge::fda::HierarchicalBSpline::dimensions() const -> std::size_t
-extern "C" int dm_hierarchical_b_spline_dimensions(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::fda::HierarchicalBSpline::dimensions", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::fda::HierarchicalBSpline>(self_id, class_k_hierarchical_b_spline, "DM-HIERARCHICAL-B-SPLINE-DIMENSIONS-SELF");
-rc::store<std::uint64_t>((record + 8), static_cast<std::uint64_t>(self.dimensions()));
+// BSplineBasis datamunge::fda::BSplineRefinement::basis (write)
+extern "C" int dm_b_spline_refinement_basis_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::fda::BSplineRefinement::basis", [&] {
+auto& self = rc::object<::datamunge::fda::BSplineRefinement>(rc::load<std::uint64_t>(record), class_k_b_spline_refinement, "DM-B-SPLINE-REFINEMENT-BASIS-SELF");
+rc::assign(self.basis, rc::object<::datamunge::fda::BSplineBasis>(rc::load<std::uint64_t>((record + 8)), class_k_b_spline_basis, "DM-B-SPLINE-REFINEMENT-BASIS-VALUE"), "DM-B-SPLINE-REFINEMENT-BASIS-VALUE");
     });
 }
-// datamunge::fda::HierarchicalBSpline::clear_spline(int cell) -> void
-extern "C" int dm_hierarchical_b_spline_clear_spline(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::fda::HierarchicalBSpline::clear_spline", [&] {
+// datamunge::fda::TensorBSpline::evaluate(const std::vector<double> & point) const -> double
+extern "C" int dm_tensor_b_spline_evaluate_vector_double(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::fda::TensorBSpline::evaluate", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::fda::HierarchicalBSpline>(self_id, class_k_hierarchical_b_spline, "DM-HIERARCHICAL-B-SPLINE-CLEAR-SPLINE-SELF");
-auto a0 = rc::integer<int>(rc::load<std::int32_t>((record + 8)), "DM-HIERARCHICAL-B-SPLINE-CLEAR-SPLINE-CELL");
-self.clear_spline(std::move(a0));
-    });
-}
-// datamunge::fda::TruncatedHierarchicalBSpline::cell_count() const -> int
-extern "C" int dm_truncated_hierarchical_b_spline_cell_count(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::fda::TruncatedHierarchicalBSpline::cell_count", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::fda::TruncatedHierarchicalBSpline>(self_id, class_k_truncated_hierarchical_b_spline, "DM-TRUNCATED-HIERARCHICAL-B-SPLINE-CELL-COUNT-SELF");
-rc::store<std::int32_t>((record + 8), static_cast<std::int32_t>(self.cell_count()));
-    });
-}
-// datamunge::fda::TruncatedHierarchicalBSpline::subdivide(int cell) -> std::vector<int>
-extern "C" int dm_truncated_hierarchical_b_spline_subdivide(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::fda::TruncatedHierarchicalBSpline::subdivide", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::fda::TruncatedHierarchicalBSpline>(self_id, class_k_truncated_hierarchical_b_spline, "DM-TRUNCATED-HIERARCHICAL-B-SPLINE-SUBDIVIDE-SELF");
-auto a0 = rc::integer<int>(rc::load<std::int32_t>((record + 8)), "DM-TRUNCATED-HIERARCHICAL-B-SPLINE-SUBDIVIDE-CELL");
-rc::store<std::uint64_t>((record + 12), rc::adopt<std::vector<int>>(std::make_unique<std::vector<int>>(self.subdivide(std::move(a0))), &resolve_v_vector_int));
-    });
-}
-// datamunge::fda::TruncatedHierarchicalBSpline::evaluate(const std::vector<double> & point) const -> double
-extern "C" int dm_truncated_hierarchical_b_spline_evaluate(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::fda::TruncatedHierarchicalBSpline::evaluate", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::fda::TruncatedHierarchicalBSpline>(self_id, class_k_truncated_hierarchical_b_spline, "DM-TRUNCATED-HIERARCHICAL-B-SPLINE-EVALUATE-SELF");
-auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_double, "DM-TRUNCATED-HIERARCHICAL-B-SPLINE-EVALUATE-POINT");
+auto& self = rc::object<::datamunge::fda::TensorBSpline>(self_id, class_k_tensor_b_spline, "DM-TENSOR-B-SPLINE-EVALUATE-VECTOR-DOUBLE-SELF");
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_double, "DM-TENSOR-B-SPLINE-EVALUATE-VECTOR-DOUBLE-POINT");
 rc::store<double>((record + 16), static_cast<double>(self.evaluate(a0)));
     });
 }
-// static datamunge::nn::NnTensor::load_npy(const std::string & path) -> NnTensor
-extern "C" int dm_nn_tensor_load_npy(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::nn::NnTensor::load_npy", [&] {
-auto a0 = rc::text(record, 256, record + 256, "DM-NN-TENSOR-LOAD-NPY-PATH");
-rc::store<std::uint64_t>((record + 260), rc::adopt<::datamunge::nn::NnTensor>(std::make_unique<::datamunge::nn::NnTensor>(::datamunge::nn::NnTensor::load_npy(a0)), &resolve_k_nn_tensor));
+// datamunge::fda::detail::OrthantCellTree::is_leaf(int cell) const -> bool
+extern "C" int dm_orthant_cell_tree_is_leaf(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::fda::detail::OrthantCellTree::is_leaf", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::fda::detail::OrthantCellTree>(self_id, class_k_orthant_cell_tree, "DM-ORTHANT-CELL-TREE-IS-LEAF-SELF");
+auto a0 = rc::integer<int>(rc::load<std::int32_t>((record + 8)), "DM-ORTHANT-CELL-TREE-IS-LEAF-CELL");
+rc::store<std::uint8_t>((record + 12), (self.is_leaf(std::move(a0))) ? 1 : 0);
     });
 }
-// datamunge::nn::NnTensor::shape() const -> std::vector<int>
-extern "C" int dm_nn_tensor_shape(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::nn::NnTensor::shape", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::nn::NnTensor>(self_id, class_k_nn_tensor, "DM-NN-TENSOR-SHAPE-SELF");
-rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<int>>(std::make_unique<std::vector<int>>(self.shape()), &resolve_v_vector_int));
+// datamunge::fda::HierarchicalBSpline::HierarchicalBSpline(std::vector<double> domain_min, std::vector<double> domain_max) -> HIERARCHICAL-B-SPLINE handle
+extern "C" int dm_hierarchical_b_spline_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::fda::HierarchicalBSpline::HierarchicalBSpline", [&] {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>(record), class_v_vector_double, "DM-HIERARCHICAL-B-SPLINE-NEW-DOMAIN-MIN");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_double, "DM-HIERARCHICAL-B-SPLINE-NEW-DOMAIN-MAX");
+rc::store<std::uint64_t>((record + 16), rc::adopt<::datamunge::fda::HierarchicalBSpline>(std::make_unique<::datamunge::fda::HierarchicalBSpline>(a0, a1), &resolve_k_hierarchical_b_spline));
     });
 }
-// datamunge::nn::NnTensor::slice(int axis, int start, int stop) const -> NnTensor
-extern "C" int dm_nn_tensor_slice(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::nn::NnTensor::slice", [&] {
+// datamunge::fda::HierarchicalBSpline::refine_region(const std::vector<double> & region_min, const std::vector<double> & region_max, int depth, const SplineFactory & factory) -> void
+extern "C" int dm_hierarchical_b_spline_refine_region_vector_dou_pvm8l(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::fda::HierarchicalBSpline::refine_region", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::nn::NnTensor>(self_id, class_k_nn_tensor, "DM-NN-TENSOR-SLICE-SELF");
-auto a0 = rc::integer<int>(rc::load<std::int32_t>((record + 8)), "DM-NN-TENSOR-SLICE-AXIS");
-auto a1 = rc::integer<int>(rc::load<std::int32_t>((record + 12)), "DM-NN-TENSOR-SLICE-START");
-auto a2 = rc::integer<int>(rc::load<std::int32_t>((record + 16)), "DM-NN-TENSOR-SLICE-STOP");
-rc::store<std::uint64_t>((record + 20), rc::adopt<::datamunge::nn::NnTensor>(std::make_unique<::datamunge::nn::NnTensor>(self.slice(std::move(a0), std::move(a1), std::move(a2))), &resolve_k_nn_tensor));
+auto& self = rc::object<::datamunge::fda::HierarchicalBSpline>(self_id, class_k_hierarchical_b_spline, "DM-HIERARCHICAL-B-SPLINE-REFINE-REGION-VECTOR-DOU-PVM8L-SELF");
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_double, "DM-HRRCHCL-B-SPLN-RFN-RGN-VECTOR-DOU-PVM8L-REGION-MIN");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 16)), class_v_vector_double, "DM-HRRCHCL-B-SPLN-RFN-RGN-VECTOR-DOU-PVM8L-REGION-MAX");
+auto a2 = rc::integer<int>(rc::load<std::int32_t>((record + 24)), "DM-HRRCHCL-B-SPLN-REFINE-REGION-VECTOR-DOU-PVM8L-DEPTH");
+auto a3 = callback_36(rc::program_of((record + 28)));
+self.refine_region(a0, a1, std::move(a2), a3);
     });
 }
-// datamunge::nn::NnTensor::tanh() const -> NnTensor
-extern "C" int dm_nn_tensor_tanh(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::nn::NnTensor::tanh", [&] {
+// datamunge::fda::TruncatedHierarchicalBSpline::is_active(int level, const std::vector<int> & index) const -> bool
+extern "C" int dm_truncated_hierarchical_b_spline_is_active(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::fda::TruncatedHierarchicalBSpline::is_active", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::nn::NnTensor>(self_id, class_k_nn_tensor, "DM-NN-TENSOR-TANH-SELF");
-rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::nn::NnTensor>(std::make_unique<::datamunge::nn::NnTensor>(self.tanh()), &resolve_k_nn_tensor));
+auto& self = rc::object<::datamunge::fda::TruncatedHierarchicalBSpline>(self_id, class_k_truncated_hierarchical_b_spline, "DM-TRUNCATED-HIERARCHICAL-B-SPLINE-IS-ACTIVE-SELF");
+auto a0 = rc::integer<int>(rc::load<std::int32_t>((record + 8)), "DM-TRUNCATED-HIERARCHICAL-B-SPLINE-IS-ACTIVE-LEVEL");
+auto& a1 = rc::object<std::vector<int>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_int, "DM-TRUNCATED-HIERARCHICAL-B-SPLINE-IS-ACTIVE-INDEX");
+rc::store<std::uint8_t>((record + 20), (self.is_active(std::move(a0), a1)) ? 1 : 0);
     });
 }
-// datamunge::nn::NnTensor::set_requires_grad(bool requires_grad = true) -> void
-extern "C" int dm_nn_tensor_set_requires_grad(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::nn::NnTensor::set_requires_grad", [&] {
+// datamunge::fda::TruncatedHierarchicalBSpline::evaluate_points(const std::vector<std::vector<double>> & points) const -> std::vector<double>
+extern "C" int dm_truncated_hierarchical_b_spline_evaluate_points(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::fda::TruncatedHierarchicalBSpline::evaluate_points", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::nn::NnTensor>(self_id, class_k_nn_tensor, "DM-NN-TENSOR-SET-REQUIRES-GRAD-SELF");
-switch (rc::given((record + 8), 0, 1)) {
+auto& self = rc::object<::datamunge::fda::TruncatedHierarchicalBSpline>(self_id, class_k_truncated_hierarchical_b_spline, "DM-TRUNCATED-HIERARCHICAL-B-SPLINE-EVALUATE-POINTS-SELF");
+auto& a0 = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_vector_double, "DM-TRNCTD-HIERARCHICAL-B-SPLINE-EVALUATE-POINTS-POINTS");
+rc::store<std::uint64_t>((record + 16), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(self.evaluate_points(a0)), &resolve_v_vector_double));
+    });
+}
+// datamunge::nn::NnTensor::defined() const -> bool
+extern "C" int dm_nn_tensor_defined(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::nn::NnTensor::defined", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::nn::NnTensor>(self_id, class_k_nn_tensor, "DM-NN-TENSOR-DEFINED-SELF");
+rc::store<std::uint8_t>((record + 8), (self.defined()) ? 1 : 0);
+    });
+}
+// datamunge::nn::NnTensor::item() const -> double
+extern "C" int dm_nn_tensor_item(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::nn::NnTensor::item", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::nn::NnTensor>(self_id, class_k_nn_tensor, "DM-NN-TENSOR-ITEM-SELF");
+rc::store<double>((record + 8), static_cast<double>(self.item()));
+    });
+}
+// datamunge::nn::NnTensor::mul(const NnTensor & other) const -> NnTensor
+extern "C" int dm_nn_tensor_mul(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::nn::NnTensor::mul", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::nn::NnTensor>(self_id, class_k_nn_tensor, "DM-NN-TENSOR-MUL-SELF");
+auto& a0 = rc::object<::datamunge::nn::NnTensor>(rc::load<std::uint64_t>((record + 8)), class_k_nn_tensor, "DM-NN-TENSOR-MUL-OTHER");
+rc::store<std::uint64_t>((record + 16), rc::adopt<::datamunge::nn::NnTensor>(std::make_unique<::datamunge::nn::NnTensor>(self.mul(a0)), &resolve_k_nn_tensor));
+    });
+}
+// datamunge::nn::NnTensor::sqrt() const -> NnTensor
+extern "C" int dm_nn_tensor_sqrt(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::nn::NnTensor::sqrt", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::nn::NnTensor>(self_id, class_k_nn_tensor, "DM-NN-TENSOR-SQRT-SELF");
+rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::nn::NnTensor>(std::make_unique<::datamunge::nn::NnTensor>(self.sqrt()), &resolve_k_nn_tensor));
+    });
+}
+// datamunge::nn::NnTensor::min(const std::vector<int> & axes = {}, bool keepdims = false) const -> NnTensor
+extern "C" int dm_nn_tensor_min(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::nn::NnTensor::min", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::nn::NnTensor>(self_id, class_k_nn_tensor, "DM-NN-TENSOR-MIN-SELF");
+switch (rc::given((record + 8), 0, 2)) {
 case 0: {
-self.set_requires_grad();
+rc::store<std::uint64_t>((record + 21), rc::adopt<::datamunge::nn::NnTensor>(std::make_unique<::datamunge::nn::NnTensor>(self.min()), &resolve_k_nn_tensor));
 break;
 }
 case 1: {
-auto a0 = rc::boolean(rc::load<std::uint8_t>((record + 12)), "DM-NN-TENSOR-SET-REQUIRES-GRAD-REQUIRES-GRAD");
-self.set_requires_grad(std::move(a0));
+auto& a0 = rc::object<std::vector<int>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_int, "DM-NN-TENSOR-MIN-AXES");
+rc::store<std::uint64_t>((record + 21), rc::adopt<::datamunge::nn::NnTensor>(std::make_unique<::datamunge::nn::NnTensor>(self.min(a0)), &resolve_k_nn_tensor));
+break;
+}
+case 2: {
+auto& a0 = rc::object<std::vector<int>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_int, "DM-NN-TENSOR-MIN-AXES");
+auto a1 = rc::boolean(rc::load<std::uint8_t>((record + 20)), "DM-NN-TENSOR-MIN-KEEPDIMS");
+rc::store<std::uint64_t>((record + 21), rc::adopt<::datamunge::nn::NnTensor>(std::make_unique<::datamunge::nn::NnTensor>(self.min(a0, std::move(a1))), &resolve_k_nn_tensor));
 break;
 }
 default: break;
 }
     });
 }
-// datamunge::nn::NnModel::add_dropout(double rate) -> void
-extern "C" int dm_nn_model_add_dropout(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::nn::NnModel::add_dropout", [&] {
+// datamunge::nn::NnModel::set_optimizer(const std::string & kind = "adam", double learning_rate = 0.001) -> void
+extern "C" int dm_nn_model_set_optimizer(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::nn::NnModel::set_optimizer", [&] {
 const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::nn::NnModel>(self_id, class_k_nn_model, "DM-NN-MODEL-ADD-DROPOUT-SELF");
-auto a0 = static_cast<double>(rc::load<double>((record + 8)));
-self.add_dropout(std::move(a0));
-    });
+auto& self = rc::object<::datamunge::nn::NnModel>(self_id, class_k_nn_model, "DM-NN-MODEL-SET-OPTIMIZER-SELF");
+switch (rc::given((record + 8), 0, 2)) {
+case 0: {
+self.set_optimizer();
+break;
 }
-// datamunge::nn::NnModel::predict(const NnTensor & x) -> NnTensor
-extern "C" int dm_nn_model_predict(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::nn::NnModel::predict", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::nn::NnModel>(self_id, class_k_nn_model, "DM-NN-MODEL-PREDICT-SELF");
-auto& a0 = rc::object<::datamunge::nn::NnTensor>(rc::load<std::uint64_t>((record + 8)), class_k_nn_tensor, "DM-NN-MODEL-PREDICT-X");
-rc::store<std::uint64_t>((record + 16), rc::adopt<::datamunge::nn::NnTensor>(std::make_unique<::datamunge::nn::NnTensor>(self.predict(a0)), &resolve_k_nn_tensor));
-    });
-}
-// std::vector<std::uint8_t> datamunge::sim::TaskOutput::terminated (read)
-extern "C" int dm_task_output_terminated_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::sim::TaskOutput::terminated", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::sim::TaskOutput>(self_id, class_k_task_output, "DM-TASK-OUTPUT-TERMINATED-SELF");
-rc::store<std::uint64_t>((record + 8), rc::borrow<std::vector<unsigned char>>(&(self.terminated), &resolve_v_vector_uchar, rc::keep_of(self_id)));
-    });
-}
-// datamunge::dstruct::DirectedGraph<std::string>::DirectedGraph<std::string>(const std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>> & vertices) -> DIRECTED-GRAPH handle
-extern "C" int dm_directed_graph_new_vector_string(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::dstruct::DirectedGraph<std::string>::DirectedGraph<std::string>", [&] {
-auto& a0 = rc::object<std::vector<std::__cxx11::basic_string<char>>>(rc::load<std::uint64_t>(record), class_v_vector_string, "DM-DIRECTED-GRAPH-NEW-VECTOR-STRING-VERTICES");
-rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::dstruct::DirectedGraph<std::string>>(std::make_unique<::datamunge::dstruct::DirectedGraph<std::string>>(a0), &resolve_k_directed_graph));
-    });
-}
-// datamunge::dstruct::DirectedGraph<std::string>::contains_path(const std::basic_string<char> & src, const std::basic_string<char> & dst) const -> bool
-extern "C" int dm_directed_graph_contains_path(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::dstruct::DirectedGraph<std::string>::contains_path", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::dstruct::DirectedGraph<std::string>>(self_id, class_k_directed_graph, "DM-DIRECTED-GRAPH-CONTAINS-PATH-SELF");
-auto a0 = rc::text((record + 8), 256, (record + 8) + 256, "DM-DIRECTED-GRAPH-CONTAINS-PATH-SRC");
-auto a1 = rc::text((record + 268), 256, (record + 268) + 256, "DM-DIRECTED-GRAPH-CONTAINS-PATH-DST");
-rc::store<std::uint8_t>((record + 528), (self.contains_path(a0, a1)) ? 1 : 0);
-    });
-}
-// datamunge::dstruct::UndirectedGraph<std::string>::neighbors(const std::basic_string<char> & vertex) const -> std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>>
-extern "C" int dm_undirected_graph_neighbors(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::dstruct::UndirectedGraph<std::string>::neighbors", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::dstruct::UndirectedGraph<std::string>>(self_id, class_k_undirected_graph, "DM-UNDIRECTED-GRAPH-NEIGHBORS-SELF");
-auto a0 = rc::text((record + 8), 256, (record + 8) + 256, "DM-UNDIRECTED-GRAPH-NEIGHBORS-VERTEX");
-rc::store<std::uint64_t>((record + 268), rc::adopt<std::vector<std::__cxx11::basic_string<char>>>(std::make_unique<std::vector<std::__cxx11::basic_string<char>>>(self.neighbors(a0)), &resolve_v_vector_string));
-    });
-}
-// datamunge::dstruct::WeightedGraph<std::string, double>::remove_edge(const std::basic_string<char> & src, const std::basic_string<char> & dst) -> bool
-extern "C" int dm_weighted_graph_remove_edge(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::dstruct::WeightedGraph<std::string, double>::remove_edge", [&] {
-const auto self_id = rc::load<std::uint64_t>(record);
-auto& self = rc::object<::datamunge::dstruct::WeightedGraph<std::string, double>>(self_id, class_k_weighted_graph, "DM-WEIGHTED-GRAPH-REMOVE-EDGE-SELF");
-auto a0 = rc::text((record + 8), 256, (record + 8) + 256, "DM-WEIGHTED-GRAPH-REMOVE-EDGE-SRC");
-auto a1 = rc::text((record + 268), 256, (record + 268) + 256, "DM-WEIGHTED-GRAPH-REMOVE-EDGE-DST");
-rc::store<std::uint8_t>((record + 528), (self.remove_edge(a0, a1)) ? 1 : 0);
-    });
-}
-// datamunge::algebra::detail::adaptive_simpson_recurse(const Expr & f, const std::string & var, double a, double b, double whole, double tol, int depth) -> double
-extern "C" int dm_adaptive_simpson_recurse(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::algebra::detail::adaptive_simpson_recurse", [&] {
-auto& a0 = rc::object<::datamunge::algebra::Expr>(rc::load<std::uint64_t>(record), class_k_expr, "DM-ADAPTIVE-SIMPSON-RECURSE-F");
-auto a1 = rc::text((record + 8), 256, (record + 8) + 256, "DM-ADAPTIVE-SIMPSON-RECURSE-VAR");
-auto a2 = static_cast<double>(rc::load<double>((record + 268)));
-auto a3 = static_cast<double>(rc::load<double>((record + 276)));
-auto a4 = static_cast<double>(rc::load<double>((record + 284)));
-auto a5 = static_cast<double>(rc::load<double>((record + 292)));
-auto a6 = rc::integer<int>(rc::load<std::int32_t>((record + 300)), "DM-ADAPTIVE-SIMPSON-RECURSE-DEPTH");
-rc::store<double>((record + 304), static_cast<double>(::datamunge::algebra::detail::adaptive_simpson_recurse(a0, a1, std::move(a2), std::move(a3), std::move(a4), std::move(a5), std::move(a6))));
-    });
-}
-// datamunge::algebra::rational_roots(const Polynomial & p, double tolerance = 1.0000000000000001E-9) -> std::vector<double>
-extern "C" int dm_rational_roots(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::algebra::rational_roots", [&] {
-switch (rc::given(record, 1, 2)) {
 case 1: {
-auto& a0 = rc::object<::datamunge::algebra::Polynomial>(rc::load<std::uint64_t>((record + 4)), class_k_polynomial, "DM-RATIONAL-ROOTS-P");
-rc::store<std::uint64_t>((record + 20), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(::datamunge::algebra::rational_roots(a0)), &resolve_v_vector_double));
+auto a0 = rc::text((record + 12), 256, (record + 12) + 256, "DM-NN-MODEL-SET-OPTIMIZER-KIND");
+self.set_optimizer(a0);
 break;
 }
 case 2: {
-auto& a0 = rc::object<::datamunge::algebra::Polynomial>(rc::load<std::uint64_t>((record + 4)), class_k_polynomial, "DM-RATIONAL-ROOTS-P");
-auto a1 = static_cast<double>(rc::load<double>((record + 12)));
-rc::store<std::uint64_t>((record + 20), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(::datamunge::algebra::rational_roots(a0, std::move(a1))), &resolve_v_vector_double));
+auto a0 = rc::text((record + 12), 256, (record + 12) + 256, "DM-NN-MODEL-SET-OPTIMIZER-KIND");
+auto a1 = static_cast<double>(rc::load<double>((record + 272)));
+self.set_optimizer(a0, std::move(a1));
 break;
 }
 default: break;
 }
     });
 }
-// datamunge::algebra::detail::berlekamp_null_space(const GfPoly & f, long long p) -> std::vector<GfPoly>
-extern "C" int dm_berlekamp_null_space(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::algebra::detail::berlekamp_null_space", [&] {
-auto& a0 = rc::object<std::vector<long long>>(rc::load<std::uint64_t>(record), class_v_vector_llong, "DM-BERLEKAMP-NULL-SPACE-F");
-auto a1 = rc::integer<long long>(rc::load<std::int64_t>((record + 8)), "DM-BERLEKAMP-NULL-SPACE-P");
-rc::store<std::uint64_t>((record + 16), rc::adopt<std::vector<std::vector<long long>>>(std::make_unique<std::vector<std::vector<long long>>>(::datamunge::algebra::detail::berlekamp_null_space(a0, std::move(a1))), &resolve_v_vector_vector_llong));
-    });
-}
-// datamunge::cv::dog_blobs(const image::Image & img, int num_scales = 4, double sigma0 = 1.6000000000000001, double threshold = 3.0) -> std::vector<KeyPoint>
-extern "C" int dm_dog_blobs(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::cv::dog_blobs", [&] {
-switch (rc::given(record, 1, 4)) {
+// datamunge::sim::TaskBatch::step(const std::vector<double> & actions, const std::vector<std::uint8_t> & mask = {}) -> const TaskOutput &
+extern "C" int dm_task_batch_step(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::sim::TaskBatch::step", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::sim::TaskBatch>(self_id, class_k_task_batch, "DM-TASK-BATCH-STEP-SELF");
+switch (rc::given((record + 8), 1, 2)) {
 case 1: {
-auto& a0 = rc::object<::datamunge::image::Image>(rc::load<std::uint64_t>((record + 4)), class_k_image, "DM-DOG-BLOBS-IMG");
-rc::store<std::uint64_t>((record + 32), rc::adopt<std::vector<datamunge::cv::KeyPoint>>(std::make_unique<std::vector<datamunge::cv::KeyPoint>>(::datamunge::cv::dog_blobs(a0)), &resolve_v_vector_key_point));
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-TASK-BATCH-STEP-ACTIONS");
+rc::store<std::uint64_t>((record + 28), rc::adopt<::datamunge::sim::TaskOutput>(std::make_unique<::datamunge::sim::TaskOutput>(self.step(a0)), &resolve_k_task_output));
 break;
 }
 case 2: {
-auto& a0 = rc::object<::datamunge::image::Image>(rc::load<std::uint64_t>((record + 4)), class_k_image, "DM-DOG-BLOBS-IMG");
-auto a1 = rc::integer<int>(rc::load<std::int32_t>((record + 12)), "DM-DOG-BLOBS-NUM-SCALES");
-rc::store<std::uint64_t>((record + 32), rc::adopt<std::vector<datamunge::cv::KeyPoint>>(std::make_unique<std::vector<datamunge::cv::KeyPoint>>(::datamunge::cv::dog_blobs(a0, std::move(a1))), &resolve_v_vector_key_point));
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-TASK-BATCH-STEP-ACTIONS");
+auto& a1 = rc::object<std::vector<unsigned char>>(rc::load<std::uint64_t>((record + 20)), class_v_vector_uchar, "DM-TASK-BATCH-STEP-MASK");
+rc::store<std::uint64_t>((record + 28), rc::adopt<::datamunge::sim::TaskOutput>(std::make_unique<::datamunge::sim::TaskOutput>(self.step(a0, a1)), &resolve_k_task_output));
+break;
+}
+default: break;
+}
+    });
+}
+// datamunge::dstruct::UndirectedGraph<std::string>::UndirectedGraph<std::string>(const std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>> & vertices) -> UNDIRECTED-GRAPH handle
+extern "C" int dm_undirected_graph_new_vector_string(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::dstruct::UndirectedGraph<std::string>::UndirectedGraph<std::string>", [&] {
+auto& a0 = rc::object<std::vector<std::__cxx11::basic_string<char>>>(rc::load<std::uint64_t>(record), class_v_vector_string, "DM-UNDIRECTED-GRAPH-NEW-VECTOR-STRING-VERTICES");
+rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::dstruct::UndirectedGraph<std::string>>(std::make_unique<::datamunge::dstruct::UndirectedGraph<std::string>>(a0), &resolve_k_undirected_graph));
+    });
+}
+// datamunge::dstruct::UndirectedGraph<std::string>::connected_components() const -> std::vector<std::vector<std::basic_string<char, std::char_traits<char>, std::allocator<char>>>>
+extern "C" int dm_undirected_graph_connected_components(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::dstruct::UndirectedGraph<std::string>::connected_components", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::dstruct::UndirectedGraph<std::string>>(self_id, class_k_undirected_graph, "DM-UNDIRECTED-GRAPH-CONNECTED-COMPONENTS-SELF");
+rc::store<std::uint64_t>((record + 8), rc::adopt<std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>>>(std::make_unique<std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>>>(self.connected_components()), &resolve_v_vector_vector_string));
+    });
+}
+// datamunge::dstruct::WeightedGraph<std::string, double>::bellman_ford_distances(const std::basic_string<char> & source) const -> std::vector<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char>>, double>>
+extern "C" int dm_weighted_graph_bellman_ford_distances(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::dstruct::WeightedGraph<std::string, double>::bellman_ford_distances", [&] {
+const auto self_id = rc::load<std::uint64_t>(record);
+auto& self = rc::object<::datamunge::dstruct::WeightedGraph<std::string, double>>(self_id, class_k_weighted_graph, "DM-WEIGHTED-GRAPH-BELLMAN-FORD-DISTANCES-SELF");
+auto a0 = rc::text((record + 8), 256, (record + 8) + 256, "DM-WEIGHTED-GRAPH-BELLMAN-FORD-DISTANCES-SOURCE");
+rc::store<std::uint64_t>((record + 268), rc::adopt<std::vector<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>, double>>>(std::make_unique<std::vector<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>, double>>>(self.bellman_ford_distances(a0)), &resolve_v_vector_pair_string_double));
+    });
+}
+// datamunge::algebra::isolate_real_roots(const Polynomial & p) -> RealRootIntervals
+extern "C" int dm_isolate_real_roots(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::algebra::isolate_real_roots", [&] {
+auto& a0 = rc::object<::datamunge::algebra::Polynomial>(rc::load<std::uint64_t>(record), class_k_polynomial, "DM-ISOLATE-REAL-ROOTS-P");
+rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::algebra::RealRootIntervals>(std::make_unique<::datamunge::algebra::RealRootIntervals>(::datamunge::algebra::isolate_real_roots(a0)), &resolve_k_real_root_intervals));
+    });
+}
+// datamunge::algebra::detail::total_degree(const std::vector<int> & exponents) -> int
+extern "C" int dm_total_degree(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::algebra::detail::total_degree", [&] {
+auto& a0 = rc::object<std::vector<int>>(rc::load<std::uint64_t>(record), class_v_vector_int, "DM-TOTAL-DEGREE-EXPONENTS");
+rc::store<std::int32_t>((record + 8), static_cast<std::int32_t>(::datamunge::algebra::detail::total_degree(a0)));
+    });
+}
+// datamunge::algebra::newton_interpolate(const std::vector<double> & xs, const std::vector<double> & ys) -> Polynomial
+extern "C" int dm_newton_interpolate(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::algebra::newton_interpolate", [&] {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>(record), class_v_vector_double, "DM-NEWTON-INTERPOLATE-XS");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_double, "DM-NEWTON-INTERPOLATE-YS");
+rc::store<std::uint64_t>((record + 16), rc::adopt<::datamunge::algebra::Polynomial>(std::make_unique<::datamunge::algebra::Polynomial>(::datamunge::algebra::newton_interpolate(a0, a1)), &resolve_k_polynomial));
+    });
+}
+// datamunge::algebra::detail::determinant(std::vector<std::vector<double>> mat) -> double
+extern "C" int dm_determinant(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::algebra::detail::determinant", [&] {
+auto& a0 = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>(record), class_v_vector_vector_double, "DM-DETERMINANT-MAT");
+rc::store<double>((record + 8), static_cast<double>(::datamunge::algebra::detail::determinant(a0)));
+    });
+}
+// datamunge::bayes::hmc_proposal(optim::DifferentiableFunction & log_posterior, const std::vector<double> & position, const std::vector<double> & momentum, double step_size, std::size_t num_steps) -> HMCProposal
+extern "C" int dm_hmc_proposal_2(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::bayes::hmc_proposal", [&] {
+auto& a0 = rc::object<::datamunge::optim::DifferentiableFunction>(rc::load<std::uint64_t>(record), class_k_differentiable_function, "DM-HMC-PROPOSAL-2-LOG-POSTERIOR");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_double, "DM-HMC-PROPOSAL-2-POSITION");
+auto& a2 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 16)), class_v_vector_double, "DM-HMC-PROPOSAL-2-MOMENTUM");
+auto a3 = static_cast<double>(rc::load<double>((record + 24)));
+auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 32)), "DM-HMC-PROPOSAL-2-NUM-STEPS");
+rc::store<std::uint64_t>((record + 40), rc::adopt<::datamunge::bayes::HMCProposal>(std::make_unique<::datamunge::bayes::HMCProposal>(::datamunge::bayes::hmc_proposal(a0, a1, a2, std::move(a3), std::move(a4))), &resolve_k_hmc_proposal));
+    });
+}
+// datamunge::cv::morphological_close(const image::Image & img, StructuringElement se = Square, int radius = 1) -> image::Image
+extern "C" int dm_morphological_close(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::cv::morphological_close", [&] {
+switch (rc::given(record, 1, 3)) {
+case 1: {
+auto& a0 = rc::object<::datamunge::image::Image>(rc::load<std::uint64_t>((record + 4)), class_k_image, "DM-MORPHOLOGICAL-CLOSE-IMG");
+rc::store<std::uint64_t>((record + 20), rc::adopt<::datamunge::image::Image>(std::make_unique<::datamunge::image::Image>(::datamunge::cv::morphological_close(a0)), &resolve_k_image));
+break;
+}
+case 2: {
+auto& a0 = rc::object<::datamunge::image::Image>(rc::load<std::uint64_t>((record + 4)), class_k_image, "DM-MORPHOLOGICAL-CLOSE-IMG");
+auto a1 = enum_structuring_element(rc::load<std::int32_t>((record + 12)), "DM-MORPHOLOGICAL-CLOSE-SE");
+rc::store<std::uint64_t>((record + 20), rc::adopt<::datamunge::image::Image>(std::make_unique<::datamunge::image::Image>(::datamunge::cv::morphological_close(a0, std::move(a1))), &resolve_k_image));
 break;
 }
 case 3: {
-auto& a0 = rc::object<::datamunge::image::Image>(rc::load<std::uint64_t>((record + 4)), class_k_image, "DM-DOG-BLOBS-IMG");
-auto a1 = rc::integer<int>(rc::load<std::int32_t>((record + 12)), "DM-DOG-BLOBS-NUM-SCALES");
-auto a2 = static_cast<double>(rc::load<double>((record + 16)));
-rc::store<std::uint64_t>((record + 32), rc::adopt<std::vector<datamunge::cv::KeyPoint>>(std::make_unique<std::vector<datamunge::cv::KeyPoint>>(::datamunge::cv::dog_blobs(a0, std::move(a1), std::move(a2))), &resolve_v_vector_key_point));
-break;
-}
-case 4: {
-auto& a0 = rc::object<::datamunge::image::Image>(rc::load<std::uint64_t>((record + 4)), class_k_image, "DM-DOG-BLOBS-IMG");
-auto a1 = rc::integer<int>(rc::load<std::int32_t>((record + 12)), "DM-DOG-BLOBS-NUM-SCALES");
-auto a2 = static_cast<double>(rc::load<double>((record + 16)));
-auto a3 = static_cast<double>(rc::load<double>((record + 24)));
-rc::store<std::uint64_t>((record + 32), rc::adopt<std::vector<datamunge::cv::KeyPoint>>(std::make_unique<std::vector<datamunge::cv::KeyPoint>>(::datamunge::cv::dog_blobs(a0, std::move(a1), std::move(a2), std::move(a3))), &resolve_v_vector_key_point));
+auto& a0 = rc::object<::datamunge::image::Image>(rc::load<std::uint64_t>((record + 4)), class_k_image, "DM-MORPHOLOGICAL-CLOSE-IMG");
+auto a1 = enum_structuring_element(rc::load<std::int32_t>((record + 12)), "DM-MORPHOLOGICAL-CLOSE-SE");
+auto a2 = rc::integer<int>(rc::load<std::int32_t>((record + 16)), "DM-MORPHOLOGICAL-CLOSE-RADIUS");
+rc::store<std::uint64_t>((record + 20), rc::adopt<::datamunge::image::Image>(std::make_unique<::datamunge::image::Image>(::datamunge::cv::morphological_close(a0, std::move(a1), std::move(a2))), &resolve_k_image));
 break;
 }
 default: break;
 }
     });
 }
-// datamunge::image::flip_vertical(const Image & src) -> Image
-extern "C" int dm_flip_vertical(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::image::flip_vertical", [&] {
-auto& a0 = rc::object<::datamunge::image::Image>(rc::load<std::uint64_t>(record), class_k_image, "DM-FLIP-VERTICAL-SRC");
-rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::image::Image>(std::make_unique<::datamunge::image::Image>(::datamunge::image::flip_vertical(a0)), &resolve_k_image));
-    });
-}
-// datamunge::datasets::fetch(const std::string & name, const std::string & directory = "") -> std::string
-extern "C" int dm_fetch(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::datasets::fetch", [&] {
-switch (rc::given(record, 1, 2)) {
-case 1: {
-auto a0 = rc::text((record + 4), 256, (record + 4) + 256, "DM-FETCH-NAME");
-rc::put_text((record + 524), 16384, (record + 524) + 16384, ::datamunge::datasets::fetch(a0), "DM-FETCH-RESULT");
-break;
-}
+// datamunge::cv::gaussian_pyramid(const image::Image & img, int levels, double sigma = 1.0) -> std::vector<image::Image>
+extern "C" int dm_gaussian_pyramid(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::cv::gaussian_pyramid", [&] {
+switch (rc::given(record, 2, 3)) {
 case 2: {
-auto a0 = rc::text((record + 4), 256, (record + 4) + 256, "DM-FETCH-NAME");
-auto a1 = rc::text((record + 264), 256, (record + 264) + 256, "DM-FETCH-DIRECTORY");
-rc::put_text((record + 524), 16384, (record + 524) + 16384, ::datamunge::datasets::fetch(a0, a1), "DM-FETCH-RESULT");
+auto& a0 = rc::object<::datamunge::image::Image>(rc::load<std::uint64_t>((record + 4)), class_k_image, "DM-GAUSSIAN-PYRAMID-IMG");
+auto a1 = rc::integer<int>(rc::load<std::int32_t>((record + 12)), "DM-GAUSSIAN-PYRAMID-LEVELS");
+rc::store<std::uint64_t>((record + 24), rc::adopt<std::vector<datamunge::image::Image>>(std::make_unique<std::vector<datamunge::image::Image>>(::datamunge::cv::gaussian_pyramid(a0, std::move(a1))), &resolve_v_vector_image));
+break;
+}
+case 3: {
+auto& a0 = rc::object<::datamunge::image::Image>(rc::load<std::uint64_t>((record + 4)), class_k_image, "DM-GAUSSIAN-PYRAMID-IMG");
+auto a1 = rc::integer<int>(rc::load<std::int32_t>((record + 12)), "DM-GAUSSIAN-PYRAMID-LEVELS");
+auto a2 = static_cast<double>(rc::load<double>((record + 16)));
+rc::store<std::uint64_t>((record + 24), rc::adopt<std::vector<datamunge::image::Image>>(std::make_unique<std::vector<datamunge::image::Image>>(::datamunge::cv::gaussian_pyramid(a0, std::move(a1), std::move(a2))), &resolve_v_vector_image));
 break;
 }
 default: break;
 }
     });
 }
-// datamunge::fem::make_rectangular_mesh2d(double x0, double y0, double x1, double y1, std::size_t nx, std::size_t ny) -> Mesh2D
-extern "C" int dm_make_rectangular_mesh2d(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::fem::make_rectangular_mesh2d", [&] {
-auto a0 = static_cast<double>(rc::load<double>(record));
-auto a1 = static_cast<double>(rc::load<double>((record + 8)));
-auto a2 = static_cast<double>(rc::load<double>((record + 16)));
-auto a3 = static_cast<double>(rc::load<double>((record + 24)));
-auto a4 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 32)), "DM-MAKE-RECTANGULAR-MESH2D-NX");
-auto a5 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 40)), "DM-MAKE-RECTANGULAR-MESH2D-NY");
-rc::store<std::uint64_t>((record + 48), rc::adopt<::datamunge::fem::Mesh2D>(std::make_unique<::datamunge::fem::Mesh2D>(::datamunge::fem::make_rectangular_mesh2d(std::move(a0), std::move(a1), std::move(a2), std::move(a3), std::move(a4), std::move(a5))), &resolve_k_mesh2d));
+// datamunge::geometry::dynamic_time_warping_work(const std::vector<double> & a, const std::vector<double> & b) -> DTWComputation
+extern "C" int dm_dynamic_time_warping_work(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::dynamic_time_warping_work", [&] {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>(record), class_v_vector_double, "DM-DYNAMIC-TIME-WARPING-WORK-A");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_double, "DM-DYNAMIC-TIME-WARPING-WORK-B");
+rc::store<std::uint64_t>((record + 16), rc::adopt<::datamunge::geometry::DTWComputation>(std::make_unique<::datamunge::geometry::DTWComputation>(::datamunge::geometry::dynamic_time_warping_work(a0, a1)), &resolve_k_dtw_computation));
     });
 }
 // datamunge::geometry::detail::circle_from_one_point(const Point2D & p) -> Circle
@@ -5907,290 +6493,340 @@ auto& a0 = rc::object<::datamunge::geometry::Point2D>(rc::load<std::uint64_t>(re
 rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::geometry::Circle>(std::make_unique<::datamunge::geometry::Circle>(::datamunge::geometry::detail::circle_from_one_point(a0)), &resolve_k_circle));
     });
 }
-// datamunge::geometry::is_convex_polygon(const std::vector<Point2D> & vertices) -> bool
-extern "C" int dm_is_convex_polygon(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::geometry::is_convex_polygon", [&] {
-auto& a0 = rc::object<std::vector<datamunge::geometry::Point2D>>(rc::load<std::uint64_t>(record), class_v_vector_point2d, "DM-IS-CONVEX-POLYGON-VERTICES");
-rc::store<std::uint8_t>((record + 8), (::datamunge::geometry::is_convex_polygon(a0)) ? 1 : 0);
+// datamunge::geometry::segment_intersection_trace(const Point2D & p, const Point2D & q, const Point2D & r, const Point2D & s) -> SegmentIntersectionRun
+extern "C" int dm_segment_intersection_trace(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::segment_intersection_trace", [&] {
+auto& a0 = rc::object<::datamunge::geometry::Point2D>(rc::load<std::uint64_t>(record), class_k_point2d, "DM-SEGMENT-INTERSECTION-TRACE-P");
+auto& a1 = rc::object<::datamunge::geometry::Point2D>(rc::load<std::uint64_t>((record + 8)), class_k_point2d, "DM-SEGMENT-INTERSECTION-TRACE-Q");
+auto& a2 = rc::object<::datamunge::geometry::Point2D>(rc::load<std::uint64_t>((record + 16)), class_k_point2d, "DM-SEGMENT-INTERSECTION-TRACE-R");
+auto& a3 = rc::object<::datamunge::geometry::Point2D>(rc::load<std::uint64_t>((record + 24)), class_k_point2d, "DM-SEGMENT-INTERSECTION-TRACE-S");
+rc::store<std::uint64_t>((record + 32), rc::adopt<::datamunge::geometry::SegmentIntersectionRun>(std::make_unique<::datamunge::geometry::SegmentIntersectionRun>(::datamunge::geometry::segment_intersection_trace(a0, a1, a2, a3)), &resolve_k_segment_intersection_run));
     });
 }
-// datamunge::geometry::detail::point_in_triangle(const Point2D & p, const Point2D & a, const Point2D & b, const Point2D & c) -> bool
-extern "C" int dm_point_in_triangle(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::geometry::detail::point_in_triangle", [&] {
-auto& a0 = rc::object<::datamunge::geometry::Point2D>(rc::load<std::uint64_t>(record), class_k_point2d, "DM-POINT-IN-TRIANGLE-P");
-auto& a1 = rc::object<::datamunge::geometry::Point2D>(rc::load<std::uint64_t>((record + 8)), class_k_point2d, "DM-POINT-IN-TRIANGLE-A");
-auto& a2 = rc::object<::datamunge::geometry::Point2D>(rc::load<std::uint64_t>((record + 16)), class_k_point2d, "DM-POINT-IN-TRIANGLE-B");
-auto& a3 = rc::object<::datamunge::geometry::Point2D>(rc::load<std::uint64_t>((record + 24)), class_k_point2d, "DM-POINT-IN-TRIANGLE-C");
-rc::store<std::uint8_t>((record + 32), (::datamunge::geometry::detail::point_in_triangle(a0, a1, a2, a3)) ? 1 : 0);
+// datamunge::geometry::voronoi_diagram(const std::vector<Point2D> & points) -> VoronoiDiagram
+extern "C" int dm_voronoi_diagram(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::geometry::voronoi_diagram", [&] {
+auto& a0 = rc::object<std::vector<datamunge::geometry::Point2D>>(rc::load<std::uint64_t>(record), class_v_vector_point2d, "DM-VORONOI-DIAGRAM-POINTS");
+rc::store<std::uint64_t>((record + 8), rc::adopt<::datamunge::geometry::VoronoiDiagram>(std::make_unique<::datamunge::geometry::VoronoiDiagram>(::datamunge::geometry::voronoi_diagram(a0)), &resolve_k_voronoi_diagram));
     });
 }
-// datamunge::image::write_pgm(const Image & img, const std::string & path) -> void
-extern "C" int dm_write_pgm(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::image::write_pgm", [&] {
-auto& a0 = rc::object<::datamunge::image::Image>(rc::load<std::uint64_t>(record), class_k_image, "DM-WRITE-PGM-IMG");
-auto a1 = rc::text((record + 8), 256, (record + 8) + 256, "DM-WRITE-PGM-PATH");
-::datamunge::image::write_pgm(a0, a1);
+// datamunge::image::read_pgm(const std::string & path) -> Image
+extern "C" int dm_read_pgm(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::image::read_pgm", [&] {
+auto a0 = rc::text(record, 256, record + 256, "DM-READ-PGM-PATH");
+rc::store<std::uint64_t>((record + 260), rc::adopt<::datamunge::image::Image>(std::make_unique<::datamunge::image::Image>(::datamunge::image::read_pgm(a0)), &resolve_k_image));
     });
 }
-// datamunge::stats::chi_squared_test_independence(const std::vector<double> & table, std::size_t nrows, std::size_t ncols, bool correct = true) -> HypothesisTestResult
-extern "C" int dm_chi_squared_test_independence(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::stats::chi_squared_test_independence", [&] {
-switch (rc::given(record, 3, 4)) {
-case 3: {
-auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 4)), class_v_vector_double, "DM-CHI-SQUARED-TEST-INDEPENDENCE-TABLE");
-auto a1 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 12)), "DM-CHI-SQUARED-TEST-INDEPENDENCE-NROWS");
-auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 20)), "DM-CHI-SQUARED-TEST-INDEPENDENCE-NCOLS");
-rc::store<std::uint64_t>((record + 29), rc::adopt<::datamunge::stats::HypothesisTestResult>(std::make_unique<::datamunge::stats::HypothesisTestResult>(::datamunge::stats::chi_squared_test_independence(a0, std::move(a1), std::move(a2))), &resolve_k_hypothesis_test_result));
+// datamunge::stats::romano_wolf_adjust(const std::vector<std::vector<double>> & resampled_p, const std::vector<double> & sorted_p) -> std::vector<double>
+extern "C" int dm_romano_wolf_adjust(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::stats::romano_wolf_adjust", [&] {
+auto& a0 = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>(record), class_v_vector_vector_double, "DM-ROMANO-WOLF-ADJUST-RESAMPLED-P");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 8)), class_v_vector_double, "DM-ROMANO-WOLF-ADJUST-SORTED-P");
+rc::store<std::uint64_t>((record + 16), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(::datamunge::stats::romano_wolf_adjust(a0, a1)), &resolve_v_vector_double));
+    });
+}
+// datamunge::stats::chi_squared_goodness_of_fit(const std::vector<double> & observed, const std::vector<double> & expected_probabilities = {}) -> HypothesisTestResult
+extern "C" int dm_chi_squared_goodness_of_fit(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::stats::chi_squared_goodness_of_fit", [&] {
+switch (rc::given(record, 1, 2)) {
+case 1: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 4)), class_v_vector_double, "DM-CHI-SQUARED-GOODNESS-OF-FIT-OBSERVED");
+rc::store<std::uint64_t>((record + 20), rc::adopt<::datamunge::stats::HypothesisTestResult>(std::make_unique<::datamunge::stats::HypothesisTestResult>(::datamunge::stats::chi_squared_goodness_of_fit(a0)), &resolve_k_hypothesis_test_result));
 break;
 }
-case 4: {
-auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 4)), class_v_vector_double, "DM-CHI-SQUARED-TEST-INDEPENDENCE-TABLE");
-auto a1 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 12)), "DM-CHI-SQUARED-TEST-INDEPENDENCE-NROWS");
-auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 20)), "DM-CHI-SQUARED-TEST-INDEPENDENCE-NCOLS");
-auto a3 = rc::boolean(rc::load<std::uint8_t>((record + 28)), "DM-CHI-SQUARED-TEST-INDEPENDENCE-CORRECT");
-rc::store<std::uint64_t>((record + 29), rc::adopt<::datamunge::stats::HypothesisTestResult>(std::make_unique<::datamunge::stats::HypothesisTestResult>(::datamunge::stats::chi_squared_test_independence(a0, std::move(a1), std::move(a2), std::move(a3))), &resolve_k_hypothesis_test_result));
+case 2: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 4)), class_v_vector_double, "DM-CHI-SQUARED-GOODNESS-OF-FIT-OBSERVED");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-CHI-SQUARED-GOODNESS-OF-FIT-EXPECTED-PROBABILITIES");
+rc::store<std::uint64_t>((record + 20), rc::adopt<::datamunge::stats::HypothesisTestResult>(std::make_unique<::datamunge::stats::HypothesisTestResult>(::datamunge::stats::chi_squared_goodness_of_fit(a0, a1)), &resolve_k_hypothesis_test_result));
 break;
 }
 default: break;
 }
     });
 }
-// datamunge::mkdir(const std::filesystem::path & path) -> bool
-extern "C" int dm_mkdir(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::mkdir", [&] {
-auto a0 = std::filesystem::path(rc::text(record, 256, record + 256, "DM-MKDIR-PATH"));
-rc::store<std::uint8_t>((record + 260), (::datamunge::mkdir(a0)) ? 1 : 0);
+// datamunge::stats::poisson_rate_interval(std::size_t events, double exposure, double confidence_level = 0.94999999999999996) -> PoissonRateInterval
+extern "C" int dm_poisson_rate_interval(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::stats::poisson_rate_interval", [&] {
+switch (rc::given(record, 2, 3)) {
+case 2: {
+auto a0 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 4)), "DM-POISSON-RATE-INTERVAL-EVENTS");
+auto a1 = static_cast<double>(rc::load<double>((record + 12)));
+rc::store<std::uint64_t>((record + 28), rc::adopt<::datamunge::stats::PoissonRateInterval>(std::make_unique<::datamunge::stats::PoissonRateInterval>(::datamunge::stats::poisson_rate_interval(std::move(a0), std::move(a1))), &resolve_k_poisson_rate_interval));
+break;
+}
+case 3: {
+auto a0 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 4)), "DM-POISSON-RATE-INTERVAL-EVENTS");
+auto a1 = static_cast<double>(rc::load<double>((record + 12)));
+auto a2 = static_cast<double>(rc::load<double>((record + 20)));
+rc::store<std::uint64_t>((record + 28), rc::adopt<::datamunge::stats::PoissonRateInterval>(std::make_unique<::datamunge::stats::PoissonRateInterval>(::datamunge::stats::poisson_rate_interval(std::move(a0), std::move(a1), std::move(a2))), &resolve_k_poisson_rate_interval));
+break;
+}
+default: break;
+}
     });
 }
-// datamunge::call_with_callback(double x, Callback * cb) -> double
-extern "C" int dm_call_with_callback(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::call_with_callback", [&] {
+// datamunge::stats::wilcoxon_rank_sum_test(const std::vector<double> & x, const std::vector<double> & y, Alternative alternative = TwoSided) -> HypothesisTestResult
+extern "C" int dm_wilcoxon_rank_sum_test(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::stats::wilcoxon_rank_sum_test", [&] {
+switch (rc::given(record, 2, 3)) {
+case 2: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 4)), class_v_vector_double, "DM-WILCOXON-RANK-SUM-TEST-X");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-WILCOXON-RANK-SUM-TEST-Y");
+rc::store<std::uint64_t>((record + 24), rc::adopt<::datamunge::stats::HypothesisTestResult>(std::make_unique<::datamunge::stats::HypothesisTestResult>(::datamunge::stats::wilcoxon_rank_sum_test(a0, a1)), &resolve_k_hypothesis_test_result));
+break;
+}
+case 3: {
+auto& a0 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 4)), class_v_vector_double, "DM-WILCOXON-RANK-SUM-TEST-X");
+auto& a1 = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 12)), class_v_vector_double, "DM-WILCOXON-RANK-SUM-TEST-Y");
+auto a2 = enum_alternative(rc::load<std::int32_t>((record + 20)), "DM-WILCOXON-RANK-SUM-TEST-ALTERNATIVE");
+rc::store<std::uint64_t>((record + 24), rc::adopt<::datamunge::stats::HypothesisTestResult>(std::make_unique<::datamunge::stats::HypothesisTestResult>(::datamunge::stats::wilcoxon_rank_sum_test(a0, a1, std::move(a2))), &resolve_k_hypothesis_test_result));
+break;
+}
+default: break;
+}
+    });
+}
+// datamunge::data::diamonds() -> DataFrame *
+extern "C" int dm_data_diamonds(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::data::diamonds", [&] {
+rc::store<std::uint64_t>(record, rc::borrow<::datamunge::DataFrame>(::datamunge::data::diamonds(), &resolve_k_data_frame, std::shared_ptr<void>()));
+    });
+}
+// datamunge::cobol_bindings::unif(double lower, double upper, std::size_t n) -> std::vector<double>
+extern "C" int dm_unif(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "datamunge::cobol_bindings::unif", [&] {
 auto a0 = static_cast<double>(rc::load<double>(record));
-auto* a1 = rc::pointer<::datamunge::Callback>(rc::load<std::uint64_t>((record + 8)), class_k_callback, "DM-CALL-WITH-CALLBACK-CB");
-rc::store<double>((record + 16), static_cast<double>(::datamunge::call_with_callback(std::move(a0), a1)));
+auto a1 = static_cast<double>(rc::load<double>((record + 8)));
+auto a2 = rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 16)), "DM-UNIF-N");
+rc::store<std::uint64_t>((record + 24), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(::datamunge::cobol_bindings::unif(std::move(a0), std::move(a1), std::move(a2))), &resolve_v_vector_double));
     });
 }
-// datamunge::sum_dpair(const std::pair<double, double> & values) -> double
-extern "C" int dm_sum_dpair(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::sum_dpair", [&] {
-auto a0 = std::pair<double, double>(static_cast<double>(rc::load<double>(record)), static_cast<double>(rc::load<double>((record + 8))));
-rc::store<double>((record + 16), static_cast<double>(::datamunge::sum_dpair(a0)));
+// Sets an element
+extern "C" int dm_vector_vector_double_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-VECTOR-DOUBLE set", [&] {
+auto& object = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>(record), class_v_vector_vector_double, "DM-VECTOR-VECTOR-DOUBLE-SELF");
+const auto at = rc::position(rc::load<std::int64_t>(record + 8), object.size(), "DM-VECTOR-VECTOR-DOUBLE-INDEX");
+object[at] = rc::object<std::vector<double>>(rc::load<std::uint64_t>((record + 24)), class_v_vector_double, "DM-VECTOR-VECTOR-DOUBLE-VALUE");
     });
 }
-// datamunge::data::eight_schools() -> DataFrame *
-extern "C" int dm_data_eight_schools(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::data::eight_schools", [&] {
-rc::store<std::uint64_t>(record, rc::borrow<::datamunge::DataFrame>(::datamunge::data::eight_schools(), &resolve_k_data_frame, std::shared_ptr<void>()));
+// An element
+extern "C" int dm_vector_int_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-INT get", [&] {
+auto& object = rc::object<std::vector<int>>(rc::load<std::uint64_t>(record), class_v_vector_int, "DM-VECTOR-INT-SELF");
+const auto at = rc::position(rc::load<std::int64_t>(record + 8), object.size(), "DM-VECTOR-INT-INDEX");
+rc::store<std::int32_t>((record + 24), static_cast<std::int32_t>(object[at]));
     });
 }
-// datamunge::data::digits() -> DataFrame *
-extern "C" int dm_data_digits(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::data::digits", [&] {
-rc::store<std::uint64_t>(record, rc::borrow<::datamunge::DataFrame>(::datamunge::data::digits(), &resolve_k_data_frame, std::shared_ptr<void>()));
-    });
-}
-// datamunge::nn::nn_set_num_threads(int threads) -> void
-extern "C" int dm_nn_set_num_threads(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "datamunge::nn::nn_set_num_threads", [&] {
-auto a0 = rc::integer<int>(rc::load<std::int32_t>(record), "DM-NN-SET-NUM-THREADS-THREADS");
-::datamunge::nn::nn_set_num_threads(std::move(a0));
+// Appends an element
+extern "C" int dm_vector_vector_int_push(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-VECTOR-INT push", [&] {
+auto& object = rc::object<std::vector<std::vector<int>>>(rc::load<std::uint64_t>(record), class_v_vector_vector_int, "DM-VECTOR-VECTOR-INT-SELF");
+object.push_back(rc::object<std::vector<int>>(rc::load<std::uint64_t>((record + 24)), class_v_vector_int, "DM-VECTOR-VECTOR-INT-VALUE"));
     });
 }
 // Its size
-extern "C" int dm_vector_double_size(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-DOUBLE size", [&] {
-auto& object = rc::object<std::vector<double>>(rc::load<std::uint64_t>(record), class_v_vector_double, "DM-VECTOR-DOUBLE-SELF");
+extern "C" int dm_vector_vector_llong_size(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-VECTOR-LLONG size", [&] {
+auto& object = rc::object<std::vector<std::vector<long long>>>(rc::load<std::uint64_t>(record), class_v_vector_vector_llong, "DM-VECTOR-VECTOR-LLONG-SELF");
+rc::store<std::uint64_t>(record + 16, static_cast<std::uint64_t>(object.size()));
+    });
+}
+// Sets an element
+extern "C" int dm_vector_rgb_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-RGB set", [&] {
+auto& object = rc::object<std::vector<datamunge::graphics::RGB>>(rc::load<std::uint64_t>(record), class_v_vector_rgb, "DM-VECTOR-RGB-SELF");
+const auto at = rc::position(rc::load<std::int64_t>(record + 8), object.size(), "DM-VECTOR-RGB-INDEX");
+object[at] = rc::object<::datamunge::graphics::RGB>(rc::load<std::uint64_t>((record + 24)), class_k_rgb, "DM-VECTOR-RGB-VALUE");
+    });
+}
+// Copies elements into a table
+extern "C" int dm_vector_data_series_to_table(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-DATA-SERIES to_table", [&] {
+auto& object = rc::object<std::vector<datamunge::graphics::DataSeries>>(rc::load<std::uint64_t>(record), class_v_vector_data_series, "DM-VECTOR-DATA-SERIES-TABLE-SELF");
+const auto start = rc::load<std::int64_t>(record + 8);
+if (start < 1 || static_cast<std::uint64_t>(start) > object.size() + 1) rc::fail(rc::index, "DM-VECTOR-DATA-SERIES-TABLE-START is outside 1 to the size + 1");
+const auto total = static_cast<std::size_t>(object.size()) - static_cast<std::size_t>(start - 1);
+const auto count = std::min<std::size_t>(total, 1000);
+for (std::size_t i = 0; i < count; ++i) {
+rc::store<std::uint64_t>((record + 20 + (i) * 8), rc::adopt<::datamunge::graphics::DataSeries>(std::make_unique<::datamunge::graphics::DataSeries>(object[static_cast<std::size_t>(start - 1) + i]), &resolve_k_data_series));
+}
+rc::store<std::int32_t>(record + 16, static_cast<std::int32_t>(count));
+    });
+}
+// Appends an element
+extern "C" int dm_vector_ulong_push(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-ULONG push", [&] {
+auto& object = rc::object<std::vector<unsigned long>>(rc::load<std::uint64_t>(record), class_v_vector_ulong, "DM-VECTOR-ULONG-SELF");
+object.push_back(rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 24)), "DM-VECTOR-ULONG-VALUE"));
+    });
+}
+// Removes every element
+extern "C" int dm_vector_triangle_clear(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-TRIANGLE clear", [&] {
+auto& object = rc::object<std::vector<datamunge::geometry::Triangle>>(rc::load<std::uint64_t>(record), class_v_vector_triangle, "DM-VECTOR-TRIANGLE-SELF");
+object.clear();
+    });
+}
+// A new VECTOR-PAIR-ULONG-ULONG from a table
+extern "C" int dm_vector_pair_ulong_ulong_from_table(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-PAIR-ULONG-ULONG from_table", [&] {
+const auto count = rc::table_count(rc::load<std::int32_t>(record + 16), 1000, "DM-VECTOR-PAIR-ULONG-ULONG-TABLE-COUNT");
+auto made = std::make_unique<std::vector<std::pair<unsigned long, unsigned long>>>();
+auto& object = *made;
+for (std::size_t i = 0; i < count; ++i) object.push_back(std::pair<unsigned long, unsigned long>(rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 20 + (i) * 16)), "DM-VECTOR-PAIR-ULONG-ULONG-TABLE-ITEM"), rc::integer<unsigned long>(rc::load<std::uint64_t>(((record + 20 + (i) * 16) + 8)), "DM-VECTOR-PAIR-ULONG-ULONG-TABLE-ITEM")));
+rc::store<std::uint64_t>(record, rc::adopt<std::vector<std::pair<unsigned long, unsigned long>>>(std::move(made), &resolve_v_vector_pair_ulong_ulong));
+    });
+}
+// Sets an element
+extern "C" int dm_vector_alpha_beta_state_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-ALPHA-BETA-STATE set", [&] {
+auto& object = rc::object<std::vector<datamunge::filter::AlphaBetaState>>(rc::load<std::uint64_t>(record), class_v_vector_alpha_beta_state, "DM-VECTOR-ALPHA-BETA-STATE-SELF");
+const auto at = rc::position(rc::load<std::int64_t>(record + 8), object.size(), "DM-VECTOR-ALPHA-BETA-STATE-INDEX");
+object[at] = rc::object<::datamunge::filter::AlphaBetaState>(rc::load<std::uint64_t>((record + 24)), class_k_alpha_beta_state, "DM-VECTOR-ALPHA-BETA-STATE-VALUE");
+    });
+}
+// An element
+extern "C" int dm_vector_kalman_state_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-KALMAN-STATE get", [&] {
+auto& object = rc::object<std::vector<datamunge::filter::KalmanState>>(rc::load<std::uint64_t>(record), class_v_vector_kalman_state, "DM-VECTOR-KALMAN-STATE-SELF");
+const auto at = rc::position(rc::load<std::int64_t>(record + 8), object.size(), "DM-VECTOR-KALMAN-STATE-INDEX");
+rc::store<std::uint64_t>((record + 24), rc::adopt<::datamunge::filter::KalmanState>(std::make_unique<::datamunge::filter::KalmanState>(object[at]), &resolve_k_kalman_state));
+    });
+}
+// Appends a table
+extern "C" int dm_vector_hull_indexed_point_append_table(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-HULL-INDEXED-POINT append_table", [&] {
+auto& object = rc::object<std::vector<datamunge::geometry::HullIndexedPoint>>(rc::load<std::uint64_t>(record), class_v_vector_hull_indexed_point, "DM-VECTOR-HULL-INDEXED-POINT-TABLE-SELF");
+const auto count = rc::table_count(rc::load<std::int32_t>(record + 16), 1000, "DM-VECTOR-HULL-INDEXED-POINT-TABLE-COUNT");
+for (std::size_t i = 0; i < count; ++i) object.push_back(rc::object<::datamunge::geometry::HullIndexedPoint>(rc::load<std::uint64_t>((record + 20 + (i) * 8)), class_k_hull_indexed_point, "DM-VECTOR-HULL-INDEXED-POINT-TABLE-ITEM"));
+    });
+}
+// Its size
+extern "C" int dm_vector_kd_nearest_probe_size(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-KD-NEAREST-PROBE size", [&] {
+auto& object = rc::object<std::vector<datamunge::geometry::KDNearestProbe>>(rc::load<std::uint64_t>(record), class_v_vector_kd_nearest_probe, "DM-VECTOR-KD-NEAREST-PROBE-SELF");
+rc::store<std::uint64_t>(record + 16, static_cast<std::uint64_t>(object.size()));
+    });
+}
+// Appends an element
+extern "C" int dm_vector_enclosing_circle_event_push(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-ENCLOSING-CIRCLE-EVENT push", [&] {
+auto& object = rc::object<std::vector<datamunge::geometry::EnclosingCircleEvent>>(rc::load<std::uint64_t>(record), class_v_vector_enclosing_circle_event, "DM-VECTOR-ENCLOSING-CIRCLE-EVENT-SELF");
+object.push_back(rc::object<::datamunge::geometry::EnclosingCircleEvent>(rc::load<std::uint64_t>((record + 24)), class_k_enclosing_circle_event, "DM-VECTOR-ENCLOSING-CIRCLE-EVENT-VALUE"));
+    });
+}
+// Sets an element
+extern "C" int dm_vector_polygon_ear_candidate_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-POLYGON-EAR-CANDIDATE set", [&] {
+auto& object = rc::object<std::vector<datamunge::geometry::PolygonEarCandidate>>(rc::load<std::uint64_t>(record), class_v_vector_polygon_ear_candidate, "DM-VECTOR-POLYGON-EAR-CANDIDATE-SELF");
+const auto at = rc::position(rc::load<std::int64_t>(record + 8), object.size(), "DM-VECTOR-POLYGON-EAR-CANDIDATE-INDEX");
+object[at] = rc::object<::datamunge::geometry::PolygonEarCandidate>(rc::load<std::uint64_t>((record + 24)), class_k_polygon_ear_candidate, "DM-VECTOR-POLYGON-EAR-CANDIDATE-VALUE");
+    });
+}
+// An element
+extern "C" int dm_vector_caliper_event_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-CALIPER-EVENT get", [&] {
+auto& object = rc::object<std::vector<datamunge::geometry::CaliperEvent>>(rc::load<std::uint64_t>(record), class_v_vector_caliper_event, "DM-VECTOR-CALIPER-EVENT-SELF");
+const auto at = rc::position(rc::load<std::int64_t>(record + 8), object.size(), "DM-VECTOR-CALIPER-EVENT-INDEX");
+rc::store<std::uint64_t>((record + 24), rc::adopt<::datamunge::geometry::CaliperEvent>(std::make_unique<::datamunge::geometry::CaliperEvent>(object[at]), &resolve_k_caliper_event));
+    });
+}
+// A new VECTOR-ODE-EVALUATION
+extern "C" int dm_vector_ode_evaluation_new(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-ODE-EVALUATION new", [&] {
+rc::store<std::uint64_t>(record, rc::adopt<std::vector<datamunge::ode::ODEEvaluation>>(std::make_unique<std::vector<datamunge::ode::ODEEvaluation>>(), &resolve_v_vector_ode_evaluation));
+    });
+}
+// Sets an element
+extern "C" int dm_vector_ode_attempt_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-ODE-ATTEMPT set", [&] {
+auto& object = rc::object<std::vector<datamunge::ode::ODEAttempt>>(rc::load<std::uint64_t>(record), class_v_vector_ode_attempt, "DM-VECTOR-ODE-ATTEMPT-SELF");
+const auto at = rc::position(rc::load<std::int64_t>(record + 8), object.size(), "DM-VECTOR-ODE-ATTEMPT-INDEX");
+object[at] = rc::object<::datamunge::ode::ODEAttempt>(rc::load<std::uint64_t>((record + 24)), class_k_ode_attempt, "DM-VECTOR-ODE-ATTEMPT-VALUE");
+    });
+}
+// Appends a table
+extern "C" int dm_vector_b_spline_basis_append_table(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-B-SPLINE-BASIS append_table", [&] {
+auto& object = rc::object<std::vector<datamunge::fda::BSplineBasis>>(rc::load<std::uint64_t>(record), class_v_vector_b_spline_basis, "DM-VECTOR-B-SPLINE-BASIS-TABLE-SELF");
+const auto count = rc::table_count(rc::load<std::int32_t>(record + 16), 1000, "DM-VECTOR-B-SPLINE-BASIS-TABLE-COUNT");
+for (std::size_t i = 0; i < count; ++i) object.push_back(rc::object<::datamunge::fda::BSplineBasis>(rc::load<std::uint64_t>((record + 20 + (i) * 8)), class_k_b_spline_basis, "DM-VECTOR-B-SPLINE-BASIS-TABLE-ITEM"));
+    });
+}
+// A new VECTOR-VECTOR-PAIR-INT-DOUBLE from a table
+extern "C" int dm_vector_vector_pair_int_double_from_table(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-VECTOR-PAIR-INT-DOUBLE from_table", [&] {
+const auto count = rc::table_count(rc::load<std::int32_t>(record + 16), 1000, "DM-VECTOR-VECTOR-PAIR-INT-DOUBLE-TABLE-COUNT");
+auto made = std::make_unique<std::vector<std::vector<std::pair<int, double>>>>();
+auto& object = *made;
+for (std::size_t i = 0; i < count; ++i) object.push_back(rc::object<std::vector<std::pair<int, double>>>(rc::load<std::uint64_t>((record + 20 + (i) * 8)), class_v_vector_pair_int_double, "DM-VECTOR-VECTOR-PAIR-INT-DOUBLE-TABLE-ITEM"));
+rc::store<std::uint64_t>(record, rc::adopt<std::vector<std::vector<std::pair<int, double>>>>(std::move(made), &resolve_v_vector_vector_pair_int_double));
+    });
+}
+// An element
+extern "C" int dm_vector_polynomial_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-POLYNOMIAL get", [&] {
+auto& object = rc::object<std::vector<datamunge::algebra::Polynomial>>(rc::load<std::uint64_t>(record), class_v_vector_polynomial, "DM-VECTOR-POLYNOMIAL-SELF");
+const auto at = rc::position(rc::load<std::int64_t>(record + 8), object.size(), "DM-VECTOR-POLYNOMIAL-INDEX");
+rc::store<std::uint64_t>((record + 24), rc::adopt<::datamunge::algebra::Polynomial>(std::make_unique<::datamunge::algebra::Polynomial>(object[at]), &resolve_k_polynomial));
+    });
+}
+// A new VECTOR-COMPLEX from a table
+extern "C" int dm_vector_complex_from_table(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-COMPLEX from_table", [&] {
+const auto count = rc::table_count(rc::load<std::int32_t>(record + 16), 1000, "DM-VECTOR-COMPLEX-TABLE-COUNT");
+auto made = std::make_unique<std::vector<datamunge::algebra::Complex>>();
+auto& object = *made;
+for (std::size_t i = 0; i < count; ++i) object.push_back(rc::object<::datamunge::algebra::Complex>(rc::load<std::uint64_t>((record + 20 + (i) * 8)), class_k_complex, "DM-VECTOR-COMPLEX-TABLE-ITEM"));
+rc::store<std::uint64_t>(record, rc::adopt<std::vector<datamunge::algebra::Complex>>(std::move(made), &resolve_v_vector_complex));
+    });
+}
+// A new VECTOR-MULTIVARIATE-POLYNOMIAL from a table
+extern "C" int dm_vector_multivariate_polynomial_from_table(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-MULTIVARIATE-POLYNOMIAL from_table", [&] {
+const auto count = rc::table_count(rc::load<std::int32_t>(record + 16), 1000, "DM-VECTOR-MULTIVARIATE-POLYNOMIAL-TABLE-COUNT");
+auto made = std::make_unique<std::vector<datamunge::algebra::MultivariatePolynomial>>();
+auto& object = *made;
+for (std::size_t i = 0; i < count; ++i) object.push_back(rc::object<::datamunge::algebra::MultivariatePolynomial>(rc::load<std::uint64_t>((record + 20 + (i) * 8)), class_k_multivariate_polynomial, "DM-VECTOR-MULTIVARIATE-POLYNOMIAL-TABLE-ITEM"));
+rc::store<std::uint64_t>(record, rc::adopt<std::vector<datamunge::algebra::MultivariatePolynomial>>(std::move(made), &resolve_v_vector_multivariate_polynomial));
+    });
+}
+// Its size
+extern "C" int dm_vector_key_point_size(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-KEY-POINT size", [&] {
+auto& object = rc::object<std::vector<datamunge::cv::KeyPoint>>(rc::load<std::uint64_t>(record), class_v_vector_key_point, "DM-VECTOR-KEY-POINT-SELF");
 rc::store<std::uint64_t>(record + 16, static_cast<std::uint64_t>(object.size()));
     });
 }
 // An element
-extern "C" int dm_vector_vector_double_get(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-VECTOR-DOUBLE get", [&] {
-auto& object = rc::object<std::vector<std::vector<double>>>(rc::load<std::uint64_t>(record), class_v_vector_vector_double, "DM-VECTOR-VECTOR-DOUBLE-SELF");
-const auto at = rc::position(rc::load<std::int64_t>(record + 8), object.size(), "DM-VECTOR-VECTOR-DOUBLE-INDEX");
-rc::store<std::uint64_t>((record + 24), rc::adopt<std::vector<double>>(std::make_unique<std::vector<double>>(object[at]), &resolve_v_vector_double));
-    });
-}
-// Appends a table
-extern "C" int dm_vector_string_append_table(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-STRING append_table", [&] {
-auto& object = rc::object<std::vector<std::__cxx11::basic_string<char>>>(rc::load<std::uint64_t>(record), class_v_vector_string, "DM-VECTOR-STRING-TABLE-SELF");
-const auto count = rc::table_count(rc::load<std::int32_t>(record + 16), 1000, "DM-VECTOR-STRING-TABLE-COUNT");
-for (std::size_t i = 0; i < count; ++i) object.push_back(rc::text((record + 20 + (i) * 260), 256, (record + 20 + (i) * 260) + 256, "DM-VECTOR-STRING-TABLE-ITEM"));
-    });
-}
-// Copies elements into a table
-extern "C" int dm_vector_vector_int_to_table(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-VECTOR-INT to_table", [&] {
-auto& object = rc::object<std::vector<std::vector<int>>>(rc::load<std::uint64_t>(record), class_v_vector_vector_int, "DM-VECTOR-VECTOR-INT-TABLE-SELF");
-const auto start = rc::load<std::int64_t>(record + 8);
-if (start < 1 || static_cast<std::uint64_t>(start) > object.size() + 1) rc::fail(rc::index, "DM-VECTOR-VECTOR-INT-TABLE-START is outside 1 to the size + 1");
-const auto total = static_cast<std::size_t>(object.size()) - static_cast<std::size_t>(start - 1);
-const auto count = std::min<std::size_t>(total, 1000);
-for (std::size_t i = 0; i < count; ++i) {
-rc::store<std::uint64_t>((record + 20 + (i) * 8), rc::adopt<std::vector<int>>(std::make_unique<std::vector<int>>(object[static_cast<std::size_t>(start - 1) + i]), &resolve_v_vector_int));
-}
-rc::store<std::int32_t>(record + 16, static_cast<std::int32_t>(count));
-    });
-}
-// Copies elements into a table
-extern "C" int dm_vector_uchar_to_table(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-UCHAR to_table", [&] {
-auto& object = rc::object<std::vector<unsigned char>>(rc::load<std::uint64_t>(record), class_v_vector_uchar, "DM-VECTOR-UCHAR-TABLE-SELF");
-const auto start = rc::load<std::int64_t>(record + 8);
-if (start < 1 || static_cast<std::uint64_t>(start) > object.size() + 1) rc::fail(rc::index, "DM-VECTOR-UCHAR-TABLE-START is outside 1 to the size + 1");
-const auto total = static_cast<std::size_t>(object.size()) - static_cast<std::size_t>(start - 1);
-const auto count = std::min<std::size_t>(total, 1000);
-for (std::size_t i = 0; i < count; ++i) {
-rc::store<std::uint8_t>((record + 20 + (i) * 1), static_cast<std::uint8_t>(object[static_cast<std::size_t>(start - 1) + i]));
-}
-rc::store<std::int32_t>(record + 16, static_cast<std::int32_t>(count));
-    });
-}
-// Removes every element
-extern "C" int dm_vector_point2d_clear(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-POINT2D clear", [&] {
-auto& object = rc::object<std::vector<datamunge::geometry::Point2D>>(rc::load<std::uint64_t>(record), class_v_vector_point2d, "DM-VECTOR-POINT2D-SELF");
-object.clear();
-    });
-}
-// A new VECTOR-ULONG from a table
-extern "C" int dm_vector_ulong_from_table(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-ULONG from_table", [&] {
-const auto count = rc::table_count(rc::load<std::int32_t>(record + 16), 1000, "DM-VECTOR-ULONG-TABLE-COUNT");
-auto made = std::make_unique<std::vector<unsigned long>>();
-auto& object = *made;
-for (std::size_t i = 0; i < count; ++i) object.push_back(rc::integer<unsigned long>(rc::load<std::uint64_t>((record + 20 + (i) * 8)), "DM-VECTOR-ULONG-TABLE-ITEM"));
-rc::store<std::uint64_t>(record, rc::adopt<std::vector<unsigned long>>(std::move(made), &resolve_v_vector_ulong));
-    });
-}
-// A new VECTOR-ALPHA-BETA-STATE from a table
-extern "C" int dm_vector_alpha_beta_state_from_table(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-ALPHA-BETA-STATE from_table", [&] {
-const auto count = rc::table_count(rc::load<std::int32_t>(record + 16), 1000, "DM-VECTOR-ALPHA-BETA-STATE-TABLE-COUNT");
-auto made = std::make_unique<std::vector<datamunge::filter::AlphaBetaState>>();
-auto& object = *made;
-for (std::size_t i = 0; i < count; ++i) object.push_back(rc::object<::datamunge::filter::AlphaBetaState>(rc::load<std::uint64_t>((record + 20 + (i) * 8)), class_k_alpha_beta_state, "DM-VECTOR-ALPHA-BETA-STATE-TABLE-ITEM"));
-rc::store<std::uint64_t>(record, rc::adopt<std::vector<datamunge::filter::AlphaBetaState>>(std::move(made), &resolve_v_vector_alpha_beta_state));
-    });
-}
-// A new VECTOR-HULL-INDEXED-POINT
-extern "C" int dm_vector_hull_indexed_point_new(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-HULL-INDEXED-POINT new", [&] {
-rc::store<std::uint64_t>(record, rc::adopt<std::vector<datamunge::geometry::HullIndexedPoint>>(std::make_unique<std::vector<datamunge::geometry::HullIndexedPoint>>(), &resolve_v_vector_hull_indexed_point));
+extern "C" int dm_vector_corner_get(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-CORNER get", [&] {
+auto& object = rc::object<std::vector<datamunge::cv::Corner>>(rc::load<std::uint64_t>(record), class_v_vector_corner, "DM-VECTOR-CORNER-SELF");
+const auto at = rc::position(rc::load<std::int64_t>(record + 8), object.size(), "DM-VECTOR-CORNER-INDEX");
+rc::store<std::uint64_t>((record + 24), rc::adopt<::datamunge::cv::Corner>(std::make_unique<::datamunge::cv::Corner>(object[at]), &resolve_k_corner));
     });
 }
 // Sets an element
-extern "C" int dm_vector_hull_event_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-HULL-EVENT set", [&] {
-auto& object = rc::object<std::vector<datamunge::geometry::HullEvent>>(rc::load<std::uint64_t>(record), class_v_vector_hull_event, "DM-VECTOR-HULL-EVENT-SELF");
-const auto at = rc::position(rc::load<std::int64_t>(record + 8), object.size(), "DM-VECTOR-HULL-EVENT-INDEX");
-object[at] = rc::object<::datamunge::geometry::HullEvent>(rc::load<std::uint64_t>((record + 24)), class_k_hull_event, "DM-VECTOR-HULL-EVENT-VALUE");
-    });
-}
-// Copies elements into a table
-extern "C" int dm_vector_rgb_to_table(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-RGB to_table", [&] {
-auto& object = rc::object<std::vector<datamunge::graphics::RGB>>(rc::load<std::uint64_t>(record), class_v_vector_rgb, "DM-VECTOR-RGB-TABLE-SELF");
-const auto start = rc::load<std::int64_t>(record + 8);
-if (start < 1 || static_cast<std::uint64_t>(start) > object.size() + 1) rc::fail(rc::index, "DM-VECTOR-RGB-TABLE-START is outside 1 to the size + 1");
-const auto total = static_cast<std::size_t>(object.size()) - static_cast<std::size_t>(start - 1);
-const auto count = std::min<std::size_t>(total, 1000);
-for (std::size_t i = 0; i < count; ++i) {
-rc::store<std::uint64_t>((record + 20 + (i) * 8), rc::adopt<::datamunge::graphics::RGB>(std::make_unique<::datamunge::graphics::RGB>(object[static_cast<std::size_t>(start - 1) + i]), &resolve_k_rgb));
-}
-rc::store<std::int32_t>(record + 16, static_cast<std::int32_t>(count));
-    });
-}
-// Copies elements into a table
-extern "C" int dm_vector_legend_entry_to_table(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-LEGEND-ENTRY to_table", [&] {
-auto& object = rc::object<std::vector<datamunge::graphics::LegendEntry>>(rc::load<std::uint64_t>(record), class_v_vector_legend_entry, "DM-VECTOR-LEGEND-ENTRY-TABLE-SELF");
-const auto start = rc::load<std::int64_t>(record + 8);
-if (start < 1 || static_cast<std::uint64_t>(start) > object.size() + 1) rc::fail(rc::index, "DM-VECTOR-LEGEND-ENTRY-TABLE-START is outside 1 to the size + 1");
-const auto total = static_cast<std::size_t>(object.size()) - static_cast<std::size_t>(start - 1);
-const auto count = std::min<std::size_t>(total, 1000);
-for (std::size_t i = 0; i < count; ++i) {
-rc::store<std::uint64_t>((record + 20 + (i) * 8), rc::adopt<::datamunge::graphics::LegendEntry>(std::make_unique<::datamunge::graphics::LegendEntry>(object[static_cast<std::size_t>(start - 1) + i]), &resolve_k_legend_entry));
-}
-rc::store<std::int32_t>(record + 16, static_cast<std::int32_t>(count));
-    });
-}
-// Sets an element
-extern "C" int dm_vector_pair_int_double_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-PAIR-INT-DOUBLE set", [&] {
-auto& object = rc::object<std::vector<std::pair<int, double>>>(rc::load<std::uint64_t>(record), class_v_vector_pair_int_double, "DM-VECTOR-PAIR-INT-DOUBLE-SELF");
-const auto at = rc::position(rc::load<std::int64_t>(record + 8), object.size(), "DM-VECTOR-PAIR-INT-DOUBLE-INDEX");
-object[at] = std::pair<int, double>(rc::integer<int>(rc::load<std::int32_t>((record + 24)), "DM-VECTOR-PAIR-INT-DOUBLE-VALUE"), static_cast<double>(rc::load<double>(((record + 24) + 4))));
-    });
-}
-// A new VECTOR-VECTOR-STRING
-extern "C" int dm_vector_vector_string_new(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-VECTOR-STRING new", [&] {
-rc::store<std::uint64_t>(record, rc::adopt<std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>>>(std::make_unique<std::vector<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>>>(), &resolve_v_vector_vector_string));
-    });
-}
-// Sets an element
-extern "C" int dm_vector_pair_string_double_set(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-PAIR-STRING-DOUBLE set", [&] {
-auto& object = rc::object<std::vector<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>, double>>>(rc::load<std::uint64_t>(record), class_v_vector_pair_string_double, "DM-VECTOR-PAIR-STRING-DOUBLE-SELF");
-const auto at = rc::position(rc::load<std::int64_t>(record + 8), object.size(), "DM-VECTOR-PAIR-STRING-DOUBLE-INDEX");
-object[at] = std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>, double>(rc::text((record + 24), 256, (record + 24) + 256, "DM-VECTOR-PAIR-STRING-DOUBLE-VALUE"), static_cast<double>(rc::load<double>(((record + 24) + 260))));
-    });
-}
-// Appends an element
-extern "C" int dm_vector_complex_push(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-COMPLEX push", [&] {
-auto& object = rc::object<std::vector<datamunge::algebra::Complex>>(rc::load<std::uint64_t>(record), class_v_vector_complex, "DM-VECTOR-COMPLEX-SELF");
-object.push_back(rc::object<::datamunge::algebra::Complex>(rc::load<std::uint64_t>((record + 24)), class_k_complex, "DM-VECTOR-COMPLEX-VALUE"));
-    });
-}
-// Removes every element
-extern "C" int dm_vector_square_free_factor_clear(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-SQUARE-FREE-FACTOR clear", [&] {
-auto& object = rc::object<std::vector<datamunge::algebra::SquareFreeFactor>>(rc::load<std::uint64_t>(record), class_v_vector_square_free_factor, "DM-VECTOR-SQUARE-FREE-FACTOR-SELF");
-object.clear();
-    });
-}
-// Appends a table
-extern "C" int dm_vector_multivariate_polynomial_append_table(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-MULTIVARIATE-POLYNOMIAL append_table", [&] {
-auto& object = rc::object<std::vector<datamunge::algebra::MultivariatePolynomial>>(rc::load<std::uint64_t>(record), class_v_vector_multivariate_polynomial, "DM-VECTOR-MULTIVARIATE-POLYNOMIAL-TABLE-SELF");
-const auto count = rc::table_count(rc::load<std::int32_t>(record + 16), 1000, "DM-VECTOR-MULTIVARIATE-POLYNOMIAL-TABLE-COUNT");
-for (std::size_t i = 0; i < count; ++i) object.push_back(rc::object<::datamunge::algebra::MultivariatePolynomial>(rc::load<std::uint64_t>((record + 20 + (i) * 8)), class_k_multivariate_polynomial, "DM-VECTOR-MULTIVARIATE-POLYNOMIAL-TABLE-ITEM"));
-    });
-}
-// Appends a table
-extern "C" int dm_vector_image_append_table(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-IMAGE append_table", [&] {
-auto& object = rc::object<std::vector<datamunge::image::Image>>(rc::load<std::uint64_t>(record), class_v_vector_image, "DM-VECTOR-IMAGE-TABLE-SELF");
-const auto count = rc::table_count(rc::load<std::int32_t>(record + 16), 1000, "DM-VECTOR-IMAGE-TABLE-COUNT");
-for (std::size_t i = 0; i < count; ++i) object.push_back(rc::object<::datamunge::image::Image>(rc::load<std::uint64_t>((record + 20 + (i) * 8)), class_k_image, "DM-VECTOR-IMAGE-TABLE-ITEM"));
-    });
-}
-// Appends a table
-extern "C" int dm_vector_corner_append_table(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-CORNER append_table", [&] {
-auto& object = rc::object<std::vector<datamunge::cv::Corner>>(rc::load<std::uint64_t>(record), class_v_vector_corner, "DM-VECTOR-CORNER-TABLE-SELF");
-const auto count = rc::table_count(rc::load<std::int32_t>(record + 16), 1000, "DM-VECTOR-CORNER-TABLE-COUNT");
-for (std::size_t i = 0; i < count; ++i) object.push_back(rc::object<::datamunge::cv::Corner>(rc::load<std::uint64_t>((record + 20 + (i) * 8)), class_k_corner, "DM-VECTOR-CORNER-TABLE-ITEM"));
-    });
-}
-// Removes every element
-extern "C" int dm_vector_hough_circle_clear(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-HOUGH-CIRCLE clear", [&] {
+extern "C" int dm_vector_hough_circle_set(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-HOUGH-CIRCLE set", [&] {
 auto& object = rc::object<std::vector<datamunge::cv::HoughCircle>>(rc::load<std::uint64_t>(record), class_v_vector_hough_circle, "DM-VECTOR-HOUGH-CIRCLE-SELF");
-object.clear();
+const auto at = rc::position(rc::load<std::int64_t>(record + 8), object.size(), "DM-VECTOR-HOUGH-CIRCLE-INDEX");
+object[at] = rc::object<::datamunge::cv::HoughCircle>(rc::load<std::uint64_t>((record + 24)), class_k_hough_circle, "DM-VECTOR-HOUGH-CIRCLE-VALUE");
     });
 }
-// A new VECTOR-PAIR-INT-INT from a table
-extern "C" int dm_vector_pair_int_int_from_table(unsigned char* record, unsigned char* status) {
-    return rc::guard(status, "VECTOR-PAIR-INT-INT from_table", [&] {
+// Appends a table
+extern "C" int dm_vector_pair_int_int_append_table(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-PAIR-INT-INT append_table", [&] {
+auto& object = rc::object<std::vector<std::pair<int, int>>>(rc::load<std::uint64_t>(record), class_v_vector_pair_int_int, "DM-VECTOR-PAIR-INT-INT-TABLE-SELF");
 const auto count = rc::table_count(rc::load<std::int32_t>(record + 16), 1000, "DM-VECTOR-PAIR-INT-INT-TABLE-COUNT");
-auto made = std::make_unique<std::vector<std::pair<int, int>>>();
-auto& object = *made;
 for (std::size_t i = 0; i < count; ++i) object.push_back(std::pair<int, int>(rc::integer<int>(rc::load<std::int32_t>((record + 20 + (i) * 8)), "DM-VECTOR-PAIR-INT-INT-TABLE-ITEM"), rc::integer<int>(rc::load<std::int32_t>(((record + 20 + (i) * 8) + 4)), "DM-VECTOR-PAIR-INT-INT-TABLE-ITEM")));
-rc::store<std::uint64_t>(record, rc::adopt<std::vector<std::pair<int, int>>>(std::move(made), &resolve_v_vector_pair_int_int));
+    });
+}
+// Its size
+extern "C" int dm_vector_dunn_comparison_size(unsigned char* record, unsigned char* status) {
+    return rc::guard(status, "VECTOR-DUNN-COMPARISON size", [&] {
+auto& object = rc::object<std::vector<datamunge::stats::DunnComparison>>(rc::load<std::uint64_t>(record), class_v_vector_dunn_comparison, "DM-VECTOR-DUNN-COMPARISON-SELF");
+rc::store<std::uint64_t>(record + 16, static_cast<std::uint64_t>(object.size()));
     });
 }
 } // namespace ROSETTA_COBOL_MODULE

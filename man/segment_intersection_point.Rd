@@ -2,24 +2,49 @@
 % Please edit documentation in R/datamunger.R
 \name{segment_intersection_point}
 \alias{segment_intersection_point}
-\title{The (single) intersection point of segments p1-q1 and p2-q2, if one exists (writes it to \code{out} and returns true).}
+\title{Construct the unique point of closed-segment contact through the preserved signature.}
 \usage{
 segment_intersection_point(p1, q1, p2, q2, out)
 }
 \arguments{
-\item{p1}{\code{Point2D}}
+\item{p1}{\code{Point2D}. First segment start.}
 
-\item{q1}{\code{Point2D}}
+\item{q1}{\code{Point2D}. First segment end.}
 
-\item{p2}{\code{Point2D}}
+\item{p2}{\code{Point2D}. Second segment start.}
 
-\item{q2}{\code{Point2D}}
+\item{q2}{\code{Point2D}. Second segment end.}
 
-\item{out}{\code{Point2D}}
+\item{out}{\code{Point2D}. Borrowed output, assigned only for unique-point success.}
 }
 \value{
-\code{logical}
+\code{logical}: True exactly for a successfully constructed unique-point contact.
 }
 \description{
-Returns false whenever segments_intersect() would (non-intersecting segments) AND for the collinear-overlapping case that segments_intersect() reports as true -- there, infinitely many points satisfy the intersection, so no single Point2D can represent it.
+Returns false for disjoint or nonzero-overlap intersections and leaves out unchanged. Correctly returns true for a single collinear endpoint or zero-length contact, fixing the historical determinant-zero shortcut. Proper crossing construction is approximate after exact classification. Constant bounded work/storage.
+}
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{dm::geometry::Point2D out;bool ok=dm::geometry::segment_intersection_point(\{0,0\},\{2,0\},\{2,0\},\{3,0\},out);
+std::print("\{\} \{\}\\n",ok,out.x); // true 2
+}\if{html}{\out{</div>}}
+}
+
+\section{Errors}{
+
+Signals an R error (from the C++ exception):
+\itemize{
+\item \code{std::invalid_argument}: Nonfinite coordinate.
+\item \code{std::overflow_error}: Construction quotient or final point outside finite represented range.
+}
+}
+
+\references{
+\itemize{
+\item Exact determinant motivation: Shewchuk (1997), https://www.cs.cmu.edu/~quake/robust.html ; standard closed-segment orientation and collinear bounding-box test.
+}
+}
+\seealso{
+segment_intersection_run()
 }

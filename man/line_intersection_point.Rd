@@ -2,24 +2,49 @@
 % Please edit documentation in R/datamunger.R
 \name{line_intersection_point}
 \alias{line_intersection_point}
-\title{The intersection point of INFINITE lines through (p1, p2) and through (p3, p4), if one exists (writes it to \code{out} and returns true) -- false for parallel or (exactly) coincident lines.}
+\title{Construct the approximate unique intersection of two infinite supporting lines.}
 \usage{
 line_intersection_point(p1, p2, p3, p4, out)
 }
 \arguments{
-\item{p1}{\code{Point2D}}
+\item{p1}{\code{Point2D}. First line first point.}
 
-\item{p2}{\code{Point2D}}
+\item{p2}{\code{Point2D}. First line second point.}
 
-\item{p3}{\code{Point2D}}
+\item{p3}{\code{Point2D}. Second line first point.}
 
-\item{p4}{\code{Point2D}}
+\item{p4}{\code{Point2D}. Second line second point.}
 
-\item{out}{\code{Point2D}}
+\item{out}{\code{Point2D}. Borrowed output, assigned only on successful construction.}
 }
 \value{
-\code{logical}
+\code{logical}: True when a finite approximate unique intersection was constructed.
 }
 \description{
-Unlike segments_intersect(), this treats both inputs as unbounded lines, not segments.
+Uses exact determinant parallelism and a widened exact-determinant quotient before final coordinate construction. Returns false for parallel, coincident or degenerate supporting lines, even when finite segments overlap. Does not restrict line parameters to [0,1]. On false/error leaves out unchanged. Constructed coordinates are approximate and must be finite doubles; classification is exact for represented inputs. Constant bounded work/storage.
+}
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{dm::geometry::Point2D out;bool ok=dm::geometry::line_intersection_point(\{0,0\},\{2,2\},\{0,2\},\{2,0\},out);
+std::print("\{\} \{\}\\n",ok,out.x); // true 1
+}\if{html}{\out{</div>}}
+}
+
+\section{Errors}{
+
+Signals an R error (from the C++ exception):
+\itemize{
+\item \code{std::invalid_argument}: Nonfinite coordinate.
+\item \code{std::overflow_error}: Nonzero quotient or final coordinate exceeds finite represented range.
+}
+}
+
+\references{
+\itemize{
+\item Exact determinant motivation: Shewchuk (1997), https://www.cs.cmu.edu/~quake/robust.html ; standard closed-segment orientation and collinear bounding-box test.
+}
+}
+\seealso{
+segment_intersection_point()
 }

@@ -2,20 +2,43 @@
 % Please edit documentation in R/datamunger.R
 \name{orientation}
 \alias{orientation}
-\title{C++ function \verb{datamunge::geometry::orientation}}
+\title{Return the exact orientation enum of three stored finite binary64 points.}
 \usage{
 orientation(a, b, c)
 }
 \arguments{
-\item{a}{\code{Point2D}}
+\item{a}{\code{Point2D}. First finite point.}
 
-\item{b}{\code{Point2D}}
+\item{b}{\code{Point2D}. Second finite point.}
 
-\item{c}{\code{Point2D}}
+\item{c}{\code{Point2D}. Third finite point.}
 }
 \value{
-\code{character (Orientation)}
+\code{character (Orientation)}: Exact collinear, clockwise or counterclockwise enum.
 }
 \description{
-C++ function \verb{datamunge::geometry::orientation}
+Delegates to the canonical bounded dyadic integer predicate, without epsilon or overflow-prone floating products. Constant bounded work/storage; inputs unchanged.
+}
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{std::print("\{\}\\n",int(dm::geometry::orientation(\{0,0\},\{1,0\},\{0,1\}))); // 2
+}\if{html}{\out{</div>}}
+}
+
+\section{Errors}{
+
+Signals an R error (from the C++ exception):
+\itemize{
+\item \code{std::invalid_argument}: Nonfinite coordinate.
+}
+}
+
+\references{
+\itemize{
+\item Exact determinant motivation: Shewchuk (1997), https://www.cs.cmu.edu/~quake/robust.html ; standard closed-segment orientation and collinear bounding-box test.
+}
+}
+\seealso{
+orientation_sign()
 }

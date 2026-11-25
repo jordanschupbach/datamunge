@@ -443,6 +443,13 @@ run-all-python: build-python
     printf "\n########## python: %d passed, %d failed ##########\n" "$pass" "$fail"; \
     if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
 
+run-all-javascript: build-javascript
+  {{ NIX_DEVELOP }} .#javascript --command bash -c 'pass=0; fail=0; failed=""; \
+    for f in examples/javascript/*_ex.js; do n="$(basename "$f")"; printf "\n========== %s ==========\n" "$n"; \
+      if node "$f"; then pass=$((pass+1)); else fail=$((fail+1)); failed="$failed $n"; fi; done; \
+    printf "\n########## javascript: %d passed, %d failed ##########\n" "$pass" "$fail"; \
+    if [ -n "$failed" ]; then echo "FAILED:$failed"; fi; [ "$fail" -eq 0 ]'
+
 run-all-r: build-r
   {{ NIX_DEVELOP }} .#r --command bash -c 'export R_LIBS_USER="$(pwd)/build/r/library${R_LIBS_USER:+:}$R_LIBS_USER"; \
     pass=0; fail=0; failed=""; \

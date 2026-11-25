@@ -2,9 +2,9 @@
 % Please edit documentation in R/datamunger.R
 \name{DiameterResult}
 \alias{DiameterResult}
-\title{C++ class \verb{datamunge::geometry::DiameterResult}}
+\title{Owned actual farthest endpoints and finite Euclidean separation.}
 \description{
-C++ class \verb{datamunge::geometry::DiameterResult}
+Owned actual farthest endpoints and finite Euclidean separation.
 }
 \section{Constructor}{
 
@@ -14,9 +14,17 @@ C++ class \verb{datamunge::geometry::DiameterResult}
 \section{Fields}{
 
 \itemize{
-\item \verb{$a} (\code{Point2D})
-\item \verb{$b} (\code{Point2D})
-\item \verb{$distance} (\code{numeric})
+\item \verb{$a} (\code{Point2D}): First actual canonical hull endpoint.
+\item \verb{$b} (\code{Point2D}): Second actual canonical hull endpoint.
+\item \verb{$distance} (\code{numeric}): Finite Euclidean separation in coordinate units.
 }
+}
+
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{const dm::geometry::DiameterResult value\{\};
+std::print("\{\}\\n",value.distance); // 0
+}\if{html}{\out{</div>}}
 }
 

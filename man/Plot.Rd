@@ -32,6 +32,20 @@ Base-class form of RPlot::size(): sets the canvas size in pixels (default 960x64
 \item \code{height}: Canvas height in pixels.
 \item Returns: This plot, for chaining.
 }
+\item \verb{$dpi(value)} -> \code{Plot}
+\verb{$dpi()} -> \code{numeric}
+
+Sets the resolution PNG and PDF output is rasterized at, like R's
+\code{png(res = )} and ggsave()'s \verb{dpi =} (default 96).
+\itemize{
+\item \code{value}: Dots per inch; finite and positive.
+\item Returns: This plot, for chaining.
+}
+
+The resolution PNG and PDF output is rasterized at (default 96).
+\itemize{
+\item Returns: Dots per inch.
+}
 \item \verb{$title(value)} -> \code{Plot}
 
 Base-class form of RPlot::title(): sets the main heading; empty removes it.

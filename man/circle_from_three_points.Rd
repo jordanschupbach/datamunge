@@ -2,20 +2,39 @@
 % Please edit documentation in R/datamunger.R
 \name{circle_from_three_points}
 \alias{circle_from_three_points}
-\title{C++ function \verb{datamunge::geometry::detail::circle_from_three_points}}
+\title{Construct a translated circumcircle or a farthest-pair collinear diameter.}
 \usage{
 circle_from_three_points(a, b, c)
 }
 \arguments{
-\item{a}{\code{Point2D}}
+\item{a}{\code{Point2D}. First finite boundary point.}
 
-\item{b}{\code{Point2D}}
+\item{b}{\code{Point2D}. Second finite boundary point.}
 
-\item{c}{\code{Point2D}}
+\item{c}{\code{Point2D}. Third finite boundary point.}
 }
 \value{
-\code{Circle}
+\code{Circle}: Owned checked circle through noncollinear boundary points, or collinear diameter.
 }
 \description{
-C++ function \verb{datamunge::geometry::detail::circle_from_three_points}
+Construct a translated circumcircle or a farthest-pair collinear diameter.
+}
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{std::print("\{\}\\n",dm::geometry::detail::circle_from_three_points(\{0,0\},\{4,0\},\{0,3\}).radius); // 2.5
+}\if{html}{\out{</div>}}
+}
+
+\section{Errors}{
+
+Signals an R error (from the C++ exception):
+\itemize{
+\item \code{std::invalid_argument}: If a coordinate is nonfinite.
+\item \code{std::overflow_error}: If circle arithmetic is unrepresentable.
+}
+}
+
+\seealso{
+min_enclosing_circle()
 }

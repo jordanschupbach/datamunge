@@ -43,7 +43,7 @@ namespace ROSETTA_LISP_MODULE { namespace rosetta_lisp {
 // ---------------------------------------------------------------- wording
 // The runtime is shared by the full Common Lisp and Julia backends (C ABI with one entry point);
 // messages name the values of the language on the other side. The Julia and C# generators define
-// ROSETTA_FULL_JULIA, ROSETTA_FULL_CSHARP or ROSETTA_FULL_FORTRAN before this runtime.
+// ROSETTA_FULL_JULIA, ROSETTA_FULL_CSHARP, ROSETTA_FULL_VB, ROSETTA_FULL_RUST, ROSETTA_FULL_PHP, ROSETTA_FULL_PERL, ROSETTA_FULL_SWIFT, ROSETTA_FULL_PASCAL, ROSETTA_FULL_DART, ROSETTA_FULL_ADA, ROSETTA_FULL_OBJC, ROSETTA_FULL_PROLOG, ROSETTA_FULL_HASKELL or ROSETTA_FULL_FORTRAN (and so on) before this runtime.
 struct Words {
 #if defined(ROSETTA_FULL_JULIA)
     static constexpr const char* language = "Julia";
@@ -85,6 +85,206 @@ struct Words {
     static constexpr const char* sequence = "an array, list or other IEnumerable";
     static constexpr const char* mapping = "a dictionary";
     static constexpr const char* tuple_kind = "tuple";
+#elif defined(ROSETTA_FULL_VB)
+    static constexpr const char* language = "Visual Basic";
+    static constexpr const char* nil = "Nothing";
+    static constexpr const char* t = "True";
+    static constexpr const char* boolean = "a Boolean";
+    static constexpr const char* integer = "an integer";
+    static constexpr const char* real = "a Double";
+    static constexpr const char* complex = "a Complex";
+    static constexpr const char* string = "a String";
+    static constexpr const char* symbol = "enum ";
+    static constexpr const char* bytes = "a Byte()";
+    static constexpr const char* reals = "a Double()";
+    static constexpr const char* list = "sequence";
+    static constexpr const char* cons = "KeyValuePair";
+    static constexpr const char* map = "dictionary";
+    static constexpr const char* function = "delegate";
+    static constexpr const char* ref = "ByRef argument";
+    static constexpr const char* sequence = "an array, List or other IEnumerable";
+    static constexpr const char* mapping = "a dictionary";
+    static constexpr const char* tuple_kind = "tuple";
+#elif defined(ROSETTA_FULL_RUST)
+    static constexpr const char* language = "Rust";
+    static constexpr const char* nil = "None";
+    static constexpr const char* t = "true";
+    static constexpr const char* boolean = "a bool";
+    static constexpr const char* integer = "an integer";
+    static constexpr const char* real = "an f64";
+    static constexpr const char* complex = "a Complex";
+    static constexpr const char* string = "a String";
+    static constexpr const char* symbol = "enumerator ";
+    static constexpr const char* bytes = "bytes";
+    static constexpr const char* reals = "an f64 slice";
+    static constexpr const char* list = "slice";
+    static constexpr const char* cons = "pair";
+    static constexpr const char* map = "map";
+    static constexpr const char* function = "closure";
+    static constexpr const char* ref = "&mut argument";
+    static constexpr const char* sequence = "a slice or Vec";
+    static constexpr const char* mapping = "a map";
+    static constexpr const char* tuple_kind = "tuple";
+#elif defined(ROSETTA_FULL_SWIFT)
+    static constexpr const char* language = "Swift";
+    static constexpr const char* nil = "nil";
+    static constexpr const char* t = "true";
+    static constexpr const char* boolean = "a Bool";
+    static constexpr const char* integer = "an integer";
+    static constexpr const char* real = "a Double";
+    static constexpr const char* complex = "a Complex";
+    static constexpr const char* string = "a String";
+    static constexpr const char* symbol = "enumerator ";
+    static constexpr const char* bytes = "bytes";
+    static constexpr const char* reals = "a [Double]";
+    static constexpr const char* list = "array";
+    static constexpr const char* cons = "pair";
+    static constexpr const char* map = "dictionary";
+    static constexpr const char* function = "closure";
+    static constexpr const char* ref = "inout argument";
+    static constexpr const char* sequence = "an array";
+    static constexpr const char* mapping = "a dictionary";
+    static constexpr const char* tuple_kind = "tuple";
+#elif defined(ROSETTA_FULL_DART)
+    static constexpr const char* language = "Dart";
+    static constexpr const char* nil = "null";
+    static constexpr const char* t = "true";
+    static constexpr const char* boolean = "a bool";
+    static constexpr const char* integer = "an int";
+    static constexpr const char* real = "a double";
+    static constexpr const char* complex = "a Complex";
+    static constexpr const char* string = "a String";
+    static constexpr const char* symbol = "enumerator ";
+    static constexpr const char* bytes = "a Uint8List";
+    static constexpr const char* reals = "a List<double>";
+    static constexpr const char* list = "List";
+    static constexpr const char* cons = "record";
+    static constexpr const char* map = "Map";
+    static constexpr const char* function = "function";
+    static constexpr const char* ref = "Ref argument";
+    static constexpr const char* sequence = "a List";
+    static constexpr const char* mapping = "a Map";
+    static constexpr const char* tuple_kind = "record";
+#elif defined(ROSETTA_FULL_OBJC)
+    static constexpr const char* language = "Objective-C";
+    static constexpr const char* nil = "nil";
+    static constexpr const char* t = "YES";
+    static constexpr const char* boolean = "a BOOL";
+    static constexpr const char* integer = "an integer";
+    static constexpr const char* real = "a double";
+    static constexpr const char* complex = "a complex number";
+    static constexpr const char* string = "an NSString";
+    static constexpr const char* symbol = "enumerator ";
+    static constexpr const char* bytes = "NSData";
+    static constexpr const char* reals = "an NSArray of numbers";
+    static constexpr const char* list = "NSArray";
+    static constexpr const char* cons = "pair";
+    static constexpr const char* map = "NSDictionary";
+    static constexpr const char* function = "block";
+    static constexpr const char* ref = "pointer argument";
+    static constexpr const char* sequence = "an NSArray";
+    static constexpr const char* mapping = "an NSDictionary";
+    static constexpr const char* tuple_kind = "tuple";
+#elif defined(ROSETTA_FULL_PROLOG)
+    static constexpr const char* language = "Prolog";
+    static constexpr const char* nil = "null";
+    static constexpr const char* t = "true";
+    static constexpr const char* boolean = "a boolean (true or false)";
+    static constexpr const char* integer = "an integer";
+    static constexpr const char* real = "a float";
+    static constexpr const char* complex = "complex(Re, Im)";
+    static constexpr const char* string = "a string";
+    static constexpr const char* symbol = "atom ";
+    static constexpr const char* bytes = "a list of bytes";
+    static constexpr const char* reals = "a list of floats";
+    static constexpr const char* list = "list";
+    static constexpr const char* cons = "pair";
+    static constexpr const char* map = "list of pairs";
+    static constexpr const char* function = "callable";
+    static constexpr const char* ref = "output argument";
+    static constexpr const char* sequence = "a list";
+    static constexpr const char* mapping = "a list of Key-Value pairs";
+    static constexpr const char* tuple_kind = "list";
+#elif defined(ROSETTA_FULL_ADA)
+    static constexpr const char* language = "Ada";
+    static constexpr const char* nil = "null";
+    static constexpr const char* t = "True";
+    static constexpr const char* boolean = "a Boolean";
+    static constexpr const char* integer = "an integer";
+    static constexpr const char* real = "a Long_Float";
+    static constexpr const char* complex = "a Complex";
+    static constexpr const char* string = "a String";
+    static constexpr const char* symbol = "enumerator ";
+    static constexpr const char* bytes = "bytes";
+    static constexpr const char* reals = "a Long_Float_Vector";
+    static constexpr const char* list = "vector";
+    static constexpr const char* cons = "pair";
+    static constexpr const char* map = "map";
+    static constexpr const char* function = "subprogram";
+    static constexpr const char* ref = "in out argument";
+    static constexpr const char* sequence = "a vector";
+    static constexpr const char* mapping = "a map";
+    static constexpr const char* tuple_kind = "record";
+#elif defined(ROSETTA_FULL_PASCAL)
+    static constexpr const char* language = "Pascal";
+    static constexpr const char* nil = "nil";
+    static constexpr const char* t = "True";
+    static constexpr const char* boolean = "a Boolean";
+    static constexpr const char* integer = "an integer";
+    static constexpr const char* real = "a Double";
+    static constexpr const char* complex = "a TNativeComplex";
+    static constexpr const char* string = "a String";
+    static constexpr const char* symbol = "enumerator ";
+    static constexpr const char* bytes = "bytes";
+    static constexpr const char* reals = "an array of Double";
+    static constexpr const char* list = "array";
+    static constexpr const char* cons = "pair";
+    static constexpr const char* map = "map";
+    static constexpr const char* function = "routine";
+    static constexpr const char* ref = "var argument";
+    static constexpr const char* sequence = "an array";
+    static constexpr const char* mapping = "a map";
+    static constexpr const char* tuple_kind = "record";
+#elif defined(ROSETTA_FULL_PHP)
+    static constexpr const char* language = "PHP";
+    static constexpr const char* nil = "null";
+    static constexpr const char* t = "true";
+    static constexpr const char* boolean = "a bool";
+    static constexpr const char* integer = "an int";
+    static constexpr const char* real = "a float";
+    static constexpr const char* complex = "a Complex";
+    static constexpr const char* string = "a string";
+    static constexpr const char* symbol = "enum case ";
+    static constexpr const char* bytes = "a byte string";
+    static constexpr const char* reals = "an array of floats";
+    static constexpr const char* list = "list";
+    static constexpr const char* cons = "pair";
+    static constexpr const char* map = "array";
+    static constexpr const char* function = "callable";
+    static constexpr const char* ref = "by-reference argument";
+    static constexpr const char* sequence = "a list array";
+    static constexpr const char* mapping = "an array (keys to values, or a list of [key, value] pairs)";
+    static constexpr const char* tuple_kind = "list";
+#elif defined(ROSETTA_FULL_PERL)
+    static constexpr const char* language = "Perl";
+    static constexpr const char* nil = "undef";
+    static constexpr const char* t = "true";
+    static constexpr const char* boolean = "a boolean";
+    static constexpr const char* integer = "an integer";
+    static constexpr const char* real = "a number";
+    static constexpr const char* complex = "a Math::Complex";
+    static constexpr const char* string = "a string";
+    static constexpr const char* symbol = "constant ";
+    static constexpr const char* bytes = "a byte string";
+    static constexpr const char* reals = "an array of numbers";
+    static constexpr const char* list = "array";
+    static constexpr const char* cons = "pair";
+    static constexpr const char* map = "hash";
+    static constexpr const char* function = "code reference";
+    static constexpr const char* ref = "written-back argument";
+    static constexpr const char* sequence = "an array reference";
+    static constexpr const char* mapping = "a hash reference (or an array reference of [key, value] pairs)";
+    static constexpr const char* tuple_kind = "array";
 #elif defined(ROSETTA_FULL_FORTRAN)
     static constexpr const char* language = "Fortran";
     static constexpr const char* nil = "an unset object";
@@ -185,6 +385,26 @@ struct Words {
     static constexpr const char* sequence = "a list or array";
     static constexpr const char* mapping = "an association list";
     static constexpr const char* tuple_kind = "tuple";
+#elif defined(ROSETTA_FULL_HASKELL)
+    static constexpr const char* language = "Haskell";
+    static constexpr const char* nil = "Nothing";
+    static constexpr const char* t = "True";
+    static constexpr const char* boolean = "a Bool";
+    static constexpr const char* integer = "an Int";
+    static constexpr const char* real = "a Double";
+    static constexpr const char* complex = "a Complex Double";
+    static constexpr const char* string = "a String";
+    static constexpr const char* symbol = "constructor ";
+    static constexpr const char* bytes = "a ByteString";
+    static constexpr const char* reals = "a [Double]";
+    static constexpr const char* list = "list";
+    static constexpr const char* cons = "tuple";
+    static constexpr const char* map = "Map";
+    static constexpr const char* function = "function";
+    static constexpr const char* ref = "IORef";
+    static constexpr const char* sequence = "a list";
+    static constexpr const char* mapping = "a Map";
+    static constexpr const char* tuple_kind = "tuple";
 #elif defined(ROSETTA_FULL_APL)
     static constexpr const char* language = "APL";
     static constexpr const char* nil = "⍬";
@@ -262,7 +482,7 @@ struct Node {
     explicit Node(Tag k) : kind(k) {}
     bool nil() const { return kind == tag_nil; }
 };
-#if defined(ROSETTA_FULL_JULIA) || defined(ROSETTA_FULL_CSHARP) || defined(ROSETTA_FULL_FORTRAN) || defined(ROSETTA_FULL_OCTAVE) || defined(ROSETTA_FULL_JAVA) || defined(ROSETTA_FULL_GO) || defined(ROSETTA_FULL_OCAML) || defined(ROSETTA_FULL_APL)
+#if defined(ROSETTA_FULL_JULIA) || defined(ROSETTA_FULL_CSHARP) || defined(ROSETTA_FULL_VB) || defined(ROSETTA_FULL_RUST) || defined(ROSETTA_FULL_PHP) || defined(ROSETTA_FULL_PERL) || defined(ROSETTA_FULL_SWIFT) || defined(ROSETTA_FULL_PASCAL) || defined(ROSETTA_FULL_DART) || defined(ROSETTA_FULL_ADA) || defined(ROSETTA_FULL_OBJC) || defined(ROSETTA_FULL_PROLOG) || defined(ROSETTA_FULL_FORTRAN) || defined(ROSETTA_FULL_OCTAVE) || defined(ROSETTA_FULL_JAVA) || defined(ROSETTA_FULL_GO) || defined(ROSETTA_FULL_OCAML) || defined(ROSETTA_FULL_HASKELL) || defined(ROSETTA_FULL_APL)
 inline Node boolean(bool value) { return Node(value ? tag_t : tag_false); }
 #else
 inline Node boolean(bool value) { return Node(value ? tag_t : tag_nil); }
@@ -595,9 +815,49 @@ inline std::string type_name(const Node& n) {
 }
 template<class T, class = void> struct Value;
 
+#if defined(ROSETTA_FULL_PERL)
+// Perl scalars are numbers and strings at once: lenient checks (after the strict overload pass)
+// read a numeric string as the number, and format a number as Perl would for a string.
+inline bool perl_number(const Node& n, Node& number) {
+    if (n.kind != tag_string) return false;
+    const char* begin = n.text.c_str();
+    while (*begin == ' ' || *begin == '\t' || *begin == '\n' || *begin == '\r') ++begin;
+    if (!*begin) return false;
+    const auto trailing = [](const char* end) {
+        while (*end == ' ' || *end == '\t' || *end == '\n' || *end == '\r') ++end;
+        return *end == 0;
+    };
+    char* end = nullptr;
+    errno = 0;
+    const long long integer = std::strtoll(begin, &end, 10);
+    if (end != begin && errno == 0 && trailing(end)) { number = Node(tag_int); number.integer = integer; return true; }
+    if (end != begin && errno == ERANGE && trailing(end) && *begin != '-') {
+        // Beyond long long: a big integer (unsigned 64-bit fits it).
+        number = Node(tag_bigint);
+        for (const char* digit = *begin == '+' ? begin + 1 : begin; digit != end; ++digit) number.text += *digit;
+        return true;
+    }
+    errno = 0;
+    const double real = std::strtod(begin, &end);
+    if (end != begin && trailing(end)) { number = Node(tag_real); number.real = real; return true; }
+    return false;
+}
+inline std::string perl_text(const Node& n) {
+    if (n.kind == tag_int) return std::to_string(n.integer);
+    if (n.kind == tag_bigint) return n.text;
+    if (std::isnan(n.real)) return "NaN";
+    if (std::isinf(n.real)) return n.real < 0 ? "-Inf" : "Inf";
+    char buffer[64];
+    std::snprintf(buffer, sizeof buffer, "%.15g", n.real);
+    return buffer;
+}
+#endif
 // Strict checks (the first overload pass) need the exact Lisp type: integers for C++ integers,
 // floats for C++ floating point. Lenient checks also accept whole floats and integers.
 template<class T> bool fits(const Node& n, bool strict) {
+#if defined(ROSETTA_FULL_PERL)
+    if (Node number; !strict && perl_number(n, number)) return fits<T>(number, false);
+#endif
     if (n.kind == tag_int) {
         const long long v = n.integer;
         if constexpr (std::is_unsigned_v<T>) return v >= 0 && static_cast<unsigned long long>(v) <= std::numeric_limits<T>::max();
@@ -634,7 +894,19 @@ inline double real_of(const Node& n) {
 }
 
 template<class T> struct Value<T, std::enable_if_t<std::is_same_v<T, bool>>> {
-#if defined(ROSETTA_FULL_APL)
+#if defined(ROSETTA_FULL_PERL)
+    // Perl's own booleans, else (lenient checks) 0, 1, "" and "0" as Perl reads them.
+    static bool check(const Node& n, bool strict) {
+        if (n.kind == tag_t || n.kind == tag_false || n.kind == tag_nil) return true;
+        if (strict) return false;
+        return (n.kind == tag_int && (n.integer == 0 || n.integer == 1)) || (n.kind == tag_real && (n.real == 0 || n.real == 1)) ||
+               (n.kind == tag_string && (n.text.empty() || n.text == "0" || n.text == "1"));
+    }
+    static bool load(const Node& n) {
+        if (!check(n, false)) fail(std::string("expected ") + Words::boolean + ", got " + type_name(n));
+        return n.kind == tag_t || (n.kind == tag_int && n.integer == 1) || (n.kind == tag_real && n.real == 1) || (n.kind == tag_string && n.text == "1");
+    }
+#elif defined(ROSETTA_FULL_APL)
     // APL booleans are the numbers 0 and 1 (after integer overloads: lenient checks only).
     static bool check(const Node& n, bool strict) {
         if (n.kind == tag_t || n.kind == tag_false) return true;
@@ -656,6 +928,9 @@ template<class T> struct Value<T, std::enable_if_t<std::is_same_v<T, bool>>> {
 template<class T> struct Value<T, std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<T, bool> && !std::is_same_v<T, char>>> {
     static bool check(const Node& n, bool strict) { return fits<T>(n, strict); }
     static T load(const Node& n) {
+#if defined(ROSETTA_FULL_PERL)
+        if (Node number; perl_number(n, number)) return load(number);
+#endif
         if (n.kind != tag_int && n.kind != tag_bigint && n.kind != tag_real) fail("expected an integer, got " + type_name(n));
         if (!fits<T>(n, false)) {
             if (n.kind != tag_real) fail("integer outside C++ type range");
@@ -669,9 +944,15 @@ template<class T> struct Value<T, std::enable_if_t<std::is_integral_v<T> && !std
 };
 template<class T> struct Value<T, std::enable_if_t<std::is_floating_point_v<T>>> {
     static bool check(const Node& n, bool strict) {
+#if defined(ROSETTA_FULL_PERL)
+        if (Node number; !strict && perl_number(n, number)) return true;
+#endif
         return n.kind == tag_real || (!strict && (n.kind == tag_int || n.kind == tag_bigint));
     }
     static T load(const Node& n) {
+#if defined(ROSETTA_FULL_PERL)
+        if (Node number; perl_number(n, number)) return load(number);
+#endif
         if (!check(n, false)) fail("expected a number, got " + type_name(n));
         const double v = real_of(n);
         if (std::isfinite(v) && std::abs(v) > static_cast<double>(std::numeric_limits<T>::max())) fail("number outside C++ type range");
@@ -683,10 +964,14 @@ inline Node text_node(Tag kind, std::string value) { Node n(kind); n.text = std:
 template<> struct Value<char> {
     static bool check(const Node& n, bool strict) {
         if (n.kind == tag_string) return n.text.size() == 1;
+#if defined(ROSETTA_FULL_PROLOG)
+        // Prolog: a one-character atom (lenient checks).
+        if (n.kind == tag_symbol) return !strict && n.text.size() == 1;
+#endif
         return !strict && Value<int>::check(n, false);
     }
     static char load(const Node& n) {
-        if (n.kind == tag_string) {
+        if (n.kind == tag_string || (n.kind == tag_symbol && n.text.size() == 1)) {
             if (n.text.size() != 1) fail("expected a single (ASCII) character");
             return n.text[0];
         }
@@ -695,11 +980,28 @@ template<> struct Value<char> {
     static Node make(char value) { return text_node(tag_string, std::string(1, value)); }
 };
 template<> struct Value<std::string> {
+#if defined(ROSETTA_FULL_PERL)
+    static bool check(const Node& n, bool strict) {
+        return n.kind == tag_string || n.kind == tag_bytes || (!strict && (n.kind == tag_int || n.kind == tag_bigint || n.kind == tag_real));
+    }
+    static std::string load(const Node& n) {
+        if (!check(n, false)) fail("expected a string, got " + type_name(n));
+        return n.kind == tag_string || n.kind == tag_bytes ? n.text : perl_text(n);
+    }
+#elif defined(ROSETTA_FULL_PROLOG)
+    // Prolog: atoms are text too (lenient checks, after enumerations).
+    static bool check(const Node& n, bool strict) { return n.kind == tag_string || n.kind == tag_bytes || (!strict && n.kind == tag_symbol); }
+    static std::string load(const Node& n) {
+        if (!check(n, false)) fail("expected a string, got " + type_name(n));
+        return n.text;
+    }
+#else
     static bool check(const Node& n, bool) { return n.kind == tag_string || n.kind == tag_bytes; }
     static std::string load(const Node& n) {
         if (!check(n, false)) fail("expected a string, got " + type_name(n));
         return n.text;
     }
+#endif
     static Node make(const std::string& value) { return text_node(tag_string, value); }
 };
 template<> struct Value<std::string_view> {
@@ -765,9 +1067,15 @@ inline std::string folded(std::string text) {
 template<class T> struct Value<T, std::enable_if_t<std::is_enum_v<T>>> {
     using U = std::underlying_type_t<T>;
     static const std::pair<std::string, long long>* named(const std::string& name) {
+#if defined(ROSETTA_FULL_PROLOG) || defined(ROSETTA_FULL_HASKELL)
+        // Prolog: the generated atoms, exactly; Haskell: the C++ names, exactly (constructors are distinct).
+        for (const auto& entry : EnumTable<T>::entries) if (entry.first == name) return &entry;
+        return nullptr;
+#else
         const auto key = folded(name);
         for (const auto& entry : EnumTable<T>::entries) if (folded(entry.first) == key) return &entry;
         return nullptr;
+#endif
     }
     static bool check(const Node& n, bool strict) {
         if (n.kind == tag_symbol || n.kind == tag_string) return !strict || named(n.text);
@@ -789,7 +1097,7 @@ template<class T> struct Value<T, std::enable_if_t<std::is_enum_v<T>>> {
     static Node make(T value) {
         const auto v = static_cast<long long>(static_cast<U>(value));
         (void)v;
-#if !defined(ROSETTA_FULL_OCTAVE) && !defined(ROSETTA_FULL_APL) // Octave, APL: enumerators are numbers (constants of an enum class)
+#if !defined(ROSETTA_FULL_OCTAVE) && !defined(ROSETTA_FULL_APL) && !defined(ROSETTA_FULL_VB) && !defined(ROSETTA_FULL_RUST) && !defined(ROSETTA_FULL_PHP) && !defined(ROSETTA_FULL_PERL) && !defined(ROSETTA_FULL_SWIFT) && !defined(ROSETTA_FULL_PASCAL) && !defined(ROSETTA_FULL_DART) && !defined(ROSETTA_FULL_ADA) && !defined(ROSETTA_FULL_OBJC) // Octave, APL: enumerators are numbers (constants of an enum class); VB: by value, since its names are case-insensitive; Rust: newtypes over the value; PHP: backed enums the generated code converts; Perl: constants of the values
         for (const auto& entry : EnumTable<T>::entries) if (entry.second == v) return text_node(tag_symbol, entry.first);
 #endif
         return number(static_cast<U>(value));
@@ -1362,6 +1670,8 @@ inline int run(const Function* table, std::size_t size, unsigned index, const un
         writer.node(text_node(tag_symbol, "unknown"));
         writer.node(text_node(tag_string, "unknown C++ exception"));
     }
+    // What C++ printed before it threw comes before the caller's later output too.
+    if (status != 0) flush_output();
     --depth();
     converting() = outer_label;
     *out_size = writer.out.size();
@@ -1409,20 +1719,29 @@ template<> struct Bound<datamunge::optim::InequalityConstrainedFunction> : std::
 template<> struct Copyable<datamunge::optim::InequalityConstrainedFunction> : std::false_type {};
 template<> struct Bound<datamunge::optim::ResidualFunction> : std::true_type {};
 template<> struct Copyable<datamunge::optim::ResidualFunction> : std::false_type {};
+template<> struct Bound<datamunge::bayes::NUTSOptions> : std::true_type {};
+template<> struct Bound<datamunge::bayes::NUTSResult> : std::true_type {};
+template<> struct Bound<datamunge::bayes::NUTS> : std::true_type {};
+template<> struct Bound<datamunge::Callback> : std::true_type {};
+template<> struct Bound<datamunge::graphics::RGB> : std::true_type {};
+template<> struct Bound<datamunge::graphics::DataSeries> : std::true_type {};
+template<> struct Bound<datamunge::graphics::ABLine> : std::true_type {};
+template<> struct Bound<datamunge::graphics::LegendEntry> : std::true_type {};
+template<> struct Bound<datamunge::graphics::Plot> : std::true_type {};
+template<> struct Bound<datamunge::graphics::RPlot> : std::true_type {};
+template<> struct Bound<datamunge::graphics::RLayout> : std::true_type {};
 template<> struct Bound<datamunge::bayes::GibbsOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::GibbsResult> : std::true_type {};
 template<> struct Bound<datamunge::bayes::GibbsSampler> : std::true_type {};
 template<> struct Bound<datamunge::bayes::HMCOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::HMCResult> : std::true_type {};
 template<> struct Bound<datamunge::bayes::HMC> : std::true_type {};
+template<> struct Bound<datamunge::bayes::HMCProposal> : std::true_type {};
 template<> struct Bound<datamunge::bayes::ImportanceSamplingOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::ImportanceSamplingResult> : std::true_type {};
 template<> struct Bound<datamunge::bayes::ImportanceSampling> : std::true_type {};
 template<> struct Bound<datamunge::bayes::MAPOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::MAP> : std::true_type {};
-template<> struct Bound<datamunge::bayes::NUTSOptions> : std::true_type {};
-template<> struct Bound<datamunge::bayes::NUTSResult> : std::true_type {};
-template<> struct Bound<datamunge::bayes::NUTS> : std::true_type {};
 template<> struct Bound<datamunge::bayes::RWMOptions> : std::true_type {};
 template<> struct Bound<datamunge::bayes::RWMResult> : std::true_type {};
 template<> struct Bound<datamunge::bayes::RandomWalkMetropolis> : std::true_type {};
@@ -1478,29 +1797,39 @@ template<> struct Bound<datamunge::geometry::ConvexHullWork> : std::true_type {}
 template<> struct Bound<datamunge::geometry::HullEvent> : std::true_type {};
 template<> struct Bound<datamunge::geometry::ConvexHullAnalysis> : std::true_type {};
 template<> struct Bound<datamunge::geometry::ConvexHullTrace> : std::true_type {};
-template<> struct Bound<datamunge::Callback> : std::true_type {};
-template<> struct Bound<datamunge::graphics::RGB> : std::true_type {};
-template<> struct Bound<datamunge::graphics::DataSeries> : std::true_type {};
-template<> struct Bound<datamunge::graphics::ABLine> : std::true_type {};
-template<> struct Bound<datamunge::graphics::LegendEntry> : std::true_type {};
-template<> struct Bound<datamunge::graphics::Plot> : std::true_type {};
-template<> struct Bound<datamunge::graphics::RPlot> : std::true_type {};
-template<> struct Bound<datamunge::graphics::RLayout> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DTWResult> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DTWWork> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DTWComputation> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DTWTrace> : std::true_type {};
+template<> struct Bound<datamunge::geometry::KDNearestProbe> : std::true_type {};
+template<> struct Bound<datamunge::geometry::KDSearchWork> : std::true_type {};
+template<> struct Bound<datamunge::geometry::KDNearestTrace> : std::true_type {};
 template<> struct Bound<datamunge::geometry::KDTree2D> : std::true_type {};
 template<> struct Copyable<datamunge::geometry::KDTree2D> : std::false_type {};
 template<> struct Bound<datamunge::geometry::Circle> : std::true_type {};
+template<> struct Bound<datamunge::geometry::EnclosingCircleEvent> : std::true_type {};
+template<> struct Bound<datamunge::geometry::EnclosingCircleTrace> : std::true_type {};
+template<> struct Bound<datamunge::geometry::EnclosingCircleCheck> : std::true_type {};
+template<> struct Bound<datamunge::geometry::SegmentIntersectionRun> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonEarCandidate> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonEarClip> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonTriangulationOptions> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonTriangulationRun> : std::true_type {};
+template<> struct Bound<datamunge::geometry::PolygonTriangulationTrace> : std::true_type {};
 template<> struct Bound<datamunge::geometry::DiameterResult> : std::true_type {};
-template<> struct Bound<datamunge::geometry::MinimumBoundingRectangle> : std::true_type {};
+template<> struct Bound<datamunge::geometry::DiameterOptions> : std::true_type {};
+template<> struct Bound<datamunge::geometry::CaliperEvent> : std::true_type {};
+template<> struct Bound<datamunge::geometry::DiameterRun> : std::true_type {};
 template<> struct Bound<datamunge::geometry::VoronoiDiagram> : std::true_type {};
 template<> struct Bound<datamunge::LinalgMatrix> : std::true_type {};
 template<> struct Bound<datamunge::ode::RHS> : std::true_type {};
 template<> struct Copyable<datamunge::ode::RHS> : std::false_type {};
 template<> struct Bound<datamunge::ode::ODEOptions> : std::true_type {};
+template<> struct Bound<datamunge::ode::ODEExecutionLimits> : std::true_type {};
 template<> struct Bound<datamunge::ode::ODESolution> : std::true_type {};
+template<> struct Bound<datamunge::ode::ODEEvaluation> : std::true_type {};
+template<> struct Bound<datamunge::ode::ODEAttempt> : std::true_type {};
+template<> struct Bound<datamunge::ode::ODETrace> : std::true_type {};
 template<> struct Bound<datamunge::ode::ODESolver> : std::true_type {};
 template<> struct Bound<datamunge::optim::ACOROptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::ACOR> : std::true_type {};
@@ -1551,6 +1880,10 @@ template<> struct Bound<datamunge::optim::HarmonySearchOptions> : std::true_type
 template<> struct Bound<datamunge::optim::HarmonySearch> : std::true_type {};
 template<> struct Bound<datamunge::optim::InteriorPointOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::InteriorPoint> : std::true_type {};
+template<> struct Bound<datamunge::optim::SurrogatePrediction> : std::true_type {};
+template<> struct Bound<datamunge::optim::GaussianJointPosterior> : std::true_type {};
+template<> struct Bound<datamunge::optim::GaussianProcessSurrogateOptions> : std::true_type {};
+template<> struct Bound<datamunge::optim::RBFGaussianProcessSurrogate> : std::true_type {};
 template<> struct Bound<datamunge::optim::LBFGSOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::LBFGS> : std::true_type {};
 template<> struct Bound<datamunge::optim::LevenbergMarquardtOptions> : std::true_type {};
@@ -1573,9 +1906,6 @@ template<> struct Bound<datamunge::optim::RandomizedBlockCoordinateDescentOption
 template<> struct Bound<datamunge::optim::RandomizedBlockCoordinateDescent> : std::true_type {};
 template<> struct Bound<datamunge::optim::RMSPropOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::RMSProp> : std::true_type {};
-template<> struct Bound<datamunge::optim::SurrogatePrediction> : std::true_type {};
-template<> struct Bound<datamunge::optim::GaussianProcessSurrogateOptions> : std::true_type {};
-template<> struct Bound<datamunge::optim::RBFGaussianProcessSurrogate> : std::true_type {};
 template<> struct Bound<datamunge::optim::SGDOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::SGD> : std::true_type {};
 template<> struct Bound<datamunge::optim::SimulatedAnnealingOptions> : std::true_type {};
@@ -1590,13 +1920,18 @@ template<> struct Bound<datamunge::optim::TrustRegionNewtonOptions> : std::true_
 template<> struct Bound<datamunge::optim::TrustRegionNewton> : std::true_type {};
 template<> struct Bound<datamunge::optim::WhaleOptimizationOptions> : std::true_type {};
 template<> struct Bound<datamunge::optim::WhaleOptimization> : std::true_type {};
-template<> struct Bound<datamunge::fda::BSplineBasis> : std::true_type {};
 template<> struct Bound<datamunge::stats::HypothesisTestResult> : std::true_type {};
+template<> struct Bound<datamunge::fda::BSplineBasis> : std::true_type {};
+template<> struct Bound<datamunge::stats::GamesHowellComparison> : std::true_type {};
+template<> struct Bound<datamunge::stats::DunnComparison> : std::true_type {};
 template<> struct Bound<datamunge::stats::ARIMAOptions> : std::true_type {};
 template<> struct Bound<datamunge::stats::ARIMA> : std::true_type {};
 template<> struct Bound<datamunge::stats::KendallTau> : std::true_type {};
 template<> struct Bound<datamunge::stats::ExponentialSmoothingOptions> : std::true_type {};
 template<> struct Bound<datamunge::stats::ExponentialSmoothing> : std::true_type {};
+template<> struct Bound<datamunge::stats::ProportionDifferenceInterval> : std::true_type {};
+template<> struct Bound<datamunge::stats::RiskRatioInterval> : std::true_type {};
+template<> struct Bound<datamunge::stats::PoissonRateInterval> : std::true_type {};
 template<> struct Bound<datamunge::Bspline> : std::true_type {};
 template<> struct Bound<datamunge::BSplineRegression> : std::true_type {};
 template<> struct Bound<datamunge::PSplineRegression> : std::true_type {};
@@ -1646,6 +1981,7 @@ template<> struct Bound<datamunge::Dual> : std::true_type {};
 template<> struct Bound<datamunge::HyperDual> : std::true_type {};
 template<> struct Bound<datamunge::Var> : std::true_type {};
 template<> struct Bound<datamunge::Tape> : std::true_type {};
+template<> struct Bound<datamunge::MLPClassifierSearch> : std::true_type {};
 template<> struct Bound<datamunge::cad::Solid> : std::true_type {};
 template<> struct Bound<datamunge::cad::View> : std::true_type {};
 template<> struct Bound<datamunge::fda::SplineSolveOptions> : std::true_type {};
@@ -4904,6 +5240,357 @@ void rosetta_apl_3230(rosetta_lisp::Call&);
 void rosetta_apl_3231(rosetta_lisp::Call&);
 void rosetta_apl_3232(rosetta_lisp::Call&);
 void rosetta_apl_3233(rosetta_lisp::Call&);
+void rosetta_apl_3234(rosetta_lisp::Call&);
+void rosetta_apl_3235(rosetta_lisp::Call&);
+void rosetta_apl_3236(rosetta_lisp::Call&);
+void rosetta_apl_3237(rosetta_lisp::Call&);
+void rosetta_apl_3238(rosetta_lisp::Call&);
+void rosetta_apl_3239(rosetta_lisp::Call&);
+void rosetta_apl_3240(rosetta_lisp::Call&);
+void rosetta_apl_3241(rosetta_lisp::Call&);
+void rosetta_apl_3242(rosetta_lisp::Call&);
+void rosetta_apl_3243(rosetta_lisp::Call&);
+void rosetta_apl_3244(rosetta_lisp::Call&);
+void rosetta_apl_3245(rosetta_lisp::Call&);
+void rosetta_apl_3246(rosetta_lisp::Call&);
+void rosetta_apl_3247(rosetta_lisp::Call&);
+void rosetta_apl_3248(rosetta_lisp::Call&);
+void rosetta_apl_3249(rosetta_lisp::Call&);
+void rosetta_apl_3250(rosetta_lisp::Call&);
+void rosetta_apl_3251(rosetta_lisp::Call&);
+void rosetta_apl_3252(rosetta_lisp::Call&);
+void rosetta_apl_3253(rosetta_lisp::Call&);
+void rosetta_apl_3254(rosetta_lisp::Call&);
+void rosetta_apl_3255(rosetta_lisp::Call&);
+void rosetta_apl_3256(rosetta_lisp::Call&);
+void rosetta_apl_3257(rosetta_lisp::Call&);
+void rosetta_apl_3258(rosetta_lisp::Call&);
+void rosetta_apl_3259(rosetta_lisp::Call&);
+void rosetta_apl_3260(rosetta_lisp::Call&);
+void rosetta_apl_3261(rosetta_lisp::Call&);
+void rosetta_apl_3262(rosetta_lisp::Call&);
+void rosetta_apl_3263(rosetta_lisp::Call&);
+void rosetta_apl_3264(rosetta_lisp::Call&);
+void rosetta_apl_3265(rosetta_lisp::Call&);
+void rosetta_apl_3266(rosetta_lisp::Call&);
+void rosetta_apl_3267(rosetta_lisp::Call&);
+void rosetta_apl_3268(rosetta_lisp::Call&);
+void rosetta_apl_3269(rosetta_lisp::Call&);
+void rosetta_apl_3270(rosetta_lisp::Call&);
+void rosetta_apl_3271(rosetta_lisp::Call&);
+void rosetta_apl_3272(rosetta_lisp::Call&);
+void rosetta_apl_3273(rosetta_lisp::Call&);
+void rosetta_apl_3274(rosetta_lisp::Call&);
+void rosetta_apl_3275(rosetta_lisp::Call&);
+void rosetta_apl_3276(rosetta_lisp::Call&);
+void rosetta_apl_3277(rosetta_lisp::Call&);
+void rosetta_apl_3278(rosetta_lisp::Call&);
+void rosetta_apl_3279(rosetta_lisp::Call&);
+void rosetta_apl_3280(rosetta_lisp::Call&);
+void rosetta_apl_3281(rosetta_lisp::Call&);
+void rosetta_apl_3282(rosetta_lisp::Call&);
+void rosetta_apl_3283(rosetta_lisp::Call&);
+void rosetta_apl_3284(rosetta_lisp::Call&);
+void rosetta_apl_3285(rosetta_lisp::Call&);
+void rosetta_apl_3286(rosetta_lisp::Call&);
+void rosetta_apl_3287(rosetta_lisp::Call&);
+void rosetta_apl_3288(rosetta_lisp::Call&);
+void rosetta_apl_3289(rosetta_lisp::Call&);
+void rosetta_apl_3290(rosetta_lisp::Call&);
+void rosetta_apl_3291(rosetta_lisp::Call&);
+void rosetta_apl_3292(rosetta_lisp::Call&);
+void rosetta_apl_3293(rosetta_lisp::Call&);
+void rosetta_apl_3294(rosetta_lisp::Call&);
+void rosetta_apl_3295(rosetta_lisp::Call&);
+void rosetta_apl_3296(rosetta_lisp::Call&);
+void rosetta_apl_3297(rosetta_lisp::Call&);
+void rosetta_apl_3298(rosetta_lisp::Call&);
+void rosetta_apl_3299(rosetta_lisp::Call&);
+void rosetta_apl_3300(rosetta_lisp::Call&);
+void rosetta_apl_3301(rosetta_lisp::Call&);
+void rosetta_apl_3302(rosetta_lisp::Call&);
+void rosetta_apl_3303(rosetta_lisp::Call&);
+void rosetta_apl_3304(rosetta_lisp::Call&);
+void rosetta_apl_3305(rosetta_lisp::Call&);
+void rosetta_apl_3306(rosetta_lisp::Call&);
+void rosetta_apl_3307(rosetta_lisp::Call&);
+void rosetta_apl_3308(rosetta_lisp::Call&);
+void rosetta_apl_3309(rosetta_lisp::Call&);
+void rosetta_apl_3310(rosetta_lisp::Call&);
+void rosetta_apl_3311(rosetta_lisp::Call&);
+void rosetta_apl_3312(rosetta_lisp::Call&);
+void rosetta_apl_3313(rosetta_lisp::Call&);
+void rosetta_apl_3314(rosetta_lisp::Call&);
+void rosetta_apl_3315(rosetta_lisp::Call&);
+void rosetta_apl_3316(rosetta_lisp::Call&);
+void rosetta_apl_3317(rosetta_lisp::Call&);
+void rosetta_apl_3318(rosetta_lisp::Call&);
+void rosetta_apl_3319(rosetta_lisp::Call&);
+void rosetta_apl_3320(rosetta_lisp::Call&);
+void rosetta_apl_3321(rosetta_lisp::Call&);
+void rosetta_apl_3322(rosetta_lisp::Call&);
+void rosetta_apl_3323(rosetta_lisp::Call&);
+void rosetta_apl_3324(rosetta_lisp::Call&);
+void rosetta_apl_3325(rosetta_lisp::Call&);
+void rosetta_apl_3326(rosetta_lisp::Call&);
+void rosetta_apl_3327(rosetta_lisp::Call&);
+void rosetta_apl_3328(rosetta_lisp::Call&);
+void rosetta_apl_3329(rosetta_lisp::Call&);
+void rosetta_apl_3330(rosetta_lisp::Call&);
+void rosetta_apl_3331(rosetta_lisp::Call&);
+void rosetta_apl_3332(rosetta_lisp::Call&);
+void rosetta_apl_3333(rosetta_lisp::Call&);
+void rosetta_apl_3334(rosetta_lisp::Call&);
+void rosetta_apl_3335(rosetta_lisp::Call&);
+void rosetta_apl_3336(rosetta_lisp::Call&);
+void rosetta_apl_3337(rosetta_lisp::Call&);
+void rosetta_apl_3338(rosetta_lisp::Call&);
+void rosetta_apl_3339(rosetta_lisp::Call&);
+void rosetta_apl_3340(rosetta_lisp::Call&);
+void rosetta_apl_3341(rosetta_lisp::Call&);
+void rosetta_apl_3342(rosetta_lisp::Call&);
+void rosetta_apl_3343(rosetta_lisp::Call&);
+void rosetta_apl_3344(rosetta_lisp::Call&);
+void rosetta_apl_3345(rosetta_lisp::Call&);
+void rosetta_apl_3346(rosetta_lisp::Call&);
+void rosetta_apl_3347(rosetta_lisp::Call&);
+void rosetta_apl_3348(rosetta_lisp::Call&);
+void rosetta_apl_3349(rosetta_lisp::Call&);
+void rosetta_apl_3350(rosetta_lisp::Call&);
+void rosetta_apl_3351(rosetta_lisp::Call&);
+void rosetta_apl_3352(rosetta_lisp::Call&);
+void rosetta_apl_3353(rosetta_lisp::Call&);
+void rosetta_apl_3354(rosetta_lisp::Call&);
+void rosetta_apl_3355(rosetta_lisp::Call&);
+void rosetta_apl_3356(rosetta_lisp::Call&);
+void rosetta_apl_3357(rosetta_lisp::Call&);
+void rosetta_apl_3358(rosetta_lisp::Call&);
+void rosetta_apl_3359(rosetta_lisp::Call&);
+void rosetta_apl_3360(rosetta_lisp::Call&);
+void rosetta_apl_3361(rosetta_lisp::Call&);
+void rosetta_apl_3362(rosetta_lisp::Call&);
+void rosetta_apl_3363(rosetta_lisp::Call&);
+void rosetta_apl_3364(rosetta_lisp::Call&);
+void rosetta_apl_3365(rosetta_lisp::Call&);
+void rosetta_apl_3366(rosetta_lisp::Call&);
+void rosetta_apl_3367(rosetta_lisp::Call&);
+void rosetta_apl_3368(rosetta_lisp::Call&);
+void rosetta_apl_3369(rosetta_lisp::Call&);
+void rosetta_apl_3370(rosetta_lisp::Call&);
+void rosetta_apl_3371(rosetta_lisp::Call&);
+void rosetta_apl_3372(rosetta_lisp::Call&);
+void rosetta_apl_3373(rosetta_lisp::Call&);
+void rosetta_apl_3374(rosetta_lisp::Call&);
+void rosetta_apl_3375(rosetta_lisp::Call&);
+void rosetta_apl_3376(rosetta_lisp::Call&);
+void rosetta_apl_3377(rosetta_lisp::Call&);
+void rosetta_apl_3378(rosetta_lisp::Call&);
+void rosetta_apl_3379(rosetta_lisp::Call&);
+void rosetta_apl_3380(rosetta_lisp::Call&);
+void rosetta_apl_3381(rosetta_lisp::Call&);
+void rosetta_apl_3382(rosetta_lisp::Call&);
+void rosetta_apl_3383(rosetta_lisp::Call&);
+void rosetta_apl_3384(rosetta_lisp::Call&);
+void rosetta_apl_3385(rosetta_lisp::Call&);
+void rosetta_apl_3386(rosetta_lisp::Call&);
+void rosetta_apl_3387(rosetta_lisp::Call&);
+void rosetta_apl_3388(rosetta_lisp::Call&);
+void rosetta_apl_3389(rosetta_lisp::Call&);
+void rosetta_apl_3390(rosetta_lisp::Call&);
+void rosetta_apl_3391(rosetta_lisp::Call&);
+void rosetta_apl_3392(rosetta_lisp::Call&);
+void rosetta_apl_3393(rosetta_lisp::Call&);
+void rosetta_apl_3394(rosetta_lisp::Call&);
+void rosetta_apl_3395(rosetta_lisp::Call&);
+void rosetta_apl_3396(rosetta_lisp::Call&);
+void rosetta_apl_3397(rosetta_lisp::Call&);
+void rosetta_apl_3398(rosetta_lisp::Call&);
+void rosetta_apl_3399(rosetta_lisp::Call&);
+void rosetta_apl_3400(rosetta_lisp::Call&);
+void rosetta_apl_3401(rosetta_lisp::Call&);
+void rosetta_apl_3402(rosetta_lisp::Call&);
+void rosetta_apl_3403(rosetta_lisp::Call&);
+void rosetta_apl_3404(rosetta_lisp::Call&);
+void rosetta_apl_3405(rosetta_lisp::Call&);
+void rosetta_apl_3406(rosetta_lisp::Call&);
+void rosetta_apl_3407(rosetta_lisp::Call&);
+void rosetta_apl_3408(rosetta_lisp::Call&);
+void rosetta_apl_3409(rosetta_lisp::Call&);
+void rosetta_apl_3410(rosetta_lisp::Call&);
+void rosetta_apl_3411(rosetta_lisp::Call&);
+void rosetta_apl_3412(rosetta_lisp::Call&);
+void rosetta_apl_3413(rosetta_lisp::Call&);
+void rosetta_apl_3414(rosetta_lisp::Call&);
+void rosetta_apl_3415(rosetta_lisp::Call&);
+void rosetta_apl_3416(rosetta_lisp::Call&);
+void rosetta_apl_3417(rosetta_lisp::Call&);
+void rosetta_apl_3418(rosetta_lisp::Call&);
+void rosetta_apl_3419(rosetta_lisp::Call&);
+void rosetta_apl_3420(rosetta_lisp::Call&);
+void rosetta_apl_3421(rosetta_lisp::Call&);
+void rosetta_apl_3422(rosetta_lisp::Call&);
+void rosetta_apl_3423(rosetta_lisp::Call&);
+void rosetta_apl_3424(rosetta_lisp::Call&);
+void rosetta_apl_3425(rosetta_lisp::Call&);
+void rosetta_apl_3426(rosetta_lisp::Call&);
+void rosetta_apl_3427(rosetta_lisp::Call&);
+void rosetta_apl_3428(rosetta_lisp::Call&);
+void rosetta_apl_3429(rosetta_lisp::Call&);
+void rosetta_apl_3430(rosetta_lisp::Call&);
+void rosetta_apl_3431(rosetta_lisp::Call&);
+void rosetta_apl_3432(rosetta_lisp::Call&);
+void rosetta_apl_3433(rosetta_lisp::Call&);
+void rosetta_apl_3434(rosetta_lisp::Call&);
+void rosetta_apl_3435(rosetta_lisp::Call&);
+void rosetta_apl_3436(rosetta_lisp::Call&);
+void rosetta_apl_3437(rosetta_lisp::Call&);
+void rosetta_apl_3438(rosetta_lisp::Call&);
+void rosetta_apl_3439(rosetta_lisp::Call&);
+void rosetta_apl_3440(rosetta_lisp::Call&);
+void rosetta_apl_3441(rosetta_lisp::Call&);
+void rosetta_apl_3442(rosetta_lisp::Call&);
+void rosetta_apl_3443(rosetta_lisp::Call&);
+void rosetta_apl_3444(rosetta_lisp::Call&);
+void rosetta_apl_3445(rosetta_lisp::Call&);
+void rosetta_apl_3446(rosetta_lisp::Call&);
+void rosetta_apl_3447(rosetta_lisp::Call&);
+void rosetta_apl_3448(rosetta_lisp::Call&);
+void rosetta_apl_3449(rosetta_lisp::Call&);
+void rosetta_apl_3450(rosetta_lisp::Call&);
+void rosetta_apl_3451(rosetta_lisp::Call&);
+void rosetta_apl_3452(rosetta_lisp::Call&);
+void rosetta_apl_3453(rosetta_lisp::Call&);
+void rosetta_apl_3454(rosetta_lisp::Call&);
+void rosetta_apl_3455(rosetta_lisp::Call&);
+void rosetta_apl_3456(rosetta_lisp::Call&);
+void rosetta_apl_3457(rosetta_lisp::Call&);
+void rosetta_apl_3458(rosetta_lisp::Call&);
+void rosetta_apl_3459(rosetta_lisp::Call&);
+void rosetta_apl_3460(rosetta_lisp::Call&);
+void rosetta_apl_3461(rosetta_lisp::Call&);
+void rosetta_apl_3462(rosetta_lisp::Call&);
+void rosetta_apl_3463(rosetta_lisp::Call&);
+void rosetta_apl_3464(rosetta_lisp::Call&);
+void rosetta_apl_3465(rosetta_lisp::Call&);
+void rosetta_apl_3466(rosetta_lisp::Call&);
+void rosetta_apl_3467(rosetta_lisp::Call&);
+void rosetta_apl_3468(rosetta_lisp::Call&);
+void rosetta_apl_3469(rosetta_lisp::Call&);
+void rosetta_apl_3470(rosetta_lisp::Call&);
+void rosetta_apl_3471(rosetta_lisp::Call&);
+void rosetta_apl_3472(rosetta_lisp::Call&);
+void rosetta_apl_3473(rosetta_lisp::Call&);
+void rosetta_apl_3474(rosetta_lisp::Call&);
+void rosetta_apl_3475(rosetta_lisp::Call&);
+void rosetta_apl_3476(rosetta_lisp::Call&);
+void rosetta_apl_3477(rosetta_lisp::Call&);
+void rosetta_apl_3478(rosetta_lisp::Call&);
+void rosetta_apl_3479(rosetta_lisp::Call&);
+void rosetta_apl_3480(rosetta_lisp::Call&);
+void rosetta_apl_3481(rosetta_lisp::Call&);
+void rosetta_apl_3482(rosetta_lisp::Call&);
+void rosetta_apl_3483(rosetta_lisp::Call&);
+void rosetta_apl_3484(rosetta_lisp::Call&);
+void rosetta_apl_3485(rosetta_lisp::Call&);
+void rosetta_apl_3486(rosetta_lisp::Call&);
+void rosetta_apl_3487(rosetta_lisp::Call&);
+void rosetta_apl_3488(rosetta_lisp::Call&);
+void rosetta_apl_3489(rosetta_lisp::Call&);
+void rosetta_apl_3490(rosetta_lisp::Call&);
+void rosetta_apl_3491(rosetta_lisp::Call&);
+void rosetta_apl_3492(rosetta_lisp::Call&);
+void rosetta_apl_3493(rosetta_lisp::Call&);
+void rosetta_apl_3494(rosetta_lisp::Call&);
+void rosetta_apl_3495(rosetta_lisp::Call&);
+void rosetta_apl_3496(rosetta_lisp::Call&);
+void rosetta_apl_3497(rosetta_lisp::Call&);
+void rosetta_apl_3498(rosetta_lisp::Call&);
+void rosetta_apl_3499(rosetta_lisp::Call&);
+void rosetta_apl_3500(rosetta_lisp::Call&);
+void rosetta_apl_3501(rosetta_lisp::Call&);
+void rosetta_apl_3502(rosetta_lisp::Call&);
+void rosetta_apl_3503(rosetta_lisp::Call&);
+void rosetta_apl_3504(rosetta_lisp::Call&);
+void rosetta_apl_3505(rosetta_lisp::Call&);
+void rosetta_apl_3506(rosetta_lisp::Call&);
+void rosetta_apl_3507(rosetta_lisp::Call&);
+void rosetta_apl_3508(rosetta_lisp::Call&);
+void rosetta_apl_3509(rosetta_lisp::Call&);
+void rosetta_apl_3510(rosetta_lisp::Call&);
+void rosetta_apl_3511(rosetta_lisp::Call&);
+void rosetta_apl_3512(rosetta_lisp::Call&);
+void rosetta_apl_3513(rosetta_lisp::Call&);
+void rosetta_apl_3514(rosetta_lisp::Call&);
+void rosetta_apl_3515(rosetta_lisp::Call&);
+void rosetta_apl_3516(rosetta_lisp::Call&);
+void rosetta_apl_3517(rosetta_lisp::Call&);
+void rosetta_apl_3518(rosetta_lisp::Call&);
+void rosetta_apl_3519(rosetta_lisp::Call&);
+void rosetta_apl_3520(rosetta_lisp::Call&);
+void rosetta_apl_3521(rosetta_lisp::Call&);
+void rosetta_apl_3522(rosetta_lisp::Call&);
+void rosetta_apl_3523(rosetta_lisp::Call&);
+void rosetta_apl_3524(rosetta_lisp::Call&);
+void rosetta_apl_3525(rosetta_lisp::Call&);
+void rosetta_apl_3526(rosetta_lisp::Call&);
+void rosetta_apl_3527(rosetta_lisp::Call&);
+void rosetta_apl_3528(rosetta_lisp::Call&);
+void rosetta_apl_3529(rosetta_lisp::Call&);
+void rosetta_apl_3530(rosetta_lisp::Call&);
+void rosetta_apl_3531(rosetta_lisp::Call&);
+void rosetta_apl_3532(rosetta_lisp::Call&);
+void rosetta_apl_3533(rosetta_lisp::Call&);
+void rosetta_apl_3534(rosetta_lisp::Call&);
+void rosetta_apl_3535(rosetta_lisp::Call&);
+void rosetta_apl_3536(rosetta_lisp::Call&);
+void rosetta_apl_3537(rosetta_lisp::Call&);
+void rosetta_apl_3538(rosetta_lisp::Call&);
+void rosetta_apl_3539(rosetta_lisp::Call&);
+void rosetta_apl_3540(rosetta_lisp::Call&);
+void rosetta_apl_3541(rosetta_lisp::Call&);
+void rosetta_apl_3542(rosetta_lisp::Call&);
+void rosetta_apl_3543(rosetta_lisp::Call&);
+void rosetta_apl_3544(rosetta_lisp::Call&);
+void rosetta_apl_3545(rosetta_lisp::Call&);
+void rosetta_apl_3546(rosetta_lisp::Call&);
+void rosetta_apl_3547(rosetta_lisp::Call&);
+void rosetta_apl_3548(rosetta_lisp::Call&);
+void rosetta_apl_3549(rosetta_lisp::Call&);
+void rosetta_apl_3550(rosetta_lisp::Call&);
+void rosetta_apl_3551(rosetta_lisp::Call&);
+void rosetta_apl_3552(rosetta_lisp::Call&);
+void rosetta_apl_3553(rosetta_lisp::Call&);
+void rosetta_apl_3554(rosetta_lisp::Call&);
+void rosetta_apl_3555(rosetta_lisp::Call&);
+void rosetta_apl_3556(rosetta_lisp::Call&);
+void rosetta_apl_3557(rosetta_lisp::Call&);
+void rosetta_apl_3558(rosetta_lisp::Call&);
+void rosetta_apl_3559(rosetta_lisp::Call&);
+void rosetta_apl_3560(rosetta_lisp::Call&);
+void rosetta_apl_3561(rosetta_lisp::Call&);
+void rosetta_apl_3562(rosetta_lisp::Call&);
+void rosetta_apl_3563(rosetta_lisp::Call&);
+void rosetta_apl_3564(rosetta_lisp::Call&);
+void rosetta_apl_3565(rosetta_lisp::Call&);
+void rosetta_apl_3566(rosetta_lisp::Call&);
+void rosetta_apl_3567(rosetta_lisp::Call&);
+void rosetta_apl_3568(rosetta_lisp::Call&);
+void rosetta_apl_3569(rosetta_lisp::Call&);
+void rosetta_apl_3570(rosetta_lisp::Call&);
+void rosetta_apl_3571(rosetta_lisp::Call&);
+void rosetta_apl_3572(rosetta_lisp::Call&);
+void rosetta_apl_3573(rosetta_lisp::Call&);
+void rosetta_apl_3574(rosetta_lisp::Call&);
+void rosetta_apl_3575(rosetta_lisp::Call&);
+void rosetta_apl_3576(rosetta_lisp::Call&);
+void rosetta_apl_3577(rosetta_lisp::Call&);
+void rosetta_apl_3578(rosetta_lisp::Call&);
+void rosetta_apl_3579(rosetta_lisp::Call&);
+void rosetta_apl_3580(rosetta_lisp::Call&);
+void rosetta_apl_3581(rosetta_lisp::Call&);
+void rosetta_apl_3582(rosetta_lisp::Call&);
+void rosetta_apl_3583(rosetta_lisp::Call&);
+void rosetta_apl_3584(rosetta_lisp::Call&);
 const rosetta_lisp::Function table[] = {rosetta_lisp::call_native,
     rosetta_apl_1,
     rosetta_apl_2,
@@ -8137,7 +8824,358 @@ const rosetta_lisp::Function table[] = {rosetta_lisp::call_native,
     rosetta_apl_3230,
     rosetta_apl_3231,
     rosetta_apl_3232,
-    rosetta_apl_3233};
+    rosetta_apl_3233,
+    rosetta_apl_3234,
+    rosetta_apl_3235,
+    rosetta_apl_3236,
+    rosetta_apl_3237,
+    rosetta_apl_3238,
+    rosetta_apl_3239,
+    rosetta_apl_3240,
+    rosetta_apl_3241,
+    rosetta_apl_3242,
+    rosetta_apl_3243,
+    rosetta_apl_3244,
+    rosetta_apl_3245,
+    rosetta_apl_3246,
+    rosetta_apl_3247,
+    rosetta_apl_3248,
+    rosetta_apl_3249,
+    rosetta_apl_3250,
+    rosetta_apl_3251,
+    rosetta_apl_3252,
+    rosetta_apl_3253,
+    rosetta_apl_3254,
+    rosetta_apl_3255,
+    rosetta_apl_3256,
+    rosetta_apl_3257,
+    rosetta_apl_3258,
+    rosetta_apl_3259,
+    rosetta_apl_3260,
+    rosetta_apl_3261,
+    rosetta_apl_3262,
+    rosetta_apl_3263,
+    rosetta_apl_3264,
+    rosetta_apl_3265,
+    rosetta_apl_3266,
+    rosetta_apl_3267,
+    rosetta_apl_3268,
+    rosetta_apl_3269,
+    rosetta_apl_3270,
+    rosetta_apl_3271,
+    rosetta_apl_3272,
+    rosetta_apl_3273,
+    rosetta_apl_3274,
+    rosetta_apl_3275,
+    rosetta_apl_3276,
+    rosetta_apl_3277,
+    rosetta_apl_3278,
+    rosetta_apl_3279,
+    rosetta_apl_3280,
+    rosetta_apl_3281,
+    rosetta_apl_3282,
+    rosetta_apl_3283,
+    rosetta_apl_3284,
+    rosetta_apl_3285,
+    rosetta_apl_3286,
+    rosetta_apl_3287,
+    rosetta_apl_3288,
+    rosetta_apl_3289,
+    rosetta_apl_3290,
+    rosetta_apl_3291,
+    rosetta_apl_3292,
+    rosetta_apl_3293,
+    rosetta_apl_3294,
+    rosetta_apl_3295,
+    rosetta_apl_3296,
+    rosetta_apl_3297,
+    rosetta_apl_3298,
+    rosetta_apl_3299,
+    rosetta_apl_3300,
+    rosetta_apl_3301,
+    rosetta_apl_3302,
+    rosetta_apl_3303,
+    rosetta_apl_3304,
+    rosetta_apl_3305,
+    rosetta_apl_3306,
+    rosetta_apl_3307,
+    rosetta_apl_3308,
+    rosetta_apl_3309,
+    rosetta_apl_3310,
+    rosetta_apl_3311,
+    rosetta_apl_3312,
+    rosetta_apl_3313,
+    rosetta_apl_3314,
+    rosetta_apl_3315,
+    rosetta_apl_3316,
+    rosetta_apl_3317,
+    rosetta_apl_3318,
+    rosetta_apl_3319,
+    rosetta_apl_3320,
+    rosetta_apl_3321,
+    rosetta_apl_3322,
+    rosetta_apl_3323,
+    rosetta_apl_3324,
+    rosetta_apl_3325,
+    rosetta_apl_3326,
+    rosetta_apl_3327,
+    rosetta_apl_3328,
+    rosetta_apl_3329,
+    rosetta_apl_3330,
+    rosetta_apl_3331,
+    rosetta_apl_3332,
+    rosetta_apl_3333,
+    rosetta_apl_3334,
+    rosetta_apl_3335,
+    rosetta_apl_3336,
+    rosetta_apl_3337,
+    rosetta_apl_3338,
+    rosetta_apl_3339,
+    rosetta_apl_3340,
+    rosetta_apl_3341,
+    rosetta_apl_3342,
+    rosetta_apl_3343,
+    rosetta_apl_3344,
+    rosetta_apl_3345,
+    rosetta_apl_3346,
+    rosetta_apl_3347,
+    rosetta_apl_3348,
+    rosetta_apl_3349,
+    rosetta_apl_3350,
+    rosetta_apl_3351,
+    rosetta_apl_3352,
+    rosetta_apl_3353,
+    rosetta_apl_3354,
+    rosetta_apl_3355,
+    rosetta_apl_3356,
+    rosetta_apl_3357,
+    rosetta_apl_3358,
+    rosetta_apl_3359,
+    rosetta_apl_3360,
+    rosetta_apl_3361,
+    rosetta_apl_3362,
+    rosetta_apl_3363,
+    rosetta_apl_3364,
+    rosetta_apl_3365,
+    rosetta_apl_3366,
+    rosetta_apl_3367,
+    rosetta_apl_3368,
+    rosetta_apl_3369,
+    rosetta_apl_3370,
+    rosetta_apl_3371,
+    rosetta_apl_3372,
+    rosetta_apl_3373,
+    rosetta_apl_3374,
+    rosetta_apl_3375,
+    rosetta_apl_3376,
+    rosetta_apl_3377,
+    rosetta_apl_3378,
+    rosetta_apl_3379,
+    rosetta_apl_3380,
+    rosetta_apl_3381,
+    rosetta_apl_3382,
+    rosetta_apl_3383,
+    rosetta_apl_3384,
+    rosetta_apl_3385,
+    rosetta_apl_3386,
+    rosetta_apl_3387,
+    rosetta_apl_3388,
+    rosetta_apl_3389,
+    rosetta_apl_3390,
+    rosetta_apl_3391,
+    rosetta_apl_3392,
+    rosetta_apl_3393,
+    rosetta_apl_3394,
+    rosetta_apl_3395,
+    rosetta_apl_3396,
+    rosetta_apl_3397,
+    rosetta_apl_3398,
+    rosetta_apl_3399,
+    rosetta_apl_3400,
+    rosetta_apl_3401,
+    rosetta_apl_3402,
+    rosetta_apl_3403,
+    rosetta_apl_3404,
+    rosetta_apl_3405,
+    rosetta_apl_3406,
+    rosetta_apl_3407,
+    rosetta_apl_3408,
+    rosetta_apl_3409,
+    rosetta_apl_3410,
+    rosetta_apl_3411,
+    rosetta_apl_3412,
+    rosetta_apl_3413,
+    rosetta_apl_3414,
+    rosetta_apl_3415,
+    rosetta_apl_3416,
+    rosetta_apl_3417,
+    rosetta_apl_3418,
+    rosetta_apl_3419,
+    rosetta_apl_3420,
+    rosetta_apl_3421,
+    rosetta_apl_3422,
+    rosetta_apl_3423,
+    rosetta_apl_3424,
+    rosetta_apl_3425,
+    rosetta_apl_3426,
+    rosetta_apl_3427,
+    rosetta_apl_3428,
+    rosetta_apl_3429,
+    rosetta_apl_3430,
+    rosetta_apl_3431,
+    rosetta_apl_3432,
+    rosetta_apl_3433,
+    rosetta_apl_3434,
+    rosetta_apl_3435,
+    rosetta_apl_3436,
+    rosetta_apl_3437,
+    rosetta_apl_3438,
+    rosetta_apl_3439,
+    rosetta_apl_3440,
+    rosetta_apl_3441,
+    rosetta_apl_3442,
+    rosetta_apl_3443,
+    rosetta_apl_3444,
+    rosetta_apl_3445,
+    rosetta_apl_3446,
+    rosetta_apl_3447,
+    rosetta_apl_3448,
+    rosetta_apl_3449,
+    rosetta_apl_3450,
+    rosetta_apl_3451,
+    rosetta_apl_3452,
+    rosetta_apl_3453,
+    rosetta_apl_3454,
+    rosetta_apl_3455,
+    rosetta_apl_3456,
+    rosetta_apl_3457,
+    rosetta_apl_3458,
+    rosetta_apl_3459,
+    rosetta_apl_3460,
+    rosetta_apl_3461,
+    rosetta_apl_3462,
+    rosetta_apl_3463,
+    rosetta_apl_3464,
+    rosetta_apl_3465,
+    rosetta_apl_3466,
+    rosetta_apl_3467,
+    rosetta_apl_3468,
+    rosetta_apl_3469,
+    rosetta_apl_3470,
+    rosetta_apl_3471,
+    rosetta_apl_3472,
+    rosetta_apl_3473,
+    rosetta_apl_3474,
+    rosetta_apl_3475,
+    rosetta_apl_3476,
+    rosetta_apl_3477,
+    rosetta_apl_3478,
+    rosetta_apl_3479,
+    rosetta_apl_3480,
+    rosetta_apl_3481,
+    rosetta_apl_3482,
+    rosetta_apl_3483,
+    rosetta_apl_3484,
+    rosetta_apl_3485,
+    rosetta_apl_3486,
+    rosetta_apl_3487,
+    rosetta_apl_3488,
+    rosetta_apl_3489,
+    rosetta_apl_3490,
+    rosetta_apl_3491,
+    rosetta_apl_3492,
+    rosetta_apl_3493,
+    rosetta_apl_3494,
+    rosetta_apl_3495,
+    rosetta_apl_3496,
+    rosetta_apl_3497,
+    rosetta_apl_3498,
+    rosetta_apl_3499,
+    rosetta_apl_3500,
+    rosetta_apl_3501,
+    rosetta_apl_3502,
+    rosetta_apl_3503,
+    rosetta_apl_3504,
+    rosetta_apl_3505,
+    rosetta_apl_3506,
+    rosetta_apl_3507,
+    rosetta_apl_3508,
+    rosetta_apl_3509,
+    rosetta_apl_3510,
+    rosetta_apl_3511,
+    rosetta_apl_3512,
+    rosetta_apl_3513,
+    rosetta_apl_3514,
+    rosetta_apl_3515,
+    rosetta_apl_3516,
+    rosetta_apl_3517,
+    rosetta_apl_3518,
+    rosetta_apl_3519,
+    rosetta_apl_3520,
+    rosetta_apl_3521,
+    rosetta_apl_3522,
+    rosetta_apl_3523,
+    rosetta_apl_3524,
+    rosetta_apl_3525,
+    rosetta_apl_3526,
+    rosetta_apl_3527,
+    rosetta_apl_3528,
+    rosetta_apl_3529,
+    rosetta_apl_3530,
+    rosetta_apl_3531,
+    rosetta_apl_3532,
+    rosetta_apl_3533,
+    rosetta_apl_3534,
+    rosetta_apl_3535,
+    rosetta_apl_3536,
+    rosetta_apl_3537,
+    rosetta_apl_3538,
+    rosetta_apl_3539,
+    rosetta_apl_3540,
+    rosetta_apl_3541,
+    rosetta_apl_3542,
+    rosetta_apl_3543,
+    rosetta_apl_3544,
+    rosetta_apl_3545,
+    rosetta_apl_3546,
+    rosetta_apl_3547,
+    rosetta_apl_3548,
+    rosetta_apl_3549,
+    rosetta_apl_3550,
+    rosetta_apl_3551,
+    rosetta_apl_3552,
+    rosetta_apl_3553,
+    rosetta_apl_3554,
+    rosetta_apl_3555,
+    rosetta_apl_3556,
+    rosetta_apl_3557,
+    rosetta_apl_3558,
+    rosetta_apl_3559,
+    rosetta_apl_3560,
+    rosetta_apl_3561,
+    rosetta_apl_3562,
+    rosetta_apl_3563,
+    rosetta_apl_3564,
+    rosetta_apl_3565,
+    rosetta_apl_3566,
+    rosetta_apl_3567,
+    rosetta_apl_3568,
+    rosetta_apl_3569,
+    rosetta_apl_3570,
+    rosetta_apl_3571,
+    rosetta_apl_3572,
+    rosetta_apl_3573,
+    rosetta_apl_3574,
+    rosetta_apl_3575,
+    rosetta_apl_3576,
+    rosetta_apl_3577,
+    rosetta_apl_3578,
+    rosetta_apl_3579,
+    rosetta_apl_3580,
+    rosetta_apl_3581,
+    rosetta_apl_3582,
+    rosetta_apl_3583,
+    rosetta_apl_3584};
 } // namespace ROSETTA_LISP_MODULE
 #if defined(_WIN32)
 #define ROSETTA_CABI_EXPORT extern "C" __declspec(dllexport)
@@ -8184,266 +9222,296 @@ ROSETTA_CABI_EXPORT int rosetta_datamunge_init(int version, ROSETTA_LISP_MODULE:
         rosetta_lisp::register_type<datamunge::optim::InequalityConstrainedFunction>("InequalityConstrainedFunction", 19);
         rosetta_lisp::add_base<datamunge::optim::InequalityConstrainedFunction, datamunge::optim::DifferentiableFunction>();
         rosetta_lisp::register_type<datamunge::optim::ResidualFunction>("ResidualFunction", 20);
-        rosetta_lisp::register_type<datamunge::bayes::GibbsOptions>("GibbsOptions", 21);
-        rosetta_lisp::register_type<datamunge::bayes::GibbsResult>("GibbsResult", 22);
-        rosetta_lisp::register_type<datamunge::bayes::GibbsSampler>("GibbsSampler", 23);
-        rosetta_lisp::register_type<datamunge::bayes::HMCOptions>("HMCOptions", 24);
-        rosetta_lisp::register_type<datamunge::bayes::HMCResult>("HMCResult", 25);
-        rosetta_lisp::register_type<datamunge::bayes::HMC>("HMC", 26);
-        rosetta_lisp::register_type<datamunge::bayes::ImportanceSamplingOptions>("ImportanceSamplingOptions", 27);
-        rosetta_lisp::register_type<datamunge::bayes::ImportanceSamplingResult>("ImportanceSamplingResult", 28);
-        rosetta_lisp::register_type<datamunge::bayes::ImportanceSampling>("ImportanceSampling", 29);
-        rosetta_lisp::register_type<datamunge::bayes::MAPOptions>("MAPOptions", 30);
-        rosetta_lisp::register_type<datamunge::bayes::MAP>("MAP", 31);
-        rosetta_lisp::register_type<datamunge::bayes::NUTSOptions>("NUTSOptions", 32);
-        rosetta_lisp::register_type<datamunge::bayes::NUTSResult>("NUTSResult", 33);
-        rosetta_lisp::register_type<datamunge::bayes::NUTS>("NUTS", 34);
-        rosetta_lisp::register_type<datamunge::bayes::RWMOptions>("RWMOptions", 35);
-        rosetta_lisp::register_type<datamunge::bayes::RWMResult>("RWMResult", 36);
-        rosetta_lisp::register_type<datamunge::bayes::RandomWalkMetropolis>("RandomWalkMetropolis", 37);
-        rosetta_lisp::register_type<datamunge::image::Pixel>("Pixel", 38);
-        rosetta_lisp::register_type<datamunge::image::Image>("Image", 39);
-        rosetta_lisp::register_type<datamunge::image::HSV>("HSV", 40);
-        rosetta_lisp::register_type<datamunge::cv::KeyPoint>("KeyPoint", 41);
-        rosetta_lisp::register_type<datamunge::cv::Corner>("Corner", 42);
-        rosetta_lisp::register_type<datamunge::cv::detail::StructureTensorField>("StructureTensorField", 43);
-        rosetta_lisp::register_type<datamunge::cv::HoughLine>("HoughLine", 44);
-        rosetta_lisp::register_type<datamunge::cv::HoughCircle>("HoughCircle", 45);
-        rosetta_lisp::register_type<datamunge::cv::FlowVector>("FlowVector", 46);
-        rosetta_lisp::register_type<datamunge::cv::LabelMap>("LabelMap", 47);
-        rosetta_lisp::register_type<datamunge::datasets::ImageBatch>("ImageBatch", 48);
-        rosetta_lisp::register_type<datamunge::datasets::ImageLoader>("ImageLoader", 49);
-        rosetta_lisp::register_type<datamunge::fem::Mesh1D>("Mesh1D", 50);
-        rosetta_lisp::register_type<datamunge::fem::ScalarField1D>("ScalarField1D", 51);
-        rosetta_lisp::register_type<datamunge::fem::ScalarField2D>("ScalarField2D", 52);
-        rosetta_lisp::register_type<datamunge::fem::BoundaryCondition1D>("BoundaryCondition1D", 53);
-        rosetta_lisp::register_type<datamunge::fem::FEM1DResult>("FEM1DResult", 54);
-        rosetta_lisp::register_type<datamunge::fem::FEM1DTimeSeries>("FEM1DTimeSeries", 55);
-        rosetta_lisp::register_type<datamunge::fem::FEM1D>("FEM1D", 56);
-        rosetta_lisp::register_type<datamunge::geometry::Point2D>("Point2D", 57);
-        rosetta_lisp::register_type<datamunge::geometry::Triangle>("Triangle", 58);
-        rosetta_lisp::register_type<datamunge::geometry::DelaunayWork>("DelaunayWork", 59);
-        rosetta_lisp::register_type<datamunge::geometry::DelaunayInsertion>("DelaunayInsertion", 60);
-        rosetta_lisp::register_type<datamunge::geometry::DelaunayTrace>("DelaunayTrace", 61);
-        rosetta_lisp::register_type<datamunge::geometry::DelaunayAnalysis>("DelaunayAnalysis", 62);
-        rosetta_lisp::register_type<datamunge::fem::Mesh2D>("Mesh2D", 63);
-        rosetta_lisp::register_type<datamunge::fem::FEM2DResult>("FEM2DResult", 64);
-        rosetta_lisp::register_type<datamunge::fem::FEM2D>("FEM2D", 65);
-        rosetta_lisp::register_type<datamunge::filter::AlphaBetaState>("AlphaBetaState", 66);
-        rosetta_lisp::register_type<datamunge::filter::AlphaBetaFilter>("AlphaBetaFilter", 67);
-        rosetta_lisp::register_type<datamunge::filter::AlphaBetaGammaState>("AlphaBetaGammaState", 68);
-        rosetta_lisp::register_type<datamunge::filter::AlphaBetaGammaFilter>("AlphaBetaGammaFilter", 69);
-        rosetta_lisp::register_type<datamunge::filter::KalmanState>("KalmanState", 70);
-        rosetta_lisp::register_type<datamunge::filter::SmoothResult>("SmoothResult", 71);
-        rosetta_lisp::register_type<datamunge::filter::KalmanFilter>("KalmanFilter", 72);
-        rosetta_lisp::register_type<datamunge::filter::VectorFunction>("VectorFunction", 73);
-        rosetta_lisp::register_type<datamunge::filter::EnsembleKalmanFilter>("EnsembleKalmanFilter", 74);
-        rosetta_lisp::register_type<datamunge::filter::ExtendedKalmanFilter>("ExtendedKalmanFilter", 75);
-        rosetta_lisp::register_type<datamunge::filter::InformationFilter>("InformationFilter", 76);
-        rosetta_lisp::register_type<datamunge::filter::ParticleFilter>("ParticleFilter", 77);
-        rosetta_lisp::register_type<datamunge::filter::UnscentedKalmanFilter>("UnscentedKalmanFilter", 78);
-        rosetta_lisp::register_type<datamunge::geometry::BoundingBox>("BoundingBox", 79);
-        rosetta_lisp::register_type<datamunge::geometry::ClosestPairResult>("ClosestPairResult", 80);
-        rosetta_lisp::register_type<datamunge::geometry::ConvexHullOptions>("ConvexHullOptions", 81);
-        rosetta_lisp::register_type<datamunge::geometry::HullIndexedPoint>("HullIndexedPoint", 82);
-        rosetta_lisp::register_type<datamunge::geometry::ConvexHullWork>("ConvexHullWork", 83);
-        rosetta_lisp::register_type<datamunge::geometry::HullEvent>("HullEvent", 84);
-        rosetta_lisp::register_type<datamunge::geometry::ConvexHullAnalysis>("ConvexHullAnalysis", 85);
-        rosetta_lisp::register_type<datamunge::geometry::ConvexHullTrace>("ConvexHullTrace", 86);
-        rosetta_lisp::register_type<datamunge::Callback>("Callback", 87);
-        rosetta_lisp::register_type<datamunge::graphics::RGB>("RGB", 88);
-        rosetta_lisp::register_type<datamunge::graphics::DataSeries>("DataSeries", 89);
-        rosetta_lisp::register_type<datamunge::graphics::ABLine>("ABLine", 90);
-        rosetta_lisp::register_type<datamunge::graphics::LegendEntry>("LegendEntry", 91);
-        rosetta_lisp::register_type<datamunge::graphics::Plot>("Plot", 92);
-        rosetta_lisp::register_type<datamunge::graphics::RPlot>("RPlot", 93);
+        rosetta_lisp::register_type<datamunge::bayes::NUTSOptions>("NUTSOptions", 21);
+        rosetta_lisp::register_type<datamunge::bayes::NUTSResult>("NUTSResult", 22);
+        rosetta_lisp::register_type<datamunge::bayes::NUTS>("NUTS", 23);
+        rosetta_lisp::register_type<datamunge::Callback>("Callback", 24);
+        rosetta_lisp::register_type<datamunge::graphics::RGB>("RGB", 25);
+        rosetta_lisp::register_type<datamunge::graphics::DataSeries>("DataSeries", 26);
+        rosetta_lisp::register_type<datamunge::graphics::ABLine>("ABLine", 27);
+        rosetta_lisp::register_type<datamunge::graphics::LegendEntry>("LegendEntry", 28);
+        rosetta_lisp::register_type<datamunge::graphics::Plot>("Plot", 29);
+        rosetta_lisp::register_type<datamunge::graphics::RPlot>("RPlot", 30);
         rosetta_lisp::add_base<datamunge::graphics::RPlot, datamunge::graphics::Plot>();
-        rosetta_lisp::register_type<datamunge::graphics::RLayout>("RLayout", 94);
-        rosetta_lisp::register_type<datamunge::geometry::DTWResult>("DTWResult", 95);
-        rosetta_lisp::register_type<datamunge::geometry::DTWWork>("DTWWork", 96);
-        rosetta_lisp::register_type<datamunge::geometry::DTWComputation>("DTWComputation", 97);
-        rosetta_lisp::register_type<datamunge::geometry::DTWTrace>("DTWTrace", 98);
-        rosetta_lisp::register_type<datamunge::geometry::KDTree2D>("KDTree2D", 99);
-        rosetta_lisp::register_type<datamunge::geometry::Circle>("Circle", 100);
-        rosetta_lisp::register_type<datamunge::geometry::DiameterResult>("DiameterResult", 101);
-        rosetta_lisp::register_type<datamunge::geometry::MinimumBoundingRectangle>("MinimumBoundingRectangle", 102);
-        rosetta_lisp::register_type<datamunge::geometry::VoronoiDiagram>("VoronoiDiagram", 103);
-        rosetta_lisp::register_type<datamunge::LinalgMatrix>("LinalgMatrix", 104);
-        rosetta_lisp::register_type<datamunge::ode::RHS>("RHS", 105);
-        rosetta_lisp::register_type<datamunge::ode::ODEOptions>("ODEOptions", 106);
-        rosetta_lisp::register_type<datamunge::ode::ODESolution>("ODESolution", 107);
-        rosetta_lisp::register_type<datamunge::ode::ODESolver>("ODESolver", 108);
-        rosetta_lisp::register_type<datamunge::optim::ACOROptions>("ACOROptions", 109);
-        rosetta_lisp::register_type<datamunge::optim::ACOR>("ACOR", 110);
-        rosetta_lisp::register_type<datamunge::optim::AdamOptions>("AdamOptions", 111);
-        rosetta_lisp::register_type<datamunge::optim::Adam>("Adam", 112);
-        rosetta_lisp::register_type<datamunge::optim::AdaGradOptions>("AdaGradOptions", 113);
-        rosetta_lisp::register_type<datamunge::optim::AdaGrad>("AdaGrad", 114);
-        rosetta_lisp::register_type<datamunge::optim::AdaDeltaOptions>("AdaDeltaOptions", 115);
-        rosetta_lisp::register_type<datamunge::optim::AdaDelta>("AdaDelta", 116);
-        rosetta_lisp::register_type<datamunge::optim::AMSGradOptions>("AMSGradOptions", 117);
-        rosetta_lisp::register_type<datamunge::optim::AMSGrad>("AMSGrad", 118);
-        rosetta_lisp::register_type<datamunge::optim::ArtificialBeeColonyOptions>("ArtificialBeeColonyOptions", 119);
-        rosetta_lisp::register_type<datamunge::optim::ArtificialBeeColony>("ArtificialBeeColony", 120);
-        rosetta_lisp::register_type<datamunge::optim::AugmentedLagrangianOptions>("AugmentedLagrangianOptions", 121);
-        rosetta_lisp::register_type<datamunge::optim::AugmentedLagrangian>("AugmentedLagrangian", 122);
-        rosetta_lisp::register_type<datamunge::optim::BayesianSurrogate>("BayesianSurrogate", 123);
-        rosetta_lisp::register_type<datamunge::optim::BayesianOptimizationOptions>("BayesianOptimizationOptions", 124);
-        rosetta_lisp::register_type<datamunge::optim::BayesianOptimizationResult>("BayesianOptimizationResult", 125);
-        rosetta_lisp::register_type<datamunge::optim::BayesianOptimization>("BayesianOptimization", 126);
-        rosetta_lisp::register_type<datamunge::optim::ConjugateGradientOptions>("ConjugateGradientOptions", 127);
-        rosetta_lisp::register_type<datamunge::optim::ConjugateGradient>("ConjugateGradient", 128);
-        rosetta_lisp::register_type<datamunge::optim::CMAESOptions>("CMAESOptions", 129);
-        rosetta_lisp::register_type<datamunge::optim::CMAES>("CMAES", 130);
-        rosetta_lisp::register_type<datamunge::optim::CoordinateDescentOptions>("CoordinateDescentOptions", 131);
-        rosetta_lisp::register_type<datamunge::optim::CoordinateDescent>("CoordinateDescent", 132);
-        rosetta_lisp::register_type<datamunge::optim::CrossEntropyMethodOptions>("CrossEntropyMethodOptions", 133);
-        rosetta_lisp::register_type<datamunge::optim::CrossEntropyMethod>("CrossEntropyMethod", 134);
-        rosetta_lisp::register_type<datamunge::optim::CuckooSearchOptions>("CuckooSearchOptions", 135);
-        rosetta_lisp::register_type<datamunge::optim::CuckooSearch>("CuckooSearch", 136);
-        rosetta_lisp::register_type<datamunge::optim::DEOptions>("DEOptions", 137);
-        rosetta_lisp::register_type<datamunge::optim::DifferentialEvolution>("DifferentialEvolution", 138);
-        rosetta_lisp::register_type<datamunge::optim::EstimationOfDistributionOptions>("EstimationOfDistributionOptions", 139);
-        rosetta_lisp::register_type<datamunge::optim::EstimationOfDistribution>("EstimationOfDistribution", 140);
-        rosetta_lisp::register_type<datamunge::optim::EvolutionStrategyOptions>("EvolutionStrategyOptions", 141);
-        rosetta_lisp::register_type<datamunge::optim::EvolutionStrategy>("EvolutionStrategy", 142);
-        rosetta_lisp::register_type<datamunge::optim::FireflyAlgorithmOptions>("FireflyAlgorithmOptions", 143);
-        rosetta_lisp::register_type<datamunge::optim::FireflyAlgorithm>("FireflyAlgorithm", 144);
-        rosetta_lisp::register_type<datamunge::optim::FISTAOptions>("FISTAOptions", 145);
-        rosetta_lisp::register_type<datamunge::optim::FISTA>("FISTA", 146);
-        rosetta_lisp::register_type<datamunge::optim::GAOptions>("GAOptions", 147);
-        rosetta_lisp::register_type<datamunge::optim::GeneticAlgorithm>("GeneticAlgorithm", 148);
-        rosetta_lisp::register_type<datamunge::optim::GradientDescentOptions>("GradientDescentOptions", 149);
-        rosetta_lisp::register_type<datamunge::optim::GradientDescent>("GradientDescent", 150);
-        rosetta_lisp::register_type<datamunge::optim::GreyWolfOptimizerOptions>("GreyWolfOptimizerOptions", 151);
-        rosetta_lisp::register_type<datamunge::optim::GreyWolfOptimizer>("GreyWolfOptimizer", 152);
-        rosetta_lisp::register_type<datamunge::optim::HarmonySearchOptions>("HarmonySearchOptions", 153);
-        rosetta_lisp::register_type<datamunge::optim::HarmonySearch>("HarmonySearch", 154);
-        rosetta_lisp::register_type<datamunge::optim::InteriorPointOptions>("InteriorPointOptions", 155);
-        rosetta_lisp::register_type<datamunge::optim::InteriorPoint>("InteriorPoint", 156);
-        rosetta_lisp::register_type<datamunge::optim::LBFGSOptions>("LBFGSOptions", 157);
-        rosetta_lisp::register_type<datamunge::optim::LBFGS>("LBFGS", 158);
-        rosetta_lisp::register_type<datamunge::optim::LevenbergMarquardtOptions>("LevenbergMarquardtOptions", 159);
-        rosetta_lisp::register_type<datamunge::optim::LevenbergMarquardt>("LevenbergMarquardt", 160);
-        rosetta_lisp::register_type<datamunge::optim::NelderMeadOptions>("NelderMeadOptions", 161);
-        rosetta_lisp::register_type<datamunge::optim::NelderMead>("NelderMead", 162);
-        rosetta_lisp::register_type<datamunge::optim::NesterovAcceleratedGradientOptions>("NesterovAcceleratedGradientOptions", 163);
-        rosetta_lisp::register_type<datamunge::optim::NesterovAcceleratedGradient>("NesterovAcceleratedGradient", 164);
-        rosetta_lisp::register_type<datamunge::optim::NadamOptions>("NadamOptions", 165);
-        rosetta_lisp::register_type<datamunge::optim::Nadam>("Nadam", 166);
-        rosetta_lisp::register_type<datamunge::optim::NewtonOptions>("NewtonOptions", 167);
-        rosetta_lisp::register_type<datamunge::optim::Newton>("Newton", 168);
-        rosetta_lisp::register_type<datamunge::optim::ParallelTemperingOptions>("ParallelTemperingOptions", 169);
-        rosetta_lisp::register_type<datamunge::optim::ParallelTempering>("ParallelTempering", 170);
-        rosetta_lisp::register_type<datamunge::optim::PSOOptions>("PSOOptions", 171);
-        rosetta_lisp::register_type<datamunge::optim::PSO>("PSO", 172);
-        rosetta_lisp::register_type<datamunge::optim::ProximalGradientOptions>("ProximalGradientOptions", 173);
-        rosetta_lisp::register_type<datamunge::optim::ProximalGradient>("ProximalGradient", 174);
-        rosetta_lisp::register_type<datamunge::optim::RandomizedBlockCoordinateDescentOptions>("RandomizedBlockCoordinateDescentOptions", 175);
-        rosetta_lisp::register_type<datamunge::optim::RandomizedBlockCoordinateDescent>("RandomizedBlockCoordinateDescent", 176);
-        rosetta_lisp::register_type<datamunge::optim::RMSPropOptions>("RMSPropOptions", 177);
-        rosetta_lisp::register_type<datamunge::optim::RMSProp>("RMSProp", 178);
-        rosetta_lisp::register_type<datamunge::optim::SurrogatePrediction>("SurrogatePrediction", 179);
-        rosetta_lisp::register_type<datamunge::optim::GaussianProcessSurrogateOptions>("GaussianProcessSurrogateOptions", 180);
-        rosetta_lisp::register_type<datamunge::optim::RBFGaussianProcessSurrogate>("RBFGaussianProcessSurrogate", 181);
+        rosetta_lisp::register_type<datamunge::graphics::RLayout>("RLayout", 31);
+        rosetta_lisp::register_type<datamunge::bayes::GibbsOptions>("GibbsOptions", 32);
+        rosetta_lisp::register_type<datamunge::bayes::GibbsResult>("GibbsResult", 33);
+        rosetta_lisp::register_type<datamunge::bayes::GibbsSampler>("GibbsSampler", 34);
+        rosetta_lisp::register_type<datamunge::bayes::HMCOptions>("HMCOptions", 35);
+        rosetta_lisp::register_type<datamunge::bayes::HMCResult>("HMCResult", 36);
+        rosetta_lisp::register_type<datamunge::bayes::HMC>("HMC", 37);
+        rosetta_lisp::register_type<datamunge::bayes::HMCProposal>("HMCProposal", 38);
+        rosetta_lisp::register_type<datamunge::bayes::ImportanceSamplingOptions>("ImportanceSamplingOptions", 39);
+        rosetta_lisp::register_type<datamunge::bayes::ImportanceSamplingResult>("ImportanceSamplingResult", 40);
+        rosetta_lisp::register_type<datamunge::bayes::ImportanceSampling>("ImportanceSampling", 41);
+        rosetta_lisp::register_type<datamunge::bayes::MAPOptions>("MAPOptions", 42);
+        rosetta_lisp::register_type<datamunge::bayes::MAP>("MAP", 43);
+        rosetta_lisp::register_type<datamunge::bayes::RWMOptions>("RWMOptions", 44);
+        rosetta_lisp::register_type<datamunge::bayes::RWMResult>("RWMResult", 45);
+        rosetta_lisp::register_type<datamunge::bayes::RandomWalkMetropolis>("RandomWalkMetropolis", 46);
+        rosetta_lisp::register_type<datamunge::image::Pixel>("Pixel", 47);
+        rosetta_lisp::register_type<datamunge::image::Image>("Image", 48);
+        rosetta_lisp::register_type<datamunge::image::HSV>("HSV", 49);
+        rosetta_lisp::register_type<datamunge::cv::KeyPoint>("KeyPoint", 50);
+        rosetta_lisp::register_type<datamunge::cv::Corner>("Corner", 51);
+        rosetta_lisp::register_type<datamunge::cv::detail::StructureTensorField>("StructureTensorField", 52);
+        rosetta_lisp::register_type<datamunge::cv::HoughLine>("HoughLine", 53);
+        rosetta_lisp::register_type<datamunge::cv::HoughCircle>("HoughCircle", 54);
+        rosetta_lisp::register_type<datamunge::cv::FlowVector>("FlowVector", 55);
+        rosetta_lisp::register_type<datamunge::cv::LabelMap>("LabelMap", 56);
+        rosetta_lisp::register_type<datamunge::datasets::ImageBatch>("ImageBatch", 57);
+        rosetta_lisp::register_type<datamunge::datasets::ImageLoader>("ImageLoader", 58);
+        rosetta_lisp::register_type<datamunge::fem::Mesh1D>("Mesh1D", 59);
+        rosetta_lisp::register_type<datamunge::fem::ScalarField1D>("ScalarField1D", 60);
+        rosetta_lisp::register_type<datamunge::fem::ScalarField2D>("ScalarField2D", 61);
+        rosetta_lisp::register_type<datamunge::fem::BoundaryCondition1D>("BoundaryCondition1D", 62);
+        rosetta_lisp::register_type<datamunge::fem::FEM1DResult>("FEM1DResult", 63);
+        rosetta_lisp::register_type<datamunge::fem::FEM1DTimeSeries>("FEM1DTimeSeries", 64);
+        rosetta_lisp::register_type<datamunge::fem::FEM1D>("FEM1D", 65);
+        rosetta_lisp::register_type<datamunge::geometry::Point2D>("Point2D", 66);
+        rosetta_lisp::register_type<datamunge::geometry::Triangle>("Triangle", 67);
+        rosetta_lisp::register_type<datamunge::geometry::DelaunayWork>("DelaunayWork", 68);
+        rosetta_lisp::register_type<datamunge::geometry::DelaunayInsertion>("DelaunayInsertion", 69);
+        rosetta_lisp::register_type<datamunge::geometry::DelaunayTrace>("DelaunayTrace", 70);
+        rosetta_lisp::register_type<datamunge::geometry::DelaunayAnalysis>("DelaunayAnalysis", 71);
+        rosetta_lisp::register_type<datamunge::fem::Mesh2D>("Mesh2D", 72);
+        rosetta_lisp::register_type<datamunge::fem::FEM2DResult>("FEM2DResult", 73);
+        rosetta_lisp::register_type<datamunge::fem::FEM2D>("FEM2D", 74);
+        rosetta_lisp::register_type<datamunge::filter::AlphaBetaState>("AlphaBetaState", 75);
+        rosetta_lisp::register_type<datamunge::filter::AlphaBetaFilter>("AlphaBetaFilter", 76);
+        rosetta_lisp::register_type<datamunge::filter::AlphaBetaGammaState>("AlphaBetaGammaState", 77);
+        rosetta_lisp::register_type<datamunge::filter::AlphaBetaGammaFilter>("AlphaBetaGammaFilter", 78);
+        rosetta_lisp::register_type<datamunge::filter::KalmanState>("KalmanState", 79);
+        rosetta_lisp::register_type<datamunge::filter::SmoothResult>("SmoothResult", 80);
+        rosetta_lisp::register_type<datamunge::filter::KalmanFilter>("KalmanFilter", 81);
+        rosetta_lisp::register_type<datamunge::filter::VectorFunction>("VectorFunction", 82);
+        rosetta_lisp::register_type<datamunge::filter::EnsembleKalmanFilter>("EnsembleKalmanFilter", 83);
+        rosetta_lisp::register_type<datamunge::filter::ExtendedKalmanFilter>("ExtendedKalmanFilter", 84);
+        rosetta_lisp::register_type<datamunge::filter::InformationFilter>("InformationFilter", 85);
+        rosetta_lisp::register_type<datamunge::filter::ParticleFilter>("ParticleFilter", 86);
+        rosetta_lisp::register_type<datamunge::filter::UnscentedKalmanFilter>("UnscentedKalmanFilter", 87);
+        rosetta_lisp::register_type<datamunge::geometry::BoundingBox>("BoundingBox", 88);
+        rosetta_lisp::register_type<datamunge::geometry::ClosestPairResult>("ClosestPairResult", 89);
+        rosetta_lisp::register_type<datamunge::geometry::ConvexHullOptions>("ConvexHullOptions", 90);
+        rosetta_lisp::register_type<datamunge::geometry::HullIndexedPoint>("HullIndexedPoint", 91);
+        rosetta_lisp::register_type<datamunge::geometry::ConvexHullWork>("ConvexHullWork", 92);
+        rosetta_lisp::register_type<datamunge::geometry::HullEvent>("HullEvent", 93);
+        rosetta_lisp::register_type<datamunge::geometry::ConvexHullAnalysis>("ConvexHullAnalysis", 94);
+        rosetta_lisp::register_type<datamunge::geometry::ConvexHullTrace>("ConvexHullTrace", 95);
+        rosetta_lisp::register_type<datamunge::geometry::DTWResult>("DTWResult", 96);
+        rosetta_lisp::register_type<datamunge::geometry::DTWWork>("DTWWork", 97);
+        rosetta_lisp::register_type<datamunge::geometry::DTWComputation>("DTWComputation", 98);
+        rosetta_lisp::register_type<datamunge::geometry::DTWTrace>("DTWTrace", 99);
+        rosetta_lisp::register_type<datamunge::geometry::KDNearestProbe>("KDNearestProbe", 100);
+        rosetta_lisp::register_type<datamunge::geometry::KDSearchWork>("KDSearchWork", 101);
+        rosetta_lisp::register_type<datamunge::geometry::KDNearestTrace>("KDNearestTrace", 102);
+        rosetta_lisp::register_type<datamunge::geometry::KDTree2D>("KDTree2D", 103);
+        rosetta_lisp::register_type<datamunge::geometry::Circle>("Circle", 104);
+        rosetta_lisp::register_type<datamunge::geometry::EnclosingCircleEvent>("EnclosingCircleEvent", 105);
+        rosetta_lisp::register_type<datamunge::geometry::EnclosingCircleTrace>("EnclosingCircleTrace", 106);
+        rosetta_lisp::register_type<datamunge::geometry::EnclosingCircleCheck>("EnclosingCircleCheck", 107);
+        rosetta_lisp::register_type<datamunge::geometry::SegmentIntersectionRun>("SegmentIntersectionRun", 108);
+        rosetta_lisp::register_type<datamunge::geometry::PolygonEarCandidate>("PolygonEarCandidate", 109);
+        rosetta_lisp::register_type<datamunge::geometry::PolygonEarClip>("PolygonEarClip", 110);
+        rosetta_lisp::register_type<datamunge::geometry::PolygonTriangulationOptions>("PolygonTriangulationOptions", 111);
+        rosetta_lisp::register_type<datamunge::geometry::PolygonTriangulationRun>("PolygonTriangulationRun", 112);
+        rosetta_lisp::register_type<datamunge::geometry::PolygonTriangulationTrace>("PolygonTriangulationTrace", 113);
+        rosetta_lisp::register_type<datamunge::geometry::DiameterResult>("DiameterResult", 114);
+        rosetta_lisp::register_type<datamunge::geometry::DiameterOptions>("DiameterOptions", 115);
+        rosetta_lisp::register_type<datamunge::geometry::CaliperEvent>("CaliperEvent", 116);
+        rosetta_lisp::register_type<datamunge::geometry::DiameterRun>("DiameterRun", 117);
+        rosetta_lisp::register_type<datamunge::geometry::VoronoiDiagram>("VoronoiDiagram", 118);
+        rosetta_lisp::register_type<datamunge::LinalgMatrix>("LinalgMatrix", 119);
+        rosetta_lisp::register_type<datamunge::ode::RHS>("RHS", 120);
+        rosetta_lisp::register_type<datamunge::ode::ODEOptions>("ODEOptions", 121);
+        rosetta_lisp::register_type<datamunge::ode::ODEExecutionLimits>("ODEExecutionLimits", 122);
+        rosetta_lisp::register_type<datamunge::ode::ODESolution>("ODESolution", 123);
+        rosetta_lisp::register_type<datamunge::ode::ODEEvaluation>("ODEEvaluation", 124);
+        rosetta_lisp::register_type<datamunge::ode::ODEAttempt>("ODEAttempt", 125);
+        rosetta_lisp::register_type<datamunge::ode::ODETrace>("ODETrace", 126);
+        rosetta_lisp::register_type<datamunge::ode::ODESolver>("ODESolver", 127);
+        rosetta_lisp::register_type<datamunge::optim::ACOROptions>("ACOROptions", 128);
+        rosetta_lisp::register_type<datamunge::optim::ACOR>("ACOR", 129);
+        rosetta_lisp::register_type<datamunge::optim::AdamOptions>("AdamOptions", 130);
+        rosetta_lisp::register_type<datamunge::optim::Adam>("Adam", 131);
+        rosetta_lisp::register_type<datamunge::optim::AdaGradOptions>("AdaGradOptions", 132);
+        rosetta_lisp::register_type<datamunge::optim::AdaGrad>("AdaGrad", 133);
+        rosetta_lisp::register_type<datamunge::optim::AdaDeltaOptions>("AdaDeltaOptions", 134);
+        rosetta_lisp::register_type<datamunge::optim::AdaDelta>("AdaDelta", 135);
+        rosetta_lisp::register_type<datamunge::optim::AMSGradOptions>("AMSGradOptions", 136);
+        rosetta_lisp::register_type<datamunge::optim::AMSGrad>("AMSGrad", 137);
+        rosetta_lisp::register_type<datamunge::optim::ArtificialBeeColonyOptions>("ArtificialBeeColonyOptions", 138);
+        rosetta_lisp::register_type<datamunge::optim::ArtificialBeeColony>("ArtificialBeeColony", 139);
+        rosetta_lisp::register_type<datamunge::optim::AugmentedLagrangianOptions>("AugmentedLagrangianOptions", 140);
+        rosetta_lisp::register_type<datamunge::optim::AugmentedLagrangian>("AugmentedLagrangian", 141);
+        rosetta_lisp::register_type<datamunge::optim::BayesianSurrogate>("BayesianSurrogate", 142);
+        rosetta_lisp::register_type<datamunge::optim::BayesianOptimizationOptions>("BayesianOptimizationOptions", 143);
+        rosetta_lisp::register_type<datamunge::optim::BayesianOptimizationResult>("BayesianOptimizationResult", 144);
+        rosetta_lisp::register_type<datamunge::optim::BayesianOptimization>("BayesianOptimization", 145);
+        rosetta_lisp::register_type<datamunge::optim::ConjugateGradientOptions>("ConjugateGradientOptions", 146);
+        rosetta_lisp::register_type<datamunge::optim::ConjugateGradient>("ConjugateGradient", 147);
+        rosetta_lisp::register_type<datamunge::optim::CMAESOptions>("CMAESOptions", 148);
+        rosetta_lisp::register_type<datamunge::optim::CMAES>("CMAES", 149);
+        rosetta_lisp::register_type<datamunge::optim::CoordinateDescentOptions>("CoordinateDescentOptions", 150);
+        rosetta_lisp::register_type<datamunge::optim::CoordinateDescent>("CoordinateDescent", 151);
+        rosetta_lisp::register_type<datamunge::optim::CrossEntropyMethodOptions>("CrossEntropyMethodOptions", 152);
+        rosetta_lisp::register_type<datamunge::optim::CrossEntropyMethod>("CrossEntropyMethod", 153);
+        rosetta_lisp::register_type<datamunge::optim::CuckooSearchOptions>("CuckooSearchOptions", 154);
+        rosetta_lisp::register_type<datamunge::optim::CuckooSearch>("CuckooSearch", 155);
+        rosetta_lisp::register_type<datamunge::optim::DEOptions>("DEOptions", 156);
+        rosetta_lisp::register_type<datamunge::optim::DifferentialEvolution>("DifferentialEvolution", 157);
+        rosetta_lisp::register_type<datamunge::optim::EstimationOfDistributionOptions>("EstimationOfDistributionOptions", 158);
+        rosetta_lisp::register_type<datamunge::optim::EstimationOfDistribution>("EstimationOfDistribution", 159);
+        rosetta_lisp::register_type<datamunge::optim::EvolutionStrategyOptions>("EvolutionStrategyOptions", 160);
+        rosetta_lisp::register_type<datamunge::optim::EvolutionStrategy>("EvolutionStrategy", 161);
+        rosetta_lisp::register_type<datamunge::optim::FireflyAlgorithmOptions>("FireflyAlgorithmOptions", 162);
+        rosetta_lisp::register_type<datamunge::optim::FireflyAlgorithm>("FireflyAlgorithm", 163);
+        rosetta_lisp::register_type<datamunge::optim::FISTAOptions>("FISTAOptions", 164);
+        rosetta_lisp::register_type<datamunge::optim::FISTA>("FISTA", 165);
+        rosetta_lisp::register_type<datamunge::optim::GAOptions>("GAOptions", 166);
+        rosetta_lisp::register_type<datamunge::optim::GeneticAlgorithm>("GeneticAlgorithm", 167);
+        rosetta_lisp::register_type<datamunge::optim::GradientDescentOptions>("GradientDescentOptions", 168);
+        rosetta_lisp::register_type<datamunge::optim::GradientDescent>("GradientDescent", 169);
+        rosetta_lisp::register_type<datamunge::optim::GreyWolfOptimizerOptions>("GreyWolfOptimizerOptions", 170);
+        rosetta_lisp::register_type<datamunge::optim::GreyWolfOptimizer>("GreyWolfOptimizer", 171);
+        rosetta_lisp::register_type<datamunge::optim::HarmonySearchOptions>("HarmonySearchOptions", 172);
+        rosetta_lisp::register_type<datamunge::optim::HarmonySearch>("HarmonySearch", 173);
+        rosetta_lisp::register_type<datamunge::optim::InteriorPointOptions>("InteriorPointOptions", 174);
+        rosetta_lisp::register_type<datamunge::optim::InteriorPoint>("InteriorPoint", 175);
+        rosetta_lisp::register_type<datamunge::optim::SurrogatePrediction>("SurrogatePrediction", 176);
+        rosetta_lisp::register_type<datamunge::optim::GaussianJointPosterior>("GaussianJointPosterior", 177);
+        rosetta_lisp::register_type<datamunge::optim::GaussianProcessSurrogateOptions>("GaussianProcessSurrogateOptions", 178);
+        rosetta_lisp::register_type<datamunge::optim::RBFGaussianProcessSurrogate>("RBFGaussianProcessSurrogate", 179);
         rosetta_lisp::add_base<datamunge::optim::RBFGaussianProcessSurrogate, datamunge::optim::BayesianSurrogate>();
-        rosetta_lisp::register_type<datamunge::optim::SGDOptions>("SGDOptions", 182);
-        rosetta_lisp::register_type<datamunge::optim::SGD>("SGD", 183);
-        rosetta_lisp::register_type<datamunge::optim::SimulatedAnnealingOptions>("SimulatedAnnealingOptions", 184);
-        rosetta_lisp::register_type<datamunge::optim::SimulatedAnnealing>("SimulatedAnnealing", 185);
-        rosetta_lisp::register_type<datamunge::optim::SAGAOptions>("SAGAOptions", 186);
-        rosetta_lisp::register_type<datamunge::optim::SAGA>("SAGA", 187);
-        rosetta_lisp::register_type<datamunge::optim::SVRGOptions>("SVRGOptions", 188);
-        rosetta_lisp::register_type<datamunge::optim::SVRG>("SVRG", 189);
-        rosetta_lisp::register_type<datamunge::optim::SQPOptions>("SQPOptions", 190);
-        rosetta_lisp::register_type<datamunge::optim::SQP>("SQP", 191);
-        rosetta_lisp::register_type<datamunge::optim::TrustRegionNewtonOptions>("TrustRegionNewtonOptions", 192);
-        rosetta_lisp::register_type<datamunge::optim::TrustRegionNewton>("TrustRegionNewton", 193);
-        rosetta_lisp::register_type<datamunge::optim::WhaleOptimizationOptions>("WhaleOptimizationOptions", 194);
-        rosetta_lisp::register_type<datamunge::optim::WhaleOptimization>("WhaleOptimization", 195);
-        rosetta_lisp::register_type<datamunge::fda::BSplineBasis>("BSplineBasis", 196);
-        rosetta_lisp::register_type<datamunge::stats::HypothesisTestResult>("HypothesisTestResult", 197);
-        rosetta_lisp::register_type<datamunge::stats::ARIMAOptions>("ARIMAOptions", 198);
-        rosetta_lisp::register_type<datamunge::stats::ARIMA>("ARIMA", 199);
-        rosetta_lisp::register_type<datamunge::stats::KendallTau>("KendallTau", 200);
-        rosetta_lisp::register_type<datamunge::stats::ExponentialSmoothingOptions>("ExponentialSmoothingOptions", 201);
-        rosetta_lisp::register_type<datamunge::stats::ExponentialSmoothing>("ExponentialSmoothing", 202);
-        rosetta_lisp::register_type<datamunge::Bspline>("Bspline", 203);
-        rosetta_lisp::register_type<datamunge::BSplineRegression>("BSplineRegression", 204);
-        rosetta_lisp::register_type<datamunge::PSplineRegression>("PSplineRegression", 205);
-        rosetta_lisp::register_type<datamunge::DataFrame>("DataFrame", 206);
-        rosetta_lisp::register_type<datamunge::CsvReader>("CsvReader", 207);
-        rosetta_lisp::register_type<datamunge::ShapeLayer>("ShapeLayer", 208);
-        rosetta_lisp::register_type<datamunge::GGPlot>("GGPlot", 209);
-        rosetta_lisp::register_type<datamunge::Splom>("Splom", 210);
-        rosetta_lisp::register_type<datamunge::LM>("LM", 211);
-        rosetta_lisp::register_type<datamunge::LMM>("LMM", 212);
-        rosetta_lisp::register_type<datamunge::GLMM>("GLMM", 213);
-        rosetta_lisp::register_type<datamunge::INLAMixedModel>("INLAMixedModel", 214);
-        rosetta_lisp::register_type<datamunge::LDA>("LDA", 215);
-        rosetta_lisp::register_type<datamunge::SVM>("SVM", 216);
-        rosetta_lisp::register_type<datamunge::DecisionTreeClassifier>("DecisionTreeClassifier", 217);
-        rosetta_lisp::register_type<datamunge::DecisionTreeRegressor>("DecisionTreeRegressor", 218);
-        rosetta_lisp::register_type<datamunge::RandomForestClassifier>("RandomForestClassifier", 219);
-        rosetta_lisp::register_type<datamunge::RandomForestRegressor>("RandomForestRegressor", 220);
-        rosetta_lisp::register_type<datamunge::ElasticNet>("ElasticNet", 221);
-        rosetta_lisp::register_type<datamunge::Ridge>("Ridge", 222);
-        rosetta_lisp::register_type<datamunge::Lasso>("Lasso", 223);
-        rosetta_lisp::register_type<datamunge::KNNClassifier>("KNNClassifier", 224);
-        rosetta_lisp::register_type<datamunge::KNNRegressor>("KNNRegressor", 225);
-        rosetta_lisp::register_type<datamunge::KMeans>("KMeans", 226);
-        rosetta_lisp::register_type<datamunge::PCA>("PCA", 227);
-        rosetta_lisp::register_type<datamunge::MDS>("MDS", 228);
-        rosetta_lisp::register_type<datamunge::Isomap>("Isomap", 229);
-        rosetta_lisp::register_type<datamunge::LLE>("LLE", 230);
-        rosetta_lisp::register_type<datamunge::TSNE>("TSNE", 231);
-        rosetta_lisp::register_type<datamunge::LaplacianEigenmaps>("LaplacianEigenmaps", 232);
-        rosetta_lisp::register_type<datamunge::DiffusionMaps>("DiffusionMaps", 233);
-        rosetta_lisp::register_type<datamunge::KernelPCA>("KernelPCA", 234);
-        rosetta_lisp::register_type<datamunge::SammonMapping>("SammonMapping", 235);
-        rosetta_lisp::register_type<datamunge::UMAP>("UMAP", 236);
-        rosetta_lisp::register_type<datamunge::AgglomerativeClustering>("AgglomerativeClustering", 237);
-        rosetta_lisp::register_type<datamunge::DBSCAN>("DBSCAN", 238);
-        rosetta_lisp::register_type<datamunge::GBMClassifier>("GBMClassifier", 239);
-        rosetta_lisp::register_type<datamunge::GBMRegressor>("GBMRegressor", 240);
-        rosetta_lisp::register_type<datamunge::XGBoostClassifier>("XGBoostClassifier", 241);
-        rosetta_lisp::register_type<datamunge::XGBoostRegressor>("XGBoostRegressor", 242);
-        rosetta_lisp::register_type<datamunge::KernelRegression>("KernelRegression", 243);
-        rosetta_lisp::register_type<datamunge::GaussianProcessRegression>("GaussianProcessRegression", 244);
-        rosetta_lisp::register_type<datamunge::NaiveBayesClassifier>("NaiveBayesClassifier", 245);
-        rosetta_lisp::register_type<datamunge::GLM>("GLM", 246);
-        rosetta_lisp::register_type<datamunge::Tensor>("Tensor", 247);
-        rosetta_lisp::register_type<datamunge::Dual>("Dual", 248);
-        rosetta_lisp::register_type<datamunge::HyperDual>("HyperDual", 249);
-        rosetta_lisp::register_type<datamunge::Var>("Var", 250);
-        rosetta_lisp::register_type<datamunge::Tape>("Tape", 251);
-        rosetta_lisp::register_type<datamunge::cad::Solid>("CadSolid", 252);
-        rosetta_lisp::register_type<datamunge::cad::View>("CadScene", 253);
-        rosetta_lisp::register_type<datamunge::fda::SplineSolveOptions>("SplineSolveOptions", 254);
-        rosetta_lisp::register_type<datamunge::fda::BSplineRefinement>("BSplineRefinement", 255);
-        rosetta_lisp::register_type<datamunge::fda::TensorBSpline>("TensorBSpline", 256);
-        rosetta_lisp::register_type<datamunge::fda::detail::OrthantCellTree>("OrthantCellTree", 257);
-        rosetta_lisp::register_type<datamunge::fda::detail::AxisRefinement>("AxisRefinement", 258);
-        rosetta_lisp::register_type<datamunge::fda::HierarchicalBSpline>("HierarchicalBSpline", 259);
-        rosetta_lisp::register_type<datamunge::fda::TruncatedHierarchicalBSpline>("TruncatedHierarchicalBSpline", 260);
-        rosetta_lisp::register_type<datamunge::nn::NnTensor>("NnTensor", 261);
-        rosetta_lisp::register_type<datamunge::nn::NnModel>("NnModel", 262);
-        rosetta_lisp::register_type<datamunge::sim::TaskOutput>("TaskOutput", 263);
-        rosetta_lisp::register_type<datamunge::sim::TaskBatch>("TaskBatch", 264);
-        rosetta_lisp::register_type<datamunge::dstruct::DirectedGraph<std::string>>("DirectedGraph", 265);
-        rosetta_lisp::register_type<datamunge::dstruct::UndirectedGraph<std::string>>("UndirectedGraph", 266);
-        rosetta_lisp::register_type<datamunge::dstruct::WeightedGraph<std::string, double>>("WeightedGraph", 267);
+        rosetta_lisp::register_type<datamunge::optim::LBFGSOptions>("LBFGSOptions", 180);
+        rosetta_lisp::register_type<datamunge::optim::LBFGS>("LBFGS", 181);
+        rosetta_lisp::register_type<datamunge::optim::LevenbergMarquardtOptions>("LevenbergMarquardtOptions", 182);
+        rosetta_lisp::register_type<datamunge::optim::LevenbergMarquardt>("LevenbergMarquardt", 183);
+        rosetta_lisp::register_type<datamunge::optim::NelderMeadOptions>("NelderMeadOptions", 184);
+        rosetta_lisp::register_type<datamunge::optim::NelderMead>("NelderMead", 185);
+        rosetta_lisp::register_type<datamunge::optim::NesterovAcceleratedGradientOptions>("NesterovAcceleratedGradientOptions", 186);
+        rosetta_lisp::register_type<datamunge::optim::NesterovAcceleratedGradient>("NesterovAcceleratedGradient", 187);
+        rosetta_lisp::register_type<datamunge::optim::NadamOptions>("NadamOptions", 188);
+        rosetta_lisp::register_type<datamunge::optim::Nadam>("Nadam", 189);
+        rosetta_lisp::register_type<datamunge::optim::NewtonOptions>("NewtonOptions", 190);
+        rosetta_lisp::register_type<datamunge::optim::Newton>("Newton", 191);
+        rosetta_lisp::register_type<datamunge::optim::ParallelTemperingOptions>("ParallelTemperingOptions", 192);
+        rosetta_lisp::register_type<datamunge::optim::ParallelTempering>("ParallelTempering", 193);
+        rosetta_lisp::register_type<datamunge::optim::PSOOptions>("PSOOptions", 194);
+        rosetta_lisp::register_type<datamunge::optim::PSO>("PSO", 195);
+        rosetta_lisp::register_type<datamunge::optim::ProximalGradientOptions>("ProximalGradientOptions", 196);
+        rosetta_lisp::register_type<datamunge::optim::ProximalGradient>("ProximalGradient", 197);
+        rosetta_lisp::register_type<datamunge::optim::RandomizedBlockCoordinateDescentOptions>("RandomizedBlockCoordinateDescentOptions", 198);
+        rosetta_lisp::register_type<datamunge::optim::RandomizedBlockCoordinateDescent>("RandomizedBlockCoordinateDescent", 199);
+        rosetta_lisp::register_type<datamunge::optim::RMSPropOptions>("RMSPropOptions", 200);
+        rosetta_lisp::register_type<datamunge::optim::RMSProp>("RMSProp", 201);
+        rosetta_lisp::register_type<datamunge::optim::SGDOptions>("SGDOptions", 202);
+        rosetta_lisp::register_type<datamunge::optim::SGD>("SGD", 203);
+        rosetta_lisp::register_type<datamunge::optim::SimulatedAnnealingOptions>("SimulatedAnnealingOptions", 204);
+        rosetta_lisp::register_type<datamunge::optim::SimulatedAnnealing>("SimulatedAnnealing", 205);
+        rosetta_lisp::register_type<datamunge::optim::SAGAOptions>("SAGAOptions", 206);
+        rosetta_lisp::register_type<datamunge::optim::SAGA>("SAGA", 207);
+        rosetta_lisp::register_type<datamunge::optim::SVRGOptions>("SVRGOptions", 208);
+        rosetta_lisp::register_type<datamunge::optim::SVRG>("SVRG", 209);
+        rosetta_lisp::register_type<datamunge::optim::SQPOptions>("SQPOptions", 210);
+        rosetta_lisp::register_type<datamunge::optim::SQP>("SQP", 211);
+        rosetta_lisp::register_type<datamunge::optim::TrustRegionNewtonOptions>("TrustRegionNewtonOptions", 212);
+        rosetta_lisp::register_type<datamunge::optim::TrustRegionNewton>("TrustRegionNewton", 213);
+        rosetta_lisp::register_type<datamunge::optim::WhaleOptimizationOptions>("WhaleOptimizationOptions", 214);
+        rosetta_lisp::register_type<datamunge::optim::WhaleOptimization>("WhaleOptimization", 215);
+        rosetta_lisp::register_type<datamunge::stats::HypothesisTestResult>("HypothesisTestResult", 216);
+        rosetta_lisp::register_type<datamunge::fda::BSplineBasis>("BSplineBasis", 217);
+        rosetta_lisp::register_type<datamunge::stats::GamesHowellComparison>("GamesHowellComparison", 218);
+        rosetta_lisp::register_type<datamunge::stats::DunnComparison>("DunnComparison", 219);
+        rosetta_lisp::register_type<datamunge::stats::ARIMAOptions>("ARIMAOptions", 220);
+        rosetta_lisp::register_type<datamunge::stats::ARIMA>("ARIMA", 221);
+        rosetta_lisp::register_type<datamunge::stats::KendallTau>("KendallTau", 222);
+        rosetta_lisp::register_type<datamunge::stats::ExponentialSmoothingOptions>("ExponentialSmoothingOptions", 223);
+        rosetta_lisp::register_type<datamunge::stats::ExponentialSmoothing>("ExponentialSmoothing", 224);
+        rosetta_lisp::register_type<datamunge::stats::ProportionDifferenceInterval>("ProportionDifferenceInterval", 225);
+        rosetta_lisp::register_type<datamunge::stats::RiskRatioInterval>("RiskRatioInterval", 226);
+        rosetta_lisp::register_type<datamunge::stats::PoissonRateInterval>("PoissonRateInterval", 227);
+        rosetta_lisp::register_type<datamunge::Bspline>("Bspline", 228);
+        rosetta_lisp::register_type<datamunge::BSplineRegression>("BSplineRegression", 229);
+        rosetta_lisp::register_type<datamunge::PSplineRegression>("PSplineRegression", 230);
+        rosetta_lisp::register_type<datamunge::DataFrame>("DataFrame", 231);
+        rosetta_lisp::register_type<datamunge::CsvReader>("CsvReader", 232);
+        rosetta_lisp::register_type<datamunge::ShapeLayer>("ShapeLayer", 233);
+        rosetta_lisp::register_type<datamunge::GGPlot>("GGPlot", 234);
+        rosetta_lisp::register_type<datamunge::Splom>("Splom", 235);
+        rosetta_lisp::register_type<datamunge::LM>("LM", 236);
+        rosetta_lisp::register_type<datamunge::LMM>("LMM", 237);
+        rosetta_lisp::register_type<datamunge::GLMM>("GLMM", 238);
+        rosetta_lisp::register_type<datamunge::INLAMixedModel>("INLAMixedModel", 239);
+        rosetta_lisp::register_type<datamunge::LDA>("LDA", 240);
+        rosetta_lisp::register_type<datamunge::SVM>("SVM", 241);
+        rosetta_lisp::register_type<datamunge::DecisionTreeClassifier>("DecisionTreeClassifier", 242);
+        rosetta_lisp::register_type<datamunge::DecisionTreeRegressor>("DecisionTreeRegressor", 243);
+        rosetta_lisp::register_type<datamunge::RandomForestClassifier>("RandomForestClassifier", 244);
+        rosetta_lisp::register_type<datamunge::RandomForestRegressor>("RandomForestRegressor", 245);
+        rosetta_lisp::register_type<datamunge::ElasticNet>("ElasticNet", 246);
+        rosetta_lisp::register_type<datamunge::Ridge>("Ridge", 247);
+        rosetta_lisp::register_type<datamunge::Lasso>("Lasso", 248);
+        rosetta_lisp::register_type<datamunge::KNNClassifier>("KNNClassifier", 249);
+        rosetta_lisp::register_type<datamunge::KNNRegressor>("KNNRegressor", 250);
+        rosetta_lisp::register_type<datamunge::KMeans>("KMeans", 251);
+        rosetta_lisp::register_type<datamunge::PCA>("PCA", 252);
+        rosetta_lisp::register_type<datamunge::MDS>("MDS", 253);
+        rosetta_lisp::register_type<datamunge::Isomap>("Isomap", 254);
+        rosetta_lisp::register_type<datamunge::LLE>("LLE", 255);
+        rosetta_lisp::register_type<datamunge::TSNE>("TSNE", 256);
+        rosetta_lisp::register_type<datamunge::LaplacianEigenmaps>("LaplacianEigenmaps", 257);
+        rosetta_lisp::register_type<datamunge::DiffusionMaps>("DiffusionMaps", 258);
+        rosetta_lisp::register_type<datamunge::KernelPCA>("KernelPCA", 259);
+        rosetta_lisp::register_type<datamunge::SammonMapping>("SammonMapping", 260);
+        rosetta_lisp::register_type<datamunge::UMAP>("UMAP", 261);
+        rosetta_lisp::register_type<datamunge::AgglomerativeClustering>("AgglomerativeClustering", 262);
+        rosetta_lisp::register_type<datamunge::DBSCAN>("DBSCAN", 263);
+        rosetta_lisp::register_type<datamunge::GBMClassifier>("GBMClassifier", 264);
+        rosetta_lisp::register_type<datamunge::GBMRegressor>("GBMRegressor", 265);
+        rosetta_lisp::register_type<datamunge::XGBoostClassifier>("XGBoostClassifier", 266);
+        rosetta_lisp::register_type<datamunge::XGBoostRegressor>("XGBoostRegressor", 267);
+        rosetta_lisp::register_type<datamunge::KernelRegression>("KernelRegression", 268);
+        rosetta_lisp::register_type<datamunge::GaussianProcessRegression>("GaussianProcessRegression", 269);
+        rosetta_lisp::register_type<datamunge::NaiveBayesClassifier>("NaiveBayesClassifier", 270);
+        rosetta_lisp::register_type<datamunge::GLM>("GLM", 271);
+        rosetta_lisp::register_type<datamunge::Tensor>("Tensor", 272);
+        rosetta_lisp::register_type<datamunge::Dual>("Dual", 273);
+        rosetta_lisp::register_type<datamunge::HyperDual>("HyperDual", 274);
+        rosetta_lisp::register_type<datamunge::Var>("Var", 275);
+        rosetta_lisp::register_type<datamunge::Tape>("Tape", 276);
+        rosetta_lisp::register_type<datamunge::MLPClassifierSearch>("MLPClassifierSearch", 277);
+        rosetta_lisp::register_type<datamunge::cad::Solid>("CadSolid", 278);
+        rosetta_lisp::register_type<datamunge::cad::View>("CadScene", 279);
+        rosetta_lisp::register_type<datamunge::fda::SplineSolveOptions>("SplineSolveOptions", 280);
+        rosetta_lisp::register_type<datamunge::fda::BSplineRefinement>("BSplineRefinement", 281);
+        rosetta_lisp::register_type<datamunge::fda::TensorBSpline>("TensorBSpline", 282);
+        rosetta_lisp::register_type<datamunge::fda::detail::OrthantCellTree>("OrthantCellTree", 283);
+        rosetta_lisp::register_type<datamunge::fda::detail::AxisRefinement>("AxisRefinement", 284);
+        rosetta_lisp::register_type<datamunge::fda::HierarchicalBSpline>("HierarchicalBSpline", 285);
+        rosetta_lisp::register_type<datamunge::fda::TruncatedHierarchicalBSpline>("TruncatedHierarchicalBSpline", 286);
+        rosetta_lisp::register_type<datamunge::nn::NnTensor>("NnTensor", 287);
+        rosetta_lisp::register_type<datamunge::nn::NnModel>("NnModel", 288);
+        rosetta_lisp::register_type<datamunge::sim::TaskOutput>("TaskOutput", 289);
+        rosetta_lisp::register_type<datamunge::sim::TaskBatch>("TaskBatch", 290);
+        rosetta_lisp::register_type<datamunge::dstruct::DirectedGraph<std::string>>("DirectedGraph", 291);
+        rosetta_lisp::register_type<datamunge::dstruct::UndirectedGraph<std::string>>("UndirectedGraph", 292);
+        rosetta_lisp::register_type<datamunge::dstruct::WeightedGraph<std::string, double>>("WeightedGraph", 293);
         rosetta_lisp::EnumTable<datamunge::algebra::MonomialOrder>::entries = {{"Lex", 0LL}, {"Grlex", 1LL}, {"Grevlex", 2LL}, };
         rosetta_lisp::EnumTable<datamunge::cv::StructuringElement>::entries = {{"Square", 0LL}, {"Cross", 1LL}, };
         rosetta_lisp::EnumTable<datamunge::fda::SplineSolver>::entries = {{"Automatic", 0LL}, {"Cholesky", 1LL}, {"ConjugateGradient", 2LL}, };
         rosetta_lisp::EnumTable<datamunge::fem::BCType>::entries = {{"Dirichlet", 0LL}, {"Neumann", 1LL}, {"Robin", 2LL}, };
+        rosetta_lisp::EnumTable<datamunge::geometry::CaliperEventKind>::entries = {{"AreaAdvance", 0LL}, {"AreaStop", 1LL}, {"PairTest", 2LL}, };
         rosetta_lisp::EnumTable<datamunge::geometry::DTWPredecessor>::entries = {{"origin", 0LL}, {"diagonal", 1LL}, {"advance_a", 2LL}, {"advance_b", 3LL}, {"unrepresentable", 4LL}, };
         rosetta_lisp::EnumTable<datamunge::geometry::HullAction>::entries = {{"test", 0LL}, {"pop", 1LL}, {"push", 2LL}, };
         rosetta_lisp::EnumTable<datamunge::geometry::HullPass>::entries = {{"lower", 0LL}, {"upper", 1LL}, };
+        rosetta_lisp::EnumTable<datamunge::geometry::KDProbeAction>::entries = {{"Visit", 0LL}, {"FarPlane", 1LL}, };
         rosetta_lisp::EnumTable<datamunge::geometry::Orientation>::entries = {{"Collinear", 0LL}, {"Clockwise", 1LL}, {"CounterClockwise", 2LL}, };
+        rosetta_lisp::EnumTable<datamunge::geometry::SegmentContact>::entries = {{"None", 0LL}, {"Point", 1LL}, {"Overlap", 2LL}, };
         rosetta_lisp::EnumTable<datamunge::graphics::DataSeries::Kind>::entries = {{"Scatter", 0LL}, {"Line", 1LL}, {"Bar", 2LL}, {"Box", 3LL}, {"Polygon", 4LL}, {"Text", 5LL}, {"Segment", 6LL}, };
         rosetta_lisp::EnumTable<datamunge::image::ImageMode>::entries = {{"Grayscale", 1LL}, {"GrayscaleAlpha", 2LL}, {"RGB", 3LL}, {"RGBA", 4LL}, };
         rosetta_lisp::EnumTable<datamunge::image::ResampleFilter>::entries = {{"Nearest", 0LL}, {"Bilinear", 1LL}, };
+        rosetta_lisp::EnumTable<datamunge::ode::ODEAttemptKind>::entries = {{"fixed_step", 0LL}, {"rk45_trial", 1LL}, {"rk4_startup", 2LL}, {"adams_bashforth", 3LL}, {"adams_pece", 4LL}, {"rk4_tail", 5LL}, };
         rosetta_lisp::EnumTable<datamunge::ode::StepMethod>::entries = {{"Euler", 0LL}, {"Midpoint", 1LL}, {"RK4", 2LL}, {"RK45", 3LL}, {"AdamsBashforth", 4LL}, {"AdamsMoulton", 5LL}, };
         rosetta_lisp::EnumTable<datamunge::optim::Acquisition>::entries = {{"ExpectedImprovement", 0LL}, {"ProbabilityOfImprovement", 1LL}, {"LowerConfidenceBound", 2LL}, };
         rosetta_lisp::EnumTable<datamunge::sim::Task>::entries = {{"InvertedPendulum", 0LL}, {"Hopper", 1LL}, };
@@ -8463,14 +9531,14 @@ ROSETTA_CABI_EXPORT int rosetta_datamunge_init(int version, ROSETTA_LISP_MODULE:
 #include <unordered_map>
 namespace ROSETTA_LISP_MODULE { namespace rosetta_gnu {
 inline const char* const prefix = "dm";
-inline const char* const classes[] = {"Expr", "Polynomial", "PolyExtendedGcdResult", "RealRootIntervals", "Complex", "Cplx", "SquareFreeFactor", "RealFactor", "RealFactorization", "MultivariatePolynomial", "GfFactorization", "RationalFunction", "ArbitraryFunction", "DifferentiableFunction", "SeparableFunction", "DifferentiableSeparableFunction", "ProximalFunction", "HessianFunction", "EqualityConstrainedFunction", "InequalityConstrainedFunction", "ResidualFunction", "GibbsOptions", "GibbsResult", "GibbsSampler", "HMCOptions", "HMCResult", "HMC", "ImportanceSamplingOptions", "ImportanceSamplingResult", "ImportanceSampling", "MAPOptions", "MAP", "NUTSOptions", "NUTSResult", "NUTS", "RWMOptions", "RWMResult", "RandomWalkMetropolis", "Pixel", "Image", "HSV", "KeyPoint", "Corner", "StructureTensorField", "HoughLine", "HoughCircle", "FlowVector", "LabelMap", "ImageBatch", "ImageLoader", "Mesh1D", "ScalarField1D", "ScalarField2D", "BoundaryCondition1D", "FEM1DResult", "FEM1DTimeSeries", "FEM1D", "Point2D", "Triangle", "DelaunayWork", "DelaunayInsertion", "DelaunayTrace", "DelaunayAnalysis", "Mesh2D", "FEM2DResult", "FEM2D", "AlphaBetaState", "AlphaBetaFilter", "AlphaBetaGammaState", "AlphaBetaGammaFilter", "KalmanState", "SmoothResult", "KalmanFilter", "VectorFunction", "EnsembleKalmanFilter", "ExtendedKalmanFilter", "InformationFilter", "ParticleFilter", "UnscentedKalmanFilter", "BoundingBox", "ClosestPairResult", "ConvexHullOptions", "HullIndexedPoint", "ConvexHullWork", "HullEvent", "ConvexHullAnalysis", "ConvexHullTrace", "Callback", "RGB", "DataSeries", "ABLine", "LegendEntry", "Plot", "RPlot", "RLayout", "DTWResult", "DTWWork", "DTWComputation", "DTWTrace", "KDTree2D", "Circle", "DiameterResult", "MinimumBoundingRectangle", "VoronoiDiagram", "LinalgMatrix", "RHS", "ODEOptions", "ODESolution", "ODESolver", "ACOROptions", "ACOR", "AdamOptions", "Adam", "AdaGradOptions", "AdaGrad", "AdaDeltaOptions", "AdaDelta", "AMSGradOptions", "AMSGrad", "ArtificialBeeColonyOptions", "ArtificialBeeColony", "AugmentedLagrangianOptions", "AugmentedLagrangian", "BayesianSurrogate", "BayesianOptimizationOptions", "BayesianOptimizationResult", "BayesianOptimization", "ConjugateGradientOptions", "ConjugateGradient", "CMAESOptions", "CMAES", "CoordinateDescentOptions", "CoordinateDescent", "CrossEntropyMethodOptions", "CrossEntropyMethod", "CuckooSearchOptions", "CuckooSearch", "DEOptions", "DifferentialEvolution", "EstimationOfDistributionOptions", "EstimationOfDistribution", "EvolutionStrategyOptions", "EvolutionStrategy", "FireflyAlgorithmOptions", "FireflyAlgorithm", "FISTAOptions", "FISTA", "GAOptions", "GeneticAlgorithm", "GradientDescentOptions", "GradientDescent", "GreyWolfOptimizerOptions", "GreyWolfOptimizer", "HarmonySearchOptions", "HarmonySearch", "InteriorPointOptions", "InteriorPoint", "LBFGSOptions", "LBFGS", "LevenbergMarquardtOptions", "LevenbergMarquardt", "NelderMeadOptions", "NelderMead", "NesterovAcceleratedGradientOptions", "NesterovAcceleratedGradient", "NadamOptions", "Nadam", "NewtonOptions", "Newton", "ParallelTemperingOptions", "ParallelTempering", "PSOOptions", "PSO", "ProximalGradientOptions", "ProximalGradient", "RandomizedBlockCoordinateDescentOptions", "RandomizedBlockCoordinateDescent", "RMSPropOptions", "RMSProp", "SurrogatePrediction", "GaussianProcessSurrogateOptions", "RBFGaussianProcessSurrogate", "SGDOptions", "SGD", "SimulatedAnnealingOptions", "SimulatedAnnealing", "SAGAOptions", "SAGA", "SVRGOptions", "SVRG", "SQPOptions", "SQP", "TrustRegionNewtonOptions", "TrustRegionNewton", "WhaleOptimizationOptions", "WhaleOptimization", "BSplineBasis", "HypothesisTestResult", "ARIMAOptions", "ARIMA", "KendallTau", "ExponentialSmoothingOptions", "ExponentialSmoothing", "Bspline", "BSplineRegression", "PSplineRegression", "DataFrame", "CsvReader", "ShapeLayer", "GGPlot", "Splom", "LM", "LMM", "GLMM", "INLAMixedModel", "LDA", "SVM", "DecisionTreeClassifier", "DecisionTreeRegressor", "RandomForestClassifier", "RandomForestRegressor", "ElasticNet", "Ridge", "Lasso", "KNNClassifier", "KNNRegressor", "KMeans", "PCA", "MDS", "Isomap", "LLE", "TSNE", "LaplacianEigenmaps", "DiffusionMaps", "KernelPCA", "SammonMapping", "UMAP", "AgglomerativeClustering", "DBSCAN", "GBMClassifier", "GBMRegressor", "XGBoostClassifier", "XGBoostRegressor", "KernelRegression", "GaussianProcessRegression", "NaiveBayesClassifier", "GLM", "Tensor", "Dual", "HyperDual", "Var", "Tape", "CadSolid", "CadScene", "SplineSolveOptions", "BSplineRefinement", "TensorBSpline", "OrthantCellTree", "AxisRefinement", "HierarchicalBSpline", "TruncatedHierarchicalBSpline", "NnTensor", "NnModel", "TaskOutput", "TaskBatch", "DirectedGraph", "UndirectedGraph", "WeightedGraph", nullptr};
-inline constexpr std::size_t class_count = 268;
+inline const char* const classes[] = {"Expr", "Polynomial", "PolyExtendedGcdResult", "RealRootIntervals", "Complex", "Cplx", "SquareFreeFactor", "RealFactor", "RealFactorization", "MultivariatePolynomial", "GfFactorization", "RationalFunction", "ArbitraryFunction", "DifferentiableFunction", "SeparableFunction", "DifferentiableSeparableFunction", "ProximalFunction", "HessianFunction", "EqualityConstrainedFunction", "InequalityConstrainedFunction", "ResidualFunction", "NUTSOptions", "NUTSResult", "NUTS", "Callback", "RGB", "DataSeries", "ABLine", "LegendEntry", "Plot", "RPlot", "RLayout", "GibbsOptions", "GibbsResult", "GibbsSampler", "HMCOptions", "HMCResult", "HMC", "HMCProposal", "ImportanceSamplingOptions", "ImportanceSamplingResult", "ImportanceSampling", "MAPOptions", "MAP", "RWMOptions", "RWMResult", "RandomWalkMetropolis", "Pixel", "Image", "HSV", "KeyPoint", "Corner", "StructureTensorField", "HoughLine", "HoughCircle", "FlowVector", "LabelMap", "ImageBatch", "ImageLoader", "Mesh1D", "ScalarField1D", "ScalarField2D", "BoundaryCondition1D", "FEM1DResult", "FEM1DTimeSeries", "FEM1D", "Point2D", "Triangle", "DelaunayWork", "DelaunayInsertion", "DelaunayTrace", "DelaunayAnalysis", "Mesh2D", "FEM2DResult", "FEM2D", "AlphaBetaState", "AlphaBetaFilter", "AlphaBetaGammaState", "AlphaBetaGammaFilter", "KalmanState", "SmoothResult", "KalmanFilter", "VectorFunction", "EnsembleKalmanFilter", "ExtendedKalmanFilter", "InformationFilter", "ParticleFilter", "UnscentedKalmanFilter", "BoundingBox", "ClosestPairResult", "ConvexHullOptions", "HullIndexedPoint", "ConvexHullWork", "HullEvent", "ConvexHullAnalysis", "ConvexHullTrace", "DTWResult", "DTWWork", "DTWComputation", "DTWTrace", "KDNearestProbe", "KDSearchWork", "KDNearestTrace", "KDTree2D", "Circle", "EnclosingCircleEvent", "EnclosingCircleTrace", "EnclosingCircleCheck", "SegmentIntersectionRun", "PolygonEarCandidate", "PolygonEarClip", "PolygonTriangulationOptions", "PolygonTriangulationRun", "PolygonTriangulationTrace", "DiameterResult", "DiameterOptions", "CaliperEvent", "DiameterRun", "VoronoiDiagram", "LinalgMatrix", "RHS", "ODEOptions", "ODEExecutionLimits", "ODESolution", "ODEEvaluation", "ODEAttempt", "ODETrace", "ODESolver", "ACOROptions", "ACOR", "AdamOptions", "Adam", "AdaGradOptions", "AdaGrad", "AdaDeltaOptions", "AdaDelta", "AMSGradOptions", "AMSGrad", "ArtificialBeeColonyOptions", "ArtificialBeeColony", "AugmentedLagrangianOptions", "AugmentedLagrangian", "BayesianSurrogate", "BayesianOptimizationOptions", "BayesianOptimizationResult", "BayesianOptimization", "ConjugateGradientOptions", "ConjugateGradient", "CMAESOptions", "CMAES", "CoordinateDescentOptions", "CoordinateDescent", "CrossEntropyMethodOptions", "CrossEntropyMethod", "CuckooSearchOptions", "CuckooSearch", "DEOptions", "DifferentialEvolution", "EstimationOfDistributionOptions", "EstimationOfDistribution", "EvolutionStrategyOptions", "EvolutionStrategy", "FireflyAlgorithmOptions", "FireflyAlgorithm", "FISTAOptions", "FISTA", "GAOptions", "GeneticAlgorithm", "GradientDescentOptions", "GradientDescent", "GreyWolfOptimizerOptions", "GreyWolfOptimizer", "HarmonySearchOptions", "HarmonySearch", "InteriorPointOptions", "InteriorPoint", "SurrogatePrediction", "GaussianJointPosterior", "GaussianProcessSurrogateOptions", "RBFGaussianProcessSurrogate", "LBFGSOptions", "LBFGS", "LevenbergMarquardtOptions", "LevenbergMarquardt", "NelderMeadOptions", "NelderMead", "NesterovAcceleratedGradientOptions", "NesterovAcceleratedGradient", "NadamOptions", "Nadam", "NewtonOptions", "Newton", "ParallelTemperingOptions", "ParallelTempering", "PSOOptions", "PSO", "ProximalGradientOptions", "ProximalGradient", "RandomizedBlockCoordinateDescentOptions", "RandomizedBlockCoordinateDescent", "RMSPropOptions", "RMSProp", "SGDOptions", "SGD", "SimulatedAnnealingOptions", "SimulatedAnnealing", "SAGAOptions", "SAGA", "SVRGOptions", "SVRG", "SQPOptions", "SQP", "TrustRegionNewtonOptions", "TrustRegionNewton", "WhaleOptimizationOptions", "WhaleOptimization", "HypothesisTestResult", "BSplineBasis", "GamesHowellComparison", "DunnComparison", "ARIMAOptions", "ARIMA", "KendallTau", "ExponentialSmoothingOptions", "ExponentialSmoothing", "ProportionDifferenceInterval", "RiskRatioInterval", "PoissonRateInterval", "Bspline", "BSplineRegression", "PSplineRegression", "DataFrame", "CsvReader", "ShapeLayer", "GGPlot", "Splom", "LM", "LMM", "GLMM", "INLAMixedModel", "LDA", "SVM", "DecisionTreeClassifier", "DecisionTreeRegressor", "RandomForestClassifier", "RandomForestRegressor", "ElasticNet", "Ridge", "Lasso", "KNNClassifier", "KNNRegressor", "KMeans", "PCA", "MDS", "Isomap", "LLE", "TSNE", "LaplacianEigenmaps", "DiffusionMaps", "KernelPCA", "SammonMapping", "UMAP", "AgglomerativeClustering", "DBSCAN", "GBMClassifier", "GBMRegressor", "XGBoostClassifier", "XGBoostRegressor", "KernelRegression", "GaussianProcessRegression", "NaiveBayesClassifier", "GLM", "Tensor", "Dual", "HyperDual", "Var", "Tape", "MLPClassifierSearch", "CadSolid", "CadScene", "SplineSolveOptions", "BSplineRefinement", "TensorBSpline", "OrthantCellTree", "AxisRefinement", "HierarchicalBSpline", "TruncatedHierarchicalBSpline", "NnTensor", "NnModel", "TaskOutput", "TaskBatch", "DirectedGraph", "UndirectedGraph", "WeightedGraph", nullptr};
+inline constexpr std::size_t class_count = 294;
 inline const char* const generics[] = {"evaluate", "gradient", "num_functions", "evaluate_term", "gradient_term", "proximal", "hessian", "constraints", "constraint_jacobian", "inequalities", "inequality_jacobian", "residuals", "jacobian", "call", "fit", "acquisition", nullptr};
 inline constexpr std::size_t generic_count = 16;
 inline constexpr std::size_t function_count = sizeof(ROSETTA_LISP_MODULE::table) / sizeof(ROSETTA_LISP_MODULE::table[0]);
-inline const unsigned long long out_masks[] = {0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 24ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL};
-inline const unsigned char void_results[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-inline const std::size_t director_methods[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 359, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 364, 365, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 911, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1783, 1784, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+inline const unsigned long long out_masks[] = {0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 24ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 4ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL, 0ULL};
+inline const unsigned char void_results[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+inline const std::size_t director_methods[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 380, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 385, 386, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 436, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1903, 1904, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 inline int init(int version, ROSETTA_LISP_MODULE::rosetta_lisp::InvokeFn invoke, ROSETTA_LISP_MODULE::rosetta_lisp::RetainFn retain) {
     return rosetta_datamunge_init(version, invoke, retain);
 }

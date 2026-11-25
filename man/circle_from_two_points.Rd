@@ -2,18 +2,37 @@
 % Please edit documentation in R/datamunger.R
 \name{circle_from_two_points}
 \alias{circle_from_two_points}
-\title{C++ function \verb{datamunge::geometry::detail::circle_from_two_points}}
+\title{Construct a two-point diameter circle using checked wide midpoint arithmetic.}
 \usage{
 circle_from_two_points(a, b)
 }
 \arguments{
-\item{a}{\code{Point2D}}
+\item{a}{\code{Point2D}. First finite endpoint.}
 
-\item{b}{\code{Point2D}}
+\item{b}{\code{Point2D}. Second finite endpoint.}
 }
 \value{
-\code{Circle}
+\code{Circle}: Owned midpoint circle; duplicates give zero radius.
 }
 \description{
-C++ function \verb{datamunge::geometry::detail::circle_from_two_points}
+Construct a two-point diameter circle using checked wide midpoint arithmetic.
+}
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{std::print("\{\}\\n",dm::geometry::detail::circle_from_two_points(\{0,0\},\{2,0\}).radius); // 1
+}\if{html}{\out{</div>}}
+}
+
+\section{Errors}{
+
+Signals an R error (from the C++ exception):
+\itemize{
+\item \code{std::invalid_argument}: If a coordinate is nonfinite.
+\item \code{std::overflow_error}: If radius/center is unrepresentable.
+}
+}
+
+\seealso{
+min_enclosing_circle()
 }

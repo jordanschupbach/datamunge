@@ -161,3 +161,6 @@ docs/mepml/**/figures/**/*.mp3
 pubspec.lock
 # Haskell (GHC) interface files of programs compiled in place
 *.hi
+
+# GNU APL session history (written to the working directory by just run-apl/repl-apl)
+.apl.history

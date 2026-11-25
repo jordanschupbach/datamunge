@@ -2,20 +2,25 @@
 % Please edit documentation in R/datamunger.R
 \name{KalmanFilter}
 \alias{KalmanFilter}
-\title{The standard discrete-time linear Kalman filter: x_k = F x_\{k-1\} + w_k, z_k = H x_k + v_k, w_k ~ N(0, Q), v_k ~ N(0, R) -- the minimum-mean-squared-error linear   estimator for exactly this model.}
+\title{Owned fixed-model linear covariance Kalman filter with optional full RTS smoothing.}
 \description{
-Stateful: holds the current (x, P) estimate,   mutated in place by predict()/update(); F, H, Q, R are fixed for the filter's   lifetime (construct a new filter if they change over time).
+Models x_k=F\emph{x_(k-1)+w and z_k=H}x_k+v with caller-supplied Q/R covariance. Inputs are copied; predict/update mutate this instance, independent copies evolve separately. Concurrent mutation requires synchronization. Shape checks do not establish finite values, covariance PSD, noise independence or valid probability assumptions: those remain caller preconditions. Uses explicit LU inverses and simplified covariance updates, not a Joseph/square-root method. Under a valid linear Gaussian model the mean is conditional MMSE; floating output is approximate. No universal realized-error or numerical PSD guarantee.
 }
 \section{Constructor}{
 
 \code{KalmanFilter$new(F, H, Q, R, x0, P0)}
+
+Copy a fixed linear model and initial state, validating matrix dimensions.
+No finite/covariance-definiteness checks are added; the caller supplies
+statistically valid finite matrices and invertible required innovation/prediction covariances.
+O(n\emph{n+m}n+m*m) copied model/state storage for n state and m observation dimensions.
 \itemize{
-\item \code{F} (\verb{list of numeric vector})
-\item \code{H} (\verb{list of numeric vector})
-\item \code{Q} (\verb{list of numeric vector})
-\item \code{R} (\verb{list of numeric vector})
-\item \code{x0} (\verb{numeric vector})
-\item \code{P0} (\verb{list of numeric vector})
+\item \code{F} (\verb{list of numeric vector}): Owned n-by-n transition matrix.
+\item \code{H} (\verb{list of numeric vector}): Owned m-by-n observation matrix.
+\item \code{Q} (\verb{list of numeric vector}): Owned n-by-n process covariance.
+\item \code{R} (\verb{list of numeric vector}): Owned m-by-m observation covariance.
+\item \code{x0} (\verb{numeric vector}): Owned initial length-n state mean.
+\item \code{P0} (\verb{list of numeric vector}): Owned initial n-by-n state covariance.
 }
 }
 
@@ -24,28 +29,83 @@ Stateful: holds the current (x, P) estimate,   mutated in place by predict()/upd
 \itemize{
 \item \verb{$predict()}
 
-The time-update (prediction) step: x = F x, P = F P F^T + Q.
+Predict x=F\emph{x and P=F}P*F^T+Q once, mutating the current state.
+Matrix arithmetic is ordinary floating point; nonfinite results propagate.
+O(n^3) dense work/O(n^2) temporaries; no rollback guarantee on exceptions.
 \item \verb{$update(z)}
 
-The measurement-update (correction) step given observation \code{z}: the standard
-innovation-covariance / Kalman-gain form (S = H P H^T + R, K = P H^T S^-1, x +=
-K(z - Hx), P = (I - KH) P) -- not the numerically-hardened Joseph form, matching
-this codebase's general preference for the textbook formula over a more robust
-but more complex alternative.
+Correct from z using innovation covariance, LU gain and simplified posterior covariance.
+Computes y=z-H\emph{x,S=H}P\emph{H^T+R,K=P}H^T\emph{S^-1, then x+=K}y and
+P=(I-K*H)*P. Requires finite statistically valid inputs/invertible S;
+shape validation alone does not ensure those properties. Rounding may
+lose symmetry/PSD; not Joseph form. Mutates state without rollback guarantee.
+\itemize{
+\item \code{z}: Borrowed length-m observation, unchanged by this call.
+}
 \item \verb{$state()} -> \verb{numeric vector}
+
+Copy the current state mean without another filter update.
+\itemize{
+\item Returns: Owned length-n current mean.
+}
 \item \verb{$covariance()} -> \verb{list of numeric vector}
+
+Copy the current covariance without recomputing a filter update.
+\itemize{
+\item Returns: Owned n-by-n current covariance.
+}
 \item \verb{$filter(measurements)} -> \verb{list of KalmanState}
 
-Runs predict() then update(z) for every z in \code{measurements}, in order, mutating
-this filter's running state -- the ordinary causal (online) filtered estimate at
-every timestep.
+Predict then correct every observation in order, owning actual posterior states.
+Empty input returns empty and leaves state unchanged. Ends at the final
+posterior, so repeated calls continue this instance rather than restarting.
+O(T) dense filter steps plus O(T*n^2) owned output; input remains unchanged.
+A later invalid measurement can follow already committed predictions/updates;
+failure does not roll the whole sequence back.
+\itemize{
+\item \code{measurements}: Borrowed ordered length-m observations.
+\item Returns: Owned actual causal mean/covariance at every completed step.
+}
 \item \verb{$smooth(measurements)} -> \code{SmoothResult}
 
-filter() followed by an RTS (Rauch-Tung-Striebel) backward smoothing pass, which
-uses the ENTIRE sequence (not just data up to each point) to refine every
-estimate -- always at least as accurate as the filtered estimate, at the cost of
-needing the full sequence in advance (not usable online). Leaves this filter's
-running (x, P) at its post-filter state, same as filter() would.
+Execute one actual forward pass and an RTS backward pass on the full sequence.
+Owns actual prediction/posterior arrays during execution, then returns
+causal and smoothed means/covariances. No repeated-prefix runs. Leaves this
+filter at its final forward posterior. Empty input returns empty unchanged.
+Exact-model conditional covariance reduces; realized error need not decrease
+on every sequence. Ordinary matrix arithmetic can lose symmetry/PSD.
+O(T) dense steps/backward solves, O(T*n^2) intermediate/output storage.
+\itemize{
+\item \code{measurements}: Borrowed full ordered length-m sequence.
+\item Returns: Owned actual forward and full-sequence smoothed trajectories.
+}
 }
 }
 
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{dm::filter::KalmanFilter k(\{\{1\}\},\{\{1\}\},\{\{1\}\},\{\{3\}\},\{0\},\{\{4\}\});
+k.predict();k.update(\{2\});std::print("\{\}\\n",k.state()[0]); // 1.25
+}\if{html}{\out{</div>}}
+}
+
+\section{Errors}{
+
+\itemize{
+\item \code{std::invalid_argument}: On ragged/incompatible matrix shapes.
+\item \code{std::bad_alloc}: On model/state allocation failure.
+}
+}
+
+\references{
+\itemize{
+\item Kalman(1960), A New Approach to Linear Filtering and Prediction Problems,
+https://doi.org/10.1115/1.3662552.
+\item Rauch,Tung,Striebel(1965), Maximum likelihood estimates of linear dynamic
+systems, https://doi.org/10.2514/3.3166.
+}
+}
+\seealso{
+filter(), smooth(), KalmanState
+}

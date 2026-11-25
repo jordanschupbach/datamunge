@@ -2,9 +2,9 @@
 % Please edit documentation in R/datamunger.R
 \name{Circle}
 \alias{Circle}
-\title{C++ class \verb{datamunge::geometry::Circle}}
+\title{Owned planar center and nonnegative radius in coordinate units.}
 \description{
-C++ class \verb{datamunge::geometry::Circle}
+Storage alone does not validate geometry; checked producers require finiteness.
 }
 \section{Constructor}{
 
@@ -14,8 +14,19 @@ C++ class \verb{datamunge::geometry::Circle}
 \section{Fields}{
 
 \itemize{
-\item \verb{$center} (\code{Point2D})
-\item \verb{$radius} (\code{numeric})
+\item \verb{$center} (\code{Point2D}): Owned circle center.
+\item \verb{$radius} (\code{numeric}): Nonnegative radius for valid native results.
 }
 }
 
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{auto c=dm::geometry::min_enclosing_circle(\{\{0,0\},\{2,0\}\});
+std::print("\{\} \{\}\\n",c.center.x,c.radius); // 1 1
+}\if{html}{\out{</div>}}
+}
+
+\seealso{
+min_enclosing_circle()
+}

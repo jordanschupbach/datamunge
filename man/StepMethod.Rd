@@ -3,7 +3,7 @@
 \docType{data}
 \name{StepMethod}
 \alias{StepMethod}
-\title{C++ enumeration \verb{datamunge::ode::StepMethod}}
+\title{Original native explicit/adaptive/PECE method selectors.}
 \format{
 A list of enumerator names, which arguments of this type accept: \code{"Euler"}, \code{"Midpoint"}, \code{"RK4"}, \code{"RK45"}, \code{"AdamsBashforth"}, \code{"AdamsMoulton"}.
 }
@@ -11,6 +11,16 @@ A list of enumerator names, which arguments of this type accept: \code{"Euler"},
 StepMethod
 }
 \description{
-C++ enumeration \verb{datamunge::ode::StepMethod}
+Original native explicit/adaptive/PECE method selectors.
+}
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{dm::ode::ODEOptions o;std::print("\{\}\\n",o.method==dm::ode::StepMethod::RK4); // true
+}\if{html}{\out{</div>}}
+}
+
+\seealso{
+ODESolver
 }
 \keyword{datasets}

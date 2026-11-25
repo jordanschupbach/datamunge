@@ -5,14 +5,17 @@
 \title{Adjust a vector of p-values for multiple comparisons, matching R's p.adjust().}
 \usage{
 p_adjust(p, method = "BH")
+p_adjust(p, method)
 }
 \arguments{
-\item{p}{\verb{numeric vector}}
+\item{p}{\verb{numeric vector}. p-values in [0, 1].}
 
-\item{method}{\code{character (PAdjustMethod)}}
+\item{method}{\code{character (PAdjustMethod)} or \code{character}. Method name, e.g. "bonferroni", "holm", "BH".}
 }
 \value{
 \verb{numeric vector}
+
+Or \verb{numeric vector}: The adjusted p-values, in input order.
 }
 \description{
 \itemize{
@@ -35,4 +38,33 @@ conservative than BH.
 \details{
 As in R, a single p-value (n <= 1) is always returned unchanged regardless of
 \code{method}.
+
+p_adjust() with the method given by name, like R's \code{p.adjust(p, method = "holm")}.
+
+Equivalent to \code{p_adjust(p, p_adjust_method(method))}; see p_adjust_method() for the accepted
+names. The input is unchanged and the result keeps its order.
+}
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{const auto adj = dm::stats::p_adjust(\{0.01, 0.02, 0.04\}, "bonferroni");
+std::print("\{:.2f\} \{:.2f\} \{:.2f\}\\n", adj[0], adj[1], adj[2]);   // 0.03 0.06 0.12
+}\if{html}{\out{</div>}}
+}
+
+\section{Errors}{
+
+Signals an R error (from the C++ exception):
+\itemize{
+\item \code{std::invalid_argument}: An unknown method name.
+}
+}
+
+\references{
+\itemize{
+\item https://stat.ethz.ch/R-manual/R-devel/library/stats/html/p.adjust.html
+}
+}
+\seealso{
+p_adjust(const std::vector\if{html}{\out{<double>}}&, PAdjustMethod), p_adjust_method()
 }

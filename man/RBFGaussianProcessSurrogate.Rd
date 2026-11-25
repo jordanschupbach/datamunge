@@ -63,6 +63,16 @@ Posterior mean and standard deviation at \code{point}.
 \item \code{point}: Query point.
 \item Returns: The prediction, in the objective's units.
 }
+\item \verb{$joint_posterior(queries)} -> \code{GaussianJointPosterior}
+
+Return the joint noise-free posterior over ordered query points.
+Observation noise conditions the training fit and is excluded from
+query covariance. Identical queries have the same latent variable.
+An empty query list after fitting gives an empty posterior.
+\itemize{
+\item \code{queries}: Finite coordinates matching the training dimension.
+\item Returns: Owned means and square row-major covariance.
+}
 \item \verb{$log_marginal_likelihood()} -> \code{numeric}
 
 Log marginal likelihood of the values at the hyperparameters in use.

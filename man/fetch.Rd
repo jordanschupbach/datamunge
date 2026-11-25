@@ -7,16 +7,18 @@
 fetch(name, directory = "")
 }
 \arguments{
-\item{name}{\code{character}. One of downloadable().}
+\item{name}{\code{character}. One of downloadable() or a registered UCI alias.}
 
 \item{directory}{\code{character}. Where the files live; empty means \code{data_home() + "/" + name}. Files
-already present there are used as they are, except DevArm and karate_club's verified files.}
+already present there are used as they are, except UCI, DevArm and karate_club's verified files.}
 }
 \value{
 \code{character}: The local path of the CSV file or the dataset directory.
 }
 \description{
-For the tabular datasets ("diamonds", "california_housing") this is the CSV file. For the
+For tabular datasets this is the CSV file. UCI names such as "uci_53"
+and "uci_iris" point to the same cache. UCI verifies size and SHA-256 on
+every access and stages complete bytes before publishing them. For the
 image datasets it is a directory: "mnist" and "fashion_mnist" hold the four uncompressed
 IDX files (\code{train-images-idx3-ubyte}, ...); "cifar10" holds \code{data_batch_1..5.bin} and
 \code{test_batch.bin}; "cifar100" holds \code{train.bin} and \code{test.bin} (the binary versions);

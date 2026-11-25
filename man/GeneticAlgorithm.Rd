@@ -4,7 +4,7 @@
 \alias{GeneticAlgorithm}
 \title{GeneticAlgorithm on the ArbitraryFunction callback interface.}
 \description{
-Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best visited point and can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
+Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best member of the final population. Retaining at least one elite ensures that this member ties the best visited loss. The solver can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate. The caller supplies finite, dimensionally consistent callbacks. Inputs are borrowed; coordinates mutate in place and can retain a partial state if a callback throws. Calls use local optimizer state and propagate callback exceptions; sharing a mutable objective across threads requires external synchronisation. Normal return alone is not a uniform convergence certificate.
 }
 \section{Constructor}{
 
@@ -22,7 +22,7 @@ Store a copy of the controls without running the objective.
 \item \verb{$optimize(}function\verb{, coordinates, lower_bound, upper_bound)} -> \code{numeric}
 
 Run GeneticAlgorithm from the supplied point using the configured finite budget.
-Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best visited point and can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate.
+Real-valued box-constrained selection, crossover, Gaussian mutation and optional elitism. Initial coordinates seed a clamped population member. Returns the best member of the final population. Retaining at least one elite ensures that this member ties the best visited loss. The solver can stop after more than twenty small-best-improvement generations. O(population_size*p) storage; strategy/rate choices affect results, with no global certificate.
 \itemize{
 \item \code{function}: Borrowed ArbitraryFunction with matching finite output shapes.
 \item \code{coordinates}: Owned-by-caller finite start; overwritten with the native returned point.

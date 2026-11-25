@@ -677,6 +677,23 @@
           05 DM-RESIDUAL-FUNCTION-JACOBIAN-ARGS-RESULT USAGE
               BINARY-DOUBLE UNSIGNED.
 
+      *>> datamunge::Callback::call(double x) -> double
+      *>> PROCEDURE DIVISION USING DM-CALLBACK-CALL-ARGS
+      *>>   DM-CALLBACK-STATUS
+      *>>
+      *>> The record of a COBOL program that C++ calls (the COBOL
+      *>>   override of datamunge::Callback::call). Set
+      *>>   DM-CALLBACK-STATUS-CODE to a non-zero value (and the
+      *>>   message) to fail the call; the error reaches the original
+      *>>   caller with kind CALLBACK.
+       01 DM-CALLBACK-CALL-ARGS.
+      *>> Self: the object's handle (CALLBACK).
+          05 DM-CALLBACK-CALL-ARGS-SELF USAGE BINARY-DOUBLE UNSIGNED.
+      *>> x (double): double.
+          05 DM-CALLBACK-CALL-ARGS-X USAGE COMP-2.
+      *>> Result (double): double.
+          05 DM-CALLBACK-CALL-ARGS-RESULT USAGE COMP-2.
+
       *>> datamunge::fem::ScalarField1D::evaluate(double x) -> double
       *>> PROCEDURE DIVISION USING DM-SCALAR-FIELD1D-EVALUATE-ARGS
       *>>   DM-CALLBACK-STATUS
@@ -738,23 +755,6 @@
       *>>   until the program returns (C++ takes it: the handle closes).
           05 DM-VECTOR-FUNCTION-EVALUATE-ARGS-RESULT USAGE BINARY-DOUBLE
               UNSIGNED.
-
-      *>> datamunge::Callback::call(double x) -> double
-      *>> PROCEDURE DIVISION USING DM-CALLBACK-CALL-ARGS
-      *>>   DM-CALLBACK-STATUS
-      *>>
-      *>> The record of a COBOL program that C++ calls (the COBOL
-      *>>   override of datamunge::Callback::call). Set
-      *>>   DM-CALLBACK-STATUS-CODE to a non-zero value (and the
-      *>>   message) to fail the call; the error reaches the original
-      *>>   caller with kind CALLBACK.
-       01 DM-CALLBACK-CALL-ARGS.
-      *>> Self: the object's handle (CALLBACK).
-          05 DM-CALLBACK-CALL-ARGS-SELF USAGE BINARY-DOUBLE UNSIGNED.
-      *>> x (double): double.
-          05 DM-CALLBACK-CALL-ARGS-X USAGE COMP-2.
-      *>> Result (double): double.
-          05 DM-CALLBACK-CALL-ARGS-RESULT USAGE COMP-2.
 
       *>> datamunge::ode::RHS::evaluate(double t, const
       *>>   std::vector<double> & y) -> std::vector<double>
@@ -908,3 +908,18 @@
               USAGE BINARY-CHAR UNSIGNED.
           05 DM-HRRCHC-B-SPLN-RFN-RGN-VCTR-DOU-PVM8L-FCTRY-ARGS-RSLT
               USAGE BINARY-DOUBLE UNSIGNED.
+
+      *>> const std::function<double (double)>
+      *>> PROCEDURE DIVISION USING DM-KS-TEST-ONE-SAMPLE-CDF-ARGS
+      *>>   DM-CALLBACK-STATUS
+      *>>
+      *>> The record of a COBOL program that C++ calls (the COBOL
+      *>>   program in DM-KS-TEST-ONE-SAMPLE-CDF). Set
+      *>>   DM-CALLBACK-STATUS-CODE to a non-zero value (and the
+      *>>   message) to fail the call; the error reaches the original
+      *>>   caller with kind CALLBACK.
+       01 DM-KS-TEST-ONE-SAMPLE-CDF-ARGS.
+      *>> ARG-1 (double): double.
+          05 DM-KS-TEST-ONE-SAMPLE-CDF-ARGS-ARG-1 USAGE COMP-2.
+      *>> Result (double): double.
+          05 DM-KS-TEST-ONE-SAMPLE-CDF-ARGS-RESULT USAGE COMP-2.

@@ -2,15 +2,15 @@
 % Please edit documentation in R/datamunger.R
 \name{downloadable}
 \alias{downloadable}
-\title{The names fetch() accepts, sorted: "california_housing", "cifar10", "cifar100", "diamonds", "fashion_mnist", "karate_club", "mnist", "rebot_devarm", "sudoku".}
+\title{Sorted canonical names accepted by fetch(), including audited UCI tables.}
 \usage{
 downloadable()
 }
 \value{
-\verb{character vector}
+\verb{character vector}: An owned list of names, with no network or filesystem access.
 }
 \description{
-The names fetch() accepts, sorted: "california_housing", "cifar10", "cifar100", "diamonds", "fashion_mnist", "karate_club", "mnist", "rebot_devarm", "sudoku".
+UCI aliases are listed by datasets::uci_catalog().
 }
 \section{Examples (C++)}{
 

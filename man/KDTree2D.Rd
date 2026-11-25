@@ -2,15 +2,21 @@
 % Please edit documentation in R/datamunger.R
 \name{KDTree2D}
 \alias{KDTree2D}
-\title{A 2D k-d tree for nearest-neighbor / range queries over a fixed point set, built once (via a median-splitting, alternating-axis partition) at construction -- doesn't support incremental insertion/removal after that.}
+\title{Own a balanced alternating-axis median tree for planar nearest/k/radius queries.}
 \description{
-A 2D k-d tree for nearest-neighbor / range queries over a fixed point set, built once (via a median-splitting, alternating-axis partition) at construction -- doesn't support incremental insertion/removal after that.
+Finite points required. Stable deterministic build ties use other coordinate, then original input index; each node retains original identity. Nearest and k-nearest equal computed distances prefer earliest input index, including duplicates. Distances use widened coordinate subtraction and hypot, avoiding the old double square overflow/underflow; they remain rounded machine values. Construction expected O(n log(n+1)) work/O(n) owned storage; tree height O(log n). Queries can visit every node: no universal average O(log n) guarantee without distribution assumptions. No insertion/removal. Const queries use local state and share no mutable state; original caller data are not retained.
 }
 \section{Constructor}{
 
-\code{KDTree2D$new(points)}
+\code{KDTree2D$new(points, max_points = 1000000)}
+
+Validate/admit points and build the owned balanced median tree.
+The legacy by-value parameter copy occurs before validation; finite/input
+admission precedes internal indexed-record/node allocation. Complete point
+cap counts records, excluding call-boundary copy/capacity/byte/RAM overhead.
 \itemize{
-\item \code{points} (\verb{list of Point2D})
+\item \code{points} (\verb{list of Point2D}): Owned value argument, possibly empty; duplicates allowed.
+\item \code{max_points} (\code{integer}): Complete optional point ceiling, default million, zero off.
 }
 }
 
@@ -18,17 +24,84 @@ A 2D k-d tree for nearest-neighbor / range queries over a fixed point set, built
 
 \itemize{
 \item \verb{$empty()} -> \code{logical}
+
+Report whether the original point set is empty.
+\itemize{
+\item Returns: True exactly for zero stored points.
+}
 \item \verb{$size()} -> \code{integer}
+
+Count stored points, including distinct identities at equal coordinates.
+\itemize{
+\item Returns: Original owned point count.
+}
 \item \verb{$nearest(query)} -> \code{Point2D}
 
-The closest point to \code{query}. Throws std::logic_error if the tree is empty.
+Return a nearest stored point under widened rounded hypot distance.
+Equal computed distances prefer the earliest original input. O(n) worst
+visited work/O(log n) recursion storage; no allocation/history/input copying.
+\itemize{
+\item \code{query}: Borrowed finite query, unchanged.
+\item Returns: Owned selected original coordinate, not a reference.
+}
 \item \verb{$k_nearest(query, k)} -> \verb{list of Point2D}
 
-The \code{k} closest points to \code{query}, nearest first. Returns fewer than \code{k}
-points if the tree itself has fewer than \code{k}.
+Return up to k closest coordinates, ordered by widened distance then original id.
+Duplicate coordinates retain multiplicity. k=0/empty returns empty after finite
+query validation. O(n log(min(k,n)+1)) worst work, O(k+log n) working storage.
+\itemize{
+\item \code{query}: Borrowed finite query.
+\item \code{k}: Requested result count, clamped to tree size before heap use.
+\item Returns: Owned nearest-first coordinates, possibly fewer than k.
+}
 \item \verb{$points_in_radius(query, radius)} -> \verb{list of Point2D}
 
-All points within \code{radius} (inclusive) of \code{query}, in no particular order.
+Return all stored coordinates with widened distance<=radius, in tree traversal order.
+Inclusive boundary, duplicate multiplicity. Negative/NaN radius rejects;
+positive infinity includes every point without requiring a finite norm.
+O(n) worst work, O(log n) recursion plus O(results) owned output.
+\itemize{
+\item \code{query}: Borrowed finite query, validated even for empty tree.
+\item \code{radius}: Nonnegative radius in coordinate units, positive infinity allowed.
+\item Returns: Owned matching coordinates, no guaranteed distance sorting.
+}
+\item \verb{$nearest_trace(query, max_entries = 1000000)} -> \code{KDNearestTrace}
+
+Own the original cloud and record actual nearest traversal operations once.
+Same answer/arithmetic/ties as nearest(). Complete point copies add O(n);
+each point/plane record is admitted before its distance/decision. Default
+million-record cap, zero off; excludes vector capacity/byte/RAM overhead.
+Failed call exposes no partial trace and never mutates the tree.
+\itemize{
+\item \code{query}: Borrowed finite query.
+\item \code{max_entries}: Actual point/plane record ceiling, default million, zero off.
+\item Returns: Owned original cloud, actual nearest answer/work/chronology.
+}
 }
 }
 
+\section{Examples (C++)}{
+
+
+\if{html}{\out{<div class="sourceCode cpp">}}\preformatted{const dm::geometry::KDTree2D tree(\{\{0,0\},\{3,4\}\});
+std::print("\{\}\\n",tree.nearest(\{1,0\}).x); // 0
+}\if{html}{\out{</div>}}
+}
+
+\section{Errors}{
+
+\itemize{
+\item \code{std::invalid_argument}: On a nonfinite coordinate.
+\item \code{std::length_error}: On signed-length/container/optional point limits.
+\item \code{std::bad_alloc}: On allocation failure.
+}
+}
+
+\references{
+\itemize{
+\item Bentley(1975), Multidimensional binary search trees used for associative searching, https://doi.org/10.1145/361002.361007.
+}
+}
+\seealso{
+nearest_trace(), k_nearest(), points_in_radius()
+}
