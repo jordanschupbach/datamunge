@@ -1,0 +1,124 @@
+//? Title: Estimate location and shift with Hodges–Lehmann estimators
+//? Exports: both
+//? Lang: en
+
+> Invert the Wilcoxon tests to estimate a center and a shift
+
+The Hodges–Lehmann estimators are the point estimates that the Wilcoxon tests imply. For one sample, the estimate is the median of the \(n(n+1)/2\) Walsh averages \((x_i+x_j)/2\) with \(i\le j\). This is the center at which the signed-rank statistic is balanced. For two samples, the estimate is the median of the \(mn\) differences \(x_i-y_j\), the shift at which the Mann–Whitney statistic is balanced.
+
+The tests also give confidence intervals. Let \(q\) be the lower \(\alpha/2\) quantile of the null rank statistic. The interval then runs from the \(q\)th smallest to the \(q\)th largest of the sorted averages or differences. The reference distribution is exact for continuous data. Its coverage is distribution-free, but it is attained only at the discrete levels the rank statistic allows. The result reports that attained level.
+
+The example estimates a treatment shift from two small samples and plots the sorted differences with the order statistics that bound the interval. A simulation then compares the one-sample interval with the t interval for normal data and for heavy-tailed \(t_3\) data. Each design uses 4000 samples of size 20.
+
+```{cpp, id=hodges-lehmann, file="figures/hodges_lehmann_differences.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/stats/hodges_lehmann.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+
+int main() {
+    // Reaction times (seconds) after a treatment and in a control group.
+    const std::vector<double> treated{5.1, 6.0, 7.2, 5.8, 6.6, 5.4, 6.9};
+    const std::vector<double> control{4.0, 4.9, 3.6, 5.5, 4.2, 5.0, 4.4, 4.7};
+    const auto shift = dm::stats::hodges_lehmann_shift(treated, control);
+    std::println("| Quantity | Value |");
+    std::println("| --- | ---: |");
+    std::println("| Differences | {} |", shift.pair_count);
+    std::println("| Shift estimate | {:.3f} |", shift.estimate);
+    std::println("| 95% interval | [{:.3f}, {:.3f}] |", shift.conf_int_lower, shift.conf_int_upper);
+    std::println("| Bounding order statistics | {} and {} |", shift.lower_rank, shift.upper_rank);
+    std::println("| Attained coverage | {:.4f} |\n", shift.achieved_conf_level);
+
+    // Compare one-sample intervals with the t interval under two error laws.
+    std::mt19937_64 random(11);
+    std::normal_distribution<double> normal;
+    std::student_t_distribution<double> heavy(3);
+    const std::size_t n = 20, replicates = 4000;
+    const double t_crit = 2.093024054408263; // qt(0.975, 19)
+    std::println("| Errors | Interval | Coverage | Median width |");
+    std::println("| --- | --- | ---: | ---: |");
+    for (const bool use_heavy : {false, true}) {
+        std::size_t hl_cover = 0, t_cover = 0;
+        std::vector<double> hl_width, t_width;
+        for (std::size_t r = 0; r < replicates; ++r) {
+            std::vector<double> x(n);
+            for (auto& v : x)
+                v = use_heavy ? heavy(random) : normal(random);
+            const auto hl = dm::stats::hodges_lehmann_location(x);
+            hl_cover += hl.conf_int_lower <= 0 && 0 <= hl.conf_int_upper;
+            hl_width.push_back(hl.conf_int_upper - hl.conf_int_lower);
+            double mean = 0, ss = 0;
+            for (const double v : x)
+                mean += v / n;
+            for (const double v : x)
+                ss += (v - mean) * (v - mean);
+            const double half = t_crit * std::sqrt(ss / (n - 1) / n);
+            t_cover += std::abs(mean) <= half;
+            t_width.push_back(2 * half);
+        }
+        const auto median = [](std::vector<double> v) {
+            std::ranges::nth_element(v, v.begin() + v.size() / 2);
+            return v[v.size() / 2];
+        };
+        const char* law = use_heavy ? "t with 3 df" : "Normal";
+        std::println("| {} | Hodges–Lehmann | {:.3f} | {:.3f} |", law, double(hl_cover) / replicates, median(hl_width));
+        std::println("| {} | t | {:.3f} | {:.3f} |", law, double(t_cover) / replicates, median(t_width));
+    }
+
+    // Sorted differences with the estimate and the interval's order statistics.
+    std::vector<double> differences;
+    for (const double a : treated)
+        for (const double b : control)
+            differences.push_back(a - b);
+    std::ranges::sort(differences);
+    std::vector<double> rank(differences.size());
+    for (std::size_t k = 0; k < rank.size(); ++k)
+        rank[k] = k + 1.0;
+    const double last = rank.size() + 1.0;
+    auto plot = dm::graphics::RPlot::create();
+    plot.points(rank, differences, "Sorted difference", {120, 124, 132}, 4)
+        .line({0, last}, {shift.estimate, shift.estimate}, "Estimate", {26, 90, 147}, 1.6)
+        .line({0, last}, {shift.conf_int_lower, shift.conf_int_lower}, "Interval bound", {176, 72, 43}, 1.2)
+        .line({0, last}, {shift.conf_int_upper, shift.conf_int_upper}, "", {176, 72, 43}, 1.2)
+        .points({double(shift.lower_rank), double(shift.upper_rank)},
+                {shift.conf_int_lower, shift.conf_int_upper}, "Bounding order statistic", {176, 72, 43}, 7)
+        .title("Pairwise differences, treated minus control")
+        .x_label("Rank among the 56 differences").y_label("Difference (s)")
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/hodges_lehmann_differences.svg");
+}
+```
+// result_begin: markdown
+| Quantity | Value |
+| --- | ---: |
+| Differences | 56 |
+| Shift estimate | 1.600 |
+| 95% interval | [0.700, 2.500] |
+| Bounding order statistics | 11 and 46 |
+| Attained coverage | 0.9599 |
+
+| Errors | Interval | Coverage | Median width |
+| --- | --- | ---: | ---: |
+| Normal | Hodges–Lehmann | 0.951 | 0.942 |
+| Normal | t | 0.947 | 0.919 |
+| t with 3 df | Hodges–Lehmann | 0.949 | 1.210 |
+| t with 3 df | t | 0.957 | 1.341 |
+\image(figures/hodges_lehmann_differences.svg)
+// result_end
+\caption(The 56 sorted treated-minus-control differences. The median is the shift estimate; the marked order statistics bound the 95% interval.)
+\alttext(Sorted differences rise from about minus 0.4 to 3.6 seconds. The estimate line sits near the middle and the two interval bounds are marked by larger points on the curve.)
+
+The treated group is slower by an estimated 1.6 seconds, with a 95% interval from 0.7 to 2.5 seconds. These values agree with `wilcox.test(conf.int = TRUE)` in R. The bounds are the 11th and 46th of the 56 sorted differences. Because the Mann–Whitney statistic is discrete, those ranks attain 96.0% coverage rather than exactly 95%.
+
+Under normal errors the Hodges–Lehmann interval is about 2% wider than the t interval. This matches the asymptotic relative efficiency of \(3/\pi\approx0.955\). Under \(t_3\) errors it is about 10% narrower, and both procedures keep close to nominal coverage. The rank interval assumes continuous data symmetric about the center for one sample, or a common shape for two samples. With tied values the result uses the normal approximation without a tie correction.
+
+[Hodges and Lehmann (1963)|https://doi.org/10.1214/aoms/1177704172] · [Bauer (1972)|https://doi.org/10.1080/01621459.1972.10481279] · [R wilcox.test|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/wilcox.test.html]

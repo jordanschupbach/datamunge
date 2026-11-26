@@ -1,0 +1,165 @@
+//? Title: Estimate survival from interval-censored data with the Turnbull estimator
+//? Exports: both
+//? Lang: en
+
+> Use what the visits actually show: the event happened between two inspections
+
+In many studies an event is never seen when it happens. A tumour recurrence, an infection or a cosmetic deterioration is found at a scheduled visit, so all that is known is that it occurred after the last negative visit and by the first positive one. Imputing a single time, such as the midpoint or the detection visit, and running Kaplan–Meier treats a guess as data.
+
+Turnbull's estimator is the nonparametric maximum likelihood estimate (NPMLE) for such data. Each observation is an interval \((L_i,R_i]\), and the likelihood is \(\prod_i P(L_i<T\le R_i)\). Peto showed that the maximum puts all its mass on the *innermost intervals*: a left endpoint followed directly by a right endpoint with no other endpoint between them. Inside an innermost interval the data cannot say where the mass sits. The survival curve is determined between the innermost intervals and only bounded within them. Self-consistency (EM) iterations find the masses, and the Kuhn–Tucker conditions certify the maximum. With exact and right-censored times only, the result is the Kaplan–Meier curve.
+
+The example simulates Weibull event times (shape 1.5, scale 5, so \(S(t)=e^{-(t/5)^{1.5}}\)) observed at irregular visits with gaps uniform on (0.5, 3). Subjects drop out at a time uniform on (4, 15). It compares the Turnbull estimate with Kaplan–Meier on two imputations: the interval midpoint and the detection visit.
+
+```{cpp, id=turnbull, file="figures/turnbull.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/survival.hpp>
+#include <datamunge/stats/turnbull.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::CensoredTime;
+using dm::stats::SurvivalObservation;
+
+double true_survival(double t) { return std::exp(-std::pow(t / 5, 1.5)); }
+
+struct Sample {
+    std::vector<CensoredTime> intervals;
+    std::vector<SurvivalObservation> midpoint, detection;
+};
+
+Sample simulate(std::size_t n, std::mt19937_64& random) {
+    std::weibull_distribution<double> life(1.5, 5);
+    std::uniform_real_distribution<double> gap(.5, 3), dropout(4, 15);
+    Sample s;
+    while (s.intervals.size() < n) {
+        const double t = life(random), end = dropout(random);
+        double last = 0, visit = gap(random);
+        while (visit <= end && visit < t) {
+            last = visit;
+            visit += gap(random);
+        }
+        if (visit <= end) { // event detected at this visit
+            s.intervals.push_back(last == 0 ? CensoredTime::left(visit)
+                                            : CensoredTime::interval(last, visit));
+            s.midpoint.push_back({(last + visit) / 2, true});
+            s.detection.push_back({visit, true});
+        } else if (last > 0) { // event-free at the last visit before dropout
+            s.intervals.push_back(CensoredTime::right(last));
+            s.midpoint.push_back({last, false});
+            s.detection.push_back({last, false});
+        }
+    }
+    return s;
+}
+
+// Kaplan–Meier value at t (right-continuous step function).
+double km_at(const dm::stats::KaplanMeierEstimate& km, double t) {
+    double s = 1;
+    for (const auto& p : km.points)
+        if (p.time <= t)
+            s = p.survival;
+    return s;
+}
+
+// Turnbull value at t: midpoint of the bounds when t lies inside a support interval.
+double turnbull_at(const dm::stats::TurnbullEstimate& e, double t) {
+    double inside = 0;
+    for (const auto& i : e.intervals)
+        if (i.lower < t && t < i.upper)
+            inside += i.mass;
+    return e.survival(t) - inside / 2;
+}
+
+int main() {
+    std::mt19937_64 random(4);
+    const double checkpoints[4]{2, 4, 6, 8};
+    double bias[3][4]{}, rmse[3][4]{};
+    const int reps = 500;
+    for (int r = 0; r < reps; ++r) {
+        const auto s = simulate(200, random);
+        const auto tb = dm::stats::turnbull(s.intervals);
+        const auto mid = dm::stats::kaplan_meier(s.midpoint);
+        const auto det = dm::stats::kaplan_meier(s.detection);
+        for (int k = 0; k < 4; ++k) {
+            const double t = checkpoints[k], truth = true_survival(t);
+            const double est[3]{turnbull_at(tb, t), km_at(mid, t), km_at(det, t)};
+            for (int m = 0; m < 3; ++m) {
+                bias[m][k] += (est[m] - truth) / reps;
+                rmse[m][k] += (est[m] - truth) * (est[m] - truth) / reps;
+            }
+        }
+    }
+    const char* names[3]{"Turnbull", "Kaplan–Meier, midpoints",
+                         "Kaplan–Meier, detection visit"};
+    std::println("| Method | Bias at t = 2 | 4 | 6 | 8 | RMSE at t = 4 |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (int m = 0; m < 3; ++m)
+        std::println("| {} | {:+.3f} | {:+.3f} | {:+.3f} | {:+.3f} | {:.3f} |", names[m],
+                     bias[m][0], bias[m][1], bias[m][2], bias[m][3], std::sqrt(rmse[m][1]));
+
+    const auto s = simulate(150, random);
+    const auto tb = dm::stats::turnbull(s.intervals);
+    std::println("\nOne sample of 150: {} innermost intervals, {} with positive mass; "
+                 "{} iterations; largest Kuhn–Tucker violation {:.1e}.",
+                 tb.candidate_intervals, tb.intervals.size(), tb.iterations, tb.kkt_violation);
+    // Survival is drawn flat between support intervals and as a straight line across each one;
+    // boxes at the bottom mark each support interval, with height proportional to its mass.
+    std::vector<double> x{0}, y{1};
+    double level = 1;
+    for (const auto& i : tb.intervals) {
+        x.insert(x.end(), {i.lower, i.upper});
+        y.insert(y.end(), {level, level - i.mass});
+        level -= i.mass;
+    }
+    std::vector<double> tx, ty;
+    for (double t = 0; t <= 14; t += .05) {
+        tx.push_back(t);
+        ty.push_back(true_survival(t));
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(tx, ty, "True survival", {46, 139, 87}, 2)
+        .line(x, y, "Turnbull", {26, 90, 147}, 2);
+    bool first = true;
+    for (const auto& i : tb.intervals) {
+        const double h = 3 * i.mass;
+        const char* label = first ? "Support intervals (height = 3 × mass)" : "";
+        plot.line({i.lower, i.lower, i.upper, i.upper}, {0, h, h, 0}, label, {176, 72, 43},
+                  1.5);
+        first = false;
+    }
+    plot.title("Turnbull estimate from irregular visits, n = 150")
+        .x_label("Time")
+        .y_label("Survival probability")
+        .ylim(0, 1.3)
+        .size(700, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/turnbull.svg");
+}
+```
+// result_begin: markdown
+| Method | Bias at t = 2 | 4 | 6 | 8 | RMSE at t = 4 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Turnbull | +0.001 | +0.003 | +0.002 | -0.001 | 0.053 |
+| Kaplan–Meier, midpoints | -0.014 | -0.001 | +0.003 | +0.002 | 0.036 |
+| Kaplan–Meier, detection visit | +0.143 | +0.140 | +0.084 | +0.037 | 0.144 |
+
+One sample of 150: 61 innermost intervals, 17 with positive mass; 5909 iterations; largest Kuhn–Tucker violation 1.0e-10.
+\image(figures/turnbull.svg)
+// result_end
+\caption(Turnbull estimate (blue) from one simulated sample of 150 subjects with irregular visits, against the true Weibull survival curve (green). Orange boxes mark the innermost intervals that carry probability mass, with height three times the mass.)
+\alttext(A green smooth curve falls from 1 to near 0 by time 14. A blue curve follows it closely, flat between support intervals and sloping across each one. Seventeen orange boxes sit along the bottom between time 0 and about 12, mostly narrow, with wider boxes near times 4, 8 and 12.)
+
+The Turnbull estimate is unbiased at every checkpoint, within 0.003. Imputing the detection visit, the time the event is first seen, is badly biased. It credits every subject with the time between the event and its discovery, and overstates survival by 0.14 at times 2 and 4. This is what an analysis of "time to diagnosis" does without saying so.
+
+Midpoint imputation also does well here: its bias is at most 0.014, and its RMSE is lower than Turnbull's (0.036 against 0.053). Visits are frequent, unrelated to the event, and short relative to the scale of the survival curve, so the midpoint is a good guess, and spreading events smoothly lowers the variance. The Turnbull estimate, by contrast, piles the mass onto a few support intervals, here 17 of 61 candidates. Its advantage is that it needs no such guess. With wide or uneven inspection intervals, the midpoint has no guarantee of being nearly unbiased, while the NPMLE remains a likelihood estimate. Its uncertainty is not simple: standard errors need bootstrap or likelihood-ratio methods, because the support changes with the data.
+
+The figure shows the structure of the estimate. The survival curve is determined only between the support boxes. Within each box the data cannot locate the mass, and the curve drawn across it is one of many possible paths. The Kuhn–Tucker check (largest violation \(10^{-10}\)) confirms that the self-consistency iterations reached the maximum.
+
+The support intervals, their open or closed ends and their masses match `interval::icfit` on the breast-cosmesis data (pooled and by treatment) and on a sample mixing exact, right- and interval-censored times. Exact and right-censored data reproduce the Kaplan–Meier estimate.
+
+[Turnbull (1976)|https://doi.org/10.1111/j.2517-6161.1976.tb01597.x] · [Fay and Shaw (2010)|https://doi.org/10.18637/jss.v036.i02]

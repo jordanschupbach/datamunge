@@ -1,0 +1,180 @@
+//? Title: Gage repeatability and reproducibility
+//? Exports: both
+//? Lang: en
+
+> Find out how much of the variation in measurements comes from the measurement system itself, split into equipment repeatability and operator reproducibility, and see how precisely a standard gage study can estimate it
+
+Before a process can be judged on its measurements, the measurement system has to be. A gage R&R study measures each of \(p\) parts several times (\(r\) replicates) by each of \(o\) operators, in random order. The two-way crossed random-effects model
+
+\[y_{ijk}=\mu+P_i+O_j+(PO)_{ij}+e_{ijk}\]
+
+separates four sources of variation:
+
+- part-to-part variation \(\sigma^2_P\);
+- operator bias \(\sigma^2_O\);
+- operator-by-part interaction \(\sigma^2_{PO}\), where operators measure some parts differently;
+- *repeatability* \(\sigma^2_e\), the equipment variation for one operator measuring one part.
+
+*Reproducibility* is \(\sigma^2_O+\sigma^2_{PO}\), and total gage R&R is repeatability plus reproducibility. The usual summaries (AIAG MSA manual) are:
+
+- %study variation \(100\,\sigma_{GRR}/\sigma_{\text{total}}\). Below 10% is acceptable, 10–30% may be acceptable, and above 30% is unacceptable.
+- %tolerance \(100\cdot6\sigma_{GRR}/(USL-LSL)\).
+- The number of distinct categories \(\lfloor1.41\,\sigma_P/\sigma_{GRR}\rfloor\), which should be at least 5.
+
+`gage_rr` computes the ANOVA table, the expected-mean-square variance components (truncated at 0), %contribution, %study variation, %tolerance and the number of distinct categories. Following AIAG and Minitab, it pools the interaction into repeatability when the interaction's p-value exceeds 0.25. The tests reproduce `anova(lm(y ~ part * operator))` and the hand-computed EMS components to \(10^{-12}\), and lme4 REML (equal for balanced data with positive estimates), both with and without pooling.
+
+The example is a simulated study of a shaft diameter: 10 parts, 3 operators and 3 replicates, with tolerance ±0.15 mm. The simulation asks how precise the headline %study variation is. The measurement system has a true %GRR of 20%, made up of repeatability 0.025, operator 0.012 and interaction 0.0047, relative to a part variance of 1. Five study designs are run, with 2000 studies each.
+
+```{cpp, id=gage, file="figures/gage_rr.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/gage_rr.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+
+struct Truth {
+    double part, op, inter, rep;
+};
+
+std::vector<double> simulate(dm::random::SplitMix64& rng, std::size_t p, std::size_t o,
+                             std::size_t r, Truth t, double mean, double scale) {
+    std::vector<double> part(p), op(o), y;
+    for (auto& v : part) v = std::sqrt(t.part) * rng.normal();
+    for (auto& v : op) v = std::sqrt(t.op) * rng.normal();
+    for (std::size_t i = 0; i < p; ++i)
+        for (std::size_t j = 0; j < o; ++j) {
+            const double inter = std::sqrt(t.inter) * rng.normal();
+            for (std::size_t k = 0; k < r; ++k)
+                y.push_back(mean + scale * (part[i] + op[j] + inter +
+                                            std::sqrt(t.rep) * rng.normal()));
+        }
+    return y;
+}
+
+int main() {
+    // Example: diameters in mm around 25.00, part SD 0.04 mm.
+    dm::random::SplitMix64 rng(3);
+    const Truth example{1.0, 0.03, 0.01, 0.06};
+    const auto y = simulate(rng, 10, 3, 3, example, 25.0, 0.04);
+    const auto g = dm::stats::gage_rr(y, 10, 3, 3, {.tolerance = 0.30});
+    std::println("| Source | df | SS | MS | F | p |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (const auto& a : g.anova)
+        std::println("| {} | {} | {:.6f} | {:.7f} | {} | {} |", a.source, a.df,
+                     a.sum_of_squares, a.mean_square,
+                     std::isnan(a.f) ? "" : std::format("{:.2f}", a.f),
+                     std::isnan(a.p_value) ? "" : std::format("{:.4f}", a.p_value));
+    std::println("\n| Component | Variance | % contribution | SD | Study var. (6 SD) | "
+                 "% study var. | % tolerance |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const auto& c : g.components)
+        std::println("| {} | {:.3e} | {:.2f} | {:.5f} | {:.4f} | {:.2f} | {:.2f} |",
+                     c.source, c.variance, c.percent_contribution, c.sd, c.study_variation,
+                     c.percent_study_variation, c.percent_tolerance);
+    std::println("\nInteraction pooled: {}. Number of distinct categories: {}.\n",
+                 g.interaction_pooled, g.distinct_categories);
+
+    // Simulation: true %GRR = 20%.
+    const Truth truth{1.0, 0.012, 0.0046667, 0.025};
+    struct Design {
+        std::size_t p, o, r;
+    };
+    std::println("| Parts x operators x replicates | Mean %GRR | 10%-90% range | "
+                 "Classified < 10% | 10-30% | > 30% | Operator variance estimated as 0 |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: | ---: |");
+    const Design designs[5] = {{5, 2, 2}, {10, 3, 2}, {10, 3, 3}, {20, 3, 2}, {10, 6, 2}};
+    std::vector<double> lo, hi, mid, pos;
+    std::vector<std::string> labels;
+    const int reps = 2000;
+    for (std::size_t d = 0; d < 5; ++d) {
+        const auto [p, o, r] = designs[d];
+        std::vector<double> pct;
+        double low = 0, marginal = 0, high = 0, zero_op = 0;
+        for (int rep = 0; rep < reps; ++rep) {
+            const auto s = dm::stats::gage_rr(simulate(rng, p, o, r, truth, 0, 1), p, o, r);
+            const double v = s.components[0].percent_study_variation;
+            pct.push_back(v);
+            low += v < 10, marginal += v >= 10 && v <= 30, high += v > 30;
+            zero_op += s.components[3].variance == 0;
+        }
+        std::ranges::sort(pct);
+        double mean = 0;
+        for (const double v : pct) mean += v / reps;
+        const std::string label = std::format("{} x {} x {}", p, o, r);
+        std::println("| {} | {:.1f} | {:.1f}-{:.1f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |",
+                     label, mean, pct[reps / 10], pct[9 * reps / 10], low / reps,
+                     marginal / reps, high / reps, zero_op / reps);
+        lo.push_back(pct[reps / 10]), hi.push_back(pct[9 * reps / 10]);
+        mid.push_back(pct[reps / 2]), pos.push_back(5.0 - d), labels.push_back(label);
+    }
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.forest(pos, mid, lo, hi, {26, 90, 147})
+        .points(mid, pos, "Median, 10%-90% of estimates", {26, 90, 147}, 6)
+        .abline_v(20, {176, 72, 43})
+        .abline_v(10, {160, 160, 160})
+        .abline_v(30, {160, 160, 160})
+        .y_ticks(pos, labels)
+        .margins(120, 20, 75, 60)
+        .y_limits(0.3, 6.2)
+        .title("Estimated %GRR when the true value is 20%")
+        .x_label("% study variation (grey: 10% and 30% limits)")
+        .y_label("")
+        .size(660, 410);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/gage_rr.svg");
+}
+```
+// result_begin: markdown
+| Source | df | SS | MS | F | p |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Part | 9 | 0.172533 | 0.0191703 | 209.77 | 0.0000 |
+| Operator | 2 | 0.000728 | 0.0003641 | 3.98 | 0.0225 |
+| Repeatability | 78 | 0.007128 | 0.0000914 |  |  |
+
+| Component | Variance | % contribution | SD | Study var. (6 SD) | % study var. | % tolerance |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Total Gage R&R | 1.005e-04 | 4.53 | 0.01002 | 0.0601 | 21.27 | 20.05 |
+| Repeatability | 9.139e-05 | 4.12 | 0.00956 | 0.0574 | 20.29 | 19.12 |
+| Reproducibility | 9.091e-06 | 0.41 | 0.00302 | 0.0181 | 6.40 | 6.03 |
+| Operator | 9.091e-06 | 0.41 | 0.00302 | 0.0181 | 6.40 | 6.03 |
+| Operator x Part | 0.000e+00 | 0.00 | 0.00000 | 0.0000 | 0.00 | 0.00 |
+| Part-to-Part | 2.120e-03 | 95.47 | 0.04604 | 0.2763 | 97.71 | 92.08 |
+| Total Variation | 2.220e-03 | 100.00 | 0.04712 | 0.2827 | 100.00 | 94.24 |
+
+Interaction pooled: true. Number of distinct categories: 6.
+
+| Parts x operators x replicates | Mean %GRR | 10%-90% range | Classified < 10% | 10-30% | > 30% | Operator variance estimated as 0 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 5 x 2 x 2 | 23.7 | 12.1-39.2 | 0.028 | 0.747 | 0.226 | 0.374 |
+| 10 x 3 x 2 | 21.6 | 14.4-30.1 | 0.004 | 0.896 | 0.101 | 0.117 |
+| 10 x 3 x 3 | 21.6 | 14.6-29.9 | 0.001 | 0.901 | 0.099 | 0.093 |
+| 20 x 3 x 2 | 20.6 | 15.4-26.3 | 0.000 | 0.961 | 0.039 | 0.066 |
+| 10 x 6 x 2 | 21.5 | 15.2-29.0 | 0.001 | 0.917 | 0.082 | 0.016 |
+\image(figures/gage_rr.svg)
+// result_end
+
+In the example the interaction is not significant, so it is pooled into repeatability. Operators differ slightly (\(F=4.0\), \(p=0.02\)), but their variance is small. The measurement system takes 21% of the study variation and 20% of the tolerance, almost all of it repeatability, the gauge itself. It resolves six distinct categories of parts. By the AIAG rules this gage is marginal: acceptable for some uses, and the place to improve is the equipment, not operator training.
+
+The simulation shows how noisy that verdict is. The usual design has 10 parts, 3 operators and 2 replicates. With a true %GRR of 20%, comfortably inside the "marginal" band, one study in ten still reports more than 30% and calls the gage unacceptable; the middle 80% of estimates span 14–30%. A third replicate barely helps (14.6–29.9) because repeatability is already well estimated. What limits precision is the few operators and parts. With 20 parts the range narrows to 15–26%, and with 6 operators the operator variance is no longer estimated as zero 12% of the time. The small 5 × 2 × 2 design is nearly useless: its estimates range from 12% to 39%, and their distribution is right-skewed (mean 23.7% against a median near 20%).
+
+>> Practical guidance
+
+- Choose parts that span the real process range, not hand-picked good parts. %study variation and the number of distinct categories depend on the part variation in the study. Use %tolerance when the gage is for conformance decisions rather than process control.
+- Use at least 10 parts and 3 operators. When reproducibility matters or the verdict is close to a limit, add parts and operators rather than replicates. Report the estimate together with its uncertainty (confidence intervals for variance components, for example by the modified large-sample method), not just the acceptability category.
+- Check the ANOVA table. A significant operator-by-part interaction means operators disagree in part-specific ways (fixturing, reading technique), and it should be investigated, not just pooled away.
+- Randomize the measurement order and blind operators to part identity. Otherwise memory and drift inflate or hide repeatability.
+
+>> References
+
+- Automotive Industry Action Group (2010). *Measurement Systems Analysis Reference Manual*, 4th ed. AIAG.
+- R. K. Burdick, C. M. Borror and D. C. Montgomery (2005). *Design and Analysis of Gauge R&R Studies: Making Decisions with Confidence Intervals in Random and Mixed ANOVA Models*. ASA-SIAM. doi:10.1137/1.9780898718379
+- D. C. Montgomery and G. C. Runger (1993). Gauge capability and designed experiments. Part I: Basic methods. *Quality Engineering* 6(1), 115-135. doi:10.1080/08982119308918710
+- S. R. Searle, G. Casella and C. E. McCulloch (1992). *Variance Components*. Wiley. doi:10.1002/9780470316856

@@ -1,0 +1,239 @@
+//? Title: Tetrachoric and polychoric correlations
+//? Exports: both
+//? Lang: en
+
+> Estimate the correlation of the continuous latent variables behind binary or ordinal ratings, instead of the attenuated correlation of their category codes, and check the bivariate-normal assumption it rests on
+
+Survey items, clinical grades and pass/fail outcomes are often coarse readings of continuous traits. The polychoric model assumes a latent standard bivariate normal pair \((\xi,\eta)\) with correlation \(\rho\), observed through thresholds: \(x=i\) when \(a_{i-1}<\xi\le a_i\) and \(y=j\) when \(b_{j-1}<\eta\le b_j\). Each cell of the \(r\times c\) table then has probability
+
+\[\pi_{ij}=\Phi_2(a_i,b_j;\rho)-\Phi_2(a_{i-1},b_j;\rho)-\Phi_2(a_i,b_{j-1};\rho)+\Phi_2(a_{i-1},b_{j-1};\rho),\]
+
+and the multinomial likelihood \(\sum n_{ij}\log\pi_{ij}\) is maximized. With two categories each, this is the **tetrachoric** correlation (Pearson 1900). The **two-step** estimator (Olsson 1979) fixes the thresholds at the normal quantiles of the cumulative marginal proportions and maximizes over \(\rho\) only. **Full ML** estimates all parameters jointly. The \(rc-r-c\) degrees of freedom left over give a likelihood-ratio test of the bivariate-normal model against the saturated table.
+
+`bivariate_normal_cdf` is Genz's Gauss-Legendre algorithm, the method behind `mvtnorm`, and a reusable core function. `polychoric_correlation` accepts a table or paired ordinal codes, uses Fisher scoring with analytic derivatives (\(\partial\Phi_2/\partial\rho=\phi_2\), \(\partial\Phi_2/\partial a=\phi(a)\Phi((b-\rho a)/\sqrt{1-\rho^2})\)), and returns observed-information standard errors, a Fisher-z interval and the LR test. `tetrachoric_correlation` handles 2 × 2 tables, and `polychoric_matrix` builds pairwise matrices for factor analysis.
+
+The tests check the CDF against direct numerical integration to \(10^{-12}\). They check the two-step and ML estimates, threshold standard errors and LR statistics against tight optimizations of the same likelihood in R, and agree with `polycor::polychor` to its optimizer's precision. They also check the closed-form tetrachoric \(\sin(0.3\pi)\) of a symmetric table to \(10^{-13}\).
+
+The example rates two five-point items generated from a latent correlation of 0.6, with responses piled in opposite ends of the scale. The simulation (500 samples of n = 500 each) measures how much the Pearson correlation of the codes is attenuated as the number of categories and the skewness of the thresholds change, and how polychoric estimates and their intervals behave. It then breaks the bivariate-normal assumption with a latent \(t_3\) distribution.
+
+```{cpp, id=pc, file="figures/polychoric.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/partial_correlation.hpp>
+#include <datamunge/stats/polychoric.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::PolychoricEstimator;
+
+// Thresholds for k categories: equal probabilities, or skewed to high (skew > 0) or low.
+std::vector<double> thresholds(int k, int skew) {
+    std::vector<double> t;
+    for (int j = 1; j < k; ++j) {
+        const double u = double(j) / k;
+        const double p = skew == 0 ? u : skew < 0 ? 1 - (1 - u) * (1 - u) : u * u;
+        t.push_back(dm::random::normal_quantile(p));
+    }
+    return t;
+}
+
+int category(double v, const std::vector<double>& t) {
+    int c = 1;
+    for (const double a : t) c += v > a;
+    return c;
+}
+
+struct Sample { std::vector<int> x, y; };
+
+// n pairs from a latent normal (or t3) with correlation rho, cut at the given thresholds.
+Sample draw(dm::random::SplitMix64& rng, std::size_t n, double rho,
+            const std::vector<double>& tx, const std::vector<double>& ty, bool t3) {
+    Sample s;
+    for (std::size_t i = 0; i < n; ++i) {
+        const double z1 = rng.normal();
+        const double z2 = rho * z1 + std::sqrt(1 - rho * rho) * rng.normal();
+        double w = 1;
+        if (t3) {
+            double c = 0;
+            for (int d = 0; d < 3; ++d) { const double g = rng.normal(); c += g * g; }
+            w = std::sqrt(3 / c);
+        }
+        // t3 margins are mapped back to normal scores so only the dependence is non-normal.
+        const auto m = [&](double v) {
+            return t3 ? dm::random::normal_quantile(dm::random::student_t_cdf(v, 3)) : v;
+        };
+        s.x.push_back(category(m(w * z1), tx));
+        s.y.push_back(category(m(w * z2), ty));
+    }
+    return s;
+}
+
+double pearson(const Sample& s) {
+    const std::vector<double> x(s.x.begin(), s.x.end()), y(s.y.begin(), s.y.end());
+    return dm::stats::partial_correlation(x, y, {}).estimate;
+}
+
+int main() {
+    dm::random::SplitMix64 rng(41);
+    // Example: two 5-point items, latent rho = 0.6, x piled high and y piled low.
+    const auto ex = draw(rng, 400, 0.6, thresholds(5, 1), thresholds(5, -1), false);
+    std::vector<std::vector<double>> table(5, std::vector<double>(5, 0.0));
+    for (std::size_t i = 0; i < ex.x.size(); ++i) table[ex.x[i] - 1][ex.y[i] - 1] += 1;
+    std::println("| Item x \\ item y | 1 | 2 | 3 | 4 | 5 |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (int i = 0; i < 5; ++i)
+        std::println("| {} | {} | {} | {} | {} | {} |", i + 1, table[i][0], table[i][1],
+                     table[i][2], table[i][3], table[i][4]);
+    const std::vector<double> xd(ex.x.begin(), ex.x.end()), yd(ex.y.begin(), ex.y.end());
+    const auto sp = dm::stats::partial_correlation(
+        xd, yd, {}, {.method = dm::stats::PartialMethod::spearman});
+    const auto two = dm::stats::polychoric_correlation(table);
+    const auto ml = dm::stats::polychoric_correlation(
+        table, {.estimator = PolychoricEstimator::maximum_likelihood});
+    std::println("\n| Estimator (latent rho = 0.6) | Estimate | SE | 95% CI | "
+                 "LR test of bivariate normality |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    std::println("| Pearson on codes | {:.3f} | | | |", pearson(ex));
+    std::println("| Spearman on codes | {:.3f} | | | |", sp.estimate);
+    for (const auto& [name, p] :
+         {std::pair{"Polychoric, two-step", two}, {"Polychoric, ML", ml}})
+        std::println("| {} | {:.3f} | {:.3f} | [{:.3f}, {:.3f}] | "
+                     "chi2 = {:.2f}, df = {}, p = {:.3f} |",
+                     name, p.rho, p.standard_error, p.lower, p.upper, p.chi_square, p.df,
+                     p.p_value);
+    const auto gen = thresholds(5, 1);
+    std::println("\nML thresholds for x: {:.2f}, {:.2f}, {:.2f}, {:.2f} "
+                 "(generating values {:.2f}, {:.2f}, {:.2f}, {:.2f}).\n",
+                 ml.row_thresholds[0], ml.row_thresholds[1], ml.row_thresholds[2],
+                 ml.row_thresholds[3], gen[0], gen[1], gen[2], gen[3]);
+
+    // Under latent t3 dependence the target is the correlation of the latent normal scores.
+    double sxy = 0, sxx = 0, syy = 0;
+    for (int i = 0; i < 400000; ++i) {
+        const double z1 = rng.normal(), z2 = 0.5 * z1 + std::sqrt(0.75) * rng.normal();
+        double c = 0;
+        for (int d = 0; d < 3; ++d) { const double g = rng.normal(); c += g * g; }
+        const double w = std::sqrt(3 / c);
+        const double u = dm::random::normal_quantile(dm::random::student_t_cdf(w * z1, 3));
+        const double v = dm::random::normal_quantile(dm::random::student_t_cdf(w * z2, 3));
+        sxy += u * v, sxx += u * u, syy += v * v;
+    }
+    const double rho_t3 = sxy / std::sqrt(sxx * syy);
+    std::println("Latent normal-score correlation under t3 dependence with rho = 0.5: "
+                 "{:.3f}.\n", rho_t3);
+
+    // Simulation: attenuation and coverage, latent rho = 0.5, n = 500.
+    const int reps = 500;
+    const double rho = 0.5;
+    std::println("| Categories | Thresholds | Mean Pearson | Mean polychoric | "
+                 "SD polychoric | Mean SE | CI coverage | LR rejects (5%) |");
+    std::println("| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |");
+    std::vector<double> ks{2, 3, 5, 7};
+    std::vector<std::vector<double>> curves(4);
+    for (int design = 0; design < 3; ++design)
+        for (const double kd : ks) {
+            const int k = static_cast<int>(kd);
+            const bool t3 = design == 2;
+            const auto tx = thresholds(k, design == 0 ? 0 : 1);
+            const auto ty = thresholds(k, design == 0 ? 0 : -1);
+            const double target = t3 ? rho_t3 : rho;
+            double mp = 0, mc = 0, sc = 0, se = 0, cover = 0, lr = 0, lr_n = 0;
+            for (int r = 0; r < reps; ++r) {
+                const auto s = draw(rng, 500, rho, tx, ty, t3);
+                const auto p = dm::stats::polychoric_correlation(s.x, s.y);
+                mp += pearson(s) / reps, mc += p.rho / reps, sc += p.rho * p.rho / reps;
+                se += p.standard_error / reps;
+                cover += (p.lower <= target && target <= p.upper) / double(reps);
+                if (p.df > 0) lr += p.p_value <= 0.05, lr_n += 1;
+            }
+            const char* name[3] = {"Equal-probability", "Skewed, opposite directions",
+                                   "Skewed; latent t3 dependence"};
+            std::println("| {} | {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {} |", k,
+                         name[design], mp, mc, std::sqrt(sc - mc * mc), se, cover,
+                         lr_n > 0 ? std::format("{:.3f}", lr / lr_n) : std::string("—"));
+            if (design < 2) {
+                curves[design].push_back(mp);
+                curves[2 + design].push_back(mc);
+            }
+        }
+
+    auto fig = dm::graphics::RPlot::create();
+    fig.line(ks, curves[0], "Pearson, equal-probability", {140, 182, 222}, 2.5)
+        .line(ks, curves[1], "Pearson, skewed", {232, 165, 135}, 2.5)
+        .line(ks, curves[2], "Polychoric, equal-probability", {26, 90, 147}, 3)
+        .line(ks, curves[3], "Polychoric, skewed", {176, 72, 43}, 3)
+        .abline_h(rho, {120, 120, 120})
+        .y_limits(0, 0.8)
+        .title("Ordinal-code and polychoric correlations (latent 0.5)")
+        .x_label("Number of categories per item")
+        .y_label("Mean estimate (500 samples, n = 500)")
+        .size(640, 410);
+    std::filesystem::create_directories("build");
+    fig.save_svg("build/polychoric.svg");
+}
+```
+// result_begin: markdown
+| Item x \ item y | 1 | 2 | 3 | 4 | 5 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 1 | 19 | 0 | 1 | 0 | 0 |
+| 2 | 24 | 8 | 2 | 0 | 0 |
+| 3 | 43 | 17 | 14 | 6 | 0 |
+| 4 | 43 | 38 | 24 | 10 | 1 |
+| 5 | 18 | 38 | 45 | 35 | 14 |
+
+| Estimator (latent rho = 0.6) | Estimate | SE | 95% CI | LR test of bivariate normality |
+| --- | ---: | ---: | ---: | ---: |
+| Pearson on codes | 0.488 | | | |
+| Spearman on codes | 0.514 | | | |
+| Polychoric, two-step | 0.602 | 0.037 | [0.526, 0.670] | chi2 = 12.52, df = 15, p = 0.639 |
+| Polychoric, ML | 0.605 | 0.040 | [0.521, 0.677] | chi2 = 12.44, df = 15, p = 0.646 |
+
+ML thresholds for x: -1.65, -1.10, -0.42, 0.32 (generating values -1.75, -0.99, -0.36, 0.36).
+
+Latent normal-score correlation under t3 dependence with rho = 0.5: 0.489.
+
+| Categories | Thresholds | Mean Pearson | Mean polychoric | SD polychoric | Mean SE | CI coverage | LR rejects (5%) |
+| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 2 | Equal-probability | 0.336 | 0.503 | 0.057 | 0.057 | 0.962 | — |
+| 3 | Equal-probability | 0.408 | 0.500 | 0.049 | 0.043 | 0.910 | 0.054 |
+| 5 | Equal-probability | 0.452 | 0.500 | 0.037 | 0.036 | 0.942 | 0.082 |
+| 7 | Equal-probability | 0.466 | 0.500 | 0.036 | 0.034 | 0.946 | 0.084 |
+| 2 | Skewed, opposite directions | 0.237 | 0.503 | 0.075 | 0.074 | 0.966 | — |
+| 3 | Skewed, opposite directions | 0.343 | 0.499 | 0.049 | 0.049 | 0.952 | 0.036 |
+| 5 | Skewed, opposite directions | 0.416 | 0.500 | 0.040 | 0.038 | 0.934 | 0.036 |
+| 7 | Skewed, opposite directions | 0.438 | 0.499 | 0.039 | 0.035 | 0.930 | 0.010 |
+| 2 | Skewed; latent t3 dependence | 0.193 | 0.398 | 0.079 | 0.078 | 0.762 | — |
+| 3 | Skewed; latent t3 dependence | 0.309 | 0.447 | 0.056 | 0.051 | 0.834 | 0.418 |
+| 5 | Skewed; latent t3 dependence | 0.386 | 0.472 | 0.046 | 0.039 | 0.896 | 0.576 |
+| 7 | Skewed; latent t3 dependence | 0.414 | 0.483 | 0.044 | 0.036 | 0.884 | 0.622 |
+\image(figures/polychoric.svg)
+// result_end
+
+In the example, both items have five categories, but responses to x pile up at the top of the scale and responses to y at the bottom. The Pearson correlation of the codes is 0.49 and Spearman's 0.51, both well below the latent 0.6. The polychoric estimates recover it: 0.60 (two-step) and 0.61 (ML), with intervals that cover 0.6. The LR test finds no conflict with bivariate normality (p = 0.64), and the ML thresholds reproduce the generating cut-points to within sampling error. With 25 cells and 400 observations, the two estimators differ by less than a tenth of a standard error.
+
+The simulation shows how strongly coarsening attenuates a correlation. With equal-probability categories, the Pearson correlation of the codes is 0.34 for binary items, 0.41 for three categories and 0.47 for seven. Thresholds skewed in opposite directions make it worse: 0.24 for binary items, less than half the latent value. The polychoric estimate is unbiased in every design, its standard errors match the sampling SD, and Fisher-z intervals cover at 91–97%. The attenuation of the codes is not a fixed factor, because it depends on the marginal distributions. Correlations of differently skewed items cannot be compared, and factor analyses of code correlations recover too many or distorted factors.
+
+Polychoric correlation is not robust to its distributional assumption. Under a latent t₃ dependence, where the margins are normal after transformation but the tails are jointly heavy, the target normal-score correlation is 0.489. The polychoric estimate is biased downward, to 0.40 for binary items and 0.48 for seven categories, and coverage drops to 76–90%. The thresholds absorb any monotone transformation of the margins; the joint shape of the latent distribution is what matters. The LR test detects the misfit in 42–62% of samples once there are three or more categories, but it is blind for 2 × 2 tables (df = 0). It is also only approximately calibrated with sparse tables: 8% with five or seven equal categories, and 1–4% when skewed margins leave many cells nearly empty.
+
+>> Practical guidance
+
+- Use polychoric correlations for ordinal items with few categories (fewer than about seven), especially when the items are skewed differently, and as input to factor analysis of such items, using weighted least squares or diagonally weighted estimators for the model.
+- The two-step estimator is as good as full ML in practice, and much faster for large item sets. Use ML when the thresholds and their standard errors are of interest.
+- Check bivariate normality with the LR test where df > 0. Treat a rejection as a sign that the "latent correlation" is not well defined, not only that the estimate is noisy.
+- Zero cells are allowed, but a 2 × 2 table with a zero cell gives an estimate at the boundary (±1). Report such cases rather than the capped value.
+- A matrix of pairwise polychoric correlations need not be positive definite. Smooth it, for example with the nearest correlation matrix, before inverting.
+
+>> References
+
+- K. Pearson (1900). Mathematical contributions to the theory of evolution. VII. On the correlation of characters not quantitatively measurable. *Philosophical Transactions of the Royal Society A* 195, 1-47. doi:10.1098/rsta.1900.0022
+- U. Olsson (1979). Maximum likelihood estimation of the polychoric correlation coefficient. *Psychometrika* 44(4), 443-460. doi:10.1007/BF02296207
+- A. Genz (2004). Numerical computation of rectangular bivariate and trivariate normal and t probabilities. *Statistics and Computing* 14, 251-260. doi:10.1023/B:STCO.0000035304.20635.31
+- J. Fox (2022). polycor: Polychoric and Polyserial Correlations. R package version 0.8.
+- F. Holgado-Tello, S. Chacón-Moscoso, I. Barbero-García and E. Vila-Abad (2010). Polychoric versus Pearson correlations in exploratory and confirmatory factor analysis of ordinal variables. *Quality & Quantity* 44, 153-166. doi:10.1007/s11135-008-9190-y

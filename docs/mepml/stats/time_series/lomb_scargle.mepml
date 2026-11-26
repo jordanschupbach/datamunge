@@ -1,0 +1,140 @@
+//? Title: Find periods in irregular data with the Lomb–Scargle periodogram
+//? Exports: both
+//? Lang: en
+
+> Fit a sinusoid at every trial frequency and ask how often noise does as well
+
+When observations arrive at irregular times, for example at night, in good weather or between instrument gaps, the FFT periodogram no longer applies. The Lomb–Scargle periodogram fits \(y=c+a\sin2\pi ft+b\cos2\pi ft\) by weighted least squares at each trial frequency \(f\). It reports the share of the weighted variance that the sinusoid explains:
+\[P(f)=1-\chi^2_{\text{sin}}(f)/\chi^2_0 .\]
+The generalized form of Zechmeister and Kürster fits the offset \(c\) at every frequency (a "floating mean") instead of subtracting the sample mean once. This matters when the sampling covers some phases more than others.
+
+Searching thousands of frequencies makes a large peak likely even from noise, so a peak's single-frequency p-value is far too optimistic. Baluev's approximation corrects for the search using an effective number of independent frequencies. It is derived from the expected number of upcrossings of the periodogram and depends on the band searched and on the spread of the observation times.
+
+The example simulates a variable star with a 0.62-day period observed on 120 nights spread over 200 days, always near local midnight. The daily rhythm of the sampling creates aliases at \(|1/0.62\pm1|\) cycles per day. It then checks how well the false-alarm approximations match simulated noise with the same sampling, and compares the floating mean with pre-centering when observations favour bright phases.
+
+```{cpp, id=lomb, file="figures/lomb_scargle.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/lomb_scargle.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::FalseAlarmMethod;
+
+int main() {
+    std::mt19937_64 random(12);
+    std::normal_distribution<double> z;
+    std::uniform_real_distribution<double> u(0, 1);
+    const double period = 0.62, two_pi = 2 * std::numbers::pi;
+
+    // 120 of 200 nights, each observed once within two hours of midnight.
+    std::vector<int> nights(200);
+    for (int d = 0; d < 200; ++d)
+        nights[d] = d;
+    std::ranges::shuffle(nights, random);
+    nights.resize(120);
+    std::ranges::sort(nights);
+    std::vector<double> t, y;
+    for (const int d : nights) {
+        t.push_back(d + (u(random) - .5) / 6);
+        y.push_back(10 + .7 * std::sin(two_pi * t.back() / period) + z(random));
+    }
+    const dm::stats::LombScargleOptions options{.maximum_frequency = 3.0};
+    const auto r = dm::stats::lomb_scargle(t, y, {}, options);
+    std::println("Best period {:.4f} d (true 0.62), power {:.3f}, amplitude {:.2f} "
+                 "(true 0.7), Baluev false-alarm probability {:.1e}.",
+                 1 / r.best_frequency, r.best_power, r.amplitude, r.false_alarm_probability);
+
+    // Calibration: the highest peak of pure noise with the same times, 1000 replicates.
+    std::vector<double> maxima;
+    for (int rep = 0; rep < 1000; ++rep) {
+        std::vector<double> noise;
+        for (std::size_t i = 0; i < t.size(); ++i)
+            noise.push_back(z(random));
+        const auto noise_fit = dm::stats::lomb_scargle(t, noise, {}, options);
+        maxima.push_back(noise_fit.best_power);
+    }
+    std::println("\n| Baluev level | Threshold | Naive | Davies | Simulated |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    for (const double p : {.5, .1, .05, .01}) {
+        const double level = dm::stats::lomb_scargle_false_alarm_level(p, t, y, {}, options);
+        const auto fap = [&](FalseAlarmMethod method) {
+            auto with = options;
+            with.method = method;
+            return dm::stats::lomb_scargle_false_alarm_probability(level, t, y, {}, with);
+        };
+        const double naive = fap(FalseAlarmMethod::naive);
+        const double davies = fap(FalseAlarmMethod::davies);
+        const double hits =
+            std::ranges::count_if(maxima, [&](double m) { return m >= level; });
+        std::println("| {} | {:.4f} | {:.3f} | {:.3f} | {:.3f} |", p, level, naive, davies,
+                     hits / 1000);
+    }
+
+    // Floating mean: a 9.3-day signal observed only when it is in its brighter phases.
+    int floating = 0, centered = 0;
+    for (int rep = 0; rep < 300; ++rep) {
+        std::vector<double> ts, ys;
+        while (ts.size() < 30) {
+            const double s = 100 * u(random);
+            const double signal = std::cos(two_pi * s / 9.3);
+            if (signal > -.2)
+                ts.push_back(s), ys.push_back(signal + .5 * z(random));
+        }
+        const auto hit = [&](bool fit_mean) {
+            const auto best = dm::stats::lomb_scargle(ts, ys, {}, {.fit_mean = fit_mean});
+            return std::abs(best.best_frequency - 1 / 9.3) < .005;
+        };
+        floating += hit(true);
+        centered += hit(false);
+    }
+    std::println("\nRecovered the 9.3-day period with phase-selective sampling: floating mean "
+                 "{:.2f}, pre-centered {:.2f} (300 replicates, 30 points each).",
+                 floating / 300.0, centered / 300.0);
+
+    const double level01 = dm::stats::lomb_scargle_false_alarm_level(.01, t, y, {}, options);
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(r.frequencies, r.power, "Lomb–Scargle power", {26, 90, 147}, 1)
+        .line({r.frequencies.front(), r.frequencies.back()}, {level01, level01},
+              "1% false-alarm level", {176, 72, 43}, 1.4)
+        .line({1 / period, 1 / period}, {.27, .31}, "True frequency", {46, 139, 87}, 2)
+        .title("Night-time sampling: true peak and daily aliases")
+        .x_label("Frequency (cycles per day)")
+        .y_label("Power (fraction of variance)")
+        .ylim(0, .4)
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/lomb_scargle.svg");
+}
+```
+// result_begin: markdown
+Best period 0.6201 d (true 0.62), power 0.253, amplitude 0.78 (true 0.7), Baluev false-alarm probability 1.0e-04.
+
+| Baluev level | Threshold | Naive | Davies | Simulated |
+| ---: | ---: | ---: | ---: | ---: |
+| 0.5 | 0.1251 | 0.213 | 0.693 | 0.294 |
+| 0.1 | 0.1546 | 0.032 | 0.105 | 0.043 |
+| 0.05 | 0.1656 | 0.015 | 0.051 | 0.021 |
+| 0.01 | 0.1896 | 0.003 | 0.010 | 0.003 |
+
+Recovered the 9.3-day period with phase-selective sampling: floating mean 0.43, pre-centered 0.01 (300 replicates, 30 points each).
+\image(figures/lomb_scargle.svg)
+// result_end
+\caption(Generalized Lomb–Scargle periodogram of the simulated night-time observations, with the 1% Baluev false-alarm level and a green tick above the true frequency.)
+\alttext(Blue power curve from 0 to 3 cycles per day. The highest peak, about 0.25, is at the true frequency of 1.61 cycles per day, marked by a green tick, and lies above the orange 1% false-alarm line at about 0.19. An alias at 0.61 cycles per day is almost as high, and aliases near 0.39 and 2.61 cycles per day reach about 0.2, also just above the line. Elsewhere the power stays mostly below 0.1.)
+
+The periodogram recovers the period as 0.6201 days and puts its false-alarm probability at \(10^{-4}\). The figure also shows why irregular sampling needs care. Because every observation is taken near midnight, a sinusoid at \(f\) and one at \(f\pm1\) cycle per day take almost the same values at the observation times. The peaks at 0.61 and 2.61 cycles per day, and at 0.39 (\(=2-1.61\), the alias of the negative frequency \(-1.61\)), are copies of the true peak, not separate signals. The 0.61 alias is almost as high as the true peak, and all three clear the 1% false-alarm line. The false-alarm probability says that some periodicity is present. It does not say which alias is the right one. Only the scatter in observing hour separates them, so choosing among aliases needs that scatter, more data or prior knowledge.
+
+The calibration table shows that the search correction matters. A power of 0.19, which has a single-frequency p-value of about \(5\times10^{-6}\), is reached by noise's highest peak in about 0.3% of simulations. Baluev's approximation is conservative here: its nominal 1%, 5% and 10% levels are reached by noise 0.3%, 2.1% and 4.3% of the time. The daily window makes the periodogram repeat itself one cycle per day apart, so the 3,000 frequencies contain fewer independent trials than the effective-bandwidth argument assumes. The naive "independent frequencies" count is closer in the tail for this sampling but is not reliable in general. The Davies bound is essentially Baluev's at small probabilities and is useless at large ones. When the sampling has a strong window function, a simulation like this one, or a bootstrap, gives the honest calibration. Baluev's value stays a safe upper bound.
+
+The last comparison shows what the floating mean buys. The 9.3-day signal is observed only when it is above −0.2, so the sampled phases are lopsided and the data mean is not the signal's mean. Fitting the offset at every frequency recovers the period in 43% of replicates. Subtracting the sample mean once and fitting a pure sinusoid recovers it in only 1%. With that model, most of the power at the true frequency is lost and the peak usually moves to the second harmonic created by the clipped waveform.
+
+Powers in all four normalizations, with and without weights, the floating-mean and pre-centered variants, the automatic frequency grid, false-alarm probabilities by the single, naive, Davies and Baluev methods, false-alarm levels and model predictions all match Astropy's `LombScargle`.
+
+[Scargle (1982)|https://doi.org/10.1086/160554] · [Zechmeister and Kürster (2009)|https://doi.org/10.1051/0004-6361:200811296] · [Baluev (2008)|https://doi.org/10.1111/j.1365-2966.2008.12689.x] · [VanderPlas (2018)|https://doi.org/10.3847/1538-4365/aab766]

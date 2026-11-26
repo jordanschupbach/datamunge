@@ -1,0 +1,245 @@
+//? Title: Partial and semipartial correlations
+//? Exports: both
+//? Lang: en
+
+> Measure the association between two variables after removing the linear influence of others, attach tests and intervals to it, and see when adjusting removes a spurious correlation and when it creates one
+
+The **partial correlation** \(r_{xy\cdot Z}\) is the correlation between the parts of \(x\) and \(y\) that are not linearly predictable from covariates \(Z\): the residuals of the regressions of \(x\) and of \(y\) on \(Z\). For a single covariate,
+
+\[r_{xy\cdot z}=\frac{r_{xy}-r_{xz}r_{yz}}{\sqrt{(1-r_{xz}^2)(1-r_{yz}^2)}},\]
+
+and in general it equals \(-P_{xy}/\sqrt{P_{xx}P_{yy}}\) for the inverse \(P\) of the covariance matrix. The **semipartial (part) correlation** \(r_{x(y\cdot Z)}\) removes \(Z\) from \(y\) only. Its square is the increase in \(R^2\) when \(y\) is added to a regression of \(x\) on \(Z\): the unique contribution of \(y\).
+
+The partial correlation is tested with \(t=r\sqrt{(n-2-k)/(1-r^2)}\) on \(n-2-k\) degrees of freedom. This is the t test of \(y\)'s coefficient in the regression of \(x\) on \(Z\) and \(y\), and so it is also the correct test that the semipartial correlation is zero. `ppcor::spcor.test` plugs the semipartial correlation into the same formula, which understates \(t\) whenever \(Z\) explains part of \(x\). The library reports the coefficient test for both. The Fisher interval \(\tanh(\operatorname{atanh}r\pm z_{1-\alpha/2}/\sqrt{n-3-k})\) applies to the partial correlation under multivariate normality. The semipartial correlation has no such interval, so use the bootstrap.
+
+`partial_correlation` and `semipartial_correlation` work from data. Each uses Pearson correlation, or Spearman correlation on ranks, and returns the t test, the Fisher interval and an optional percentile bootstrap interval. `partial_correlation_matrix` gives all pairwise partial and semipartial correlations given the remaining variables, from a covariance or correlation matrix and its sample size. The tests reproduce `ppcor::pcor.test` and `pcor` (estimates, statistics and p-values, Pearson and Spearman) and the `spcor.test`/`spcor` estimates to \(10^{-12}\). They check the semipartial test against the coefficient t test of `lm`, and the data and matrix forms against each other.
+
+The example asks how fuel consumption (mpg) relates to engine power (hp) in `mtcars` once weight is accounted for. The simulation (2000 samples of n = 100 each) has two parts:
+
+- Three causal structures in which \(x\) and \(y\) have no direct link: a confounder \(z\) measured exactly, the same confounder measured with reliability 0.6, and a collider \(z=x+y+e\).
+- The coverage of Fisher and bootstrap intervals for a true partial correlation of 0.3 given three covariates, under normal and heavy-tailed (multivariate \(t_3\)) data.
+
+```{cpp, id=pc, file="figures/partial_correlation.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/datasets/datasets.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/partial_correlation.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::PartialMethod;
+
+std::string interval(double lo, double hi) {
+    return std::isnan(lo) ? std::string("—") : std::format("[{:.3f}, {:.3f}]", lo, hi);
+}
+
+double chi_square_draw(dm::random::SplitMix64& rng, int df) {
+    double s = 0;
+    for (int i = 0; i < df; ++i) {
+        const double z = rng.normal();
+        s += z * z;
+    }
+    return s;
+}
+
+int main() {
+    const auto cars = dm::datasets::mtcars();
+    auto col = [&](const char* name) { return cars.get_column<double>(name).values(); };
+    const auto mpg = col("mpg"), hp = col("hp"), wt = col("wt"), disp = col("disp");
+    const auto qsec = col("qsec");
+    std::println("| Association of mpg with hp | Method | Estimate | t (df) | p | "
+                 "Fisher 95% CI | Bootstrap 95% CI |");
+    std::println("| --- | --- | ---: | ---: | ---: | ---: | ---: |");
+    for (const auto method : {PartialMethod::pearson, PartialMethod::spearman}) {
+        const char* m = method == PartialMethod::pearson ? "Pearson" : "Spearman";
+        const dm::stats::PartialOptions o{.method = method, .bootstrap = 2000, .seed = 5};
+        const auto raw = dm::stats::partial_correlation(mpg, hp, {}, o);
+        const auto par = dm::stats::partial_correlation(mpg, hp, {wt}, o);
+        const auto semi = dm::stats::semipartial_correlation(mpg, hp, {wt}, o);
+        for (const auto& [name, r] : {std::pair{"Raw", raw}, {"Partial, given wt", par},
+                                      {"Semipartial (hp adjusted for wt)", semi}})
+            std::println("| {} | {} | {:.3f} | {:.2f} ({}) | {:.4f} | {} | {} |", name, m,
+                         r.estimate, r.statistic, r.df, r.p_value,
+                         interval(r.lower, r.upper),
+                         interval(r.bootstrap_lower, r.bootstrap_upper));
+    }
+    const auto semi = dm::stats::semipartial_correlation(mpg, hp, {wt});
+    std::println("\nSquared semipartial correlation (R^2 gained by adding hp to mpg ~ wt): "
+                 "{:.3f}.\n", semi.estimate * semi.estimate);
+
+    // Partial correlation matrix of five variables, each pair given the other three.
+    const std::vector<std::vector<double>> vars{mpg, hp, wt, disp, qsec};
+    const char* names[5] = {"mpg", "hp", "wt", "disp", "qsec"};
+    dm::linalg::DenseMatrix<double> cov(5, 5, 0.0);
+    const double n = static_cast<double>(mpg.size());
+    std::vector<double> mean(5, 0.0);
+    for (int a = 0; a < 5; ++a)
+        for (const double v : vars[a]) mean[a] += v / n;
+    for (int a = 0; a < 5; ++a)
+        for (int b = 0; b < 5; ++b)
+            for (std::size_t i = 0; i < mpg.size(); ++i)
+                cov(a, b) += (vars[a][i] - mean[a]) * (vars[b][i] - mean[b]) / (n - 1);
+    const auto pm = dm::stats::partial_correlation_matrix(cov, mpg.size());
+    std::println("| Partial r (p) | mpg | hp | wt | disp | qsec |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (int a = 0; a < 5; ++a) {
+        std::string row = std::format("| {} |", names[a]);
+        for (int b = 0; b < 5; ++b)
+            row += a == b ? " — |"
+                          : std::format(" {:.2f} ({:.3f}) |", pm.partial(a, b),
+                                        pm.partial_p_value(a, b));
+        std::println("{}", row);
+    }
+
+    // Simulation 1: causal structures without a direct x-y link.
+    dm::random::SplitMix64 rng(17);
+    const int reps = 2000;
+    const std::size_t m = 100;
+    std::println("\n| Structure | Mean raw r | Raw test rejects | Mean partial r | "
+                 "Partial test rejects |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    const char* structures[3] = {"Confounder z measured exactly",
+                                 "Confounder measured with reliability 0.6",
+                                 "Collider z = x + y + e"};
+    for (int s = 0; s < 3; ++s) {
+        double raw = 0, raw_rej = 0, par = 0, par_rej = 0;
+        for (int r = 0; r < reps; ++r) {
+            std::vector<double> x(m), y(m), z(m);
+            for (std::size_t i = 0; i < m; ++i) {
+                if (s < 2) {
+                    const double c = rng.normal();
+                    x[i] = 0.7 * c + rng.normal() * std::sqrt(0.51);
+                    y[i] = 0.7 * c + rng.normal() * std::sqrt(0.51);
+                    // Observed confounder: exact, or error variance 2/3 (reliability 0.6).
+                    z[i] = s == 0 ? c : c + std::sqrt(2.0 / 3) * rng.normal();
+                } else {
+                    x[i] = rng.normal(), y[i] = rng.normal();
+                    z[i] = x[i] + y[i] + 0.5 * rng.normal();
+                }
+            }
+            const auto a = dm::stats::partial_correlation(x, y, {});
+            const auto b = dm::stats::partial_correlation(x, y, {z});
+            raw += a.estimate / reps, raw_rej += (a.p_value < 0.05) / double(reps);
+            par += b.estimate / reps, par_rej += (b.p_value < 0.05) / double(reps);
+        }
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", structures[s], raw,
+                     raw_rej, par, par_rej);
+    }
+
+    // Simulation 2: coverage for a true partial correlation of 0.3 given three covariates.
+    std::println("\n| Data | n | Fisher-z coverage | Bootstrap coverage | "
+                 "Mean Fisher width | Mean bootstrap width |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (const bool heavy : {false, true})
+        for (const std::size_t size : {30uz, 100uz}) {
+            double fc = 0, bc = 0, fw = 0, bw = 0;
+            const int sims = 1000;
+            for (int r = 0; r < sims; ++r) {
+                std::vector<double> x(size), y(size);
+                std::vector<std::vector<double>> z(3, std::vector<double>(size));
+                for (std::size_t i = 0; i < size; ++i) {
+                    const double w = heavy ? std::sqrt(3 / chi_square_draw(rng, 3)) : 1.0;
+                    double zx = 0, zy = 0;
+                    for (int c = 0; c < 3; ++c) {
+                        z[c][i] = w * rng.normal();
+                        zx += 0.5 * z[c][i], zy += (c - 1) * 0.6 * z[c][i];
+                    }
+                    const double e1 = rng.normal();
+                    const double e2 = 0.3 * e1 + std::sqrt(0.91) * rng.normal();
+                    x[i] = zx + w * e1, y[i] = zy + w * e2;
+                }
+                const auto p = dm::stats::partial_correlation(
+                    x, y, z, {.bootstrap = 300, .seed = static_cast<std::uint64_t>(r + 1)});
+                fc += p.lower <= 0.3 && 0.3 <= p.upper;
+                bc += p.bootstrap_lower <= 0.3 && 0.3 <= p.bootstrap_upper;
+                fw += (p.upper - p.lower) / sims;
+                bw += (p.bootstrap_upper - p.bootstrap_lower) / sims;
+            }
+            std::println("| {} | {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |",
+                         heavy ? "Multivariate t3" : "Normal", size, fc / sims, bc / sims,
+                         fw, bw);
+        }
+
+    // Figure: 400 units from the collider structure; highlight those with |z| < 0.5.
+    std::vector<double> ax, ay, sx, sy;
+    for (int i = 0; i < 400; ++i) {
+        const double x = rng.normal(), y = rng.normal(), z = x + y + 0.5 * rng.normal();
+        ax.push_back(x), ay.push_back(y);
+        if (std::abs(z) < 0.5) sx.push_back(x), sy.push_back(y);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.points(ax, ay, "All units", {200, 200, 200}, 5)
+        .points(sx, sy, "Units with |z| < 0.5", {26, 90, 147}, 6)
+        .y_limits(-3.5, 4.5)
+        .title("Conditioning on a collider z = x + y + e")
+        .x_label("x")
+        .y_label("y")
+        .size(620, 430);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/partial_correlation.svg");
+}
+```
+// result_begin: markdown
+| Association of mpg with hp | Method | Estimate | t (df) | p | Fisher 95% CI | Bootstrap 95% CI |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Raw | Pearson | -0.776 | -6.74 (30) | 0.0000 | [-0.885, -0.586] | [-0.875, -0.688] |
+| Partial, given wt | Pearson | -0.547 | -3.52 (29) | 0.0015 | [-0.755, -0.239] | [-0.733, -0.338] |
+| Semipartial (hp adjusted for wt) | Pearson | -0.272 | -3.52 (29) | 0.0015 | — | [-0.399, -0.146] |
+| Raw | Spearman | -0.895 | -10.97 (30) | 0.0000 | [-0.948, -0.794] | [-0.954, -0.812] |
+| Partial, given wt | Spearman | -0.711 | -5.44 (29) | 0.0000 | [-0.851, -0.476] | [-0.851, -0.519] |
+| Semipartial (hp adjusted for wt) | Spearman | -0.329 | -5.44 (29) | 0.0000 | — | [-0.477, -0.194] |
+
+Squared semipartial correlation (R^2 gained by adding hp to mpg ~ wt): 0.074.
+
+| Partial r (p) | mpg | hp | wt | disp | qsec |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| mpg | — | -0.22 (0.242) | -0.57 (0.001) | 0.05 (0.806) | 0.22 (0.254) |
+| hp | -0.22 (0.242) | — | 0.10 (0.622) | 0.22 (0.246) | -0.60 (0.001) |
+| wt | -0.57 (0.001) | 0.10 (0.622) | — | 0.68 (0.000) | 0.56 (0.001) |
+| disp | 0.05 (0.806) | 0.22 (0.246) | 0.68 (0.000) | — | -0.29 (0.126) |
+| qsec | 0.22 (0.254) | -0.60 (0.001) | 0.56 (0.001) | -0.29 (0.126) | — |
+
+| Structure | Mean raw r | Raw test rejects | Mean partial r | Partial test rejects |
+| --- | ---: | ---: | ---: | ---: |
+| Confounder z measured exactly | 0.489 | 0.999 | 0.000 | 0.043 |
+| Confounder measured with reliability 0.6 | 0.489 | 0.999 | 0.277 | 0.801 |
+| Collider z = x + y + e | -0.001 | 0.044 | -0.799 | 1.000 |
+
+| Data | n | Fisher-z coverage | Bootstrap coverage | Mean Fisher width | Mean bootstrap width |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Normal | 30 | 0.951 | 0.937 | 0.680 | 0.684 |
+| Normal | 100 | 0.953 | 0.944 | 0.362 | 0.354 |
+| Multivariate t3 | 30 | 0.822 | 0.930 | 0.661 | 0.815 |
+| Multivariate t3 | 100 | 0.703 | 0.910 | 0.354 | 0.505 |
+\image(figures/partial_correlation.svg)
+// result_end
+
+Heavier cars have more powerful engines, so the raw correlation of −0.78 between mpg and horsepower mixes the two. Given weight, the partial correlation is −0.55: among cars of equal weight, more power still means lower mileage. The semipartial correlation (−0.27) answers a different question. Horsepower's weight-free part adds 7.4% to the \(R^2\) of mpg on weight. That is the correct size measure for "unique contribution", and its test (t = −3.52, p = 0.0015) is the same as the partial correlation's. `ppcor::spcor.test` reports p = 0.14 for the same quantity, because it plugs the semipartial correlation into a formula that ignores the variance weight already explains.
+
+Spearman versions tell the same story with somewhat larger magnitudes. In the five-variable matrix, the partial correlation of mpg with hp shrinks to −0.22 (p = 0.24) once displacement and quarter-mile time are also held fixed. Those two absorb much of what power measures, and weight is the only variable left with a clear direct association with mpg. Each partial correlation is conditional on the specific set of covariates, and its meaning changes as that set changes.
+
+The first simulation shows when adjustment helps and when it harms. With the confounder measured exactly, the partial correlation is centred on zero and the test holds its 5% size. With the confounder measured at reliability 0.6, more than half the spurious association remains (0.28), and the test "finds" a direct link 80% of the time. Adjusting for a noisy proxy only partly adjusts. Conditioning on a collider creates a strong negative association (−0.80) between two independent variables, as the figure shows: among units with the sum held near zero, a large x must come with a small y. The causal structure, not the data, decides what to adjust for.
+
+For a true partial correlation of 0.3 with normal data, the Fisher interval covers at the nominal rate even at n = 30. Under multivariate \(t_3\) data, its coverage falls to 82% at n = 30 and 70% at n = 100. The error does not shrink with more data, because the variance of the estimator depends on fourth moments. The percentile bootstrap holds 91–93%, with intervals about 45% wider at n = 100.
+
+>> Practical guidance
+
+- Report the partial correlation for "association holding Z fixed" and the squared semipartial correlation for "unique variance explained". Test both with the regression coefficient t test, which is what this library reports.
+- Choose covariates from a causal argument. Adjust for confounders; never adjust for colliders or for consequences of x or y. Measurement error in a confounder leaves residual confounding, so a nonzero partial correlation is not proof of a direct link.
+- Use Fisher intervals only for roughly normal data. With heavy tails or outliers, use the bootstrap or Spearman partial correlations.
+- Partial correlations measure linear (or, with ranks, monotone) conditional association. Zero partial correlation is conditional independence only under joint normality.
+- With many variables and a modest n, estimate the precision matrix with regularization, as in the graphical lasso, instead of inverting the sample covariance.
+
+>> References
+
+- R. A. Fisher (1924). The distribution of the partial correlation coefficient. *Metron* 3, 329-332.
+- S. Kim (2015). ppcor: An R package for a fast calculation to semi-partial correlation coefficients. *Communications for Statistical Applications and Methods* 22(6), 665-674. doi:10.5351/CSAM.2015.22.6.665
+- J. Cohen, P. Cohen, S. G. West and L. S. Aiken (2003). *Applied Multiple Regression/Correlation Analysis for the Behavioral Sciences*, 3rd ed., ch. 3. Erlbaum.
+- J. Pearl (2009). *Causality*, 2nd ed., ch. 3. Cambridge University Press.
+- K. A. Bollen (1989). *Structural Equations with Latent Variables*, ch. 5 (measurement error in covariates). Wiley.

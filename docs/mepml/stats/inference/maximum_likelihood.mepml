@@ -1,0 +1,116 @@
+//? Title: Fit a custom likelihood with constraints and observed information
+//? Exports: both
+//? Lang: en
+
+> Maximize a supplied per-observation log likelihood
+
+Many models are easy to write as a log likelihood but have no dedicated fitting routine. `maximum_likelihood` takes the contribution \(\ell_i(\theta)\) of each observation, optional lower and upper bounds, and an optional analytic score. It returns the maximizer and the per-observation scores \(s_i(\hat\theta)\). It also returns the observed information \(J=-\nabla^2\sum_i\ell_i\), the outer product of the scores \(K=\sum_is_is_i^\top\), and two covariance estimates: the model-based \(J^{-1}\) and the sandwich \(J^{-1}KJ^{-1}\).
+
+Bounded parameters are optimized on a log or logit scale, so the estimate stays inside its bounds. The information is computed on the original scale, so the standard errors refer to the original parameters.
+
+The example simulates 400 counts from a zero-inflated Poisson law with structural-zero probability \(\pi=0.3\) and rate \(\lambda=2.5\). It fits two models: the zero-inflated model, with \(0\le\pi\le1\) and \(\lambda>0\), and a plain Poisson model. When a model is correct, \(J\) and \(K\) estimate the same matrix and the two standard errors agree. The plain Poisson model is wrong for these data, and its sandwich standard error differs from the model-based one.
+
+```{cpp, id=maximum-likelihood, file="figures/zip_fit.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/maximum_likelihood.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+
+int main() {
+    std::mt19937_64 random(17);
+    std::bernoulli_distribution structural(.3);
+    std::poisson_distribution<int> poisson(2.5);
+    std::vector<double> y(400);
+    for (auto& v : y)
+        v = structural(random) ? 0 : poisson(random);
+
+    // Zero-inflated Poisson: P(0) = pi + (1-pi) e^-lambda, P(k) = (1-pi) Pois(k; lambda).
+    const auto zip = [&](const std::vector<double>& t, std::size_t i) {
+        const double pi = t[0], lambda = t[1];
+        if (y[i] == 0)
+            return std::log(pi + (1 - pi) * std::exp(-lambda));
+        return std::log1p(-pi) + y[i] * std::log(lambda) - lambda - std::lgamma(y[i] + 1);
+    };
+    const auto fit = dm::stats::maximum_likelihood(y.size(), {.5, 1.0}, zip,
+                                                   {.lower = {0.0, 0.0}, .upper = {1.0, 100.0}});
+    const auto plain = dm::stats::maximum_likelihood(
+        y.size(), {1.0},
+        [&](const std::vector<double>& t, std::size_t i) {
+            return y[i] * std::log(t[0]) - t[0] - std::lgamma(y[i] + 1);
+        },
+        {.lower = {0.0}});
+
+    std::println("| Model | Parameter | Estimate | Model-based SE | Sandwich SE |");
+    std::println("| --- | --- | ---: | ---: | ---: |");
+    const char* names[]{"π", "λ"};
+    for (std::size_t j = 0; j < 2; ++j)
+        std::println("| Zero-inflated | {} | {:.4f} | {:.4f} | {:.4f} |", names[j], fit.estimate[j],
+                     fit.standard_errors[j], std::sqrt(fit.robust_covariance(j, j)));
+    std::println("| Poisson | λ | {:.4f} | {:.4f} | {:.4f} |\n", plain.estimate[0],
+                 plain.standard_errors[0], std::sqrt(plain.robust_covariance(0, 0)));
+    std::println("Log likelihoods: zero-inflated {:.2f}, Poisson {:.2f}. Iterations: {} and {}; "
+                 "converged: {} and {}.\n",
+                 fit.log_likelihood, plain.log_likelihood, fit.iterations, plain.iterations,
+                 fit.converged, plain.converged);
+    double s0 = 0, s1 = 0;
+    for (std::size_t i = 0; i < y.size(); ++i) {
+        s0 += fit.score_contributions(i, 0);
+        s1 += fit.score_contributions(i, 1);
+    }
+    std::println("Score contributions sum to ({:.1e}, {:.1e}) at the estimate.", s0, s1);
+
+    // Observed frequencies with the two fitted probability mass functions.
+    std::vector<double> k, observed, zip_mass, poisson_mass;
+    for (int c = 0; c <= 9; ++c) {
+        double count = 0;
+        for (const double v : y)
+            count += v == c;
+        const double pois = std::exp(c * std::log(plain.estimate[0]) - plain.estimate[0] -
+                                     std::lgamma(c + 1.0));
+        const double base = std::exp(c * std::log(fit.estimate[1]) - fit.estimate[1] -
+                                     std::lgamma(c + 1.0));
+        k.push_back(c);
+        observed.push_back(count / y.size());
+        zip_mass.push_back((c == 0 ? fit.estimate[0] : 0) + (1 - fit.estimate[0]) * base);
+        poisson_mass.push_back(pois);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.bars(k, observed, "Observed", {200, 204, 210})
+        .line(k, zip_mass, "Zero-inflated fit", {26, 90, 147}, 1.6)
+        .points(k, zip_mass, "", {26, 90, 147}, 5)
+        .line(k, poisson_mass, "Poisson fit", {176, 72, 43}, 1.6)
+        .points(k, poisson_mass, "", {176, 72, 43}, 5)
+        .title("Count frequencies and fitted probabilities")
+        .x_label("Count").y_label("Proportion")
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/zip_fit.svg");
+}
+```
+// result_begin: markdown
+| Model | Parameter | Estimate | Model-based SE | Sandwich SE |
+| --- | --- | ---: | ---: | ---: |
+| Zero-inflated | π | 0.2839 | 0.0267 | 0.0267 |
+| Zero-inflated | λ | 2.5032 | 0.1061 | 0.1031 |
+| Poisson | λ | 1.7925 | 0.0669 | 0.0865 |
+
+Log likelihoods: zero-inflated -695.78, Poisson -759.27. Iterations: 9 and 8; converged: true and true.
+
+Score contributions sum to (-2.3e-06, 3.0e-07) at the estimate.
+\image(figures/zip_fit.svg)
+// result_end
+\caption(Observed count proportions with the fitted zero-inflated and Poisson probability mass functions.)
+\alttext(The bars show many zeros and a mode near two. The zero-inflated fit follows the bars closely; the Poisson fit underestimates the zeros and overestimates the ones.)
+
+The zero-inflated fit recovers \(\pi\) and \(\lambda\) within about one standard error, and its model-based and sandwich standard errors agree closely. The plain Poisson fit estimates the overall mean, 1.79. Its model-based standard error of 0.067 assumes the variance equals the mean. The sandwich error of 0.087 reflects the extra variance the zeros create. The difference between the two standard errors is a simple sign of misspecification. The difference of 63.5 in log likelihood strongly favors the zero-inflated model.
+
+When an estimate is on or very close to a bound, `at_bound` is set. Regular asymptotic theory then does not apply to that parameter, and its standard error should not be used. Supplying an analytic score avoids the \(2p\) extra likelihood evaluations per observation that central differences need. It also makes the observed information more accurate.
+
+[Fisher (1922)|https://doi.org/10.1098/rsta.1922.0009] · [White (1982)|https://doi.org/10.2307/1912526] · [Nocedal and Wright (2006)|https://doi.org/10.1007/978-0-387-40065-5] · [R stats4::mle|https://stat.ethz.ch/R-manual/R-devel/library/stats4/html/mle.html]

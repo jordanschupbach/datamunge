@@ -84,6 +84,17 @@ int main() {
     plot.save_svg("build/stability_selection_path.svg");
 }
 ```
+// result_begin: markdown
+| Predictor | Maximum selection frequency |
+| --- | ---: |
+| X1 | 1.000 |
+| X2 | 1.000 |
+| X3 | 0.017 |
+| X4 | 0.017 |
+
+Stable set X1 X2.
+\image(figures/stability_selection_path.svg)
+// result_end
 \caption(The horizontal line marks the 0.8 threshold applied to each predictor's maximum frequency.)
 \alttext(The first two predictors reach the threshold. The remaining predictors have lower selection frequencies across the penalty grid.)
 

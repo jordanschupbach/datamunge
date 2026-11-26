@@ -1,0 +1,155 @@
+//? Title: Estimate a spectral density with Welch averaging and multitapers
+//? Exports: both
+//? Lang: en
+
+> Trade a little resolution for a lot of variance and leakage control
+
+The periodogram \(|\sum_tx_te^{-2\pi ift}|^2/n\) is the natural estimate of a spectral density, but it has two problems. Its variance does not shrink as \(n\) grows: each ordinate is roughly \(S(f)\,\chi^2_2/2\). Its implicit rectangular taper also leaks power from strong frequencies into weak ones through sidelobes. Both estimators here trade a little frequency resolution for a stable estimate with controlled leakage.
+
+- **Welch** splits the series into overlapping segments, applies a smooth window to each and averages the segment periodograms. Fifty-percent overlap with a Hann window loses little information, and the equivalent degrees of freedom \(\nu\) for the average account for the correlation between overlapping segments.
+- **Thomson's multitaper** applies \(K\) orthogonal Slepian tapers to the whole series and combines the \(K\) nearly independent eigenspectra. The tapers maximize the energy inside a band of half-width \(W=NW/n\), so leakage from outside that band is tiny. Adaptive weights drop the leakier high-order tapers where the spectrum is low.
+
+Both report pointwise chi-square bands \(\nu\hat S/\chi^2_{\nu,1-\alpha/2}\le S\le\nu\hat S/\chi^2_{\nu,\alpha/2}\). The example uses the AR(4) process of Percival and Walden, whose spectrum spans about 65 dB, a severe test of leakage. It compares the raw periodogram, Welch and the adaptive multitaper estimate with the true spectrum, then checks the coverage of the 95% bands over 200 simulated series.
+
+```{cpp, id=spectral, file="figures/spectral_density.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/spectral_density.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <complex>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::SpectralWindow;
+
+const std::vector<double> phi{2.7607, -3.8106, 2.6535, -0.9238};
+
+// One-sided AR(4) spectral density with unit innovation variance.
+double true_density(double f) {
+    std::complex<double> a = 1;
+    for (std::size_t k = 0; k < phi.size(); ++k)
+        a -= phi[k] * std::polar(1.0, -2 * std::numbers::pi * f * double(k + 1));
+    return 2 / std::norm(a);
+}
+
+std::vector<double> simulate(std::size_t n, std::mt19937_64& random) {
+    std::normal_distribution<double> z;
+    std::vector<double> x(n + 1000, 0.0);
+    for (std::size_t t = 4; t < x.size(); ++t)
+        x[t] = phi[0] * x[t - 1] + phi[1] * x[t - 2] + phi[2] * x[t - 3] + phi[3] * x[t - 4]
+               + z(random);
+    return {x.begin() + 1000, x.end()};
+}
+
+double db(double v) { return 10 * std::log10(v); }
+
+int main() {
+    std::mt19937_64 random(5);
+    const std::size_t n = 2048;
+    const auto x = simulate(n, random);
+    const auto periodogram = dm::stats::welch_spectrum(
+        x, {.segment_length = n, .window = SpectralWindow::rectangular});
+    const auto welch = dm::stats::welch_spectrum(x, {.segment_length = 256});
+    const auto mtm = dm::stats::multitaper_spectrum(x, {.time_bandwidth = 4, .fft_length = n});
+
+    // Mean error in dB at frequencies above 0.3, where the true spectrum is lowest.
+    std::println("| Estimator | Mean error above f = 0.3 (dB) | ν (interior) |");
+    std::println("| --- | ---: | ---: |");
+    const auto high_error = [](const dm::stats::SpectralEstimate& s) {
+        double sum = 0;
+        int count = 0;
+        for (std::size_t k = 1; k + 1 < s.density.size(); ++k)
+            if (s.frequencies[k] > .3) {
+                sum += db(s.density[k]) - db(true_density(s.frequencies[k]));
+                ++count;
+            }
+        return sum / count;
+    };
+    std::println("| Periodogram | {:.1f} | {:.0f} |", high_error(periodogram),
+                 periodogram.degrees_of_freedom[5]);
+    std::println("| Welch, Hann, 256 / 128 | {:.1f} | {:.1f} |", high_error(welch),
+                 welch.degrees_of_freedom[5]);
+    auto nu = mtm.degrees_of_freedom;
+    std::ranges::sort(nu);
+    std::println("| Multitaper, NW = 4, adaptive | {:.1f} | {:.1f} (median) |",
+                 high_error(mtm), nu[nu.size() / 2]);
+
+    // Pointwise coverage of 95% bands over 200 series, at 40 interior frequencies each.
+    int welch_in = 0, mtm_in = 0, checks = 0;
+    for (int r = 0; r < 200; ++r) {
+        const auto y = simulate(n, random);
+        const auto w = dm::stats::welch_spectrum(y, {.segment_length = 256});
+        const auto m =
+            dm::stats::multitaper_spectrum(y, {.time_bandwidth = 4, .fft_length = n});
+        for (int j = 1; j <= 40; ++j) {
+            const double f = j / 82.0;
+            const auto wk = std::size_t(std::lround(f * 256));
+            const auto mk = std::size_t(std::lround(f * n));
+            const double sw = true_density(w.frequencies[wk]);
+            const double sm = true_density(m.frequencies[mk]);
+            welch_in += w.lower[wk] <= sw && sw <= w.upper[wk];
+            mtm_in += m.lower[mk] <= sm && sm <= m.upper[mk];
+            ++checks;
+        }
+    }
+    std::println("\nCoverage of nominal 95% bands: Welch {:.3f}, multitaper {:.3f} "
+                 "({} checks each).", welch_in / double(checks), mtm_in / double(checks),
+                 checks);
+
+    std::vector<double> fp, pp, fw, pw, fm, pm, lo, hi, truth;
+    for (std::size_t k = 1; k < periodogram.density.size(); k += 2) {
+        fp.push_back(periodogram.frequencies[k]);
+        pp.push_back(db(periodogram.density[k]));
+    }
+    for (std::size_t k = 1; k < welch.density.size(); ++k) {
+        fw.push_back(welch.frequencies[k]);
+        pw.push_back(db(welch.density[k]));
+    }
+    for (std::size_t k = 1; k < mtm.density.size(); k += 2) {
+        fm.push_back(mtm.frequencies[k]);
+        pm.push_back(db(mtm.density[k]));
+        lo.push_back(db(mtm.lower[k]));
+        hi.push_back(db(mtm.upper[k]));
+        truth.push_back(db(true_density(mtm.frequencies[k])));
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(fp, pp, "Periodogram", {190, 193, 198}, .6)
+        .line(fw, pw, "Welch (Hann, 256)", {46, 139, 87}, 1.4)
+        .line(fm, pm, "Multitaper (NW = 4)", {26, 90, 147}, 1.4)
+        .line(fm, lo, "Multitaper 95% band", {120, 160, 200}, .7)
+        .line(fm, hi, "", {120, 160, 200}, .7)
+        .line(fm, truth, "True AR(4) spectrum", {176, 72, 43}, 1.6)
+        .title("AR(4) spectrum: leakage and variance")
+        .x_label("Frequency (cycles per sample)")
+        .y_label("Density (dB)")
+        .ylim(-50, 75)
+        .size(740, 440);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/spectral_density.svg");
+}
+```
+// result_begin: markdown
+| Estimator | Mean error above f = 0.3 (dB) | ν (interior) |
+| --- | ---: | ---: |
+| Periodogram | 10.3 | 2 |
+| Welch, Hann, 256 / 128 | -0.0 | 28.5 |
+| Multitaper, NW = 4, adaptive | -0.2 | 8.5 (median) |
+
+Coverage of nominal 95% bands: Welch 0.939, multitaper 0.949 (8000 checks each).
+\image(figures/spectral_density.svg)
+// result_end
+\caption(Estimates of the AR(4) spectrum from one series of 2048 values, in decibels. The raw periodogram is grey, the Welch estimate green and the adaptive multitaper estimate blue with its 95% band. The true spectrum is orange.)
+\alttext(The true spectrum has two sharp peaks near frequencies 0.11 and 0.14 reaching about 45 dB and falls to about -20 dB at high frequencies. The grey periodogram scatters widely and, above frequency 0.3, stays roughly 10 dB above the truth. The green Welch curve and the blue multitaper curve both follow the orange truth across the full range, with the blue 95% band enclosing it.)
+
+The periodogram fails exactly where the spectrum is low. Above \(f=0.3\) it sits about 10 dB too high on average, because the sidelobes of its rectangular taper carry power down from the 45 dB peaks. This is bias, not noise: more data does not remove it. (The mean of a \(\chi^2_2\) ordinate in decibels is itself 2.5 dB below the log of the mean, so the leakage bias is larger than 10 dB.) The Hann-windowed Welch average and the multitaper estimate both follow the true spectrum across the whole 65 dB range. On average they are within 0.2 dB at high frequencies.
+
+They differ in what they trade. Welch with 256-sample segments averages about 28 equivalent degrees of freedom, so it is smooth, but its resolution is limited to roughly \(2/256\) cycles per sample. That is enough here only because the two AR(4) peaks are 0.03 apart. The multitaper estimate uses the whole series, so its resolution is \(2W=8/2048\), eight times finer. The adaptive weights give a median of 8.5 degrees of freedom rather than \(2K=14\), because they down-weight leaky tapers in the low part of the spectrum. With the equivalent degrees of freedom accounted for, both sets of 95% bands cover the true spectrum close to their nominal rate: 93.9% for Welch and 94.9% for the multitaper estimate.
+
+`welch_spectrum` matches `scipy.signal.welch` for Hann, Hamming, Blackman and rectangular windows, constant and linear detrending, density and spectrum scaling, zero padding to any length, and median averaging with its bias correction. Its bands use the overlap-corrected degrees of freedom of Percival and Walden. `dpss_tapers` matches `scipy.signal.windows.dpss`, including concentration ratios, and matches R's `multitaper::dpss` up to the sign of odd tapers. The plain multitaper average matches R's `spec.mtm` with an arithmetic-mean centre. The adaptive estimate and its degrees of freedom match an independent NumPy implementation of Percival and Walden's equations 370a–b. Transforms of any length use a new Bluestein `dft_any_length` in the core FFT header.
+
+[Welch (1967)|https://doi.org/10.1109/TAU.1967.1161901] · [Thomson (1982)|https://doi.org/10.1109/PROC.1982.12433] · [Percival and Walden (1993)|https://doi.org/10.1017/CBO9780511622762]

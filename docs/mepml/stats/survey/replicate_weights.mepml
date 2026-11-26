@@ -1,0 +1,169 @@
+//? Title: Estimate survey variances with BRR, Fay and jackknife replicate weights
+//? Exports: both
+//? Lang: en
+
+> Recompute the estimate under perturbed weights instead of deriving a variance formula
+
+Replicate-weight methods estimate a variance by recomputing the statistic many times. Each replicate reweights the sample to mimic drawing a different half-sample or deleting one primary sampling unit (PSU). The spread of the replicate estimates then estimates the sampling variance. The same code works for any statistic, including ones with no convenient linearization. Public-use files from agencies ship replicate weights instead of strata and PSU identifiers, which also protects confidentiality.
+- The stratified jackknife (JKn) deletes one PSU from its stratum in each replicate and inflates the others in that stratum by \(n_h/(n_h-1)\). The variance is \(\sum_r\frac{n_h-1}{n_h}(\hat\theta_r-\bar\theta)^2\).
+- Balanced repeated replication (BRR) suits designs with two PSUs per stratum. Each replicate keeps one PSU per stratum with doubled weight. The choice of PSU follows a Hadamard matrix, which makes the half-samples fully balanced. With \(R\) replicates, the variance is \(\frac1R\sum_r(\hat\theta_r-\bar\theta)^2\).
+- Fay's method is a variant of BRR that keeps the dropped half at weight \(\rho\) and gives the kept half \(2-\rho\), and divides the variance by \((1-\rho)^2\). No unit's weight ever reaches zero.
+
+The example draws 2 PSUs from each of 20 strata (40 PSUs per stratum in the population), then 10 units per PSU. The outcome has a PSU effect. It estimates the mean of a subgroup (a domain) whose prevalence ranges from 2% to 50%. For 500 samples per prevalence, it compares linearization, JKn, BRR and Fay (\(\rho=0.5\)). When a BRR half-sample contains no domain member, that replicate's domain mean is undefined, so the sample is counted as a BRR failure. The table gives each method's mean standard error over its successful samples, divided by the empirical SD of the estimates. The figure shows interval coverage.
+
+```{cpp, id=rep, file="figures/replicate_weights.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/survey.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <numeric>
+#include <print>
+#include <random>
+#include <stdexcept>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::ReplicateMethod;
+
+int main() {
+    const int strata = 20, psus = 40, units = 30, take = 10;
+    std::mt19937_64 random(3);
+    std::normal_distribution<double> z;
+    std::uniform_real_distribution<double> u(0, 1);
+    const std::vector<double> prevalence{.02, .05, .1, .2, .5};
+    std::vector<double> cover_curve[4];
+    const char* names[4]{"Linearization", "Jackknife (JKn)", "BRR", "Fay (rho = 0.5)"};
+    std::println("| Domain prevalence | BRR failed | SE ratio: linearization "
+                 "| JKn | BRR | Fay |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const double p : prevalence) {
+        // Population: y = stratum level + PSU effect + noise; domain members score 5 higher.
+        std::vector<double> y;
+        std::vector<bool> member;
+        double sum = 0, count = 0;
+        for (int h = 0; h < strata; ++h)
+            for (int c = 0; c < psus; ++c) {
+                const double psu_effect = 3 * z(random);
+                for (int k = 0; k < units; ++k) {
+                    const bool m = u(random) < p;
+                    const double v = 50 + h * .5 + psu_effect + (m ? 5 : 0) + 8 * z(random);
+                    y.push_back(v);
+                    member.push_back(m);
+                    if (m) {
+                        sum += v;
+                        count += 1;
+                    }
+                }
+            }
+        const double truth = sum / count;
+        std::vector<double> est, se[4];
+        double cover[4]{}, failed[4]{};
+        const int reps = 500;
+        std::vector<int> psu_ids(psus), unit_ids(units);
+        std::iota(psu_ids.begin(), psu_ids.end(), 0);
+        std::iota(unit_ids.begin(), unit_ids.end(), 0);
+        for (int r = 0; r < reps; ++r) {
+            dm::stats::SurveyDesign design{.lonely_psu = dm::stats::LonelyPsu::certainty};
+            std::vector<double> ys;
+            std::vector<bool> domain;
+            for (int h = 0; h < strata; ++h) {
+                std::ranges::shuffle(psu_ids, random);
+                for (int c = 0; c < 2; ++c) {
+                    std::ranges::shuffle(unit_ids, random);
+                    for (int k = 0; k < take; ++k) {
+                        const std::size_t i =
+                            (std::size_t(h) * psus + psu_ids[c]) * units + unit_ids[k];
+                        ys.push_back(y[i]);
+                        domain.push_back(member[i]);
+                        design.weights.push_back(double(psus) / 2 * units / take);
+                        design.strata.push_back(h);
+                        design.clusters.push_back(psu_ids[c]);
+                    }
+                }
+            }
+            if (std::ranges::count(domain, true) == 0) {
+                for (double& f : failed)
+                    f += 1;
+                continue;
+            }
+            const auto lin = dm::stats::survey_mean(design, ys, domain);
+            est.push_back(lin.estimate);
+            const ReplicateMethod methods[3]{ReplicateMethod::jkn, ReplicateMethod::brr,
+                                             ReplicateMethod::fay};
+            for (int m = 0; m < 4; ++m) {
+                try {
+                    const auto e = m == 0
+                        ? lin
+                        : dm::stats::replicate_mean(
+                              dm::stats::make_replicate_design(design,
+                                                               {.method = methods[m - 1]}),
+                              ys, domain);
+                    se[m].push_back(e.standard_error);
+                    cover[m] += e.lower <= truth && truth <= e.upper;
+                } catch (const std::invalid_argument&) { // a replicate with no domain members
+                    failed[m] += 1;
+                }
+            }
+        }
+        const double mean = std::accumulate(est.begin(), est.end(), 0.0) / est.size();
+        double ss = 0;
+        for (const double v : est)
+            ss += (v - mean) * (v - mean);
+        const double sd = std::sqrt(ss / (est.size() - 1));
+        double ratio[4];
+        for (int m = 0; m < 4; ++m) {
+            const double ok = double(se[m].size());
+            ratio[m] = std::accumulate(se[m].begin(), se[m].end(), 0.0) / ok / sd;
+            cover_curve[m].push_back(cover[m] / ok);
+        }
+        std::println("| {:.0f}% | {:.1f}% | {:.2f} | {:.2f} | {:.2f} | {:.2f} |", 100 * p,
+                     100 * failed[2] / reps, ratio[0], ratio[1], ratio[2], ratio[3]);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    const dm::graphics::RGBA colors[4]{
+        {120, 120, 120}, {80, 150, 90}, {176, 72, 43}, {26, 90, 147}};
+    const std::vector<double> nominal(prevalence.size(), .95);
+    plot.line(prevalence, nominal, "Nominal 95%", {150, 150, 150}, 1.2);
+    for (int m = 0; m < 4; ++m)
+        plot.line(prevalence, cover_curve[m], names[m], colors[m], 1.8)
+            .points(prevalence, cover_curve[m], colors[m], 3.5);
+    plot.title("Coverage of 95% intervals for a domain mean (successful samples)")
+        .x_label("Domain prevalence")
+        .y_label("Coverage")
+        .ylim(.8, 1.05)
+        .size(700, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/replicate_weights.svg");
+}
+```
+// result_begin: markdown
+| Domain prevalence | BRR failed | SE ratio: linearization | JKn | BRR | Fay |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 2% | 23.4% | 0.83 | 0.88 | 0.97 | 0.86 |
+| 5% | 0.0% | 0.92 | 0.93 | 1.00 | 0.94 |
+| 10% | 0.0% | 0.95 | 0.95 | 0.98 | 0.96 |
+| 20% | 0.0% | 1.00 | 1.00 | 1.02 | 1.00 |
+| 50% | 0.0% | 0.97 | 0.97 | 0.98 | 0.97 |
+\image(figures/replicate_weights.svg)
+// result_end
+\caption(Coverage of nominal 95% intervals for a domain mean as the domain's prevalence grows, for Taylor linearization (grey), the stratified jackknife (green), BRR (orange, among samples where every half-sample contained domain members) and Fay's method with rho = 0.5 (blue). 500 samples of 2 PSUs from each of 20 strata per point.)
+\alttext(A grey horizontal line marks 0.95. Four coverage lines, for linearization, jackknife, BRR and Fay, rise from between about 0.86 and 0.92 at 2% prevalence to about 0.93 at 20% and stay there to 50%. The orange BRR line starts highest, near 0.92, and the other three nearly coincide throughout.)
+
+For common domains (prevalence 20% or more), the four methods give practically the same standard errors and coverage. Under this design, BRR is exact for totals, and linearization and the jackknife are asymptotically equivalent for smooth statistics. All coverages sit near 93%, slightly below 95%, because 40 PSUs in 20 strata leave only 20 degrees of freedom.
+
+The methods separate for rare domains.
+- BRR fails outright in 23% of samples at 2% prevalence. Some half-sample keeps only PSUs with no domain members, so that replicate's domain mean is undefined. Its better-looking standard error ratio and coverage come from the samples where it succeeded, which tend to contain more domain members. They are not a fair comparison.
+- Fay's method never fails. The dropped half keeps weight \(\rho=0.5\), so every replicate sees every unit. Its standard errors track the jackknife's. This robustness is one reason Fay-type replicate weights are popular in published survey files.
+- At 2% prevalence, all successful methods understate the variance (ratios 0.83–0.88) and undercover. The domain then rests on about eight sampled units spread over a few PSUs, which is too few for any normal-theory interval.
+
+Replicate standard errors also make the design shareable: an analyst given only `weights` and the replicate matrix can reproduce these results without strata or PSU codes.
+
+Replicate designs match `survey::as.svrepdesign`:
+- BRR and Fay (\(\rho=0.3\)) on NHANES with two PSUs per stratum: the same 16 replicates and scales, and equal totals.
+- Means computed from `survey`'s own replicate weights, including the `mse = TRUE` centring.
+- JK1 on `apiclus1` and JKn on `apistrat`, with finite-population corrections, for means, totals, ratios and domain means.
+
+A separate test confirms full balance: BRR totals reproduce the linearized variance for every number of strata from 1 to 40, covering Sylvester, Paley and doubled Hadamard orders.
+
+[Wolter (2007)|https://doi.org/10.1007/978-0-387-35099-8] · [Lumley (2004)|https://doi.org/10.18637/jss.v009.i08]

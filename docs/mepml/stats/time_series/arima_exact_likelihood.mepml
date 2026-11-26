@@ -1,0 +1,120 @@
+//? Title: Fit ARIMA models by exact likelihood with missing data
+//? Exports: both
+//? Lang: en
+
+> Let the Kalman filter integrate over the gaps
+
+Conditional sum of squares treats the first observations as fixed and needs a complete series. The exact Gaussian likelihood instead uses the joint density of all observations. In state space form, the Kalman filter factorizes it into one-step prediction errors \(v_t\) with variances \(\sigma^2F_t\):
+\[\ell=-\tfrac12\sum_t\{\log(2\pi\sigma^2F_t)+v_t^2/(\sigma^2F_t)\}.\]
+A missing observation needs no imputation. The filter predicts through it without an update, which integrates that value out of the joint density exactly. Differencing is handled by states with a diffuse prior, so the same likelihood serves ARIMA and seasonal models.
+
+`arima_likelihood` evaluates this likelihood at given coefficients using the state space form of R's `makeARIMA`, so the result can be compared with `arima` directly. `fit_arima_exact` maximizes it over coefficients that are reparameterized through partial autocorrelations, which keeps the search inside the stationary and invertible region. `forecast_arima_exact` continues the filter beyond the sample.
+
+The example simulates 300 monthly observations from an ARMA(1,1) model with mean 50, \(\phi=0.7\), \(\theta=0.4\) and \(\sigma=2\). It then deletes observations, first at random and then as a 24-month block plus the last five months, and fits the same model each time.
+
+```{cpp, id=arima-exact, file="figures/arima_gaps_forecast.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/arima_exact.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+constexpr double NA = std::numeric_limits<double>::quiet_NaN();
+
+int main() {
+    std::mt19937_64 random(2024);
+    std::normal_distribution<double> noise(0, 2);
+    std::vector<double> y;
+    double w = 0, e_prev = 0;
+    for (int t = -100; t < 300; ++t) {  // 100-step burn-in
+        const double e = noise(random);
+        w = .7 * w + e + .4 * e_prev;
+        e_prev = e;
+        if (t >= 0)
+            y.push_back(50 + w);
+    }
+
+    const auto with_gaps = [&](double fraction, bool block) {
+        auto x = y;
+        std::bernoulli_distribution drop(fraction);
+        for (std::size_t t = 0; t < x.size(); ++t)
+            if (block ? ((t >= 150 && t < 174) || t >= 295) : drop(random))
+                x[t] = NA;
+        return x;
+    };
+    struct Case { const char* name; std::vector<double> data; };
+    const std::vector<Case> cases{{"Complete", y},
+                                  {"10% missing at random", with_gaps(.1, false)},
+                                  {"40% missing at random", with_gaps(.4, false)},
+                                  {"Block of 24 + last 5 missing", with_gaps(0, true)}};
+    std::println("| Data | n | φ (SE) | θ (SE) | Mean (SE) | σ² | Log lik. |");
+    std::println("| --- | ---: | --- | --- | --- | ---: | ---: |");
+    dm::stats::ExactArimaFit block_fit;
+    for (const auto& c : cases) {
+        const auto fit = dm::stats::fit_arima_exact(c.data, {.order = {.p = 1, .q = 1}});
+        std::println("| {} | {} | {:.3f} ({:.3f}) | {:.3f} ({:.3f}) | {:.2f} ({:.2f}) | {:.2f} | {:.1f} |",
+                     c.name, fit.observations_used, fit.estimates[0], fit.standard_errors[0],
+                     fit.estimates[1], fit.standard_errors[1], fit.estimates[2],
+                     fit.standard_errors[2], fit.sigma2, fit.log_likelihood);
+        block_fit = fit;
+    }
+
+    // Forecast 12 months past the end of the gapped series; the last five months are missing.
+    const auto f = dm::stats::forecast_arima_exact(block_fit, 12);
+    std::println("\nForecast from the gapped series, 1, 6 and 12 months past month 300 "
+                 "(true values are not used):");
+    for (const std::size_t h : {0, 5, 11})
+        std::println("- h = {}: {:.2f} ± {:.2f} (95%)", h + 1, f.mean[h], 1.96 * f.standard_error[h]);
+
+    const auto& gapped = cases.back().data;
+    std::vector<double> t_obs, y_obs, t_miss, y_miss, t_f, lo, hi;
+    for (std::size_t t = 200; t < gapped.size(); ++t) {
+        (std::isnan(gapped[t]) ? t_miss : t_obs).push_back(double(t));
+        (std::isnan(gapped[t]) ? y_miss : y_obs).push_back(y[t]);
+    }
+    for (std::size_t h = 0; h < 12; ++h) {
+        t_f.push_back(300.0 + h);
+        lo.push_back(f.mean[h] - 1.96 * f.standard_error[h]);
+        hi.push_back(f.mean[h] + 1.96 * f.standard_error[h]);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(t_obs, y_obs, "Observed", {80, 86, 96}, 1.2)
+        .points(t_miss, y_miss, "Withheld (not used)", {176, 72, 43}, 4)
+        .line(t_f, f.mean, "Forecast", {26, 90, 147}, 1.8)
+        .line(t_f, lo, "95% interval", {26, 90, 147}, .8)
+        .line(t_f, hi, "", {26, 90, 147}, .8)
+        .ylim(38, 70)
+        .title("ARMA(1,1) forecasts after a series that ends in a gap")
+        .x_label("Month").y_label("Value")
+        .size(740, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/arima_gaps_forecast.svg");
+}
+```
+// result_begin: markdown
+| Data | n | φ (SE) | θ (SE) | Mean (SE) | σ² | Log lik. |
+| --- | ---: | --- | --- | --- | ---: | ---: |
+| Complete | 300 | 0.719 (0.046) | 0.337 (0.059) | 50.05 (0.60) | 4.83 | -662.4 |
+| 10% missing at random | 269 | 0.702 (0.048) | 0.380 (0.066) | 50.05 (0.58) | 4.74 | -603.6 |
+| 40% missing at random | 195 | 0.687 (0.060) | 0.367 (0.122) | 50.19 (0.58) | 5.13 | -465.4 |
+| Block of 24 + last 5 missing | 271 | 0.733 (0.047) | 0.327 (0.063) | 49.87 (0.65) | 4.91 | -601.5 |
+
+Forecast from the gapped series, 1, 6 and 12 months past month 300 (true values are not used):
+- h = 1: 49.81 ± 7.91 (95%)
+- h = 6: 49.86 ± 8.03 (95%)
+- h = 12: 49.87 ± 8.04 (95%)
+\image(figures/arima_gaps_forecast.svg)
+// result_end
+\caption(The last 100 months of the gapped series, the withheld values, and 12-month forecasts with 95% intervals from the ARMA(1,1) model fitted by exact likelihood.)
+\alttext(The observed series varies around 50 with a gap from month 150 to 173, not shown, and five withheld points at months 295 to 299 shown as dots. The forecast starts near 49.8 and stays almost flat, with an interval about 8 wide on each side.)
+
+All four fits recover the parameters within about one standard error. Random gaps mostly widen the uncertainty about \(\theta\): its standard error doubles when 40% of the series is missing, because the MA coefficient is identified by adjacent pairs of observations, and many of those pairs are broken. The autoregressive coefficient and the mean are much less affected. A contiguous block costs only the information in its own observations, and the fit is otherwise unchanged. Log likelihoods are comparable only between fits to the same data.
+
+Because the series ends with five missing months, the forecast origin is month 295, and the first forecast is effectively six steps ahead. The filter does this automatically. The interval is almost as wide as the stationary limit at \(h=1\), and the forecast reverts to the estimated mean at rate \(\phi\). In the unit tests, estimates, standard errors, log likelihoods, residuals and forecasts agree with `arima(method = "ML")` and `predict` in R. This holds for an AR(2) model of `LakeHuron`, for the `presidents` series with its missing quarters, and for the seasonal airline model of `USAccDeaths`, and fixed-parameter likelihoods agree to \(10^{-8}\).
+
+[Gardner, Harvey and Phillips (1980)|https://doi.org/10.2307/2346910] · [Jones (1980)|https://doi.org/10.1080/00401706.1980.10486171] · [Durbin and Koopman (2012)|https://doi.org/10.1093/acprof:oso/9780199641178.001.0001] · [R arima|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/arima.html]

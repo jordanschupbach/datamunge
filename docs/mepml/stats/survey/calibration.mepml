@@ -1,0 +1,183 @@
+//? Title: Calibrate and rake survey weights to known population totals
+//? Exports: both
+//? Lang: en
+
+> Adjust design weights so the sample reproduces known totals, correcting nonresponse and reducing variance
+
+Censuses and administrative registers often give exact population counts by age and sex, or totals of variables such as income. A weighted sample usually fails to reproduce them, because of sampling variation, differential nonresponse or frame undercoverage. Calibration (Deville and Särndal, 1992) adjusts each design weight \(w_i\) by a factor \(g_i\) so that \(\sum_iw_ig_ix_i=T\) holds exactly for the auxiliary variables \(x\), while keeping \(g\) as close to 1 as possible. The choice of distance sets the shape of the adjustment.
+- Linear (chi-square) distance gives \(g_i=1+x_i^\top\lambda\). This is the generalized regression (GREG) estimator, available in closed form, but nothing stops a weight from becoming negative.
+- Raking (multiplicative) distance gives \(g_i=\exp(x_i^\top\lambda)\). Weights stay positive, and with categorical margins this is iterative proportional fitting, which `rake_weights` performs directly.
+- Logit distance with bounds \((L,U)\) keeps every \(g_i\) strictly inside them, which caps the influence of any one respondent.
+
+Every calibration estimator is approximately design-unbiased, and they share the same large-sample variance. When nonresponse depends on the calibration variables, they also remove the resulting bias. That works because each response class is then reweighted to its known size.
+
+The example draws simple random samples of 400 from a population of 20,000 with four age groups, two sexes and a skewed income. The outcome depends on all three. Response falls from about 30% in the youngest group to about 70% in the oldest, giving roughly 200 respondents. Over 1000 samples, it compares the respondent mean under design weights with the mean after calibrating to the age and sex counts and the income total.
+
+```{cpp, id=cal, file="figures/calibration.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/survey_calibration.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::CalibrationDistance;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+struct Person {
+    int age, sex;
+    double income, y;
+};
+
+int main() {
+    std::mt19937_64 random(30);
+    std::uniform_real_distribution<double> u(0, 1);
+    std::normal_distribution<double> z;
+    const std::size_t N = 20000, n = 400;
+    std::vector<Person> pop;
+    double mu = 0, income_total = 0;
+    double age_count[4]{}, male_count = 0;
+    for (std::size_t i = 0; i < N; ++i) {
+        const int age = int(4 * u(random)), sex = u(random) < .5;
+        const double income = std::exp(10 + .15 * age + .6 * z(random));
+        const double y = 20 + 3 * age + 2 * sex + income / 20000 + 4 * z(random);
+        pop.push_back({age, sex, income, y});
+        mu += y / N;
+        income_total += income;
+        age_count[age] += 1;
+        male_count += sex;
+    }
+    // Constraints: intercept, age groups 1-3, male, income.
+    const std::vector<double> targets{double(N), age_count[1], age_count[2], age_count[3],
+                                      male_count, income_total};
+    struct Method { const char* name; CalibrationDistance d; double lo, hi; };
+    const Method methods[4]{
+        {"Linear (GREG)", CalibrationDistance::linear, -INFINITY, INFINITY},
+        {"Raking", CalibrationDistance::raking, -INFINITY, INFINITY},
+        {"Logit, g in (0.3, 6)", CalibrationDistance::logit, .3, 6},
+        {"Logit, g in (0.5, 3.5)", CalibrationDistance::logit, .5, 3.5}};
+    const int reps = 1000;
+    double bias[5]{}, mse[5]{}, negative[5]{}, min_g[5], max_g[5], failed[5]{}, residual[5]{};
+    std::fill(min_g, min_g + 5, INFINITY);
+    std::fill(max_g, max_g + 5, -INFINITY);
+    std::vector<double> example_g[4];
+    std::vector<std::size_t> ids(N);
+    for (std::size_t i = 0; i < N; ++i)
+        ids[i] = i;
+    for (int r = 0; r < reps; ++r) {
+        std::ranges::shuffle(ids, random);
+        std::vector<double> w, y;
+        std::vector<std::vector<double>> rows;
+        for (std::size_t k = 0; k < n; ++k) {
+            const Person& p = pop[ids[k]];
+            const double respond = 1 / (1 + std::exp(-(-.9 + .6 * p.age + .2 * p.sex)));
+            if (u(random) < respond) {
+                w.push_back(double(N) / n);
+                y.push_back(p.y);
+                rows.push_back({1, double(p.age == 1), double(p.age == 2), double(p.age == 3),
+                                double(p.sex), p.income});
+            }
+        }
+        Matrix x(w.size(), 6);
+        for (std::size_t i = 0; i < w.size(); ++i)
+            for (std::size_t a = 0; a < 6; ++a)
+                x(i, a) = rows[i][a];
+        const auto mean = [&](const std::vector<double>& weights) {
+            double s = 0, t = 0;
+            for (std::size_t i = 0; i < weights.size(); ++i) {
+                s += weights[i] * y[i];
+                t += weights[i];
+            }
+            return s / t;
+        };
+        const double design = mean(w);
+        bias[0] += (design - mu) / reps;
+        mse[0] += (design - mu) * (design - mu) / reps;
+        for (int m = 0; m < 4; ++m) {
+            const auto c = dm::stats::calibrate_weights(
+                w, x, targets, {.distance = methods[m].d, .lower = methods[m].lo,
+                                .upper = methods[m].hi});
+            failed[m + 1] += !c.converged;
+            residual[m + 1] = std::max(residual[m + 1], c.max_relative_residual);
+            const double e = mean(c.weights);
+            bias[m + 1] += (e - mu) / reps;
+            mse[m + 1] += (e - mu) * (e - mu) / reps;
+            for (const double g : c.g) {
+                negative[m + 1] += g < 0;
+                min_g[m + 1] = std::min(min_g[m + 1], g);
+                max_g[m + 1] = std::max(max_g[m + 1], g);
+            }
+            if (r == 0) {
+                example_g[m] = c.g;
+                std::ranges::sort(example_g[m]);
+            }
+        }
+    }
+    std::println("| Weights | Bias | RMSE | Not converged | Negative weights | Range of g |");
+    std::println("| --- | ---: | ---: | ---: | ---: | --- |");
+    std::println("| Design weights only | {:+.3f} | {:.3f} | — | 0 | 1 |", bias[0],
+                 std::sqrt(mse[0]));
+    for (int m = 0; m < 4; ++m)
+        std::println("| {} | {:+.3f} | {:.3f} | {:.0f} | {:.0f} | {:.2f} to {:.2f} |",
+                     methods[m].name, bias[m + 1], std::sqrt(mse[m + 1]), failed[m + 1],
+                     negative[m + 1], min_g[m + 1], max_g[m + 1]);
+    std::println("\nLargest relative residual left by a non-converged logit calibration: "
+                 "{:.2f} and {:.2f}.", residual[3], residual[4]);
+
+    auto plot = dm::graphics::RPlot::create();
+    const dm::graphics::RGBA colors[3]{{176, 72, 43}, {26, 90, 147}, {80, 150, 90}};
+    for (int m = 0; m < 3; ++m) { // the three calibrations that reach the targets
+        std::vector<double> rank;
+        for (std::size_t i = 0; i < example_g[m].size(); ++i)
+            rank.push_back((i + .5) / example_g[m].size());
+        plot.line(rank, example_g[m], methods[m].name, colors[m], 2);
+    }
+    plot.title("Sorted calibration factors g in one sample")
+        .x_label("Fraction of respondents")
+        .y_label("g = calibrated / design weight")
+        .size(700, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/calibration.svg");
+}
+```
+// result_begin: markdown
+| Weights | Bias | RMSE | Not converged | Negative weights | Range of g |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Design weights only | +1.144 | 1.206 | — | 0 | 1 |
+| Linear (GREG) | -0.003 | 0.300 | 0 | 21 | -1.27 to 8.90 |
+| Raking | -0.004 | 0.300 | 0 | 0 | 0.15 to 10.55 |
+| Logit, g in (0.3, 6) | -0.003 | 0.300 | 5 | 0 | 0.32 to 6.00 |
+| Logit, g in (0.5, 3.5) | +0.059 | 0.327 | 359 | 0 | 0.50 to 3.50 |
+
+Largest relative residual left by a non-converged logit calibration: 0.37 and 0.36.
+\image(figures/calibration.svg)
+// result_end
+
+Calibration removes almost all of the nonresponse bias. Older respondents respond more often and have higher outcomes, so the design-weighted mean is biased upward by 1.14, about three standard errors. Calibrating to age and sex counts and to total income brings the bias to within simulation noise and cuts the RMSE from 1.21 to 0.30. That works because response here depends only on calibration variables, so every response class is reweighted to its known size. When nonresponse also depends on the outcome given \(x\), calibration reduces the bias but does not remove it.
+
+Linear and raking calibration give nearly identical estimates, as the shared asymptotic theory predicts. They differ in the weights. GREG produced 21 negative weights across the 1000 samples, as low as g = -1.27, which cannot be used to estimate a proportion of a subgroup and which many analysis systems reject. Raking keeps every weight positive but allowed one respondent's weight to grow by a factor of 10.5.
+
+The figure above the discussion shows the sorted factors in one sample. Linear and raking calibration agree in the middle and differ at the tails, where the linear factors fall lower and the raking factors rise higher. Logit calibration stays within its bounds.
+
+Bounds are a constraint on the problem, not just a cap on the weights. Some targets cannot be met with every \(g_i\) in \((L,U)\), for example when old respondents are so scarce that their weights must rise by more than \(U\). No algorithm can calibrate such a sample. The calibration function then reports `converged = false` with the remaining residuals rather than failing silently. A linear-programming feasibility check confirmed that every non-converged sample in the table, 5 at (0.3, 6) and 359 at (0.5, 3.5), has no solution inside its bounds. Those samples are included in the bias and RMSE with their incompletely calibrated weights. At (0.3, 6) they barely matter. At (0.5, 3.5), where a third of samples are left uncalibrated, they bring back part of the bias. Tight bounds trade bias control for stable weights. Bounds that bind in a third of samples are too tight for a sample this small.
+
+The solver matters too. Undamped Newton, as used by R's `survey::calibrate`, can overshoot into the flat tails of the logit function, where every factor sits at a bound and the Newton matrix becomes singular. On the same samples, `survey`'s `grake` failed to converge on 214 of the 995 feasible problems at bounds (0.3, 6). `calibrate_weights` minimizes the convex dual \(\sum_iw_i\Phi(x_i^\top\lambda)-\lambda^\top T\) with an Armijo line search and Levenberg damping, so it converged on every feasible sample. On problems where both solvers converge, it reproduces `survey::calibrate` weights to \(10^{-9}\) for all three distances, with and without bounds. `rake_weights` reproduces `survey::rake` to \(10^{-8}\).
+
+>> Practical guidance
+
+- Use linear calibration (GREG) when the weights are only used for totals and means, and check for negative weights.
+- Use raking for categorical margins, especially when only marginal counts are known, as in many census tables. Check the largest factor, because extreme factors inflate the variance.
+- Use logit calibration with bounds when the weights must stay in a range. Start with wide bounds and narrow them only while every sample still converges, and read `max_relative_residual` when it does not.
+- Choose calibration variables that predict both response and the outcome. Calibrating to variables unrelated to either adds variance without reducing bias.
+- Compute variances with the calibrated weights and the residuals from the regression on \(x\). For linearization, these residuals replace \(y\). With replicate weights, each replicate must be recalibrated.
+
+>> References
+
+- J.-C. Deville and C.-E. Särndal (1992). Calibration estimators in survey sampling. *Journal of the American Statistical Association* 87(418), 376-382. doi:10.1080/01621459.1992.10475217
+- J.-C. Deville, C.-E. Särndal and O. Sautory (1993). Generalized raking procedures in survey sampling. *Journal of the American Statistical Association* 88(423), 1013-1020. doi:10.1080/01621459.1993.10476369
+- W. E. Deming and F. F. Stephan (1940). On a least squares adjustment of a sampled frequency table when the expected marginal totals are known. *Annals of Mathematical Statistics* 11(4), 427-444. doi:10.1214/aoms/1177731829
+- T. Lumley (2010). *Complex Surveys: A Guide to Analysis Using R*. Wiley, chapter 7.

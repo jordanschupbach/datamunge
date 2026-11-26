@@ -1,0 +1,218 @@
+//? Title: Ripley's K and pair correlation
+//? Exports: both
+//? Lang: en
+
+> Summarise clustering and regularity of a point pattern across distances, correct for the window edge, and test complete spatial randomness without the multiple-testing trap of pointwise envelopes
+
+For a stationary point process with intensity \(\lambda\), Ripley's \(K(r)\) is the expected number of further points within distance \(r\) of a typical point, divided by \(\lambda\). Under complete spatial randomness (CSR), \(K(r)=\pi r^2\). Larger values indicate clustering at scale \(r\) and smaller values indicate inhibition. Besag's \(L(r)=\sqrt{K(r)/\pi}\) stabilises the variance and equals \(r\) under CSR, so \(L(r)-r\) is the usual plot. The pair correlation function \(g(r)=K'(r)/(2\pi r)\) is the derivative version. It describes pairs at distance exactly \(r\) rather than within \(r\), so it is easier to interpret but noisier.
+
+Points near the edge of the window have neighbours outside it that are not observed, so naive pair counts underestimate \(K\). The corrections weight each pair or restrict the reference points:
+
+- Border (reduced sample): only points at least \(r\) from the edge serve as centres.
+- Translation (Ohser–Stoyan): each pair is weighted by \(|W|/|W\cap(W+x_j-x_i)|\).
+- Isotropic (Ripley): each pair is weighted by the inverse fraction of the circle through \(x_j\), centred at \(x_i\), that lies inside the window.
+
+`ripley_k`, `besag_l` and `pair_correlation` work in rectangular windows. The tests reproduce `spatstat.explore::Kest` for all four corrections, and `pcf` (exact kernel sums, translation and Ripley weights, both divisors, Stoyan and fixed bandwidths). They use random, clustered (Thomas) and regular (sequential inhibition) patterns, and agree to \(10^{-12}\) for \(K\) and \(10^{-9}\) for \(g\).
+
+The study has three parts. First, it compares the corrections on 500 CSR patterns of 100 points in a \(2\times1\) window. Second, it compares two Monte Carlo tests of CSR, each against 99 simulated CSR patterns, using \(L(r)-r\) with the translation correction on \(r\in(0,0.25]\). The pointwise test rejects if the observed curve leaves the pointwise min–max envelope at any \(r\). The global maximum-absolute-deviation (MAD) test ranks \(\max_r|\hat L(r)-r|\) among the 100 patterns and rejects at 5% if the observed value is among the five largest. Both tests are applied to 200 CSR patterns and to 200 weakly clustered Thomas patterns: on average 100 points, parent intensity 40, 1.25 offspring per parent, offspring scale 0.06.
+
+```{cpp, id=k, file="figures/ripley_k.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/point_pattern.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+using dm::stats::EdgeCorrection;
+const dm::stats::RectangleWindow win{.xmin = 0, .xmax = 2, .ymin = 0, .ymax = 1};
+
+std::size_t poisson(dm::random::SplitMix64& rng, double mean) {
+    return dm::random::poisson_quantile(rng.uniform01(), mean);
+}
+Matrix csr(dm::random::SplitMix64& rng, std::size_t n) {
+    Matrix p(n, 2);
+    for (std::size_t i = 0; i < n; ++i)
+        p(i, 0) = 2 * rng.uniform01(), p(i, 1) = rng.uniform01();
+    return p;
+}
+// Thomas process: Poisson parents (intensity kappa, window padded by 4 sigma), Poisson(mu)
+// Gaussian offspring with SD sigma, kept inside the window.
+Matrix thomas(dm::random::SplitMix64& rng, double kappa, double sigma, double mu) {
+    const double pad = 4 * sigma;
+    const std::size_t parents = poisson(rng, kappa * (2 + 2 * pad) * (1 + 2 * pad));
+    std::vector<double> xs, ys;
+    for (std::size_t k = 0; k < parents; ++k) {
+        const double px = -pad + (2 + 2 * pad) * rng.uniform01();
+        const double py = -pad + (1 + 2 * pad) * rng.uniform01();
+        for (std::size_t c = poisson(rng, mu); c > 0; --c) {
+            const double x = px + sigma * rng.normal(), y = py + sigma * rng.normal();
+            if (x >= 0 && x <= 2 && y >= 0 && y <= 1)
+                xs.push_back(x), ys.push_back(y);
+        }
+    }
+    Matrix p(xs.size(), 2);
+    for (std::size_t i = 0; i < xs.size(); ++i)
+        p(i, 0) = xs[i], p(i, 1) = ys[i];
+    return p;
+}
+
+std::vector<double> centred_l(const Matrix& p, const std::vector<double>& r) {
+    auto l = dm::stats::besag_l(p, win, r, EdgeCorrection::translation);
+    for (std::size_t k = 0; k < r.size(); ++k)
+        l[k] -= r[k];
+    return l;
+}
+
+struct Decision {
+    bool pointwise{}, global{};
+};
+// Monte Carlo tests of CSR with 99 simulations of the same number of points.
+Decision test(dm::random::SplitMix64& rng, const Matrix& p, const std::vector<double>& r,
+              std::vector<double>* lo = nullptr, std::vector<double>* hi = nullptr,
+              double* critical = nullptr) {
+    const auto obs = centred_l(p, r);
+    std::vector<double> mn(r.size(), 1e300), mx(r.size(), -1e300), dev;
+    for (int s = 0; s < 99; ++s) {
+        const auto sim = centred_l(csr(rng, p.rows()), r);
+        double d = 0;
+        for (std::size_t k = 0; k < r.size(); ++k) {
+            mn[k] = std::min(mn[k], sim[k]);
+            mx[k] = std::max(mx[k], sim[k]);
+            d = std::max(d, std::abs(sim[k]));
+        }
+        dev.push_back(d);
+    }
+    double d_obs = 0;
+    Decision out;
+    for (std::size_t k = 0; k < r.size(); ++k) {
+        d_obs = std::max(d_obs, std::abs(obs[k]));
+        out.pointwise = out.pointwise || obs[k] < mn[k] || obs[k] > mx[k];
+    }
+    std::ranges::sort(dev);
+    out.global = d_obs > dev[94];  // observed among the 5 largest of 100
+    if (lo)
+        *lo = mn, *hi = mx, *critical = dev[94];
+    return out;
+}
+
+int main() {
+    dm::random::SplitMix64 rng(5);
+    // Part 1: edge corrections under CSR.
+    const std::vector<double> rk{0.05, 0.15, 0.25};
+    const EdgeCorrection corr[4]{EdgeCorrection::none, EdgeCorrection::border,
+                                 EdgeCorrection::translation, EdgeCorrection::isotropic};
+    const char* corr_names[4]{"None", "Border", "Translation", "Isotropic (Ripley)"};
+    double s[4][3]{}, s2[4][3]{};
+    const int reps = 500;
+    for (int rep = 0; rep < reps; ++rep) {
+        const Matrix p = csr(rng, 100);
+        for (int c = 0; c < 4; ++c) {
+            const auto k = dm::stats::ripley_k(p, win, rk, corr[c]);
+            for (int j = 0; j < 3; ++j) {
+                const double ratio = k[j] / (std::numbers::pi * rk[j] * rk[j]);
+                s[c][j] += ratio / reps;
+                s2[c][j] += ratio * ratio / reps;
+            }
+        }
+    }
+    std::println("| Correction | K / (pi r^2) at r = 0.05 | at r = 0.15 | at r = 0.25 |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (int c = 0; c < 4; ++c) {
+        std::print("| {}", corr_names[c]);
+        for (int j = 0; j < 3; ++j)
+            std::print(" | {:.3f} ({:.3f})", s[c][j],
+                       std::sqrt(s2[c][j] - s[c][j] * s[c][j]));
+        std::println(" |");
+    }
+
+    // Part 2: pointwise versus global envelope tests.
+    std::vector<double> r;
+    for (int k = 1; k <= 25; ++k)
+        r.push_back(0.01 * k);
+    double reject[2][2]{};  // [csr, thomas][pointwise, global]
+    const int sets = 200;
+    for (int rep = 0; rep < sets; ++rep) {
+        const Decision a = test(rng, csr(rng, 100), r);
+        const Decision b = test(rng, thomas(rng, 40, 0.06, 1.25), r);
+        reject[0][0] += a.pointwise, reject[0][1] += a.global;
+        reject[1][0] += b.pointwise, reject[1][1] += b.global;
+    }
+    std::println("\n| Data | Pointwise envelope: rejects anywhere | Global MAD test |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| CSR (size) | {:.3f} | {:.3f} |", reject[0][0] / sets,
+                 reject[0][1] / sets);
+    std::println("| Thomas (power) | {:.3f} | {:.3f} |", reject[1][0] / sets,
+                 reject[1][1] / sets);
+
+    // Figure: one Thomas pattern with both envelopes.
+    std::vector<double> rf;
+    for (int k = 1; k <= 50; ++k)
+        rf.push_back(0.005 * k);
+    const Matrix p = thomas(rng, 25, 0.04, 4);
+    std::vector<double> lo, hi, glo, ghi;
+    double crit = 0;
+    test(rng, p, rf, &lo, &hi, &crit);
+    const auto obs = centred_l(p, rf);
+    for (std::size_t k = 0; k < rf.size(); ++k)
+        glo.push_back(-crit), ghi.push_back(crit);
+    auto plot = dm::graphics::RPlot::create();
+    plot.ribbon(rf, glo, ghi, {176, 72, 43, 0.15})
+        .ribbon(rf, lo, hi, {26, 90, 147, 0.25})
+        .line(rf, obs, "Observed (Thomas, mu = 4)", {0, 0, 0}, 2)
+        .line(rf, glo, "Global MAD 5% band", {176, 72, 43}, 1)
+        .line(rf, ghi, "", {176, 72, 43}, 1)
+        .line(rf, lo, "Pointwise min-max of 99 CSR", {26, 90, 147}, 1)
+        .line(rf, hi, "", {26, 90, 147}, 1)
+        .abline_h(0, {120, 120, 120})
+        .y_limits(-0.03, 0.09)
+        .title("L(r) - r for a clustered pattern")
+        .x_label("r")
+        .y_label("L(r) - r (translation correction)")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/ripley_k.svg");
+}
+```
+// result_begin: markdown
+| Correction | K / (pi r^2) at r = 0.05 | at r = 0.15 | at r = 0.25 |
+| --- | ---: | ---: | ---: |
+| None | 0.974 (0.222) | 0.909 (0.075) | 0.844 (0.052) |
+| Border | 0.997 (0.240) | 0.986 (0.107) | 0.978 (0.100) |
+| Translation | 1.006 (0.230) | 1.003 (0.082) | 0.997 (0.063) |
+| Isotropic (Ripley) | 1.004 (0.230) | 1.003 (0.078) | 0.998 (0.052) |
+
+| Data | Pointwise envelope: rejects anywhere | Global MAD test |
+| --- | ---: | ---: |
+| CSR (size) | 0.190 | 0.030 |
+| Thomas (power) | 0.855 | 0.685 |
+\image(figures/ripley_k.svg)
+// result_end
+
+Without correction, \(\hat K\) is biased downward, and the bias grows with \(r\). At \(r=0.25\) it reaches 16% of \(\pi r^2\) in a window only one unit high. Clustering or regularity could not be told apart from this edge effect. All three corrections remove the bias, but they differ in variance. The border estimator discards centres near the edge and has about twice the SD of the isotropic correction at \(r=0.25\) (0.100 against 0.052). The translation and isotropic weights use every pair, and the isotropic correction is the most precise at large \(r\). Border and translation remain useful because they are simpler and apply to any window shape.
+
+The pointwise envelope is a common way to misread a Monte Carlo test. Each pointwise min–max band of 99 simulations covers a single \(r\) with probability 0.98. The curve is examined at 25 values of \(r\), and rejecting whenever it leaves the band anywhere gives a test of CSR with actual size 19%, not 2% or 5%. The global MAD test compares the whole curve with a single statistic and holds its level (3.0%; nominal \(5/100\), with Monte Carlo error about 1.5%). In the figure, its band is the constant \(\pm\) critical deviation. Its power against weak clustering (0.69) is lower than the pointwise rule's 0.86, but the pointwise figure is not a valid comparison: it is bought with a four-times-inflated false-positive rate. The clustered pattern in the figure is unambiguous under either test. Its \(L(r)-r\) rises above both bands from \(r\approx0.01\) and peaks near \(r=0.1\), about two to three times the offspring scale.
+
+>> Practical guidance
+
+- Always edge-correct. Use the isotropic correction in rectangles and other simple windows, the translation correction for irregular windows, and the border correction only when speed matters.
+- Plot \(L(r)-r\) or \(g(r)\) rather than \(K(r)\). The pair correlation function locates the interaction distance, while \(K\) and \(L\) accumulate over all distances up to \(r\).
+- Test CSR with a global envelope or deviation test and a range of \(r\) fixed in advance. Treat pointwise envelopes as descriptive only.
+- Limit \(r\) to about a quarter of the shorter side of the window. Beyond that, few pairs are observed and the corrections become unstable.
+- Remember that \(K\) assumes stationarity. An intensity trend also inflates \(K\) and mimics clustering; inhomogeneous \(K\) or a fitted intensity model separates the two.
+
+>> References
+
+- B. D. Ripley (1977). Modelling spatial patterns. *Journal of the Royal Statistical Society B* 39(2), 172-212. doi:10.1111/j.2517-6161.1977.tb01615.x
+- J. Besag (1977). Contribution to the discussion of Dr Ripley's paper. *Journal of the Royal Statistical Society B* 39(2), 193-195.
+- J. Ohser and D. Stoyan (1981). On the second-order and orientation analysis of planar stationary point processes. *Biometrical Journal* 23(6), 523-533. doi:10.1002/bimj.4710230602
+- D. Stoyan and H. Stoyan (1994). *Fractals, Random Shapes and Point Fields*. Wiley.
+- M. Myllymäki, T. Mrkvička, P. Grabarnik, H. Seijo and U. Hahn (2017). Global envelope tests for spatial processes. *Journal of the Royal Statistical Society B* 79(2), 381-404. doi:10.1111/rssb.12172
+- A. Baddeley, E. Rubak and R. Turner (2015). *Spatial Point Patterns: Methodology and Applications with R*. CRC Press. doi:10.1201/b19708

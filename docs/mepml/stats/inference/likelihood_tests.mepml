@@ -1,0 +1,120 @@
+//? Title: Test parameter restrictions with Wald, score and likelihood-ratio statistics
+//? Exports: both
+//? Lang: en
+
+> Compare three asymptotically equivalent tests
+
+A restriction such as \(R\theta=r\) can be tested in three classical ways. The Wald test fits only the full model and asks whether \(R\hat\theta-r\) is far from zero, measured by its estimated covariance. The score test fits only the restricted model and asks whether the full model's score at that point is far from zero. The likelihood-ratio test fits both models and compares their maximized log likelihoods. Under regularity conditions, all three statistics have the same chi-square limit. The degrees of freedom are the rank of the restrictions.
+
+`wald_test` takes the fit from `maximum_likelihood` and a restriction matrix. It reports the rank of \(RVR^\top\), so redundant rows add no degrees of freedom. `score_test` takes the full model evaluated at the restricted estimate by `evaluate_likelihood`. `likelihood_ratio_test` takes the two maximized log likelihoods.
+
+The example tests whether Weibull failure times are exponential, that is, whether the shape is \(k=1\). It applies the three tests to one sample. A simulation then estimates their sizes at the 5% level for sample sizes from 10 to 160 under the exponential null, with 2000 samples for each size.
+
+```{cpp, id=likelihood-tests, file="figures/likelihood_test_size.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/likelihood_tests.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+
+struct Tests {
+    dm::stats::RestrictionTestResult wald, score, lr;
+};
+
+// Weibull(shape k, scale lambda) against the exponential restriction k = 1.
+Tests weibull_shape_tests(const std::vector<double>& y) {
+    const auto ll = [&](const std::vector<double>& t, std::size_t i) {
+        const double z = y[i] / t[1];
+        return std::log(t[0] / t[1]) + (t[0] - 1) * std::log(z) - std::pow(z, t[0]);
+    };
+    const dm::stats::MaximumLikelihoodOptions bounds{.lower = {0.0, 0.0}};
+    double mean = 0;
+    for (const double v : y)
+        mean += v / y.size();
+    const auto full = dm::stats::maximum_likelihood(y.size(), {1.0, mean}, ll, bounds);
+    const auto at_null = dm::stats::evaluate_likelihood(y.size(), {1.0, mean}, ll, bounds);
+    const dm::linalg::DenseMatrix<double> shape(1, 2, {1, 0});
+    return {dm::stats::wald_test(full, shape, {1}), dm::stats::score_test(at_null, 1),
+            dm::stats::likelihood_ratio_test(full.log_likelihood, at_null.log_likelihood, 1)};
+}
+
+int main() {
+    std::mt19937_64 random(8);
+    std::weibull_distribution<double> weibull(1.4, 10);
+    std::vector<double> sample(40);
+    for (auto& v : sample)
+        v = weibull(random);
+    const auto one = weibull_shape_tests(sample);
+    std::println("| Test | Statistic | Rank | p-value |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (const auto* t : {&one.wald, &one.score, &one.lr})
+        std::println("| {} | {:.3f} | {} | {:.4f} |", t->method, t->statistic, t->rank, t->p_value);
+
+    std::exponential_distribution<double> null_law(.1);
+    std::vector<double> sizes, wald_rate, score_rate, lr_rate;
+    std::println("\n| n | Wald size | Score size | Likelihood-ratio size |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    for (const std::size_t n : {10, 20, 40, 80, 160}) {
+        double w = 0, s = 0, l = 0;
+        const int replicates = 2000;
+        for (int r = 0; r < replicates; ++r) {
+            std::vector<double> y(n);
+            for (auto& v : y)
+                v = null_law(random);
+            const auto t = weibull_shape_tests(y);
+            w += t.wald.p_value < .05;
+            s += t.score.p_value < .05;
+            l += t.lr.p_value < .05;
+        }
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} |", n, w / replicates, s / replicates,
+                     l / replicates);
+        sizes.push_back(std::log2(double(n)));
+        wald_rate.push_back(w / replicates);
+        score_rate.push_back(s / replicates);
+        lr_rate.push_back(l / replicates);
+    }
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.line({sizes.front(), sizes.back()}, {.05, .05}, "Nominal 5%", {150, 154, 160}, 1)
+        .line(sizes, wald_rate, "Wald", {176, 72, 43}, 1.6)
+        .points(sizes, wald_rate, "", {176, 72, 43}, 5)
+        .line(sizes, score_rate, "Score", {26, 90, 147}, 1.6)
+        .points(sizes, score_rate, "", {26, 90, 147}, 5)
+        .line(sizes, lr_rate, "Likelihood ratio", {64, 140, 80}, 1.6)
+        .points(sizes, lr_rate, "", {64, 140, 80}, 5)
+        .title("Rejection rate under the exponential null")
+        .x_label("log2 sample size").y_label("Rejection rate at 5%")
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/likelihood_test_size.svg");
+}
+```
+// result_begin: markdown
+| Test | Statistic | Rank | p-value |
+| --- | ---: | ---: | ---: |
+| Wald test (observed information) | 8.498 | 1 | 0.0036 |
+| Rao score test (observed information) | 8.383 | 1 | 0.0038 |
+| Likelihood-ratio test | 10.586 | 1 | 0.0011 |
+
+| n | Wald size | Score size | Likelihood-ratio size |
+| ---: | ---: | ---: | ---: |
+| 10 | 0.040 | 0.039 | 0.070 |
+| 20 | 0.043 | 0.042 | 0.055 |
+| 40 | 0.051 | 0.051 | 0.059 |
+| 80 | 0.056 | 0.056 | 0.058 |
+| 160 | 0.044 | 0.044 | 0.047 |
+\image(figures/likelihood_test_size.svg)
+// result_end
+\caption(Estimated size of the three tests of \(k=1\) at the 5% level, by sample size, from 2000 exponential samples each.)
+\alttext(All three rejection rates approach the 5% line as the sample size grows. At n equal to 10 the likelihood-ratio test rejects about 7% of the time, while the Wald and score tests reject about 4%.)
+
+For the sample of 40 Weibull times with true shape 1.4, all three tests reject the exponential model. The statistics differ by about 25%, which is typical in moderate samples. In the simulation each test's size approaches 5% as \(n\) grows. With 10 observations the likelihood-ratio test is too liberal, at about 7%, and the Wald and score tests are slightly conservative here. With 2000 replicates a size estimate has a standard error of about 0.005.
+
+The tests behave differently in other ways. The Wald statistic changes under reparameterization. For example, testing \(\log k=0\) gives a different value, while the likelihood-ratio statistic does not change. The score test is convenient when the full model is hard to fit. All three use the chi-square reference only for regular problems; when the restricted value lies on the boundary of the parameter space, as for a variance component equal to zero, the reference is a mixture.
+
+[Wald (1943)|https://doi.org/10.1090/S0002-9947-1943-0012401-3] · [Rao (1948)|https://doi.org/10.1017/S0305004100023987] · [Wilks (1938)|https://doi.org/10.1214/aoms/1177732360] · [Engle (1984)|https://doi.org/10.1016/S1573-4412(84)02005-5]

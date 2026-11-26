@@ -1,0 +1,192 @@
+//? Title: Estimate fixed-size sampling variance with the Sen–Yates–Grundy estimator
+//? Exports: both
+//? Lang: en
+
+> Use joint inclusion probabilities to get an unbiased variance for without-replacement unequal-probability samples
+
+The Horvitz–Thompson total \(\hat t=\sum_{i\in s}y_i/\pi_i\) is unbiased under any probability design. Its variance, though, depends on how units are selected *together*, through the joint inclusion probabilities \(\pi_{ij}\). Two unbiased estimators of that variance exist.
+- The Horvitz–Thompson form is \(\sum_i(1-\pi_i)z_i^2+\sum_{i\ne j}\frac{\pi_{ij}-\pi_i\pi_j}{\pi_{ij}}z_iz_j\), where \(z_i=y_i/\pi_i\). It is valid for any design, but it can be negative and is often erratic.
+- The Sen–Yates–Grundy (SYG) form is \(\tfrac12\sum_{i\ne j}\frac{\pi_i\pi_j-\pi_{ij}}{\pi_{ij}}(z_i-z_j)^2\). It is valid for fixed-size designs, and it is never negative when \(\pi_{ij}\le\pi_i\pi_j\) for every pair, as holds for most good \(\pi\)ps designs. Because it uses only differences of \(z\), it is exactly zero when \(y\propto\pi\), as the true variance is.
+
+The common shortcut uses only the \(\pi_i\) and treats the sample as drawn with replacement. It ignores the gain from sampling without replacement and so overstates the variance, increasingly as the sampling fraction grows.
+
+The example compares the three estimators exactly, not by simulation. It uses a conditional Poisson (maximum-entropy) design that draws \(n=6\) of \(N=20\) units, with \(P(s)\propto\prod_{i\in s}x_i\) for a size measure \(x\). It enumerates all 38,760 possible samples, which gives the exact \(\pi_i\), \(\pi_{ij}\) and true variance. It then computes every variance estimator on every sample, weighted by the sample's probability. Two variables are studied: one roughly proportional to \(x\) and one unrelated to it. The table gives each estimator's exact relative bias and relative RMSE, the probability of a negative estimate, and the coverage of the nominal 95% normal interval.
+
+```{cpp, id=syg, file="figures/sen_yates_grundy.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/survey.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+int main() {
+    const std::size_t N = 20, n = 6;
+    std::mt19937_64 random(5);
+    std::lognormal_distribution<double> size(0, .6);
+    std::normal_distribution<double> z;
+    std::vector<double> x(N), y_prop(N), y_flat(N);
+    for (std::size_t i = 0; i < N; ++i) {
+        x[i] = size(random);
+        y_prop[i] = 10 * x[i] * (1 + .15 * z(random));
+        y_flat[i] = 10 + 2 * z(random);
+    }
+    // Enumerate every sample of size n with probability proportional to the product of x.
+    std::vector<std::vector<std::size_t>> samples;
+    std::vector<double> prob;
+    std::vector<char> pick(N, 0);
+    std::fill(pick.begin(), pick.begin() + n, 1);
+    do {
+        std::vector<std::size_t> s;
+        double p = 1;
+        for (std::size_t i = 0; i < N; ++i)
+            if (pick[i]) {
+                s.push_back(i);
+                p *= x[i];
+            }
+        samples.push_back(s);
+        prob.push_back(p);
+    } while (std::prev_permutation(pick.begin(), pick.end()));
+    double total_p = 0;
+    for (const double p : prob)
+        total_p += p;
+    Matrix joint(N, N);
+    for (std::size_t k = 0; k < samples.size(); ++k) {
+        prob[k] /= total_p;
+        for (const std::size_t i : samples[k])
+            for (const std::size_t j : samples[k])
+                joint(i, j) += prob[k];
+    }
+    bool syg_condition = true;
+    for (std::size_t i = 0; i < N; ++i)
+        for (std::size_t j = 0; j < i; ++j)
+            syg_condition = syg_condition && joint(i, j) <= joint(i, i) * joint(j, j);
+    double lo = 1, hi = 0;
+    for (std::size_t i = 0; i < N; ++i) {
+        lo = std::min(lo, joint(i, i));
+        hi = std::max(hi, joint(i, i));
+    }
+    std::println("{} samples; pi ranges from {:.3f} to {:.3f}; "
+                 "pi_ij <= pi_i pi_j for every pair: {}.\n",
+                 samples.size(), lo, hi, syg_condition ? "yes" : "no");
+
+    struct Variable { std::string name; const std::vector<double>* y; };
+    const char* names[3]{"With-replacement approximation", "Horvitz–Thompson form",
+                         "Sen–Yates–Grundy"};
+    const char* short_names[3]{"With replacement", "HT form", "SYG"};
+    std::println("| Variable | Estimator | Relative bias | Relative RMSE "
+                 "| P(negative) | Coverage |");
+    std::println("| --- | --- | ---: | ---: | ---: | ---: |");
+    std::vector<double> ratio[3], weight;
+    for (const Variable& v : {Variable{"y close to 10x", &y_prop},
+                              Variable{"y unrelated to x", &y_flat}}) {
+        const auto& y = *v.y;
+        double t = 0;
+        for (const double value : y)
+            t += value;
+        // Exact design variance of the HT total.
+        double true_var = 0;
+        std::vector<double> estimate(samples.size());
+        for (std::size_t k = 0; k < samples.size(); ++k) {
+            for (const std::size_t i : samples[k])
+                estimate[k] += y[i] / joint(i, i);
+            true_var += prob[k] * (estimate[k] - t) * (estimate[k] - t);
+        }
+        double bias[3]{}, mse[3]{}, negative[3]{}, cover[3]{};
+        for (std::size_t k = 0; k < samples.size(); ++k) {
+            std::vector<double> ys, ps;
+            Matrix js(n, n);
+            for (std::size_t a = 0; a < n; ++a) {
+                ys.push_back(y[samples[k][a]]);
+                ps.push_back(joint(samples[k][a], samples[k][a]));
+                for (std::size_t b = 0; b < n; ++b)
+                    js(a, b) = joint(samples[k][a], samples[k][b]);
+            }
+            const dm::stats::HorvitzThompsonResult r[3]{
+                dm::stats::horvitz_thompson(ys, ps),
+                dm::stats::horvitz_thompson_joint(
+                    ys, js, {.method = dm::stats::SurveyVariance::horvitz_thompson}),
+                dm::stats::horvitz_thompson_joint(ys, js)};
+            for (int e = 0; e < 3; ++e) {
+                const double var = r[e].total.variance;
+                bias[e] += prob[k] * (var - true_var);
+                mse[e] += prob[k] * (var - true_var) * (var - true_var);
+                negative[e] += prob[k] * r[e].negative_variance;
+                cover[e] += prob[k] * (r[e].total.lower <= t && t <= r[e].total.upper);
+                if (v.y == &y_flat)
+                    ratio[e].push_back(var / true_var);
+            }
+            if (v.y == &y_flat)
+                weight.push_back(prob[k]);
+        }
+        for (int e = 0; e < 3; ++e)
+            std::println("| {} | {} | {:+.3f} | {:.3f} | {:.3f} | {:.3f} |", v.name,
+                         short_names[e],
+                         bias[e] / true_var, std::sqrt(mse[e]) / true_var, negative[e],
+                         cover[e]);
+    }
+
+    // Exact distribution functions of estimated / true variance for the unrelated variable.
+    auto plot = dm::graphics::RPlot::create();
+    const dm::graphics::RGBA colors[3]{{120, 120, 120}, {176, 72, 43}, {26, 90, 147}};
+    for (int e = 0; e < 3; ++e) {
+        std::vector<std::size_t> order(ratio[e].size());
+        for (std::size_t k = 0; k < order.size(); ++k)
+            order[k] = k;
+        std::ranges::sort(order, [&](std::size_t a, std::size_t b) {
+            return ratio[e][a] < ratio[e][b];
+        });
+        std::vector<double> sx{std::min(0.0, ratio[e][order[0]])}, sy{0};
+        double c = 0;
+        for (const std::size_t k : order) {
+            sx.insert(sx.end(), {ratio[e][k], ratio[e][k]});
+            sy.insert(sy.end(), {c, c + weight[k]});
+            c += weight[k];
+        }
+        sx.push_back(4);
+        sy.push_back(1);
+        plot.line(sx, sy, names[e], colors[e], 1.8);
+    }
+    plot.title("Distribution of variance estimates, y unrelated to x")
+        .x_label("Estimated variance / true variance")
+        .y_label("Cumulative probability (exact)")
+        .xlim(-1, 4)
+        .ylim(0, 1.3)
+        .size(700, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/sen_yates_grundy.svg");
+}
+```
+// result_begin: markdown
+38760 samples; pi ranges from 0.153 to 0.619; pi_ij <= pi_i pi_j for every pair: yes.
+
+| Variable | Estimator | Relative bias | Relative RMSE | P(negative) | Coverage |
+| --- | --- | ---: | ---: | ---: | ---: |
+| y close to 10x | With replacement | +1.295 | 1.998 | 0.000 | 0.870 |
+| y close to 10x | HT form | +0.000 | 1.434 | 0.311 | 0.655 |
+| y close to 10x | SYG | -0.000 | 0.586 | 0.000 | 0.810 |
+| y unrelated to x | With replacement | +0.453 | 1.010 | 0.000 | 0.916 |
+| y unrelated to x | HT form | +0.000 | 0.893 | 0.115 | 0.808 |
+| y unrelated to x | SYG | -0.000 | 0.685 | 0.000 | 0.857 |
+\image(figures/sen_yates_grundy.svg)
+// result_end
+\caption(Exact distribution, over all 38,760 possible samples, of the ratio of estimated to true variance of the Horvitz–Thompson total for the variable unrelated to size. Grey: with-replacement approximation; orange: Horvitz–Thompson form; blue: Sen–Yates–Grundy.)
+\alttext(Three rising cumulative curves on a horizontal axis from −1 to 4. The orange curve starts near −1 and has about 11% of its mass below zero. The blue curve starts at zero, is the steepest and reaches one half near 0.85. The grey curve starts at zero but is shifted to the right, reaching one half near 1.3.)
+
+Both exact estimators are unbiased (relative bias 0.000 to three decimals, computed exactly), as theory says. Their behaviour differs a great deal, though.
+- The Horvitz–Thompson form is negative in 31% of samples for the size-related variable and 11% for the unrelated one. Its relative RMSE is two to three times that of SYG.
+- SYG is never negative here, because this maximum-entropy design satisfies \(\pi_{ij}\le\pi_i\pi_j\) for every pair. It is also the most stable of the three. Its advantage is largest when \(y\) roughly tracks \(\pi\): there the \(z_i\) are similar, and SYG, built from their differences, is small exactly when the true variance is.
+- The with-replacement approximation ignores the without-replacement gain. With a sampling fraction of 30%, it overstates the variance by 45% for the unrelated variable and by 130% for the size-related one.
+
+The coverage column is a reminder that an unbiased variance does not make a 95% interval. With six units, the HT total is far from normal and every variance estimate is noisy. The intervals built from the two unbiased estimators undercover (81–86% for SYG). The conservative approximation covers more often only because it is inflated. For samples this small, a \(t\) reference distribution or a design-based bootstrap would be needed.
+
+The SYG and Horvitz–Thompson standard errors for totals and Hájek means match `survey::svydesign(pps = ppsmat(election_jointprob), variance = "YG")` and `variance = "HT"` on the `election_pps` data. They also reduce to the textbook \(N^2(1-f)s^2/n\) under simple random sampling.
+
+[Yates and Grundy (1953)|https://doi.org/10.1111/j.2517-6161.1953.tb00140.x] · [Särndal, Swensson and Wretman (1992)|https://doi.org/10.1007/978-1-4612-4378-6] · [Tillé (2006), Sampling Algorithms|https://doi.org/10.1007/0-387-34240-0]

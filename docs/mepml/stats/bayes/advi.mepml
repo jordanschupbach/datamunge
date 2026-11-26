@@ -1,0 +1,217 @@
+//? Title: Automatic differentiation variational inference
+//? Exports: both
+//? Lang: en
+
+> Approximate a posterior by the closest Gaussian on an unconstrained scale, fitted by stochastic gradient ascent on the evidence lower bound, and see what the mean-field and full-rank families get right and wrong
+
+Variational inference replaces sampling with optimisation. It picks the member \(q\) of a simple family that minimises \(\mathrm{KL}(q\,\|\,p(\cdot\mid y))\), which is equivalent to maximising the evidence lower bound
+
+\[
+\mathrm{ELBO}(q)=E_q[\log p(y,\theta)]+\mathcal H[q]\le\log p(y).
+\]
+
+Automatic differentiation variational inference (ADVI) makes this generic. Each constrained parameter is first mapped to the real line (a log for positive parameters, a logit for intervals), with the log-Jacobian added to the density. A Gaussian is then fitted on the unconstrained scale. The ELBO gradient is estimated by reparameterisation, \(\zeta=\mu+L\varepsilon\) with \(\varepsilon\sim N(0,I)\), so only the gradient of the log density is needed. The entropy term has an exact gradient. The mean-field family uses a diagonal \(L=\mathrm{diag}(e^{\omega})\), and the full-rank family a lower-triangular \(L\).
+
+`advi` follows Stan's algorithm. It uses adaptive per-coordinate step sizes \(\rho_k=\eta k^{-1/2}/(1+\sqrt{s_k})\) with a moving average \(s_k\) of squared gradients, chooses \(\eta\) by short trial runs, and stops when the mean or median relative ELBO change falls below a tolerance. `ParameterSupport` declares the constraints, and the draws are returned on the constrained scale. The tests check that the full-rank family recovers a correlated Gaussian exactly, that mean-field reaches the known KL optimum (each variance equal to the inverse of the precision diagonal), and that log-normal and logit-normal targets are recovered through the transforms.
+
+The example is a linear regression \(y=\beta_0+\beta_1x_1+\beta_2x_2+\sigma\varepsilon\) with \(n=40\), strongly correlated predictors (correlation 0.9), the reference prior \(p(\beta,\sigma)\propto1/\sigma\), and \(\sigma\) declared positive. Its posterior is known exactly: \(\beta\) is multivariate \(t\) and \(\sigma^2\) is scaled inverse \(\chi^2\). The table compares posterior means and SDs from 20,000 draws of each approximation with the exact values. The figure compares the approximate marginal densities of \(\beta_1\) with the exact one.
+
+```{cpp, id=advi, file="figures/advi.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/bayes/advi.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using Vec = std::vector<double>;
+
+struct Regression : dm::optim::DifferentiableFunction {
+    std::vector<std::array<double, 3>> x;
+    Vec y;
+    // log p(beta, sigma | y) = -(n + 1) log sigma - RSS / (2 sigma^2) + const.
+    double evaluate(const Vec& t) override {
+        double rss = 0;
+        for (std::size_t i = 0; i < y.size(); ++i) {
+            const double e = y[i] - t[0] * x[i][0] - t[1] * x[i][1] - t[2] * x[i][2];
+            rss += e * e;
+        }
+        return -(double(y.size()) + 1) * std::log(t[3]) - rss / (2 * t[3] * t[3]);
+    }
+    Vec gradient(const Vec& t) override {
+        Vec g(4, 0.0);
+        double rss = 0;
+        for (std::size_t i = 0; i < y.size(); ++i) {
+            const double e = y[i] - t[0] * x[i][0] - t[1] * x[i][1] - t[2] * x[i][2];
+            rss += e * e;
+            for (int j = 0; j < 3; ++j)
+                g[j] += e * x[i][j] / (t[3] * t[3]);
+        }
+        g[3] = -(double(y.size()) + 1) / t[3] + rss / (t[3] * t[3] * t[3]);
+        return g;
+    }
+};
+
+// Inverse of a 3 x 3 symmetric matrix by cofactors.
+std::array<double, 9> inverse3(const std::array<double, 9>& a) {
+    std::array<double, 9> c{};
+    for (int i = 0; i < 3; ++i)
+        for (int j = 0; j < 3; ++j) {
+            const int r0 = (i + 1) % 3, r1 = (i + 2) % 3, c0 = (j + 1) % 3, c1 = (j + 2) % 3;
+            c[j * 3 + i] = a[r0 * 3 + c0] * a[r1 * 3 + c1] - a[r0 * 3 + c1] * a[r1 * 3 + c0];
+        }
+    const double det = a[0] * c[0] + a[1] * c[3] + a[2] * c[6];
+    for (double& v : c)
+        v /= det;
+    return c;
+}
+
+int main() {
+    dm::random::SplitMix64 rng(40);
+    Regression model;
+    const std::size_t n = 40;
+    for (std::size_t i = 0; i < n; ++i) {
+        const double z1 = rng.normal(), z2 = 0.9 * z1 + std::sqrt(1 - 0.81) * rng.normal();
+        model.x.push_back({1.0, z1, z2});
+        model.y.push_back(1 + 0.5 * z1 - 0.3 * z2 + 0.8 * rng.normal());
+    }
+    // Exact posterior: beta ~ t_nu(bhat, s^2 (X'X)^{-1}), sigma^2 ~ nu s^2 / chi^2_nu.
+    std::array<double, 9> xtx{};
+    std::array<double, 3> xty{};
+    for (std::size_t i = 0; i < n; ++i)
+        for (int a = 0; a < 3; ++a) {
+            xty[a] += model.x[i][a] * model.y[i];
+            for (int b = 0; b < 3; ++b)
+                xtx[a * 3 + b] += model.x[i][a] * model.x[i][b];
+        }
+    const auto v = inverse3(xtx);
+    std::array<double, 3> bhat{};
+    for (int a = 0; a < 3; ++a)
+        for (int b = 0; b < 3; ++b)
+            bhat[a] += v[a * 3 + b] * xty[b];
+    double rss = 0;
+    for (std::size_t i = 0; i < n; ++i) {
+        double e = model.y[i];
+        for (int a = 0; a < 3; ++a)
+            e -= model.x[i][a] * bhat[a];
+        rss += e * e;
+    }
+    const double nu = double(n) - 3, s2 = rss / nu;
+    Vec exact_mean{bhat[0], bhat[1], bhat[2]}, exact_sd;
+    for (int a = 0; a < 3; ++a)
+        exact_sd.push_back(std::sqrt(s2 * v[a * 4] * nu / (nu - 2)));
+    const double e_sigma = std::sqrt(nu * s2 / 2) *
+                           std::exp(std::lgamma((nu - 1) / 2) - std::lgamma(nu / 2));
+    exact_mean.push_back(e_sigma);
+    exact_sd.push_back(std::sqrt(nu * s2 / (nu - 2) - e_sigma * e_sigma));
+    const double exact_corr = v[4 + 1] / std::sqrt(v[4] * v[8]);
+
+    using dm::bayes::AdviFamily;
+    std::vector<dm::bayes::ParameterSupport> supports(4);
+    supports[3] = dm::bayes::ParameterSupport::positive();
+    std::vector<dm::bayes::AdviResult> fits;
+    for (const auto family : {AdviFamily::mean_field, AdviFamily::full_rank})
+        fits.push_back(dm::bayes::advi(model, {0.0, 0.0, 0.0, 1.0},
+                                       {.family = family, .supports = supports,
+                                        .gradient_samples = 5, .tolerance = 0.001,
+                                        .output_draws = 20000, .seed = 8}));
+    const auto moments = [](const dm::bayes::AdviResult& r, int j) {
+        double m = 0, q = 0;
+        for (const auto& d : r.draws)
+            m += d[j] / r.draws.size(), q += d[j] * d[j] / r.draws.size();
+        return std::array<double, 2>{m, std::sqrt(q - m * m)};
+    };
+    const char* names[4]{"beta0", "beta1", "beta2", "sigma"};
+    std::println("| Parameter | Exact mean (SD) | Mean-field mean (SD) | "
+                 "Full-rank mean (SD) |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (int j = 0; j < 4; ++j) {
+        const auto mf = moments(fits[0], j), fr = moments(fits[1], j);
+        std::println("| {} | {:.3f} ({:.3f}) | {:.3f} ({:.3f}) | {:.3f} ({:.3f}) |", names[j],
+                     exact_mean[j], exact_sd[j], mf[0], mf[1], fr[0], fr[1]);
+    }
+    double fr_corr = 0;
+    {
+        const auto a = moments(fits[1], 1), b = moments(fits[1], 2);
+        for (const auto& d : fits[1].draws)
+            fr_corr += (d[1] - a[0]) * (d[2] - b[0]) / fits[1].draws.size();
+        fr_corr /= a[1] * b[1];
+    }
+    std::println("| corr(beta1, beta2) | {:.3f} | 0 | {:.3f} |", exact_corr, fr_corr);
+    std::println("\nIterations: mean-field {}, full-rank {}; step size eta {} and {}.",
+                 fits[0].iterations, fits[1].iterations, fits[0].step_size,
+                 fits[1].step_size);
+
+    // Marginal densities of beta1.
+    Vec grid, exact_d, mf_d, fr_d;
+    const double scale = std::sqrt(s2 * v[4]);
+    const double mf_sd = fits[0].cholesky[1 * 4 + 1];
+    const double fr_sd = std::hypot(fits[1].cholesky[4], fits[1].cholesky[5]);
+    const auto normal = [](double z, double m, double s) {
+        const double u = (z - m) / s;
+        return std::exp(-0.5 * u * u) / (s * std::sqrt(2 * std::numbers::pi));
+    };
+    for (double b = bhat[1] - 5 * scale; b <= bhat[1] + 5 * scale; b += scale / 25) {
+        const double z = (b - bhat[1]) / scale;
+        const double t = std::exp(std::lgamma((nu + 1) / 2) - std::lgamma(nu / 2)) /
+                         std::sqrt(nu * std::numbers::pi) *
+                         std::pow(1 + z * z / nu, -(nu + 1) / 2) / scale;
+        grid.push_back(b);
+        exact_d.push_back(t);
+        mf_d.push_back(normal(b, fits[0].mean[1], mf_sd));
+        fr_d.push_back(normal(b, fits[1].mean[1], fr_sd));
+    }
+    double top = 0;
+    for (const double d : mf_d)
+        top = std::max(top, d);
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(grid, exact_d, "Exact (Student t)", {40, 40, 40}, 2.5)
+        .line(grid, mf_d, "Mean-field ADVI", {176, 72, 43}, 2)
+        .line(grid, fr_d, "Full-rank ADVI", {26, 90, 147}, 2)
+        .y_limits(0, 1.3 * top)
+        .title("Posterior of beta1 with correlated predictors")
+        .x_label("beta1")
+        .y_label("Density")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/advi.svg");
+}
+```
+// result_begin: markdown
+| Parameter | Exact mean (SD) | Mean-field mean (SD) | Full-rank mean (SD) |
+| --- | ---: | ---: | ---: |
+| beta0 | 1.025 (0.143) | 1.030 (0.139) | 1.031 (0.139) |
+| beta1 | 0.355 (0.350) | 0.354 (0.118) | 0.360 (0.345) |
+| beta2 | -0.250 (0.371) | -0.255 (0.133) | -0.256 (0.372) |
+| sigma | 0.883 (0.106) | 0.879 (0.104) | 0.882 (0.099) |
+| corr(beta1, beta2) | -0.935 | 0 | -0.934 |
+
+Iterations: mean-field 10000, full-rank 10000; step size eta 1 and 0.1.
+\image(figures/advi.svg)
+// result_end
+
+Both families get the posterior means right to within a few thousandths, and both recover the residual SD \(\sigma\) through the log transform, with mean and SD within 0.007 of the exact values. They differ on the slopes. Because \(x_1\) and \(x_2\) are nearly collinear, the posterior of \((\beta_1,\beta_2)\) is a narrow ridge with correlation −0.935. Mean-field ADVI cannot represent the correlation. Minimising \(\mathrm{KL}(q\,\|\,p)\) then fits the width of the ridge rather than its length: each variance is the conditional variance \(1/\Lambda_{jj}\), not the marginal variance. The slope SDs are a third of the truth (0.118 against 0.350), so 95% intervals would cover about 50% of the time. Full-rank ADVI captures the correlation (−0.934) and the marginal SDs within 0.01. In the figure its density almost covers the exact Student \(t\), which differs from a normal only slightly in the tails at 37 degrees of freedom.
+
+The mean-field intercept is fine because centred predictors leave it almost uncorrelated with the slopes. The underdispersion is selective: it affects exactly the parameters whose posterior dependence the family cannot express, and summaries such as ELBO traces or predictive checks of the mean do not reveal it. Neither run met the strict tolerance of 0.001 within 10,000 iterations, because the ELBO is itself a 100-draw estimate whose noise sets a floor on the relative change. A looser tolerance stops earlier, at the cost of a less settled fit.
+
+>> Practical guidance
+
+- Declare every constraint with `ParameterSupport`. The Gaussian is fitted on the unconstrained scale, so a positive parameter's approximation is log-normal.
+- Use full-rank ADVI when parameters are correlated (collinear predictors, hierarchical location and scale) and the dimension allows \(d(d+1)/2\) extra parameters. Treat mean-field variances as lower bounds.
+- Use ADVI for fast point estimates and for initialising MCMC. For final uncertainty statements, check it against MCMC or with diagnostics such as PSIS on \(\log p-\log q\).
+- Run with several seeds. Different optima or a step size that is too large show up as different means.
+- Increase `gradient_samples` to reduce gradient noise in difficult posteriors, and `elbo_samples` for a sharper convergence test.
+
+>> References
+
+- A. Kucukelbir, D. Tran, R. Ranganath, A. Gelman and D. M. Blei (2017). Automatic differentiation variational inference. *Journal of Machine Learning Research* 18(14), 1-45.
+- D. M. Blei, A. Kucukelbir and J. D. McAuliffe (2017). Variational inference: a review for statisticians. *Journal of the American Statistical Association* 112(518), 859-877. doi:10.1080/01621459.2017.1285773
+- D. P. Kingma and M. Welling (2014). Auto-encoding variational Bayes. *International Conference on Learning Representations*.
+- Y. Yao, A. Vehtari, D. Simpson and A. Gelman (2018). Yes, but did it work?: evaluating variational inference. *Proceedings of the 35th International Conference on Machine Learning*, 5581-5590.

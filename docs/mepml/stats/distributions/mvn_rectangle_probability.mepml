@@ -1,0 +1,124 @@
+//? Title: Integrate the multivariate normal density over a rectangle
+//? Exports: both
+//? Lang: en
+
+> Compute correlated box probabilities with an error estimate
+
+Simultaneous tests and intervals often need \(P(a\le X\le b)\) for a correlated normal vector \(X\sim N(\mu,\Sigma)\). Examples include Dunnett comparisons, multiple endpoints and group-sequential monitoring. Beyond two or three dimensions this has no closed form. Genz's method writes \(X=\mu+LZ\) with a Cholesky factor \(L\) and integrates one coordinate at a time. Given the earlier coordinates, each coordinate's admissible interval is a one-dimensional normal probability. The \(d\)-dimensional integral then becomes a smooth integral over the unit cube of dimension \(d-1\).
+
+`mvn_rectangle_probability` evaluates that integral with randomly shifted lattice rules. The standard error across the shifts gives the reported error, which is three standard errors. The rule grows until this error falls below the requested tolerance. Variables are reordered so that the narrowest intervals are integrated first, which makes the integrand flatter.
+
+The example computes a two-sided simultaneous critical value for five equicorrelated statistics with correlation 1/2. This is the setting of five treatments compared with a shared control in a balanced design. It then compares the lattice rule's convergence with plain Monte Carlo on the same box.
+
+```{cpp, id=mvn-rectangle, file="figures/mvn_rectangle_convergence.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/linalg/cholesky.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/mvn_probability.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+int main() {
+    constexpr std::size_t d = 5;
+    Matrix sigma(d, d, .5);
+    for (std::size_t j = 0; j < d; ++j)
+        sigma(j, j) = 1;
+    const std::vector<double> zero(d, 0.0);
+    const auto coverage = [&](double c, double tol) {
+        return dm::stats::mvn_rectangle_probability(std::vector<double>(d, -c),
+                                                    std::vector<double>(d, c), zero, sigma,
+                                                    {.abs_tol = tol, .max_points = 2000000});
+    };
+
+    // Bisection for the c with P(|Z_j| <= c for all j) = 0.95.
+    double lo = 1.96, hi = 3.5;
+    for (int it = 0; it < 40; ++it) {
+        const double mid = .5 * (lo + hi);
+        (coverage(mid, 1e-6).value < .95 ? lo : hi) = mid;
+    }
+    const auto at = coverage(.5 * (lo + hi), 1e-6);
+    std::println("Simultaneous 95% critical value c = {:.4f} (Bonferroni: 2.5758).\n",
+                 .5 * (lo + hi));
+    std::println("At c the probability is {:.6f} with error {:.1e} from {} evaluations.\n",
+                 at.value, at.error, at.points);
+
+    // Error of lattice rules against plain Monte Carlo at c = 2.5.
+    const auto reference = coverage(2.5, 1e-7);
+    const auto root = dm::linalg::cholesky(sigma).L;
+    std::mt19937_64 random(5);
+    std::normal_distribution<double> normal;
+    std::vector<double> lattice_x, lattice_y, mc_x, mc_y;
+    std::println("| Evaluations | Lattice error | Plain Monte Carlo error |");
+    std::println("| ---: | ---: | ---: |");
+    for (const std::size_t budget : {2000, 8000, 32000, 128000, 512000}) {
+        const auto lattice = dm::stats::mvn_rectangle_probability(
+            std::vector<double>(d, -2.5), std::vector<double>(d, 2.5), zero, sigma,
+            {.abs_tol = 1e-12, .max_points = budget, .seed = 9});
+        std::size_t inside = 0;
+        for (std::size_t r = 0; r < lattice.points; ++r) {
+            bool ok = true;
+            std::vector<double> z(d);
+            for (auto& v : z)
+                v = normal(random);
+            for (std::size_t i = 0; i < d && ok; ++i) {
+                double x = 0;
+                for (std::size_t k = 0; k <= i; ++k)
+                    x += root(i, k) * z[k];
+                ok = std::abs(x) <= 2.5;
+            }
+            inside += ok;
+        }
+        const double mc = double(inside) / lattice.points;
+        const double mc_error = 3 * std::sqrt(mc * (1 - mc) / lattice.points);
+        std::println("| {} | {:.1e} | {:.1e} |", lattice.points, lattice.error, mc_error);
+        lattice_x.push_back(std::log10(double(lattice.points)));
+        lattice_y.push_back(std::log10(lattice.error));
+        mc_x.push_back(std::log10(double(lattice.points)));
+        mc_y.push_back(std::log10(mc_error));
+    }
+    std::println("\nReference probability at c = 2.5: {:.7f} (error {:.1e}).",
+                 reference.value, reference.error);
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(mc_x, mc_y, "Plain Monte Carlo", {176, 72, 43}, 1.6)
+        .points(mc_x, mc_y, "", {176, 72, 43}, 5)
+        .line(lattice_x, lattice_y, "Randomized lattice", {26, 90, 147}, 1.6)
+        .points(lattice_x, lattice_y, "", {26, 90, 147}, 5)
+        .title("Three-standard-error half-width against evaluations")
+        .x_label("log10 evaluations").y_label("log10 error")
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/mvn_rectangle_convergence.svg");
+}
+```
+// result_begin: markdown
+Simultaneous 95% critical value c = 2.5115 (Bonferroni: 2.5758).
+
+At c the probability is 0.950000 with error 5.6e-06 from 1433520 evaluations.
+
+| Evaluations | Lattice error | Plain Monte Carlo error |
+| ---: | ---: | ---: |
+| 1848 | 2.2e-03 | 1.6e-02 |
+| 5976 | 1.3e-03 | 8.6e-03 |
+| 23520 | 2.1e-04 | 4.3e-03 |
+| 124656 | 5.3e-05 | 1.9e-03 |
+| 423864 | 2.0e-05 | 1.0e-03 |
+
+Reference probability at c = 2.5: 0.9484635 (error 5.7e-06).
+\image(figures/mvn_rectangle_convergence.svg)
+// result_end
+\caption(Reported error against the number of integrand evaluations, on log scales, for the box \(|Z_j|\le2.5\).)
+\alttext(Both error curves fall as evaluations grow. The lattice curve is lower throughout and falls with a steeper slope than plain Monte Carlo.)
+
+The simultaneous critical value is 2.5114, below the Bonferroni value 2.5758, because the five statistics are positively correlated. Both this value and the box probability 0.948465 agree with `qmvnorm` and `pmvnorm` in the R package mvtnorm, within the reported error.
+
+The plain Monte Carlo error falls like \(N^{-1/2}\). The lattice error falls close to \(N^{-1}\), and at about 400,000 evaluations it is roughly 50 times smaller. The reported error is a statistical estimate from the spread of independent shifts, so it can understate the error when only a few shifts are used. The default of 12 shifts makes that unlikely. The covariance must be positive definite; degenerate (singular) normal laws are not handled.
+
+[Genz (1992)|https://doi.org/10.1080/10618600.1992.10477010] · [Genz and Bretz (2009)|https://doi.org/10.1007/978-3-642-01689-9] · [R mvtnorm|https://cran.r-project.org/package=mvtnorm]

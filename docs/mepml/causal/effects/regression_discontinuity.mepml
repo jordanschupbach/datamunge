@@ -1,0 +1,205 @@
+//? Title: Regression discontinuity with robust bias-corrected inference
+//? Exports: both
+//? Lang: en
+
+> Fit local polynomials on each side of a cutoff and make the confidence interval account for the bias of the fit
+
+In a regression discontinuity design, treatment is assigned when a running variable \(X\) crosses a cutoff \(c\): a vote share above 50%, a test score above a pass mark, an age above an eligibility threshold. If units cannot sort precisely around the cutoff, those just above and just below it are comparable, and the jump in the regression function at \(c\),
+
+\[
+\tau=\lim_{x\downarrow c}E[Y\mid X=x]-\lim_{x\uparrow c}E[Y\mid X=x],
+\]
+
+is the average treatment effect at the cutoff. In a fuzzy design the cutoff only changes the probability of treatment. The effect for compliers is then the ratio of the outcome jump to the treatment jump, an instrumental-variable estimand.
+
+Two practices dominate. Global polynomials fit a high-order curve to all the data on each side, but the fit at the boundary is driven by observations far from it and is sensitive to the chosen order. Local polynomials fit a low-order curve only within a bandwidth \(h\) of the cutoff, with kernel weights that decline with distance. The usual choice of \(h\) minimises the mean squared error of the estimate. That creates a problem for inference: at the MSE-optimal bandwidth the squared bias is of the same order as the variance, so a conventional interval centred on the estimate is shifted and undercovers.
+
+Calonico, Cattaneo and Titiunik (2014) estimate the leading bias with a higher-order fit (local quadratic for a local linear estimate) within a second bandwidth \(b\) and subtract it. The robust standard error also includes the variability of that estimated correction, so the interval stays valid at the MSE-optimal \(h\). `regression_discontinuity` implements this for sharp and fuzzy designs, with the conventional, bias-corrected and robust results side by side. `rd_bandwidths` gives the MSE-optimal bandwidths. The tests reproduce R's `rdrobust` (bandwidths, estimates, standard errors and intervals) on its US Senate data for several kernels, orders, variance estimators, a kink design, rounded running variables with mass points, and a simulated fuzzy design.
+
+The simulation uses the design of Calonico, Cattaneo and Titiunik, which mimics Lee's (2008) US House election data. The running variable is \(2\,\mathrm{Beta}(2,4)-1\), the conditional means are fifth-order polynomials fitted to that data on each side, and the noise SD is 0.1295, giving a true jump of 0.04 at \(c=0\) with 500 observations. The table compares, over 2000 samples, a global quartic fit (ordinary least squares on each side, HC1 errors) with the local linear estimate at the MSE-optimal \(h\) and its bias-corrected and robust versions. A fuzzy version with 2000 observations raises take-up from 20% to 70% at the cutoff. Untreated outcomes follow the same two curves with the jump removed, and the treatment effect is 0.2 for every unit. The figure shows how the coverage of the conventional and robust intervals changes when \(h\) is scaled away from the MSE-optimal value, with \(b\) fixed.
+
+```{cpp, id=rdd, file="figures/regression_discontinuity.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/causal/rdd.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::causal::RdEstimate;
+using dm::causal::RdKernel;
+using dm::causal::RdOptions;
+using dm::causal::RdVariance;
+
+// Lee (2008) House election data fitted by fifth-order polynomials on each side of the cutoff.
+double mean_left(double x) {
+    return 0.48 + x * (1.27 + x * (7.18 + x * (20.21 + x * (21.54 + x * 7.33))));
+}
+double mean_right(double x) {
+    return 0.52 + x * (0.84 + x * (-3.00 + x * (7.99 + x * (-9.01 + x * 3.56))));
+}
+
+struct Sample {
+    std::vector<double> x, y, take_up, y_fuzzy;
+};
+
+Sample draw(dm::random::SplitMix64& rng, int n) {
+    Sample s;
+    for (int i = 0; i < n; ++i) {
+        // Beta(2, 4) is the second smallest of five uniforms.
+        std::array<double, 5> u;
+        for (double& v : u)
+            v = rng.uniform01();
+        std::ranges::sort(u);
+        const double x = 2 * u[1] - 1;
+        s.x.push_back(x);
+        s.y.push_back((x < 0 ? mean_left(x) : mean_right(x)) + 0.1295 * rng.normal());
+        const double t = rng.uniform01() < (x < 0 ? 0.2 : 0.7);
+        s.take_up.push_back(t);
+        // Untreated means follow the two curves without their jump; every effect is 0.2.
+        const double base = x < 0 ? mean_left(x) : mean_right(x) - 0.04;
+        s.y_fuzzy.push_back(base + 0.2 * t + 0.1295 * rng.normal());
+    }
+    return s;
+}
+
+struct Score {
+    double sum = 0, sq = 0, length = 0, cover = 0;
+    void add(const RdEstimate& e, double truth, double z) {
+        sum += e.estimate - truth;
+        sq += (e.estimate - truth) * (e.estimate - truth);
+        length += 2 * z * e.standard_error;
+        cover += e.lower <= truth && truth <= e.upper;
+    }
+    void row(const std::string& name, int reps) const {
+        const double bias = sum / reps;
+        std::println("| {} | {:+.4f} | {:.4f} | {:.4f} | {:.3f} |", name, bias,
+                     std::sqrt(sq / reps - bias * bias), length / reps, cover / reps);
+    }
+};
+
+int main() {
+    const double truth = mean_right(0) - mean_left(0), z = 1.959963984540054;
+    // A global quartic: uniform kernel with a bandwidth covering every observation.
+    const RdOptions global{.order = 4,
+                           .kernel = RdKernel::uniform,
+                           .variance = RdVariance::hc1,
+                           .bandwidth = 2,
+                           .bias_bandwidth = 2};
+    dm::random::SplitMix64 rng(2014);
+    const int reps = 2000;
+    Score sharp[4], fuzzy[2];
+    double mean_h = 0, mean_b = 0, first_stage = 0;
+    for (int r = 0; r < reps; ++r) {
+        const Sample s = draw(rng, 500);
+        const auto g = dm::causal::regression_discontinuity(s.y, s.x, global);
+        const auto ll = dm::causal::regression_discontinuity(s.y, s.x);
+        sharp[0].add(g.conventional, truth, z);
+        sharp[1].add(ll.conventional, truth, z);
+        sharp[2].add(ll.bias_corrected, truth, z);
+        sharp[3].add(ll.robust, truth, z);
+        mean_h += ll.h_left / reps;
+        mean_b += ll.b_left / reps;
+        const Sample f = draw(rng, 2000);
+        const auto fz = dm::causal::regression_discontinuity(f.y_fuzzy, f.x, {}, f.take_up);
+        fuzzy[0].add(fz.conventional, 0.2, z);
+        fuzzy[1].add(fz.robust, 0.2, z);
+        first_stage += fz.first_stage_conventional.estimate / reps;
+    }
+    std::println("True jump {:.2f}; mean MSE-optimal h {:.3f}, mean b {:.3f}.\n", truth, mean_h,
+                 mean_b);
+    std::println("| Sharp design (n = 500) | Bias | SD | Mean CI length | Coverage |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    sharp[0].row("Global quartic, conventional", reps);
+    sharp[1].row("Local linear, conventional", reps);
+    sharp[2].row("Bias-corrected, conventional SE", reps);
+    sharp[3].row("Robust bias-corrected", reps);
+    std::println("\nFuzzy design (n = 2000): mean first-stage jump {:.3f}, true effect 0.2.\n",
+                 first_stage);
+    std::println("| Fuzzy design (n = 2000) | Bias | SD | Mean CI length | Coverage |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    fuzzy[0].row("Local linear Wald ratio, conventional", reps);
+    fuzzy[1].row("Robust bias-corrected", reps);
+
+    // Coverage as h is scaled away from the MSE-optimal value, with b held at its optimum.
+    const std::vector<double> scale{0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 2.5};
+    std::vector<double> conventional, robust;
+    const int grid_reps = 1000;
+    for (const double k : scale) {
+        double c = 0, rb = 0;
+        for (int r = 0; r < grid_reps; ++r) {
+            const Sample s = draw(rng, 500);
+            const auto bw = dm::causal::rd_bandwidths(s.y, s.x, {});
+            const auto e = dm::causal::regression_discontinuity(
+                s.y, s.x, {.bandwidth = k * bw.h, .bias_bandwidth = std::max(bw.b, k * bw.h)});
+            c += e.conventional.lower <= truth && truth <= e.conventional.upper;
+            rb += e.robust.lower <= truth && truth <= e.robust.upper;
+        }
+        conventional.push_back(c / grid_reps);
+        robust.push_back(rb / grid_reps);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(scale, conventional, "Conventional", {176, 72, 43}, 2)
+        .points(scale, conventional, "", {176, 72, 43}, 5)
+        .line(scale, robust, "Robust bias-corrected", {26, 90, 147}, 2)
+        .points(scale, robust, "", {26, 90, 147}, 5)
+        .abline_h(0.95, {120, 120, 120}, 1)
+        .y_limits(0.7, 1.0)
+        .title("Coverage of 95% intervals as the bandwidth grows")
+        .x_label("Bandwidth h / MSE-optimal h")
+        .y_label("Coverage")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/regression_discontinuity.svg");
+}
+```
+// result_begin: markdown
+True jump 0.04; mean MSE-optimal h 0.195, mean b 0.315.
+
+| Sharp design (n = 500) | Bias | SD | Mean CI length | Coverage |
+| --- | ---: | ---: | ---: | ---: |
+| Global quartic, conventional | +0.0244 | 0.0608 | 0.2327 | 0.919 |
+| Local linear, conventional | +0.0161 | 0.0597 | 0.2079 | 0.894 |
+| Bias-corrected, conventional SE | +0.0093 | 0.0688 | 0.2079 | 0.859 |
+| Robust bias-corrected | +0.0093 | 0.0688 | 0.2459 | 0.918 |
+
+Fuzzy design (n = 2000): mean first-stage jump 0.498, true effect 0.2.
+
+| Fuzzy design (n = 2000) | Bias | SD | Mean CI length | Coverage |
+| --- | ---: | ---: | ---: | ---: |
+| Local linear Wald ratio, conventional | +0.0502 | 0.0551 | 0.2098 | 0.829 |
+| Robust bias-corrected | +0.0346 | 0.0667 | 0.2497 | 0.914 |
+\image(figures/regression_discontinuity.svg)
+// result_end
+
+The local linear estimate at the MSE-optimal bandwidth (on average \(h=0.195\)) is biased by +0.016, 40% of the 0.04 effect. Its conventional interval ignores that bias and covers 89% of the time. The MSE-optimal bandwidth deliberately trades bias for variance, so this is not bad luck: it is the price of using the same bandwidth for estimation and inference. The global quartic does worse on bias (+0.024) with a wider interval. It happens to cover reasonably here, because the true curves are smooth polynomials, but its fit at the boundary rests on observations far from the cutoff, and in real data the answer can change with the chosen order.
+
+Subtracting the estimated bias removes most of it (+0.009 left), but the correction adds variance: the SD rises from 0.060 to 0.069. Paired with the conventional standard error, the bias-corrected estimate covers only 86% of the time, worse than not correcting. The robust standard error includes the variance of the correction. The interval is 18% longer, and coverage rises to 92%, the closest to nominal of the four. The remaining shortfall matches what Calonico, Cattaneo and Titiunik report for this design at \(n=500\). It comes from the few observations near the cutoff (only about 60 per side lie within \(h\)), where the nearest-neighbour variance estimate is noisy, and from the steep cubic and quartic terms of the left curve that the local quadratic correction misses. The Monte Carlo error of each coverage figure is about 0.006.
+
+The figure shows why the robust interval is preferred. As \(h\) grows past the MSE-optimal value, the bias of the local linear fit grows with \(h^2\) and conventional coverage falls steadily, to 80% at 2.5 times the optimum. The robust interval also degrades, because the bias bandwidth must grow with \(h\) and the quadratic correction eventually misses the higher-order curvature, but much more slowly. Below the optimum both intervals are similar, since there the bias is small relative to the noise.
+
+The fuzzy design adds a second source of error. The Wald ratio divides the outcome jump by the first-stage jump (0.5 here). Bias in the numerator passes straight into the ratio, and the ratio's sampling distribution is skewed. The conventional estimate is biased by +0.050, a quarter of the true effect, and covers 83% of the time. The robust bias-corrected interval, which applies the delta method to both corrected jumps, covers 91%.
+
+>> Practical guidance
+
+- Report the local linear estimate at the MSE-optimal bandwidth together with the robust bias-corrected interval (the default in `regression_discontinuity` and in `rdrobust`). Never pair the bias-corrected estimate with the conventional standard error.
+- Avoid global high-order polynomials. They give noisy, order-dependent fits at the boundary and put large weights on observations far from the cutoff.
+- Show that the conclusion holds over a range of bandwidths, for example half to twice the optimum. Remember that coverage of the conventional interval falls quickly for larger bandwidths.
+- Check the design: a density test for manipulation of the running variable, continuity of predetermined covariates at the cutoff, and placebo cutoffs where no effect should appear. This implementation does not adjust for covariates or clustering.
+- With a discrete running variable (mass points), the estimate extrapolates between the closest values on each side. Count distinct values rather than observations, which `mass_point_adjust` does, and consider local-randomisation methods when very few values lie near the cutoff.
+- In fuzzy designs, report the first-stage jump and its robust interval. A small or imprecise first stage makes the ratio unstable, as with weak instruments.
+
+>> References
+
+- S. Calonico, M. D. Cattaneo and R. Titiunik (2014). Robust nonparametric confidence intervals for regression-discontinuity designs. *Econometrica* 82(6), 2295-2326. doi:10.3982/ECTA11757
+- S. Calonico, M. D. Cattaneo and M. H. Farrell (2020). Optimal bandwidth choice for robust bias-corrected inference in regression discontinuity designs. *The Econometrics Journal* 23(2), 192-210. doi:10.1093/ectj/utz022
+- S. Calonico, M. D. Cattaneo, M. H. Farrell and R. Titiunik (2017). rdrobust: Software for regression-discontinuity designs. *The Stata Journal* 17(2), 372-404. doi:10.1177/1536867X1701700208
+- G. Imbens and K. Kalyanaraman (2012). Optimal bandwidth choice for the regression discontinuity estimator. *Review of Economic Studies* 79(3), 933-959. doi:10.1093/restud/rdr043
+- A. Gelman and G. Imbens (2019). Why high-order polynomials should not be used in regression discontinuity designs. *Journal of Business & Economic Statistics* 37(3), 447-456. doi:10.1080/07350015.2017.1366909
+- D. S. Lee (2008). Randomized experiments from non-random selection in U.S. House elections. *Journal of Econometrics* 142(2), 675-697. doi:10.1016/j.jeconom.2007.05.008

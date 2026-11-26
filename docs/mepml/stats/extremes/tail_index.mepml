@@ -1,0 +1,206 @@
+//? Title: Hill and Pickands tail-index estimation
+//? Exports: both
+//? Lang: en
+
+> Estimate how heavy a tail is from the largest order statistics, read the estimate's stability over the number k used, and extrapolate quantiles beyond the data
+
+For a heavy-tailed distribution, \(P(X>x)\approx x^{-1/\xi}L(x)\) with a slowly varying \(L\). The **extreme value index** \(\xi\) (tail index \(\alpha=1/\xi\)) sets how fast very large values become rarer, and with it the existence of moments (\(E X^r<\infty\) only for \(r<1/\xi\)) and the size of extrapolated quantiles. The classical estimators use only the \(k\) largest order statistics \(X_{n:n}\ge X_{n-1:n}\ge\dots\), treating \(X_{n-k:n}\) as a random threshold:
+
+- **Hill** (1975): \(\hat\xi_H=\frac1k\sum_{i=1}^k\log X_{n-i+1:n}-\log X_{n-k:n}\). It is the maximum-likelihood estimator for an exact Pareto tail, asymptotically normal with variance \(\xi^2/k\), but valid only for \(\xi>0\) and not invariant to shifts.
+- **Pickands** (1975): \(\hat\xi_P=\log\bigl[(X_{n-k+1}-X_{n-2k+1})/(X_{n-2k+1}-X_{n-4k+1})\bigr]/\log 2\). It is valid for any \(\xi\) and invariant to location and scale, but it uses only three order statistics and has a much larger variance.
+- **Moment** (Dekkers, Einmahl and de Haan 1989): \(\hat\xi_M=M_1+1-\tfrac12(1-M_1^2/M_2)^{-1}\), with \(M_j\) the means of \((\log X_{n-i+1}-\log X_{n-k})^j\). It extends Hill to all real \(\xi\), with variance \((1+\xi^2)/k\) for \(\xi\ge0\).
+
+All three face the same trade-off. With small \(k\) the estimate is noisy. With large \(k\), observations from the body of the distribution, where the power law does not hold yet, bias it. The standard diagnostic is the plot of \(\hat\xi\) against \(k\): look for a stable region. The **Weissman** (1978) estimator extrapolates beyond the sample: \(\hat Q(1-p)=X_{n-k:n}\bigl((k+1)/((n+1)p)\bigr)^{\hat\xi_H}\).
+
+`tail_index` gives each estimator at one \(k\) with its asymptotic standard error. `tail_index_path` gives the whole path, and `weissman_quantile` the extrapolated quantile. The tests reproduce `ReIns` 1.0.16 (Hill, Moment and Weissman.q) and the Pickands formula to rounding. They also check the asymptotic variances, the exact \(\xi=-1\) of Pickands on uniform quantiles, and location-scale invariance.
+
+The example uses the Secura Belgian Re automobile claims: 371 claims above €1.2 million (Beirlant et al. 2004), the textbook case for these estimators. It cross-checks the result against a generalized Pareto fit. The simulation compares the estimators' bias, RMSE and interval coverage over \(k\) for an exact Pareto tail, a \(t_3\) tail with second-order bias, and a lognormal, whose \(\xi=0\) Hill cannot see.
+
+```{cpp, id=tail, file="figures/tail_index.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/gpd.hpp>
+#include <datamunge/stats/tail_index.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <fstream>
+#include <functional>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::TailIndexMethod;
+
+std::vector<double> read_series(const std::string& path) {
+    std::ifstream in(path);
+    std::vector<double> v;
+    for (std::string line; std::getline(in, line);)
+        if (!line.empty() && line[0] != '#') v.push_back(std::stod(line));
+    return v;
+}
+
+std::vector<double> estimates(const std::vector<dm::stats::TailIndexEstimate>& path,
+                              double dm::stats::TailIndexEstimate::*field) {
+    std::vector<double> out;
+    for (const auto& e : path) out.push_back(e.*field);
+    return out;
+}
+
+int main() {
+    const auto claims = read_series("data/secura.txt");
+    const std::size_t n = claims.size();
+    std::println("{} claims, largest {:.2f} million EUR.\n", n,
+                 std::ranges::max(claims) / 1e6);
+
+    std::println("| k | Threshold X(n-k) (million) | Hill [95%] | Moment [95%] | "
+                 "Pickands [95%] | Weissman 1-in-1000 claim (million) |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const std::size_t k : {25, 50, 95, 150, 250}) {
+        const auto h = dm::stats::tail_index(claims, k, TailIndexMethod::hill);
+        const auto m = dm::stats::tail_index(claims, k, TailIndexMethod::moment);
+        std::string pick = "–";
+        if (4 * k <= n) {
+            const auto p = dm::stats::tail_index(claims, k, TailIndexMethod::pickands);
+            pick = std::format("{:.3f} [{:.2f}, {:.2f}]", p.estimate, p.lower, p.upper);
+        }
+        std::println("| {} | {:.3f} | {:.3f} [{:.3f}, {:.3f}] | "
+                     "{:.3f} [{:.3f}, {:.3f}] | {} | {:.2f} |", k, h.threshold / 1e6,
+                     h.estimate, h.lower, h.upper, m.estimate, m.lower, m.upper, pick,
+                     dm::stats::weissman_quantile(claims, k, 1e-3) / 1e6);
+    }
+
+    // Cross-check: GPD fit to the excesses over the same random threshold (k = 95).
+    const auto h95 = dm::stats::tail_index(claims, 95, TailIndexMethod::hill);
+    const auto g = dm::stats::fit_gpd(claims, h95.threshold);
+    std::println("\nGPD fit above X(n-95): xi = {:.3f} (SE {:.3f}) from {} exceedances; "
+                 "Hill gives {:.3f} (SE {:.3f}).", g.shape, g.shape_se, g.exceedances,
+                 h95.estimate, h95.standard_error);
+
+    // Simulation: n = 1000, 300 replicates, three tails.
+    struct Tail {
+        std::string name;
+        double xi;
+        std::function<double(double)> quantile;
+    };
+    const std::vector<Tail> tails{
+        {"Pareto, xi = 0.5", 0.5, [](double u) { return std::pow(1 - u, -0.5); }},
+        {"abs t3, xi = 1/3", 1.0 / 3,
+         [](double u) { return dm::random::student_t_quantile(0.5 + u / 2, 3); }},
+        {"lognormal, xi = 0", 0.0,
+         [](double u) { return std::exp(dm::random::normal_quantile(u)); }}};
+    dm::random::SplitMix64 rng(23);
+    const int reps = 300;
+    std::println("\n| Tail | k | Hill bias | Hill RMSE | Hill coverage | Moment bias | "
+                 "Moment RMSE | Moment coverage | Pickands bias | Pickands RMSE |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const auto& tail : tails) {
+        const std::vector<std::size_t> ks{25, 50, 100, 200};
+        // [method][k] accumulators: bias, squared error, coverage.
+        std::vector<std::vector<double>> bias(3, std::vector<double>(ks.size())),
+            se2 = bias, cover = bias;
+        for (int r = 0; r < reps; ++r) {
+            std::vector<double> x(1000);
+            for (auto& v : x) v = tail.quantile(rng.uniform01() * 0.999999 + 5e-7);
+            for (std::size_t j = 0; j < ks.size(); ++j) {
+                const TailIndexMethod methods[]{TailIndexMethod::hill,
+                                                TailIndexMethod::moment,
+                                                TailIndexMethod::pickands};
+                for (std::size_t m = 0; m < 3; ++m) {
+                    const auto e = dm::stats::tail_index(x, ks[j], methods[m]);
+                    bias[m][j] += (e.estimate - tail.xi) / reps;
+                    se2[m][j] += std::pow(e.estimate - tail.xi, 2) / reps;
+                    const bool inside = e.lower <= tail.xi && tail.xi <= e.upper;
+                    cover[m][j] += inside / double(reps);
+                }
+            }
+        }
+        for (std::size_t j = 0; j < ks.size(); ++j)
+            std::println("| {} | {} | {:+.3f} | {:.3f} | {:.2f} | {:+.3f} | {:.3f} | "
+                         "{:.2f} | {:+.3f} | {:.3f} |", tail.name, ks[j], bias[0][j],
+                         std::sqrt(se2[0][j]), cover[0][j], bias[1][j],
+                         std::sqrt(se2[1][j]), cover[1][j], bias[2][j],
+                         std::sqrt(se2[2][j]));
+    }
+
+    using dm::stats::tail_index_path;
+    const auto hill = tail_index_path(claims, TailIndexMethod::hill, 10, 300);
+    const auto mom = tail_index_path(claims, TailIndexMethod::moment, 10, 300);
+    const auto pick = tail_index_path(claims, TailIndexMethod::pickands, 10, 300);
+    using E = dm::stats::TailIndexEstimate;
+    const auto k_of = [](const std::vector<E>& p) {
+        std::vector<double> k;
+        for (const auto& e : p) k.push_back(static_cast<double>(e.k));
+        return k;
+    };
+    auto fig = dm::graphics::RPlot::create();
+    fig.line(k_of(pick), estimates(pick, &E::estimate), "Pickands", {150, 150, 150}, 1.5)
+        .line(k_of(hill), estimates(hill, &E::upper), "Hill 95% interval", {140, 182, 222},
+              1.5)
+        .line(k_of(hill), estimates(hill, &E::lower), "", {140, 182, 222}, 1.5)
+        .line(k_of(mom), estimates(mom, &E::estimate), "Moment", {178, 74, 38}, 2)
+        .line(k_of(hill), estimates(hill, &E::estimate), "Hill", {26, 90, 147}, 2.5)
+        .abline_v(95, {170, 170, 170})
+        .y_limits(-1.0, 1.6)
+        .title("Secura claims: extreme value index against k")
+        .x_label("k (number of upper order statistics)")
+        .y_label("Estimated xi")
+        .size(640, 410);
+    std::filesystem::create_directories("build");
+    fig.save_svg("build/tail_index.svg");
+}
+```
+// result_begin: markdown
+371 claims, largest 7.90 million EUR.
+
+| k | Threshold X(n-k) (million) | Hill [95%] | Moment [95%] | Pickands [95%] | Weissman 1-in-1000 claim (million) |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 25 | 3.738 | 0.280 [0.170, 0.390] | 0.024 [-0.368, 0.417] | 0.654 [-0.13, 1.44] | 12.27 |
+| 50 | 3.000 | 0.299 [0.216, 0.382] | 0.146 [-0.134, 0.426] | -0.330 [-0.82, 0.16] | 13.08 |
+| 95 | 2.580 | 0.271 [0.217, 0.326] | 0.264 [0.056, 0.472] | – | 11.63 |
+| 150 | 2.143 | 0.321 [0.269, 0.372] | 0.168 [0.006, 0.330] | – | 14.70 |
+| 250 | 1.661 | 0.397 [0.348, 0.446] | 0.081 [-0.043, 0.206] | – | 22.09 |
+
+GPD fit above X(n-95): xi = 0.296 (SE 0.149) from 95 exceedances; Hill gives 0.271 (SE 0.028).
+
+| Tail | k | Hill bias | Hill RMSE | Hill coverage | Moment bias | Moment RMSE | Moment coverage | Pickands bias | Pickands RMSE |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Pareto, xi = 0.5 | 25 | -0.002 | 0.098 | 0.94 | -0.138 | 0.285 | 0.88 | -0.002 | 0.380 |
+| Pareto, xi = 0.5 | 50 | -0.003 | 0.066 | 0.94 | -0.065 | 0.181 | 0.91 | -0.014 | 0.277 |
+| Pareto, xi = 0.5 | 100 | -0.004 | 0.049 | 0.93 | -0.034 | 0.120 | 0.91 | +0.007 | 0.191 |
+| Pareto, xi = 0.5 | 200 | -0.001 | 0.037 | 0.94 | -0.020 | 0.078 | 0.96 | -0.006 | 0.131 |
+| abs t3, xi = 1/3 | 25 | +0.029 | 0.071 | 0.98 | -0.095 | 0.236 | 0.91 | -0.068 | 0.371 |
+| abs t3, xi = 1/3 | 50 | +0.043 | 0.065 | 0.93 | -0.050 | 0.164 | 0.93 | -0.137 | 0.297 |
+| abs t3, xi = 1/3 | 100 | +0.073 | 0.082 | 0.57 | -0.036 | 0.115 | 0.92 | -0.217 | 0.289 |
+| abs t3, xi = 1/3 | 200 | +0.135 | 0.138 | 0.00 | -0.037 | 0.090 | 0.89 | -0.418 | 0.437 |
+| lognormal, xi = 0 | 25 | +0.378 | 0.385 | 0.00 | +0.178 | 0.286 | 0.90 | +0.306 | 0.481 |
+| lognormal, xi = 0 | 50 | +0.423 | 0.426 | 0.00 | +0.230 | 0.282 | 0.60 | +0.293 | 0.404 |
+| lognormal, xi = 0 | 100 | +0.474 | 0.476 | 0.00 | +0.291 | 0.313 | 0.21 | +0.305 | 0.362 |
+| lognormal, xi = 0 | 200 | +0.557 | 0.558 | 0.00 | +0.338 | 0.347 | 0.00 | +0.265 | 0.292 |
+\image(figures/tail_index.svg)
+// result_end
+
+For the Secura claims, the Hill path is stable between about \(k=40\) and \(k=150\), at \(\hat\xi\approx0.27\)–0.32. That is a tail index near 3.5, so the claim sizes have a finite variance but probably no finite fourth moment. Beyond \(k\approx150\) the Hill path rises steadily: the threshold drops toward the €1.2 million reporting limit, and the power law holds less well. The moment estimator, which also allows \(\xi\le0\), agrees near \(k=95\) (0.26) but is far noisier, and Pickands is unusable at this sample size. Its interval at \(k=25\) spans \([-0.13,1.44]\), and its admissible range ends at \(k=92\). At \(k=95\), a generalized Pareto fit above the same threshold gives \(\hat\xi=0.30\), consistent with Hill, but with a standard error five times larger (0.15 against 0.028). The Hill standard error is that small because it assumes \(\xi>0\) and an exact power law, and the estimator ignores bias. The Weissman estimate of the claim exceeded once in 1000 claims varies from €11.6 to €14.7 million across the stable region. At \(k=250\) it reaches €22 million, a reminder that extrapolation is sensitive to the choice of \(k\).
+
+The simulation explains this pattern. For an exact Pareto tail, Hill is unbiased at every \(k\), its RMSE falls like \(1/\sqrt k\), and its intervals cover 93–94% of the time. Here more data is simply better. The \(t_3\) tail is only asymptotically Pareto (second-order parameter \(\rho=-2/3\)). Hill's bias grows with \(k\) (+0.03 at \(k=25\), +0.14 at \(k=200\) for \(n=1000\)), so its RMSE is smallest at \(k\approx50\). Because the interval ignores bias, coverage collapses: 57% at \(k=100\), and none at \(k=200\). The moment estimator has a larger variance but much less bias here, and its coverage stays at 89–93%. Pickands is unbiased only for an exact Pareto tail. Its RMSE is three to four times Hill's, and on the \(t_3\) tail it is badly biased once \(4k\) reaches into the body.
+
+The lognormal case is the cautionary one. Its true \(\xi\) is 0, but Hill returns 0.38–0.56, with intervals that never cover zero. The Hill plot of lognormal data can look as stable as the Secura plot. Hill estimates assume a power-law tail rather than testing for one. The moment estimator is also biased upward (+0.18 to +0.34), but less so. Its intervals cover at \(k=25\) and degrade quickly after that.
+
+>> Practical guidance
+
+- Plot the estimates against \(k\), or \(\log k\), and report a value from a stable region together with the region itself. A single \(k\) with a Hill standard error understates the uncertainty, because bias dominates at large \(k\).
+- Use Hill only when a power-law tail is plausible (positive data, \(\xi>0\)). Check that assumption with the moment estimator or a GPD fit, which allow \(\xi\le0\), and with a Pareto quantile plot.
+- Prefer the moment estimator or a GPD fit when the sign of \(\xi\) is in doubt. Treat Pickands as a location-invariant diagnostic, not as a primary estimate, unless \(n\) is in the many thousands.
+- Bias-reduced Hill estimators (for example, ReIns' `Hill.2oQV`) and adaptive choices of \(k\) exist. They depend on estimating the second-order parameter, which is itself difficult in moderate samples.
+
+>> References
+
+- B. M. Hill (1975). A simple general approach to inference about the tail of a distribution. *Annals of Statistics* 3(5), 1163-1174. doi:10.1214/aos/1176343247
+- J. Pickands (1975). Statistical inference using extreme order statistics. *Annals of Statistics* 3(1), 119-131. doi:10.1214/aos/1176343003
+- A. L. M. Dekkers, J. H. J. Einmahl and L. de Haan (1989). A moment estimator for the index of an extreme-value distribution. *Annals of Statistics* 17(4), 1833-1855. doi:10.1214/aos/1176347397
+- I. Weissman (1978). Estimation of parameters and large quantiles based on the k largest observations. *Journal of the American Statistical Association* 73(364), 812-815. doi:10.1080/01621459.1978.10480104
+- J. Beirlant, Y. Goegebeur, J. Segers and J. Teugels (2004). *Statistics of Extremes: Theory and Applications*. Wiley. doi:10.1002/0470012382
+- T. Reynkens and R. Verbelen (2024). ReIns: Functions from "Reinsurance: Actuarial and Statistical Aspects", R package version 1.0.16.

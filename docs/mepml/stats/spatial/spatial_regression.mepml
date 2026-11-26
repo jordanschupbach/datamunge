@@ -1,0 +1,188 @@
+//? Title: Spatial lag and spatial error regression
+//? Exports: both
+//? Lang: en
+
+> Fit simultaneous autoregressive regressions by maximum likelihood, read spillovers through impacts, and see what ignoring or misplacing the spatial dependence does to the effect of a covariate
+
+When regression residuals are spatially autocorrelated, ordinary least squares is no longer efficient, and its standard errors are no longer valid. Two models are commonly used. The spatial lag (SAR) model lets the response depend on neighbouring responses:
+
+\[
+y=\rho Wy+X\beta+\varepsilon,\qquad \varepsilon\sim N(0,\sigma^2I).
+\]
+
+A change in \(x_k\) at one location then propagates through \((I-\rho W)^{-1}\). The direct effect averages the own-location response, and the total effect adds the spillovers to all other locations. With row-standardised \(W\) the total effect is \(\beta_k/(1-\rho)\), so \(\beta_k\) itself is not the marginal effect. The spatial error (SEM) model keeps the mean \(X\beta\) and places the dependence in the disturbance, \(u=\lambda Wu+\varepsilon\). There \(\beta_k\) is the marginal effect, and the spatial structure affects only efficiency.
+
+`spatial_lag_regression` and `spatial_error_regression` maximise the concentrated log-likelihood over \(\rho\) or \(\lambda\). The log-determinant \(\log|I-\rho W|\) comes from the eigenvalues of \(W\) when \(W\) is similar to a symmetric matrix, and from an LU factorisation otherwise. Standard errors come from the analytic information matrix. Both functions return the likelihood-ratio test against OLS and the AIC, and the lag model also returns direct, indirect and total impacts. The tests reproduce `spatialreg::lagsarlm` and `errorsarlm` (method `"eigen"`) on the Columbus crime data for row-standardised and binary weights: estimates, standard errors, \(\sigma^2\), log-likelihoods, AIC, fitted values and impacts. They also reproduce the LU path on asymmetric 4-nearest-neighbour weights. For binary weights the total impact uses the mean row sum of \((I-\rho W)^{-1}\); spatialreg's \(\beta/(1-\rho)\) is exact only for row-standardised \(W\).
+
+The study uses a \(15\times15\) lattice with row-standardised rook weights. The covariate is spatially smooth, \(x=(I-0.6W)^{-1}z\). Responses come either from a lag process (\(\rho=0.5\)) or from an error process (\(\lambda=0.5\)), in both cases with \(\beta=(1,1)\) and \(\sigma^2=1\). Each data set is analysed by OLS, SAR and SEM; there are 200 data sets per process. The target is the total effect of \(x\): 2 under the lag process and 1 under the error process.
+
+```{cpp, id=sar, file="figures/spatial_regression.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/spatial_regression.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+constexpr std::size_t side = 15, n = side * side;
+
+// (I - r W)^{-1} v by fixed-point iteration (converges for |r| < 1, row-standardised W).
+std::vector<double> filter_inverse(const Matrix& w, double r,
+                                   const std::vector<double>& v) {
+    std::vector<double> y = v;
+    for (int it = 0; it < 80; ++it) {
+        std::vector<double> next = v;
+        for (std::size_t i = 0; i < n; ++i)
+            for (std::size_t j = 0; j < n; ++j)
+                if (w(i, j) != 0)
+                    next[i] += r * w(i, j) * y[j];
+        y = next;
+    }
+    return y;
+}
+
+double slope_total(const dm::stats::SpatialRegressionResult& f, bool lag) {
+    return lag ? f.impacts[1].total : f.coefficients[1];
+}
+
+int main() {
+    Matrix xy(n, 2);
+    for (std::size_t c = 0; c < n; ++c)
+        xy(c, 0) = static_cast<double>(c % side), xy(c, 1) = static_cast<double>(c / side);
+    const auto w = dm::stats::row_standardize(dm::stats::distance_band_weights(xy, 0, 1));
+    dm::random::SplitMix64 rng(2024);
+    const int reps = 200;
+    const char* dgp_names[2]{"Lag, rho = 0.5", "Error, lambda = 0.5"};
+    const double truth_total[2]{2.0, 1.0};
+    // [dgp][estimator OLS, SAR, SEM]
+    std::vector<double> slope[2][3], total[2][3];
+    double cover[2][3]{}, lr_sar[2]{}, lr_sem[2]{}, aic_right[2]{};
+    for (int dgp = 0; dgp < 2; ++dgp)
+        for (int r = 0; r < reps; ++r) {
+            std::vector<double> z(n), e(n);
+            for (std::size_t i = 0; i < n; ++i)
+                z[i] = rng.normal(), e[i] = rng.normal();
+            const auto x1 = filter_inverse(w, 0.6, z);
+            Matrix x(n, 2);
+            std::vector<double> mean(n);
+            for (std::size_t i = 0; i < n; ++i)
+                x(i, 0) = 1, x(i, 1) = x1[i], mean[i] = 1 + x1[i];
+            std::vector<double> y(n);
+            if (dgp == 0) {
+                for (std::size_t i = 0; i < n; ++i)
+                    mean[i] += e[i];
+                y = filter_inverse(w, 0.5, mean);
+            } else {
+                const auto u = filter_inverse(w, 0.5, e);
+                for (std::size_t i = 0; i < n; ++i)
+                    y[i] = mean[i] + u[i];
+            }
+            // OLS: the error model with lambda pinned at 0 (ML variance, divisor n).
+            const auto sar = dm::stats::spatial_lag_regression(y, x, w);
+            const auto sem = dm::stats::spatial_error_regression(y, x, w);
+            const dm::stats::SpatialRegressionOptions pinned{.lower = -1e-9, .upper = 1e-9};
+            const auto ols = dm::stats::spatial_error_regression(y, x, w, pinned);
+            const dm::stats::SpatialRegressionResult* fits[3]{&ols, &sar, &sem};
+            for (int k = 0; k < 3; ++k) {
+                slope[dgp][k].push_back(fits[k]->coefficients[1]);
+                total[dgp][k].push_back(slope_total(*fits[k], k == 1));
+                cover[dgp][k] += std::abs(fits[k]->coefficients[1] - 1) <=
+                                 1.959964 * fits[k]->standard_errors[1];
+            }
+            lr_sar[dgp] += sar.lr_p_value < 0.05;
+            lr_sem[dgp] += sem.lr_p_value < 0.05;
+            aic_right[dgp] += dgp == 0 ? sar.aic < sem.aic : sem.aic < sar.aic;
+        }
+    const auto mean = [](const std::vector<double>& v) {
+        double s = 0;
+        for (const double x : v)
+            s += x;
+        return s / v.size();
+    };
+    const auto sd = [&](const std::vector<double>& v) {
+        const double m = mean(v);
+        double s = 0;
+        for (const double x : v)
+            s += (x - m) * (x - m);
+        return std::sqrt(s / (v.size() - 1));
+    };
+    const char* est[3]{"OLS", "Spatial lag (SAR)", "Spatial error (SEM)"};
+    std::println("| Process | Estimator | beta_x: mean (SD) | 95% CI covers beta_x = 1 | "
+                 "Total effect of x: mean (SD) | True total effect |");
+    std::println("| --- | --- | ---: | ---: | ---: | ---: |");
+    for (int d = 0; d < 2; ++d)
+        for (int k = 0; k < 3; ++k)
+            std::println("| {} | {} | {:.3f} ({:.3f}) | {:.3f} | {:.3f} ({:.3f}) | "
+                         "{:.0f} |",
+                         dgp_names[d], est[k], mean(slope[d][k]), sd(slope[d][k]),
+                         cover[d][k] / reps, mean(total[d][k]), sd(total[d][k]),
+                         truth_total[d]);
+    std::println("\n| Process | SAR LR test rejects rho = 0 | "
+                 "SEM LR test rejects lambda = 0 | "
+                 "AIC prefers the true model |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (int d = 0; d < 2; ++d)
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} |", dgp_names[d], lr_sar[d] / reps,
+                     lr_sem[d] / reps, aic_right[d] / reps);
+
+    // Sorted total-effect estimates under the lag process.
+    const dm::graphics::RGBA colours[3]{{120, 120, 120}, {26, 90, 147}, {176, 72, 43}};
+    std::vector<double> q;
+    for (int r = 0; r < reps; ++r)
+        q.push_back((r + 0.5) / reps);
+    auto plot = dm::graphics::RPlot::create();
+    for (int k = 0; k < 3; ++k) {
+        auto v = total[0][k];
+        std::ranges::sort(v);
+        plot.line(v, q, est[k], colours[k], 2);
+    }
+    plot.abline_v(2, {0, 0, 0})
+        .y_limits(0, 1.35)
+        .title("Total effect of x under a lag process (truth 2)")
+        .x_label("Estimated total effect (OLS and SEM: slope; SAR: impacts)")
+        .y_label("Empirical CDF over 200 data sets")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/spatial_regression.svg");
+}
+```
+// result_begin: markdown
+| Process | Estimator | beta_x: mean (SD) | 95% CI covers beta_x = 1 | Total effect of x: mean (SD) | True total effect |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Lag, rho = 0.5 | OLS | 1.327 (0.088) | 0.020 | 1.327 (0.088) | 2 |
+| Lag, rho = 0.5 | Spatial lag (SAR) | 1.006 (0.067) | 0.940 | 1.975 (0.169) | 2 |
+| Lag, rho = 0.5 | Spatial error (SEM) | 1.084 (0.087) | 0.715 | 1.084 (0.087) | 2 |
+| Error, lambda = 0.5 | OLS | 1.002 (0.079) | 0.870 | 1.002 (0.079) | 1 |
+| Error, lambda = 0.5 | Spatial lag (SAR) | 0.873 (0.068) | 0.505 | 1.334 (0.150) | 1 |
+| Error, lambda = 0.5 | Spatial error (SEM) | 0.995 (0.064) | 0.950 | 0.995 (0.064) | 1 |
+
+| Process | SAR LR test rejects rho = 0 | SEM LR test rejects lambda = 0 | AIC prefers the true model |
+| --- | ---: | ---: | ---: |
+| Lag, rho = 0.5 | 1.000 | 1.000 | 0.995 |
+| Error, lambda = 0.5 | 0.995 | 1.000 | 0.975 |
+\image(figures/spatial_regression.svg)
+// result_end
+
+Under the lag process, OLS is badly biased for every quantity of interest. Its slope of 1.33 is neither \(\beta=1\) nor the total effect 2, and its 95% intervals cover \(\beta\) in only 2% of data sets. The omitted \(\rho Wy\) is correlated with the smooth covariate, so OLS absorbs part of the spillover into \(\hat\beta\). The SAR model recovers \(\beta\) (mean 1.006, coverage 94%), and its impacts recover the total effect (mean 1.98). The figure shows the consequence of the wrong model. If the analyst fits SEM to lag-generated data, the estimated effect of \(x\) is about half the truth, even though SEM's LR test rejects \(\lambda=0\) with certainty. A significant spatial parameter does not show that the mean model is right.
+
+Under the error process, OLS stays unbiased, but its intervals are too narrow (87% coverage), and it is less precise than SEM (SD 0.079 against 0.064). SEM is unbiased and correctly calibrated. Fitting SAR to error-generated data is again harmful. Its \(\beta\) is biased down to 0.87 and its impacts overstate the total effect at 1.33, because it attributes to spillovers a correlation that lives only in the disturbance. Both LR tests reject the nonspatial model under either process, so they detect spatial dependence but not its form. The AIC comparison of the two fitted models picks the true one in 97.5–99.5% of data sets.
+
+>> Practical guidance
+
+- Decide between lag and error models on substantive grounds first. A lag model says outcomes influence each other, while an error model says omitted spatially structured factors affect the outcome. The fitted parameters answer different questions.
+- Compare the two fitted models by likelihood or AIC, not by testing each against OLS. Both tests reject whenever there is any spatial dependence.
+- Report impacts, not \(\beta\), from a lag model. With row-standardised weights the total effect is \(\beta/(1-\rho)\), which can be twice \(\beta\) or more.
+- Use the eigenvalue log-determinant for weights that are symmetric or row-standardised from symmetric neighbours. Asymmetric weights, such as \(k\)-nearest neighbours, fall back to LU. Set the search interval explicitly if the default \((-1,1)\) does not suit the weights.
+- Treat asymptotic standard errors cautiously in small samples. They come from the information matrix at the estimate and ignore the boundary of the parameter space.
+
+>> References
+
+- L. Anselin (1988). *Spatial Econometrics: Methods and Models*. Kluwer. doi:10.1007/978-94-015-7799-1
+- J. P. LeSage and R. K. Pace (2009). *Introduction to Spatial Econometrics*. CRC Press. doi:10.1201/9781420064254
+- R. S. Bivand, G. Millo and G. Piras (2021). A review of software for spatial econometrics in R. *Mathematics* 9(11), 1276. doi:10.3390/math9111276
+- J. K. Ord (1975). Estimation methods for models of spatial interaction. *Journal of the American Statistical Association* 70(349), 120-126. doi:10.1080/01621459.1975.10480272

@@ -1,0 +1,144 @@
+//? Title: Combine multiply imputed analyses with Rubin's rules
+//? Exports: both
+//? Lang: en
+
+> Pool estimates and variances across imputations, with small-sample degrees of freedom and the fraction of missing information
+
+Each of the m completed datasets gives an estimate \(\hat Q_i\) and a complete-data variance \(U_i\). Rubin's rules combine them into \(\bar Q\) and a total variance \(T=\bar U+(1+1/m)B\), where \(\bar U\) is the average within-imputation variance and \(B\) is the variance of the estimates across imputations. The between-imputation term is what single imputation leaves out: the uncertainty about the missing values themselves. The factor \(1+1/m\) accounts for using a finite number of imputations.
+
+The reference distribution is a t distribution whose degrees of freedom reflect how well \(B\) is estimated.
+- Rubin's (1987) \(\nu_{old}=(m-1)/\lambda^2\), where \(\lambda=(1+1/m)B/T\), assumes a large complete-data sample. It can exceed the complete-data degrees of freedom, which is impossible in a small sample.
+- Barnard and Rubin (1999) combine it with \(\nu_{obs}=\frac{\nu_{com}+1}{\nu_{com}+3}\nu_{com}(1-\lambda)\). The result never exceeds \(\nu_{com}\) and is the default in `mice`.
+
+`pool_rubin` reports both forms, the relative increase in variance, \(\lambda\), and the fraction of missing information \((r+2/(\nu+3))/(r+1)\). `pooled_wald_test` gives the D1 test for several parameters. Both match `mice::pool`, `mice::D1` and `mitml` exactly.
+
+The simulation uses \(x\) and \(y\) from a bivariate normal distribution with correlation 0.6. About 40% of \(y\) is missing at random, depending on \(x\). The target is the mean of \(y\). Missing values are imputed with the Bayesian normal model of `mice_impute`, and the complete-data analysis is the sample mean with its usual variance on \(n-1\) degrees of freedom. The table reports the coverage of 95% intervals over 2000 samples for n = 25 and 100 and m = 2, 5 and 20 imputations, using three versions of the interval:
+- the within-imputation variance only, as if the imputations were data;
+- Rubin's rules with \(\nu_{old}\);
+- Rubin's rules with Barnard–Rubin degrees of freedom.
+
+It also reports the median of each degrees-of-freedom estimate and the mean fraction of missing information (FMI).
+
+```{cpp, id=rubin, file="figures/rubin_pooling.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/multiple_imputation.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+using dm::stats::ImputationMethod;
+
+int main() {
+    dm::random::SplitMix64 rng(1987);
+    const double na = std::numeric_limits<double>::quiet_NaN();
+    const int reps = 2000;
+    std::println("| n, m | Within only | Rubin 1987 df | Barnard-Rubin df | Median df (1987 / BR) "
+                 "| FMI |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    std::vector<double> old_df, br_df; // n = 25, m = 5
+    for (const std::size_t n : {25, 100})
+        for (const std::size_t m : {2, 5, 20}) {
+            double cover[3]{}, fmi = 0;
+            std::vector<double> dfs[2];
+            for (int r = 0; r < reps; ++r) {
+                Matrix d(n, 2);
+                for (std::size_t i = 0; i < n; ++i) {
+                    d(i, 0) = rng.normal();
+                    const double y = 0.6 * d(i, 0) + 0.8 * rng.normal();
+                    d(i, 1) = rng.uniform01() < 1 / (1 + std::exp(-(-0.5 + d(i, 0)))) ? na : y;
+                }
+                const auto imp = dm::stats::mice_impute(
+                    d, rng, {.imputations = m, .iterations = 1,
+                             .methods = {ImputationMethod::norm, ImputationMethod::norm}});
+                std::vector<std::vector<double>> est;
+                std::vector<Matrix> var;
+                for (const auto& c : imp.completed) {
+                    double s = 0, ss = 0;
+                    for (std::size_t i = 0; i < n; ++i)
+                        s += c(i, 1);
+                    const double mean = s / double(n);
+                    for (std::size_t i = 0; i < n; ++i)
+                        ss += (c(i, 1) - mean) * (c(i, 1) - mean);
+                    est.push_back({mean});
+                    var.push_back(Matrix(1, 1, ss / double(n - 1) / double(n)));
+                }
+                const auto br = dm::stats::pool_rubin(est, var, double(n - 1)).parameters[0];
+                const auto old = dm::stats::pool_rubin(est, var).parameters[0];
+                const double z = dm::random::student_t_quantile(0.975, double(n - 1));
+                cover[0] += (std::abs(br.estimate) <= z * std::sqrt(br.within)) / double(reps);
+                cover[1] += (old.lower <= 0 && 0 <= old.upper) / double(reps);
+                cover[2] += (br.lower <= 0 && 0 <= br.upper) / double(reps);
+                fmi += br.fmi / reps;
+                dfs[0].push_back(old.df);
+                dfs[1].push_back(br.df);
+            }
+            const auto median = [](std::vector<double> v) {
+                std::ranges::nth_element(v, v.begin() + v.size() / 2);
+                return v[v.size() / 2];
+            };
+            std::println("| {}, {} | {:.3f} | {:.3f} | {:.3f} | {:.0f} / {:.1f} | {:.2f} |", n, m,
+                         cover[0], cover[1], cover[2], median(dfs[0]), median(dfs[1]), fmi);
+            if (n == 25 && m == 5) {
+                old_df = dfs[0];
+                br_df = dfs[1];
+            }
+        }
+
+    std::vector<double> lx, ly;
+    for (std::size_t i = 0; i < 600; ++i) {
+        lx.push_back(std::log10(old_df[i]));
+        ly.push_back(br_df[i]);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.points(lx, ly, "One sample (n = 25, m = 5)", {26, 90, 147}, 3)
+        .abline_h(24, {176, 72, 43}, 1.5)
+        .title("Degrees of freedom: Rubin (1987) vs Barnard-Rubin")
+        .x_label("log10 of Rubin's 1987 df")
+        .y_label("Barnard-Rubin df (line: complete-data df 24)")
+        .size(620, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/rubin_pooling.svg");
+}
+```
+// result_begin: markdown
+| n, m | Within only | Rubin 1987 df | Barnard-Rubin df | Median df (1987 / BR) | FMI |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 25, 2 | 0.852 | 0.927 | 0.939 | 11 / 6.5 | 0.46 |
+| 25, 5 | 0.877 | 0.942 | 0.964 | 29 / 9.4 | 0.48 |
+| 25, 20 | 0.892 | 0.947 | 0.965 | 128 / 12.3 | 0.47 |
+| 100, 2 | 0.845 | 0.928 | 0.934 | 13 / 10.6 | 0.41 |
+| 100, 5 | 0.867 | 0.943 | 0.949 | 34 / 21.9 | 0.40 |
+| 100, 20 | 0.889 | 0.952 | 0.956 | 140 / 42.6 | 0.40 |
+\image(figures/rubin_pooling.svg)
+// result_end
+
+Ignoring the between-imputation variance is the most common error with imputed data, and it is serious. Treating the imputations as real data (the within-only column) gives intervals that cover only 85–89% of the time, because about 40–48% of the information about the mean of \(y\) is missing (the FMI column). Adding \((1+1/m)B\) restores coverage.
+
+The degrees of freedom matter in two ways.
+- With m = 2, \(B\) rests on one degree of freedom and the t reference cannot fully compensate, so coverage stays at 93%. Five imputations already give nominal coverage, and twenty make the intervals more stable.
+- In small samples, Rubin's 1987 degrees of freedom are not credible. With n = 25 the complete-data analysis has only 24 degrees of freedom, yet the median \(\nu_{old}\) is 29 with m = 5 and 128 with m = 20, because it grows with m regardless of n. The figure shows the Barnard–Rubin value for the same samples. It follows \(\nu_{old}\) when that is small, but levels off below the complete-data 24 however large \(\nu_{old}\) becomes. With n = 25 this makes the intervals slightly conservative (96.5%), while \(\nu_{old}\) happens to give 94–95% here. With n = 100 the two versions agree closely. Barnard–Rubin is the safer default, and it is what `mice` reports, but at small n the choice changes the interval width noticeably.
+
+The FMI is the share of the information about a parameter lost to missing data. It drives both the loss of precision and the number of imputations needed. A common guideline sets m at least to the percentage of missing information (here about 40), although m = 5–20 already gives good coverage. More imputations mainly reduce the Monte Carlo variability of p-values and standard errors between analysts.
+
+>> Practical guidance
+
+- Always pool with `pool_rubin`. Never analyze a single completed dataset, or stacked datasets, with complete-data standard errors.
+- Pass the complete-data residual degrees of freedom (`complete_df`) so that the Barnard–Rubin correction applies, especially when n is small.
+- Report the FMI with each estimate. A large FMI means the conclusions depend heavily on the imputation model.
+- Use `pooled_wald_test` (D1) for several parameters, such as all levels of a factor. It pools the covariance matrices instead of combining separate p-values.
+- Pool estimates on a scale where they are approximately normal: log odds ratios rather than odds ratios, and Fisher z rather than correlations.
+
+>> References
+
+- D. B. Rubin (1987). *Multiple Imputation for Nonresponse in Surveys*. Wiley.
+- J. Barnard and D. B. Rubin (1999). Small-sample degrees of freedom with multiple imputation. *Biometrika* 86(4), 948-955. doi:10.1093/biomet/86.4.948
+- K. H. Li, T. E. Raghunathan and D. B. Rubin (1991). Large-sample significance levels from multiply imputed data using moment-based statistics and an F reference distribution. *Journal of the American Statistical Association* 86(416), 1065-1073. doi:10.1080/01621459.1991.10475152
+- J. W. Graham, A. E. Olchowski and T. D. Gilreath (2007). How many imputations are really needed? *Prevention Science* 8(3), 206-213. doi:10.1007/s11121-007-0070-9

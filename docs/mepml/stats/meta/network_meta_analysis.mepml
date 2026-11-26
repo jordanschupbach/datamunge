@@ -1,0 +1,262 @@
+//? Title: Network meta-analysis
+//? Exports: both
+//? Lang: en
+
+> Compare several treatments at once by combining direct trial evidence with indirect comparisons through common comparators, handle multi-arm trials correctly, and check whether direct and indirect evidence agree
+
+Trials rarely compare every pair of treatments. Network meta-analysis (NMA) estimates all pairwise effects from a connected network of comparisons. It assumes *consistency*: each treatment has an effect \(d_t\) relative to a reference, and every comparison is a difference \(d_t-d_b\). An A-versus-B effect then follows from A–C and B–C trials, \(\hat d_{AB}^{\text{ind}}=\hat d_{AC}-\hat d_{BC}\), and is pooled with any direct A–B trials. The model is a generalised least-squares regression of all study contrasts on treatment indicators.
+
+Multi-arm trials need care. A three-arm trial contributes two contrasts against its baseline arm, and these are correlated because they share that arm. Splitting such a trial into three independent pairwise comparisons double-counts its evidence. Random effects add \(\tau^2\) to each contrast's variance and \(\tau^2/2\) to the covariance of contrasts in the same trial, which keeps the heterogeneity variance common to all comparisons.
+
+The consistency assumption can be checked. The network Q splits into heterogeneity *within designs* (trials comparing the same set of treatments disagree) and inconsistency *between designs* (different designs imply different effects).
+
+`network_meta_analysis` takes each study as contrasts against its baseline arm with a full covariance matrix. `network_study_from_arms` builds such a study from arm-level estimates. The function returns, for common and random effects (DerSimonian–Laird or REML \(\tau^2\)):
+
+- every pairwise estimate with its standard error, interval and p-value;
+- the network Q with its within- and between-design decomposition;
+- \(\tau^2\) and \(I^2\);
+- P-scores.
+
+The tests reproduce `netmeta` (version 3.3.1), `decomp.design()` and `netrank()` to \(10^{-9}\) on the smoking-cessation network, which includes two three-arm trials and zero-event arms. They also check REML against an exact solution of the score equation. netmeta's `rma.mv` stops about \(5\times10^{-7}\) short of that solution.
+
+The example analyses 24 smoking-cessation trials of no contact (A), self-help (B), individual counselling (C) and group counselling (D); the outcome is quitting, so larger odds ratios are better. The simulation concerns a sparsely compared pair. A network has eight A–B and eight A–C trials, two B–C trials and two three-arm A–B–C trials. True log odds ratios are \(d_B=0.3\) and \(d_C=0.6\), with \(\tau^2=0.04\). The simulation estimates B versus C (truth 0.3) in three ways: a direct-only random-effects meta-analysis, the correct NMA, and a naive NMA that splits the three-arm trials into independent pairs. It does this under consistency, and with inconsistency where the two-arm B–C trials have a true effect 0.4 higher. There are 2000 networks per scenario.
+
+```{cpp, id=nma, file="figures/network_meta_analysis.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/meta_analysis.hpp>
+#include <datamunge/stats/network_meta_analysis.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::linalg::DenseMatrix;
+using dm::stats::NetworkStudy;
+
+// Smoking cessation (netmeta::smokingcessation): treatment, events, total per arm.
+struct Arm {
+    int t;
+    double e, n;
+};
+const std::vector<std::vector<Arm>> trials{
+    {{0, 9, 140}, {2, 23, 140}, {3, 10, 138}}, {{1, 11, 78}, {2, 12, 85}, {3, 29, 170}},
+    {{0, 75, 731}, {2, 363, 714}}, {{0, 2, 106}, {2, 9, 205}},
+    {{0, 58, 549}, {2, 237, 1561}}, {{0, 0, 33}, {2, 9, 48}},
+    {{0, 3, 100}, {2, 31, 98}}, {{0, 1, 31}, {2, 26, 95}},
+    {{0, 6, 39}, {2, 17, 77}}, {{0, 79, 702}, {1, 77, 694}},
+    {{0, 18, 671}, {1, 21, 535}}, {{0, 64, 642}, {2, 107, 761}},
+    {{0, 5, 62}, {2, 8, 90}}, {{0, 20, 234}, {2, 34, 237}},
+    {{0, 0, 20}, {3, 9, 20}}, {{0, 8, 116}, {1, 19, 149}},
+    {{0, 95, 1107}, {2, 143, 1031}}, {{0, 15, 187}, {2, 36, 504}},
+    {{0, 78, 584}, {2, 73, 675}}, {{0, 69, 1177}, {2, 54, 888}},
+    {{1, 20, 49}, {2, 16, 43}}, {{1, 7, 66}, {3, 32, 127}},
+    {{2, 12, 76}, {3, 20, 74}}, {{2, 9, 55}, {3, 3, 26}}};
+
+NetworkStudy from_arms(std::vector<Arm> arms) {
+    bool zero = false;
+    for (const auto& a : arms)
+        zero = zero || a.e == 0 || a.e == a.n;
+    std::vector<std::size_t> t;
+    std::vector<double> est, var;
+    for (auto a : arms) {
+        if (zero)
+            a.e += 0.5, a.n += 1;  // pairwise()'s continuity correction
+        t.push_back(std::size_t(a.t));
+        est.push_back(std::log(a.e / (a.n - a.e)));
+        var.push_back(1 / a.e + 1 / (a.n - a.e));
+    }
+    return dm::stats::network_study_from_arms(t, est, var);
+}
+
+// Simulation: arm-level log odds with arm random effects of variance tau2 / 2.
+std::vector<NetworkStudy> simulate(dm::random::SplitMix64& rng, double delta) {
+    const double d[3] = {0.0, 0.3, 0.6}, tau2 = 0.04;
+    std::vector<NetworkStudy> out;
+    auto add = [&](std::vector<std::size_t> t, double extra) {
+        std::vector<double> est, var;
+        const double base = -1 + 0.5 * rng.normal();
+        for (std::size_t j = 0; j < t.size(); ++j) {
+            const double v = 0.02 + 0.08 * rng.uniform01();
+            const double shift = (j > 0 ? extra : 0.0);
+            est.push_back(base + d[t[j]] + shift + std::sqrt(tau2 / 2) * rng.normal() +
+                          std::sqrt(v) * rng.normal());
+            var.push_back(v);
+        }
+        out.push_back(dm::stats::network_study_from_arms(t, est, var));
+    };
+    for (int i = 0; i < 8; ++i) add({0, 1}, 0.0), add({0, 2}, 0.0);
+    for (int i = 0; i < 2; ++i) add({1, 2}, delta);
+    for (int i = 0; i < 2; ++i) add({0, 1, 2}, 0.0);
+    return out;
+}
+
+int main() {
+    std::vector<NetworkStudy> studies;
+    for (const auto& tr : trials)
+        studies.push_back(from_arms(tr));
+    const auto n = dm::stats::network_meta_analysis(studies);
+    const char* names[4] = {"A: no contact", "B: self-help", "C: individual", "D: group"};
+    std::println("{} studies, {} contrasts, {} designs. Q = {:.1f} on {} df; within "
+                 "designs {:.1f} on {} df; between designs (inconsistency) {:.1f} on {} df "
+                 "(p = {:.3f}). tau2 = {:.3f}, I2 = {:.1f}%.\n",
+                 n.studies, n.contrasts, n.designs, n.q,
+                 n.q_df, n.q_within, n.q_within_df, n.q_between, n.q_between_df,
+                 n.q_between_p_value, n.tau2, n.i2);
+    std::println("Random-effects odds ratios, row versus column [95% CI]:\n");
+    std::println("| | A | B | C | D | P-score |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (std::size_t i = 0; i < 4; ++i) {
+        std::string row = std::format("| {} |", names[i]);
+        for (std::size_t j = 0; j < 4; ++j)
+            row += i == j ? " — |"
+                          : std::format(" {:.2f} [{:.2f}, {:.2f}] |",
+                                        std::exp(n.random.estimate(i, j)),
+                                        std::exp(n.random.lower(i, j)),
+                                        std::exp(n.random.upper(i, j)));
+        std::println("{} {:.3f} |", row, n.random.p_scores[i]);
+    }
+
+    std::println("\n| Scenario | Method | Bias of B vs C | Mean SE | Coverage | "
+                 "Inconsistency Q rejects at 5% |");
+    std::println("| --- | --- | ---: | ---: | ---: | ---: |");
+    dm::random::SplitMix64 rng(31);
+    for (const double delta : {0.0, 0.4}) {
+        double bias[3]{}, se[3]{}, cov[3]{}, rej = 0;
+        const int reps = 2000;
+        for (int r = 0; r < reps; ++r) {
+            const auto net = simulate(rng, delta);
+            // Direct C-versus-B evidence: B-C trials and each 3-arm trial's C-B contrast.
+            std::vector<double> y, v;
+            for (const auto& s : net) {
+                if (s.treatments.size() == 2 && s.treatments[0] == 1)
+                    y.push_back(s.effects[0]), v.push_back(s.covariance(0, 0));
+                if (s.treatments.size() == 3) {
+                    y.push_back(s.effects[1] - s.effects[0]);
+                    v.push_back(s.covariance(0, 0) + s.covariance(1, 1) -
+                                2 * s.covariance(0, 1));
+                }
+            }
+            const auto dir = dm::stats::random_effects_meta(y, v);
+            const auto good = dm::stats::network_meta_analysis(net);
+            // Same data, three-arm trials split into independent pairs.
+            const auto naive_net = [&] {
+                std::vector<NetworkStudy> out;
+                for (const auto& s : net) {
+                    if (s.treatments.size() == 2) { out.push_back(s); continue; }
+                    const double e0 = 0, e1 = s.effects[0], e2 = s.effects[1];
+                    const double v0 = s.covariance(0, 1);  // baseline arm variance
+                    const double v1 = s.covariance(0, 0) - v0, v2 = s.covariance(1, 1) - v0;
+                    const std::vector<std::size_t>& t = s.treatments;
+                    out.push_back(dm::stats::network_study_from_arms({t[0], t[1]}, {e0, e1},
+                                                                     {v0, v1}));
+                    out.push_back(dm::stats::network_study_from_arms({t[0], t[2]}, {e0, e2},
+                                                                     {v0, v2}));
+                    out.push_back(dm::stats::network_study_from_arms({t[1], t[2]}, {e1, e2},
+                                                                     {v1, v2}));
+                }
+                return out;
+            }();
+            const auto naive = dm::stats::network_meta_analysis(naive_net);
+            const double est[3] = {dir.estimate, good.random.estimate(2, 1),
+                                   naive.random.estimate(2, 1)};
+            const double sd[3] = {dir.standard_error, good.random.standard_error(2, 1),
+                                  naive.random.standard_error(2, 1)};
+            for (int m = 0; m < 3; ++m) {
+                bias[m] += (est[m] - 0.3) / reps, se[m] += sd[m] / reps;
+                cov[m] += std::abs(est[m] - 0.3) <= 1.96 * sd[m];
+            }
+            rej += good.q_between_p_value <= 0.05;
+        }
+        const char* method[3] = {"Direct only (random effects)", "NMA",
+                                 "NMA, 3-arm trials split"};
+        for (int m = 0; m < 3; ++m)
+            std::println("| {} | {} | {:+.3f} | {:.3f} | {:.3f} | {} |",
+                         delta == 0 ? "Consistent" : "Inconsistent (+0.4 in B-C trials)",
+                         method[m], bias[m], se[m], cov[m] / reps,
+                         m == 1 ? std::format("{:.3f}", rej / reps) : std::string(""));
+    }
+
+    // Network graph: edge widths proportional to the number of direct trials.
+    const double px[4] = {0, 1, 1, 0}, py[4] = {0, 0, 1, 1};
+    int count[4][4]{};
+    for (const auto& tr : trials)
+        for (std::size_t a = 0; a < tr.size(); ++a)
+            for (std::size_t b = a + 1; b < tr.size(); ++b)
+                ++count[tr[a].t][tr[b].t], ++count[tr[b].t][tr[a].t];
+    auto plot = dm::graphics::RPlot::create();
+    for (int a = 0; a < 4; ++a)
+        for (int b = a + 1; b < 4; ++b)
+            if (count[a][b] > 0) {
+                plot.segments({px[a]}, {py[a]}, {px[b]}, {py[b]}, {26, 90, 147, 0.7},
+                              1.5 * count[a][b]);
+                // Label at 30% along the edge so the crossing diagonals stay readable.
+                plot.text(px[a] + 0.3 * (px[b] - px[a]) + 0.03,
+                          py[a] + 0.3 * (py[b] - py[a]) + 0.05,
+                          std::to_string(count[a][b]), {176, 72, 43}, 16);
+            }
+    for (int a = 0; a < 4; ++a) {
+        plot.points({px[a]}, {py[a]}, "", {60, 60, 60}, 14);
+        const double lx = px[a] + (px[a] > 0.5 ? -0.1 : -0.15);
+        const double ly = py[a] + (py[a] > 0.5 ? 0.13 : -0.16);
+        plot.text(lx, ly, names[a], {17, 24, 39}, 15);
+    }
+    plot.x_limits(-0.35, 1.35)
+        .y_limits(-0.3, 1.3)
+        .hide_axes()
+        .title("Smoking-cessation network (trials per comparison)")
+        .size(560, 460);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/network_meta_analysis.svg");
+}
+```
+// result_begin: markdown
+24 studies, 26 contrasts, 8 designs. Q = 202.6 on 23 df; within designs 187.4 on 16 df; between designs (inconsistency) 15.2 on 7 df (p = 0.033). tau2 = 0.599, I2 = 88.6%.
+
+Random-effects odds ratios, row versus column [95% CI]:
+
+| | A | B | C | D | P-score |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| A: no contact | — | 0.66 [0.32, 1.36] | 0.48 [0.31, 0.74] | 0.41 [0.18, 0.91] | 0.048 |
+| B: self-help | 1.52 [0.74, 3.12] | — | 0.73 [0.35, 1.53] | 0.62 [0.25, 1.49] | 0.404 |
+| C: individual | 2.08 [1.36, 3.20] | 1.37 [0.65, 2.89] | — | 0.84 [0.39, 1.82] | 0.710 |
+| D: group | 2.47 [1.10, 5.52] | 1.63 [0.67, 3.93] | 1.18 [0.55, 2.55] | — | 0.838 |
+
+| Scenario | Method | Bias of B vs C | Mean SE | Coverage | Inconsistency Q rejects at 5% |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Consistent | Direct only (random effects) | +0.002 | 0.204 | 0.947 |  |
+| Consistent | NMA | -0.003 | 0.138 | 0.944 | 0.139 |
+| Consistent | NMA, 3-arm trials split | -0.003 | 0.130 | 0.928 |  |
+| Inconsistent (+0.4 in B-C trials) | Direct only (random effects) | +0.201 | 0.226 | 0.839 |  |
+| Inconsistent (+0.4 in B-C trials) | NMA | +0.099 | 0.144 | 0.901 | 0.311 |
+| Inconsistent (+0.4 in B-C trials) | NMA, 3-arm trials split | +0.088 | 0.135 | 0.880 |  |
+\image(figures/network_meta_analysis.svg)
+// result_end
+
+In the smoking-cessation network, all three interventions beat no contact. Group counselling (D) has the highest P-score (0.84), with an odds ratio of 2.47 [1.10, 5.52] against no contact. Individual counselling (C) follows (0.71), and self-help (B) is ranked third (0.40). The comparisons among the active interventions are imprecise: D versus C is 1.18 [0.55, 2.55], so the ranking among them is far from certain. Most of the evidence is A–C (15 trials), and every other comparison rests on 2–4 direct trials plus indirect paths. Heterogeneity is large (\(\tau^2=0.60\), \(I^2=89\%\)), and almost all of it is within designs (187 of 203). The between-design inconsistency statistic (15.2 on 7 df, \(p=0.03\)) suggests that direct and indirect evidence do not fully agree. With heterogeneity this large that is hard to separate from noise, but it is a reason to inspect the loops.
+
+The simulation shows what the network adds and what it assumes:
+
+- **Precision.** Under consistency, the NMA estimate of the sparsely compared B-versus-C effect is unbiased and its standard error is a third smaller than direct evidence alone (0.138 vs 0.204), with nominal coverage. The indirect paths through A contribute most of the information.
+- **Multi-arm trials.** Splitting the two three-arm trials into independent pairs double-counts them: the standard error shrinks to 0.130 and coverage falls to 93%.
+- **Inconsistency.** When the B–C trials are biased by 0.4, NMA dilutes the bias to +0.10 (direct evidence alone has +0.20). Coverage drops to 90%, and the between-design Q detects the inconsistency only 31% of the time. Its false-positive rate under consistency is also 14%, because DL heterogeneity is ignored in the common-effect decomposition. Inconsistency tests are weak, and agreement between direct and indirect evidence cannot be taken for granted from a non-significant test.
+
+>> Practical guidance
+
+- Check that the network is connected, and that the trials are similar enough in populations, outcome definitions and common comparators for transitivity to be plausible. Consistency is an assumption about the trials, not something the data can confirm.
+- Enter multi-arm trials with all their contrasts against one baseline arm and the full covariance, for example from arm-level data. Never split them into independent pairwise comparisons.
+- Report the league table with confidence intervals and the heterogeneity and inconsistency decomposition. Treat P-scores and rankings as summaries of uncertain differences, especially when intervals between top treatments overlap widely.
+- Investigate inconsistency loop by loop when the between-design Q is notable. Do not dismiss it when the test is non-significant, because power is low with few trials per comparison.
+
+>> References
+
+- G. Lu and A. E. Ades (2004). Combination of direct and indirect evidence in mixed treatment comparisons. *Statistics in Medicine* 23(20), 3105-3124. doi:10.1002/sim.1875
+- G. Rücker (2012). Network meta-analysis, electrical networks and graph theory. *Research Synthesis Methods* 3(4), 312-324. doi:10.1002/jrsm.1058
+- U. Krahn, H. Binder and J. König (2013). A graphical tool for locating inconsistency in network meta-analyses. *BMC Medical Research Methodology* 13, 35. doi:10.1186/1471-2288-13-35
+- G. Rücker and G. Schwarzer (2015). Ranking treatments in frequentist network meta-analysis works without resampling methods. *BMC Medical Research Methodology* 15, 58. doi:10.1186/s12874-015-0060-8
+- D. Jackson, I. R. White and R. D. Riley (2012). Quantifying the impact of between-study heterogeneity in multivariate meta-analyses. *Statistics in Medicine* 31(29), 3805-3820. doi:10.1002/sim.5453
+- V. Hasselblad (1998). Meta-analysis of multitreatment studies. *Medical Decision Making* 18(1), 37-43. doi:10.1177/0272989X9801800110

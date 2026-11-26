@@ -1,0 +1,118 @@
+//? Title: Show equivalence and noninferiority with one-sided tests
+//? Exports: both
+//? Lang: en
+
+> Reverse the burden of proof with margins
+
+A nonsignificant difference does not show that two treatments are alike. Equivalence must be tested directly. One states a margin \((\Delta_L,\Delta_U)\) within which differences do not matter and makes "the difference lies outside the margin" the null hypothesis. The two one-sided tests procedure (TOST) rejects both \(\delta\le\Delta_L\) and \(\delta\ge\Delta_U\) at level \(\alpha\). Equivalently, it requires the \(100(1-2\alpha)\%\) interval to lie inside the margin. Noninferiority uses only one side. A new treatment is declared not worse than the reference by more than \(m\) when \(H_0:\delta\le-m\) is rejected.
+
+`tost_mean` and `tost_mean_difference` implement TOST for one-sample or paired means and for two independent samples, with Welch or pooled variances. `noninferiority_risk_difference` tests a difference of two proportions. The Wald method uses the observed variance, while the Farrington–Manning method uses the variance at the maximum likelihood estimates restricted to the null boundary.
+
+The example first tests average bioequivalence on the log scale with the conventional limits \(\log0.8\) and \(\log1.25\). It then compares the two risk-difference tests by their exact size at the null boundary. To obtain the exact size, it enumerates all outcomes of two arms of 100 patients.
+
+```{cpp, id=equivalence, file="figures/noninferiority_size.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/equivalence.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::RiskDifferenceMethod;
+
+int main() {
+    // Log AUC for a test and a reference formulation in two parallel groups of 18.
+    std::mt19937_64 random(12);
+    std::normal_distribution<double> test(std::log(102.0), .22), reference(std::log(100.0), .22);
+    std::vector<double> t(18), r(18);
+    for (auto& v : t)
+        v = test(random);
+    for (auto& v : r)
+        v = reference(random);
+    const auto be = dm::stats::tost_mean_difference(
+        t, r, {.lower_margin = std::log(.8), .upper_margin = std::log(1.25)});
+    std::println("| Quantity | Value |");
+    std::println("| --- | ---: |");
+    std::println("| Geometric mean ratio | {:.4f} |", std::exp(be.estimate));
+    std::println("| 90% interval for the ratio | [{:.4f}, {:.4f}] |", std::exp(be.conf_low),
+                 std::exp(be.conf_high));
+    std::println("| t against 0.80 / p | {:.3f} / {:.4f} |", be.t_lower, be.p_lower);
+    std::println("| t against 1.25 / p | {:.3f} / {:.4f} |", be.t_upper, be.p_upper);
+    std::println("| Welch df | {:.2f} |", be.df);
+    std::println("| Bioequivalent at α = 0.05 | {} |\n", be.equivalent ? "yes" : "no");
+
+    // Exact size of the 2.5% noninferiority tests at the boundary p1 = p2 - 0.1, n = 100 per arm.
+    const std::size_t n = 100;
+    const auto binomial = [&](std::size_t k, double p) {
+        return std::exp(std::lgamma(n + 1.0) - std::lgamma(k + 1.0) - std::lgamma(n - k + 1.0) +
+                        k * std::log(p) + (n - k) * std::log1p(-p));
+    };
+    std::vector<double> reference_rate, wald_size, score_size;
+    std::println("| Reference rate | Wald size | Farrington–Manning size |");
+    std::println("| ---: | ---: | ---: |");
+    for (const double p2 : {.5, .6, .7, .8, .85, .9, .95}) {
+        const double p1 = p2 - .1;
+        double wald = 0, score = 0;
+        for (std::size_t a = 0; a <= n; ++a)
+            for (std::size_t b = 0; b <= n; ++b) {
+                const double prob = binomial(a, p1) * binomial(b, p2);
+                if (prob < 1e-16)
+                    continue;
+                score += prob * dm::stats::noninferiority_risk_difference(a, n, b, n, .1).noninferior;
+                const bool degenerate = (a == 0 || a == n) && (b == 0 || b == n);
+                if (!degenerate)
+                    wald += prob * dm::stats::noninferiority_risk_difference(
+                                       a, n, b, n, .1, .025, RiskDifferenceMethod::wald).noninferior;
+            }
+        reference_rate.push_back(p2);
+        wald_size.push_back(wald);
+        score_size.push_back(score);
+        std::println("| {:.2f} | {:.4f} | {:.4f} |", p2, wald, score);
+    }
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.line({.5, .95}, {.025, .025}, "Nominal 2.5%", {150, 154, 160}, 1)
+        .line(reference_rate, wald_size, "Wald", {176, 72, 43}, 1.6)
+        .points(reference_rate, wald_size, "", {176, 72, 43}, 5)
+        .line(reference_rate, score_size, "Farrington–Manning", {26, 90, 147}, 1.6)
+        .points(reference_rate, score_size, "", {26, 90, 147}, 5)
+        .title("Exact size of 2.5% noninferiority tests, margin 0.1, n = 100 per arm")
+        .x_label("Reference success rate p2 (treatment rate p2 − 0.1)")
+        .y_label("Probability of declaring noninferiority")
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/noninferiority_size.svg");
+}
+```
+// result_begin: markdown
+| Quantity | Value |
+| --- | ---: |
+| Geometric mean ratio | 1.0210 |
+| 90% interval for the ratio | [0.9082, 1.1478] |
+| t against 0.80 / p | 3.524 / 0.0006 |
+| t against 1.25 / p | -2.923 / 0.0031 |
+| Welch df | 33.79 |
+| Bioequivalent at α = 0.05 | yes |
+
+| Reference rate | Wald size | Farrington–Manning size |
+| ---: | ---: | ---: |
+| 0.50 | 0.0272 | 0.0272 |
+| 0.60 | 0.0272 | 0.0272 |
+| 0.70 | 0.0251 | 0.0250 |
+| 0.80 | 0.0267 | 0.0250 |
+| 0.85 | 0.0273 | 0.0251 |
+| 0.90 | 0.0286 | 0.0248 |
+| 0.95 | 0.0339 | 0.0231 |
+\image(figures/noninferiority_size.svg)
+// result_end
+\caption(Exact probability of declaring noninferiority when the treatment is exactly 0.1 worse than the reference, for the Wald and Farrington–Manning tests at one-sided level 2.5%.)
+\alttext(Both curves are near 2.5 percent for reference rates up to 0.7. As the reference rate approaches 0.95 the Wald curve rises to about 3.4 percent, while the Farrington–Manning curve stays near or slightly below 2.5 percent.)
+
+The 90% interval for the geometric mean ratio, 0.91 to 1.15, lies inside 0.80 to 1.25. Both one-sided tests reject, so the formulations are bioequivalent at the 5% level. The TOST statistics agree with `t_TOST` in the R package TOSTER.
+
+For proportions, the two noninferiority tests behave similarly when the success rates are moderate. Near the upper end of the scale, the Wald variance is estimated from the data and is often too small. This makes the Wald test anti-conservative, with an exact size of 3.4% at a reference rate of 0.95. The Farrington–Manning test evaluates the variance at the restricted estimates on the null boundary and keeps its size close to 2.5%. Its restricted estimates and score interval agree with direct maximization of the binomial likelihood in R. Some outcomes have zero estimated variance, for example when every patient in both arms succeeds. In those cases the Wald statistic is undefined, and the enumeration counts them as non-rejections.
+
+[Schuirmann (1987)|https://doi.org/10.1007/BF01068419] · [Lakens (2017)|https://doi.org/10.1177/1948550617697177] · [Farrington and Manning (1990)|https://doi.org/10.1002/sim.4780091208] · [Miettinen and Nurminen (1985)|https://doi.org/10.1002/sim.4780040211]

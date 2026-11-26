@@ -1,0 +1,143 @@
+//? Title: Decompose seasonal series with STL
+//? Exports: both
+//? Lang: en
+
+> Separate trend, seasonality and noise with loess
+
+STL writes a series as \(y_t=T_t+S_t+R_t\) and estimates the components by alternating two smoothers. The inner loop works as follows:
+
+1. Detrend the series and smooth each cycle-subseries (all Januaries, all Februaries, and so on) by loess with span \(n_s\). This lets the seasonal pattern change slowly from year to year.
+2. Remove any low-frequency signal that leaked into that estimate, using moving averages of length \(p\), \(p\) and 3 followed by a loess.
+3. Smooth the deseasonalized series with span \(n_t\) to update the trend.
+
+The robust variant adds an outer loop. It gives each observation a bisquare weight based on its remainder, so isolated outliers stay in \(R_t\) instead of distorting the trend and the seasonal pattern. With no seasonal window, `stl_decomposition` fits a fixed "periodic" pattern.
+
+The example builds 12 years of monthly data with:
+
+- a trend that shifts down by 1.5 units over six months,
+- a seasonal pattern whose amplitude grows by half,
+- normal noise with standard deviation 0.25,
+- 6% of months hit by large one-off shocks.
+
+Because the true components are known, the example can score how well each fit recovers them.
+
+```{cpp, id=stl, file="figures/stl_trend.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/stl.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+
+struct Truth { std::vector<double> y, trend, seasonal; };
+
+Truth simulate(std::mt19937_64& random, double outlier_rate) {
+    std::normal_distribution<double> noise(0, .25);
+    std::bernoulli_distribution outlier(outlier_rate);
+    std::uniform_real_distribution<double> shock(2.5, 4);
+    Truth s;
+    for (int t = 0; t < 144; ++t) {
+        const double shift = -1.5 / (1 + std::exp(-(t - 80) / 1.5));
+        const double trend = 10 + .02 * t + shift;
+        const double amplitude = 1 + .5 * t / 143.0;
+        const double month = 2 * std::numbers::pi * (t % 12) / 12;
+        const double seasonal = amplitude * (std::sin(month) + .4 * std::cos(2 * month));
+        double e = noise(random);
+        if (outlier(random))
+            e += (random() % 2 ? 1 : -1) * shock(random);
+        s.trend.push_back(trend);
+        s.seasonal.push_back(seasonal);
+        s.y.push_back(trend + seasonal + e);
+    }
+    return s;
+}
+
+double rmse(const std::vector<double>& a, const std::vector<double>& b) {
+    double s = 0;
+    for (std::size_t i = 0; i < a.size(); ++i)
+        s += (a[i] - b[i]) * (a[i] - b[i]);
+    return std::sqrt(s / a.size());
+}
+
+int main() {
+    std::mt19937_64 random(2024);
+    struct Fit { const char* name; dm::stats::StlOptions options; };
+    const std::vector<Fit> fits{
+        {"Periodic", {.period = 12}},
+        {"Seasonal window 13", {.period = 12, .seasonal_window = 13}},
+        {"Seasonal window 13, robust", {.period = 12, .seasonal_window = 13, .robust = true}},
+    };
+    std::println("| Fit | Outliers | Trend RMSE | Seasonal RMSE |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (const double rate : {0.0, .06}) {
+        std::vector<double> trend_error(fits.size()), seasonal_error(fits.size());
+        const int replicates = 200;
+        for (int r = 0; r < replicates; ++r) {
+            const auto s = simulate(random, rate);
+            for (std::size_t f = 0; f < fits.size(); ++f) {
+                const auto d = dm::stats::stl_decomposition(s.y, fits[f].options);
+                trend_error[f] += rmse(d.trend, s.trend) / replicates;
+                seasonal_error[f] += rmse(d.seasonal, s.seasonal) / replicates;
+            }
+        }
+        for (std::size_t f = 0; f < fits.size(); ++f)
+            std::println("| {} | {:.0f}% | {:.3f} | {:.3f} |", fits[f].name, 100 * rate,
+                         trend_error[f], seasonal_error[f]);
+    }
+
+    // One contaminated series, standard and robust fits.
+    const auto s = simulate(random, .06);
+    const auto plain = dm::stats::stl_decomposition(s.y, fits[1].options);
+    const auto robust = dm::stats::stl_decomposition(s.y, fits[2].options);
+    std::size_t downweighted = 0;
+    for (const double w : robust.weights)
+        downweighted += w < .5;
+    std::println("\nRobust fit: {} of {} months have weight below 0.5; spans {} / {} / {}.",
+                 downweighted, s.y.size(), robust.seasonal_window, robust.trend_window,
+                 robust.lowpass_window);
+
+    std::vector<double> t(s.y.size()), deseasonalized(s.y.size());
+    for (std::size_t i = 0; i < t.size(); ++i) {
+        t[i] = 2000 + i / 12.0;
+        deseasonalized[i] = s.y[i] - robust.seasonal[i];
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.points(t, deseasonalized, "Seasonally adjusted (robust)", {150, 154, 160}, 3)
+        .line(t, s.trend, "True trend", {40, 40, 40}, 1.4)
+        .line(t, plain.trend, "STL trend", {176, 72, 43}, 1.6)
+        .line(t, robust.trend, "Robust STL trend", {26, 90, 147}, 1.8)
+        .title("Trend estimates for a series with a level shift and outliers")
+        .x_label("Year")
+        .y_label("Level")
+        .ylim(6, 15.5)
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/stl_trend.svg");
+}
+```
+// result_begin: markdown
+| Fit | Outliers | Trend RMSE | Seasonal RMSE |
+| --- | ---: | ---: | ---: |
+| Periodic | 0% | 0.092 | 0.131 |
+| Seasonal window 13 | 0% | 0.090 | 0.103 |
+| Seasonal window 13, robust | 0% | 0.101 | 0.116 |
+| Periodic | 6% | 0.249 | 0.256 |
+| Seasonal window 13 | 6% | 0.236 | 0.277 |
+| Seasonal window 13, robust | 6% | 0.099 | 0.112 |
+
+Robust fit: 15 of 144 months have weight below 0.5; spans 13 / 21 / 13.
+\image(figures/stl_trend.svg)
+// result_end
+\caption(One contaminated series: the robust STL trend follows the true trend through the level shift, while the standard fit is pulled toward individual shocks.)
+\alttext(Grey points show the seasonally adjusted series, scattered around a trend that rises slowly from 10, drops by about 1.5 units near 2006.7 and then rises again. Several points lie 2.5 to 4 units away. The blue robust trend stays close to the black true trend. The orange standard trend shows bumps near the outliers.)
+
+Without outliers, a seasonal window of 13 recovers the growing seasonal amplitude better than the periodic fit, which can only estimate an average pattern. The robust fit pays a small efficiency cost here, because the bisquare weights downweight ordinary large residuals as well. With 6% shocks, both standard fits more than double their errors: each shock enters the cycle-subseries loess for its month and the trend loess around it. The robust fit is almost unaffected. Here it gave weight below 0.5 to 15 of 144 months, which roughly matches the 6% contamination plus a few large ordinary residuals. The remainder \(R_t\) of a robust fit is therefore a useful outlier screen, and \(y_t-S_t\) is a seasonally adjusted series that is not distorted by them.
+
+The trend span (21 months here, the default \(1.5p/(1-1.5/n_s)\) rounded up to an odd number) sets how sharp a level shift the trend can follow. A shorter `trend_window` tracks breaks faster but leaves more noise in the trend. Non-robust fits match R's `stats::stl` to 1e-10. R's Fortran partial sort sometimes returns a slightly different median of the absolute residuals, so robust fits are instead checked against `statsmodels` STL, which uses the exact median.
+
+[Cleveland, Cleveland, McRae and Terpenning (1990)|https://www.scb.se/contentassets/ca21efb41fee47d293bbee5bf7be7fb3/stl-a-seasonal-trend-decomposition-procedure-based-on-loess.pdf]

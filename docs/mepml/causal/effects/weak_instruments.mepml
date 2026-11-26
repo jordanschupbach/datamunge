@@ -1,0 +1,124 @@
+//? Title: Weak-instrument-robust inference
+//? Exports: both
+//? Lang: en
+
+> Invert the Anderson–Rubin test to get confidence sets for a structural coefficient that stay valid however weak the instruments are
+
+Instrumental-variable estimates of a structural coefficient \(\beta\) in \(y=\beta d+X\gamma+u\) use instruments \(Z\) that move the endogenous regressor \(d\) but are unrelated to \(u\). Two-stage least squares (2SLS) and the usual \(\hat\beta\pm1.96\,\mathrm{se}\) interval rely on the instruments being strong. When the first stage is weak, 2SLS is biased towards ordinary least squares, its distribution is far from normal, and Wald intervals can cover the truth much less often than claimed. The rule of thumb of a first-stage F above 10 (Staiger and Stock) guards against the worst cases, but it is a pre-test, not a valid inference procedure.
+
+The Anderson–Rubin (AR) test avoids the problem. Under \(H_0:\beta=\beta_0\), the variable \(y-\beta_0d\) equals \(X\gamma+u\) and is unrelated to the instruments, so the F statistic of its regression on \(Z\) (after partialling out \(X\)) has an exact \(F(L,n-L-p)\) distribution under normal errors, whatever the instrument strength. Collecting every \(\beta_0\) the test does not reject gives a confidence set. Because the acceptance condition is a quadratic inequality in \(\beta_0\), the set can be a bounded interval, the union of two rays, or the whole real line. It can also be empty when the instruments disagree about \(\beta\). An unbounded set is the honest answer when the data cannot pin \(\beta\) down: Dufour showed that any valid method must sometimes return one when instruments may be arbitrarily weak.
+
+`weak_iv_inference` returns the AR test at a chosen null, the inverted AR set, the first-stage F, and the 2SLS and limited-information maximum likelihood (LIML) estimates with conventional intervals. On Card's returns-to-schooling data and on simulated weak designs, the tests reproduce R's `ivmodel` (`AR.test`, `KClass` and `LIML`), including bounded, two-ray and whole-line sets.
+
+The simulation uses \(n=200\) observations, three standard normal instruments with equal first-stage coefficients, \(\beta=1\), and unit-variance errors \(u\) and \(v\) (first stage) with correlation 0.8. Strong endogeneity makes weak-instrument bias severe. Instrument strength is set by the concentration parameter \(\mu^2=\pi^\top Z^\top Z\pi\), for which the expected first-stage F is about \(1+\mu^2/3\). For each \(\mu^2\), 2000 samples give the median bias of 2SLS, the coverage of the 95% 2SLS and LIML Wald intervals and of the AR set, and the share of AR sets that are unbounded.
+
+```{cpp, id=weakiv, file="figures/weak_instruments.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/causal/weak_iv.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::causal::ConfidenceSetShape;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+int main() {
+    const std::size_t n = 200, instruments = 3;
+    const int reps = 2000;
+    const std::vector<double> strengths{1, 2, 4, 8, 16, 32, 64, 128};
+    dm::random::SplitMix64 rng(1997);
+    std::vector<double> log_mu, cover_tsls, cover_liml, cover_ar;
+    std::println("| \\(\\mu^2\\) | 2SLS median bias | 2SLS coverage | LIML coverage "
+                 "| AR coverage | AR unbounded |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const double mu2 : strengths) {
+        const double pi = std::sqrt(mu2 / static_cast<double>(n * instruments));
+        std::vector<double> estimates;
+        double c_tsls = 0, c_liml = 0, c_ar = 0, unbounded = 0;
+        for (int r = 0; r < reps; ++r) {
+            Matrix z(n, instruments);
+            std::vector<double> y(n), d(n);
+            for (std::size_t i = 0; i < n; ++i) {
+                double index = 0;
+                for (std::size_t j = 0; j < instruments; ++j) {
+                    z(i, j) = rng.normal();
+                    index += pi * z(i, j);
+                }
+                const double v = rng.normal(), u = 0.8 * v + 0.6 * rng.normal();
+                d[i] = index + v;
+                y[i] = 1.0 * d[i] + u;
+            }
+            const auto fit = dm::causal::weak_iv_inference(y, d, z);
+            estimates.push_back(fit.tsls.estimate);
+            c_tsls += fit.tsls.lower <= 1 && 1 <= fit.tsls.upper;
+            c_liml += fit.liml.lower <= 1 && 1 <= fit.liml.upper;
+            c_ar += fit.ar_set.contains(1.0);
+            unbounded += fit.ar_set.shape == ConfidenceSetShape::two_rays ||
+                         fit.ar_set.shape == ConfidenceSetShape::whole_line;
+        }
+        std::ranges::nth_element(estimates, estimates.begin() + reps / 2);
+        std::println("| {:.0f} | {:+.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", mu2,
+                     estimates[reps / 2] - 1, c_tsls / reps, c_liml / reps, c_ar / reps,
+                     unbounded / reps);
+        log_mu.push_back(std::log2(mu2));
+        cover_tsls.push_back(c_tsls / reps);
+        cover_liml.push_back(c_liml / reps);
+        cover_ar.push_back(c_ar / reps);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(log_mu, cover_tsls, "2SLS Wald", {176, 72, 43}, 2)
+        .points(log_mu, cover_tsls, "", {176, 72, 43}, 5)
+        .line(log_mu, cover_liml, "LIML Wald", {120, 120, 120}, 2)
+        .points(log_mu, cover_liml, "", {120, 120, 120}, 5)
+        .line(log_mu, cover_ar, "Anderson-Rubin set", {26, 90, 147}, 2)
+        .points(log_mu, cover_ar, "", {26, 90, 147}, 5)
+        .abline_h(0.95, {60, 60, 60}, 1)
+        .y_limits(0.5, 1.2)
+        .title("Coverage of 95% sets as instruments strengthen")
+        .x_label("log2 of the concentration parameter")
+        .y_label("Coverage")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/weak_instruments.svg");
+}
+```
+// result_begin: markdown
+| \(\mu^2\) | 2SLS median bias | 2SLS coverage | LIML coverage | AR coverage | AR unbounded |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | +0.568 | 0.615 | 0.798 | 0.945 | 0.877 |
+| 2 | +0.459 | 0.650 | 0.833 | 0.954 | 0.807 |
+| 4 | +0.315 | 0.744 | 0.881 | 0.947 | 0.641 |
+| 8 | +0.168 | 0.847 | 0.922 | 0.949 | 0.369 |
+| 16 | +0.099 | 0.888 | 0.937 | 0.957 | 0.077 |
+| 32 | +0.047 | 0.910 | 0.949 | 0.957 | 0.001 |
+| 64 | +0.029 | 0.918 | 0.937 | 0.946 | 0.000 |
+| 128 | +0.013 | 0.944 | 0.955 | 0.952 | 0.000 |
+\image(figures/weak_instruments.svg)
+// result_end
+
+With weak instruments, 2SLS is pulled towards ordinary least squares, whose bias here is about 0.8. At \(\mu^2=1\) (expected first-stage F about 1.3), the median 2SLS estimate is 0.57 too high. Its 95% Wald interval covers the true coefficient only 62% of the time, because it is centred on a biased estimate and its standard error does not reflect the estimate's real spread. Coverage improves only slowly as the instruments strengthen. At \(\mu^2=32\), where the expected F is about 12 and would pass the rule of thumb, the Wald interval still covers only 91%, and it takes \(\mu^2=128\) (F about 44) to reach the nominal level. That matches Stock and Yogo's finding that the F needed for reliable Wald inference grows with the degree of endogeneity. LIML is approximately median-unbiased and does better, but its Wald interval also undercovers badly when instruments are weak (80% at \(\mu^2=1\)).
+
+The Anderson–Rubin set covers at the nominal rate at every strength, between 94.5% and 95.7%, within Monte Carlo error (about 0.005) of 95%. It pays for this robustness through its shape, not its coverage. When the instruments carry almost no information, most AR sets are unbounded: 88% are two rays or the whole line at \(\mu^2=1\), 37% at \(\mu^2=8\), and 8% at \(\mu^2=16\). An unbounded set is not a failure of the method. It shows that the data do not rule out arbitrarily large effects, and a bounded Wald interval in the same samples is precise only because it ignores that uncertainty. Once the instruments are reasonably strong, AR sets are bounded and close to the Wald intervals, so robust inference costs little when it is not needed.
+
+With several instruments, the AR test also tests the overidentifying restrictions: it rejects every \(\beta\) when the instruments imply contradictory coefficients, which gives an empty set. That makes AR sets informative about instrument validity as well as strength, but it also means that a misspecified model can produce a misleadingly narrow set. When there are many instruments, the conditional likelihood-ratio test of Moreira (2003) has better power while keeping the same robustness.
+
+>> Practical guidance
+
+- Report the first-stage F and the Anderson–Rubin confidence set alongside 2SLS. With one endogenous regressor and one instrument, the AR test is the efficient robust test, and its set should be the headline interval.
+- Do not drop specifications or instruments because the first-stage F is low and then report Wald intervals for the rest. That pre-testing distorts inference. Robust sets remain valid without it.
+- Read an unbounded AR set as "the data cannot bound the effect", not as a computational problem. An empty set signals that the overidentifying restrictions are rejected.
+- AR tests assume homoskedastic, independent errors in the form implemented here. With heteroskedastic or clustered errors, use a robust version of the AR statistic, and use the effective F of Montiel Olea and Pflueger rather than the classical F to judge strength.
+
+>> References
+
+- T. W. Anderson and H. Rubin (1949). Estimation of the parameters of a single equation in a complete system of stochastic equations. *Annals of Mathematical Statistics* 20(1), 46-63. doi:10.1214/aoms/1177730090
+- J.-M. Dufour (1997). Some impossibility theorems in econometrics with applications to structural and dynamic models. *Econometrica* 65(6), 1365-1387. doi:10.2307/2171740
+- D. Staiger and J. H. Stock (1997). Instrumental variables regression with weak instruments. *Econometrica* 65(3), 557-586. doi:10.2307/2171753
+- J. H. Stock and M. Yogo (2005). Testing for weak instruments in linear IV regression. In *Identification and Inference for Econometric Models*, Cambridge University Press, 80-108.
+- M. J. Moreira (2003). A conditional likelihood ratio test for structural models. *Econometrica* 71(4), 1027-1048. doi:10.1111/1468-0262.00438
+- I. Andrews, J. H. Stock and L. Sun (2019). Weak instruments in instrumental variables regression: theory and practice. *Annual Review of Economics* 11, 727-753. doi:10.1146/annurev-economics-080218-025643

@@ -1,0 +1,130 @@
+//? Title: Estimate cointegration with Johansen and VECM
+//? Exports: both
+//? Lang: en
+
+> Find long-run equilibria among wandering series
+
+Individually nonstationary series are cointegrated when some linear combinations of them, \(\beta^\top y_t\), are stationary. Prices of close substitutes, or interest rates of different maturities, drift without bound but stay tied together. Granger's representation theorem then writes the VAR in error-correction form:
+\[\Delta y_t=\alpha\beta^\top y_{t-1}+\sum_{i=1}^k\Gamma_i\Delta y_{t-i}+c+u_t,\]
+where:
+
+- the \(r\) columns of \(\beta\) are the long-run relations,
+- \(\alpha\) gives the speed at which each series corrects deviations from them,
+- the matrices \(\Gamma_i\) capture short-run dynamics.
+
+Johansen's method partials out the short-run terms and solves an eigenproblem for the squared canonical correlations \(\hat\lambda_i\) between \(\Delta y_t\) and \(y_{t-1}\). The trace statistic \(-T\sum_{i>r}\ln(1-\hat\lambda_i)\) tests the hypothesis of at most \(r\) relations. `johansen_test` reports it together with the maximum-eigenvalue statistic and Osterwald-Lenum critical values. `fit_vecm` estimates \(\alpha\), \(\beta\) and \(\Gamma\) for a chosen rank.
+
+The example simulates three series:
+
+- \(y_1\), a random walk with drift \(\mu\),
+- \(y_2=y_1+e_t\), where \(e_t\) is an AR(1) with coefficient 0.7, so \(\beta=(1,-1,0)^\top\),
+- \(y_3\), an independent random walk with the same drift.
+
+The true rank is 1. The example records how often the sequential 5% trace test picks each rank, then fits the VECM to one sample.
+
+```{cpp, id=johansen, file="figures/vecm_equilibrium.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/cointegration.hpp>
+
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+Matrix simulate(std::size_t n, double drift, std::mt19937_64& random) {
+    std::normal_distribution<double> z;
+    Matrix y(n, 3);
+    double trend = 0, other = 0, gap = 0;
+    for (std::size_t t = 0; t < n; ++t) {
+        trend += drift + z(random);
+        other += drift + z(random);
+        gap = .7 * gap + .8 * z(random);
+        y(t, 0) = trend;
+        y(t, 1) = trend + gap;
+        y(t, 2) = other;
+    }
+    return y;
+}
+
+int main() {
+    std::mt19937_64 random(8);
+    const int replicates = 1000;
+    std::println("| Drift μ | n | Rank 0 | Rank 1 | Rank 2 | Rank 3 |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const double drift : {.2, 0.0})
+        for (const std::size_t n : {100, 250}) {
+            int count[4] = {0, 0, 0, 0};
+            for (int r = 0; r < replicates; ++r)
+                ++count[dm::stats::johansen_test(simulate(n, drift, random)).trace_rank];
+            std::println("| {:.1f} | {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", drift, n,
+                         count[0] / double(replicates), count[1] / double(replicates),
+                         count[2] / double(replicates), count[3] / double(replicates));
+        }
+
+    const auto y = simulate(250, .2, random);
+    const auto j = dm::stats::johansen_test(y);
+    std::println("\n| H0: rank ≤ r | Trace | 5% critical | Max-eigenvalue | 5% critical |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    for (std::size_t r = 0; r < 3; ++r)
+        std::println("| {} | {:.2f} | {:.2f} | {:.2f} | {:.2f} |", r, j.trace[r],
+                     j.trace_critical[r][1], j.max_eigenvalue[r],
+                     j.max_eigenvalue_critical[r][1]);
+
+    const auto m = dm::stats::fit_vecm(y, {.rank = 1, .lagged_differences = 1});
+    std::println("\nβ = (1, {:.3f} ± {:.3f}, {:.3f} ± {:.3f}); true (1, −1, 0).", m.beta(1, 0),
+                 m.beta_standard_errors(1, 0), m.beta(2, 0), m.beta_standard_errors(2, 0));
+    std::println("α = ({:.3f} ± {:.3f}, {:.3f} ± {:.3f}, {:.3f} ± {:.3f}).", m.alpha(0, 0),
+                 m.alpha_standard_errors(0, 0), m.alpha(1, 0), m.alpha_standard_errors(1, 0),
+                 m.alpha(2, 0), m.alpha_standard_errors(2, 0));
+
+    std::vector<double> t, level1, level2, gap;
+    for (std::size_t i = 0; i < y.rows(); ++i) {
+        t.push_back(double(i));
+        level1.push_back(y(i, 0));
+        level2.push_back(y(i, 1));
+        gap.push_back(y(i, 0) + m.beta(1, 0) * y(i, 1) + m.beta(2, 0) * y(i, 2));
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(t, level1, "y1", {26, 90, 147}, 1.2)
+        .line(t, level2, "y2", {176, 72, 43}, 1.2)
+        .line(t, gap, "Estimated equilibrium error β'y", {46, 139, 87}, 1.6)
+        .title("Two drifting series and their stationary combination")
+        .ylim(-8, 72)
+        .x_label("Time")
+        .y_label("Level")
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/vecm_equilibrium.svg");
+}
+```
+// result_begin: markdown
+| Drift μ | n | Rank 0 | Rank 1 | Rank 2 | Rank 3 |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.2 | 100 | 0.531 | 0.423 | 0.028 | 0.018 |
+| 0.2 | 250 | 0.000 | 0.929 | 0.056 | 0.015 |
+| 0.0 | 100 | 0.439 | 0.451 | 0.047 | 0.063 |
+| 0.0 | 250 | 0.000 | 0.879 | 0.061 | 0.060 |
+
+| H0: rank ≤ r | Trace | 5% critical | Max-eigenvalue | 5% critical |
+| ---: | ---: | ---: | ---: | ---: |
+| 0 | 49.25 | 29.80 | 37.10 | 21.13 |
+| 1 | 12.15 | 15.49 | 11.85 | 14.26 |
+| 2 | 0.30 | 3.84 | 0.30 | 3.84 |
+
+β = (1, -1.015 ± 0.020, 0.015 ± 0.016); true (1, −1, 0).
+α = (-0.076 ± 0.066, 0.249 ± 0.079, -0.034 ± 0.065).
+\image(figures/vecm_equilibrium.svg)
+// result_end
+\caption(The simulated levels y1 and y2 drift upward together, while the estimated equilibrium error, y1 − 1.015 y2 + 0.015 y3, stays near a constant.)
+\alttext(Blue and orange lines for y1 and y2 rise from near 0 to about 50 over 250 periods, almost on top of each other. A green line for the estimated combination fluctuates in a narrow band around zero for the whole sample.)
+
+With 250 observations and a drift, the sequential trace test finds the single relation 93% of the time. In the remaining cases it overshoots to rank 2 about as often as the nominal 5% suggests. At \(n=100\) it misses the relation about half the time: the gap \(e_t\) has autocorrelation 0.7, so 100 observations contain only a few independent excursions, and the test has little power against "no cointegration". This pattern, failing to reject too few relations in short samples, is the main practical weakness of the Johansen procedure.
+
+The rows without drift show a second issue. Following statsmodels, the "constant" setting demeans both levels and differences and uses the Osterwald-Lenum table for an unrestricted constant, which assumes the series actually trend. With no drift, the last trace statistic should be compared with a larger restricted-constant critical value. Rank 3 is then chosen 6% of the time, four times as often as in the drifting case (1.5%). When series show no visible trend, a restricted constant (`VecmTerm::inside` in `fit_vecm`) is the appropriate model.
+
+For the single fit, the estimated relation \(\hat\beta=(1,-1.015,0.015)\) is very close to the truth. Its standard errors (0.02) are small because \(\hat\beta\) is superconsistent and converges at rate \(T\), not \(\sqrt T\). The loadings recover the adjustment mechanism: \(y_2\) moves toward \(y_1\) at about a quarter of the gap per period (\(\hat\alpha_2=0.25\), \(t\approx3.2\)), while the loadings of \(y_1\) and \(y_3\) are not significant. The data therefore identify \(y_1\) as the weakly exogenous driver. Eigenvalues, trace and maximum-eigenvalue statistics, critical values, \(\alpha\), \(\beta\), \(\Gamma\), deterministic coefficients, \(\hat\Sigma_u\), log likelihoods, standard errors and forecasts match statsmodels' `coint_johansen` and `VECM` for all seven deterministic specifications. One exception: when the rank and the number of free \(\beta\) rows both exceed one, statsmodels lays out the \(\beta\) standard errors in permuted order, and `fit_vecm` follows Lütkepohl's row-by-column layout instead.
+
+[Engle and Granger (1987)|https://doi.org/10.2307/1913236] · [Johansen (1991)|https://doi.org/10.2307/2938278] · [Osterwald-Lenum (1992)|https://doi.org/10.1111/j.1468-0084.1992.tb00013.x] · [Lütkepohl (2005)|https://doi.org/10.1007/978-3-540-27752-1]

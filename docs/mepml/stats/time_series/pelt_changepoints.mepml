@@ -1,0 +1,163 @@
+//? Title: Segment a series at its changepoints with PELT
+//? Exports: both
+//? Lang: en
+
+> Find the best segmentation exactly, at roughly linear cost
+
+A changepoint splits a series into segments, each with its own distribution. Given a segment cost \(C\) (twice the negative log likelihood of the segment under its own fitted parameters) and a penalty \(\beta\) per changepoint, the best segmentation minimizes
+\[\sum_{j=1}^{k+1}\big[C(x_{\tau_{j-1}+1:\tau_j})+\beta\big]\]
+over the number \(k\) and positions \(\tau_j\) of the changepoints. Optimal partitioning solves this exactly with the recursion \(F(t)=\min_{\tau<t}\{F(\tau)+C(x_{\tau+1:t})+\beta\}\), at quadratic cost. PELT adds one observation: once \(F(\tau)+C(x_{\tau+1:t})>F(t)\), the candidate \(\tau\) can never be the last changepoint again and is dropped. When changepoints keep occurring as the series grows, few candidates survive and the expected cost becomes linear, without giving up exactness.
+
+The penalty decides how much likelihood gain justifies a new changepoint. BIC charges \((d+1)\ln n\) for a change in \(d\) parameters. Zhang and Siegmund's modified BIC (the default) charges more and adds \(\ln m\) for each segment of length \(m\). AIC charges a constant and is known to over-segment. The example segments a series whose mean and variance both change, compares the penalties on pure noise and on a series with three changes, and shows what goes wrong when the change-in-mean cost is used with the wrong noise variance.
+
+```{cpp, id=pelt, file="figures/pelt_changepoints.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/changepoint.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::ChangeCost;
+using dm::stats::ChangePenalty;
+
+struct Piece {
+    std::size_t length;
+    double mean, sd;
+};
+
+std::vector<double> simulate(const std::vector<Piece>& pieces, std::mt19937_64& random) {
+    std::normal_distribution<double> z;
+    std::vector<double> x;
+    for (const auto& p : pieces)
+        for (std::size_t i = 0; i < p.length; ++i)
+            x.push_back(p.mean + p.sd * z(random));
+    return x;
+}
+
+int main() {
+    std::mt19937_64 random(31);
+    const std::vector<Piece> truth{{200, 0, 1}, {150, 2, 1}, {150, 2, 3}, {250, -1, .5}};
+    const auto x = simulate(truth, random);
+    const auto fit =
+        dm::stats::pelt_changepoints(x, {.cost = ChangeCost::normal_mean_variance});
+    std::println("| Segment | Start | Mean | s.d. |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    for (std::size_t j = 0; j < fit.means.size(); ++j)
+        std::println("| {} | {} | {:.2f} | {:.2f} |", j + 1, j ? fit.changepoints[j - 1] : 0,
+                     fit.means[j], std::sqrt(fit.variances[j]));
+    std::println("\nTrue changes at 200 (mean), 350 (variance only) and 500 (both).");
+
+    // Penalties: false changes on pure noise, and exact recovery of three mean changes.
+    const std::vector<Piece> three{{150, 0, 1}, {150, 1, 1}, {100, -.5, 1}, {100, .5, 1}};
+    const std::vector<std::size_t> where{150, 300, 400};
+    std::println("\n| Penalty | Changes found in noise | Three changes within ±5 |");
+    std::println("| --- | ---: | ---: |");
+    const std::pair<const char*, ChangePenalty> penalties[] = {
+        {"MBIC", ChangePenalty::mbic},
+        {"BIC", ChangePenalty::bic},
+        {"Hannan–Quinn", ChangePenalty::hannan_quinn},
+        {"AIC", ChangePenalty::aic}};
+    for (const auto& [name, penalty] : penalties) {
+        double false_changes = 0;
+        int exact = 0;
+        std::mt19937_64 local(77);
+        for (int r = 0; r < 200; ++r) {
+            const auto noise = simulate({{500, 0, 1}}, local);
+            false_changes += dm::stats::pelt_changepoints(noise, {.penalty = penalty})
+                                 .changepoints.size();
+            const auto found = dm::stats::pelt_changepoints(simulate(three, local),
+                                                            {.penalty = penalty})
+                                   .changepoints;
+            bool ok = found.size() == 3;
+            for (std::size_t j = 0; ok && j < 3; ++j)
+                ok = found[j] + 5 >= where[j] && found[j] <= where[j] + 5;
+            exact += ok;
+        }
+        std::println("| {} | {:.2f} | {:.2f} |", name, false_changes / 200, exact / 200.0);
+    }
+
+    // The change-in-mean cost with noise s.d. 2 but the default unit variance.
+    std::mt19937_64 local(5);
+    double unscaled = 0, scaled = 0;
+    for (int r = 0; r < 100; ++r) {
+        const auto noise = simulate({{500, 0, 2}}, local);
+        unscaled += dm::stats::pelt_changepoints(noise).changepoints.size();
+        // MAD of first differences / sqrt(2) estimates the noise s.d. even across mean shifts.
+        std::vector<double> d;
+        for (std::size_t i = 1; i < noise.size(); ++i)
+            d.push_back(std::abs(noise[i] - noise[i - 1]));
+        std::ranges::nth_element(d, d.begin() + d.size() / 2);
+        const double sd = 1.4826 * d[d.size() / 2] / std::sqrt(2.0);
+        scaled += dm::stats::pelt_changepoints(noise, {.noise_variance = sd * sd})
+                      .changepoints.size();
+    }
+    std::println("\nNoise s.d. 2, no changes: {:.1f} false changes per series with the "
+                 "default unit variance, {:.2f} with a MAD estimate.", unscaled / 100,
+                 scaled / 100);
+
+    std::vector<double> t, step_t, step_fit, true_t, true_mean;
+    for (std::size_t i = 0; i < x.size(); ++i)
+        t.push_back(double(i));
+    std::size_t start = 0;
+    for (std::size_t j = 0; j < fit.means.size(); ++j) {
+        const std::size_t end = j < fit.changepoints.size() ? fit.changepoints[j] : x.size();
+        step_t.insert(step_t.end(), {double(start), double(end)});
+        step_fit.insert(step_fit.end(), {fit.means[j], fit.means[j]});
+        start = end;
+    }
+    start = 0;
+    for (const auto& p : truth) {
+        true_t.insert(true_t.end(), {double(start), double(start + p.length)});
+        true_mean.insert(true_mean.end(), {p.mean, p.mean});
+        start += p.length;
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(t, x, "Series", {170, 174, 180}, .7)
+        .line(true_t, true_mean, "True mean", {46, 139, 87}, 1.6)
+        .line(step_t, step_fit, "PELT segment mean", {176, 72, 43}, 2)
+        .title("PELT with the normal mean-and-variance cost")
+        .x_label("Time")
+        .y_label("Value")
+        .ylim(-6, 13)
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/pelt_changepoints.svg");
+}
+```
+// result_begin: markdown
+| Segment | Start | Mean | s.d. |
+| ---: | ---: | ---: | ---: |
+| 1 | 0 | -0.14 | 0.99 |
+| 2 | 198 | 1.92 | 1.07 |
+| 3 | 350 | 1.86 | 3.02 |
+| 4 | 499 | -1.02 | 0.47 |
+
+True changes at 200 (mean), 350 (variance only) and 500 (both).
+
+| Penalty | Changes found in noise | Three changes within ±5 |
+| --- | ---: | ---: |
+| MBIC | 0.00 | 0.66 |
+| BIC | 0.06 | 0.65 |
+| Hannan–Quinn | 1.44 | 0.26 |
+| AIC | 20.42 | 0.00 |
+
+Noise s.d. 2, no changes: 10.1 false changes per series with the default unit variance, 0.00 with a MAD estimate.
+\image(figures/pelt_changepoints.svg)
+// result_end
+\caption(The simulated series with its true mean and the segment means found by PELT with the normal mean-and-variance cost.)
+\alttext(A grey series of 750 points. It is quiet around 0 until time 200, around 2 until 350, widely scattered around 2 until 500, then tightly packed around -1. The orange PELT segment means overlap the green true means, with steps at 198, 350 and 499.)
+
+PELT with the mean-and-variance cost finds all three changes, at 198, 350 and 499 against true positions 200, 350 and 500. That includes the change at 350, where only the variance changes and the mean stays at 2, which a change-in-mean method cannot see. The segment estimates (means −0.14, 1.92, 1.86, −1.02; standard deviations 0.99, 1.07, 3.02, 0.47) are close to the truth.
+
+The penalty comparison shows the trade-off. On 500 points of pure noise, MBIC never reports a change and BIC rarely does (0.06 per series). Hannan–Quinn reports 1.4 on average and AIC about 20, because a penalty that does not grow with \(n\) cannot hold back the \(O(n)\) ways to split noise. On the three-change series, whose mean shifts are 1 noise standard deviation, MBIC and BIC place exactly three changes within five observations of the truth in about two thirds of replicates. Hannan–Quinn's extra changes cut that to a quarter, and AIC never gets it right. MBIC is the sensible default. A smaller penalty pays off only when many small changes are expected.
+
+The change-in-mean cost is a sum of squares divided by the noise variance, so the penalty is in units of that variance. With noise standard deviation 2 and the default unit variance, PELT finds about ten spurious changes per series. Estimating the noise standard deviation by the MAD of first differences divided by \(\sqrt2\) removes them all. That estimate is robust because a few mean shifts barely affect the differences. R's `cpt.mean` assumes unit variance in the same way, so the data should be rescaled first.
+
+Changepoints, penalties and segment estimates match R's `changepoint` package with `method = "PELT"` for the normal mean, variance (with estimated or known mean), mean-and-variance, Poisson and exponential costs. The tests cover the MBIC, BIC, AIC, Hannan–Quinn and manual penalties and minimum segment lengths above the default, including an AIC case with 22 changepoints. A separate test checks the pruned recursion against exhaustive optimal partitioning.
+
+[Killick, Fearnhead and Eckley (2012)|https://doi.org/10.1080/01621459.2012.737745] · [Zhang and Siegmund (2007)|https://doi.org/10.1111/j.1541-0420.2006.00662.x]

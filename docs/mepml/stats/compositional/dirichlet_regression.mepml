@@ -1,0 +1,280 @@
+//? Title: Dirichlet regression
+//? Exports: both
+//? Lang: en
+
+> Regress a whole composition on covariates with a Dirichlet likelihood: a multinomial-logit model for the expected shares and a separate log-linear model for how tightly observations scatter around them
+
+When the response is a vector of proportions, such as sediment fractions, time use or budget shares, the **Dirichlet distribution** is the natural likelihood. With concentration parameters \(\alpha_1,\dots,\alpha_D\) it has mean \(\mu_j=\alpha_j/\phi\) and variance \(\mu_j(1-\mu_j)/(1+\phi)\), where \(\phi=\sum\alpha_j\) acts as a **precision**. The mean/precision ("alternative") parametrization of Maier (2014) separates what the covariates do to the expected composition from what they do to the dispersion:
+
+\[\mu_{ij}=\frac{\exp(x_i^\top\beta_j)}{\sum_k\exp(x_i^\top\beta_k)},\quad \beta_{\text{base}}=0,\qquad \log\phi_i=z_i^\top\gamma,\qquad y_i\sim\mathrm{Dir}(\mu_i\phi_i).\]
+
+Each \(\beta_j\) is a log-odds effect of part \(j\) relative to the base part. With two parts the model reduces to beta regression (Ferrari and Cribari-Neto 2004). A precision that depends on covariates corresponds to the variable-dispersion beta model.
+
+`dirichlet_regression` fits this model by Fisher scoring, using the analytic score and expected information, which needed new `random::digamma` and `random::trigamma` functions. It reports Wald standard errors from the observed information, as DirichletReg does, along with fitted means and precisions, standardized residuals, and predictions at new covariates. Responses with exact 0 or 1 values are compressed toward the interior as `DirichletReg::DR_data` does. The tests reproduce `DirichletReg::DirichReg(..., model = "alternative")` coefficients, observed-information standard errors, likelihood, AIC/BIC, fitted values and residuals for two models and two base parts, plus a compressed fit. They also confirm the reduction to `beta_regression` when D = 2. The new special functions match R to within 2e-15 relative.
+
+The example reanalyses the classic Arctic lake sediments: sand, silt and clay fractions at 39 water depths (Coakley and Rust 1968; Aitchison 1986). The simulation uses the fitted model as the truth and asks three questions: whether the Wald intervals cover, what ignoring precision heterogeneity costs, and how the Dirichlet mean differs from a logistic-normal regression's center.
+
+```{cpp, id=dirreg, file="figures/dirichlet_regression.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/linalg/cholesky.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/random/simplex.hpp>
+#include <datamunge/stats/compositional.hpp>
+#include <datamunge/stats/dirichlet_regression.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <fstream>
+#include <print>
+#include <sstream>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+using dm::stats::DirichletRegression;
+
+Matrix polynomial(const std::vector<double>& depth, int degree) {
+    Matrix m(depth.size(), degree + 1, 1.0);
+    for (std::size_t i = 0; i < depth.size(); ++i)
+        for (int k = 1; k <= degree; ++k) m(i, k) = std::pow(depth[i], k);
+    return m;
+}
+
+// Least-squares ilr regression (logistic-normal model): coefficients for each coordinate.
+Matrix ilr_ols(const Matrix& x, const Matrix& y) {
+    const auto z = dm::stats::ilr(y);
+    Matrix xtx(x.cols(), x.cols(), 0.0), coef(x.cols(), z.cols(), 0.0);
+    for (std::size_t i = 0; i < x.rows(); ++i)
+        for (std::size_t a = 0; a < x.cols(); ++a)
+            for (std::size_t b = 0; b < x.cols(); ++b) xtx(a, b) += x(i, a) * x(i, b);
+    const auto chol = dm::linalg::cholesky(xtx);
+    for (std::size_t k = 0; k < z.cols(); ++k) {
+        std::vector<double> xty(x.cols(), 0.0);
+        for (std::size_t i = 0; i < x.rows(); ++i)
+            for (std::size_t a = 0; a < x.cols(); ++a) xty[a] += x(i, a) * z(i, k);
+        const auto b = chol.solve(xty);
+        for (std::size_t a = 0; a < x.cols(); ++a) coef(a, k) = b[a];
+    }
+    return coef;
+}
+
+Matrix ilr_ols_center(const Matrix& coef, const Matrix& x) {
+    Matrix z(x.rows(), coef.cols(), 0.0);
+    for (std::size_t i = 0; i < x.rows(); ++i)
+        for (std::size_t k = 0; k < coef.cols(); ++k)
+            for (std::size_t a = 0; a < x.cols(); ++a) z(i, k) += x(i, a) * coef(a, k);
+    return dm::stats::ilr_inverse(z, dm::stats::ilr_basis(coef.cols() + 1));
+}
+
+int main() {
+    std::ifstream in("data/arctic_lake.txt");
+    std::vector<double> depth;
+    std::vector<std::vector<double>> rows;
+    for (std::string line; std::getline(in, line);) {
+        if (line.empty() || line[0] == '#') continue;
+        std::istringstream s(line);
+        double a, b, c, d;
+        s >> a >> b >> c >> d;
+        rows.push_back({a, b, c}), depth.push_back(d);
+    }
+    const std::size_t n = rows.size();
+    Matrix y(n, 3, 0.0);
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t j = 0; j < 3; ++j) y(i, j) = rows[i][j];
+    const auto x1 = polynomial(depth, 1), x2 = polynomial(depth, 2);
+    const auto one = polynomial(depth, 0);
+    const dm::stats::DirichletRegressionOptions clay_base{.base = 2};
+    const auto m0 = dm::stats::dirichlet_regression(x1, one, y, clay_base);
+    const auto m1 = dm::stats::dirichlet_regression(x2, one, y, clay_base);
+    const auto m2 = dm::stats::dirichlet_regression(x2, x1, y, clay_base);
+
+    std::println("| Model | Parameters | Log-likelihood | AIC | "
+                 "LR test against previous |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    const DirichletRegression* models[]{&m0, &m1, &m2};
+    const char* names[]{"Mean ~ depth; precision constant",
+                        "Mean ~ depth + depth^2; precision constant",
+                        "Mean ~ depth + depth^2; precision ~ depth"};
+    for (int m = 0; m < 3; ++m) {
+        std::string lr = "";
+        if (m > 0) {
+            const double stat =
+                2 * (models[m]->log_likelihood - models[m - 1]->log_likelihood);
+            const double df = double(models[m]->parameters - models[m - 1]->parameters);
+            lr = std::format("chi2({:.0f}) = {:.2f}, p = {:.2g}", df, stat,
+                             dm::random::chi_squared_survival(stat, df));
+        }
+        std::println("| {} | {} | {:.2f} | {:.2f} | {} |", names[m], models[m]->parameters,
+                     models[m]->log_likelihood, models[m]->aic, lr);
+    }
+
+    std::println("\n| Block | Term | Estimate | SE | z | p |");
+    std::println("| --- | --- | ---: | ---: | ---: | ---: |");
+    const char* parts[]{"sand", "silt", "clay"};
+    const char* terms[]{"(Intercept)", "depth", "depth^2"};
+    for (int j = 0; j < 2; ++j)
+        for (int c = 0; c < 3; ++c) {
+            const double b = m2.mean_coefficients(c, j), se = m2.mean_standard_errors(c, j);
+            std::println("| Mean: {} vs clay | {} | {:.4g} | {:.3g} | {:.2f} | {:.2g} |",
+                         parts[j], terms[c], b, se, b / se,
+                         2 * dm::random::normal_cdf(-std::abs(b / se)));
+        }
+    for (int c = 0; c < 2; ++c) {
+        const double g = m2.precision_coefficients[c], se = m2.precision_standard_errors[c];
+        std::println("| Log precision | {} | {:.4g} | {:.3g} | {:.2f} | {:.2g} |", terms[c],
+                     g, se, g / se, 2 * dm::random::normal_cdf(-std::abs(g / se)));
+    }
+
+    // Expected composition and precision against depth, with the logistic-normal center.
+    const auto ilr_coef = ilr_ols(x2, y);
+    const std::vector<double> grid_depths{10, 25, 50, 75, 100};
+    const auto pred = m2.predict(polynomial(grid_depths, 2), polynomial(grid_depths, 1));
+    const auto centre = ilr_ols_center(ilr_coef, polynomial(grid_depths, 2));
+    std::println("\n| Depth (m) | Sand | Silt | Clay | Precision phi | SD of clay share | "
+                 "Logistic-normal center (sand, silt, clay) |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (std::size_t g = 0; g < grid_depths.size(); ++g) {
+        const double mu = pred.mean(g, 2), phi = pred.precision[g];
+        std::println("| {:.0f} | {:.3f} | {:.3f} | {:.3f} | {:.1f} | {:.3f} | "
+                     "{:.3f}, {:.3f}, {:.3f} |", grid_depths[g], pred.mean(g, 0),
+                     pred.mean(g, 1), mu, phi, std::sqrt(mu * (1 - mu) / (1 + phi)),
+                     centre(g, 0), centre(g, 1), centre(g, 2));
+    }
+
+    // Simulation: the fitted model as truth.
+    dm::random::SplitMix64 rng(53);
+    std::println("\n| Design | Wald coverage, mean coefs | "
+                 "Wald coverage, precision coefs | "
+                 "Coverage, mean coefs if precision held constant | Power of LR test for "
+                 "precision ~ depth | Clay at 10 m: truth / Dirichlet / logistic-normal |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (const std::size_t size : {39, 150}) {
+        std::vector<double> d(size);
+        for (std::size_t i = 0; i < size; ++i)
+            d[i] = size == n ? depth[i] : 10 + 94 * (i + 0.5) / size;
+        const auto X = polynomial(d, 2), Z = polynomial(d, 1);
+        const auto truth = m2.predict(X, Z);
+        const auto at10 = m2.predict(polynomial({10.0}, 2), polynomial({10.0}, 1));
+        const int reps = 300;
+        double cover_b = 0, cover_g = 0, cover_const = 0, power = 0, dir10 = 0, ln10 = 0;
+        for (int r = 0; r < reps; ++r) {
+            Matrix sim(size, 3, 0.0);
+            for (std::size_t i = 0; i < size; ++i) {
+                const auto draw = dm::random::dirichlet_sample(rng, truth.alpha.row(i));
+                for (std::size_t j = 0; j < 3; ++j) sim(i, j) = draw[j];
+            }
+            const auto full = dm::stats::dirichlet_regression(X, Z, sim, clay_base);
+            const auto flat = dm::stats::dirichlet_regression(X, polynomial(d, 0), sim,
+                                                              clay_base);
+            const double z = 1.959963984540054;
+            for (int j = 0; j < 2; ++j)
+                for (int c = 0; c < 3; ++c) {
+                    const double b = m2.mean_coefficients(c, j);
+                    cover_b += std::abs(full.mean_coefficients(c, j) - b) <=
+                               z * full.mean_standard_errors(c, j);
+                    cover_const += std::abs(flat.mean_coefficients(c, j) - b) <=
+                                   z * flat.mean_standard_errors(c, j);
+                }
+            for (int c = 0; c < 2; ++c)
+                cover_g += std::abs(full.precision_coefficients[c] -
+                                    m2.precision_coefficients[c]) <=
+                           z * full.precision_standard_errors[c];
+            const double stat = 2 * (full.log_likelihood - flat.log_likelihood);
+            power += dm::random::chi_squared_survival(stat, 1) < 0.05;
+            dir10 += full.predict(polynomial({10.0}, 2), polynomial({10.0}, 1)).mean(0, 2);
+            ln10 += ilr_ols_center(ilr_ols(X, sim), polynomial({10.0}, 2))(0, 2);
+        }
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.2f} | "
+                     "{:.4f} / {:.4f} / {:.4f} |",
+                     size == n ? std::string("Lake depths, n = 39")
+                               : std::format("Even depths, n = {}", size),
+                     cover_b / (6.0 * reps), cover_g / (2.0 * reps),
+                     cover_const / (6.0 * reps), power / reps, at10.mean(0, 2),
+                     dir10 / reps, ln10 / reps);
+    }
+
+    // Figure: observed shares and fitted expected composition against depth.
+    std::vector<double> grid, fit[3], ln[3];
+    for (double g = 10; g <= 104; g += 1) grid.push_back(g);
+    const auto curve = m2.predict(polynomial(grid, 2), polynomial(grid, 1));
+    const auto ln_curve = ilr_ols_center(ilr_coef, polynomial(grid, 2));
+    for (std::size_t g = 0; g < grid.size(); ++g)
+        for (int j = 0; j < 3; ++j)
+            fit[j].push_back(curve.mean(g, j)), ln[j].push_back(ln_curve(g, j));
+    const dm::graphics::RGBA colors[]{{196, 154, 60}, {26, 90, 147}, {178, 74, 38}};
+    auto fig = dm::graphics::RPlot::create();
+    for (int j = 0; j < 3; ++j) {
+        std::vector<double> obs;
+        for (std::size_t i = 0; i < n; ++i)
+            obs.push_back(y(i, j) / (y(i, 0) + y(i, 1) + y(i, 2)));
+        fig.points(depth, obs, "", colors[j], 3.5);
+    }
+    for (int j = 0; j < 3; ++j)
+        fig.line(grid, ln[j], j == 0 ? "Logistic-normal center" : "", {150, 150, 150}, 1.5);
+    const char* labels[]{"Sand (Dirichlet mean)", "Silt", "Clay"};
+    for (int j = 0; j < 3; ++j) fig.line(grid, fit[j], labels[j], colors[j], 2.5);
+    fig.y_limits(0, 1.15)
+        .title("Arctic lake sediments: composition against depth")
+        .x_label("Water depth (m)")
+        .y_label("Proportion")
+        .size(640, 420);
+    std::filesystem::create_directories("build");
+    fig.save_svg("build/dirichlet_regression.svg");
+}
+```
+// result_begin: markdown
+| Model | Parameters | Log-likelihood | AIC | LR test against previous |
+| --- | ---: | ---: | ---: | ---: |
+| Mean ~ depth; precision constant | 5 | 77.74 | -145.48 |  |
+| Mean ~ depth + depth^2; precision constant | 7 | 91.30 | -168.59 | chi2(2) = 27.12, p = 1.3e-06 |
+| Mean ~ depth + depth^2; precision ~ depth | 8 | 107.84 | -199.68 | chi2(1) = 33.09, p = 8.8e-09 |
+
+| Block | Term | Estimate | SE | z | p |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Mean: sand vs clay | (Intercept) | 2.975 | 0.497 | 5.98 | 2.2e-09 |
+| Mean: sand vs clay | depth | -0.1064 | 0.018 | -5.91 | 3.4e-09 |
+| Mean: sand vs clay | depth^2 | 0.0005161 | 0.000143 | 3.61 | 0.0003 |
+| Mean: silt vs clay | (Intercept) | 1.687 | 0.401 | 4.21 | 2.5e-05 |
+| Mean: silt vs clay | depth | -0.0357 | 0.0123 | -2.91 | 0.0036 |
+| Mean: silt vs clay | depth^2 | 0.0001914 | 8.88e-05 | 2.15 | 0.031 |
+| Log precision | (Intercept) | 1.324 | 0.357 | 3.70 | 0.00021 |
+| Log precision | depth | 0.04177 | 0.0066 | 6.33 | 2.5e-10 |
+
+| Depth (m) | Sand | Silt | Clay | Precision phi | SD of clay share | Logistic-normal center (sand, silt, clay) |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 10 | 0.595 | 0.322 | 0.084 | 5.7 | 0.107 | 0.677, 0.292, 0.031 |
+| 25 | 0.351 | 0.463 | 0.186 | 10.7 | 0.114 | 0.372, 0.498, 0.130 |
+| 50 | 0.124 | 0.520 | 0.356 | 30.4 | 0.085 | 0.102, 0.528, 0.370 |
+| 75 | 0.055 | 0.493 | 0.452 | 86.3 | 0.053 | 0.046, 0.469, 0.486 |
+| 100 | 0.039 | 0.488 | 0.473 | 245.1 | 0.032 | 0.049, 0.517, 0.433 |
+
+| Design | Wald coverage, mean coefs | Wald coverage, precision coefs | Coverage, mean coefs if precision held constant | Power of LR test for precision ~ depth | Clay at 10 m: truth / Dirichlet / logistic-normal |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Lake depths, n = 39 | 0.940 | 0.927 | 0.804 | 1.00 | 0.0835 / 0.0837 / 0.0471 |
+| Even depths, n = 150 | 0.940 | 0.940 | 0.571 | 1.00 | 0.0835 / 0.0847 / 0.0496 |
+\image(figures/dirichlet_regression.svg)
+// result_end
+
+The sediments call for both a curved mean and a depth-dependent precision. Adding \(\text{depth}^2\) to the mean model improves the likelihood by \(\chi^2_2=27.1\). Letting the precision depend on depth adds a further \(\chi^2_1=33.1\), and AIC falls by 31. The mean coefficients describe log-odds relative to clay. Sand falls steeply against clay with depth, and the positive quadratic term flattens the decline below about 60 m. Silt changes less, so the expected composition moves from sand-dominated near the shore (60% sand at 10 m) to an even silt–clay mixture in deep water. The precision rises from about 6 at 10 m to 245 at 100 m. Shallow samples vary widely, with a standard deviation of 0.11 in the clay share, while deep samples are almost uniform (0.03). The figure shows this narrowing scatter.
+
+The logistic-normal regression, least squares on ilr coordinates, estimates something different. Its fitted values are compositional centers, the closed geometric means. Small shares pull a geometric mean toward zero. At 10 m the center puts clay at 3.1%, while the Dirichlet expected share is 8.4%. The simulation shows that this is not sampling noise: with the Dirichlet model as the truth, the Dirichlet fit recovers the expected clay share at 10 m (0.084), but the logistic-normal center stays near 0.05 whether n = 39 or 150. Neither estimate is wrong, but only the Dirichlet mean answers "what fraction is expected". Use the center when the question concerns typical ratios.
+
+When the model matches the data, the observed-information Wald intervals cover 93–94% of the time, even with 39 observations. Ignoring the precision model is costly. A constant-precision fit treats the noisy shallow samples and the precise deep ones as equally informative, so its standard errors for the mean coefficients are wrong. Their coverage falls to 80% at n = 39, and to 57% with 150 observations, because more data concentrate the intervals around a misweighted estimate. The likelihood-ratio test detects the precision effect in every replicate, so modelling the precision costs little.
+
+>> Practical guidance
+
+- Model the precision explicitly and test covariates in it by likelihood ratio. Variable dispersion is common in compositional data, and ignoring it invalidates the inference for the mean model even when the mean itself is well estimated.
+- Interpret \(\beta_j\) as log-odds of part \(j\) against the base part, and report fitted compositions at representative covariate values. Changing the base reparametrizes the model without changing the fit.
+- Choose between the Dirichlet mean and the logistic-normal center according to the question: expected shares or typical ratios. The Dirichlet model also has a single precision governing all parts, so a covariance structure among log-ratios calls for logistic-normal models.
+- Zeros make Dirichlet log-likelihoods infinite. Boundary compression is a pragmatic fix for a few zeros, but frequent zeros call for a zero-inflated or multinomial-count model.
+
+>> References
+
+- M. J. Maier (2014). DirichletReg: Dirichlet regression for compositional data in R. Research Report Series 125, Vienna University of Economics and Business.
+- R. H. Hijazi and R. W. Jernigan (2009). Modelling compositional data using Dirichlet regression models. *Journal of Applied Probability and Statistics* 4(1), 77-91.
+- J. P. Coakley and B. R. Rust (1968). Sedimentation in an Arctic lake. *Journal of Sedimentary Petrology* 38(4), 1290-1300. doi:10.1306/74D71B5B-2B21-11D7-8648000102C1865D
+- J. Aitchison (1986). *The Statistical Analysis of Compositional Data*. Chapman and Hall. doi:10.1007/978-94-009-4109-0
+- S. Ferrari and F. Cribari-Neto (2004). Beta regression for modelling rates and proportions. *Journal of Applied Statistics* 31(7), 799-815. doi:10.1080/0266476042000214501
+- M. Smithson and J. Verkuilen (2006). A better lemon squeezer? Maximum-likelihood regression with beta-distributed dependent variables. *Psychological Methods* 11(1), 54-71. doi:10.1037/1082-989X.11.1.54

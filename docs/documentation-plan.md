@@ -9,6 +9,1682 @@ symbol without reading its implementation.
 
 ## Completion checklist
 
+- 2026-11-25 — Added stats/permanova.hpp with bray_curtis_distances,
+  PermanovaTerm, factor_term, numeric_term, interaction_term, PermanovaBy,
+  PermanovaOptions, PermanovaRow, Permanova, permanova, DispersionCenter,
+  DispersionOptions, Dispersion and dispersion_test. It gives Gower-matrix
+  PERMANOVA with overall, sequential and marginal partitions, free,
+  stratified or explicit permutations, and aliased-column handling, plus
+  PCoA-based dispersion tests (centroid or exact spatial median on real
+  and imaginary axes, optional bias adjustment) with residual permutation.
+  Tests replayed vegan's permutation matrix and reproduced adonis2
+  overall, by-terms and by-margin tables (SS, R2, pseudo-F and p) and
+  betadisper/permutest distances, eigenvalues, bias adjustment, F and
+  p-values exactly, with exact Weiszfeld spatial medians. Doxygen covered
+  all definitions and all public examples ran. The MePML report ran and
+  exported to HTML and Org with dune-meadow sequential and marginal
+  tables, centroid and median dispersion tests, a native PCoA figure, and
+  a simulation of PERMANOVA and PERMDISP under unequal dispersion and
+  unbalanced designs. [Permutational MANOVA and dispersion
+  tests](mepml/stats/multivariate/permanova.mepml)
+
+- 2026-11-25 — Added stats/dirichlet_regression.hpp with
+  DirichletRegressionOptions, DirichletPrediction, DirichletRegression
+  (with predict) and dirichlet_regression, and added public
+  random::digamma and random::trigamma to random/distributions.hpp. It
+  gives Fisher-scoring maximum likelihood for the mean/precision Dirichlet
+  model (multinomial-logit means with a base part, log-linear precision),
+  observed-information standard errors, AIC/BIC, fitted values,
+  standardized residuals, predictions and DR_data boundary compression.
+  Tests reproduced DirichletReg (alternative parametrization)
+  coefficients, observed-information SEs, likelihood, AIC/BIC, fitted
+  means, precisions and residuals on ArcticLake for two models and bases
+  and a compressed fit, the reduction to beta_regression when D = 2, and
+  digamma/trigamma constants. Doxygen covered all definitions and all
+  public examples ran. The MePML report ran and exported to HTML and Org
+  with nested-model LR tests, coefficient and prediction tables, a
+  comparison with the logistic-normal center, a native
+  composition-versus-depth figure, and a coverage, misspecification and
+  mean-versus-center simulation. [Dirichlet
+  regression](mepml/stats/compositional/dirichlet_regression.mepml)
+
+- 2026-11-25 — Added stats/compositional.hpp with closure, clr and
+  clr_inverse, alr and alr_inverse, IlrBasis, ilr_basis, balance_basis,
+  ilr and ilr_inverse, aitchison_distance(s), compositional_center,
+  variation_matrix, total_variance, multiplicative_replacement,
+  CountZeroMethod, CountZeroOptions and count_zero_replacement. Tests
+  reproduced compositions (clr, alr, ilr, ilrBase, gsi.buildilrBase,
+  variation, mvar, center and Aitchison dist) and zCompositions (multRepl
+  on raw and closed data, and cmultRepl with GBM, SQ, BL and CZM, with and
+  without adjustment) to rounding, plus every inverse, basis
+  orthonormality and the pivot-Helmert identity. Doxygen covered all
+  definitions and all public examples ran. The MePML report ran and
+  exported to HTML and Org with subcompositional incoherence and dominance
+  on Aitchison's household budgets, alr non-isometry, balance tests
+  between the sexes with a native balance plot, sensitivity of the Pigs
+  counts to zero replacement, and simulations of rounded-zero and
+  count-zero strategies. [Compositional log-ratio
+  analysis](mepml/stats/compositional/log_ratio.mepml)
+
+- 2026-11-25 — Added stats/extremal_index.hpp with ExtremalIndexMethod,
+  ExtremalIndexOptions, ExtremalIndex, extremal_index, Declustered and
+  decluster, and added an extremal_index argument to gpd_return_level for
+  clustered series. It gives the Ferro-Segers intervals estimator with its
+  implied run length and cluster count, the runs estimator, runs
+  declustering with cluster maxima, and the Ferro-Segers cluster
+  bootstrap. Tests reproduced extRemes extremalindex (estimate, clusters
+  and run length at four thresholds, both methods) and runs declustering
+  exactly on Fort Collins precipitation, matched its bootstrap percentiles
+  within 0.01, and recovered theta = 1 - a for a max-autoregressive
+  process. They documented two deliberate deviations: r = 0 when theta =
+  1, and extRemes decluster(method = "intervals") ignoring its run length.
+  Doxygen covered all definitions and all public examples ran. The MePML
+  report ran and exported to HTML and Org with Fort Collins estimates over
+  thresholds and run lengths, return levels under independence, rate
+  scaling and declustering, a native threshold-stability figure, and a
+  simulation with ARMAX and moving-maximum processes. [Extremal index
+  estimation](mepml/stats/extremes/extremal_index.mepml)
+
+- 2026-11-25 — Added stats/tail_index.hpp with TailIndexMethod,
+  TailIndexEstimate, tail_index, tail_index_path and weissman_quantile. It
+  gives Hill, Pickands and Dekkers-Einmahl-de Haan moment estimators of
+  the extreme value index from the k upper order statistics with
+  asymptotic standard errors and intervals, full paths over k, and
+  Weissman extrapolated quantiles. Tests reproduced ReIns 1.0.16 Hill,
+  Moment and Weissman.q and the Pickands formula to rounding, the
+  asymptotic variances, exact Pickands on uniform quantiles,
+  location-scale invariance and range validation. Doxygen covered all
+  definitions and all public examples ran. The MePML report ran and
+  exported to HTML and Org with the Secura Belgian Re claims (estimator
+  table, Weissman quantiles, GPD cross-check, native estimate-versus-k
+  plot) and a bias, RMSE and coverage simulation for Pareto, t3 and
+  lognormal tails. [Hill and Pickands tail-index
+  estimation](mepml/stats/extremes/tail_index.mepml)
+
+- 2026-11-25 — Added stats/gpd.hpp with gpd_cdf, gpd_quantile,
+  gpd_log_density, GpdOptions, GpdFit, fit_gpd, GpdReturnLevel,
+  gpd_return_level, ThresholdDiagnostic and threshold_diagnostics, and
+  factored the shared Newton and numerical-derivative helpers into
+  src/datamunge/stats/extreme_detail.hpp. It gives maximum-likelihood GPD
+  and exponential fits of threshold excesses, return levels at a specified
+  number of observations per period with delta-method intervals (including
+  exceedance-rate uncertainty) and profile-likelihood intervals, and
+  mean-residual-life and parameter-stability diagnostics. Tests reproduced
+  tight R fits with exact symbolic-Hessian SEs, delta and root-found
+  profile limits on Coles's rainfall series, the exact exponential
+  estimate, ismev::gpd.fit and extRemes GP distribution functions. Doxygen
+  covered all definitions and all public examples ran. The MePML report
+  ran and exported to HTML and Org with threshold diagnostics, GPD and
+  exponential return levels, a native threshold-sensitivity figure, and a
+  bias, RMSE and coverage simulation over thresholds for a tail that is
+  only asymptotically generalized Pareto. [Generalized Pareto
+  fitting](mepml/stats/extremes/gpd.mepml)
+
+- 2026-11-25 — Added stats/gev.hpp with gev_cdf, gev_quantile,
+  gev_log_density, GevMethod, GevOptions, GevFit, fit_gev, GumbelTest,
+  gumbel_test, ReturnLevel and gev_return_level. It gives GEV distribution
+  functions continuous through xi = 0, maximum-likelihood (Newton from
+  L-moment starts, observed-information covariance) and
+  Hosking-Wallis-Wood L-moment fitting, the Gumbel model and LR test, and
+  return levels with delta-method and profile-likelihood intervals. Tests
+  reproduced tight R optimizations with exact symbolic-Hessian SEs and
+  root-found profile limits on the Port Pirie and Fremantle sea-level
+  series, extRemes L-moment fits and distribution functions, and
+  ismev::gev.fit. Doxygen covered all definitions and all public examples
+  ran. The MePML report ran and exported to HTML and Org with GEV,
+  L-moment and Gumbel fits of both series, return-level tables with Wald
+  and profile intervals, a native return-level plot, and a coverage and
+  misspecification simulation. [Generalized extreme value
+  fitting](mepml/stats/extremes/gev.mepml)
+
+- 2026-11-25 — Added stats/copula.hpp with CopulaFamily, CopulaMethod,
+  CopulaOptions, CopulaFit, pseudo_observations, copula_log_density,
+  fit_copula, t_copula_tail_dependence and simulate_copula. It covers
+  d-dimensional Gaussian and Student t copulas, fitted by maximum
+  pseudo-likelihood (L-BFGS over a C-vine partial-correlation
+  parametrization and bounded log df) or by Kendall's-tau inversion (with
+  df by MPL for t, and eigenvalue projection when needed), with AIC/BIC,
+  pairwise tail dependence and simulation. Tests reproduced copula 1.1.7
+  pobs with ties, dCopula log densities, lambda and itau fits exactly, and
+  its mpl and itau.mpl fits at least as well as R's optimizer, and checked
+  the Kendall-tau identity and df recovery on simulated data. Doxygen
+  covered all definitions and all public examples ran. The MePML report
+  ran and exported to HTML and Org with a three-asset example,
+  joint-exceedance probabilities under the fitted families, a native
+  conditional tail-probability figure, and a study of estimator bias and
+  AIC family selection. [Gaussian and Student t
+  copulas](mepml/stats/dependence/copulas.mepml)
+
+- 2026-11-25 — Added stats/polychoric.hpp with bivariate_normal_cdf
+  (Genz/TVPACK Gauss-Legendre algorithm), PolychoricEstimator,
+  PolychoricOptions, PolychoricCorrelation, polychoric_correlation (table
+  and paired-code overloads), tetrachoric_correlation and
+  polychoric_matrix. It gives two-step and full maximum-likelihood fits by
+  Fisher scoring with analytic derivatives, observed-information standard
+  errors for rho and thresholds, Fisher-z intervals and the
+  likelihood-ratio test of bivariate normality. Tests checked the CDF
+  against adaptive integration to 1e-12. They matched two-step and ML
+  estimates, threshold SEs and LR statistics from tight R optimizations of
+  the same likelihood, agreed with polycor::polychor to its optimizer
+  precision, and checked the closed-form symmetric tetrachoric. Doxygen
+  covered all definitions and all public examples ran. The MePML report
+  ran and exported to HTML and Org with a skewed five-point example, an
+  attenuation, bias and coverage simulation across category counts and
+  threshold designs with native curves, and a latent t3 misspecification
+  study of bias, coverage and LR-test power. [Tetrachoric and polychoric
+  correlations](mepml/stats/dependence/polychoric.mepml)
+
+- 2026-11-25 — Added stats/hsic.hpp with HsicKernel, HsicOptions, Hsic and
+  hsic (d-variable matrix and two-sample vector overloads). It gives the
+  dHSIC V-statistic for joint independence with Gaussian (median heuristic
+  with an optional multiplier, or fixed bandwidth) and discrete kernels,
+  the moment-matched gamma test and a permutation test. Tests reproduced
+  dHSIC 2.1 statistics, median-heuristic bandwidths and gamma p-values for
+  two and three variables and for fixed and discrete kernels, and its
+  permutation p-values within Monte Carlo error. Doxygen covered all
+  definitions and all public examples ran. The MePML report ran and
+  exported to HTML and Org with a pairwise-independent but jointly
+  dependent example, size of the gamma and permutation tests for normal
+  and Cauchy data, and native power-versus-bandwidth curves against
+  distance correlation. [Hilbert-Schmidt independence
+  criterion](mepml/stats/dependence/hsic.mepml)
+
+- 2026-11-25 — Added stats/distance_correlation.hpp with
+  DistanceCorrelationOptions, DistanceCorrelation, distance_correlation
+  (matrix and vector overloads) and partial_distance_correlation. It gives
+  V-statistic distance covariance and correlation with a distance
+  exponent, the U-statistic and bias-corrected dCor, the high-dimensional
+  t test, the nV^2 permutation test and partial distance correlation.
+  Tests reproduced energy 1.7.12 dcov.test estimates and statistics for
+  three exponents, bcdcor, dcorT.test, dcovU and pdcor to 1e-11, and its
+  permutation p-values within Monte Carlo error, and checked invariances.
+  Doxygen covered all definitions and all public examples ran. The MePML
+  report ran and exported to HTML and Org with power and estimate
+  comparisons across six relationships, the size of the permutation and t
+  tests in low and high dimension, and native power curves against
+  Pearson. [Distance
+  correlation](mepml/stats/dependence/distance_correlation.mepml)
+
+- 2026-11-25 — Added stats/partial_correlation.hpp with PartialMethod,
+  PartialOptions, AdjustedCorrelation, partial_correlation,
+  semipartial_correlation, PartialCorrelationMatrix and
+  partial_correlation_matrix. These give residual-based Pearson and
+  Spearman partial and semipartial correlations with coefficient t tests,
+  Fisher-z intervals (partial) and percentile bootstrap intervals, and
+  all-pairs matrices from a covariance matrix. Tests reproduced ppcor
+  pcor.test/pcor (estimates, statistics, p-values) and spcor.test/spcor
+  estimates to 1e-12. They matched the semipartial test to lm's
+  coefficient t test, documenting that ppcor's spcor.test statistic is too
+  conservative, and cross-checked the data and matrix forms. Doxygen
+  covered all definitions and all public examples ran. The MePML report
+  ran and exported to HTML and Org with an mtcars analysis, a
+  partial-correlation matrix, a confounder, unreliable-confounder and
+  collider simulation with a native figure, and Fisher versus bootstrap
+  coverage under normal and heavy-tailed data. [Partial and semipartial
+  correlations](mepml/stats/dependence/partial_correlation.mepml)
+
+- 2026-11-25 — Added stats/acceptance_sampling.hpp with SamplingModel,
+  AttributePlan, SamplingOptions, acceptance_probability,
+  find_attribute_plan, RectifyingPerformance, rectifying_performance, Aoql
+  and average_outgoing_quality_limit. It gives binomial (type B),
+  hypergeometric (type A, with a stable normalized recurrence) and Poisson
+  OC functions, the smallest plan meeting producer and consumer risk
+  points, and AOQ, ATI and AOQL under rectifying inspection. Tests
+  reproduced AcceptanceSampling::find.plan for 24 risk-point combinations
+  under three models and its OC values to 1e-12, checked minimality, and
+  matched AOQ, ATI and AOQL computed in R. Doxygen covered all definitions
+  and all public examples ran. The MePML report ran and exported to HTML
+  and Org with plan design across models and lot sizes, a c = 0
+  comparison, native OC curves, and a lot-level simulation of realized
+  risks and outgoing quality. [Acceptance sampling by
+  attributes](mepml/stats/quality/acceptance_sampling.mepml)
+
+- 2026-11-25 — Added stats/process_capability.hpp with WithinSigma,
+  CapabilityOptions, CapabilityIndex, ProcessCapability,
+  process_capability (subgrouped and individuals), range_constant_d2 and
+  sd_constant_c4. It covers pooled, Rbar/d2, Sbar/c4 and moving-range
+  within SDs (exact d2 for any n), optional c4 for the overall SD, and
+  one- or two-sided limits. It returns Cp, Cpl, Cpu, Cpk, Pp, Ppl, Ppu,
+  Ppk and Cpm with chi-square and Bissell intervals, and expected and
+  observed ppm. Tests reproduced qcc::process.capability, sd.xbar and
+  sd.xbar.one on piston rings (equal and unequal subgroups, MR spans 2 and
+  3, one-sided limits), d2 against R integrate, and c4. Doxygen covered
+  all definitions and all public examples ran. The MePML report ran and
+  exported to HTML and Org with the piston-ring analysis, a native
+  histogram against the limits, and simulations of Cpk precision and
+  interval coverage, drift (Cpk vs Ppk) and skewness (ppm error). [Process
+  capability indices](mepml/stats/quality/process_capability.mepml)
+
+- 2026-11-25 — Added stats/gage_rr.hpp with GageOptions, GageAnovaRow,
+  GageComponent, GageStudy and gage_rr. This is the ANOVA method for
+  balanced crossed parts x operators x replicates studies: an ANOVA table
+  with F tests against the interaction, EMS variance components truncated
+  at zero, optional AIAG interaction pooling (p > 0.25), %contribution,
+  %study variation, %tolerance and the number of distinct categories.
+  Tests reproduced anova(lm(y ~ part * operator)) and the hand EMS
+  components to 1e-12, and lme4 REML, with and without pooling. Doxygen
+  covered all definitions and all public examples ran. The MePML report
+  ran and exported to HTML and Org with a diameter gage study and a
+  simulation of how precisely common designs estimate %GRR and classify a
+  marginal gage. [Gage repeatability and
+  reproducibility](mepml/stats/quality/gage_rr.mepml)
+
+- 2026-11-25 — Extended stats/item_response.hpp with GradedItem,
+  GradedOptions, GradedFit, fit_graded_response,
+  graded_category_probabilities, graded_item_information,
+  graded_test_information and graded_scores. Fitting is marginal maximum
+  likelihood for Samejima's graded response model (free or common
+  discrimination) with Gauss-Hermite quadrature over grouped patterns,
+  damped Newton shared with the binary models, and observed-information
+  standard errors. Tests reproduced ltm::grm estimates, log-likelihoods
+  and EB/EAP scores on Science and Environment, threshold SEs against
+  numDeriv's observed information (ltm's summary.grm overstates SEs beyond
+  the first threshold), reduction to the 2PL, and item information against
+  numerical Fisher information. Doxygen covered all definitions and all
+  public examples ran. The MePML report ran and exported to HTML and Org
+  with the Science attitude scale, native category response and
+  information curves, and a simulation of recovery, coverage and the cost
+  of dichotomizing. [Graded response
+  model](mepml/stats/psychometrics/graded_response.mepml)
+
+- 2026-11-25 — Added stats/item_response.hpp with IrtModel, IrtOptions,
+  IrtItem, IrtFit, fit_irt, irt_probability, irt_test_information,
+  IrtScore and irt_scores. Fitting is marginal maximum likelihood with
+  Gauss-Hermite quadrature over grouped response patterns, damped Newton
+  on the analytic gradient with a finite-difference Hessian, and
+  delta-method standard errors. It covers the Rasch model with fixed or
+  estimated common discrimination and the 2PL, with MAP and EAP abilities
+  with uncertainty and test information. Tests reproduced ltm::rasch (both
+  constraints) and ltm::ltm(X ~ z1) estimates, standard errors,
+  log-likelihoods and EB/EAP factor scores on LSAT, Abortion and a
+  simulated test. Doxygen covered all definitions and all public examples
+  ran. The MePML report ran and exported to HTML and Org with the LSAT
+  Rasch-vs-2PL comparison, native item characteristic and information
+  curves, and a simulation of recovery, coverage, the likelihood-ratio
+  test and EAP calibration. [Rasch and two-parameter item-response
+  models](mepml/stats/psychometrics/rasch_2pl.mepml)
+
+- 2026-11-25 — Added stats/reliability.hpp with ItemStatistics,
+  AlphaEstimate, cronbach_alpha, OneFactorFit, one_factor_fit,
+  OmegaOptions, OmegaEstimate and mcdonald_omega. cronbach_alpha gives raw
+  and standardized alpha, the average inter-item correlation, Feldt and
+  distribution-free asymptotic intervals, and item-rest correlations and
+  alpha if deleted. one_factor_fit is ML by Rubin-Thayer EM with the
+  lavaan chi-square test. mcdonald_omega gives model-implied and
+  observed-variance omega with percentile bootstrap intervals for omega
+  and alpha. Tests reproduced psych::alpha (alpha, std.alpha, average_r,
+  ase, Feldt, r.drop, alpha.drop) to 1e-12, lavaan cfa(std.lv = TRUE)
+  loadings, residual variances and chi-square, and an exact
+  compound-symmetric solution. Doxygen covered all definitions and all
+  public examples ran. The MePML report ran and exported to HTML and Org
+  with an item analysis, interval comparison and a simulation of bias and
+  coverage for tau-equivalent, congeneric, skewed and correlated-error
+  scales. [Cronbach's alpha and McDonald's
+  omega](mepml/stats/psychometrics/alpha_omega.mepml)
+
+- 2026-11-25 — Added stats/generalizability.hpp with VarianceComponent,
+  GStudy, g_study, DStudy and d_study. g_study handles balanced, fully
+  crossed random designs with any number of facets: ANOVA mean squares by
+  inclusion-exclusion over marginal means, components from top-down
+  expected-mean-square substitution (raw and truncated), Brennan standard
+  errors and percentages. d_study gives relative and absolute error, E
+  rho^2, Phi and SEMs for any facet sizes. Tests reproduced aov mean
+  squares and an independent full EMS solve to 1e-10 for three- and
+  four-factor designs (with negative estimates), agreed with lme4 REML,
+  and matched psych::alpha for a one-facet design. Doxygen covered all
+  definitions and all public examples ran. The MePML report ran and
+  exported to HTML and Org with a persons x raters x occasions G-study, a
+  D-study table, native D-study curves against the truth, and a study of
+  how precisely small G-studies predict reliability. [Generalizability
+  theory](mepml/stats/psychometrics/generalizability_theory.mepml)
+
+- 2026-11-25 — Added stats/network_meta_analysis.hpp with NetworkStudy,
+  network_study_from_arms, NetworkTauEstimator (DL, REML),
+  NetworkMetaOptions, NetworkEstimates, NetworkMetaAnalysis and
+  network_meta_analysis. The model is contrast-based GLS with exact
+  multi-arm covariance and Lu-Ades homogeneous random effects. It returns
+  full pairwise estimate, SE, interval and p-value matrices for common and
+  random effects, the network Q with its within-design heterogeneity and
+  between-design inconsistency decomposition, tau^2, I^2 and P-scores.
+  Tests reproduced netmeta, decomp.design and netrank to 1e-9 on the
+  smoking-cessation network (three-arm trials, zero-event arms), and REML
+  against an exact score-equation root (netmeta's rma.mv stops about 5e-7
+  short). Doxygen covered all definitions and all public examples ran. The
+  MePML report ran and exported to HTML and Org with the smoking-cessation
+  league table, P-scores and inconsistency decomposition, a native network
+  graph, and a simulation of precision gain, multi-arm double counting and
+  inconsistency. [Network
+  meta-analysis](mepml/stats/meta/network_meta_analysis.mepml)
+
+- 2026-11-25 — Added SmallStudyPredictor (standard error, variance, n,
+  1/n, 1/sqrt n), SmallStudyModel (weighted regression with multiplicative
+  dispersion, or random-effects meta-regression), EggerOptions, EggerTest
+  and egger_test to stats/meta_analysis.hpp. egger_test returns the
+  asymmetry slope, its test, and the limit (PET/PEESE) estimate with an
+  interval, with inverse-variance or equal weights and any tau^2 estimator
+  and inference for the random-effects model. Tests reproduced
+  metafor::regtest for all five predictors, both models including
+  Hartung-Knapp, and an unweighted lm on the BCG data. Doxygen covered all
+  definitions and all public examples ran. The MePML report ran and
+  exported to HTML and Org with a binary-trial simulation of Egger,
+  random-effects Egger and Peters tests under no bias, strong effects and
+  selective publication, the PET limit estimate, and a native funnel plot
+  with Egger's line. [Egger
+  regression](mepml/stats/meta/egger_regression.mepml)
+
+- 2026-11-25 — Added meta_regression with MetaRegression,
+  MetaRegressionOptions and MetaInfluence to stats/meta_analysis.hpp: a
+  mixed-effects meta-regression with an automatic intercept, any tau^2
+  estimator, and Wald or Hartung-Knapp inference (chi-squared or F omnibus
+  QM). It reports QE, residual tau^2 with a Q-profile interval, residual
+  I^2 and H^2, pseudo-R^2, fitted values, residuals and weights. Optional
+  leave-one-out influence diagnostics cover hat values, standardised and
+  studentised residuals, DFFITS, Cook's distance, covariance ratios, tau^2
+  and QE after deletion, DFBETAS and metafor's influence flag. Moderators
+  are centred and scaled internally, which fixed a loss of about seven
+  digits with year-valued moderators. Tests reproduced metafor rma(mods),
+  confint, rstandard, fitted and every column of influence() on the BCG
+  data, including a flagged outlier. Doxygen covered all definitions and
+  all public examples ran. The MePML report ran and exported to HTML and
+  Org with the BCG latitude analysis, influence table and bubble plot with
+  confidence and prediction bands, and a simulation of slope-test size,
+  power and spurious pseudo-R^2.
+  [Meta-regression](mepml/stats/meta/meta_regression.mepml)
+
+- 2026-11-25 — Added MetaInference (Wald, Hartung-Knapp, truncated
+  Hartung-Knapp) to RandomEffectsOptions. Under Hartung-Knapp the squared
+  standard error is scaled by the generalised Q / (k - 1) (at least 1 in
+  the truncated variant), and the test, confidence interval and prediction
+  interval use t with k - 1 df. MetaAnalysis now reports df and the
+  variance scale. Tests reproduced metafor::rma(test = "knha") and
+  rma(test = "adhoc") with DL and REML to 1e-9 on three data sets,
+  including one where the scale is below 1. Doxygen covered all
+  definitions and all public examples ran. The MePML report ran and
+  exported to HTML and Org with a coverage and width study for similar
+  study sizes and for a single dominant study, and a native
+  coverage-versus-k figure. [Hartung–Knapp
+  inference](mepml/stats/meta/hartung_knapp.mepml)
+
+- 2026-11-25 — Added TauEstimator (DerSimonian-Laird, Paule-Mandel, REML,
+  ML), RandomEffectsOptions and random_effects_meta to
+  stats/meta_analysis.hpp: the random-effects average with Wald inference
+  and weights, tau^2 with a Q-profile interval, I^2 and H^2 based on
+  tau^2, and a normal or t(k - 2) prediction interval. The tau^2 machinery
+  (weighted fit, generalised Q root, Fisher scoring with step halving) is
+  written for a general design matrix. MetaAnalysis gained tau2, the tau2
+  interval, the prediction interval and iteration diagnostics. Tests
+  reproduced metafor::rma with all four estimators, predict() and
+  confint() to about 1e-9 on the BCG, Normand 1999 and homogeneous data
+  sets. Doxygen covered all definitions and all public examples ran. The
+  MePML report ran and exported to HTML and Org with the BCG comparison of
+  estimators, a forest plot with common- and random-effects diamonds and a
+  prediction interval, and a simulation of tau^2 bias and interval
+  coverage. [Random-effects
+  meta-analysis](mepml/stats/meta/random_effects.mepml)
+
+- 2026-11-25 — Added stats/meta_analysis.hpp with the MetaAnalysis result
+  and common_effect_meta (inverse-variance pooled estimate, standard
+  error, Wald test and interval, normalised weights, Cochran's Q with its
+  p-value, I^2 and H^2), plus a precise chi_squared_survival upper tail in
+  random/distributions.hpp. Tests reproduced metafor::rma(method = "EE")
+  to 1e-10 on the BCG vaccine trials (including a Q p-value of 2e-26) and
+  on a homogeneous example, including the weights and a 90% interval.
+  Doxygen covered all definitions and all public examples ran. The MePML
+  report ran and exported to HTML and Org with the BCG analysis, a native
+  forest plot and a coverage study under between-study heterogeneity.
+  [Common-effect meta-analysis](mepml/stats/meta/common_effect.mepml)
+
+- 2026-11-25 — Added von_mises_fit (maximum-likelihood mean direction and
+  concentration with an exact Bessel-ratio inverse of A1 or Fisher's
+  approximation, Best-Fisher bias correction, known-mean fitting,
+  information standard errors, Wald interval for mu, profile-likelihood
+  interval for kappa, log-likelihood, AIC, and boundary, Rayleigh and
+  vanishing-resultant diagnostics), plus von_mises_a1,
+  von_mises_a1_inverse, von_mises_log_likelihood and a Fourier-series
+  von_mises_cdf to stats/circular.hpp. Tests reproduced
+  circular::mle.vonmises (with bias correction and with a known mean), an
+  exact uniroot inverse, an R profile interval, besselI ratios up to kappa
+  2000 and pvonmises to about 1e-10, and checked the degenerate cases.
+  Doxygen covered all definitions and all public examples ran. The MePML
+  report ran and exported to HTML and Org with a bias and coverage study,
+  a vanishing-resultant study near uniformity and a native bias figure.
+  [von Mises fitting](mepml/stats/circular/von_mises_fitting.mepml)
+
+- 2026-11-25 — Added rayleigh_test (Greenwood-Durand small-sample
+  correction), rayleigh_test_direction (V test with Edgeworth correction)
+  and kuiper_test (Stephens' modified V* with the asymptotic tail p-value
+  and an arbitrary continuous null CDF) to stats/circular.hpp, each with
+  optional Monte Carlo calibration. Tests reproduced
+  circular::rayleigh.test with and without mu and kuiper.test to 1e-12 for
+  samples below and above n = 50, Kuiper against a von Mises null CDF by
+  numerical integration, and agreement of the analytic and Monte Carlo
+  p-values. Doxygen covered all definitions and all public examples ran.
+  The MePML report ran and exported to HTML and Org with a small-sample
+  size study, power against von Mises and axial alternatives, a
+  misdirected V test and a native power-curve figure. [Rayleigh and Kuiper
+  tests](mepml/stats/circular/uniformity_tests.mepml)
+
+- 2026-11-25 — Added stats/circular.hpp with trigonometric_moment,
+  circular_summary (mean direction, mean resultant length, circular
+  variance and SD, angular deviation, second central cosine, Fisher's
+  circular dispersion and standard error, and Fisher's large-sample
+  interval for the mean direction), circular_mean_bootstrap_interval and
+  von_mises_sample (Best-Fisher). Tests reproduced the circular package's
+  mean, rho, variance, SD, angular deviation and trigonometric moments to
+  1e-12 for von Mises, wrapped Cauchy and bimodal samples, the dispersion
+  and interval against direct R computation, and the sampler's mean
+  resultant length I1/I0. Doxygen covered all definitions and all public
+  examples ran. The MePML report ran and exported to HTML and Org with an
+  arithmetic-versus-circular mean comparison at the cut point, a coverage
+  study of Fisher and bootstrap intervals, and a native unit-circle
+  figure. [Circular
+  summaries](mepml/stats/circular/circular_summaries.mepml)
+
+- 2026-11-25 — Added stats/hawkes.hpp with the exponential-kernel Hawkes
+  process: hawkes_log_likelihood (O(n) recursion, process starting empty),
+  hawkes_fit (multi-start damped Newton on log parameters with analytic
+  gradient, observed-information standard errors, branching ratio and
+  AIC), hawkes_simulate (Ogata thinning) and hawkes_residuals
+  (time-rescaling compensator increments). Tests matched emhawkes 0.9.8
+  logLik (lambda_component0 = 0) and an independent R likelihood to 1e-10,
+  a high-precision R optimum to 1e-6 with optimHess standard errors to
+  1e-4 relative, emhawkes hfit estimates to 1e-4, and parameter recovery
+  from simulations. Doxygen covered all definitions and all public
+  examples ran. The MePML report ran and exported to HTML and Org with a
+  horizon study of bias and coverage, a misspecification study showing
+  that slowly varying Poisson rates masquerade as excitation and evade
+  residual checks, and a native intensity plot. [Hawkes process
+  estimation](mepml/stats/time_series/hawkes.mepml)
+
+- 2026-11-25 — Extended stats/point_pattern.hpp with
+  berman_turner_quadrature (spatstat's grid-centre dummies plus corners
+  with counting weights and default grid rule), poisson_process_regression
+  (log-linear intensity on covariate functions, Newton with step halving,
+  inverse-Fisher covariance, Berman-Turner log-likelihood and AIC) and
+  poisson_process_intensity. Tests reproduced spatstat quadrature weights
+  and spatstat.model 3.6.1 ppm coefficients, vcov, logLik and AIC for the
+  default scheme, a 30x15 grid with a quadratic trend and a functional
+  covariate. Doxygen covered all definitions and all public examples ran.
+  The MePML report ran and exported to HTML and Org with a
+  quadrature-resolution study, a clustered-data coverage study and a
+  native fitted-intensity map. [Poisson point-process
+  regression](mepml/stats/spatial/poisson_process_regression.mepml)
+
+- 2026-11-25 — Added stats/point_pattern.hpp with RectangleWindow,
+  EdgeCorrection, ripley_k and besag_l (no, border, translation and exact
+  isotropic Ripley corrections) and pair_correlation (Epanechnikov kernel
+  with Stoyan's bandwidth rule, translation or isotropic weights, divisor
+  r or d). Tests reproduced spatstat.explore 3.7.0 Kest for all four
+  corrections and pcf (fast = FALSE, zerocor none) for both corrections,
+  both divisors and a fixed bandwidth on random, Thomas and SSI patterns
+  in a 2x1 window, to 1e-12 and 1e-9. Doxygen covered all definitions and
+  all public examples ran. The MePML report ran and exported to HTML and
+  Org with an edge-correction bias/variance study, a size and power
+  comparison of pointwise envelopes and the global MAD test, and a native
+  L(r) - r envelope plot. [Ripley's K and pair
+  correlation](mepml/stats/spatial/ripley_k.mepml)
+
+- 2026-11-25 — Added stats/spatial_regression.hpp with
+  spatial_lag_regression and spatial_error_regression: concentrated
+  maximum likelihood with an eigenvalue log-determinant for symmetrisable
+  weights and an LU fallback, analytic information-matrix standard errors,
+  Wald and likelihood-ratio tests against OLS, AIC, innovations residuals,
+  and direct, indirect and total impacts for the lag model. Tests
+  reproduced spatialreg 1.4.2 lagsarlm and errorsarlm (method eigen) on
+  the Columbus crime data for row-standardised and binary weights
+  (estimates, standard errors, s2, log-likelihoods, AIC, fitted values,
+  impacts) and the LU path on asymmetric 4-NN weights; for binary weights
+  the total impact uses the exact mean row sum of (I - rho W)^{-1}.
+  Doxygen covered all definitions and all public examples ran. The MePML
+  report ran and exported to HTML and Org with a simulation of OLS, SAR
+  and SEM under lag and error processes and a native plot of total-effect
+  estimates. [Spatial lag and spatial error
+  regression](mepml/stats/spatial/spatial_regression.mepml)
+
+- 2026-11-25 — Extended stats/geostatistics.hpp with simple_kriging,
+  ordinary_kriging and universal_kriging (GLS form with trend-estimation
+  variance, global or nearest-neighbour/max-distance neighbourhoods, exact
+  interpolation at data locations) and kriging_cross_validation
+  (leave-one-out predictions, residuals, z-scores and summaries). Tests
+  reproduced gstat 2.1.5 krige on meuse log(zinc) for simple, ordinary and
+  universal (sqrt(dist)) kriging with global and nmax neighbourhoods and
+  spherical and exponential models, and krige.cv for ordinary and
+  universal kriging, to 1e-9. Doxygen covered all definitions and all
+  public examples ran. The MePML report ran and exported to HTML and Org
+  with a simulation of interior and extrapolation accuracy and interval
+  coverage for oracle and fitted variograms, and a native transect plot
+  with 95% bands. [Ordinary and universal
+  kriging](mepml/stats/spatial/kriging.mepml)
+
+- 2026-11-25 — Extended stats/geostatistics.hpp with variogram models
+  (spherical, exponential, Gaussian and Matern, as in gstat),
+  variogram_model_value and variogram_model_covariance, and fit_variogram:
+  weighted least squares with gstat's fit.method weightings (N, iterated
+  Cressie N/gamma^2, unweighted, and the default N/h^2), exact nonnegative
+  sills for each range and a global profile search over the range, with
+  optional fixed nugget or range. Tests matched gstat variogramLine
+  values, an independent R computation of the exact weighted optimum on
+  meuse log(zinc) to 1e-6 for every shape and weighting, gstat
+  fit.variogram where it converges (spherical, Matern, Cressie), and a
+  lower SSE than gstat's non-converged Gaussian fit. Doxygen covered all
+  definitions and all public examples ran. The MePML report ran and
+  exported to HTML and Org with a simulation comparing weightings and
+  misspecified shapes and a native plot of four shapes fitted to one
+  empirical variogram. [Variogram model
+  fitting](mepml/stats/spatial/variogram_fitting.mepml)
+
+- 2026-11-25 — Added stats/geostatistics.hpp with empirical_variogram:
+  method-of-moments and Cressie-Hawkins semivariograms with
+  gstat-compatible default cutoff and width, explicit boundaries, and
+  directional variograms (azimuth clockwise from north, angular
+  tolerance). Tests reproduced gstat 2.1.5 variogram on meuse log(zinc)
+  for regular and irregular bins, four directions, a narrow tolerance and
+  the Cressie estimator. Doxygen covered all definitions and all public
+  examples ran. The MePML report ran and exported to HTML and Org with a
+  simulation of estimator bias and SD on clean and contaminated Gaussian
+  fields and a native plot of directional variograms of an anisotropic
+  field. [Empirical
+  variogram](mepml/stats/spatial/empirical_variogram.mepml)
+
+- 2026-11-25 — Added local spatial statistics to
+  stats/spatial_autocorrelation.hpp: local_morans_i (LISA with conditional
+  or total randomisation moments, Moran-scatterplot quadrants, and
+  conditional-permutation p-values with spdep's folded two-sided
+  convention) and local_getis_ord (G_i and G_i* with analytic z-scores and
+  conditional permutations). Tests reproduced spdep 1.4.2 localmoran
+  (conditional and total, all alternatives, binary and row-standardised
+  weights, pysal quadrants) and localG (G_i and G_i*, styles W and B) to
+  1e-12, and checked conditional-permutation moments against the analytic
+  conditional moments. Doxygen covered all definitions and all public
+  examples ran. The MePML report ran and exported to HTML and Org with a
+  lattice hot/cold-spot study comparing unadjusted and Benjamini-Hochberg
+  local inference and a native Gi* z-score map. [Local Moran and Getis-Ord
+  statistics](mepml/stats/spatial/local_autocorrelation.mepml)
+
+- 2026-11-25 — Added global spatial autocorrelation tests in
+  stats/spatial_autocorrelation.hpp: knn_weights, distance_band_weights
+  and row_standardize build spatial weights; morans_i and gearys_c compute
+  Moran's I and Geary's C with Cliff-Ord variances under normality or
+  randomisation, one- or two-sided alternatives, and Monte Carlo
+  permutation tests with the (1 + count)/(1 + nsim) convention and
+  permutation moments. Tests reproduced spdep 1.4.2 knearneigh/dnearneigh
+  weights and moran.test/geary.test for row-standardised and binary
+  weights, both variance assumptions and all alternatives to 1e-12, and
+  checked permutation moments. Doxygen covered all definitions and all
+  public examples ran. The MePML report ran and exported to HTML and Org
+  with a size study of normality, randomisation and permutation
+  calibration under normal and skewed data and a native plot of power
+  against Gaussian-field range. [Global Moran I and Geary
+  C](mepml/stats/spatial/global_autocorrelation.mepml)
+
+- 2026-11-25 — Added simulation-based calibration in bayes/sbc.hpp:
+  simulation_based_calibration draws parameters from the prior, simulates
+  data, refits with a user-supplied algorithm and ranks the truth among
+  the posterior draws (ties split at random), returning per-parameter
+  ranks, histograms, Pearson chi-squared uniformity tests with exact
+  expected counts, ECDF maximum-deviation tests calibrated by simulated
+  uniform ranks, mean rank fractions and fit-failure counts. Tests checked
+  uniform ranks for an exact conjugate posterior, detection of
+  underdispersion and bias, the chi-squared statistic and failure
+  bookkeeping. Doxygen covered all definitions and all public examples
+  ran. The MePML report ran and exported to HTML and Org, applying SBC to
+  exact draws, mean-field ADVI and full-rank ADVI on a collinear
+  regression, with repeat-seed checks of chance rejections and a native
+  plot of rank histograms. [Simulation-based
+  calibration](mepml/stats/bayes/sbc.mepml)
+
+- 2026-11-25 — Added automatic differentiation variational inference in
+  bayes/advi.hpp: advi fits mean-field or full-rank Gaussians on the
+  unconstrained scale of real, lower-, upper- and interval-bounded
+  parameters (ParameterSupport transforms with log-Jacobians), using
+  reparameterisation gradients with exact entropy gradients, Stan's
+  adaptive step-size sequence with an eta search, and relative-ELBO
+  convergence monitoring; it returns the variational mean and Cholesky
+  factor, the ELBO trace and constrained draws. Tests checked exact
+  recovery of a correlated Gaussian by the full-rank family, the
+  mean-field KL optimum (inverse precision diagonal), log-normal and
+  logit-normal targets through the transforms, reproducibility and
+  validation. Doxygen covered all definitions and all public examples ran.
+  The MePML report ran and exported to HTML and Org, comparing both
+  families with the exact posterior of a collinear regression with unknown
+  sigma, and a native plot of marginal densities. [Automatic
+  differentiation variational inference](mepml/stats/bayes/advi.mepml)
+
+- 2026-11-25 — Added a tempered sequential Monte Carlo sampler in
+  bayes/smc.hpp: sequential_monte_carlo moves particles from the prior to
+  the posterior through prior x likelihood^phi with adaptive temperatures
+  by conditional-ESS bisection (or a fixed schedule), accumulates the log
+  evidence, resamples systematically below an ESS threshold, and moves
+  particles by random-walk Metropolis with a full or diagonal
+  weighted-particle proposal and acceptance-adapted scale; per-stage
+  diagnostics are returned. Tests checked the evidence and posterior means
+  against an exact conjugate model, unbiasedness over repeated runs, fixed
+  schedules and reproducibility, recovery of both modes of a bimodal
+  posterior with its quadrature evidence, the diagonal proposal's
+  high-dimensional evidence, and validation. Doxygen covered all
+  definitions and all public examples ran. The MePML report ran and
+  exported to HTML and Org with an evidence-accuracy study over dimension,
+  particles and moves, a diagnosed proposal-adaptation bias, a multimodal
+  comparison with random-walk Metropolis and a native plot of adaptive
+  schedules. [Sequential Monte Carlo
+  samplers](mepml/stats/bayes/smc.mepml)
+
+- 2026-11-25 — Added Pareto-smoothed importance sampling and PSIS-LOO in
+  bayes/psis_loo.hpp: pareto_smoothed_importance_sampling (loo 2.9 tail
+  length with r_eff, Zhang-Stephens generalized Pareto fit with weakly
+  informative shape adjustment, quantile smoothing, truncation, normalised
+  log weights, k-hat and PSIS effective sample size), pareto_k_threshold,
+  psis_loo (pointwise and total elpd_loo, p_loo, LOOIC with standard
+  errors, k diagnostics, per-observation r_eff) and loo_compare (paired
+  difference and SE). Tests reproduced loo 2.9.0 psis, loo and loo_compare
+  on regression log-likelihood matrices with an outlier, with unit and
+  varying r_eff, and heavy-tailed log ratios to 1e-9. Doxygen covered all
+  definitions and all public examples ran. The MePML report ran and
+  exported to HTML and Org, scoring PSIS-LOO, raw IS-LOO and WAIC against
+  exact conjugate leave-one-out, with repeated-sampling variance and a
+  native plot of pointwise error by Pareto k. [Pareto-smoothed importance
+  sampling leave-one-out](mepml/stats/bayes/psis_loo.mepml)
+
+- 2026-11-25 — Added Rosenbaum sensitivity bounds in causal/rosenbaum.hpp:
+  rosenbaum_wilcoxon (signed-rank bounds of rbounds::psens with
+  average-rank ties), rosenbaum_sign_test (exact binomial bounds for
+  sign/McNemar tests on discordant pairs), rosenbaum_m_test (Huber-type
+  m-tests in matched sets with variable numbers of controls via the
+  Gastwirth-Krieger-Rosenbaum separable approximation, with
+  inner/trim/scale-quantile/shift options and upper and lower bounds),
+  rosenbaum_sensitivity_value (bisection for the largest gamma with
+  p_upper <= alpha) and rosenbaum_amplify (Rosenbaum-Silber Lambda/Delta).
+  Tests reproduced sensitivitymv 1.4.4 senmv on mercury, tbmetaphase and
+  erpcp for several score settings to 1e-10, rbounds psens on erpcp, the
+  psens formula with ties, exact binomial bounds and amplify. Doxygen
+  covered all definitions and all public examples ran. The MePML report
+  ran and exported to HTML and Org with a worst-case hidden-bias validity
+  check and a native plot of sensitivity-analysis power against design
+  sensitivity. [Rosenbaum sensitivity
+  bounds](mepml/causal/effects/rosenbaum_bounds.mepml)
+
+- 2026-11-25 — Added mediation analysis by parametric g-computation in
+  causal/mediation.hpp. mediation_analysis fits linear or logistic
+  mediator and outcome regressions (optional treatment-by-mediator term,
+  any treatment levels) and evaluates the mediation formula exactly: sums
+  for binary mediators, closed form for linear mediator and outcome, and
+  Gauss-Hermite quadrature for a normal mediator with a logistic outcome.
+  It returns delta(0), delta(1), zeta(0), zeta(1), the total effect and
+  the proportion mediated with seeded nonparametric-bootstrap SEs and
+  percentile intervals. Added the reusable stats::normal_gauss_hermite
+  rule (Golub-Welsch). Tests reproduced mediation 4.5.1 on the JOBS II
+  data where its estimates are exact and an exact R g-formula with
+  interactions, logistic outcomes and binary mediators, checked bootstrap
+  reproducibility, Gauss-Hermite moments and validation. Doxygen covered
+  all definitions and all public examples ran. The MePML report ran and
+  exported to HTML and Org with an interaction simulation contrasting the
+  product of coefficients with g-computation, bootstrap coverage, and a
+  native plot of bias under unmeasured mediator-outcome confounding.
+  [Mediation by g-computation](mepml/causal/effects/mediation.mepml)
+
+- 2026-11-25 — Added generalized method of moments estimation in
+  stats/gmm_estimation.hpp. generalized_method_of_moments takes a moment
+  function returning the n-by-q contributions (and an optional analytic
+  Jacobian, central differences otherwise), minimises the GMM quadratic
+  form by damped Gauss-Newton, and offers one-step (identity or user
+  weights), two-step and iterated estimators with centred or uncentred
+  moment covariance. It returns estimates, efficient or sandwich
+  covariance with normal inference, the final weights, mean moments and
+  Hansen's J test. Tests reproduced the gmm package 1.9.1 (vcov = "MDS")
+  two-step, iterated and identity-weighted fits of a heteroskedastic
+  linear IV model and a nonlinear gamma-moment model with analytic and
+  numerical Jacobians, checked exact identification and fixed weights, and
+  validated inputs. Doxygen covered all definitions and all public
+  examples ran. The MePML report ran and exported to HTML and Org with a
+  heteroskedastic IV simulation comparing 2SLS, identity, two-step and
+  iterated GMM, J-test size, and a native plot of J-test power against an
+  invalid instrument. [Generalized method of
+  moments](mepml/stats/inference/generalized_method_of_moments.mepml)
+
+- 2026-11-25 — Added weak-instrument-robust inference in
+  causal/weak_iv.hpp. weak_iv_inference partials exogenous controls (and
+  an optional intercept) out of the outcome, endogenous regressor and
+  instruments, then returns the Anderson-Rubin F test at a chosen null
+  with its F(L, n - L - p) p-value, the inverted AR confidence set
+  (bounded interval, two rays, whole line or empty, as a ConfidenceSet
+  with a contains() check), the first-stage F, and 2SLS and LIML k-class
+  estimates with conventional t intervals. Tests reproduced ivmodel 1.9.1
+  AR.test, KClass(k = 1) and LIML on Card's data (just- and
+  over-identified with the standard controls) and on simulated weak
+  designs giving two-ray and whole-line sets with and without an
+  intercept, checked an empty set under contradictory instruments, and
+  validated inputs. Doxygen covered all definitions and all public
+  examples ran. The MePML report ran and exported to HTML and Org with a
+  simulation across concentration parameters comparing 2SLS and LIML Wald
+  coverage with the AR set's coverage and unboundedness, and a native
+  coverage plot. [Weak-instrument-robust
+  inference](mepml/causal/effects/weak_instruments.mepml)
+
+- 2026-11-25 — Added synthetic control estimation in
+  causal/synthetic_control.hpp. synthetic_control standardises predictors
+  as R's Synth does, solves the simplex-constrained donor-weight QP
+  exactly by a primal active-set method, and, unless V is given, chooses
+  predictor weights by Nelder-Mead from equal and regression-based starts
+  to minimise the fit-period MSPE. It returns weights, V, synthetic
+  predictors and outcome path, gaps and pre/post RMSPE.
+  synthetic_control_placebos refits with each donor as a placebo treated
+  unit, filters by relative pre-treatment MSPE, and gives the RMSPE-ratio
+  permutation p-value. Tests reproduced exact quadprog donor weights at
+  fixed V on Synth's Basque data (and Synth's interior-point weights to
+  its tolerance), reached a fit-period MSPE no worse than Synth 1.1.9's
+  optimised V with the Cataluna-Madrid synthetic, and checked placebo
+  refits, filtering, p-values and validation. Doxygen covered all
+  definitions and all public examples ran. The MePML report ran and
+  exported to HTML and Org with a factor-model simulation comparing
+  difference in differences with synthetic controls, placebo-test size and
+  power, and a native plot of treated, synthetic and donor-average paths.
+  [Synthetic control](mepml/causal/effects/synthetic_control.mepml)
+
+- 2026-11-25 — Added regression discontinuity estimation in
+  causal/rdd.hpp. regression_discontinuity fits kernel-weighted local
+  polynomials on each side of the cutoff (triangular, Epanechnikov or
+  uniform kernels; any order and derivative, so kink designs too) and
+  returns conventional, bias-corrected and robust bias-corrected estimates
+  with normal inference, following Calonico, Cattaneo and Titiunik. It
+  supports nearest-neighbour and HC0-HC3 variances, sharp and fuzzy
+  designs (delta-method Wald ratio with first-stage results), and
+  user-supplied bandwidths. rd_bandwidths gives rdrobust's common
+  MSE-optimal (mserd) h and b with mass-point adjustment and bandwidth
+  caps. Tests reproduced rdrobust 3.0.0 bandwidths, estimates, standard
+  errors, effective sample sizes and robust intervals on the RDsenate data
+  (defaults, local quadratic with uniform kernel and HC1, manual
+  bandwidths with Epanechnikov and HC2, a kink design, rounded margins
+  with mass points and HC3) and on a simulated fuzzy design with two
+  settings. Doxygen covered all 119 definitions and all public examples
+  ran. The MePML report ran and exported to HTML and Org with the
+  Calonico-Cattaneo-Titiunik Lee simulation comparing a global quartic,
+  conventional, bias-corrected and robust local linear inference, a fuzzy
+  design, and a native plot of coverage against bandwidth. [Regression
+  discontinuity](mepml/causal/effects/regression_discontinuity.mepml)
+
+- 2026-11-25 — Added marginal structural models in causal/msm.hpp.
+  longitudinal_weights fits pooled logistic numerator and denominator
+  models for a treatment or censoring process (by a fast IRLS solver on
+  standardized covariates) over all rows or rows up to each individual's
+  first event. It accumulates stabilized or unstabilized per-row factors
+  within individuals, truncates at type-7 percentiles, and returns fitted
+  probabilities, coefficients and weight summaries.
+  fit_marginal_structural_model fits weighted pooled-logistic or linear
+  structural models with individual-clustered sandwich (vcovCL HC0 with
+  G/(G-1)) standard errors. Tests reproduced ipw ipwtm treatment, dropout
+  and truncated weights and a weighted pooled-logistic MSM with vcovCL
+  errors on haartdat, and checked unstabilized all-rows weights and
+  validation. Doxygen covered all definitions and all public examples ran.
+  The MePML report ran and exported to HTML and Org with a time-varying
+  confounding simulation (confounder affected by prior treatment,
+  informative dropout) comparing regression, treatment-weighted, fully
+  weighted and truncated MSMs, and a native weight-diagnostic plot.
+  [Marginal structural
+  models](mepml/causal/effects/marginal_structural_models.mepml)
+
+- 2026-11-25 — Added staggered-adoption difference in differences in
+  causal/staggered_did.hpp. staggered_did validates a balanced panel,
+  drops units treated in the first period, and estimates unconditional
+  Callaway-Sant'Anna ATT(g, t) against never-treated or not-yet-treated
+  comparisons, with varying or universal base periods and anticipation. It
+  aggregates by event time (with the overall dynamic average), by cohort
+  (with the size-weighted overall) and simply, and gives analytical
+  influence-function standard errors that include the estimated
+  cohort-share weights. Tests reproduced did att_gt and aggte (group-time,
+  dynamic, group, simple; estimates and analytical SEs) on mpdta for
+  never-treated, not-yet-treated, universal-base and anticipation
+  settings. Doxygen covered all 43 definitions and all public examples
+  ran. The MePML report ran and exported to HTML and Org with a simulation
+  of growing, cohort-specific effects contrasting static TWFE with the
+  Callaway-Sant'Anna aggregates, and a native event-study plot against the
+  true dynamic effects. [Staggered-adoption differences in
+  differences](mepml/causal/effects/staggered_did.mepml)
+
+- 2026-11-25 — Added targeted maximum likelihood estimation in
+  causal/aipw.hpp. targeted_mle maps the outcome to [0, 1], obtains
+  out-of-fold initial outcome predictions and clipped propensities through
+  the nuisance machinery now shared with cross_fitted_aipw, fits the
+  two-coefficient logistic fluctuation on the arm-specific clever
+  covariates by safeguarded Newton steps, and returns the targeted ATE and
+  potential-outcome means, the initial plug-in estimate, the fluctuation
+  coefficients, influence values and normal inference. Tests reproduced
+  the R tmle package (supplied Q and g, logistic fluctuation, target.gwt =
+  FALSE) on lalonde, and checked bounded means and double robustness on a
+  binary outcome. Doxygen covered all 75 definitions and all public
+  examples ran. The MePML report ran and exported to HTML and Org with a
+  binary-outcome simulation comparing IPW, AIPW and TMLE under moderate
+  and poor overlap with a misspecified outcome model, and a native
+  per-sample comparison plot. [Targeted maximum likelihood
+  estimation](mepml/causal/effects/tmle.mepml)
+
+- 2026-11-25 — Added cross-fitted AIPW in causal/aipw.hpp.
+  cross_fitted_aipw assigns treatment-stratified random folds (or takes
+  explicit fold ids; one fold means no cross-fitting), trains pluggable
+  propensity and arm-specific outcome learners out of fold, clips
+  propensities, and returns the ATE, potential-outcome means, influence
+  values, influence-function standard error, normal interval and p-value,
+  together with all out-of-fold nuisance predictions.
+  logistic_propensity_learner and linear_outcome_learner are the defaults.
+  Tests reproduced a hand-written R glm/lm AIPW on lalonde with the same
+  folds (cross-fitted and full-sample), and checked fold balance,
+  out-of-fold learner calls, reproducibility and double robustness.
+  Doxygen covered all 37 definitions and all public examples ran. The
+  MePML report ran and exported to HTML and Org with a Friedman-function
+  simulation comparing misspecified parametric AIPW and random-forest AIPW
+  without and with 2- and 5-fold cross-fitting, and a native QQ plot of
+  standardized errors. [Cross-fitted
+  AIPW](mepml/causal/effects/cross_fitted_aipw.mepml)
+
+- 2026-11-25 — Added entropy balancing in causal/weighting.hpp.
+  entropy_balance solves the KL-minimal exponential-tilting weights for
+  ATT, ATC or ATE, with base or sampling weights and one or two moments,
+  using the raking-calibration Newton solver on centered, scaled moments.
+  It reports effective sample sizes, the largest weight share and balance
+  before and after. weighted_effect gives the weighted contrast with an
+  HC0 sandwich error; a covariate-adjusted overload fits the weighted
+  outcome regression. The matched and weighted contrasts now share a
+  private sandwich helper. Tests on lalonde reproduced WeightIt ebal
+  weights (ATT, two moments, ATE, ATC within WeightIt's convergence,
+  sampling weights), effective sample sizes, lm_weightit HC0 effects and
+  errors with and without covariates, and cobalt balance statistics.
+  Doxygen covered all definitions and all public examples ran. The MePML
+  report ran and exported to HTML and Org with a simulation comparing
+  logistic odds weights and entropy balancing under linear and quadratic
+  confounding, standard-error calibration and a native RMSE plot. [Entropy
+  balancing](mepml/causal/effects/entropy_balancing.mepml)
+
+- 2026-11-25 — Added propensity score matching in causal/matching.hpp.
+  propensity_scores fits the logistic model. match_on_propensity and
+  propensity_score_match perform MatchIt-style greedy nearest-neighbor
+  matching: largest, smallest or data order; k:1 rounds without
+  replacement or k nearest with replacement; caliper in score SDs on the
+  probability or logit scale; MatchIt tie rules and ATT weights.
+  covariate_balance reports weighted means, treated-SD standardized
+  differences, variance ratios and eCDF maxima before and after matching.
+  matched_effect gives the weighted ATT with a matched-set cluster-robust
+  (vcovCL HC1) or HC1 standard error and t interval. Tests on lalonde
+  reproduced MatchIt propensities, match matrices, weights and balance
+  tables, plus lm/sandwich effects and standard errors, for 1:1, caliper,
+  2:1 and 2:1-with-replacement designs. Doxygen covered all 49 definitions
+  and all 9 public examples ran. The MePML report ran and exported to HTML
+  and Org with a confounded simulation comparing designs, estimand shifts
+  under calipers and standard-error calibration, and a native balance
+  plot. [Propensity score
+  matching](mepml/causal/effects/propensity_matching.mepml)
+
+- 2026-11-25 — Added pattern-mixture sensitivity analysis to
+  multiple_imputation.hpp. MiceOptions gained shift_rows, which restricts
+  delta shifts to a pattern or arm. tipping_point_analysis imputes over a
+  grid of departures from MAR with common random numbers, applies a user
+  analysis, pools by Rubin's rules and interpolates the tipping delta
+  (change in significance) and the null delta (sign change). Unit tests
+  verified that the estimate is exactly linear in delta with one
+  incomplete outcome, that only masked rows are shifted, the exact null
+  point and the bracketing of the interpolated tipping point. All 495
+  group-comparison tests passed, Doxygen covered all 73 definitions and
+  all 13 public examples ran. The MePML report ran and exported to HTML
+  and Org with a two-arm trial comparing active-arm-only and both-arm
+  shifts, and a native effect-versus-delta plot. [Pattern-mixture
+  sensitivity analysis](mepml/stats/missing/tipping_point.mepml)
+
+- 2026-11-25 — Added Rubin pooling in multiple_imputation.hpp. pool_rubin
+  combines estimate vectors and covariance matrices into pooled estimates
+  with within, between and total variance, the relative increase in
+  variance, lambda, the fraction of missing information, Barnard–Rubin or
+  Rubin 1987 degrees of freedom, t p-values and intervals.
+  pooled_wald_test gives the D1 multiparameter test with
+  Li–Raghunathan–Rubin or Reiter small-sample denominator df. Results
+  matched mice pool, summary.mipo and D1 and mitml testModels on nhanes
+  imputations to 1e-9. All 494 group-comparison tests passed, Doxygen
+  covered all definitions and all public examples ran. The MePML report
+  ran and exported to HTML and Org with a coverage study across n and m
+  and a native comparison of degrees-of-freedom rules. [Rubin pooling
+  rules](mepml/stats/missing/rubin_pooling.mepml)
+
+- 2026-11-25 — Added multiple imputation by chained equations in
+  multiple_imputation.hpp. mice_impute uses mice-style posterior parameter
+  draws (chi-square residual scale and Cholesky coefficient draw),
+  predictive mean matching (type 1, random donor among the closest) or
+  Bayesian normal imputation, random observed-value starts, per-column
+  delta shifts and chain-mean diagnostics. It is supported by new public
+  gamma and chi-square variates in random/variates.hpp. Unit tests checked
+  that observed values are preserved, that PMM imputes only observed
+  donors, seeded reproducibility, near-unbiased pooled estimates under MAR
+  (and a small, documented PMM donor-thinning bias), and the effect of the
+  shift. All 494 group-comparison tests passed, Doxygen covered all 58
+  definitions and all public examples ran. The MePML report ran and
+  exported to HTML and Org with a skewed-outcome comparison of complete
+  cases, single imputation, normal, PMM and log-scale MICE, and a native
+  chain-convergence plot. [Multiple imputation by chained
+  equations](mepml/stats/missing/mice.mepml)
+
+- 2026-11-25 — Completed the incomplete-data EM item in missing_data.hpp.
+  em_multivariate_normal returns maximum-likelihood means and covariances,
+  the observed-data log-likelihood, iteration counts and an empirical
+  convergence rate. mvn_regression derives regression coefficients,
+  residual variance and R squared from any mean and covariance, which
+  gives ML regression with incomplete response and predictors. The EM
+  results matched norm em.norm on airquality and mice nhanes to 1e-8, and
+  mvn_regression reproduced least squares on complete data. All 489
+  group-comparison tests passed, Doxygen covered all 38 definitions and
+  all 9 public examples ran. The MePML report ran and exported to HTML and
+  Org with a MAR simulation comparing listwise deletion, pairwise moments
+  and EM, and a native plot of convergence rate against the share of
+  values missing. [EM for incomplete multivariate normal
+  data](mepml/stats/missing/em_multivariate_normal.mepml)
+
+- 2026-11-25 — Added missing_data.hpp with missing_patterns,
+  em_multivariate_normal (pattern-grouped maximum-likelihood EM with
+  observed-data log-likelihood and a convergence-rate estimate of the
+  largest fraction of missing information) and little_mcar_test. The EM
+  estimates, log-likelihood and Little statistic matched norm em.norm
+  (tight criterion) with an exact recomputation on airquality and mice
+  nhanes to 1e-8. They also agreed with naniar mcar_test to its default EM
+  accuracy. All 488 group-comparison tests passed, Doxygen covered all 32
+  definitions and all 7 public examples ran. The MePML report ran and
+  exported to HTML and Org with size, power and bias comparisons under
+  MCAR, MAR and MNAR mechanisms and a native power plot. [Little MCAR
+  test](mepml/stats/missing/little_mcar.mepml)
+
+- 2026-11-25 — Added survey-weighted GLMs in survey_glm.hpp.
+  fit_survey_glm fits Gaussian, binomial (quasi-binomial) and Poisson
+  (quasi-Poisson) models with canonical links by weighted IRLS. It returns
+  linearization-sandwich standard errors, t inference on the domain design
+  degrees of freedom, glm-style model-based standard errors and design
+  effects. Domain fits keep the full design. survey_glm_wald_test gives
+  regTermTest-style F tests. survey_degrees_of_freedom gained a domain
+  argument. Results matched survey svyglm (stratified Gaussian, cluster
+  logistic and Poisson, a domain fit), glm with rescaled weights and
+  regTermTest: coefficients and Gaussian standard errors to 1e-8, and
+  non-Gaussian standard errors to 1e-5 because R evaluates the IRLS
+  weights one iteration earlier. All 484 group-comparison tests passed,
+  Doxygen covered all 121 survey and GLM definitions and all public
+  examples ran. The MePML report ran and exported to HTML and Org with an
+  informative-sampling simulation and a native density plot.
+  [Survey-weighted GLM](mepml/stats/survey/survey_glm.mepml)
+
+- 2026-11-25 — Added design-based tests for two-way survey tables in
+  survey_tables.hpp. survey_table_test reports the Pearson statistic on
+  weighted proportions, the eigenvalues of the generalized design-effect
+  matrix, the first- and second-order Rao–Scott corrections and the Wald
+  and adjusted Wald F tests. survey.hpp gained survey_score_covariance,
+  the multivariate linearized covariance of weighted scores (reusable as
+  the meat of a design-based sandwich), and survey_degrees_of_freedom.
+  Statistics, degrees of freedom and p-values matched survey svychisq (F,
+  Chisq, Wald and adjWald) to 1e-8 on apiclus1 and two apistrat tables.
+  All 481 group-comparison tests passed, Doxygen covered all 28 table
+  definitions and survey's 83, and all public examples ran. The MePML
+  report ran and exported to HTML and Org with a cluster-sampling
+  simulation of size and power and a native null p-value plot. [Rao–Scott
+  tests](mepml/stats/survey/rao_scott.mepml)
+
+- 2026-11-25 — Added unequal-probability sampling in pps_sampling.hpp.
+  inclusion_probabilities computes probabilities proportional to size with
+  iterative certainty capping. pps_sample draws fixed-size samples by
+  systematic, randomized systematic, Sampford, Brewer and ordered pivotal
+  sampling. systematic_joint_inclusion uses exact arc overlaps, and
+  sampford_joint_inclusion uses the Asok–Sukhatme formula with stable
+  elementary symmetric polynomials. Results matched sampling
+  inclusionprobabilities, UPsystematicpi2 and UPsampfordpi2 to 1e-12.
+  Monte Carlo checks confirmed the first-order and joint frequencies of
+  every sampler. All 478 group-comparison tests passed, Doxygen covered
+  all 17 definitions and all 5 public examples ran. The MePML report ran
+  and exported to HTML and Org with a design comparison: sorted systematic
+  sampling had 40% of the Sampford variance, but its SYG variance estimate
+  failed because 80% of pairs had zero joint probability. A native
+  joint-probability plot is included. [Probability-proportional-to-size
+  sampling](mepml/stats/survey/pps_sampling.mepml)
+
+- 2026-11-25 — Added survey weight calibration in survey_calibration.hpp.
+  calibrate_weights supports linear (GREG), raking and logit distances
+  with optional bounds. It uses Newton's method with an Armijo line search
+  on the convex dual and Levenberg damping, so it converges on every
+  feasible problem and otherwise reports converged = false with residuals
+  per constraint. rake_weights does iterative proportional fitting to
+  categorical margins. Results matched survey calibrate weights on
+  apiclus1 to 1e-9 for linear, raking, logit and bounded linear and
+  raking, and matched survey rake to 1e-8. All 474 group-comparison tests
+  passed, Doxygen covered all 30 calibration definitions and all 7 public
+  examples ran. The MePML report ran and exported to HTML and Org with a
+  nonresponse simulation and a native plot of the calibration factors. A
+  linear-programming check found that every non-converged sample was
+  infeasible, while survey's grake failed on 214 of 995 feasible samples.
+  [Survey calibration and raking](mepml/stats/survey/calibration.mepml)
+
+- 2026-11-25 — Added replicate-weight variance estimation.
+  make_replicate_design builds balanced repeated replication (normalized
+  Sylvester/Paley Hadamard matrices), Fay BRR, JK1 and JKn replicates with
+  survey's scaling and first-stage finite-population corrections.
+  ReplicateDesign also accepts published replicate weights with scale,
+  per-replicate scales and mse centring. replicate_total, replicate_mean
+  and replicate_ratio support domains. Results matched survey
+  as.svrepdesign BRR and Fay on two-PSU NHANES, means from survey's own
+  replicate weights (including mse), JK1 on apiclus1 and JKn on apistrat.
+  BRR totals reproduced the linearized variance for 1 to 40 strata. All
+  471 group-comparison tests passed, Doxygen covered all 80 survey
+  definitions and all 19 public examples ran. The MePML report ran and
+  exported to HTML and Org with a rare-domain comparison of linearization,
+  JKn, BRR and Fay and a native coverage plot. [Replicate-weight
+  variance](mepml/stats/survey/replicate_weights.mepml)
+
+- 2026-11-25 — Added Taylor linearization for stratified multistage
+  designs. SurveyDesign holds weights, strata, PSUs read within strata,
+  first-stage population PSU counts and a lonely-PSU policy. survey_total,
+  survey_mean and survey_ratio take optional domains and use stratified
+  ultimate-cluster variances of linearized values with finite-population
+  corrections. Results matched survey svytotal, svymean, svyratio and
+  svyby on apistrat (strata and fpc), apiclus1 (clusters, fpc and
+  domains), apiclus2 (two stages), nhanes (stratified clusters with a
+  missing-data domain) and a lonely PSU under certainty. All 467
+  group-comparison tests passed, Doxygen covered all 56 survey definitions
+  and all twelve public examples ran. The MePML report ran and exported to
+  HTML and Org with a stratified two-stage school simulation comparing
+  independent-unit, full-design and subsetting standard errors, plus a
+  native plot of standard-error accuracy against intra-class correlation.
+  [Taylor linearization](mepml/stats/survey/taylor_linearization.mepml)
+
+- 2026-11-25 — Added horvitz_thompson_joint with exact design variances
+  from joint inclusion probabilities. It offers the Sen–Yates–Grundy form
+  for fixed-size designs and the Horvitz–Thompson form for any design,
+  applied to totals, Horvitz–Thompson means and linearized Hájek means.
+  Raw (possibly negative) variance estimates are kept, with a
+  negative-variance flag, and the joint-probability matrix is validated.
+  Totals and Hájek-mean standard errors matched survey svydesign(pps =
+  ppsmat(election_jointprob)) with variance "YG" and "HT", and both forms
+  reduce to the simple-random-sampling formula. All 463 group-comparison
+  tests passed, Doxygen covered all 30 survey definitions and all seven
+  public examples ran. The MePML report ran and exported to HTML and Org
+  with an exact enumeration of a 6-of-20 conditional Poisson design
+  comparing the three variance estimators, plus a native distribution
+  plot. [Sen–Yates–Grundy
+  variance](mepml/stats/survey/sen_yates_grundy.mepml)
+
+- 2026-11-25 — Added a survey module with Horvitz–Thompson and Hájek
+  estimation. It returns the Horvitz–Thompson total, the Hájek mean with
+  linearized variance, the Horvitz–Thompson mean when the population size
+  is known, and the estimated population size. Each comes with a
+  with-replacement standard error and a normal interval. Results matched
+  survey svytotal and svymean with svydesign(ids = ~1, probs = ~p) on
+  apistrat, including 90% intervals. All 460 group-comparison tests
+  passed, Doxygen covered all 20 definitions in the new files and all four
+  public examples ran. The MePML report ran and exported to HTML and Org
+  with a fixed-size PPS simulation contrasting the estimators when y does
+  and does not track the size measure, plus a native scatter of both
+  estimators against the estimated population size. [Horvitz–Thompson and
+  Hájek estimation](mepml/stats/survey/horvitz_thompson.mepml)
+
+- 2026-11-25 — Added inverse-probability-of-censoring-weighted validation
+  of survival predictions. time_dependent_auc gives the cumulative/dynamic
+  AUC with ties counted one half and case/control counts. brier_score
+  gives Brier scores over a grid, the pooled Kaplan–Meier benchmark,
+  left-step integrated Brier scores and explained variation. Evaluation
+  times beyond the support of the censoring distribution are rejected. The
+  AUC matched riskRegression Score, and the Brier and integrated Brier
+  scores (with the Kaplan–Meier reference) matched pec and crps on pbc,
+  including tied markers and a grid not starting at 0. All 457
+  group-comparison tests passed, Doxygen covered all 25 definitions in the
+  new files and all four public examples ran. The MePML report ran and
+  exported to HTML and Org with an oracle comparison of IPCW and
+  complete-case estimates and a native Brier-curve plot.
+  [Inverse-censoring-weighted
+  validation](mepml/stats/survival/survival_accuracy.mepml)
+
+- 2026-11-25 — Extended fit_cox_counting with a clusters option for
+  Andersen–Gill recurrent-event regression. Efron/Breslow score residuals
+  (as survival's coxscore) are converted to dfbeta, summed by subject and
+  give the Lin–Wei cluster-robust covariance, robust standard errors and
+  robust Wald test. With strata this also covers the
+  Prentice–Williams–Peterson model. Robust and model-based covariances and
+  robust Wald tests matched survival coxph(... + cluster(id)) on bladder2
+  (Efron, Breslow, stratified by event number) and cgd. All 454
+  group-comparison tests passed, Doxygen covered all 99 definitions in the
+  Cox counting files and all ten public examples ran. The MePML report ran
+  and exported to HTML and Org with a gamma-frailty simulation comparing
+  model-based and robust coverage and first-event attenuation, plus a
+  native coverage plot. [Andersen–Gill recurrent-event
+  regression](mepml/stats/survival/andersen_gill.mepml)
+
+- 2026-11-25 — Added Fine–Gray proportional subdistribution hazards
+  regression with inverse-probability-of-censoring weights (optionally per
+  censoring group) and Breslow ties. It returns the robust sandwich
+  covariance with Fine and Gray's correction for the estimated censoring
+  distribution, the information, Wald hazard-ratio intervals, the baseline
+  cumulative subdistribution hazard and predicted cumulative incidence.
+  Results matched cmprsk 2.2.12 crr and predict.crr on 500 mgus2 subjects
+  for both causes and with censoring groups. All 451 group-comparison
+  tests passed, Doxygen covered all 46 definitions in the new files and
+  all four public examples ran. The MePML report ran and exported to HTML
+  and Org with a simulation of Fine and Gray's design, comparison with
+  cause-specific Cox coefficients and a native incidence plot. [Fine–Gray
+  regression](mepml/stats/survival/fine_gray.mepml)
+
+- 2026-11-25 — Added Gray's K-sample test of equal cumulative incidence
+  for every cause, with weight exponent rho and optional strata, as a port
+  of cmprsk's crst routine. It returns per-cause scores, variance
+  matrices, chi-square statistics and p-values. Statistics and p-values
+  matched cmprsk 2.2.12 cuminc on mgus2 (progression vs death) for two and
+  three groups, rho 0, 0.5 and 1, and with strata. All 449
+  group-comparison tests passed, Doxygen covered all 37 scoped definitions
+  in the multi-state files and all ten public examples ran. The MePML
+  report ran and exported to HTML and Org with a four-scenario comparison
+  against the cause-specific log-rank test and a native incidence plot.
+  [Gray test](mepml/stats/survival/gray_test.mepml)
+
+- 2026-11-25 — Added the Aalen–Johansen estimator for Markov multi-state
+  processes on (start, stop] records with from and to states and optional
+  subject ids. It reports state occupation probabilities with
+  infinitesimal-jackknife standard errors (influence summed within
+  subjects), per-state risk sets, intensity increments and transition
+  matrices P(s, t) between any times. A cumulative-incidence wrapper
+  handles competing risks. Probabilities, standard errors and risk sets
+  matched R survival 3.8.6 survfit with a factor status on mgus2 competing
+  risks, and on a simulated illness–death process with several rows per
+  subject. Transition matrices satisfied Chapman–Kolmogorov. All 447
+  group-comparison tests passed, Doxygen covered all 25 scoped definitions
+  and all seven public examples ran. The MePML report ran and exported to
+  HTML and Org with a bias and coverage comparison against 1 −
+  Kaplan–Meier and a native cumulative-incidence plot. [Aalen–Johansen
+  estimator](mepml/stats/survival/aalen_johansen.mepml)
+
+- 2026-11-25 — Added Turnbull's nonparametric maximum likelihood estimator
+  for exact, left-, right- and interval-censored times. Innermost
+  intervals come from a keyed endpoint sort that treats ties correctly.
+  Self-consistency iterations stop on the Kuhn–Tucker conditions, with
+  active-set pruning of masses that EM would only approach geometrically
+  and revival of any pruned interval that becomes favourable. The estimate
+  reports its support, open and closed ends, masses, log likelihood and
+  survival between support intervals. Support intervals, their ends and
+  masses matched interval 1.1.1.0 icfit on the breast-cosmesis data
+  (pooled and by treatment) and on a mixed exact/right/interval sample,
+  and exact plus right-censored data reproduced Kaplan–Meier. All 444
+  group-comparison tests passed, Doxygen covered all 24 scoped definitions
+  and all five public examples ran. The MePML report ran and exported to
+  HTML and Org with a bias and RMSE comparison against midpoint and
+  detection-visit imputation, and a native support-interval plot.
+  [Turnbull estimator](mepml/stats/survival/turnbull_estimator.mepml)
+
+- 2026-11-25 — Added parametric accelerated failure time regression with
+  Weibull, exponential, log-normal and log-logistic errors. It accepts
+  exact, right-, left- and interval-censored times through CensoredTime,
+  using analytic first and second derivatives of every likelihood
+  contribution and Newton iteration on (beta, log sigma) with step halving
+  and a ridge fallback. Output includes time ratios with intervals, a
+  likelihood-ratio test against the intercept-only model, and quantile and
+  survival prediction. Coefficients, the full covariance including log
+  scale, scale and both log likelihoods matched R survival 3.8.6 survreg
+  on lung for all four distributions, and on a mixed
+  exact/right/left/interval sample via Surv(type = "interval2"). All 440
+  group-comparison tests passed, Doxygen covered all 72 scoped definitions
+  and all eleven public examples ran. The MePML report ran and exported to
+  HTML and Org with a distribution-misspecification and AIC study,
+  interval likelihood versus midpoint imputation at two visit spacings,
+  and a native Kaplan–Meier overlay. [Accelerated failure time
+  regression](mepml/stats/survival/accelerated_failure_time.mepml)
+
+- 2026-11-25 — Added proportional-hazards diagnostics for counting-process
+  Cox fits. Per-covariate and global score tests of beta(t) = beta + gamma
+  g(t) at (beta-hat, 0) use the joint information, with the 1 - KM(t-),
+  rank, identity or log time scales. Results also include unscaled and
+  scaled Schoenfeld residuals with per-stratum scaling and their event
+  times. The engine now records per-event-time risk-set moments and shares
+  one validated layout between fitting and diagnostics. Tests, p-values,
+  transformed times and scaled residuals matched R survival 3.8.6 cox.zph
+  for all four transforms with Efron and Breslow ties on veteran, and on a
+  stratified start/stop heart fit. All 436 group-comparison tests passed,
+  Doxygen covered all 88 scoped definitions and all ten public examples
+  ran. The MePML report ran and exported to HTML and Org with size and
+  power by time scale and a native residual plot with a lowess smooth.
+  [Proportional-hazards diagnostics](mepml/stats/survival/proportional_haz
+  ards_diagnostics.mepml)
+
+- 2026-11-25 — Extended counting-process Cox regression with optional
+  strata: within-stratum risk sets and sweeps, shared coefficients, a
+  summed partial likelihood and one baseline cumulative hazard per
+  stratum. Survival prediction now takes a stratum label. Coefficients,
+  standard errors, log likelihoods, all three global tests and every
+  stratum's baseline matched R survival 3.8.6 coxph with strata(celltype)
+  on veteran (Efron and Breslow), and a stratified start/stop fit on heart
+  matched too. All 433 group-comparison tests passed, Doxygen covered all
+  65 scoped definitions and all seven public examples ran. The MePML
+  report ran and exported to HTML and Org with a confounded multi-centre
+  simulation comparing no adjustment, covariate adjustment and
+  stratification, and a native baseline plot. [Stratified Cox
+  regression](mepml/stats/survival/stratified_cox.mepml)
+
+- 2026-11-25 — Added counting-process Cox regression on (start, stop]
+  records for delayed entry, gaps and time-varying covariates, with Efron
+  or Breslow ties. Risk-set sums are swept over sorted stop and start
+  times with recomputation when cancellation threatens precision, and
+  Newton iteration uses step halving. Output includes model-based
+  covariance, likelihood-ratio, Wald and score tests, the baseline
+  cumulative hazard and survival prediction. Coefficients, standard
+  errors, log likelihoods and all three tests matched R survival 3.8.6
+  coxph on the Stanford heart transplant data (Efron and Breslow) and on a
+  left-truncated sample with coincident entry and exit times. The baseline
+  hazard matched basehaz after its 0/1 centering. All 430 group-comparison
+  tests passed, Doxygen covered all 58 scoped definitions and all six
+  public examples ran. The MePML report ran and exported to HTML and Org
+  with an immortal-time-bias simulation and a native plot.
+  [Counting-process Cox
+  regression](mepml/stats/survival/cox_time_varying.mepml)
+
+- 2026-11-25 — Added restricted mean survival time to a fixed horizon and
+  the matching restricted mean time lost, with a Greenwood-type standard
+  error and Wald interval. Two-group comparison reports the RMST
+  difference and log-scale RMST and RMTL ratios with intervals and
+  p-values. Per-arm estimates and all three contrasts matched survRM2
+  1.0.4 rmst2 on lung by sex (two horizons, 90%) and veteran by treatment.
+  All 426 group-comparison tests passed, Doxygen covered all 31 scoped
+  definitions including internal helpers, and all five public examples
+  ran. The MePML report ran and exported to HTML and Org with exact-truth
+  coverage, power by horizon against the log-rank test, and a native power
+  plot. [Restricted mean survival
+  time](mepml/stats/survival/restricted_mean_survival.mepml)
+
+- 2026-11-25 — Added Fleming–Harrington G(rho, gamma) weighted log-rank
+  tests for two or more groups with optional strata. They use the pooled
+  left-continuous Kaplan–Meier weights within each stratum, hypergeometric
+  covariance, and a chi-square over groups with positive expectation.
+  Observed, expected, covariance and chi-square matched R survival 3.8.6
+  survdiff on lung for three ECOG groups with rho 0, 0.5 and 1 and
+  stratified by sex. Results for gamma > 0 matched direct two-group sums
+  computed in R. All 423 group-comparison tests passed, Doxygen covered
+  all 15 scoped definitions and all three public examples ran. The MePML
+  report ran and exported to HTML and Org with a size and power study
+  under proportional, early and delayed effects and a native power plot.
+  [Log-rank and Fleming–Harrington
+  tests](mepml/stats/survival/logrank_fleming_harrington.mepml)
+
+- 2026-11-25 — Added the Nelson–Aalen cumulative hazard with optional
+  delayed entry (counting-process risk sets), Nelson–Aalen or
+  Fleming–Harrington tie handling with the matching variances, plain or
+  log-transformed pointwise intervals, and the Breslow–Fleming–Harrington
+  survival. Risk sets come from a sorted sweep in O(n log n). Times, risk
+  sets, counts, cumulative hazards and standard errors matched R survival
+  3.8.6 survfit (ctype 1 and 2) on lung and on a delayed-entry sample, and
+  the plain interval matched survfit's log interval for exp(-H). All 419
+  group-comparison tests passed, Doxygen covered all 25 scoped definitions
+  and all five public examples ran. The MePML report ran and exported to
+  HTML and Org with a delayed-entry bias comparison, small-sample interval
+  coverage and a native step plot. [Nelson–Aalen
+  estimator](mepml/stats/survival/nelson_aalen.mepml)
+
+- 2026-11-25 — Added the Diebold–Mariano test of equal predictive accuracy
+  for |e|^p losses and for arbitrary precomputed loss differentials. It
+  uses truncated (acf) or Bartlett long-run variances up to lag h-1, the
+  Harvey–Leybourne–Newbold small-sample correction with a t(n-1)
+  reference, all three alternatives, and R's fallback to h = 1 when the
+  truncated variance is not positive. Statistics and p-values matched R
+  forecast 9.0.1 dm.test for horizons 1 to 3, both variance estimators,
+  absolute and squared loss, every alternative and the fallback case. All
+  416 group-comparison tests passed, Doxygen covered all 22 scoped
+  definitions and all five public examples ran. The MePML report ran and
+  exported to HTML and Org with a size study for overlapping 4-step
+  forecasts and a native power plot. [Diebold–Mariano
+  test](mepml/stats/time_series/diebold_mariano.mepml)
+
+- 2026-11-25 — Added Markov-switching (Hamilton) regression with k
+  regimes, switching regression coefficients and switching or shared
+  variances. It returns the transition matrix, steady state, expected
+  durations, Hessian standard errors in statsmodels' parameter order, log
+  likelihood, AIC and BIC, and filtered (Hamilton) and smoothed (Kim)
+  regime probabilities. Estimation follows statsmodels' start values and
+  EM, then L-BFGS and safeguarded Newton refinement. Results matched
+  statsmodels MarkovRegression for two regimes with a regressor, two
+  regimes with shared variance, and three regimes: parameters and
+  probabilities within 2e-6, standard errors within 0.05%. All 413
+  group-comparison tests passed, Doxygen covered all 49 scoped definitions
+  and all three public examples ran. The MePML report ran and exported to
+  HTML and Org with a simulated business cycle, real-time detection, an
+  interval-coverage replication and a native probability plot.
+  [Markov-switching
+  regression](mepml/stats/time_series/markov_switching.mepml)
+
+- 2026-11-25 — Added PELT multiple changepoint detection with the normal
+  mean (known noise variance), normal variance (estimated or known mean),
+  normal mean-and-variance, Poisson and exponential costs. It supports
+  MBIC (with per-segment length terms), BIC, AIC, Hannan–Quinn, manual and
+  zero penalties and a minimum segment length, and returns changepoints,
+  segment means and variances, the penalty and the optimal cost.
+  Changepoints, penalties and segment estimates matched R changepoint 2.3
+  for every cost and penalty tested, including a 22-change AIC case. The
+  pruned recursion matched exhaustive optimal partitioning. All 409
+  group-comparison tests passed, Doxygen covered all 35 scoped definitions
+  and all five public examples ran. The MePML report ran and exported to
+  HTML and Org with a mean-and-variance segmentation plot, a penalty
+  comparison and a noise-scale sensitivity check. [PELT
+  changepoints](mepml/stats/time_series/pelt_changepoints.mepml)
+
+- 2026-11-25 — Added the generalized (floating-mean) Lomb–Scargle
+  periodogram for irregularly sampled, optionally weighted data. It
+  supports standard, model, log and PSD normalizations, pre-centering and
+  pure-sinusoid variants, Astropy's automatic frequency grid, false-alarm
+  probabilities for the highest peak (single, naive, Davies and Baluev),
+  the inverse false-alarm level, the best-frequency offset and amplitude,
+  and sinusoid model predictions. Powers, grids, false-alarm probabilities
+  and levels, model predictions and fitted parameters matched astropy 7.2
+  LombScargle. All 404 group-comparison tests passed, Doxygen covered all
+  47 scoped definitions and all ten public examples ran. The MePML report
+  ran and exported to HTML and Org with a night-time aliasing example, a
+  simulation calibrating the false-alarm approximations and a
+  floating-mean comparison. [Lomb–Scargle
+  periodogram](mepml/stats/time_series/lomb_scargle.mepml)
+
+- 2026-11-25 — Added Welch's averaged modified periodogram (Hann, Hamming,
+  Blackman and rectangular windows, constant and linear detrending,
+  density and spectrum scaling, zero padding and bias-corrected median
+  averaging), Slepian (DPSS) tapers by Sturm bisection and inverse
+  iteration with concentration ratios, and Thomson multitaper estimates
+  with plain or adaptive weights. All are one-sided and return chi-square
+  bands with overlap-corrected or adaptive equivalent degrees of freedom.
+  Also added a Bluestein any-length DFT to the core FFT header. Welch
+  matched scipy.signal.welch in four configurations, and DPSS matched
+  scipy windows.dpss (with ratios) and R multitaper::dpss up to odd-taper
+  signs. The plain multitaper average matched R spec.mtm, and the adaptive
+  estimate and degrees of freedom matched a NumPy port of Percival-Walden
+  eq. 370a-b. All 400 group-comparison tests passed, Doxygen covered all
+  63 scoped definitions and all 15 public examples ran. The MePML report
+  ran and exported to HTML and Org with an AR(4) leakage comparison, band
+  coverage and a native decibel plot. [Welch and multitaper
+  spectra](mepml/stats/time_series/spectral_density.mepml)
+
+- 2026-11-25 — Added local level, local linear trend and basic structural
+  (trend plus dummy seasonal) models, fitted by Kalman-filter maximum
+  likelihood over nonnegative disturbance variances. They return filtered
+  and fixed-interval smoothed components, standardized residuals and
+  multi-step forecasts with standard errors, and missing values are
+  supported. The filter, smoother and forecast recursions port R's
+  KalmanLike, KalmanSmooth and KalmanFore. Variances, log likelihoods,
+  states, residuals and forecasts matched R's StructTS, tsSmooth and
+  predict on Nile (level and trend), log10(UKgas) (BSM) and a Nile series
+  with missing values. With missing values R rescales the likelihood, and
+  this is documented. All 394 group-comparison tests passed, Doxygen
+  covered all 65 scoped definitions and all six public examples ran. The
+  MePML report ran and exported to HTML and Org with a decomposition and
+  forecast plot and a pile-up simulation for zero variance estimates.
+  [Structural time-series
+  models](mepml/stats/time_series/structural_models.mepml)
+
+- 2026-11-25 — Added Engle's ARCH-LM test (LM and F statistics with direct
+  upper-tail p-values) and Gaussian GARCH(p, q) estimation with zero or
+  constant mean. Fitting uses L-BFGS in positivity- and
+  stationarity-preserving coordinates from several starts, followed by
+  Newton refinement. Fits report arch's EWMA backcast, robust
+  (Bollerslev–Wooldridge) and classical standard errors, AIC/BIC,
+  conditional variances, standardized residuals, persistence and
+  multi-step variance forecasts. ARCH-LM matched statsmodels het_arch.
+  GARCH(1,1), GARCH(2,1), ARCH(2) and zero-mean fits matched arch in
+  parameters, log likelihood, volatilities, forecasts and standard errors,
+  and a boundary GARCH(1,2) case matched to within 1e-6 in log likelihood.
+  All 390 group-comparison tests passed. Doxygen covered all 60 scoped
+  definitions and all seven public examples ran. The MePML report ran and
+  exported to HTML and Org with an interval-coverage simulation under fat
+  tails and a native volatility-band plot. [ARCH-LM and
+  GARCH](mepml/stats/time_series/arch_garch.mepml)
+
+- 2026-11-25 — Added Johansen cointegration rank tests (trace and
+  maximum-eigenvalue statistics, normalized eigenvectors, Osterwald-Lenum
+  critical values, sequential 5% rank choice) and VECM estimation by
+  reduced-rank ML. The VECM supports restricted or unrestricted constants
+  and trends and reports loadings, identity-normalized cointegrating
+  vectors, short-run matrices, deterministic coefficients, covariances,
+  log likelihoods, standard errors, the levels-VAR representation and
+  forecasts. Results matched statsmodels coint_johansen for three
+  deterministic orders and two lag counts, and VECM for seven
+  deterministic specifications and ranks 1 and 2, except that statsmodels
+  permutes beta standard errors in one layout case. All 387
+  group-comparison tests passed. Doxygen covered all 65 scoped definitions
+  and all nine public examples ran. The MePML report ran and exported to
+  HTML and Org with a rank-selection simulation and a native
+  equilibrium-error plot. [Johansen cointegration and
+  VECM](mepml/stats/time_series/johansen_vecm.mepml)
+
+- 2026-11-25 — Added VAR-based Granger causality tests: zero restrictions
+  on lag blocks of causing series in one or more caused equations, a Wald
+  statistic using the full cross-equation coefficient covariance, F
+  (statsmodels degrees of freedom) or chi-squared references, and
+  upper-tail p-values computed directly. The design inverse is now stored
+  on fitted VAR models. F and Wald statistics and p-values matched
+  statsmodels test_causality for single and joint blocks, constant and
+  trend models, and a VAR(4). All 384 group-comparison tests passed.
+  Doxygen covered all 59 scoped definitions and all 11 public examples
+  ran. The MePML report ran and exported to HTML and Org with a mediator
+  simulation and a native power plot. [Granger
+  causality](mepml/stats/time_series/granger_causality.mepml)
+
+- 2026-11-25 — Added vector autoregressions: equation-wise least-squares
+  fits with none, constant or linear-trend terms, coefficient standard
+  errors, small-sample and ML residual covariances, log likelihood,
+  AIC/BIC/HQIC/FPE, companion-matrix stability, common-sample lag-order
+  selection, and iterated forecasts with MA-based MSE matrices.
+  Parameters, standard errors, covariances, criteria, companion roots,
+  forecasts and forecast covariances matched statsmodels VAR on macrodata
+  growth rates for all three trend options, and select_order matched for
+  orders 0 to 8. All 382 group-comparison tests passed. Doxygen covered
+  all 49 scoped definitions and all eight public examples ran. The MePML
+  report ran and exported to HTML and Org with order-selection and
+  coverage simulations and a native forecast plot. [Vector
+  autoregression](mepml/stats/time_series/vector_autoregression.mepml)
+
+- 2026-11-25 — Added STL seasonal-trend decomposition by loess, ported
+  from the reference Fortran: cycle-subseries loess with end extension,
+  the low-pass filter, the trend loess with strides and interpolation,
+  bisquare robustness iterations, periodic fits and R's default spans.
+  Periodic, windowed and custom-degree fits matched R stl to 1e-10. Robust
+  fits matched statsmodels STL, which uses the exact median that R's
+  partial sort can miss. All 377 group-comparison tests passed. Doxygen
+  covered all 48 scoped definitions and all three public examples ran. The
+  MePML report ran and exported to HTML and Org with a native outlier
+  simulation and trend plot. [STL
+  decomposition](mepml/stats/time_series/stl_decomposition.mepml)
+
+- 2026-11-25 — Added the KPSS level and trend stationarity test with
+  Bartlett long-run variance, the Hobijn–Franses–Ooms automatic bandwidth,
+  Kwiatkowski et al. critical values, interpolated p-values and a
+  truncation flag. Statistics, automatic lags and p-values matched
+  statsmodels kpss for automatic, fixed and legacy bandwidths. All 372
+  group-comparison tests passed. Doxygen covered all 59 scoped definitions
+  and all 14 public examples ran. The MePML report ran and exported to
+  HTML and Org with a joint ADF/KPSS classification and a native
+  bandwidth-size plot. [KPSS
+  test](mepml/stats/time_series/kpss_test.mepml)
+
+- 2026-11-25 — Added augmented Dickey–Fuller tests (fixed, AIC or BIC lags
+  on a common sample), Phillips–Perron Z-tau and Z-alpha with Bartlett
+  long-run variance, MacKinnon (1994) p-values and MacKinnon (2010)
+  finite-sample critical values for none, constant and trend cases.
+  Statistics, p-values, chosen lags, sample sizes and critical values
+  matched statsmodels adfuller and arch PhillipsPerron. All 371
+  group-comparison tests passed. Doxygen covered all 44 scoped definitions
+  and all ten public examples ran. The MePML report ran and exported to
+  HTML and Org with a native size and power simulation. [Unit-root
+  tests](mepml/stats/time_series/unit_root_tests.mepml)
+
+- 2026-11-25 — Extended the exact ARIMA fitter with exogenous regressors
+  estimated jointly with the seasonal ARIMA error parameters. Starting
+  values come from least squares on the differenced data, and forecasts
+  use future regressor paths. Coefficients, standard errors, log
+  likelihoods and forecasts matched arima(xreg = ...) and predict(newxreg
+  = ...) for the LakeHuron trend model and for the Seatbelts airline model
+  with law and petrol-price covariates. All 367 group-comparison tests
+  passed. Doxygen covered all 94 scoped definitions and all nine public
+  examples ran. The MePML report ran and exported to HTML and Org with
+  native scenario forecasts. [Regression with ARIMA
+  errors](mepml/stats/time_series/arima_regression.mepml)
+
+- 2026-11-25 — Added the exact Gaussian likelihood of seasonal ARIMA
+  models by Kalman filtering in R's makeARIMA state space form, with
+  diffuse differencing states and missing values integrated out. Also
+  added maximum likelihood fitting over PACF-reparameterized coefficients,
+  numerical-Hessian standard errors and Kalman forecasts. Fixed-parameter
+  likelihoods and residuals matched arima to 1e-8, and fits and forecasts
+  for LakeHuron AR(2), presidents with missing quarters and the
+  USAccDeaths airline model matched arima(method = "ML") and predict. All
+  364 group-comparison tests passed. Doxygen covered all 87 scoped
+  definitions and all nine public examples ran. The MePML report ran and
+  exported to HTML and Org with native forecasts from a gapped series.
+  [Exact ARIMA
+  likelihood](mepml/stats/time_series/arima_exact_likelihood.mepml)
+
+- 2026-11-25 — Added one-sided group-sequential efficacy boundaries from
+  O'Brien–Fleming-type, Pocock-type, power and Hwang–Shih–DeCani spending,
+  plus stagewise crossing probabilities, expected stopping information and
+  drift for target power via the Armitage–McPherson–Rowe recursion.
+  Boundaries and crossing probabilities matched mvtnorm Miwa integration
+  to about 1e-7, and ldbounds to its grid accuracy. Also refined
+  random::normal_quantile with a Halley step from about 1e-9 relative
+  error to a few ulps against qnorm. All 359 group-comparison tests
+  passed. Doxygen covered all 35 scoped definitions and all eight public
+  examples ran. The MePML report ran and exported to HTML and Org with
+  native boundary plots and a Monte Carlo size check. [Group-sequential
+  boundaries](mepml/stats/inference/group_sequential.mepml)
+
+- 2026-11-25 — Added exact D-optimal designs chosen from any candidate
+  model matrix by Fedorov exchange with random restarts, optional repeats,
+  and D, A and G criteria with rank and estimability for any design.
+  Criteria and best determinants on 3^2, 3^3 and 5^2 quadratic candidate
+  grids matched AlgDesign::optFederov, and the one-factor quadratic
+  recovered {-1, 0, 1} with G-efficiency 1. All 355 group-comparison tests
+  passed. Doxygen covered all 28 scoped definitions and all five public
+  examples ran. The MePML report ran and exported to HTML and Org with a
+  native plot of the design on a constrained region. [D-optimal
+  designs](mepml/stats/design/d_optimal.mepml)
+
+- 2026-11-25 — Added central composite designs (rotatable, face-centered,
+  spherical or custom axial distance, optional fractional cube) and
+  Box–Behnken designs, plus second-order least-squares fits with
+  stationary point and canonical analysis (maximum, minimum, saddle or
+  ridge). Run orders, coefficients, residual SD, stationary points and
+  eigenvalues matched rsm::ccd, rsm::bbd, rsm(y ~ SO(...)) and
+  canonical(). All 351 group-comparison tests passed. Doxygen covered all
+  38 scoped definitions and all nine public examples ran. The MePML report
+  ran and exported to HTML and Org with native fitted-surface contours.
+  [Response surfaces](mepml/stats/design/response_surface.mepml)
+
+- 2026-11-25 — Added full 2^k and regular 2^(k-q) fractional factorial
+  designs from generator words, with the defining relation, word length
+  pattern, resolution and alias sets up to a chosen interaction order. Run
+  matrices, generators and main-effect and two-factor alias chains for
+  2^(7-3) and 2^(5-2) designs matched FrF2 exactly. All 347
+  group-comparison tests passed. Doxygen covered all 18 scoped definitions
+  and all four public examples ran. The MePML report ran and exported to
+  HTML and Org with a native half-normal effects plot. [Factorial
+  designs](mepml/stats/design/factorial_designs.mepml)
+
+- 2026-11-25 — Added two one-sided tests for one-sample/paired and
+  two-sample means (Welch or pooled) with 1-2α intervals, and Wald and
+  Farrington–Manning noninferiority tests for a risk difference with
+  closed-form restricted estimates and an inverted score interval. TOST
+  statistics, p-values and intervals matched TOSTER's t_TOST, and
+  restricted estimates, statistics and score intervals matched direct
+  likelihood maximization in R. All 343 group-comparison tests passed.
+  Doxygen covered all 40 scoped definitions and all seven public examples
+  ran. The MePML report ran and exported to HTML and Org with a native
+  plot of exact test sizes. [Equivalence
+  tests](mepml/stats/inference/equivalence.mepml)
+
+- 2026-11-25 — Added Hartigan's dip statistic with its modal interval (the
+  AS 217 algorithm with the diptest package's corrections) and a dip test
+  calibrated by uniform samples. Dips and modal intervals for 24 normal,
+  mixture, tied-exponential and uniform samples matched diptest::dip
+  exactly. All 339 group-comparison tests passed. Doxygen covered all 18
+  scoped definitions and all five public examples ran. The MePML report
+  ran and exported to HTML and Org with a native power curve for
+  two-normal mixtures. [Dip
+  test](mepml/stats/nonparametric/dip_test.mepml)
+
+- 2026-11-25 — Added multivariate t rectangle probabilities (an extra
+  chi-scale lattice coordinate in the Genz integrator) and single-step
+  Dunnett comparisons with adjusted p-values, a critical value by Illinois
+  false position and simultaneous limits for all three alternatives.
+  Multivariate t boxes matched mvtnorm's pmvt; Dunnett statistics matched
+  multcomp, and p-values and critical values matched high-accuracy pmvt,
+  because multcomp's default 1e-3 integration is too coarse. All 336
+  group-comparison tests passed. Doxygen covered all 51 scoped definitions
+  and all nine public examples ran. The MePML report ran and exported to
+  HTML and Org with a native interval plot; its null simulation gave a
+  5.1% family-wise error. [Dunnett
+  comparisons](mepml/stats/inference/dunnett.mepml)
+
+- 2026-11-25 — Added normal tolerance factors (exact one-sided noncentral
+  t, exact two-sided by integration of the coverage equation, and Howe's
+  approximation), normal tolerance intervals, and Wilks order-statistic
+  tolerance limits with attained confidence and feasibility. Factors for
+  four sample sizes and two levels, and the normal and order-statistic
+  limits, matched R's tolerance package. All 331 group-comparison tests
+  passed. Doxygen covered all 27 scoped definitions and all six public
+  examples ran. The MePML report ran and exported to HTML and Org with a
+  native content plot; on lognormal data the normal upper bound attained
+  81.8% instead of 95% confidence. [Tolerance
+  limits](mepml/stats/inference/tolerance_limits.mepml)
+
+- 2026-11-25 — Added Wald tests of linear restrictions with model-based or
+  sandwich covariance and the numerical rank of the restrictions, Rao
+  score tests from the full model evaluated at a restricted estimate (with
+  a new evaluate_likelihood), and likelihood-ratio tests. All three
+  statistics matched R's anova and vcov for a logistic regression,
+  redundant restriction rows left rank and statistic unchanged, and a
+  normal-mean case matched its closed form. All 327 group-comparison tests
+  passed. Doxygen covered all 59 scoped definitions and all eight public
+  examples ran. The MePML report ran and exported to HTML and Org with a
+  native size-simulation plot. [Likelihood
+  tests](mepml/stats/inference/likelihood_tests.mepml)
+
+- 2026-11-25 — Added general maximum likelihood for a supplied
+  per-observation log likelihood with box constraints (log/logit
+  transforms and BFGS), optional analytic scores, per-observation score
+  contributions, observed information, the outer-product information and
+  model-based and sandwich covariances, with bound flags. Gamma estimates,
+  information, outer product and sandwich matched R and normal and Poisson
+  fits matched closed forms. All 324 group-comparison tests passed.
+  Doxygen covered all 42 scoped definitions and all three public examples
+  ran. The MePML report ran and exported to HTML and Org with a native
+  plot of a constrained zero-inflated Poisson fit. [Maximum
+  likelihood](mepml/stats/inference/maximum_likelihood.mepml)
+
+- 2026-11-25 — Added multivariate normal rectangle probabilities and
+  distribution function by Genz's separation of variables with variable
+  reordering and randomly shifted lattice rules, returning a
+  three-standard-error estimate, the evaluations used and convergence.
+  Orthant probabilities matched closed forms and two boxes matched R's
+  mvtnorm within the reported error. All 319 group-comparison tests
+  passed. Doxygen covered all 26 scoped definitions and all four public
+  examples ran. The MePML report ran and exported to HTML and Org with a
+  native plot; its five-dimensional simultaneous critical value 2.5114
+  matched mvtnorm's qmvnorm. [Multivariate normal
+  rectangles](mepml/stats/distributions/mvn_rectangle_probability.mepml)
+
+- 2026-11-25 — Added Hodges–Lehmann location and shift estimates with
+  exact signed-rank and Mann–Whitney order-statistic intervals, a
+  continuity-corrected normal fallback, one-sided bounds and the attained
+  coverage. Estimates, bounds and attained levels matched R's `wilcox.test`
+  and `psignrank`/`pwilcox` for both alternatives. All 314 group-comparison
+  tests passed. Doxygen covered all 32 scoped definitions and all five
+  public examples ran. The MePML report ran and exported to HTML and Org
+  with a native plot; with 20 normal values the interval was 2.5% wider
+  than the t interval and with t(3) errors 10% narrower.
+  [Hodges–Lehmann](mepml/stats/inference/hodges_lehmann.mepml)
+
+- 2026-11-25 — Added Gaussian model-X knockoffs with equicorrelated and
+  SDP covariance gaps, the knockoff and knockoff+ thresholds, and a filter
+  that passes each draw to a caller-supplied antisymmetric statistic.
+  Both gap rules and all thresholds matched the R knockoff package, and
+  60,000-row moments matched the exchangeable joint covariance. All 673
+  selected native tests passed. Doxygen covered all 37 scoped definitions
+  and all nine public examples ran. The MePML report ran and exported to
+  HTML and Org with a native plot; over 100 replicates the knockoff+
+  false discovery proportion averaged 0.183 at a 0.2 target.
+  [Model-X knockoffs](mepml/stats/regression/model_x_knockoffs.mepml)
+
+- 2026-11-25 — Added stability selection, which reuses each drawn
+  subsample across the whole regularization grid and reports per-level
+  counts, frequencies and the maximum-frequency stable set. Fixtures
+  checked hand-counted frequencies, reproducible draws and malformed
+  selector output. All 668 selected native tests passed. Doxygen covered
+  all 16 scoped definitions and all three public examples ran. The MePML
+  report ran and exported to HTML and Org with a native frequency plot.
+  [Stability selection](mepml/stats/regression/stability_selection.mepml)
+
 - 2026-11-22 — Added nested cross-validation with shared inner folds,
   fold-local refits, and predictions in original observation order.
   A traced fixture verified outer-row isolation and row-weighted loss.

@@ -1,0 +1,157 @@
+//? Title: Estimate a cumulative hazard with the Nelson–Aalen estimator
+//? Exports: both
+//? Lang: en
+
+> Add up the observed event rate in each risk set
+
+The cumulative hazard \(H(t)=\int_0^t h(u)\,du\) is the expected number of events a subject would experience by time \(t\) if events could repeat. Its natural estimate, from Nelson and Aalen, adds the fraction of the risk set that fails at each event time:
+\[\hat H(t)=\sum_{t_i\le t}\frac{d_i}{n_i},\qquad \widehat{\operatorname{Var}}\,\hat H(t)=\sum_{t_i\le t}\frac{d_i}{n_i^2}.\]
+Unlike the Kaplan–Meier product, the sum is additive, which makes it the building block for log-rank tests, Cox baseline hazards and hazard-shape diagnostics: a straight line means a constant hazard, and a convex curve an increasing one. With delayed entry (left truncation), a subject joins the risk set only after its entry time. The estimator stays valid if \(n_i\) counts only subjects with entry \(<t_i\le\) exit.
+
+The example simulates exponential lifetimes (so the true hazard is \(H(t)=t\)) observed with delayed entry and censoring. It shows how badly the estimate is biased when the delayed entry is ignored, then compares the coverage of the plain interval \(\hat H\pm z\,\mathrm{se}\) and the log-transformed interval \(\hat H e^{\pm z\,\mathrm{se}/\hat H}\) in small samples.
+
+```{cpp, id=nelson, file="figures/nelson_aalen.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/nelson_aalen.hpp>
+
+#include <algorithm>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::HazardInterval;
+using dm::stats::SurvivalObservation;
+
+// Unit-rate exponential lifetimes, entry uniform on (0, a), censoring uniform on (0, c) after
+// entry. Subjects who fail before their entry time are never seen (left truncation).
+struct Sample {
+    std::vector<SurvivalObservation> records;
+    std::vector<double> entry;
+};
+
+Sample simulate(std::size_t n, double a, double c, std::mt19937_64& random) {
+    std::exponential_distribution<double> life(1);
+    std::uniform_real_distribution<double> u(0, 1);
+    Sample s;
+    while (s.records.size() < n) {
+        const double entry = a * u(random), death = life(random);
+        if (death <= entry)
+            continue;
+        const double censor = entry + c * u(random);
+        s.records.push_back({std::min(death, censor), death <= censor});
+        s.entry.push_back(entry);
+    }
+    return s;
+}
+
+double hazard_at(const std::vector<dm::stats::NelsonAalenPoint>& na, double t) {
+    double h = 0;
+    for (const auto& p : na)
+        if (p.time <= t)
+            h = p.cumulative_hazard;
+    return h;
+}
+
+int main() {
+    std::mt19937_64 random(17);
+    const auto sample = simulate(200, 1.5, 3, random);
+    const auto with_entry = dm::stats::nelson_aalen(sample.records, {.entry = sample.entry});
+    const auto ignoring = dm::stats::nelson_aalen(sample.records);
+    std::println("| t | True H | With entry times | Ignoring entry |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    for (const double t : {0.5, 1.0, 1.5, 2.0})
+        std::println("| {} | {:.2f} | {:.3f} | {:.3f} |", t, t, hazard_at(with_entry, t),
+                     hazard_at(ignoring, t));
+
+    // Coverage of 95% intervals, n = 25 with entry at 0 and censoring on (0, 2), 5000 samples.
+    std::println("\n| t | Plain interval | Log interval | Mean at risk |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    for (const double t : {0.1, 0.5, 1.0, 1.5}) {
+        int plain = 0, logged = 0, used = 0;
+        double at_risk = 0;
+        for (int r = 0; r < 5000; ++r) {
+            const auto s = simulate(25, 0, 2, random);
+            const auto lg = dm::stats::nelson_aalen(s.records);
+            const auto pl = dm::stats::nelson_aalen(s.records,
+                                                    {.interval = HazardInterval::plain});
+            std::size_t k = lg.size();
+            for (std::size_t i = 0; i < lg.size(); ++i)
+                if (lg[i].time <= t)
+                    k = i;
+            if (k == lg.size() || lg[k].cumulative_hazard == 0)
+                continue;
+            ++used;
+            std::size_t risk = 0;
+            for (const auto& o : s.records)
+                risk += o.time >= t;
+            at_risk += double(risk);
+            logged += lg[k].lower <= t && t <= lg[k].upper;
+            plain += pl[k].lower <= t && t <= pl[k].upper;
+        }
+        std::println("| {} | {:.3f} | {:.3f} | {:.1f} |", t, plain / double(used),
+                     logged / double(used), at_risk / used);
+    }
+
+    const auto steps = [](const std::vector<dm::stats::NelsonAalenPoint>& na,
+                          std::vector<double>& x, std::vector<double>& y, bool lower,
+                          bool upper) {
+        double previous = 0;
+        x = {0};
+        y = {0};
+        for (const auto& p : na) {
+            if (p.time > 3)
+                break;
+            const double v = lower ? p.lower : upper ? p.upper : p.cumulative_hazard;
+            x.insert(x.end(), {p.time, p.time});
+            y.insert(y.end(), {previous, v});
+            previous = v;
+        }
+    };
+    std::vector<double> x1, y1, x2, y2, xl, yl, xu, yu;
+    steps(with_entry, x1, y1, false, false);
+    steps(ignoring, x2, y2, false, false);
+    steps(with_entry, xl, yl, true, false);
+    steps(with_entry, xu, yu, false, true);
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(xl, yl, "95% log interval", {140, 170, 205}, .8)
+        .line(xu, yu, "", {140, 170, 205}, .8)
+        .line(x1, y1, "Nelson–Aalen with entry times", {26, 90, 147}, 1.8)
+        .line(x2, y2, "Ignoring delayed entry", {176, 72, 43}, 1.6)
+        .line({0, 3}, {0, 3}, "True H(t) = t", {46, 139, 87}, 1.4)
+        .title("Cumulative hazard under delayed entry")
+        .x_label("Time")
+        .y_label("Cumulative hazard")
+        .ylim(0, 4.2)
+        .size(700, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/nelson_aalen.svg");
+}
+```
+// result_begin: markdown
+| t | True H | With entry times | Ignoring entry |
+| ---: | ---: | ---: | ---: |
+| 0.5 | 0.50 | 0.498 | 0.101 |
+| 1 | 1.00 | 0.971 | 0.352 |
+| 1.5 | 1.50 | 1.543 | 0.820 |
+| 2 | 2.00 | 2.032 | 1.309 |
+
+| t | Plain interval | Log interval | Mean at risk |
+| ---: | ---: | ---: | ---: |
+| 0.1 | 0.998 | 0.974 | 21.3 |
+| 0.5 | 0.928 | 0.964 | 11.4 |
+| 1 | 0.929 | 0.956 | 4.5 |
+| 1.5 | 0.889 | 0.947 | 1.4 |
+\image(figures/nelson_aalen.svg)
+// result_end
+\caption(Nelson–Aalen estimates from 200 subjects with delayed entry, using the entry times (blue, with its 95% log interval) and ignoring them (orange), against the true cumulative hazard.)
+\alttext(A green diagonal shows the true cumulative hazard rising from 0 to 3. The blue step function, which uses the entry times, follows the diagonal closely, with a light-blue interval around it that widens over time. The orange step function, which ignores delayed entry, rises far more slowly and stays well below the diagonal throughout.)
+
+With entry times in the risk sets, the estimator recovers \(H(t)=t\) to within about 3% up to \(t=2\). Ignoring the delayed entry puts each subject in risk sets from time 0, before anyone could have been observed failing. The early risk sets are then inflated with subjects who were not yet under observation, and the hazard is underestimated by 80% at \(t=0.5\) and still by a third at \(t=2\). Left truncation is common in registry and cohort data, for example when age is the time scale or subjects enter at diagnosis, so entry times are not optional.
+
+The coverage table (counting samples with at least one event before \(t\)) shows why the log-transformed interval is the default. Early on, with about 20 subjects at risk, the plain interval is far too wide (99.8%) because its lower end is cut at zero. Later, as the risk set shrinks to a handful, it under-covers, reaching 89% when 1.4 subjects remain at risk on average. The log interval respects \(H>0\) and the right skew of \(\hat H\), and stays between 94.7% and 97.4% throughout.
+
+Times, risk sets, event and censoring counts, cumulative hazards and standard errors match R's `survfit` with `ctype = 1` (Nelson–Aalen) and `ctype = 2` (Fleming–Harrington tie correction), for the `lung` data and for a delayed-entry sample in counting-process form. The plain interval reproduces `survfit`'s log-scale interval for \(e^{-\hat H}\).
+
+[Aalen (1978)|https://doi.org/10.1214/aos/1176344247] · [Nelson (1972)|https://doi.org/10.1080/00401706.1972.10488991]

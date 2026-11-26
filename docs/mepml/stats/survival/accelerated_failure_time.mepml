@@ -1,0 +1,202 @@
+//? Title: Fit accelerated failure time models with censored data
+//? Exports: both
+//? Lang: en
+
+> Model log survival time directly, with a time ratio as the effect measure
+
+An accelerated failure time (AFT) model writes the logarithm of the event time as a linear model with a standardized error \(W\):
+\[\log T=\beta_0+x^\top\beta+\sigma W.\]
+A covariate stretches or shrinks the whole time axis by the time ratio \(e^{\beta_j}\). A time ratio of 1.5 means every quantile of survival is 50% longer. Choosing a minimum extreme value, normal or logistic \(W\) makes \(T\) Weibull, log-normal or log-logistic. Only the Weibull is also a proportional hazards model, with log hazard ratio \(-\beta_j/\sigma\). The log-normal and log-logistic hazards rise and then fall, and their hazard ratios converge to 1.
+
+Censoring enters the likelihood naturally. An exact time contributes its density, a right-censored time its survival probability, a left-censored time its distribution function, and an interval-censored time the probability of its interval.
+
+The example simulates log-logistic data (\(\beta_0=1\), time ratio \(e^{0.5}=1.65\) for a binary covariate, \(\sigma=0.6\)) with uniform censoring. It asks two questions:
+- How wrong is the time ratio if the wrong error distribution is fitted, and does AIC pick the right one?
+- With event times known only between scheduled visits one or three time units apart, how does the interval likelihood compare with imputing the midpoint?
+
+```{cpp, id=aft, file="figures/aft_fits.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/aft.hpp>
+#include <datamunge/stats/survival.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::AftDistribution;
+using dm::stats::CensoredTime;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+struct Sample {
+    std::vector<double> time, censor, x;
+    std::vector<bool> event;
+};
+
+Sample simulate(std::size_t n, std::mt19937_64& random) {
+    std::uniform_real_distribution<double> u(0, 1);
+    Sample s;
+    for (std::size_t i = 0; i < n; ++i) {
+        const double x = i % 2, v = u(random);
+        const double t = std::exp(1 + .5 * x + .6 * std::log(v / (1 - v)));
+        const double c = 12 * u(random);
+        s.time.push_back(std::min(t, c));
+        s.censor.push_back(c);
+        s.event.push_back(t <= c);
+        s.x.push_back(x);
+    }
+    return s;
+}
+
+std::vector<CensoredTime> exact_or_right(const Sample& s) {
+    std::vector<CensoredTime> t;
+    for (std::size_t i = 0; i < s.time.size(); ++i)
+        t.push_back(s.event[i] ? CensoredTime::exact(s.time[i])
+                               : CensoredTime::right(s.time[i]));
+    return t;
+}
+
+int main() {
+    std::mt19937_64 random(21);
+    const AftDistribution dists[3]{AftDistribution::weibull, AftDistribution::lognormal,
+                                   AftDistribution::loglogistic};
+    const char* names[3]{"Weibull", "Log-normal", "Log-logistic (true)"};
+    const int reps = 1000;
+    const double truth = std::exp(.5);
+    double mean[3]{}, cover[3]{}, chosen[3]{};
+    for (int r = 0; r < reps; ++r) {
+        const auto s = simulate(300, random);
+        const auto t = exact_or_right(s);
+        double best = -1e300;
+        int pick = 0;
+        for (int k = 0; k < 3; ++k) {
+            const auto fit = dm::stats::fit_aft(t, Matrix(s.x.size(), 1, s.x),
+                                                {.distribution = dists[k]});
+            mean[k] += fit.time_ratios[0] / reps;
+            cover[k] += fit.time_ratio_lower[0] <= truth && truth <= fit.time_ratio_upper[0];
+            // Same parameter count, so the AIC choice is the largest likelihood.
+            if (fit.log_likelihood > best) {
+                best = fit.log_likelihood;
+                pick = k;
+            }
+        }
+        chosen[pick] += 1;
+    }
+    std::println("| Fitted distribution | Mean time ratio (truth {:.3f}) | 95% coverage "
+                 "| Chosen by AIC |", truth);
+    std::println("| --- | ---: | ---: | ---: |");
+    for (int k = 0; k < 3; ++k)
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} |", names[k], mean[k], cover[k] / reps,
+                     chosen[k] / reps);
+
+    // Visits every `gap` time units up to the censoring time. An event is seen at the first
+    // visit after it, if that visit happens; otherwise it is censored at the last visit.
+    std::println("\n| Visits every | Analysis | Time ratio ({:.3f}) | Coverage | σ (0.6) |",
+                 truth);
+    std::println("| ---: | --- | ---: | ---: | ---: |");
+    for (const double gap : {1.0, 3.0}) {
+        double tr[2]{}, cov[2]{}, sigma[2]{};
+        for (int r = 0; r < reps; ++r) {
+            const auto s = simulate(300, random);
+            std::vector<CensoredTime> interval, midpoint;
+            std::vector<double> xs;
+            for (std::size_t i = 0; i < s.time.size(); ++i) {
+                const double detect = gap * std::ceil(s.time[i] / gap);
+                const double last = gap * std::floor(s.censor[i] / gap);
+                if (s.event[i] && detect <= s.censor[i]) {
+                    interval.push_back(detect == gap
+                                           ? CensoredTime::left(gap)
+                                           : CensoredTime::interval(detect - gap, detect));
+                    midpoint.push_back(CensoredTime::exact(detect - gap / 2));
+                } else if (last > 0) {
+                    interval.push_back(CensoredTime::right(last));
+                    midpoint.push_back(interval.back());
+                } else {
+                    continue; // never visited: no information
+                }
+                xs.push_back(s.x[i]);
+            }
+            const Matrix x(xs.size(), 1, xs);
+            const dm::stats::AftOptions o{.distribution = AftDistribution::loglogistic};
+            const dm::stats::AftFit fits[2]{dm::stats::fit_aft(interval, x, o),
+                                            dm::stats::fit_aft(midpoint, x, o)};
+            for (int k = 0; k < 2; ++k) {
+                tr[k] += fits[k].time_ratios[0] / reps;
+                cov[k] += fits[k].time_ratio_lower[0] <= truth &&
+                          truth <= fits[k].time_ratio_upper[0];
+                sigma[k] += fits[k].scale / reps;
+            }
+        }
+        const char* label[2]{"Interval likelihood", "Midpoint imputation"};
+        for (int k = 0; k < 2; ++k)
+            std::println("| {} | {} | {:.3f} | {:.3f} | {:.3f} |", gap, label[k], tr[k],
+                         cov[k] / reps, sigma[k]);
+    }
+
+    // One sample: Kaplan–Meier by group against Weibull and log-logistic fits.
+    const auto s = simulate(400, random);
+    const auto t = exact_or_right(s);
+    const Matrix x(s.x.size(), 1, s.x);
+    const auto weibull = dm::stats::fit_aft(t, x);
+    const auto loglogistic =
+        dm::stats::fit_aft(t, x, {.distribution = AftDistribution::loglogistic});
+    auto plot = dm::graphics::RPlot::create();
+    const dm::graphics::RGBA colour[2]{{26, 90, 147}, {176, 72, 43}};
+    for (int g = 0; g < 2; ++g) {
+        std::vector<dm::stats::SurvivalObservation> obs;
+        for (std::size_t i = 0; i < s.time.size(); ++i)
+            if (s.x[i] == g)
+                obs.push_back({s.time[i], s.event[i]});
+        const auto km = dm::stats::kaplan_meier(obs);
+        std::vector<double> kx{0}, ky{1}, grid, sw, sl;
+        for (const auto& p : km.points) {
+            kx.insert(kx.end(), {p.time, p.time});
+            ky.insert(ky.end(), {ky.back(), p.survival});
+        }
+        for (double u = .05; u <= 12; u += .05) {
+            grid.push_back(u);
+            sw.push_back(weibull.predict_survival(u, {double(g)}));
+            sl.push_back(loglogistic.predict_survival(u, {double(g)}));
+        }
+        plot.line(kx, ky, g ? "Kaplan–Meier, x = 1" : "Kaplan–Meier, x = 0", colour[g], 1.4)
+            .line(grid, sl, g ? "Log-logistic fits" : "", {46, 139, 87}, 2)
+            .line(grid, sw, g ? "Weibull fits" : "", {150, 154, 160}, 2);
+    }
+    plot.title("Kaplan–Meier curves and AFT fits by group, n = 400")
+        .x_label("Time")
+        .y_label("Survival probability")
+        .ylim(0, 1.3)
+        .size(700, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/aft_fits.svg");
+}
+```
+// result_begin: markdown
+| Fitted distribution | Mean time ratio (truth 1.649) | 95% coverage | Chosen by AIC |
+| --- | ---: | ---: | ---: |
+| Weibull | 1.584 | 0.920 | 0.037 |
+| Log-normal | 1.683 | 0.951 | 0.230 |
+| Log-logistic (true) | 1.673 | 0.946 | 0.733 |
+
+| Visits every | Analysis | Time ratio (1.649) | Coverage | σ (0.6) |
+| ---: | --- | ---: | ---: | ---: |
+| 1 | Interval likelihood | 1.668 | 0.956 | 0.595 |
+| 1 | Midpoint imputation | 1.673 | 0.953 | 0.596 |
+| 3 | Interval likelihood | 1.681 | 0.958 | 0.601 |
+| 3 | Midpoint imputation | 1.587 | 0.907 | 0.504 |
+\image(figures/aft_fits.svg)
+// result_end
+\caption(Kaplan–Meier curves for the two covariate groups in one simulated sample of 400, with fitted log-logistic (green) and Weibull (grey) survival curves for each group.)
+\alttext(Two Kaplan–Meier step curves, blue for x = 0 falling faster and orange for x = 1 falling more slowly, falling from 1 to about 0.1 and 0.2 respectively by time 10 to 12. Smooth green log-logistic curves follow both step curves closely. Smooth grey Weibull curves lie close to them but sit slightly off in the middle and the tail.)
+
+All three distributions give a usable time ratio, but they are not equivalent. The true log-logistic and the similar-shaped log-normal are nearly unbiased with 95% coverage. The Weibull, whose hazard cannot rise and then fall, underestimates the time ratio (1.58 against 1.65) and covers it 92% of the time. Because all three models have the same number of parameters, AIC reduces to the log likelihood. It picks the true distribution 73% of the time and the Weibull only 4%, so a comparison of candidate fits is worthwhile. The figure shows why the Weibull loses: its curves have the wrong curvature in the middle and the tail.
+
+In the visit-time table, the column headers give the true values in brackets. Interval censoring matters when inspection is coarse relative to the spread of event times. With visits every time unit, midpoint imputation is about as good as the interval likelihood. With visits every three units, imputation pulls the scale down to 0.50 (truth 0.6), because it pretends the event times are more concentrated than they are. It also biases the time ratio and drops coverage to 91%. The interval likelihood stays unbiased with 96% coverage. Exact handling costs nothing, so there is no reason to impute.
+
+Coefficients, the full covariance of the coefficients and \(\log\sigma\), the scale and both log likelihoods match R's `survreg`:
+- on the `lung` data for the Weibull, exponential, log-normal and log-logistic distributions
+- on a simulated sample that mixes exact, right-, left- and interval-censored times, fitted with `Surv(type = "interval2")`
+
+[Kalbfleisch and Prentice (2002)|https://doi.org/10.1002/9781118032985] · [Wei (1992)|https://doi.org/10.1002/sim.4780111409]

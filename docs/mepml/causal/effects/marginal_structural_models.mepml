@@ -1,0 +1,210 @@
+//? Title: Marginal structural models for time-varying treatment
+//? Exports: both
+//? Lang: en
+
+> Weight each person-time history by the inverse probability of its treatment and censoring to estimate the effect of a treatment regime
+
+When treatment varies over time, the confounders often do too, and they can be affected by earlier treatment. A patient's lab value \(L_t\) influences whether they are treated now, and also reflects how earlier treatment worked. Regression cannot handle this. Leaving \(L_t\) out leaves its confounding in place. Adjusting for it blocks part of the effect of earlier treatment, and when \(L_t\) shares an unmeasured cause with the outcome, conditioning on it also opens a collider path. Marginal structural models avoid both problems. They model the mean of the potential outcome under a treatment history, \(E[Y^{\bar a}]=\beta_0+\beta_1\,\mathrm{cum}(\bar a)\), and fit that model to data reweighted by
+
+\[
+SW_i(t)=\prod_{s\le t}\frac{P(A_s\mid \bar A_{s-1},V)}{P(A_s\mid \bar A_{s-1},\bar L_s,V)}\times
+\prod_{s\le t}\frac{P(C_s=0\mid \bar A_s,V)}{P(C_s=0\mid \bar A_s,\bar L_s,V)}.
+\]
+
+In the reweighted pseudo-population, treatment no longer depends on the time-varying confounders and dropout is non-informative. Its stabilizing numerators keep the weights near 1.
+
+`longitudinal_weights` fits the pooled logistic numerator and denominator models for one process, such as treatment or censoring. It uses either all rows or the rows up to each person's first event, and returns the cumulative weights, optionally truncated at percentiles. `fit_marginal_structural_model` fits the weighted logistic or linear structural model with standard errors clustered by person. On the `haartdat` cohort from the ipw package, the tests reproduce `ipwtm`'s treatment, dropout and truncated weights, and a weighted pooled-logistic MSM with sandwich `vcovCL` errors.
+
+The simulation follows 2000 people over five intervals:
+- an unmeasured health factor \(U\) raises the lab value \(L_t\) and the final outcome \(Y\);
+- treatment lowers the next lab value (\(L_t\) depends on \(A_{t-1}\)), and patients with high \(L_t\) are more likely to be treated;
+- patients with high \(L_t\) are also more likely to drop out, after which \(Y\) is missing;
+- the outcome is \(Y=2+U-\mathrm{cum}(\bar A)+\varepsilon\), so each treated interval lowers \(Y\) by 1, and \(L_t\) affects \(Y\) only through \(U\).
+
+Treatment may switch on and off, so the treatment model uses all rows. Dropout is absorbing, so the censoring model uses the rows up to dropout. The denominators condition on \(L_t\) and previous treatment, the numerators on previous treatment and time. Each method fits \(Y\) on cumulative treatment among those who complete follow-up. The results cover 500 cohorts.
+
+```{cpp, id=msm, file="figures/marginal_structural_models.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/causal/msm.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+using dm::causal::MsmFamily;
+
+struct Cohort {
+    std::vector<std::size_t> id;
+    std::vector<int> a, c, t;
+    std::vector<double> l, a_prev;
+    std::vector<double> y;              // final outcome per person (NaN if dropped out)
+    std::vector<std::size_t> last_row;  // last row of each completer
+    std::vector<double> cum, l_sum;     // completers' cumulative treatment and lab-value sum
+};
+
+Cohort simulate(dm::random::SplitMix64& rng, std::size_t people) {
+    Cohort s;
+    for (std::size_t p = 0; p < people; ++p) {
+        const double u = rng.normal();
+        int previous = 0, cum = 0;
+        double l_sum = 0;
+        bool dropped = false;
+        for (int t = 0; t < 5 && !dropped; ++t) {
+            const double l = u - 0.8 * previous + 0.5 * rng.normal();
+            const double lp = -0.5 + 0.5 * l + 0.8 * previous;
+            const int a = rng.uniform01() < 1 / (1 + std::exp(-lp));
+            const int c = rng.uniform01() < 1 / (1 + std::exp(-(-3.0 + 0.9 * l)));
+            s.id.push_back(p);
+            s.t.push_back(t);
+            s.l.push_back(l);
+            s.a.push_back(a);
+            s.a_prev.push_back(previous);
+            s.c.push_back(c);
+            cum += a;
+            l_sum += l;
+            previous = a;
+            dropped = c == 1;
+        }
+        if (!dropped) {
+            s.last_row.push_back(s.id.size() - 1);
+            s.cum.push_back(cum);
+            s.l_sum.push_back(l_sum);
+            s.y.push_back(2 + u - cum + rng.normal());
+        }
+    }
+    return s;
+}
+
+int main() {
+    const std::vector<std::string> names{"Unadjusted regression", "Regression adjusting for L",
+                                         "MSM, treatment weights only",
+                                         "MSM, treatment and censoring weights",
+                                         "MSM, both weights truncated 1%/99%"};
+    dm::random::SplitMix64 rng(2000);
+    const int reps = 500;
+    double sum[5]{}, sq[5]{}, se[5]{}, cover[5]{};
+    std::vector<double> plot_mean, plot_lo, plot_hi;
+    for (int r = 0; r < reps; ++r) {
+        const auto s = simulate(rng, 2000);
+        const std::size_t rows = s.id.size();
+        Matrix num(rows, 2), den(rows, 3), cnum(rows, 2), cden(rows, 3);
+        for (std::size_t i = 0; i < rows; ++i) {
+            num(i, 0) = s.a_prev[i];
+            num(i, 1) = s.t[i];
+            den(i, 0) = s.a_prev[i];
+            den(i, 1) = s.t[i];
+            den(i, 2) = s.l[i];
+            cnum(i, 0) = s.a[i];
+            cnum(i, 1) = s.t[i];
+            cden(i, 0) = s.a[i];
+            cden(i, 1) = s.t[i];
+            cden(i, 2) = s.l[i];
+        }
+        const auto tw = dm::causal::longitudinal_weights(
+            s.id, {.event = s.a, .numerator = num, .denominator = den},
+            {.risk_set = dm::causal::WeightRiskSet::all_rows, .truncation = 0.01});
+        const auto cw = dm::causal::longitudinal_weights(
+            s.id, {.event = s.c, .numerator = cnum, .denominator = cden},
+            {.truncation = 0.01});
+        const std::size_t m = s.y.size();
+        Matrix x1(m, 1), x2(m, 2);
+        std::vector<double> ones(m, 1.0), w_t(m), w_tc(m), w_trunc(m);
+        std::vector<std::size_t> who(m);
+        for (std::size_t k = 0; k < m; ++k) {
+            const std::size_t i = s.last_row[k];
+            x1(k, 0) = x2(k, 0) = s.cum[k];
+            x2(k, 1) = s.l_sum[k];
+            w_t[k] = tw.weights[i];
+            w_tc[k] = tw.weights[i] * cw.weights[i];
+            w_trunc[k] = tw.truncated[i] * cw.truncated[i];
+            who[k] = s.id[i];
+        }
+        const auto fit = [&](const Matrix& x, const std::vector<double>& w) {
+            return dm::causal::fit_marginal_structural_model(s.y, x, w, who, MsmFamily::linear);
+        };
+        const dm::causal::MsmFit fits[5]{fit(x1, ones), fit(x2, ones), fit(x1, w_t),
+                                         fit(x1, w_tc), fit(x1, w_trunc)};
+        for (int k = 0; k < 5; ++k) {
+            const double b = fits[k].coefficients[1];
+            sum[k] += (b + 1) / reps;
+            sq[k] += (b + 1) * (b + 1) / reps;
+            se[k] += fits[k].standard_errors[1] / reps;
+            cover[k] += (fits[k].lower[1] <= -1 && -1 <= fits[k].upper[1]) / double(reps);
+        }
+        if (r == 0) { // weight diagnostics by interval for the first cohort
+            for (int t = 0; t < 5; ++t) {
+                std::vector<double> v;
+                for (std::size_t i = 0; i < rows; ++i)
+                    if (s.t[i] == t)
+                        v.push_back(tw.weights[i] * cw.weights[i]);
+                std::ranges::sort(v);
+                double mean = 0;
+                for (const double x : v)
+                    mean += x / double(v.size());
+                plot_mean.push_back(mean);
+                plot_lo.push_back(v[v.size() / 100]);
+                plot_hi.push_back(v[v.size() - 1 - v.size() / 100]);
+            }
+            std::println("First cohort: {} person-intervals, {} completers; stabilized "
+                         "treatment weights range {:.2f} to {:.2f} (mean {:.3f}).\n",
+                         rows, m, tw.min, tw.max, tw.mean);
+        }
+    }
+    std::println("| Method | Bias | Emp. SD | Mean SE | Coverage |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (int k = 0; k < 5; ++k)
+        std::println("| {} | {:+.3f} | {:.3f} | {:.3f} | {:.3f} |", names[k], sum[k],
+                     std::sqrt(sq[k] - sum[k] * sum[k]), se[k], cover[k]);
+
+    const std::vector<double> t{1, 2, 3, 4, 5};
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(t, plot_mean, "Mean weight", {26, 90, 147}, 2)
+        .line(t, plot_lo, "1st percentile", {120, 120, 120}, 1)
+        .line(t, plot_hi, "99th percentile", {176, 72, 43}, 1)
+        .abline_h(1, {60, 60, 60}, 1)
+        .title("Stabilized treatment x censoring weights by interval")
+        .x_label("Interval")
+        .y_label("Cumulative weight")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/marginal_structural_models.svg");
+}
+```
+// result_begin: markdown
+First cohort: 8973 person-intervals, 1561 completers; stabilized treatment weights range 0.11 to 11.55 (mean 1.001).
+
+| Method | Bias | Emp. SD | Mean SE | Coverage |
+| --- | ---: | ---: | ---: | ---: |
+| Unadjusted regression | +0.330 | 0.025 | 0.026 | 0.000 |
+| Regression adjusting for L | +0.125 | 0.022 | 0.021 | 0.000 |
+| MSM, treatment weights only | +0.019 | 0.055 | 0.045 | 0.888 |
+| MSM, treatment and censoring weights | +0.003 | 0.084 | 0.056 | 0.916 |
+| MSM, both weights truncated 1%/99% | +0.079 | 0.032 | 0.035 | 0.366 |
+\image(figures/marginal_structural_models.svg)
+// result_end
+
+The unadjusted regression is badly biased (+0.33): sicker patients, with high \(U\) and therefore high \(L\), are treated more often and also have worse outcomes. Adjusting for the lab values removes part of that bias but adds another. \(L_t\) is affected by earlier treatment, so conditioning on it blocks the part of the effect that runs through improved lab values. It is also a collider between earlier treatment and \(U\). The estimate stays biased by +0.13, and its interval never covers. With time-varying confounders affected by treatment, no choice of regression covariates fixes this.
+
+Weighting with stabilized treatment weights removes nearly all of the confounding bias. The remaining +0.02 comes from dropout: patients with high \(L\) leave the study, and they share the high \(U\) that raises the outcome. Adding censoring weights restores the completers to the full cohort, and the estimate becomes unbiased (+0.003). The figure shows the usual diagnostics for one cohort. The mean weight stays at 1 in every interval, as stabilized weights should when the models are correct, while the spread grows as factors accumulate over intervals.
+
+That spread is the cost of weighting. The censoring weights raise the SD from 0.055 to 0.084, and the cluster-robust standard error understates it (0.056), with 92% coverage. The weights' heavy right tail makes the weighted mean converge slowly, and the sandwich estimator sees too few large weights to measure their variability. Truncating the weights at the 1st and 99th percentiles cuts the SD by more than half, but reintroduces confounding bias (+0.08), so its intervals cover only 37% of the time. Truncation is a bias–variance trade-off to report as a sensitivity analysis, not a free improvement.
+
+>> Practical guidance
+
+- Model treatment with the full measured history (current and lagged confounders, previous treatment, time), and censoring the same way. Use only baseline covariates and treatment history in the numerators, and include the baseline covariates in the structural model too.
+- Check that stabilized weights average about 1 in each interval and inspect their tails. Large means or extreme maxima point to model misspecification or positivity problems.
+- Report untruncated and truncated results side by side. A large change means the conclusion depends on a few individuals with extreme weights.
+- Cluster-robust standard errors ignore weight estimation and can understate the variability under heavy-tailed weights. A bootstrap over individuals that refits the weight models is more reliable.
+
+>> References
+
+- J. M. Robins, M. A. Hernan and B. Brumback (2000). Marginal structural models and causal inference in epidemiology. *Epidemiology* 11(5), 550-560. doi:10.1097/00001648-200009000-00011
+- S. R. Cole and M. A. Hernan (2008). Constructing inverse probability weights for marginal structural models. *American Journal of Epidemiology* 168(6), 656-664. doi:10.1093/aje/kwn164
+- W. M. van der Wal and R. B. Geskus (2011). ipw: An R package for inverse probability weighting. *Journal of Statistical Software* 43(13), 1-23. doi:10.18637/jss.v043.i13
+- M. A. Hernan and J. M. Robins (2020). *Causal Inference: What If*. Chapman & Hall/CRC, chapters 12 and 21.

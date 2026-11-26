@@ -1,0 +1,136 @@
+//? Title: Test whether data are missing completely at random
+//? Exports: both
+//? Lang: en
+
+> Compare the observed means of each missing-data pattern with their maximum-likelihood estimates
+
+Complete-case analysis, the default of most regression software, is unbiased only if the cases lost do not differ systematically from those kept. The strongest version of that assumption is missing completely at random (MCAR): whether a value is missing does not depend on any data, observed or not. Under MCAR, every group of cases sharing a missing-data pattern is a random subsample, so its means on the observed variables estimate the same population means. Little (1988) turned this into a single chi-square test: \[d^2=\sum_jn_j(\bar y_j-\hat\mu_{O_j})^\top\hat\Sigma_{O_j}^{-1}(\bar y_j-\hat\mu_{O_j}),\] where \(\bar y_j\) holds the observed-variable means of the \(n_j\) cases with pattern j, and \(\hat\mu\), \(\hat\Sigma\) are the maximum-likelihood estimates from EM. Under MCAR \(d^2\) is approximately \(\chi^2\) on \(\sum_jk_j-p\) degrees of freedom, where \(k_j\) is the number of observed variables in pattern j.
+
+`little_mcar_test` computes the statistic from the EM fit of `em_multivariate_normal`. It matches `naniar::mcar_test`, and it matches exactly a recomputation from `norm::em.norm` run to a tight criterion, on R's `airquality` and `mice::nhanes` data.
+
+The simulation uses four standard normal variables with a common correlation \(\rho\). Variable 4 is 20% MCAR missing in every scenario. About 30% of variable 3 is missing by one of three mechanisms.
+- MCAR: missing at random with probability 0.3.
+- MAR: \(\mathrm{logit}\,P(\text{miss})=-1.2+1.5y_1\), depending on an observed variable.
+- MNAR: \(\mathrm{logit}\,P(\text{miss})=-1.2+1.5y_3\), depending on the value that goes missing.
+
+Each scenario uses 1000 samples. The table reports the rejection rate at 5% and the bias of two estimates of the mean of \(y_3\) (true value 0) at n = 400: the complete-case mean and the EM mean.
+
+```{cpp, id=little, file="figures/little_mcar.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/missing_data.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+enum Mechanism { mcar, mar, mnar };
+
+Matrix simulate(std::size_t n, double rho, Mechanism m, dm::random::RandomGenerator& rng) {
+    const double na = std::numeric_limits<double>::quiet_NaN();
+    Matrix x(n, 4);
+    for (std::size_t i = 0; i < n; ++i) {
+        const double common = rng.normal(); // equicorrelated: shared factor
+        for (std::size_t j = 0; j < 4; ++j)
+            x(i, j) = std::sqrt(rho) * common + std::sqrt(1 - rho) * rng.normal();
+        const double score = m == mcar ? 0.0 : 1.5 * (m == mar ? x(i, 0) : x(i, 2));
+        const double p = m == mcar ? 0.3 : 1 / (1 + std::exp(1.2 - score));
+        if (rng.uniform01() < p)
+            x(i, 2) = na;
+        if (rng.uniform01() < 0.2)
+            x(i, 3) = na;
+    }
+    return x;
+}
+
+int main() {
+    dm::random::SplitMix64 rng(1988);
+    const char* names[3]{"MCAR", "MAR (on y1)", "MNAR (on y3)"};
+    const int reps = 1000;
+    std::println("| Mechanism | rho | Reject, n = 100 | Reject, n = 400 | CC bias | EM bias |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (const Mechanism m : {mcar, mar, mnar})
+        for (const double rho : {0.0, 0.5}) {
+            double reject[2]{}, cc_bias = 0, em_bias = 0;
+            for (int s = 0; s < 2; ++s)
+                for (int r = 0; r < reps; ++r) {
+                    const auto x = simulate(s == 0 ? 100 : 400, rho, m, rng);
+                    const auto t = dm::stats::little_mcar_test(x);
+                    reject[s] += (t.p_value < 0.05) / double(reps);
+                    if (s == 1) {
+                        double sum = 0, count = 0;
+                        for (std::size_t i = 0; i < x.rows(); ++i)
+                            if (!std::isnan(x(i, 2))) {
+                                sum += x(i, 2);
+                                count += 1;
+                            }
+                        cc_bias += sum / count / reps;
+                        em_bias += t.fit.mean[2] / reps;
+                    }
+                }
+            std::println("| {} | {:.1f} | {:.3f} | {:.3f} | {:+.3f} | {:+.3f} |", names[m], rho,
+                         reject[0], reject[1], cc_bias, em_bias);
+        }
+
+    // Power against sample size at rho = 0.3.
+    auto plot = dm::graphics::RPlot::create();
+    const std::vector<double> sizes{50, 100, 200, 400, 800};
+    const dm::graphics::RGBA colors[3]{{120, 120, 120}, {26, 90, 147}, {176, 72, 43}};
+    for (const Mechanism m : {mcar, mar, mnar}) {
+        std::vector<double> power;
+        for (const double n : sizes) {
+            double rej = 0;
+            for (int r = 0; r < 400; ++r) {
+                const auto x = simulate(std::size_t(n), 0.3, m, rng);
+                rej += dm::stats::little_mcar_test(x).p_value < 0.05;
+            }
+            power.push_back(rej / 400);
+        }
+        plot.line(sizes, power, names[m], colors[m], 2);
+    }
+    plot.abline_h(0.05, {60, 60, 60}, 1)
+        .title("Rejection rate of Little's test, rho = 0.3")
+        .x_label("Sample size")
+        .y_label("Rejection rate at 5%")
+        .size(640, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/little_mcar.svg");
+}
+```
+// result_begin: markdown
+| Mechanism | rho | Reject, n = 100 | Reject, n = 400 | CC bias | EM bias |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| MCAR | 0.0 | 0.045 | 0.048 | +0.001 | +0.001 |
+| MCAR | 0.5 | 0.056 | 0.051 | -0.002 | -0.002 |
+| MAR (on y1) | 0.0 | 0.993 | 1.000 | -0.001 | +0.000 |
+| MAR (on y1) | 0.5 | 0.984 | 1.000 | -0.164 | +0.000 |
+| MNAR (on y3) | 0.0 | 0.044 | 0.049 | -0.325 | -0.325 |
+| MNAR (on y3) | 0.5 | 0.540 | 0.999 | -0.324 | -0.225 |
+\image(figures/little_mcar.svg)
+// result_end
+
+Under MCAR the test holds its level (4.5–5.6%), and the complete-case and EM means are both unbiased.
+
+When missingness depends on an observed variable (MAR), the test is very powerful. Cases missing \(y_3\) have systematically different \(y_1\), which the pattern means reveal at once. The bias table shows what the rejection does and does not mean. With \(\rho=0.5\), the complete-case mean of \(y_3\) is biased by \(-0.16\), and EM, which uses the relation between \(y_1\) and \(y_3\), removes the bias completely. With \(\rho=0\), the test rejects just as strongly, but the complete-case mean is unbiased, because \(y_3\) is unrelated to the variable that drives missingness. Rejecting MCAR shows that the patterns differ, not that a particular estimate is biased.
+
+The MNAR rows show the test's blind spot. When missingness depends on \(y_3\) itself and \(y_3\) is unrelated to the other variables (\(\rho=0\)), the observed variables carry no trace of the selection. The test rejects at the nominal 5%, while every estimate of the mean of \(y_3\) is biased by \(-0.33\). When \(\rho=0.5\), the selection leaves a shadow in the correlated variables, so the test can detect it, but EM removes only part of the bias (\(-0.23\)), because MAR does not hold. No test based on observed data can distinguish MNAR from MAR in general.
+
+The figure shows the power curves at \(\rho=0.3\). The MAR mechanism is detected almost surely from n = 100. The same strength of MNAR selection needs several hundred cases, because only its correlated shadow is visible.
+
+>> Practical guidance
+
+- Treat a significant Little test as evidence against complete-case analysis, then look at which patterns and variables differ.
+- Do not treat a non-significant test as permission to drop incomplete cases. It may reflect low power or MNAR missingness that the observed data cannot reveal.
+- Prefer methods that are valid under MAR (EM, multiple imputation, full-information likelihood) regardless of the test. They lose little under MCAR.
+- Include variables that predict missingness and are correlated with the incomplete variables (auxiliary variables). They make MAR more plausible and make MNAR more detectable.
+- The test assumes multivariate normality for its reference distribution. With strongly skewed variables, transform them first or interpret p-values loosely.
+
+>> References
+
+- R. J. A. Little (1988). A test of missing completely at random for multivariate data with missing values. *Journal of the American Statistical Association* 83(404), 1198-1202. doi:10.1080/01621459.1988.10478722
+- D. B. Rubin (1976). Inference and missing data. *Biometrika* 63(3), 581-592. doi:10.1093/biomet/63.3.581
+- R. J. A. Little and D. B. Rubin (2019). *Statistical Analysis with Missing Data*, 3rd ed. Wiley.

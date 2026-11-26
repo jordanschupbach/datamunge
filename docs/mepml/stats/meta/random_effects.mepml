@@ -1,0 +1,207 @@
+//? Title: Random-effects meta-analysis
+//? Exports: both
+//? Lang: en
+
+> Let true effects vary between studies, estimate their variance τ² by DerSimonian–Laird, Paule–Mandel or REML, and separate the uncertainty about the average effect from the spread of effects a new study could show
+
+The random-effects model assumes the studies estimate different true effects \(\theta_i\sim N(\mu,\tau^2)\), so that \(y_i\sim N(\mu,v_i+\tau^2)\). The target is the average effect \(\mu\), and \(\tau^2\) measures how much the true effects vary. Given an estimate \(\hat\tau^2\), the average is again an inverse-variance mean, with weights \(w_i^*=1/(v_i+\hat\tau^2)\). These weights are more even than the common-effect weights, so small studies count for more. The estimators of \(\tau^2\) differ:
+
+- DerSimonian–Laird (DL) matches Cochran's \(Q\) to its expectation in closed form.
+- Paule–Mandel (PM) chooses \(\tau^2\) so that the generalised \(Q(\tau^2)=\sum w_i^*(y_i-\hat\mu)^2\) equals its expectation \(k-1\).
+- REML maximises the restricted likelihood.
+- ML maximises the full likelihood, ignoring the degree of freedom spent on \(\mu\).
+
+Two intervals answer different questions. The confidence interval \(\hat\mu\pm z\,\mathrm{SE}\) is for the average effect. The prediction interval \(\hat\mu\pm z\sqrt{\mathrm{SE}^2+\hat\tau^2}\) is where the true effect in a new study is expected to fall. The Q-profile interval for \(\tau^2\) inverts \(Q(\tau^2)\) against \(\chi^2_{k-1}\).
+
+`random_effects_meta` returns the average effect, its Wald test and interval, \(\hat\tau^2\) with its Q-profile interval, \(I^2\) and \(H^2\) based on \(\tau^2\), the weights, and the prediction interval. The prediction interval uses either \(z\) (as `metafor`) or \(t_{k-2}\) (Higgins et al., 2009). The tests reproduce `metafor::rma` with all four estimators, `predict()` and `confint()` to about \(10^{-9}\) on three datasets: the BCG trials, the Normand (1999) standardised mean differences, and a homogeneous set where \(\hat\tau^2=0\).
+
+The example applies the four estimators to the BCG trials. The simulation then draws \(k\) studies with \(v_i\sim U(0.01,0.2)\) and \(\theta_i\sim N(0.3,\tau^2)\) and records four quantities: the mean of \(\hat\tau^2\), how often \(\hat\tau^2=0\), the coverage of the 95% interval for \(\mu\), and the coverage of the 95% prediction interval. The last is the probability that a new study's true effect falls inside, computed exactly for each replicate. There are 2000 meta-analyses per setting.
+
+```{cpp, id=re, file="figures/random_effects.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/meta_analysis.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::TauEstimator;
+
+int main() {
+    // BCG trials: vaccinated cases, non-cases, control cases, non-cases.
+    const double bcg[13][4] = {{4, 119, 11, 128},         {6, 300, 29, 274},
+                               {3, 228, 11, 209},         {62, 13536, 248, 12619},
+                               {33, 5036, 47, 5761},      {180, 1361, 372, 1079},
+                               {8, 2537, 10, 619},        {505, 87886, 499, 87892},
+                               {29, 7470, 45, 7232},      {17, 1699, 65, 1600},
+                               {186, 50448, 141, 27197},  {5, 2493, 3, 2338},
+                               {27, 16886, 29, 17825}};
+    std::vector<double> y, v;
+    for (const auto& t : bcg) {
+        const double n1 = t[0] + t[1], n0 = t[2] + t[3];
+        y.push_back(std::log((t[0] / n1) / (t[2] / n0)));
+        v.push_back(1 / t[0] - 1 / n1 + 1 / t[2] - 1 / n0);
+    }
+    const std::pair<TauEstimator, const char*> est[4]{
+        {TauEstimator::dersimonian_laird, "DL"},
+        {TauEstimator::paule_mandel, "PM"},
+        {TauEstimator::reml, "REML"},
+        {TauEstimator::ml, "ML"}};
+    std::println("| Estimator | tau2 [Q-profile 95%] | I2 (%) | Risk ratio [95% CI] | "
+                 "95% prediction interval | Weight of TPT Madras |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (const auto& [e, name] : est) {
+        const auto m = dm::stats::random_effects_meta(y, v, {.estimator = e});
+        std::println("| {} | {:.3f} [{:.3f}, {:.3f}] | {:.1f} | {:.3f} [{:.3f}, {:.3f}] | "
+                     "[{:.3f}, {:.3f}] | {:.1f}% |",
+                     name, m.tau2, m.tau2_lower, m.tau2_upper, m.i2, std::exp(m.estimate),
+                     std::exp(m.lower), std::exp(m.upper), std::exp(m.prediction_lower),
+                     std::exp(m.prediction_upper), 100 * m.weights[7]);
+    }
+
+    dm::random::SplitMix64 rng(8);
+    const double mu = 0.3;
+    std::println("\n| tau2 | k | Estimator | Mean tau2-hat | tau2-hat = 0 | "
+                 "CI coverage of mu | PI coverage (z) | PI coverage (t, k - 2) |");
+    std::println("| ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: |");
+    for (const double tau2 : {0.04, 0.16})
+        for (const std::size_t k : {5, 10, 30})
+            for (const auto& [e, name] : est) {
+                if (e == TauEstimator::ml && k == 30) continue;
+                double mt = 0, zero = 0, ci = 0, piz = 0, pit = 0;
+                const int reps = 2000;
+                dm::random::SplitMix64 sim(1000 * k + static_cast<int>(100 * tau2));
+                for (int r = 0; r < reps; ++r) {
+                    std::vector<double> yy(k), vv(k);
+                    for (std::size_t i = 0; i < k; ++i) {
+                        vv[i] = 0.01 + 0.19 * sim.uniform01();
+                        yy[i] = mu + std::sqrt(tau2) * sim.normal() +
+                                std::sqrt(vv[i]) * sim.normal();
+                    }
+                    const auto m = dm::stats::random_effects_meta(yy, vv, {.estimator = e});
+                    const auto mt2 = dm::stats::random_effects_meta(
+                        yy, vv, {.estimator = e, .t_prediction = true});
+                    mt += m.tau2 / reps, zero += m.tau2 == 0;
+                    ci += m.lower <= mu && mu <= m.upper;
+                    const double s = std::sqrt(tau2);
+                    const auto inside = [&](double lo, double hi) {
+                        return dm::random::normal_cdf((hi - mu) / s) -
+                               dm::random::normal_cdf((lo - mu) / s);
+                    };
+                    piz += inside(m.prediction_lower, m.prediction_upper) / reps;
+                    pit += inside(mt2.prediction_lower, mt2.prediction_upper) / reps;
+                }
+                std::println("| {} | {} | {} | {:.3f} | {:.3f} | {:.3f} | "
+                             "{:.3f} | {:.3f} |",
+                             tau2, k, name, mt, zero / reps, ci / reps, piz, pit);
+            }
+
+    // Forest plot: studies, common-effect and REML diamonds, REML prediction interval.
+    const auto ce = dm::stats::common_effect_meta(y, v);
+    const auto re = dm::stats::random_effects_meta(y, v);
+    const char* names[13] = {"Aronson 1948",          "Ferguson & Simes 1949",
+                             "Rosenthal 1960",        "Hart & Sutherland 1977",
+                             "Frimodt-Moller 1973",   "Stein & Aronson 1953",
+                             "Vandiviere 1973",       "TPT Madras 1980",
+                             "Coetzee & Berjak 1968", "Rosenthal 1961",
+                             "Comstock 1974",         "Comstock & Webster 1969",
+                             "Comstock 1976"};
+    std::vector<double> pos, lo, hi;
+    std::vector<std::string> labels;
+    for (std::size_t i = 0; i < 13; ++i) {
+        pos.push_back(16.0 - double(i));
+        lo.push_back(y[i] - 1.96 * std::sqrt(v[i]));
+        hi.push_back(y[i] + 1.96 * std::sqrt(v[i]));
+        labels.push_back(std::format("{} ({:.1f}% / {:.1f}%)", names[i],
+                                     100 * ce.weights[i], 100 * re.weights[i]));
+    }
+    std::vector<double> tick_pos = pos;
+    tick_pos.insert(tick_pos.end(), {2.0, 1.0, 0.0});
+    labels.insert(labels.end(),
+                  {"Common effect", "Random effects (REML)", "Prediction interval"});
+    auto plot = dm::graphics::RPlot::create();
+    plot.forest(pos, y, lo, hi, {60, 60, 60})
+        .polygon({ce.lower, ce.estimate, ce.upper, ce.estimate}, {2, 2.35, 2, 1.65},
+                 {120, 120, 120})
+        .polygon({re.lower, re.estimate, re.upper, re.estimate}, {1, 1.35, 1, 0.65},
+                 {26, 90, 147})
+        .segments({re.prediction_lower}, {0.0}, {re.prediction_upper}, {0.0},
+                  {176, 72, 43}, 3)
+        .abline_v(0.0, {150, 150, 150})
+        .y_ticks(tick_pos, labels)
+        .margins(250, 30, 60, 70)
+        .title("BCG trials: common-effect vs random-effects pooling")
+        .x_label("Log risk ratio; weights common-effect / random-effects")
+        .y_label("")
+        .size(760, 560);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/random_effects.svg");
+}
+```
+// result_begin: markdown
+| Estimator | tau2 [Q-profile 95%] | I2 (%) | Risk ratio [95% CI] | 95% prediction interval | Weight of TPT Madras |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| DL | 0.309 [0.120, 1.111] | 92.1 | 0.490 [0.345, 0.695] | [0.156, 1.537] | 10.2% |
+| PM | 0.318 [0.120, 1.111] | 92.3 | 0.489 [0.343, 0.697] | [0.153, 1.562] | 10.2% |
+| REML | 0.313 [0.120, 1.111] | 92.2 | 0.489 [0.344, 0.696] | [0.155, 1.549] | 10.2% |
+| ML | 0.280 [0.120, 1.111] | 91.4 | 0.491 [0.351, 0.688] | [0.165, 1.461] | 10.4% |
+
+| tau2 | k | Estimator | Mean tau2-hat | tau2-hat = 0 | CI coverage of mu | PI coverage (z) | PI coverage (t, k - 2) |
+| ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: |
+| 0.04 | 5 | DL | 0.054 | 0.382 | 0.918 | 0.821 | 0.936 |
+| 0.04 | 5 | PM | 0.057 | 0.382 | 0.918 | 0.822 | 0.936 |
+| 0.04 | 5 | REML | 0.054 | 0.400 | 0.916 | 0.817 | 0.933 |
+| 0.04 | 5 | ML | 0.032 | 0.550 | 0.894 | 0.765 | 0.911 |
+| 0.04 | 10 | DL | 0.045 | 0.256 | 0.929 | 0.819 | 0.860 |
+| 0.04 | 10 | PM | 0.049 | 0.256 | 0.929 | 0.818 | 0.858 |
+| 0.04 | 10 | REML | 0.045 | 0.269 | 0.929 | 0.814 | 0.855 |
+| 0.04 | 10 | ML | 0.034 | 0.377 | 0.918 | 0.767 | 0.815 |
+| 0.04 | 30 | DL | 0.042 | 0.070 | 0.940 | 0.867 | 0.877 |
+| 0.04 | 30 | PM | 0.044 | 0.070 | 0.935 | 0.865 | 0.875 |
+| 0.04 | 30 | REML | 0.042 | 0.070 | 0.932 | 0.861 | 0.872 |
+| 0.16 | 5 | DL | 0.164 | 0.172 | 0.883 | 0.797 | 0.902 |
+| 0.16 | 5 | PM | 0.165 | 0.172 | 0.878 | 0.798 | 0.902 |
+| 0.16 | 5 | REML | 0.164 | 0.182 | 0.882 | 0.795 | 0.899 |
+| 0.16 | 5 | ML | 0.114 | 0.279 | 0.848 | 0.733 | 0.859 |
+| 0.16 | 10 | DL | 0.163 | 0.043 | 0.908 | 0.862 | 0.899 |
+| 0.16 | 10 | PM | 0.163 | 0.043 | 0.905 | 0.863 | 0.900 |
+| 0.16 | 10 | REML | 0.162 | 0.048 | 0.907 | 0.860 | 0.897 |
+| 0.16 | 10 | ML | 0.136 | 0.084 | 0.886 | 0.823 | 0.865 |
+| 0.16 | 30 | DL | 0.159 | 0.001 | 0.934 | 0.921 | 0.931 |
+| 0.16 | 30 | PM | 0.159 | 0.001 | 0.939 | 0.923 | 0.933 |
+| 0.16 | 30 | REML | 0.159 | 0.001 | 0.934 | 0.922 | 0.932 |
+\image(figures/random_effects.svg)
+// result_end
+
+For the BCG trials the random-effects average is a risk ratio of 0.49 [0.34, 0.70], compared with 0.65 for the common-effect model. Allowing for \(\hat\tau^2\approx0.31\) evens out the weights. TPT Madras falls from 41% to 10% of the total, and the small trials with strong protective effects gain weight. DL, PM and REML agree closely, and ML is about 10% lower. The Q-profile interval \([0.12, 1.11]\) shows that \(\tau^2\) itself is poorly determined by 13 studies. The prediction interval for the risk ratio in a new setting is \([0.16, 1.55]\). The average protective effect is clear, but a new population could plausibly see no benefit. That is the substantive message of the heterogeneity, and the confidence interval alone hides it.
+
+The simulation shows three weaknesses of the standard analysis with few studies:
+
+1. **\(\hat\tau^2\) is often 0.** It is 0 in 38–55% of meta-analyses at \(k=5\) and \(\tau^2=0.04\), even though true heterogeneity is present. ML is clearly biased downward (mean 0.032 for 0.04, and 0.114 for 0.16 at \(k=5\)). DL, PM and REML are nearly unbiased on average, but only because overestimates balance the truncated zeros.
+2. **The Wald interval for \(\mu\) undercovers:** 88–92% at \(k=5\) and 91–93% at \(k=10\). It treats \(\hat\tau^2\) as known and uses normal quantiles. The Hartung–Knapp adjustment addresses this.
+3. **The \(z\)-based prediction interval undercovers badly:** 73–82% at \(k=5\), and still 81–87% at \(k=10\). Higgins' \(t_{k-2}\) version is close to nominal at \(k=5\), 90–94%. At \(k=10\) with small \(\tau^2\) it reaches only 86%, because the many zero estimates of \(\tau^2\) collapse the interval onto the confidence interval.
+
+With 30 studies all three estimators behave well and both prediction intervals approach 92–93%.
+
+>> Practical guidance
+
+- Prefer REML or Paule–Mandel for \(\tau^2\). DerSimonian–Laird is acceptable with many studies and is what much of the literature reports. Avoid ML with few studies.
+- Always report \(\hat\tau^2\) with its Q-profile interval and a prediction interval. The prediction interval is the clinically relevant statement when effects vary between settings.
+- Use the \(t_{k-2}\) prediction interval, and the Hartung–Knapp adjustment for the mean, when \(k\) is below about 20. Treat any interval from fewer than 5 studies as rough.
+- A zero \(\hat\tau^2\) with few studies does not demonstrate homogeneity. Look at the upper Q-profile limit for \(\tau^2\) before concluding that the studies agree.
+- Random-effects weighting gives more influence to small studies. If small studies are systematically different (small-study effects or publication bias), the random-effects estimate inherits that difference. Check with a funnel plot or Egger's test.
+
+>> References
+
+- R. DerSimonian and N. Laird (1986). Meta-analysis in clinical trials. *Controlled Clinical Trials* 7(3), 177-188. doi:10.1016/0197-2456(86)90046-2
+- R. C. Paule and J. Mandel (1982). Consensus values and weighting factors. *Journal of Research of the National Bureau of Standards* 87(5), 377-385. doi:10.6028/jres.087.022
+- W. Viechtbauer (2005). Bias and efficiency of meta-analytic variance estimators in the random-effects model. *Journal of Educational and Behavioral Statistics* 30(3), 261-293. doi:10.3102/10769986030003261
+- W. Viechtbauer (2007). Confidence intervals for the amount of heterogeneity in meta-analysis. *Statistics in Medicine* 26(1), 37-52. doi:10.1002/sim.2514
+- J. P. T. Higgins, S. G. Thompson and D. J. Spiegelhalter (2009). A re-evaluation of random-effects meta-analysis. *Journal of the Royal Statistical Society A* 172(1), 137-159. doi:10.1111/j.1467-985X.2008.00552.x
+- D. Langan, J. P. T. Higgins, D. Jackson, et al. (2019). A comparison of heterogeneity variance estimators in simulated random-effects meta-analyses. *Research Synthesis Methods* 10(1), 83-98. doi:10.1002/jrsm.1316

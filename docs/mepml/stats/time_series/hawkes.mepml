@@ -1,0 +1,197 @@
+//? Title: Hawkes process estimation
+//? Exports: both
+//? Lang: en
+
+> Estimate self-excitation in event times by maximum likelihood, check the fit with time-rescaled residuals, and tell excitation apart from a slowly varying background rate
+
+A Hawkes process is a point process on the line whose intensity jumps after every event and then decays:
+
+\[
+\lambda(t)=\mu+\sum_{t_i<t}\alpha e^{-\beta(t-t_i)}.
+\]
+
+Each event triggers on average \(\alpha/\beta\) further events, so the branching ratio \(n^*=\alpha/\beta\) is the fraction of events that are offspring rather than immigrants. When \(n^*<1\) the process is stationary, with mean rate \(\mu/(1-n^*)\). The model describes earthquake aftershocks, trades, social-media cascades and infection chains. With the exponential kernel the log-likelihood
+
+\[
+\ell=\sum_k\log\lambda(t_k)-\mu T-\frac\alpha\beta\sum_k\bigl(1-e^{-\beta(T-t_k)}\bigr)
+\]
+
+can be computed in \(O(n)\) by a recursion over the inter-event times.
+
+`hawkes_log_likelihood`, `hawkes_fit`, `hawkes_simulate` and `hawkes_residuals` implement the exponential Hawkes process that starts empty at time 0:
+
+- The fit maximises the likelihood by damped Newton steps on log-parameters, with an analytic gradient, from several starts. Standard errors come from the observed information.
+- Simulation uses Ogata's thinning.
+- The residuals are compensator increments \(\Lambda(t_k)-\Lambda(t_{k-1})\), which are independent \(\mathrm{Exp}(1)\) under the model.
+
+The tests match the likelihood to `emhawkes` (with `lambda_component0 = 0`) and to an independent R implementation. The fitted parameters agree with a high-precision R optimum to \(10^{-6}\), the standard errors with `optimHess` to \(10^{-4}\) relative, and the estimates with `emhawkes::hfit` to \(10^{-4}\).
+
+The study has two parts. First, it simulates the process with \(\mu=0.5\), \(\alpha=0.8\), \(\beta=1.5\) (\(n^*=0.533\), mean rate 1.07) over three horizons and fits it, with 200 replications per horizon. Second, it fits the Hawkes model to an inhomogeneous Poisson process with no excitation at all. That process has rate \(1+0.9\sin(2\pi t/100)\) over \(T=2000\). The time-rescaling residuals of each fit are tested against \(\mathrm{Exp}(1)\) with a Kolmogorov–Smirnov test.
+
+```{cpp, id=hawkes, file="figures/hawkes.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/hawkes.hpp>
+#include <datamunge/stats/ks_test.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::HawkesParameters;
+const HawkesParameters truth{.mu = 0.5, .alpha = 0.8, .beta = 1.5};
+
+// Inhomogeneous Poisson process with rate 1 + 0.9 sin(2 pi t / 100), by thinning.
+std::vector<double> seasonal(dm::random::SplitMix64& rng, double horizon) {
+    std::vector<double> t;
+    double s = 0;
+    while (true) {
+        s += -std::log(1 - rng.uniform01()) / 1.9;
+        if (s > horizon)
+            return t;
+        if (rng.uniform01() * 1.9 <= 1 + 0.9 * std::sin(2 * std::numbers::pi * s / 100))
+            t.push_back(s);
+    }
+}
+
+double ks_exponential_p(const std::vector<double>& residuals) {
+    return dm::stats::ks_test_one_sample(residuals, [](double x) {
+               return x <= 0 ? 0.0 : 1 - std::exp(-x);
+           }).p_value;
+}
+
+// Index-of-dispersion test of counts of rescaled times in windows of 50
+// (Poisson counts under the model).
+double dispersion_p(const std::vector<double>& residuals) {
+    std::vector<double> counts;
+    double clock = 0, edge = 50, c = 0;
+    for (const double r : residuals) {
+        clock += r;
+        while (clock > edge)
+            counts.push_back(c), c = 0, edge += 50;
+        ++c;
+    }
+    double mean = 0, ss = 0;
+    for (const double v : counts)
+        mean += v / counts.size();
+    for (const double v : counts)
+        ss += (v - mean) * (v - mean);
+    return 1 - dm::random::chi_squared_cdf(ss / mean, counts.size() - 1.0);
+}
+
+int main() {
+    dm::random::SplitMix64 rng(77);
+    const int reps = 200;
+    std::println("| Horizon T | Mean events | Branching ratio: mean (SD), true 0.533 | "
+                 "mu covered | alpha covered | beta covered |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const double horizon : {200.0, 1000.0, 5000.0}) {
+        double events = 0, br = 0, br2 = 0, cover[3]{};
+        for (int r = 0; r < reps; ++r) {
+            const auto t = dm::stats::hawkes_simulate(truth, horizon, rng.next_u64());
+            const auto f = dm::stats::hawkes_fit(t, {.end_time = horizon});
+            events += t.size() / double(reps);
+            br += f.branching_ratio / reps;
+            br2 += f.branching_ratio * f.branching_ratio / reps;
+            const double est[3]{f.parameters.mu, f.parameters.alpha, f.parameters.beta};
+            const double tru[3]{truth.mu, truth.alpha, truth.beta};
+            for (int k = 0; k < 3; ++k)
+                cover[k] += std::abs(est[k] - tru[k]) <= 1.959964 * f.standard_errors[k];
+        }
+        std::println("| {:.0f} | {:.0f} | {:.3f} ({:.3f}) | {:.3f} | {:.3f} | {:.3f} |",
+                     horizon, events, br, std::sqrt(br2 - br * br), cover[0] / reps,
+                     cover[1] / reps, cover[2] / reps);
+    }
+
+    std::println("\n| Data (T = 2000) | Mean fitted branching ratio | "
+                 "Mean fitted 1 / beta | KS test of residuals rejects | "
+                 "Dispersion test rejects |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (const bool hawkes_data : {true, false}) {
+        double br = 0, memory = 0, reject = 0, overdispersed = 0;
+        for (int r = 0; r < reps; ++r) {
+            const auto t = hawkes_data
+                               ? dm::stats::hawkes_simulate(truth, 2000, rng.next_u64())
+                               : seasonal(rng, 2000);
+            const auto f = dm::stats::hawkes_fit(t, {.end_time = 2000});
+            br += f.branching_ratio / reps;
+            memory += 1 / f.parameters.beta / reps;
+            const auto res = dm::stats::hawkes_residuals(t, f.parameters);
+            reject += (ks_exponential_p(res) < 0.05) / double(reps);
+            overdispersed += (dispersion_p(res) < 0.05) / double(reps);
+        }
+        std::println("| {} | {:.3f} | {:.2f} | {:.3f} | {:.3f} |",
+                     hawkes_data ? "Hawkes (true n* 0.533, 1/beta 0.67)"
+                                 : "Seasonal Poisson, no excitation",
+                     br, memory, reject, overdispersed);
+    }
+
+    // Figure: true and fitted intensity over the first 60 time units of one simulated path.
+    const auto t = dm::stats::hawkes_simulate(truth, 1000, 2026);
+    const auto f = dm::stats::hawkes_fit(t, {.end_time = 1000});
+    std::vector<double> grid, true_l, fit_l, ev, zero;
+    for (double s = 0; s <= 60; s += 0.02) {
+        double a = 0, b = 0;
+        for (const double ti : t) {
+            if (ti >= s)
+                break;
+            a += truth.alpha * std::exp(-truth.beta * (s - ti));
+            b += f.parameters.alpha * std::exp(-f.parameters.beta * (s - ti));
+        }
+        grid.push_back(s);
+        true_l.push_back(truth.mu + a);
+        fit_l.push_back(f.parameters.mu + b);
+    }
+    for (const double ti : t)
+        if (ti <= 60)
+            ev.push_back(ti), zero.push_back(0.05);
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(grid, true_l, "True intensity", {0, 0, 0}, 1.6)
+        .line(grid, fit_l, "Fitted intensity", {176, 72, 43}, 1.2)
+        .points(ev, zero, "Events", {26, 90, 147}, 4)
+        .y_limits(0, 5.5)
+        .title("Self-exciting intensity and its fit")
+        .x_label("Time")
+        .y_label("Intensity")
+        .size(640, 380);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/hawkes.svg");
+}
+```
+// result_begin: markdown
+| Horizon T | Mean events | Branching ratio: mean (SD), true 0.533 | mu covered | alpha covered | beta covered |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 200 | 213 | 0.521 (0.076) | 0.950 | 0.940 | 0.965 |
+| 1000 | 1066 | 0.531 (0.033) | 0.970 | 0.940 | 0.935 |
+| 5000 | 5372 | 0.532 (0.017) | 0.940 | 0.940 | 0.955 |
+
+| Data (T = 2000) | Mean fitted branching ratio | Mean fitted 1 / beta | KS test of residuals rejects | Dispersion test rejects |
+| --- | ---: | ---: | ---: | ---: |
+| Hawkes (true n* 0.533, 1/beta 0.67) | 0.529 | 0.66 | 0.000 | 0.025 |
+| Seasonal Poisson, no excitation | 0.838 | 4.43 | 0.025 | 0.030 |
+\image(figures/hawkes.svg)
+// result_end
+
+When the model is correct, maximum likelihood behaves as expected. The branching ratio is slightly biased downward over the shortest horizon (0.521 from about 200 events) and is essentially unbiased by \(T=1000\). Its SD shrinks like \(1/\sqrt T\), from 0.076 to 0.017. The Wald intervals from the observed information cover all three parameters at close to 95% at every horizon. The figure shows the fitted intensity on top of the true one, jumping at each event and decaying within about \(1/\beta\approx0.7\) time units.
+
+The second table shows the main risk in applying Hawkes models. A Poisson process with a slowly varying rate, with no excitation at all, receives a fitted branching ratio of 0.84 and a long memory \(1/\hat\beta\approx4.4\). Events cluster in the high-rate half of each cycle, and the Hawkes likelihood can only explain that clustering as self-excitation. The usual residual checks do not detect the misspecification. The KS test of the time-rescaled residuals rejects 2.5% of fits and the dispersion test 3%, no more often than for correctly specified data. The long-memory kernel lets the compensator track the slow rate changes. This is a known identification problem. The excitation estimate is only as good as the model for the background rate.
+
+>> Practical guidance
+
+- Model the background rate explicitly, with trends, seasonality or covariates, before interpreting \(\alpha/\beta\) as contagion. A fitted memory \(1/\beta\) that is long relative to the plausible trigger mechanism signals unmodelled background variation.
+- Report the branching ratio with its uncertainty, and check \(\alpha/\beta<1\) for stationarity. A ratio near 1 often reflects nonstationarity rather than strong excitation.
+- Use time-rescaled residuals to detect gross misfit, but do not take passing residual tests as evidence that excitation is real.
+- Compare candidate models by likelihood: Hawkes against inhomogeneous Poisson, and Hawkes with and without a time-varying background. Use AIC, or a likelihood-ratio test when the models are nested.
+- Define the observation window explicitly (`end_time`). Using the last event time as the end slightly biases \(\mu\) upward, because the empty stretch after the final event is ignored.
+
+>> References
+
+- A. G. Hawkes (1971). Spectra of some self-exciting and mutually exciting point processes. *Biometrika* 58(1), 83-90. doi:10.1093/biomet/58.1.83
+- Y. Ogata (1981). On Lewis' simulation method for point processes. *IEEE Transactions on Information Theory* 27(1), 23-31. doi:10.1109/TIT.1981.1056305
+- Y. Ogata (1988). Statistical models for earthquake occurrences and residual analysis for point processes. *Journal of the American Statistical Association* 83(401), 9-27. doi:10.1080/01621459.1988.10478560
+- T. Ozaki (1979). Maximum likelihood estimation of Hawkes' self-exciting point processes. *Annals of the Institute of Statistical Mathematics* 31(1), 145-155. doi:10.1007/BF02480272
+- A. Reinhart (2018). A review of self-exciting spatio-temporal point processes and their applications. *Statistical Science* 33(3), 299-318. doi:10.1214/17-STS629

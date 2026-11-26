@@ -255,7 +255,53 @@ add_executable(run_stats_group_comparison_tests cpp/stats_group_comparison_tests
   cpp/stats_gap_statistic_tests.cpp
   cpp/stats_consensus_clustering_tests.cpp
   cpp/stats_nested_cross_validation_tests.cpp
-  cpp/stats_stability_selection_tests.cpp)
+  cpp/stats_stability_selection_tests.cpp
+  cpp/stats_knockoffs_tests.cpp
+  cpp/stats_hodges_lehmann_tests.cpp
+  cpp/stats_mvn_probability_tests.cpp
+  cpp/stats_maximum_likelihood_tests.cpp
+  cpp/stats_likelihood_tests_tests.cpp
+  cpp/stats_tolerance_limits_tests.cpp
+  cpp/stats_dunnett_tests.cpp
+  cpp/stats_dip_test_tests.cpp
+  cpp/stats_equivalence_tests.cpp
+  cpp/stats_factorial_design_tests.cpp
+  cpp/stats_response_surface_tests.cpp
+  cpp/stats_d_optimal_tests.cpp
+  cpp/stats_group_sequential_tests.cpp
+  cpp/stats_arima_exact_tests.cpp
+  cpp/stats_arima_regression_tests.cpp
+  cpp/stats_unit_root_tests.cpp
+  cpp/stats_stl_tests.cpp
+  cpp/stats_var_tests.cpp
+  cpp/stats_cointegration_tests.cpp
+  cpp/stats_garch_tests.cpp
+  cpp/stats_structural_tests.cpp
+  cpp/stats_spectral_tests.cpp
+  cpp/stats_lomb_scargle_tests.cpp
+  cpp/stats_changepoint_tests.cpp
+  cpp/stats_markov_switching_tests.cpp
+  cpp/stats_diebold_mariano_tests.cpp
+  cpp/stats_nelson_aalen_tests.cpp
+  cpp/stats_survival_tests_tests.cpp
+  cpp/stats_rmst_tests.cpp
+  cpp/stats_cox_counting_tests.cpp
+  cpp/stats_cox_strata_tests.cpp
+  cpp/stats_cox_zph_tests.cpp
+  cpp/stats_aft_tests.cpp
+  cpp/stats_turnbull_tests.cpp
+  cpp/stats_multistate_tests.cpp
+  cpp/stats_gray_tests.cpp
+  cpp/stats_fine_gray_tests.cpp
+  cpp/stats_cox_cluster_tests.cpp
+  cpp/stats_survival_accuracy_tests.cpp
+  cpp/stats_survey_tests.cpp
+  cpp/stats_survey_calibration_tests.cpp
+  cpp/stats_pps_sampling_tests.cpp
+  cpp/stats_survey_tables_tests.cpp
+  cpp/stats_survey_glm_tests.cpp
+  cpp/stats_missing_data_tests.cpp
+  cpp/stats_multiple_imputation_tests.cpp)
 target_link_libraries(run_stats_group_comparison_tests datamunge::datamunge GTest::gtest_main)
 set_target_properties(run_stats_group_comparison_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
 gtest_discover_tests(run_stats_group_comparison_tests TEST_PREFIX "group-comparison.")
@@ -2065,3 +2111,208 @@ add_executable(run_causal_inference_tests cpp/causal_inference_tests.cpp)
 target_link_libraries(run_causal_inference_tests datamunge::datamunge GTest::gtest_main)
 set_target_properties(run_causal_inference_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
 gtest_discover_tests(run_causal_inference_tests TEST_PREFIX "causal.")
+
+add_executable(run_causal_matching_tests cpp/causal_matching_tests.cpp)
+target_link_libraries(run_causal_matching_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_causal_matching_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_causal_matching_tests TEST_PREFIX "causal.")
+
+add_executable(run_causal_weighting_tests cpp/causal_weighting_tests.cpp)
+target_link_libraries(run_causal_weighting_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_causal_weighting_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_causal_weighting_tests TEST_PREFIX "causal.")
+
+add_executable(run_causal_aipw_tests cpp/causal_aipw_tests.cpp)
+target_link_libraries(run_causal_aipw_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_causal_aipw_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_causal_aipw_tests TEST_PREFIX "causal.")
+
+add_executable(run_causal_msm_tests cpp/causal_msm_tests.cpp)
+target_link_libraries(run_causal_msm_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_causal_msm_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_causal_msm_tests TEST_PREFIX "causal.")
+
+add_executable(run_causal_did_tests cpp/causal_did_tests.cpp)
+target_link_libraries(run_causal_did_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_causal_did_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_causal_did_tests TEST_PREFIX "causal.")
+
+add_executable(run_causal_rdd_tests cpp/causal_rdd_tests.cpp)
+target_link_libraries(run_causal_rdd_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_causal_rdd_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_causal_rdd_tests TEST_PREFIX "causal.")
+
+add_executable(run_causal_synth_tests cpp/causal_synth_tests.cpp)
+target_link_libraries(run_causal_synth_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_causal_synth_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_causal_synth_tests TEST_PREFIX "causal.")
+
+add_executable(run_causal_weak_iv_tests cpp/causal_weak_iv_tests.cpp)
+target_link_libraries(run_causal_weak_iv_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_causal_weak_iv_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_causal_weak_iv_tests TEST_PREFIX "causal.")
+
+add_executable(run_stats_gmm_estimation_tests cpp/stats_gmm_estimation_tests.cpp)
+target_link_libraries(run_stats_gmm_estimation_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_gmm_estimation_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_gmm_estimation_tests TEST_PREFIX "stats.")
+
+add_executable(run_causal_mediation_tests cpp/causal_mediation_tests.cpp)
+target_link_libraries(run_causal_mediation_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_causal_mediation_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_causal_mediation_tests TEST_PREFIX "causal.")
+
+add_executable(run_causal_rosenbaum_tests cpp/causal_rosenbaum_tests.cpp)
+target_link_libraries(run_causal_rosenbaum_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_causal_rosenbaum_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_causal_rosenbaum_tests TEST_PREFIX "causal.")
+
+add_executable(run_bayes_psis_loo_tests cpp/bayes_psis_loo_tests.cpp)
+target_link_libraries(run_bayes_psis_loo_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_bayes_psis_loo_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_bayes_psis_loo_tests TEST_PREFIX "bayes.")
+
+add_executable(run_bayes_smc_tests cpp/bayes_smc_tests.cpp)
+target_link_libraries(run_bayes_smc_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_bayes_smc_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_bayes_smc_tests TEST_PREFIX "bayes.")
+
+add_executable(run_bayes_advi_tests cpp/bayes_advi_tests.cpp)
+target_link_libraries(run_bayes_advi_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_bayes_advi_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_bayes_advi_tests TEST_PREFIX "bayes.")
+
+add_executable(run_bayes_sbc_tests cpp/bayes_sbc_tests.cpp)
+target_link_libraries(run_bayes_sbc_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_bayes_sbc_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_bayes_sbc_tests TEST_PREFIX "bayes.")
+
+add_executable(run_stats_spatial_autocorrelation_tests cpp/stats_spatial_autocorrelation_tests.cpp)
+target_link_libraries(run_stats_spatial_autocorrelation_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_spatial_autocorrelation_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_spatial_autocorrelation_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_geostatistics_tests cpp/stats_geostatistics_tests.cpp)
+target_link_libraries(run_stats_geostatistics_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_geostatistics_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_geostatistics_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_spatial_regression_tests cpp/stats_spatial_regression_tests.cpp)
+target_link_libraries(run_stats_spatial_regression_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_spatial_regression_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_spatial_regression_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_point_pattern_tests cpp/stats_point_pattern_tests.cpp)
+target_link_libraries(run_stats_point_pattern_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_point_pattern_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_point_pattern_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_hawkes_tests cpp/stats_hawkes_tests.cpp)
+target_link_libraries(run_stats_hawkes_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_hawkes_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_hawkes_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_circular_tests cpp/stats_circular_tests.cpp)
+target_link_libraries(run_stats_circular_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_circular_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_circular_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_meta_analysis_tests cpp/stats_meta_analysis_tests.cpp)
+target_link_libraries(run_stats_meta_analysis_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_meta_analysis_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_meta_analysis_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_network_meta_tests cpp/stats_network_meta_tests.cpp)
+target_link_libraries(run_stats_network_meta_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_network_meta_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_network_meta_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_generalizability_tests cpp/stats_generalizability_tests.cpp)
+target_link_libraries(run_stats_generalizability_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_generalizability_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_generalizability_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_reliability_tests cpp/stats_reliability_tests.cpp)
+target_link_libraries(run_stats_reliability_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_reliability_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_reliability_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_item_response_tests cpp/stats_item_response_tests.cpp)
+target_link_libraries(run_stats_item_response_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_item_response_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_item_response_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_gage_rr_tests cpp/stats_gage_rr_tests.cpp)
+target_link_libraries(run_stats_gage_rr_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_gage_rr_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_gage_rr_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_process_capability_tests cpp/stats_process_capability_tests.cpp)
+target_link_libraries(run_stats_process_capability_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_process_capability_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_process_capability_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_acceptance_sampling_tests cpp/stats_acceptance_sampling_tests.cpp)
+target_link_libraries(run_stats_acceptance_sampling_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_acceptance_sampling_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_acceptance_sampling_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_partial_correlation_tests cpp/stats_partial_correlation_tests.cpp)
+target_link_libraries(run_stats_partial_correlation_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_partial_correlation_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_partial_correlation_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_distance_correlation_tests cpp/stats_distance_correlation_tests.cpp)
+target_link_libraries(run_stats_distance_correlation_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_distance_correlation_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_distance_correlation_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_hsic_tests cpp/stats_hsic_tests.cpp)
+target_link_libraries(run_stats_hsic_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_hsic_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_hsic_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_polychoric_tests cpp/stats_polychoric_tests.cpp)
+target_link_libraries(run_stats_polychoric_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_polychoric_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_polychoric_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_copula_tests cpp/stats_copula_tests.cpp)
+target_link_libraries(run_stats_copula_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_copula_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_copula_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_gev_tests cpp/stats_gev_tests.cpp)
+target_link_libraries(run_stats_gev_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_gev_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_gev_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_gpd_tests cpp/stats_gpd_tests.cpp)
+target_link_libraries(run_stats_gpd_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_gpd_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_gpd_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_tail_index_tests cpp/stats_tail_index_tests.cpp)
+target_link_libraries(run_stats_tail_index_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_tail_index_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_tail_index_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_extremal_index_tests cpp/stats_extremal_index_tests.cpp)
+target_link_libraries(run_stats_extremal_index_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_extremal_index_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_extremal_index_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_compositional_tests cpp/stats_compositional_tests.cpp)
+target_link_libraries(run_stats_compositional_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_compositional_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_compositional_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_dirichlet_regression_tests cpp/stats_dirichlet_regression_tests.cpp)
+target_link_libraries(run_stats_dirichlet_regression_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_dirichlet_regression_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_dirichlet_regression_tests TEST_PREFIX "stats.")
+
+add_executable(run_stats_permanova_tests cpp/stats_permanova_tests.cpp)
+target_link_libraries(run_stats_permanova_tests datamunge::datamunge GTest::gtest_main)
+set_target_properties(run_stats_permanova_tests PROPERTIES CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON)
+gtest_discover_tests(run_stats_permanova_tests TEST_PREFIX "stats.")

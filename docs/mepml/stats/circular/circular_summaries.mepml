@@ -1,0 +1,145 @@
+//? Title: Circular summaries
+//? Exports: both
+//? Lang: en
+
+> Summarise directions with the mean resultant rather than the arithmetic mean, measure their spread, and check how well large-sample and bootstrap intervals for the mean direction cover it
+
+Angles, compass bearings, times of day and phases of a cycle live on a circle, where \(0\) and \(2\pi\) are the same point. The arithmetic mean of such values depends on where the circle is cut. The mean of 350° and 10° is 180° when it should be 0°. Circular statistics instead average the unit vectors \((\cos\theta_j,\sin\theta_j)\). Their mean has direction \(\bar\theta\), the mean direction, and length \(\bar R\in[0,1]\), the mean resultant length. \(\bar R\) is near 1 when directions are concentrated and near 0 when they are spread out or balanced in opposite directions. From these come several measures of spread:
+
+- the circular variance \(1-\bar R\);
+- the circular standard deviation \(\sqrt{-2\log\bar R}\);
+- the angular deviation \(\sqrt{2(1-\bar R)}\);
+- Fisher's circular dispersion \(\hat\delta=(1-\bar\rho_2)/(2\bar R^2)\), which uses the second central trigonometric moment \(\bar\rho_2\).
+
+The dispersion gives the standard error of the mean direction, \(\hat\sigma=\sqrt{\hat\delta/n}\). Fisher's large-sample interval \(\bar\theta\pm\arcsin(z_{1-\alpha/2}\hat\sigma)\) does not assume a von Mises distribution.
+
+`trigonometric_moment`, `circular_summary` and `circular_mean_bootstrap_interval` compute these quantities, and `von_mises_sample` draws von Mises variates by the Best–Fisher algorithm. The tests reproduce the `circular` package's mean direction, \(\bar R\), variance, standard deviation, angular deviation and trigonometric moments for von Mises, wrapped Cauchy and bimodal samples. They also check the dispersion and interval against a direct R computation, and the sampler's \(E\cos(\theta-\mu)=I_1(\kappa)/I_0(\kappa)\).
+
+The study draws von Mises samples centred at \(\mu=\pi\), the cut point of \((-\pi,\pi]\). It compares the arithmetic and circular means, and the coverage of the two 95% intervals for \(\mu\): Fisher's large-sample interval and a 1000-resample percentile bootstrap. There are 500 samples per setting.
+
+```{cpp, id=circ, file="figures/circular_summaries.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/circular.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+const double pi = std::numbers::pi;
+
+// Signed angular distance from a to b in (-pi, pi].
+double gap(double a, double b) { return std::remainder(b - a, 2 * pi); }
+
+int main() {
+    dm::random::SplitMix64 rng(3);
+    // Arithmetic versus circular mean when the mean direction sits at the cut point.
+    double lin_err = 0, circ_err = 0;
+    for (int r = 0; r < 500; ++r) {
+        const auto x = dm::stats::von_mises_sample(50, pi, 2.0, rng.next_u64());
+        double lin = 0;
+        for (const double v : x)
+            lin += v / x.size();
+        lin_err += std::abs(gap(pi, lin)) / 500;
+        circ_err += std::abs(gap(pi, dm::stats::circular_summary(x).mean_direction)) / 500;
+    }
+    std::println("Mean absolute angular error for mu = pi, kappa = 2, n = 50: "
+                 "arithmetic mean {:.3f} rad, circular mean {:.3f} rad.\n",
+                 lin_err, circ_err);
+
+    std::println("| kappa | n | Fisher interval coverage | Fisher interval undefined | "
+                 "Bootstrap coverage | Mean width: Fisher / bootstrap (rad) |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const double kappa : {0.5, 2.0})
+        for (const std::size_t n : {10, 25, 100}) {
+            double fc = 0, fu = 0, bc = 0, fw = 0, bw = 0, fn = 0;
+            const int reps = 500;
+            for (int r = 0; r < reps; ++r) {
+                const auto x = dm::stats::von_mises_sample(n, pi, kappa, rng.next_u64());
+                const auto s = dm::stats::circular_summary(x);
+                if (std::isnan(s.lower)) {
+                    ++fu;
+                } else {
+                    const double half = (s.upper - s.lower) / 2;
+                    fc += std::abs(gap(s.mean_direction, pi)) <= half;
+                    fw += 2 * half, ++fn;
+                }
+                const auto b = dm::stats::circular_mean_bootstrap_interval(
+                    x, 0.95, 1000, rng.next_u64());
+                const double centre = s.mean_direction, d = gap(centre, pi);
+                bc += d >= b.lower - centre && d <= b.upper - centre;
+                bw += (b.upper - b.lower) / reps;
+            }
+            // Undefined Fisher intervals (whole circle) count as covering.
+            std::println("| {} | {} | {:.3f} | {:.3f} | {:.3f} | {:.2f} / {:.2f} |", kappa,
+                         n, (fc + fu) / reps, fu / reps, bc / reps, fn > 0 ? fw / fn : NAN,
+                         bw);
+        }
+
+    // Figure: one sample of 25 near the cut point with both means and the Fisher interval.
+    const auto x = dm::stats::von_mises_sample(25, pi, 2.0, 41);
+    const auto s = dm::stats::circular_summary(x);
+    double lin = 0;
+    for (const double v : x)
+        lin += v / x.size();
+    std::vector<double> cx, cy, px, py, ax, ay;
+    for (int k = 0; k <= 360; ++k)
+        cx.push_back(std::cos(k * pi / 180)), cy.push_back(std::sin(k * pi / 180));
+    for (const double v : x)
+        px.push_back(std::cos(v)), py.push_back(std::sin(v));
+    for (double a = s.lower; a <= s.upper; a += 0.01)
+        ax.push_back(1.15 * std::cos(a)), ay.push_back(1.15 * std::sin(a));
+    const double r = s.resultant_length;
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(cx, cy, "", {170, 170, 170}, 1)
+        .points(px, py, "Observed directions", {60, 60, 60}, 5)
+        .segments({0}, {0}, {r * std::cos(s.mean_direction)},
+                  {r * std::sin(s.mean_direction)}, {26, 90, 147}, 3)
+        .segments({0}, {0}, {0.9 * std::cos(lin)}, {0.9 * std::sin(lin)}, {176, 72, 43}, 3)
+        .line(ax, ay, "95% interval for the mean direction", {26, 90, 147}, 3)
+        .line({0, 0}, {0, 0}, "Mean resultant (blue) vs arithmetic mean (red)",
+              {176, 72, 43}, 3)
+        .x_limits(-1.4, 1.4)
+        .y_limits(-1.4, 1.9)
+        .title("Directions near the cut point at pi")
+        .x_label("cos(theta)")
+        .y_label("sin(theta)")
+        .size(470, 610);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/circular_summaries.svg");
+}
+```
+// result_begin: markdown
+Mean absolute angular error for mu = pi, kappa = 2, n = 50: arithmetic mean 2.846 rad, circular mean 0.101 rad.
+
+| kappa | n | Fisher interval coverage | Fisher interval undefined | Bootstrap coverage | Mean width: Fisher / bootstrap (rad) |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.5 | 10 | 0.924 | 0.646 | 0.850 | 1.84 / 3.23 |
+| 0.5 | 25 | 0.936 | 0.456 | 0.904 | 1.76 / 2.70 |
+| 0.5 | 100 | 0.946 | 0.042 | 0.940 | 1.21 / 1.28 |
+| 2 | 10 | 0.932 | 0.018 | 0.922 | 1.10 / 1.08 |
+| 2 | 25 | 0.956 | 0.000 | 0.952 | 0.67 / 0.66 |
+| 2 | 100 | 0.932 | 0.000 | 0.928 | 0.33 / 0.33 |
+\image(figures/circular_summaries.svg)
+// result_end
+
+The arithmetic mean fails completely at the cut point. With \(\mu=\pi\), angles just below \(\pi\) and just above \(-\pi\) cancel, so the arithmetic mean lands near 0, an average error of 2.85 radians, almost opposite to the true direction. The circular mean errs by 0.10 radians. The figure shows one sample of 25. The mean resultant (blue) points into the cluster near \(\pi\), its length \(\bar R\) shows the concentration, and the arc marks the 95% interval. The arithmetic mean (red) points the other way.
+
+For concentrated data (\(\kappa=2\)), both intervals reach nominal coverage from \(n=25\), with nearly identical widths. Even at \(n=10\) they cover 92–93%. Diffuse data (\(\kappa=0.5\), \(\bar R\approx0.24\)) are hard. With \(n=10\), Fisher's interval cannot be formed in 65% of samples (\(z\hat\sigma\ge1\)), meaning the data do not determine a direction. Counting those as covering gives the reported 92%, but that coverage is uninformative. The bootstrap interval always returns an arc, and it is honest about the uncertainty: it is wide (mean 3.2 radians) and still undercovers at 85%, because resampling 10 diffuse points understates the variability of the mean direction. Both intervals behave well only once \(n\bar R^2\) is large enough, about 100 points here.
+
+>> Practical guidance
+
+- Summarise directions with \(\bar\theta\) and \(\bar R\), never with the arithmetic mean of angles, and report the convention used for the range, \((-\pi,\pi]\) or \([0,2\pi)\).
+- Report \(\bar R\) or the circular standard deviation with the mean direction. A mean direction with \(\bar R\) near 0 is meaningless, as are balanced bimodal data, where \(\bar R\) is small even though the directions are concentrated (use the second moment or axial methods there).
+- Use Fisher's large-sample interval for \(n\ge25\) with moderate concentration, and the bootstrap for smaller samples. Treat both as unreliable when \(n\bar R^2\) is small, and test uniformity first.
+- Convert degrees, hours or days of the year to radians before summarising, and convert the results back for reporting.
+
+>> References
+
+- N. I. Fisher (1993). *Statistical Analysis of Circular Data*. Cambridge University Press. doi:10.1017/CBO9780511564345
+- K. V. Mardia and P. E. Jupp (2000). *Directional Statistics*. Wiley. doi:10.1002/9780470316979
+- D. J. Best and N. I. Fisher (1979). Efficient simulation of the von Mises distribution. *Journal of the Royal Statistical Society C* 28(2), 152-157. doi:10.2307/2346732
+- A. Pewsey, M. Neuhäuser and G. D. Ruxton (2013). *Circular Statistics in R*. Oxford University Press.

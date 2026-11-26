@@ -1,0 +1,127 @@
+//? Title: Choose runs for an irregular region with D-optimal designs
+//? Exports: both
+//? Lang: en
+
+> Maximize the information determinant over a candidate set
+
+Classical designs assume a cube or sphere. When some factor combinations are infeasible, or when the run budget does not fit a standard design, an optimal design chooses the runs instead. For a linear model \(y=f(x)^\top\beta+\varepsilon\) with \(n\) runs, the least-squares covariance is \(\sigma^2M^{-1}\), where \(M=\sum_i f(x_i)f(x_i)^\top\). A D-optimal design maximizes \(|M|\). This minimizes the volume of the joint confidence ellipsoid for \(\beta\) and does not depend on how the factors are scaled.
+
+`d_optimal_design` takes a candidate model matrix, so any linear model works. It searches with Fedorov's exchange algorithm, which repeatedly swaps the design row and candidate pair that most increases the determinant, using the update \(|M'|=|M|(1+d_j-d_i-d_id_j+d_{ij}^2)\). The search restarts from several random designs. `design_criteria` reports the D, A and G criteria and checks whether every parameter is estimable.
+
+The example fits a full quadratic in two factors on \([-1,1]^2\), but the corner where both factors are high is unsafe, so the constraint \(x_1+x_2\le1\) applies. The candidates are a 21 × 21 grid of the feasible region. The D-optimal designs are compared with an ad hoc design that keeps the feasible points of the 3 × 3 grid, moves the excluded corner onto the constraint at (0.5, 0.5), and adds center replicates.
+
+```{cpp, id=d-optimal, file="figures/d_optimal_region.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/d_optimal.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+// Full quadratic model: 1, x1, x2, x1 x2, x1^2, x2^2.
+std::vector<double> model(double a, double b) { return {1, a, b, a * b, a * a, b * b}; }
+
+Matrix model_matrix(const std::vector<std::pair<double, double>>& points) {
+    Matrix f(points.size(), 6);
+    for (std::size_t r = 0; r < points.size(); ++r) {
+        const auto row = model(points[r].first, points[r].second);
+        for (std::size_t c = 0; c < 6; ++c)
+            f(r, c) = row[c];
+    }
+    return f;
+}
+
+int main() {
+    std::vector<std::pair<double, double>> region;
+    for (int i = 0; i <= 20; ++i)
+        for (int j = 0; j <= 20; ++j) {
+            const double a = -1 + .1 * i, b = -1 + .1 * j;
+            if (a + b <= 1 + 1e-9)
+                region.push_back({a, b});
+        }
+    const Matrix candidates = model_matrix(region);
+    std::println("{} feasible candidate points.\n", region.size());
+
+    // Ad hoc design: feasible 3 x 3 points, the cut corner moved to (0.5, 0.5), centers to n runs.
+    const auto ad_hoc = [](std::size_t n) {
+        std::vector<std::pair<double, double>> p{{-1, -1}, {0, -1}, {1, -1}, {-1, 0}, {0, 0},
+                                                 {1, 0},  {-1, 1}, {0, 1},  {.5, .5}};
+        while (p.size() < n)
+            p.push_back({0, 0});
+        return p;
+    };
+
+    std::println("| Runs | D-optimal D | Ad hoc D | Relative D-efficiency | D-optimal G-eff. "
+                 "| Ad hoc G-eff. |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: |");
+    std::vector<std::pair<double, double>> chosen10;
+    for (const std::size_t n : {9, 10, 12, 15}) {
+        const auto best = dm::stats::d_optimal_design(candidates, n, {.starts = 100, .allow_repeats = true});
+        const auto naive = dm::stats::design_criteria(model_matrix(ad_hoc(n)), candidates);
+        // Per-run relative efficiency (|M_naive| / |M_opt|)^(1/p) with equal n.
+        const double relative = std::exp((naive.log_det - best.criteria.log_det) / 6);
+        std::println("| {} | {:.4f} | {:.4f} | {:.3f} | {:.3f} | {:.3f} |", n,
+                     best.criteria.d_criterion, naive.d_criterion, relative,
+                     best.criteria.g_efficiency, naive.g_efficiency);
+        if (n == 10)
+            for (const auto r : best.rows)
+                chosen10.push_back(region[r]);
+    }
+    std::print("\nThe 10-run D-optimal design:");
+    for (const auto& [a, b] : chosen10)
+        std::print(" ({:.1f}, {:.1f})", a, b);
+    std::println(".");
+
+    // Too few distinct points: the corner-only design cannot estimate the quadratic terms.
+    const auto corners = dm::stats::design_criteria(
+        model_matrix({{-1, -1}, {1, -1}, {-1, 1}, {0, 1}, {1, 0}, {-1, -1}}), candidates);
+    std::println("\nSix runs on only five distinct boundary points give rank {} of 6, estimable: {}.",
+                 corners.rank, corners.estimable ? "yes" : "no");
+
+    std::vector<double> cx, cy, ox, oy;
+    for (const auto& [a, b] : region) {
+        cx.push_back(a);
+        cy.push_back(b);
+    }
+    for (const auto& [a, b] : chosen10) {
+        ox.push_back(a);
+        oy.push_back(b);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.points(cx, cy, "Candidates", {200, 204, 210}, 3)
+        .line({0, 1}, {1, 0}, "Constraint x1 + x2 = 1", {176, 72, 43}, 1.5)
+        .points(ox, oy, "10-run D-optimal design", {26, 90, 147}, 9)
+        .title("D-optimal runs on a constrained region")
+        .x_label("x1").y_label("x2")
+        .size(600, 560);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/d_optimal_region.svg");
+}
+```
+// result_begin: markdown
+386 feasible candidate points.
+
+| Runs | D-optimal D | Ad hoc D | Relative D-efficiency | D-optimal G-eff. | Ad hoc G-eff. |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 9 | 0.3946 | 0.3802 | 0.964 | 0.808 | 0.737 |
+| 10 | 0.3926 | 0.3690 | 0.940 | 0.735 | 0.681 |
+| 12 | 0.3973 | 0.3368 | 0.848 | 0.705 | 0.579 |
+| 15 | 0.4019 | 0.2924 | 0.727 | 0.918 | 0.468 |
+
+The 10-run D-optimal design: (-1.0, -1.0) (-1.0, -1.0) (-1.0, 0.1) (-1.0, 1.0) (-0.1, -0.1) (0.0, 1.0) (0.2, -1.0) (1.0, -1.0) (1.0, 0.0) (1.0, 0.0).
+
+Six runs on only five distinct boundary points give rank 5 of 6, estimable: no.
+\image(figures/d_optimal_region.svg)
+// result_end
+\caption(The 386 feasible candidate points, the constraint x1 + x2 = 1 and the 10-run D-optimal design; points chosen twice are drawn once.)
+\alttext(The chosen runs sit at the three feasible square corners, at the two ends of the constraint line, at midpoints of the left and bottom edges and near the center. The corners (−1, −1) and (1, 0) are each replicated.)
+
+The D-optimal runs fall where a quadratic needs them. They sit at the vertices of the feasible region, including both ends of the constraint edge, at points near the middle of the edges, and close to the center. The vertices where the prediction variance is largest are replicated. The ad hoc design loses 4% efficiency per run at 9 runs. Its relative efficiency falls to 73% at 15 runs, because its extra runs are center replicates, which add little information about the edges. At 15 runs it would need about \(1/0.727\approx1.4\) times as many runs to match the D-optimal design. The D-optimal designs also have higher G-efficiency, so their worst prediction variance over the region is smaller.
+
+The 10-run design is not symmetric in \(x_1\) and \(x_2\), even though the region is. Its mirror image has the same determinant, and exact D-optimal designs are often not unique. The last line shows the estimability check: six runs on only five distinct points cannot identify six parameters. On the 3 × 3 and 3 × 3 × 3 grids, the D, A and G criteria agree with `AlgDesign::optFederov` in R, and exchange reaches the best determinant that `optFederov` found.
+
+[Fedorov (1972)|https://www.sciencedirect.com/book/9780122507502] · [Atkinson, Donev and Tobias (2007)|https://doi.org/10.1093/oso/9780199296590.001.0001] · [R AlgDesign|https://cran.r-project.org/package=AlgDesign]

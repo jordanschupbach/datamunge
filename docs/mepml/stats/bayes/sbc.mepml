@@ -1,0 +1,253 @@
+//? Title: Simulation-based calibration
+//? Exports: both
+//? Lang: en
+
+> Check that a Bayesian inference algorithm returns the right posterior by simulating parameters from the prior, refitting on simulated data, and testing whether the true values' ranks among the posterior draws are uniform
+
+If parameters are drawn from the prior and data from the model, averaging the exact posteriors over many such datasets gives back the prior. Simulation-based calibration (SBC) turns this into a test of an inference algorithm. Each replication draws \(\tilde\theta\sim p(\theta)\), simulates \(\tilde y\sim p(y\mid\tilde\theta)\), runs the algorithm to get \(L\) posterior draws, and records the rank of \(\tilde\theta\) among them. For an exact algorithm the rank is uniform on \(\{0,\dots,L\}\), whatever the model. Departures have recognisable shapes:
+
+- A U-shaped histogram means posteriors that are too narrow, because the truth often falls outside them.
+- An inverted U means posteriors that are too wide.
+- A slope means a systematic shift.
+
+SBC checks the whole pipeline (model code, gradients, sampler or approximation) against the generative model, without knowing any true posterior.
+
+`simulation_based_calibration` takes three callbacks: a prior sampler, a data simulator and a fitting routine. It returns the ranks, binned histograms, Pearson's \(\chi^2\) test of uniformity, and a test based on the largest deviation of the rank ECDF from the uniform CDF, calibrated by simulating uniform ranks. The tests check uniformity for an exact conjugate posterior, rejection for posteriors that are half as wide as they should be or shifted, the \(\chi^2\) statistic, and the bookkeeping of failed fits.
+
+The example applies SBC to the variational approximations of the previous report. The model is a Bayesian regression with three coefficients \(\beta\sim N(0,I)\), unit error variance, \(n=20\), and a fixed design with two predictors at correlation 0.9. Three algorithms each return \(L=99\) draws: exact draws from the Gaussian posterior, mean-field ADVI and full-rank ADVI. Each is checked over 1000 replications, with 20 bins.
+
+```{cpp, id=sbc, file="figures/sbc.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/bayes/advi.hpp>
+#include <datamunge/bayes/sbc.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cstdint>
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <string>
+#include <utility>
+#include <vector>
+
+namespace dm = datamunge;
+using Vec = std::vector<double>;
+using Draws = std::vector<Vec>;
+
+constexpr std::size_t n = 20, p = 3, L = 99;
+std::array<std::array<double, p>, n> X;
+
+// Posterior N(V X'y, V) with V = (X'X + I)^{-1}; returns the mean and the Cholesky of V.
+struct Gaussian {
+    Vec mean;
+    std::array<double, p * p> chol{};
+};
+Gaussian exact_posterior(const Vec& y) {
+    std::array<double, p * p> a{};
+    Vec b(p, 0.0);
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t r = 0; r < p; ++r) {
+            b[r] += X[i][r] * y[i];
+            for (std::size_t c = 0; c < p; ++c)
+                a[r * p + c] += X[i][r] * X[i][c];
+        }
+    for (std::size_t r = 0; r < p; ++r)
+        a[r * p + r] += 1;
+    // Invert the precision by Gauss-Jordan elimination.
+    std::array<double, p * p> v{};
+    for (std::size_t r = 0; r < p; ++r)
+        v[r * p + r] = 1;
+    for (std::size_t c = 0; c < p; ++c) {
+        const double piv = a[c * p + c];
+        for (std::size_t k = 0; k < p; ++k)
+            a[c * p + k] /= piv, v[c * p + k] /= piv;
+        for (std::size_t r = 0; r < p; ++r)
+            if (r != c) {
+                const double f = a[r * p + c];
+                for (std::size_t k = 0; k < p; ++k)
+                    a[r * p + k] -= f * a[c * p + k], v[r * p + k] -= f * v[c * p + k];
+            }
+    }
+    Gaussian g{Vec(p, 0.0)};
+    for (std::size_t r = 0; r < p; ++r)
+        for (std::size_t c = 0; c < p; ++c)
+            g.mean[r] += v[r * p + c] * b[c];
+    for (std::size_t j = 0; j < p; ++j)
+        for (std::size_t i = j; i < p; ++i) {
+            double s = v[i * p + j];
+            for (std::size_t k = 0; k < j; ++k)
+                s -= g.chol[i * p + k] * g.chol[j * p + k];
+            g.chol[i * p + j] = i == j ? std::sqrt(s) : s / g.chol[j * p + j];
+        }
+    return g;
+}
+
+struct LogPosterior : dm::optim::DifferentiableFunction {
+    Vec y;
+    double evaluate(const Vec& t) override {
+        double s = 0;
+        for (std::size_t i = 0; i < n; ++i) {
+            const double e = y[i] - X[i][0] * t[0] - X[i][1] * t[1] - X[i][2] * t[2];
+            s -= 0.5 * e * e;
+        }
+        return s - 0.5 * (t[0] * t[0] + t[1] * t[1] + t[2] * t[2]);
+    }
+    Vec gradient(const Vec& t) override {
+        Vec g{-t[0], -t[1], -t[2]};
+        for (std::size_t i = 0; i < n; ++i) {
+            const double e = y[i] - X[i][0] * t[0] - X[i][1] * t[1] - X[i][2] * t[2];
+            for (std::size_t j = 0; j < p; ++j)
+                g[j] += e * X[i][j];
+        }
+        return g;
+    }
+};
+
+int main() {
+    dm::random::SplitMix64 design(5);
+    for (auto& row : X) {
+        const double z = design.normal();
+        row = {1.0, z, 0.9 * z + std::sqrt(0.19) * design.normal()};
+    }
+    const auto prior = [](dm::random::SplitMix64& g) {
+        return Vec{g.normal(), g.normal(), g.normal()};
+    };
+    const auto simulate = [](const Vec& t, dm::random::SplitMix64& g) {
+        Vec y(n);
+        for (std::size_t i = 0; i < n; ++i)
+            y[i] = X[i][0] * t[0] + X[i][1] * t[1] + X[i][2] * t[2] + g.normal();
+        return y;
+    };
+    const auto exact = [](const Vec& y, dm::random::SplitMix64& g) {
+        const Gaussian post = exact_posterior(y);
+        Draws d(L, Vec(p));
+        for (auto& row : d) {
+            const Vec z{g.normal(), g.normal(), g.normal()};
+            for (std::size_t i = 0; i < p; ++i) {
+                row[i] = post.mean[i];
+                for (std::size_t k = 0; k <= i; ++k)
+                    row[i] += post.chol[i * p + k] * z[k];
+            }
+        }
+        return d;
+    };
+    const auto variational = [](dm::bayes::AdviFamily family) {
+        return [family](const Vec& y, dm::random::SplitMix64& g) {
+            LogPosterior lp;
+            lp.y = y;
+            return dm::bayes::advi(lp, {0.0, 0.0, 0.0},
+                                   {.family = family, .max_iterations = 4000,
+                                    .output_draws = L, .seed = g.next_u64()})
+                .draws;
+        };
+    };
+    using F = dm::bayes::AdviFamily;
+    const std::vector<std::pair<std::string, dm::bayes::SbcFit>> algorithms{
+        {"Exact posterior", exact},
+        {"Mean-field ADVI", variational(F::mean_field)},
+        {"Full-rank ADVI", variational(F::full_rank)}};
+    const char* names[p]{"beta0", "beta1", "beta2"};
+    std::println("| Algorithm | Parameter | Mean rank / L | Chi-squared p | ECDF p |");
+    std::println("| --- | --- | ---: | ---: | ---: |");
+    std::vector<std::vector<std::size_t>> histograms;
+    for (std::size_t a = 0; a < algorithms.size(); ++a) {
+        const auto r = dm::bayes::simulation_based_calibration(
+            prior, simulate, algorithms[a].second,
+            {.replications = 1000, .bins = 20, .seed = 77});
+        for (std::size_t j = 0; j < p; ++j) {
+            const auto& q = r.parameters[j];
+            const auto fmt = [](double v, double floor) {
+                return v < floor ? std::format("< {:g}", floor) : std::format("{:.2g}", v);
+            };
+            std::println("| {} | {} | {:.3f} | {} | {} |", algorithms[a].first, names[j],
+                         q.mean_rank_fraction, fmt(q.chi_squared_p_value, 1e-6),
+                         fmt(q.ecdf_p_value, 0.001));
+        }
+        histograms.push_back(r.parameters[1].histogram);
+    }
+
+    // Repeat the calibrated algorithms with four more seeds; smallest p of 3.
+    std::println("\nRepeat runs (seeds 1-4), smallest chi-squared p over the three "
+                 "coefficients:\n");
+    std::println("| Algorithm | Seed 1 | Seed 2 | Seed 3 | Seed 4 |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (const std::size_t a : {0u, 2u}) {
+        std::string row = "| " + algorithms[a].first;
+        for (std::uint64_t seed = 1; seed <= 4; ++seed) {
+            const auto r = dm::bayes::simulation_based_calibration(
+                prior, simulate, algorithms[a].second,
+                {.replications = 1000, .bins = 20, .ecdf_simulations = 1, .seed = seed});
+            double low = 1;
+            for (const auto& q : r.parameters)
+                low = std::min(low, q.chi_squared_p_value);
+            row += std::format(" | {:.2g}", low);
+        }
+        std::println("{} |", row);
+    }
+
+    Vec centre, expected(20, 50.0);
+    for (int b = 0; b < 20; ++b)
+        centre.push_back(5 * b + 2.5);
+    const dm::graphics::RGBA colors[3]{{40, 40, 40}, {176, 72, 43}, {26, 90, 147}};
+    double top = 0;
+    for (const auto& h : histograms)
+        for (const std::size_t c : h)
+            top = std::max(top, double(c));
+    auto plot = dm::graphics::RPlot::create();
+    for (std::size_t a = 0; a < histograms.size(); ++a) {
+        Vec h(histograms[a].begin(), histograms[a].end());
+        plot.line(centre, h, algorithms[a].first, colors[a], 2)
+            .points(centre, h, "", colors[a], 4);
+    }
+    plot.line(centre, expected, "Uniform expectation", {150, 150, 150}, 1)
+        .y_limits(0, 1.6 * top)
+        .title("SBC rank histograms of beta1 (1000 replications)")
+        .x_label("Rank of the true beta1 among 99 posterior draws (bin centre)")
+        .y_label("Count")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/sbc.svg");
+}
+```
+// result_begin: markdown
+| Algorithm | Parameter | Mean rank / L | Chi-squared p | ECDF p |
+| --- | --- | ---: | ---: | ---: |
+| Exact posterior | beta0 | 0.514 | 0.018 | 0.23 |
+| Exact posterior | beta1 | 0.505 | 0.079 | 0.18 |
+| Exact posterior | beta2 | 0.497 | 0.046 | 0.14 |
+| Mean-field ADVI | beta0 | 0.487 | 0.22 | 0.31 |
+| Mean-field ADVI | beta1 | 0.499 | < 1e-06 | < 0.001 |
+| Mean-field ADVI | beta2 | 0.510 | < 1e-06 | < 0.001 |
+| Full-rank ADVI | beta0 | 0.486 | 0.61 | 0.31 |
+| Full-rank ADVI | beta1 | 0.504 | 0.87 | 0.54 |
+| Full-rank ADVI | beta2 | 0.503 | 0.00051 | 0.24 |
+
+Repeat runs (seeds 1-4), smallest chi-squared p over the three coefficients:
+
+| Algorithm | Seed 1 | Seed 2 | Seed 3 | Seed 4 |
+| --- | ---: | ---: | ---: | ---: |
+| Exact posterior | 0.1 | 0.37 | 0.38 | 0.44 |
+| Full-rank ADVI | 0.081 | 0.29 | 0.23 | 0.015 |
+\image(figures/sbc.svg)
+// result_end
+
+Mean-field ADVI fails SBC for both slopes, with p-values below \(10^{-6}\) and the U-shaped histogram in the figure. The true \(\beta_1\) ranks among the lowest five of the 100 possible positions in about 21% of replications, and among the highest five in about 21%, against an expected 5% each. This is the underdispersion seen in the previous report, which found the mean-field slope SDs a third of the true values. SBC detects it without any knowledge of the true posterior: the mean rank stays at 0.5, so the approximation is centred correctly, and only the shape of the histogram reveals the problem. The intercept, which is nearly uncorrelated with the slopes, passes. Exact draws and full-rank ADVI give flat histograms.
+
+The main table also shows why SBC p-values must be read with care. With nine tests, a few small values are expected by chance: the exact sampler, which is correct by construction, reaches \(p=0.018\) for \(\beta_0\) with this seed. One full-rank test reaches \(p=0.0005\), while the ECDF test for the same parameter gives 0.24. The repeat runs show neither effect recurring: the smallest p-value over the three coefficients is between 0.015 and 0.44 for both algorithms over four further seeds. A true miscalibration, like mean-field ADVI's, gives tiny p-values every time and a histogram shape that matches a mechanism. An isolated small p-value calls for more replications, not a conclusion.
+
+>> Practical guidance
+
+- Simulate from the same prior and likelihood that the fitting code assumes. SBC tests the consistency of the whole pipeline, so a mismatch shows up as a failure.
+- Use posterior draws that are nearly independent. Thin MCMC output to about its effective sample size before ranking, otherwise autocorrelation alone produces a U shape.
+- Read the histogram shape as well as the p-values: a U means too narrow, an inverted U too wide, and a slope or a mean rank away from 0.5 a shift.
+- Include derived quantities, such as the log likelihood or predictions, as extra "parameters". Errors that leave each marginal looking fine often show up there.
+- Rerun with more replications or another seed before acting on a single borderline p-value.
+
+>> References
+
+- S. Talts, M. Betancourt, D. Simpson, A. Vehtari and A. Gelman (2018). Validating Bayesian inference algorithms with simulation-based calibration. arXiv:1804.06788.
+- S. R. Cook, A. Gelman and D. B. Rubin (2006). Validation of software for Bayesian models using posterior quantiles. *Journal of Computational and Graphical Statistics* 15(3), 675-692. doi:10.1198/106186006X136976
+- T. Säilynoja, P.-C. Bürkner and A. Vehtari (2022). Graphical test for discrete uniformity and its applications in goodness-of-fit evaluation and multiple sample comparison. *Statistics and Computing* 32(2), 32. doi:10.1007/s11222-022-10090-6

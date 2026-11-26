@@ -1,0 +1,163 @@
+//? Title: Poisson point-process regression
+//? Exports: both
+//? Lang: en
+
+> Model how the intensity of a point pattern depends on spatial covariates, choose the quadrature that approximates the likelihood, and check the standard errors when points are clustered
+
+An inhomogeneous Poisson process has intensity \(\lambda(u)\): the expected number of points per unit area at location \(u\), with counts in disjoint regions independent. A log-linear model \(\lambda(u)=\exp(\beta^\top z(u))\) relates the intensity to covariates such as elevation, distance to a road or a coordinate trend. The log-likelihood
+
+\[
+\ell(\beta)=\sum_{i=1}^n\beta^\top z(x_i)-\int_W\exp(\beta^\top z(u))\,du
+\]
+
+needs the integral over the window. The Berman–Turner device approximates it by a weighted sum over quadrature points: the data points plus dummy points at the centres of a grid of tiles. Each point is weighted by its tile's area divided by the number of points in the tile. With this approximation the likelihood has the form of a weighted Poisson GLM. It is concave, so Newton's method finds its maximum.
+
+`berman_turner_quadrature` builds spatstat's default scheme, a grid of \(\max(32,10\lceil2\sqrt n/10\rceil)\) tiles per side plus the four corners. `poisson_process_regression` fits the model, with the covariates given as a function of location. It returns coefficients, the inverse-Fisher-information covariance, the Berman–Turner log-likelihood and the AIC, and `poisson_process_intensity` evaluates the fitted intensity. The tests reproduce spatstat's quadrature weights and `ppm` fits (coefficients, `vcov`, `logLik`, `AIC`) for the default scheme, a custom \(30\times15\) grid with a quadratic trend, and a covariate supplied as a function.
+
+The study uses a rough covariate, \(z(u)=\cos(6\pi x)\cos(4\pi y)\), on \([0,2]\times[0,1]\). The intensity is \(\lambda(u)=\exp(4+z(u))\), giving about 140 points per pattern. First, Poisson patterns are simulated by thinning and fitted with quadrature grids from \(16\times8\) to \(128\times64\) tiles. Second, clustered patterns with the same intensity are made by thinning a stationary Thomas process (5 offspring per parent, scale 0.03) with retention probability \(\lambda(u)/\max\lambda\). The Poisson model is still fitted to them. Each setting has 300 patterns, and the table reports the slope \(\beta_1\) (true value 1).
+
+```{cpp, id=ppm, file="figures/poisson_process_regression.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/point_pattern.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+const dm::stats::RectangleWindow win{.xmin = 0, .xmax = 2, .ymin = 0, .ymax = 1};
+const double pi = std::numbers::pi;
+
+double covariate(double x, double y) { return std::cos(6 * pi * x) * std::cos(4 * pi * y); }
+double intensity(double x, double y) { return std::exp(4 + covariate(x, y)); }
+const double lambda_max = std::exp(5.0);
+const dm::stats::PointCovariates design = [](double x, double y) {
+    return std::vector<double>{1.0, covariate(x, y)};
+};
+
+std::size_t poisson(dm::random::SplitMix64& rng, double mean) {
+    return dm::random::poisson_quantile(rng.uniform01(), mean);
+}
+Matrix to_matrix(const std::vector<double>& xs, const std::vector<double>& ys) {
+    Matrix p(xs.size(), 2);
+    for (std::size_t i = 0; i < xs.size(); ++i)
+        p(i, 0) = xs[i], p(i, 1) = ys[i];
+    return p;
+}
+// Homogeneous points at rate lambda_max (Poisson or Thomas), then thinned by lambda / max.
+Matrix simulate(dm::random::SplitMix64& rng, bool clustered) {
+    std::vector<double> xs, ys;
+    const auto keep = [&](double x, double y) {
+        if (x >= 0 && x <= 2 && y >= 0 && y <= 1 &&
+            rng.uniform01() < intensity(x, y) / lambda_max)
+            xs.push_back(x), ys.push_back(y);
+    };
+    if (!clustered) {
+        for (std::size_t k = poisson(rng, lambda_max * 2); k > 0; --k)
+            keep(2 * rng.uniform01(), rng.uniform01());
+    } else {
+        const double mu = 5, sigma = 0.03, pad = 4 * sigma;
+        const double area = (2 + 2 * pad) * (1 + 2 * pad);
+        for (std::size_t k = poisson(rng, lambda_max / mu * area); k > 0; --k) {
+            const double px = -pad + (2 + 2 * pad) * rng.uniform01();
+            const double py = -pad + (1 + 2 * pad) * rng.uniform01();
+            for (std::size_t c = poisson(rng, mu); c > 0; --c)
+                keep(px + sigma * rng.normal(), py + sigma * rng.normal());
+        }
+    }
+    return to_matrix(xs, ys);
+}
+
+int main() {
+    dm::random::SplitMix64 rng(12);
+    struct Setting {
+        const char* data;
+        bool clustered;
+        std::size_t grid;
+    };
+    const Setting settings[]{{"Poisson", false, 8},  {"Poisson", false, 16},
+                             {"Poisson", false, 32}, {"Poisson", false, 64},
+                             {"Thinned Thomas (clustered)", true, 64}};
+    std::println("| Data | Quadrature grid | Mean slope (true 1) | Empirical SD | "
+                 "Mean model SE | 95% Wald coverage |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    const int reps = 300;
+    for (const Setting& s : settings) {
+        double sum = 0, sq = 0, se = 0, cover = 0;
+        for (int r = 0; r < reps; ++r) {
+            const Matrix p = simulate(rng, s.clustered);
+            const auto fit = dm::stats::poisson_process_regression(
+                p, win, design, {.grid_x = 2 * s.grid, .grid_y = s.grid});
+            const double b = fit.coefficients[1], e = fit.standard_errors[1];
+            sum += b, sq += b * b, se += e;
+            cover += std::abs(b - 1) <= 1.959964 * e;
+        }
+        const double m = sum / reps;
+        std::println("| {} | {} x {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", s.data,
+                     2 * s.grid, s.grid, m, std::sqrt(sq / reps - m * m), se / reps,
+                     cover / reps);
+    }
+
+    // Figure: fitted log-intensity of one Poisson pattern with its points.
+    const Matrix p = simulate(rng, false);
+    const auto fit = dm::stats::poisson_process_regression(p, win, design,
+                                                           {.grid_x = 128, .grid_y = 64});
+    std::vector<double> gx, gy, px, py;
+    for (int a = 0; a < 100; ++a)
+        gx.push_back(0.01 + 0.02 * a);
+    for (int b = 0; b < 50; ++b)
+        gy.push_back(0.01 + 0.02 * b);
+    std::vector<std::vector<double>> z(gx.size(), std::vector<double>(gy.size()));
+    for (std::size_t a = 0; a < gx.size(); ++a)
+        for (std::size_t b = 0; b < gy.size(); ++b)
+            z[a][b] =
+                std::log(dm::stats::poisson_process_intensity(fit, design, gx[a], gy[b]));
+    for (std::size_t i = 0; i < p.rows(); ++i)
+        px.push_back(p(i, 0)), py.push_back(p(i, 1));
+    auto plot = dm::graphics::RPlot::create();
+    const std::vector<dm::graphics::RGBA> blues{
+        {240, 240, 245}, {190, 205, 230}, {120, 150, 200}, {40, 80, 150}};
+    plot.image(gx, gy, z, blues)
+        .points(px, py, "", {176, 40, 30}, 4)
+        .title("Fitted log-intensity and one simulated pattern")
+        .x_label("x")
+        .y_label("y")
+        .size(640, 380);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/poisson_process_regression.svg");
+}
+```
+// result_begin: markdown
+| Data | Quadrature grid | Mean slope (true 1) | Empirical SD | Mean model SE | 95% Wald coverage |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Poisson | 16 x 8 | 0.787 | 0.153 | 0.181 | 0.823 |
+| Poisson | 32 x 16 | 0.986 | 0.188 | 0.188 | 0.943 |
+| Poisson | 64 x 32 | 0.995 | 0.187 | 0.189 | 0.953 |
+| Poisson | 128 x 64 | 0.992 | 0.191 | 0.189 | 0.937 |
+| Thinned Thomas (clustered) | 128 x 64 | 0.995 | 0.283 | 0.191 | 0.837 |
+\image(figures/poisson_process_regression.svg)
+// result_end
+
+The quadrature is part of the estimator. The covariate has period \(1/3\) along \(x\) and \(1/2\) along \(y\). A \(16\times8\) grid places dummy points every 0.125 units, so it samples each period only two or three times, and the weighted sum misstates \(\int\exp(\beta^\top z)\). The slope is then biased by 21% toward zero (0.79), and the Wald intervals cover the truth only 82% of the time. From \(32\times16\) upward the estimate is unbiased, and the model SE (0.188) matches the empirical SD. spatstat's default for about 140 points would be a \(32\times32\) grid, adequate here but only marginally so. The rule is to resolve the covariate's finest scale, not to scale with \(\sqrt n\).
+
+Clustering breaks the standard errors, not the estimate. Independent thinning of a Thomas process gives exactly the modelled intensity, so the Poisson score equation is still unbiased, and the slope averages 0.995. The points, however, arrive in clusters of correlated locations. The actual SD of the slope is 0.283, while the inverse Fisher information still reports 0.19, which assumes independence. Coverage falls to 84%. The Poisson fit is then a composite-likelihood estimator of the intensity. Its standard errors need a sandwich correction that uses the pair correlation, or a cluster or Cox process model that includes the dependence explicitly.
+
+>> Practical guidance
+
+- Choose the dummy grid from the covariates' spatial scale, and refit with a finer grid to confirm that the estimates do not move. Coefficients that change with the grid indicate quadrature error.
+- Supply covariates as functions or fine rasters. The fit evaluates them at every dummy point, so a coarse raster limits the accuracy however fine the grid.
+- Check the residual second-order structure after fitting, using inhomogeneous \(K\) or a pair correlation weighted by the fitted intensity. Clustering beyond the trend makes the Poisson standard errors too small.
+- With clustering, keep the Poisson estimates as estimating equations, but widen the inference: use a sandwich variance, block bootstrap over subregions, or fit a Cox or cluster process.
+- Compare nested trend models by likelihood ratio or AIC only when the Poisson assumption is plausible. These criteria share the same independence assumption.
+
+>> References
+
+- M. Berman and T. R. Turner (1992). Approximating point process likelihoods with GLIM. *Journal of the Royal Statistical Society C* 41(1), 31-38. doi:10.2307/2347614
+- A. Baddeley and R. Turner (2000). Practical maximum pseudolikelihood for spatial point patterns. *Australian & New Zealand Journal of Statistics* 42(3), 283-322. doi:10.1111/1467-842X.00128
+- R. Waagepetersen (2007). An estimating function approach to inference for inhomogeneous Neyman-Scott processes. *Biometrics* 63(1), 252-258. doi:10.1111/j.1541-0420.2006.00667.x
+- A. Baddeley, E. Rubak and R. Turner (2015). *Spatial Point Patterns: Methodology and Applications with R*. CRC Press. doi:10.1201/b19708

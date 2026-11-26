@@ -1,0 +1,153 @@
+//? Title: Regress on covariates with seasonal ARIMA errors
+//? Exports: both
+//? Lang: en
+
+> Model the noise, then trust the coefficients
+
+Business and environmental series often depend on known drivers such as price, promotions, weather or policy changes. Their residuals, however, are seasonal and autocorrelated. Ordinary least squares still gives unbiased coefficients, but its standard errors assume independent errors and can be badly wrong. Dynamic regression keeps the regression mean and lets the errors follow a seasonal ARIMA model:
+\[y_t=\mu+x_t^\top\beta+u_t,\qquad \phi(B)\Phi(B^s)(1-B)^d(1-B^s)^Du_t=\theta(B)\Theta(B^s)\varepsilon_t.\]
+The exact likelihood is evaluated on \(y_t-\mu-x_t^\top\beta\), so the regression and ARIMA coefficients are estimated together. Differencing applies to the errors, which is the same as differencing both the response and the covariates.
+
+`fit_arima_exact` accepts a regressor matrix, starts from least squares on the differenced data, and returns all coefficients with standard errors from the observed information. `forecast_arima_exact` combines future regressor values with the forecasts of the error process.
+
+The example simulates eight years of monthly demand. Log demand falls with log price, rises by 0.15 during promotion months, and has ARIMA\((1,0,0)(0,1,1)_{12}\) errors with \(\phi=0.6\) and \(\Theta=-0.5\). The seasonal pattern is set by the first year and then evolves through the seasonal difference.
+
+```{cpp, id=arima-regression, file="figures/arima_regression_scenarios.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/linalg/eigen.hpp>
+#include <datamunge/linalg/least_squares.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/arima_exact.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+int main() {
+    const std::size_t n = 96;
+    std::mt19937_64 random(8);
+    std::normal_distribution<double> shock(0, .04), price_noise(0, .03);
+    std::bernoulli_distribution promote(.2);
+
+    // Covariates: a drifting log price and random promotion months.
+    Matrix x(n, 2);
+    double log_price = std::log(4.0);
+    for (std::size_t t = 0; t < n; ++t) {
+        log_price += .002 + price_noise(random);
+        x(t, 0) = log_price;
+        x(t, 1) = promote(random);
+    }
+    // Errors: (1 - 0.6B) w_t = (1 - 0.5B^12) e_t on the seasonal difference u_t - u_{t-12}.
+    std::vector<double> e(n + 12), w(n + 12, 0), u(n + 12, 0);
+    for (auto& v : e)
+        v = shock(random);
+    for (std::size_t t = 12; t < n + 12; ++t) {
+        w[t] = .6 * w[t - 1] + e[t] - .5 * e[t - 12];
+        const double first_year = t < 24 ? .08 * std::sin(std::numbers::pi * double(t) / 6) : 0;
+        u[t] = u[t - 12] + w[t] + first_year;
+    }
+    std::vector<double> y(n);
+    for (std::size_t t = 0; t < n; ++t)
+        y[t] = 6 - 1.2 * x(t, 0) + .15 * x(t, 1) + u[t + 12];
+
+    // Naive OLS of y on (1, log price, promotion), with iid standard errors.
+    Matrix design(n, 3);
+    for (std::size_t t = 0; t < n; ++t) {
+        design(t, 0) = 1;
+        design(t, 1) = x(t, 0);
+        design(t, 2) = x(t, 1);
+    }
+    const auto ols = dm::linalg::least_squares(design, y);
+    const auto gram = dm::linalg::gram(design);
+    const double s2 = ols.residual_norm * ols.residual_norm / (n - 3);
+    // Diagonal of (X'X)^-1 via the symmetric eigendecomposition.
+    const auto eig = dm::linalg::symmetric_eigen(gram);
+    std::vector<double> ols_se(3, 0);
+    for (std::size_t i = 0; i < 3; ++i) {
+        for (std::size_t k = 0; k < 3; ++k)
+            ols_se[i] += eig.eigenvectors(i, k) * eig.eigenvectors(i, k) / eig.eigenvalues[k];
+        ols_se[i] = std::sqrt(s2 * ols_se[i]);
+    }
+
+    const auto fit = dm::stats::fit_arima_exact(
+        y, {.order = {.p = 1, .seasonal_d = 1, .seasonal_q = 1, .period = 12},
+            .regressors = x,
+            .regressor_names = {"log price", "promotion"}});
+    std::println("| Coefficient | True | OLS (iid SE) | ARIMA errors (SE) |");
+    std::println("| --- | ---: | --- | --- |");
+    const auto& se = fit.standard_errors;
+    std::println("| log price | -1.20 | {:.3f} ({:.3f}) | {:.3f} ({:.3f}) |",
+                 ols.coefficients[1], ols_se[1], fit.regression[0], se[2]);
+    std::println("| promotion | 0.15 | {:.3f} ({:.3f}) | {:.3f} ({:.3f}) |",
+                 ols.coefficients[2], ols_se[2], fit.regression[1], se[3]);
+    std::println("| ar1 | 0.60 | | {:.3f} ({:.3f}) |", fit.estimates[0], se[0]);
+    std::println("| sma1 | -0.50 | | {:.3f} ({:.3f}) |", fit.estimates[1], se[1]);
+    std::println("\nσ² = {:.5f} (true 0.0016), log likelihood {:.2f}, AIC {:.2f}.\n",
+                 fit.sigma2, fit.log_likelihood, fit.aic);
+
+    // Two 12-month scenarios at constant price: no promotion, or promotions in months 3 and 9.
+    Matrix plain(12, 2), promoted(12, 2);
+    for (std::size_t h = 0; h < 12; ++h) {
+        plain(h, 0) = promoted(h, 0) = x(n - 1, 0);
+        promoted(h, 1) = (h == 2 || h == 8) ? 1 : 0;
+    }
+    const auto base = dm::stats::forecast_arima_exact(fit, 12, plain);
+    const auto promo = dm::stats::forecast_arima_exact(fit, 12, promoted);
+    std::println("Forecast demand in month 3: {:.0f} units without promotion, {:.0f} with.",
+                 std::exp(base.mean[2]), std::exp(promo.mean[2]));
+    std::println("The 95% interval multiplies or divides the forecast by {:.3f}.",
+                 std::exp(1.96 * base.standard_error[2]));
+
+    std::vector<double> t_hist, y_hist, t_f, b, p, lo, hi;
+    for (std::size_t t = 48; t < n; ++t) {
+        t_hist.push_back(double(t + 1));
+        y_hist.push_back(std::exp(y[t]));
+    }
+    for (std::size_t h = 0; h < 12; ++h) {
+        t_f.push_back(double(n + h + 1));
+        b.push_back(std::exp(base.mean[h]));
+        p.push_back(std::exp(promo.mean[h]));
+        lo.push_back(std::exp(base.mean[h] - 1.96 * base.standard_error[h]));
+        hi.push_back(std::exp(base.mean[h] + 1.96 * base.standard_error[h]));
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(t_hist, y_hist, "Observed demand", {80, 86, 96}, 1.2)
+        .line(t_f, b, "Forecast, no promotion", {26, 90, 147}, 1.8)
+        .line(t_f, lo, "95% interval", {26, 90, 147}, .8)
+        .line(t_f, hi, "", {26, 90, 147}, .8)
+        .line(t_f, p, "Promotions in months 99, 105", {176, 72, 43}, 1.8)
+        .ylim(35, 90)
+        .title("Demand scenarios from regression with seasonal ARIMA errors")
+        .x_label("Month").y_label("Units")
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/arima_regression_scenarios.svg");
+}
+```
+// result_begin: markdown
+| Coefficient | True | OLS (iid SE) | ARIMA errors (SE) |
+| --- | ---: | --- | --- |
+| log price | -1.20 | -1.199 (0.048) | -1.183 (0.056) |
+| promotion | 0.15 | 0.132 (0.021) | 0.145 (0.008) |
+| ar1 | 0.60 | | 0.590 (0.094) |
+| sma1 | -0.50 | | -0.720 (0.140) |
+
+σ² = 0.00153 (true 0.0016), log likelihood 148.57, AIC -287.13.
+
+Forecast demand in month 3: 54 units without promotion, 62 with.
+The 95% interval multiplies or divides the forecast by 1.097.
+\image(figures/arima_regression_scenarios.svg)
+// result_end
+\caption(The last four years of simulated demand and 12-month forecasts at a constant price, with and without promotions in two future months; the 95% interval is shown for the plain scenario.)
+\alttext(Demand varies seasonally between roughly 45 and 70 units. Both forecasts continue the seasonal pattern, and the promotion scenario rises about 15 percent above the plain forecast in months 99 and 105.)
+
+Both methods estimate the coefficients without bias, but their standard errors differ in opposite directions. Least squares overstates the uncertainty of the promotion effect by a factor of about 2.6, because the slowly moving seasonal error inflates its residual variance. Promotions are switched on and off month by month, and the ARIMA error model compares each promoted month with its predicted baseline, so the estimate becomes much sharper. The price covariate changes slowly and moves with the persistent error component, so its honest standard error is larger than the one least squares reports. Both errors would lead to poor decisions, one by missing a real promotion effect and the other by overstating confidence in price elasticity.
+
+The forecasts combine the planned covariate path with the predicted error process. A promotion month is expected to sell about \(e^{0.145}-1\approx16\%\) more, and the seasonal shape carries over from the observed years. These intervals treat the coefficients as known, as `predict.Arima` does in R. In the unit tests, coefficients, standard errors, log likelihoods and covariate-driven forecasts agree with `arima(xreg = ...)` and `predict(newxreg = ...)` in R. This holds for the trend model of `LakeHuron` and for the airline model of UK driver deaths with the seat-belt law and petrol price as covariates.
+
+[Box, Jenkins, Reinsel and Ljung (2015)|https://www.wiley.com/en-us/Time+Series+Analysis%3A+Forecasting+and+Control%2C+5th+Edition-p-9781118675021] · [Harvey and Durbin (1986), seat-belt law|https://doi.org/10.2307/2981553] · [Hyndman and Athanasopoulos, ch. 10|https://otexts.com/fpp3/dynamic.html] · [R arima|https://stat.ethz.ch/R-manual/R-devel/library/stats/html/arima.html]

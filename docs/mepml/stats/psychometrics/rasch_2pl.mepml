@@ -1,0 +1,206 @@
+//? Title: Rasch and two-parameter item-response models
+//? Exports: both
+//? Lang: en
+
+> Place items and people on one latent scale, estimate how hard and how discriminating each test item is, and check whether a common discrimination (Rasch) is enough
+
+Item-response theory (IRT) models the probability that a person with ability \(\theta\) answers item \(j\) correctly. The two-parameter logistic model (2PL) is
+
+\[P(X_{ij}=1\mid\theta_i)=\frac{1}{1+\exp\{-a_j(\theta_i-b_j)\}},\]
+
+with difficulty \(b_j\) (the ability at which the chance is 50%) and discrimination \(a_j\) (how sharply the item separates people near \(b_j\)). The **Rasch model** constrains all discriminations to be equal. Its sum score is then a sufficient statistic for ability, and items are ordered the same way for everybody. The scale is identified by giving \(\theta\) a standard normal distribution in the population. The Rasch model either fixes \(a=1\), which frees the latent variance, or estimates one common \(a\).
+
+`fit_irt` fits all three variants by marginal maximum likelihood. It integrates \(\theta\) out by Gauss–Hermite quadrature, groups identical response patterns, and maximizes with damped Newton steps on the analytic gradient. It returns difficulties and discriminations with delta-method standard errors, the log-likelihood, AIC and BIC. `irt_scores` gives posterior-mode (MAP) and posterior-mean (EAP) abilities with their uncertainty. `irt_probability` and `irt_test_information` give item characteristic curves and test information. The tests reproduce `ltm::rasch` (fixed and estimated common discrimination) and `ltm::ltm(X ~ z1)`, including standard errors and EB/EAP factor scores, on the LSAT and Abortion data and on a simulated 8-item test.
+
+The example fits the three models to the classic LSAT section 6 data (1000 examinees, 5 items) and compares them by likelihood ratio. The simulation uses an 8-item test with discriminations from 0.6 to 2.0 and difficulties from −1.5 to 1.8. For 2PL data and for Rasch data (all \(a=1.1\)), it examines parameter recovery, interval coverage, the Rasch-versus-2PL test and ability estimation at n = 200 and 1000 (300 samples each).
+
+```{cpp, id=irt, file="figures/rasch_2pl.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/item_response.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::IrtModel;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+// LSAT section 6 (ltm::LSAT) as response patterns with frequencies.
+const std::vector<std::pair<std::string, int>> lsat{
+    {"00000", 3}, {"00001", 6}, {"00010", 2}, {"00011", 11}, {"00100", 1},
+    {"00101", 1}, {"00110", 3}, {"00111", 4}, {"01000", 1}, {"01001", 8},
+    {"01011", 16}, {"01101", 3}, {"01110", 2}, {"01111", 15}, {"10000", 10},
+    {"10001", 29}, {"10010", 14}, {"10011", 81}, {"10100", 3}, {"10101", 28},
+    {"10110", 15}, {"10111", 80}, {"11000", 16}, {"11001", 56}, {"11010", 21},
+    {"11011", 173}, {"11100", 11}, {"11101", 61}, {"11110", 28}, {"11111", 298}};
+
+const std::vector<double> a_true{0.6, 0.9, 1.2, 1.5, 2.0, 0.8, 1.1, 1.4};
+const std::vector<double> b_true{-1.5, -0.8, -0.3, 0.0, 0.4, 0.8, 1.2, 1.8};
+
+Matrix simulate(dm::random::SplitMix64& rng, std::size_t n, const std::vector<double>& a,
+                std::vector<double>& theta) {
+    const std::size_t p = a.size();
+    Matrix x(n, p, 0.0);
+    theta.assign(n, 0.0);
+    for (std::size_t i = 0; i < n; ++i) {
+        theta[i] = rng.normal();
+        for (std::size_t j = 0; j < p; ++j) {
+            const double pr = 1 / (1 + std::exp(-a[j] * (theta[i] - b_true[j])));
+            x(i, j) = rng.uniform01() < pr ? 1.0 : 0.0;
+        }
+    }
+    return x;
+}
+
+int main() {
+    Matrix x(1000, 5, 0.0);
+    std::size_t row = 0;
+    for (const auto& [pattern, count] : lsat)
+        for (int c = 0; c < count; ++c, ++row)
+            for (std::size_t j = 0; j < 5; ++j)
+                x(row, j) = pattern[j] == '1';
+    const auto r1 =
+        dm::stats::fit_irt(x, {.model = IrtModel::rasch, .rasch_discrimination = 1});
+    const auto r = dm::stats::fit_irt(x, {.model = IrtModel::rasch});
+    const auto m = dm::stats::fit_irt(x);
+    std::println("| Item | Rasch (a = 1): b | Rasch: b | 2PL: b | 2PL: a (SE) |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    for (std::size_t j = 0; j < 5; ++j)
+        std::println("| {} | {:.3f} ({:.3f}) | {:.3f} ({:.3f}) | {:.3f} ({:.3f}) | "
+                     "{:.3f} ({:.3f}) |", j + 1, r1.items[j].difficulty,
+                     r1.items[j].difficulty_se, r.items[j].difficulty,
+                     r.items[j].difficulty_se, m.items[j].difficulty,
+                     m.items[j].difficulty_se,
+                     m.items[j].discrimination, m.items[j].discrimination_se);
+    const double lr = 2 * (m.log_likelihood - r.log_likelihood);
+    std::println("\nCommon discrimination {:.3f} ({:.3f}). Log-likelihoods {:.2f}, {:.2f}, "
+                 "{:.2f}; AIC {:.1f}, {:.1f}, {:.1f}; BIC {:.1f}, {:.1f}, {:.1f}.",
+                 r.items[0].discrimination, r.items[0].discrimination_se, r1.log_likelihood,
+                 r.log_likelihood, m.log_likelihood, r1.aic, r.aic, m.aic, r1.bic, r.bic,
+                 m.bic);
+    std::println("LR test of Rasch against 2PL: {:.2f} on 4 df, p = {:.3f}.\n", lr,
+                 dm::random::chi_squared_survival(lr, 4));
+
+    // Simulation.
+    std::println("| True model | n | LR test rejects Rasch | 2PL: median abs. error a | "
+                 "2PL: coverage a | 2PL: median abs. error b | 2PL: coverage b | "
+                 "Rasch: median abs. error b | EAP RMSE | Mean EAP SD |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+    dm::random::SplitMix64 rng(42);
+    const int reps = 300;
+    for (const bool rasch_truth : {false, true}) {
+        const std::vector<double> a = rasch_truth ? std::vector<double>(8, 1.1) : a_true;
+        for (const std::size_t n : {200uz, 1000uz}) {
+            double rej = 0, ca = 0, cb = 0, er = 0, esd = 0;
+            std::vector<double> ea, eb, erb;  // absolute errors over items and samples
+            for (int rep = 0; rep < reps; ++rep) {
+                std::vector<double> theta;
+                const Matrix s = simulate(rng, n, a, theta);
+                const auto f2 = dm::stats::fit_irt(s);
+                const auto f1 = dm::stats::fit_irt(s, {.model = IrtModel::rasch});
+                const double stat = 2 * (f2.log_likelihood - f1.log_likelihood);
+                rej += dm::random::chi_squared_survival(stat, 7) <= 0.05;
+                for (std::size_t j = 0; j < 8; ++j) {
+                    const auto& it = f2.items[j];
+                    ea.push_back(std::abs(it.discrimination - a[j]));
+                    eb.push_back(std::abs(it.difficulty - b_true[j]));
+                    ca += std::abs(it.discrimination - a[j]) <= 1.96 * it.discrimination_se;
+                    cb += std::abs(it.difficulty - b_true[j]) <= 1.96 * it.difficulty_se;
+                    erb.push_back(std::abs(f1.items[j].difficulty - b_true[j]));
+                }
+                const auto sc = dm::stats::irt_scores(f2, s);
+                for (std::size_t i = 0; i < n; ++i) {
+                    er += std::pow(sc[i].eap - theta[i], 2) / (double(n) * reps);
+                    esd += sc[i].eap_sd / (double(n) * reps);
+                }
+            }
+            auto median = [](std::vector<double> v) {
+                std::ranges::nth_element(v, v.begin() + v.size() / 2);
+                return v[v.size() / 2];
+            };
+            std::println("| {} | {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | "
+                         "{:.3f} | {:.3f} | {:.3f} |",
+                         rasch_truth ? "Rasch (a = 1.1)" : "2PL", n,
+                         rej / reps, median(ea), ca / (8.0 * reps), median(eb),
+                         cb / (8.0 * reps), median(erb), std::sqrt(er), esd);
+        }
+    }
+
+    // Item characteristic curves of the 8-item test and its information.
+    dm::stats::IrtFit test;
+    for (std::size_t j = 0; j < 8; ++j)
+        test.items.push_back({.difficulty = b_true[j], .discrimination = a_true[j]});
+    auto plot = dm::graphics::RPlot::create();
+    std::vector<double> grid;
+    for (double t = -3.5; t <= 3.5001; t += 0.05) grid.push_back(t);
+    for (std::size_t j = 0; j < 8; ++j) {
+        std::vector<double> pr;
+        for (const double t : grid)
+            pr.push_back(dm::stats::irt_probability(test.items[j], t));
+        const int shade = 40 + 20 * static_cast<int>(j);
+        plot.line(grid, pr, j == 0 ? "Item characteristic curves" : "",
+                  {26, 90, static_cast<std::uint8_t>(std::min(255, 100 + shade))}, 1.5);
+    }
+    std::vector<double> info;
+    for (const double t : grid)
+        info.push_back(dm::stats::irt_test_information(test, t) / 3);
+    plot.line(grid, info, "Test information / 3", {176, 72, 43}, 2.5)
+        .y_limits(0, 1.2)
+        .title("Eight-item 2PL test: item curves and information")
+        .x_label("Ability theta")
+        .y_label("P(correct)  |  information / 3")
+        .size(660, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/rasch_2pl.svg");
+}
+```
+// result_begin: markdown
+| Item | Rasch (a = 1): b | Rasch: b | 2PL: b | 2PL: a (SE) |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | -2.872 (0.129) | -3.615 (0.327) | -3.359 (0.866) | 0.826 (0.258) |
+| 2 | -1.063 (0.082) | -1.322 (0.142) | -1.370 (0.307) | 0.723 (0.187) |
+| 3 | -0.258 (0.077) | -0.318 (0.098) | -0.280 (0.100) | 0.891 (0.233) |
+| 4 | -1.388 (0.086) | -1.730 (0.169) | -1.866 (0.434) | 0.688 (0.185) |
+| 5 | -2.219 (0.105) | -2.780 (0.251) | -3.126 (0.871) | 0.657 (0.210) |
+
+Common discrimination 0.755 (0.069). Log-likelihoods -2473.05, -2466.94, -2466.65; AIC 4956.1, 4945.9, 4953.3; BIC 4980.6, 4975.3, 5002.4.
+LR test of Rasch against 2PL: 0.57 on 4 df, p = 0.967.
+
+| True model | n | LR test rejects Rasch | 2PL: median abs. error a | 2PL: coverage a | 2PL: median abs. error b | 2PL: coverage b | Rasch: median abs. error b | EAP RMSE | Mean EAP SD |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 2PL | 200 | 0.763 | 0.203 | 0.960 | 0.146 | 0.948 | 0.174 | 0.606 | 0.578 |
+| 2PL | 1000 | 1.000 | 0.092 | 0.948 | 0.071 | 0.945 | 0.126 | 0.591 | 0.586 |
+| Rasch (a = 1.1) | 200 | 0.047 | 0.200 | 0.964 | 0.155 | 0.951 | 0.122 | 0.630 | 0.605 |
+| Rasch (a = 1.1) | 1000 | 0.060 | 0.092 | 0.956 | 0.067 | 0.958 | 0.056 | 0.619 | 0.613 |
+\image(figures/rasch_2pl.svg)
+// result_end
+
+On the LSAT data all five items are easy (difficulties from −3.4 to −0.3 in the 2PL), and their discriminations are similar (0.66–0.89). The common-discrimination Rasch model fits as well as the 2PL: the likelihood-ratio statistic is 0.57 on 4 df, and AIC and BIC both prefer the Rasch model. With \(a\) fixed at 1, the difficulties shrink by the factor 0.755. That is the same model on a different scale, with the latent standard deviation 0.755 instead of 1, but its log-likelihood is lower because the latent variance is constrained. In the 2PL, the difficulties of the easiest items have large standard errors (about 0.87). A weakly discriminating item that almost everybody answers correctly pins down \(b\) poorly, because the item curve is flat where few people are.
+
+The simulation shows what each model buys:
+
+- **Recovery.** With n = 200, the 2PL's median absolute error is about 0.2 for discriminations and 0.15 for difficulties. Wald intervals still cover 95–96%. The mean-squared error at that size, however, is dominated by a few samples in which the weakest item (a = 0.6) gets a near-zero slope and an extreme difficulty: the RMSE of b was 3.1 in a first run. At n = 1000 the errors halve.
+- **Model choice.** The likelihood-ratio test rejects the Rasch model for these unequal discriminations in 76% of samples at n = 200 and always at n = 1000. It holds its level when the Rasch model is true (5–6%). Fitting the Rasch model to 2PL data biases the difficulties of items with extreme discriminations: the median error stays at 0.13 even at n = 1000. When the Rasch model is true, it estimates difficulties more precisely than the 2PL (0.12 vs 0.16 at n = 200).
+- **Ability.** With eight items, EAP abilities have an error of about 0.6 SD. The posterior SD reports that correctly, so EAP uncertainty is well calibrated. The test information curve in the figure peaks near \(\theta=0.4\), at about 2.6 (SE 0.62), and falls off quickly at the extremes. A short test measures well only where its difficulties are.
+
+>> Practical guidance
+
+- Start with the 2PL unless the Rasch model's measurement properties (sum-score sufficiency, invariant item ordering) are required. Test the Rasch restriction by likelihood ratio and inspect items whose discriminations differ sharply.
+- Plan for at least several hundred respondents for stable 2PL slopes, and more if some items are very easy, very hard or weakly discriminating. Check for near-zero or negative discriminations: they flag items that do not measure the trait, or that are keyed the wrong way.
+- Remember that the scale is fixed by the N(0, 1) population assumption. Compare parameters across groups or test forms only after linking or a multigroup model.
+- Report ability estimates with their posterior SD or 1/√information, and use the test information curve to see where the test measures precisely. Check unidimensionality and local independence (for example with residual correlations) before trusting any of this.
+
+>> References
+
+- G. Rasch (1960). *Probabilistic Models for Some Intelligence and Attainment Tests*. Danish Institute for Educational Research.
+- A. Birnbaum (1968). Some latent trait models and their use in inferring an examinee's ability. In F. M. Lord and M. R. Novick, *Statistical Theories of Mental Test Scores*. Addison-Wesley.
+- R. D. Bock and M. Aitkin (1981). Marginal maximum likelihood estimation of item parameters: Application of an EM algorithm. *Psychometrika* 46(4), 443-459. doi:10.1007/BF02293801
+- D. Rizopoulos (2006). ltm: An R package for latent variable modeling and item response theory analyses. *Journal of Statistical Software* 17(5), 1-25. doi:10.18637/jss.v017.i05
+- S. E. Embretson and S. P. Reise (2000). *Item Response Theory for Psychologists*. Lawrence Erlbaum.

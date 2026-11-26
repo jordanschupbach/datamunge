@@ -1,0 +1,141 @@
+//? Title: Summarize survival with the restricted mean survival time
+//? Exports: both
+//? Lang: en
+
+> Report a between-group difference in event-free time up to a fixed horizon
+
+A hazard ratio is a single number only if hazards are proportional. The restricted mean survival time (RMST) needs no such assumption. It is the area under the survival curve up to a horizon \(\tau\),
+\[\mu(\tau)=\int_0^\tau S(t)\,dt=E\{\min(T,\tau)\},\]
+the expected event-free time over the first \(\tau\) units of follow-up. Its complement \(\tau-\mu(\tau)\) is the restricted mean time lost. The plug-in estimate integrates the Kaplan–Meier curve. Its variance \(\sum_{t_i\le\tau}A_i^2 d_i/\{n_i(n_i-d_i)\}\) weights each event time by the squared area \(A_i\) that remains after it. Groups are compared by the difference in RMST, a number of time units that clinicians can read directly, or by the ratio.
+
+\(\tau\) must be fixed in advance and must lie within the follow-up of both groups. The example shows that the choice matters. It reuses the trial design of the log-rank report: 150 subjects per arm, control hazard 1 and censoring at time 2. Under a constant hazard ratio of 0.6 and a delayed effect (no effect before 0.5, then hazard ratio 0.4), it compares the power of the RMST difference at several horizons with the log-rank test, and checks the coverage of the 95% interval against the exact RMST difference.
+
+```{cpp, id=rmst, file="figures/rmst_power.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/rmst.hpp>
+#include <datamunge/stats/survival_tests.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::SurvivalObservation;
+
+// Treatment hazard h1 before time 0.5 and h2 afterwards; control hazard 1.
+struct Scenario {
+    std::string name;
+    double h1, h2;
+};
+
+double lifetime(double h1, double h2, std::mt19937_64& random) {
+    const double e = std::exponential_distribution<double>(1)(random);
+    return e < h1 * .5 ? e / h1 : .5 + (e - h1 * .5) / h2;
+}
+
+// Exact RMST of the piecewise-exponential law up to tau.
+double true_rmst(double h1, double h2, double tau) {
+    const double first = std::min(tau, .5);
+    double area = (1 - std::exp(-h1 * first)) / h1;
+    if (tau > .5)
+        area += std::exp(-h1 * .5) * (1 - std::exp(-h2 * (tau - .5))) / h2;
+    return area;
+}
+
+int main() {
+    std::mt19937_64 random(31);
+    const std::vector<Scenario> scenarios{{"Proportional, HR 0.6", .6, .6},
+                                          {"Delayed effect", 1, .4}};
+    const std::vector<double> horizons{.75, 1, 1.25, 1.5, 1.75, 2};
+    const int reps = 2000;
+    std::vector<std::vector<double>> power(2);
+    std::vector<double> logrank(2);
+    std::println("| Scenario | τ | True difference | Mean estimate | Coverage | Power |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (std::size_t s = 0; s < scenarios.size(); ++s) {
+        std::vector<int> reject(horizons.size()), cover(horizons.size());
+        std::vector<double> mean(horizons.size());
+        int logrank_reject = 0;
+        for (int r = 0; r < reps; ++r) {
+            std::vector<SurvivalObservation> records;
+            std::vector<int> arm;
+            for (int a = 0; a < 2; ++a)
+                for (int i = 0; i < 150; ++i) {
+                    const auto& sc = scenarios[s];
+                    const double t = a == 0 ? lifetime(1, 1, random)
+                                            : lifetime(sc.h1, sc.h2, random);
+                    records.push_back({std::min(t, 2.0), t <= 2.0});
+                    arm.push_back(a);
+                }
+            logrank_reject += dm::stats::survival_group_test(records, arm).p_value < .05;
+            for (std::size_t k = 0; k < horizons.size(); ++k) {
+                const auto c = dm::stats::rmst_compare(records, arm, horizons[k]);
+                const double truth = true_rmst(scenarios[s].h1, scenarios[s].h2, horizons[k]) -
+                                     true_rmst(1, 1, horizons[k]);
+                reject[k] += c.difference.p_value < .05;
+                cover[k] += c.difference.lower <= truth && truth <= c.difference.upper;
+                mean[k] += c.difference.estimate / reps;
+            }
+        }
+        logrank[s] = logrank_reject / double(reps);
+        for (std::size_t k = 0; k < horizons.size(); ++k) {
+            const double truth = true_rmst(scenarios[s].h1, scenarios[s].h2, horizons[k]) -
+                                 true_rmst(1, 1, horizons[k]);
+            power[s].push_back(reject[k] / double(reps));
+            std::println("| {} | {} | {:.4f} | {:.4f} | {:.3f} | {:.3f} |", scenarios[s].name,
+                         horizons[k], truth, mean[k], cover[k] / double(reps),
+                         power[s].back());
+        }
+    }
+    std::println("\nLog-rank power: {:.3f} (proportional), {:.3f} (delayed effect).",
+                 logrank[0], logrank[1]);
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(horizons, power[0], "RMST difference, proportional", {26, 90, 147}, 2)
+        .line(horizons, power[1], "RMST difference, delayed effect", {176, 72, 43}, 2)
+        .line({.75, 2}, {logrank[0], logrank[0]}, "Log-rank, proportional", {140, 170, 205},
+              1.2)
+        .line({.75, 2}, {logrank[1], logrank[1]}, "Log-rank, delayed effect", {225, 160, 140},
+              1.2)
+        .title("Power of the RMST difference by horizon, 150 per arm")
+        .x_label("Horizon τ")
+        .y_label("Rejection rate at 5%")
+        .ylim(0, 1.35)
+        .size(700, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/rmst_power.svg");
+}
+```
+// result_begin: markdown
+| Scenario | τ | True difference | Mean estimate | Coverage | Power |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Proportional, HR 0.6 | 0.75 | 0.0763 | 0.0751 | 0.961 | 0.749 |
+| Proportional, HR 0.6 | 1 | 0.1199 | 0.1184 | 0.956 | 0.838 |
+| Proportional, HR 0.6 | 1.25 | 0.1659 | 0.1643 | 0.954 | 0.890 |
+| Proportional, HR 0.6 | 1.5 | 0.2122 | 0.2105 | 0.954 | 0.926 |
+| Proportional, HR 0.6 | 1.75 | 0.2572 | 0.2555 | 0.958 | 0.948 |
+| Proportional, HR 0.6 | 2 | 0.3000 | 0.2982 | 0.958 | 0.965 |
+| Delayed effect | 0.75 | 0.0101 | 0.0094 | 0.946 | 0.068 |
+| Delayed effect | 1 | 0.0362 | 0.0356 | 0.950 | 0.144 |
+| Delayed effect | 1.25 | 0.0730 | 0.0726 | 0.950 | 0.274 |
+| Delayed effect | 1.5 | 0.1165 | 0.1165 | 0.947 | 0.443 |
+| Delayed effect | 1.75 | 0.1639 | 0.1644 | 0.949 | 0.598 |
+| Delayed effect | 2 | 0.2130 | 0.2140 | 0.950 | 0.721 |
+
+Log-rank power: 0.978 (proportional), 0.906 (delayed effect).
+\image(figures/rmst_power.svg)
+// result_end
+\caption(Power of the 95% RMST-difference test by horizon τ for 150 subjects per arm, under a constant hazard ratio of 0.6 (blue) and a delayed effect (orange). The light horizontal lines give the log-rank power in each scenario. 2000 trials per point.)
+\alttext(Both RMST power curves rise with the horizon. The blue proportional-hazards curve goes from about 0.75 to 0.97 and meets its light-blue log-rank line near the largest horizon. The orange delayed-effect curve starts near 0.07 and reaches about 0.72 at τ = 2, still well below its light-orange log-rank line at about 0.91.)
+
+The RMST difference is unbiased at every horizon, and its 95% Wald interval covers the exact difference 94.6–96.1% of the time. Power depends strongly on \(\tau\), because the difference accumulates only where the survival curves have separated. Under proportional hazards it rises from 75% at \(\tau=0.75\) to 97% at \(\tau=2\), the end of follow-up, where it matches the log-rank test. Under the delayed effect the first half time unit contributes nothing, and power at \(\tau=0.75\) is barely above the 5% level. Even at \(\tau=2\) it is 72%, against 91% for the log-rank test.
+
+RMST is therefore not a power device for delayed effects. Here it is less powerful than the log-rank test because it gives full weight to the early period with no difference. Its advantage is interpretability. "Treated patients lived on average 0.21 time units longer during the first 2 units of follow-up" remains true and meaningful when hazards cross, whereas a single hazard ratio averages incompatible effects. A horizon near the end of reliable follow-up in both arms, fixed before seeing the data, gives the most information. Choosing \(\tau\) after looking at the curves invalidates the test.
+
+Per-arm RMST with standard errors and intervals, and the difference, RMST ratio and RMTL ratio with intervals and p-values, all match survRM2's `rmst2` on the `lung` data (by sex, at two horizons and 90% confidence) and on the `veteran` data (by treatment).
+
+[Royston and Parmar (2013)|https://doi.org/10.1186/1471-2288-13-152] · [Uno et al. (2014)|https://doi.org/10.1200/JCO.2013.53.2149]

@@ -1,0 +1,181 @@
+//? Title: Estimate means and covariances from incomplete normal data by EM
+//? Exports: both
+//? Lang: en
+
+> Maximize the observed-data likelihood across missing-data patterns instead of discarding incomplete cases
+
+With several incomplete variables, every case contributes to the likelihood only through its observed variables. For multivariate normal data the maximum-likelihood estimates have no closed form, but the EM algorithm finds them by alternating two simple steps (Dempster, Laird and Rubin, 1977).
+- The E-step fills in each case's sufficient statistics with their conditional expectations given its observed values. These come from the regression of the missing variables on the observed ones implied by the current \(\mu\) and \(\Sigma\), plus the conditional covariance.
+- The M-step recomputes \(\mu\) and \(\Sigma\) as if the data were complete.
+
+`em_multivariate_normal` groups cases by missing-data pattern, so each pattern needs only one regression per iteration. It returns the ML estimates, the observed-data log-likelihood, and the empirical convergence rate. The rate approximates the largest fraction of missing information, the share of the complete-data information that the missing values would have supplied. `mvn_regression` turns \(\hat\mu\) and \(\hat\Sigma\) into regression coefficients, which gives ML regression when the response and the predictors can both be missing.
+
+The estimates are valid when data are missing at random (MAR), meaning that missingness may depend on observed values. They match `norm::em.norm` to \(10^{-8}\) on `airquality` and `mice::nhanes`.
+
+The simulation uses n = 300 cases from \(y=1+0.5x_1+0.5x_2+e\), where \(x_2=0.6x_1+0.8z\) and \(z\), \(e\) are standard normal. \(y\) is always observed. \(x_1\) is missing completely at random for 15% of cases. \(x_2\) is missing with \(\mathrm{logit}\,P=-1+1.5y\), so more than half of the values are missing, mostly those with high outcomes. The comparison covers three methods over 2000 samples:
+- listwise deletion, which fits least squares to complete cases only;
+- pairwise moments, which compute each mean, variance and covariance from all cases observing the variables involved and then derive the regression;
+- EM, which derives the regression from the ML estimates.
+
+The table reports bias and RMSE for the slopes and for the mean of \(x_2\) (true values 0.5, 0.5 and 0).
+
+```{cpp, id=em, file="figures/em_multivariate_normal.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/missing_data.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+// Columns: x1, x2, y. x1 is 15% MCAR; x2 is missing with logit = shift + 1.5 y.
+Matrix simulate(std::size_t n, double shift, dm::random::RandomGenerator& rng) {
+    const double na = std::numeric_limits<double>::quiet_NaN();
+    Matrix d(n, 3);
+    for (std::size_t i = 0; i < n; ++i) {
+        const double x1 = rng.normal(), x2 = 0.6 * x1 + 0.8 * rng.normal();
+        const double y = 1 + 0.5 * x1 + 0.5 * x2 + rng.normal();
+        d(i, 0) = rng.uniform01() < 0.15 ? na : x1;
+        d(i, 1) = rng.uniform01() < 1 / (1 + std::exp(-(shift + 1.5 * y))) ? na : x2;
+        d(i, 2) = y;
+    }
+    return d;
+}
+
+// Pairwise-available means and covariances (each from the cases observing the pair).
+dm::stats::MvnEmResult pairwise(const Matrix& d) {
+    dm::stats::MvnEmResult r;
+    const std::size_t p = d.cols();
+    r.mean.assign(p, 0.0);
+    r.covariance = Matrix(p, p);
+    for (std::size_t j = 0; j < p; ++j) {
+        double s = 0, c = 0;
+        for (std::size_t i = 0; i < d.rows(); ++i)
+            if (!std::isnan(d(i, j))) {
+                s += d(i, j);
+                c += 1;
+            }
+        r.mean[j] = s / c;
+    }
+    for (std::size_t j = 0; j < p; ++j)
+        for (std::size_t k = 0; k <= j; ++k) {
+            double mj = 0, mk = 0, c = 0, s = 0;
+            for (std::size_t i = 0; i < d.rows(); ++i)
+                if (!std::isnan(d(i, j)) && !std::isnan(d(i, k))) {
+                    mj += d(i, j);
+                    mk += d(i, k);
+                    c += 1;
+                }
+            mj /= c;
+            mk /= c;
+            for (std::size_t i = 0; i < d.rows(); ++i)
+                if (!std::isnan(d(i, j)) && !std::isnan(d(i, k)))
+                    s += (d(i, j) - mj) * (d(i, k) - mk);
+            r.covariance(j, k) = r.covariance(k, j) = s / c;
+        }
+    return r;
+}
+
+int main() {
+    dm::random::SplitMix64 rng(1977);
+    const int reps = 2000;
+    const char* names[3]{"Listwise deletion", "Pairwise moments", "EM"};
+    double bias[3][3]{}, sq[3][3]{}, missing = 0;
+    for (int r = 0; r < reps; ++r) {
+        const auto d = simulate(300, -1, rng);
+        // Listwise: ML moments of the complete cases give the least-squares fit.
+        std::vector<std::size_t> keep;
+        for (std::size_t i = 0; i < d.rows(); ++i) {
+            missing += std::isnan(d(i, 1)) / (300.0 * reps);
+            if (!std::isnan(d(i, 0)) && !std::isnan(d(i, 1)))
+                keep.push_back(i);
+        }
+        Matrix cc(keep.size(), 3);
+        for (std::size_t i = 0; i < keep.size(); ++i)
+            for (std::size_t j = 0; j < 3; ++j)
+                cc(i, j) = d(keep[i], j);
+        const dm::stats::MvnEmResult fits[3]{dm::stats::em_multivariate_normal(cc), pairwise(d),
+                                             dm::stats::em_multivariate_normal(d)};
+        for (int m = 0; m < 3; ++m) {
+            const auto reg = dm::stats::mvn_regression(fits[m].mean, fits[m].covariance, 2, {0, 1});
+            const double e[3]{reg.slopes[0] - 0.5, reg.slopes[1] - 0.5, fits[m].mean[1]};
+            for (int k = 0; k < 3; ++k) {
+                bias[m][k] += e[k] / reps;
+                sq[m][k] += e[k] * e[k] / reps;
+            }
+        }
+    }
+    std::println("Average share of x2 missing: {:.0f}%.\n", 100 * missing);
+    std::println("| Method | Bias b1 | Bias b2 | RMSE b2 | Bias mean x2 | RMSE mean x2 |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (int m = 0; m < 3; ++m)
+        std::println("| {} | {:+.3f} | {:+.3f} | {:.3f} | {:+.3f} | {:.3f} |", names[m], bias[m][0],
+                     bias[m][1], std::sqrt(sq[m][1]), bias[m][2], std::sqrt(sq[m][2]));
+
+    // Convergence: rate and iterations against the share of x2 missing.
+    std::vector<double> share, rate, iterations;
+    for (double shift = -4; shift <= 2.01; shift += 0.5) {
+        double s = 0, rt = 0, it = 0;
+        for (int r = 0; r < 100; ++r) {
+            const auto d = simulate(300, shift, rng);
+            for (std::size_t i = 0; i < d.rows(); ++i)
+                s += std::isnan(d(i, 1)) / 30000.0;
+            const auto fit = dm::stats::em_multivariate_normal(d, {.tolerance = 1e-8});
+            rt += fit.convergence_rate / 100;
+            it += double(fit.iterations) / 100;
+        }
+        share.push_back(s);
+        rate.push_back(rt);
+        iterations.push_back(it);
+    }
+    std::println("\nIterations to a 1e-8 tolerance: {:.0f} with {:.0f}% of x2 missing, "
+                 "{:.0f} with {:.0f}% missing.",
+                 iterations.front(), 100 * share.front(), iterations.back(), 100 * share.back());
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(share, rate, "Empirical EM convergence rate", {26, 90, 147}, 2)
+        .line({0, 1}, {0, 1}, "Fraction of x2 missing", {150, 150, 150}, 1)
+        .title("EM slows down as information goes missing")
+        .x_label("Fraction of x2 missing")
+        .y_label("Convergence rate (ratio of successive changes)")
+        .size(620, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/em_multivariate_normal.svg");
+}
+```
+// result_begin: markdown
+Average share of x2 missing: 57%.
+
+| Method | Bias b1 | Bias b2 | RMSE b2 | Bias mean x2 | RMSE mean x2 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Listwise deletion | -0.131 | -0.133 | 0.171 | -0.418 | 0.427 |
+| Pairwise moments | +0.217 | -0.317 | 0.341 | -0.418 | 0.427 |
+| EM | -0.002 | -0.001 | 0.119 | -0.001 | 0.096 |
+
+Iterations to a 1e-8 tolerance: 23 with 18% of x2 missing, 906 with 90% missing.
+\image(figures/em_multivariate_normal.svg)
+// result_end
+
+Both shortcuts are badly biased, even though the data are MAR. Listwise deletion keeps mainly cases with low \(y\), which is selection on the outcome. That attenuates both slopes by about a quarter and underestimates the mean of \(x_2\) by 0.42 standard deviations. Pairwise moments are worse for the regression. Each covariance comes from a different subset of cases, and combining them distorts the slopes in opposite directions (+0.22 and −0.32). The resulting matrix also need not be positive definite. EM uses all observed values in a single likelihood, which accounts for the dependence of missingness on \(y\). Its estimates are unbiased, and its RMSE for the second slope is 30% lower than listwise deletion despite the 57% missing.
+
+Unbiasedness here depends on MAR: \(x_2\) goes missing according to \(y\), which is always observed. If missingness depended on \(x_2\) itself, EM would remove only part of the bias, as the Little-test report shows.
+
+The figure shows the cost of missing information. EM converges linearly, and the ratio of successive parameter changes approaches the largest fraction of missing information. With 18% of \(x_2\) missing it converges in about 23 iterations. With 90% missing the rate approaches 1 and it needs about 900. The rate lies above the share of \(x_2\) missing, because it reflects the worst-informed parameter, not the average. The covariance of \(x_1\) and \(x_2\), for example, is unobserved whenever either variable is missing. The prediction of \(x_2\) from \(x_1\) and \(y\) recovers some of that information but not all. A convergence rate near 1 warns that the data say little about some parameters, and that standard errors will be large.
+
+>> Practical guidance
+
+- Use EM estimates instead of listwise or pairwise moments whenever missingness may depend on observed variables.
+- Include auxiliary variables that predict missingness or the incomplete variables in the EM model even if they are not of substantive interest. They make MAR more plausible and recover information.
+- EM gives point estimates only. For standard errors, use multiple imputation, the bootstrap or the observed information. Naive complete-data formulas applied to EM estimates are too small.
+- Check `converged` and `convergence_rate`. A rate close to 1 means slow convergence and little information. Raise `max_iterations` or reconsider the model.
+- Look at `log_likelihood` across starting values or models. It is the observed-data likelihood, so likelihood-ratio comparisons between nested normal models remain valid.
+
+>> References
+
+- A. P. Dempster, N. M. Laird and D. B. Rubin (1977). Maximum likelihood from incomplete data via the EM algorithm. *Journal of the Royal Statistical Society B* 39(1), 1-38. doi:10.1111/j.2517-6161.1977.tb01600.x
+- R. J. A. Little and D. B. Rubin (2019). *Statistical Analysis with Missing Data*, 3rd ed. Wiley, chapters 8 and 11.
+- J. L. Schafer (1997). *Analysis of Incomplete Multivariate Data*. Chapman and Hall, chapter 5.

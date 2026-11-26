@@ -1,0 +1,218 @@
+//? Title: Gaussian and Student t copulas
+//? Exports: both
+//? Lang: en
+
+> Separate dependence from the marginal distributions, fit Gaussian and t copulas to ranks, and see what the choice means for the probability that several variables are extreme together
+
+By Sklar's theorem, any continuous joint distribution can be written as \(F(x_1,\dots,x_d)=C(F_1(x_1),\dots,F_d(x_d))\): the margins \(F_j\) and a **copula** \(C\), a distribution on \([0,1]^d\) with uniform margins that carries all of the dependence. The **Gaussian copula** with correlation matrix \(R\) has density
+
+\[c(u)=|R|^{-1/2}\exp\bigl(-\tfrac12 z^\top(R^{-1}-I)z\bigr),\qquad z_j=\Phi^{-1}(u_j),\]
+
+and the **t copula** replaces the normal by a multivariate \(t_\nu\), dividing its density by the product of univariate \(t_\nu\) densities at \(x_j=t_\nu^{-1}(u_j)\). Both have Kendall's \(\tau_{jk}=\tfrac2\pi\arcsin R_{jk}\). They differ in the tails. The Gaussian copula is asymptotically independent in the tails, while the t copula has coefficients of joint extremes
+
+\[\lambda=\lim_{q\to0}P(U_2\le q\mid U_1\le q)=2\,t_{\nu+1}\Bigl(-\sqrt{(\nu+1)(1-\rho)/(1+\rho)}\Bigr).\]
+
+Fitting is semiparametric. The margins are replaced by **pseudo-observations** \(\hat u_{ij}=\operatorname{rank}(x_{ij})/(n+1)\), and the copula is fitted by maximum pseudo-likelihood (MPL) or by inverting Kendall's tau (\(R_{jk}=\sin(\pi\hat\tau_{jk}/2)\), with \(\nu\) then by MPL for fixed \(R\)).
+
+`pseudo_observations`, `copula_log_density`, `fit_copula`, `t_copula_tail_dependence` and `simulate_copula` implement this for any dimension. The MPL fit runs L-BFGS over a C-vine partial-correlation parametrization, in which every point is a valid correlation matrix, and over \(\log\nu\). A Kendall matrix that is not positive definite is projected by eigenvalue clipping. The tests reproduce `copula` 1.1.7: `pobs` with ties, `dCopula` log densities to \(10^{-11}\), `lambda`, and the `itau` fit exactly. The `mpl` and `itau.mpl` fits agree with R's optimizer to its precision (\(\nu\) to \(10^{-3}\), log-likelihoods within \(10^{-6}\), and never below R's).
+
+The example simulates 1000 days of three asset returns with t₄ dependence and skewed, heavy-tailed margins, then fits both copulas. It compares their implied tail dependence and the probability that all three assets have a 1-in-20 loss on the same day. The simulation study (100 samples per cell) measures the bias of \(\hat\rho\) and \(\hat\nu\), and how reliably AIC chooses between the two families.
+
+```{cpp, id=cop, file="figures/copulas.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/copula.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::CopulaFamily;
+using dm::stats::CopulaMethod;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+// Among rows with column a at or below q, the fraction with column b at or below q.
+double joint_below(const Matrix& u, std::size_t a, std::size_t b, double q) {
+    double both = 0, first = 0;
+    for (std::size_t i = 0; i < u.rows(); ++i)
+        if (u(i, a) <= q) {
+            first += 1;
+            both += u(i, b) <= q;
+        }
+    return first > 0 ? both / first : 0.0;
+}
+
+double all_below(const Matrix& u, double q) {
+    double c = 0;
+    for (std::size_t i = 0; i < u.rows(); ++i) {
+        bool all = true;
+        for (std::size_t j = 0; j < u.cols(); ++j) all = all && u(i, j) <= q;
+        c += all;
+    }
+    return c / static_cast<double>(u.rows());
+}
+
+int main() {
+    // Three daily returns: t4 copula dependence, skewed heavy-tailed margins.
+    const Matrix r_true(3, 3, {1, 0.6, 0.4, 0.6, 1, 0.5, 0.4, 0.5, 1});
+    const auto v = dm::stats::simulate_copula(r_true, CopulaFamily::student_t, 4, 1000, 3);
+    Matrix returns(1000, 3, 0.0);
+    for (std::size_t i = 0; i < 1000; ++i)
+        for (std::size_t j = 0; j < 3; ++j) {
+            const double t = dm::random::student_t_quantile(v(i, j), 3);
+            returns(i, j) = 0.01 * (t - 0.3 * std::abs(t));  // skewed toward losses
+        }
+    const auto u = dm::stats::pseudo_observations(returns);
+
+    std::println("| Fit (n = 1000) | rho12 | rho13 | rho23 | df | log-lik | AIC | "
+                 "lambda12 |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+    const auto show = [](const char* name, const dm::stats::CopulaFit& f) {
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {} | {:.2f} | {:.2f} | {:.3f} |",
+                     name, f.correlation(0, 1), f.correlation(0, 2), f.correlation(1, 2),
+                     std::isinf(f.df) ? std::string("∞") : std::format("{:.2f}", f.df),
+                     f.log_likelihood, f.aic, f.tail_dependence(0, 1));
+    };
+    const auto gauss = dm::stats::fit_copula(u);
+    const auto gauss_tau =
+        dm::stats::fit_copula(u, {.method = CopulaMethod::kendall_inversion});
+    const auto tfit = dm::stats::fit_copula(u, {.family = CopulaFamily::student_t});
+    const auto t_tau = dm::stats::fit_copula(
+        u, {.family = CopulaFamily::student_t, .method = CopulaMethod::kendall_inversion});
+    show("Gaussian, MPL", gauss);
+    show("Gaussian, Kendall inversion", gauss_tau);
+    show("t, MPL", tfit);
+    show("t, Kendall inversion + MPL for df", t_tau);
+    std::println("| Generating t copula | 0.600 | 0.400 | 0.500 | 4.00 | | | {:.3f} |\n",
+                 dm::stats::t_copula_tail_dependence(0.6, 4));
+
+    // Joint tail probabilities: data versus 400000 draws from each fitted copula.
+    const auto sim_g = dm::stats::simulate_copula(gauss.correlation, CopulaFamily::gaussian,
+                                                  0, 400000, 11);
+    const auto sim_t = dm::stats::simulate_copula(tfit.correlation, CopulaFamily::student_t,
+                                                  tfit.df, 400000, 12);
+    const auto sim_true =
+        dm::stats::simulate_copula(r_true, CopulaFamily::student_t, 4, 400000, 13);
+    std::println("| Event | Data | Gaussian fit | t fit | Generating copula |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (const double q : {0.05, 0.01}) {
+        std::println("| P(all three below their {:.0f}% quantile) | {:.4f} | {:.4f} | "
+                     "{:.4f} | {:.4f} |", 100 * q, all_below(u, q), all_below(sim_g, q),
+                     all_below(sim_t, q), all_below(sim_true, q));
+        std::println("| P(asset 2 below {:.0f}% q. given asset 1 below) | {:.3f} | "
+                     "{:.3f} | {:.3f} | {:.3f} |", 100 * q, joint_below(u, 0, 1, q),
+                     joint_below(sim_g, 0, 1, q), joint_below(sim_t, 0, 1, q),
+                     joint_below(sim_true, 0, 1, q));
+    }
+
+    // Simulation study: estimator bias and family selection, 100 samples per cell.
+    std::println("\n| Truth | n | Mean rho12 (MPL) | Mean rho12 (tau) | Mean df (MPL) | "
+                 "Median df (MPL) | AIC picks t |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: | ---: |");
+    dm::random::SplitMix64 seeds(77);
+    for (const bool truth_t : {false, true})
+        for (const std::size_t n : {250uz, 1000uz}) {
+            const int reps = 100;
+            double r_mpl = 0, r_tau = 0, nu = 0, pick_t = 0;
+            std::vector<double> nus;
+            for (int r = 0; r < reps; ++r) {
+                const auto family =
+                    truth_t ? CopulaFamily::student_t : CopulaFamily::gaussian;
+                const auto s =
+                    dm::stats::simulate_copula(r_true, family, 4, n, seeds.next_u64());
+                const auto us = dm::stats::pseudo_observations(s);
+                const auto g = dm::stats::fit_copula(us);
+                const dm::stats::CopulaOptions mpl{.family = CopulaFamily::student_t};
+                const dm::stats::CopulaOptions tau{
+                    .family = CopulaFamily::student_t,
+                    .method = CopulaMethod::kendall_inversion};
+                const auto t = dm::stats::fit_copula(us, mpl);
+                const auto ti = dm::stats::fit_copula(us, tau);
+                r_mpl += t.correlation(0, 1) / reps, r_tau += ti.correlation(0, 1) / reps;
+                nu += t.df / reps;
+                nus.push_back(t.df);
+                pick_t += (t.aic < g.aic) / double(reps);
+            }
+            std::ranges::sort(nus);
+            std::println("| {} | {} | {:.3f} | {:.3f} | {:.1f} | {:.1f} | {:.3f} |",
+                         truth_t ? "t copula, df = 4" : "Gaussian copula", n, r_mpl, r_tau,
+                         nu, nus[nus.size() / 2], pick_t);
+        }
+
+    // Figure: P(U2 <= q | U1 <= q) as q -> 0.
+    std::vector<double> qs, emp, fg, ft;
+    for (double lq = -4.5; lq <= -0.69; lq += 0.25) {
+        const double q = std::exp(lq);
+        qs.push_back(q);
+        emp.push_back(joint_below(u, 0, 1, q));
+        fg.push_back(joint_below(sim_g, 0, 1, q));
+        ft.push_back(joint_below(sim_t, 0, 1, q));
+    }
+    std::vector<double> qs_emp, emp_pts;
+    for (std::size_t i = 0; i < qs.size(); ++i)
+        if (qs[i] * 1000 >= 10) qs_emp.push_back(qs[i]), emp_pts.push_back(emp[i]);
+    auto fig = dm::graphics::RPlot::create();
+    fig.line(qs, fg, "Gaussian copula fit", {176, 72, 43}, 2.5)
+        .line(qs, ft, "t copula fit", {26, 90, 147}, 2.5)
+        .points(qs_emp, emp_pts, "Data (at least 10 points below q)", {17, 24, 39}, 5)
+        .abline_h(tfit.tail_dependence(0, 1), {140, 182, 222})
+        .y_limits(0, 1.05)
+        .title("Joint extremes: P(asset 2 below q | asset 1 below q)")
+        .x_label("Quantile level q")
+        .y_label("Conditional probability")
+        .size(640, 410);
+    std::filesystem::create_directories("build");
+    fig.save_svg("build/copulas.svg");
+}
+```
+// result_begin: markdown
+| Fit (n = 1000) | rho12 | rho13 | rho23 | df | log-lik | AIC | lambda12 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Gaussian, MPL | 0.596 | 0.444 | 0.472 | ∞ | 366.34 | -726.68 | 0.000 |
+| Gaussian, Kendall inversion | 0.583 | 0.425 | 0.476 | ∞ | 365.69 | -725.37 | 0.000 |
+| t, MPL | 0.589 | 0.432 | 0.465 | 4.33 | 419.76 | -831.52 | 0.290 |
+| t, Kendall inversion + MPL for df | 0.583 | 0.425 | 0.476 | 4.31 | 419.51 | -831.02 | 0.287 |
+| Generating t copula | 0.600 | 0.400 | 0.500 | 4.00 | | | 0.314 |
+
+| Event | Data | Gaussian fit | t fit | Generating copula |
+| --- | ---: | ---: | ---: | ---: |
+| P(all three below their 5% quantile) | 0.0100 | 0.0050 | 0.0083 | 0.0087 |
+| P(asset 2 below 5% q. given asset 1 below) | 0.420 | 0.308 | 0.392 | 0.401 |
+| P(all three below their 1% quantile) | 0.0010 | 0.0003 | 0.0013 | 0.0015 |
+| P(asset 2 below 1% q. given asset 1 below) | 0.400 | 0.182 | 0.331 | 0.358 |
+
+| Truth | n | Mean rho12 (MPL) | Mean rho12 (tau) | Mean df (MPL) | Median df (MPL) | AIC picks t |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Gaussian copula | 250 | 0.606 | 0.596 | 471.2 | 103.5 | 0.100 |
+| Gaussian copula | 1000 | 0.601 | 0.599 | 651.1 | 1000.0 | 0.020 |
+| t copula, df = 4 | 250 | 0.601 | 0.602 | 3.9 | 3.7 | 1.000 |
+| t copula, df = 4 | 1000 | 0.599 | 0.601 | 4.0 | 3.9 | 1.000 |
+\image(figures/copulas.svg)
+// result_end
+
+Because the fit uses only ranks, the skewed, heavy-tailed margins of the returns do not affect it. Both families recover the correlation structure: MPL and Kendall inversion agree to within 0.02 of each other, and within sampling error of the generating 0.6, 0.4 and 0.5. The likelihood separates the families clearly. The t copula improves the log-likelihood by 53 for one extra parameter, and its \(\hat\nu=4.3\) is close to the generating 4.
+
+The families differ most where it matters for risk. The data show all three assets below their 5% quantile on 1.0% of days. The t fit implies 0.83% and the generating copula 0.87%, but the Gaussian fit implies only 0.50%. At the 1% level the Gaussian copula understates the joint-crash probability fivefold (0.03% against 0.13–0.15%). The figure shows why. As \(q\to0\), the Gaussian conditional probability \(P(U_2\le q\mid U_1\le q)\) falls towards zero, whatever the correlation. The t copula's levels off near its tail-dependence coefficient \(\hat\lambda=0.29\) (the horizontal line), as do the data, until too few points remain to estimate it.
+
+The simulation confirms that both correlation estimators are unbiased, and that \(\nu\) is well identified from a t₄ copula (median \(\hat\nu\) 3.7 at n = 250 and 3.9 at n = 1000). When the truth is Gaussian, \(\hat\nu\) is usually very large and often reaches the upper bound of 1000, which is the boundary of the parameter space. Its mean is therefore not meaningful. AIC picks the t copula in 10% of Gaussian samples at n = 250 and 2% at n = 1000, and always when the truth is t₄. With Gaussian data, choosing the t copula costs little, because a large \(\nu\) reproduces the Gaussian. Choosing the Gaussian copula for t data understates joint extremes.
+
+>> Practical guidance
+
+- Fit copulas to pseudo-observations unless the margins are known. Ranks protect the dependence estimate from misspecified margins, which is the main point of the copula approach.
+- Prefer the t copula as a default for financial, insurance and environmental data, where joint extremes matter. Check the evidence for finite \(\nu\) with AIC or a likelihood-ratio test, keeping in mind that \(\nu=\infty\) lies on the boundary.
+- Kendall inversion is fast and robust, and is a good start or check for MPL. In high dimension, project the inverted matrix if it is not positive definite.
+- Elliptical copulas have the same dependence in both tails, and one \(\nu\) for every pair. If losses cluster more than gains, or tail dependence differs across pairs, use asymmetric (Clayton, Gumbel) or vine copulas.
+- Report tail dependence and joint-exceedance probabilities alongside the correlations. Correlation alone does not describe the risk of simultaneous extremes.
+
+>> References
+
+- A. Sklar (1959). Fonctions de répartition à n dimensions et leurs marges. *Publications de l'Institut de Statistique de l'Université de Paris* 8, 229-231.
+- C. Genest, K. Ghoudi and L.-P. Rivest (1995). A semiparametric estimation procedure of dependence parameters in multivariate families of distributions. *Biometrika* 82(3), 543-552. doi:10.1093/biomet/82.3.543
+- S. Demarta and A. J. McNeil (2005). The t copula and related copulas. *International Statistical Review* 73(1), 111-129. doi:10.1111/j.1751-5823.2005.tb00254.x
+- A. J. McNeil, R. Frey and P. Embrechts (2015). *Quantitative Risk Management*, revised ed., ch. 7. Princeton University Press.
+- M. Hofert, I. Kojadinovic, M. Mächler and J. Yan (2018). *Elements of Copula Modeling with R*. Springer. doi:10.1007/978-3-319-89635-9
+- D. Lewandowski, D. Kurowicka and H. Joe (2009). Generating random correlation matrices based on vines and extended onion method. *Journal of Multivariate Analysis* 100(9), 1989-2001. doi:10.1016/j.jmva.2009.04.008

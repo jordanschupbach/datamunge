@@ -1,0 +1,129 @@
+//? Title: Test stationarity with KPSS
+//? Exports: both
+//? Lang: en
+
+> Make stationarity the null hypothesis
+
+Unit-root tests take nonstationarity as the null, so with short or persistent series they often fail to reject, and the result proves little. The KPSS test reverses the roles. It writes the series as a deterministic level or trend plus a random walk plus stationary noise, \(y_t=\xi t+r_t+\varepsilon_t\) with \(r_t=r_{t-1}+u_t\), and tests \(\sigma_u^2=0\). The LM statistic accumulates the residuals from the level or trend regression into partial sums \(S_t\):
+\[\eta=\frac{1}{n^2\hat\lambda^2}\sum_{t=1}^nS_t^2.\]
+Under stationarity the partial sums behave like a Brownian bridge. Under a unit root they drift, and \(\eta\) grows with \(n\). The long-run variance \(\hat\lambda^2\) uses Bartlett weights. The number of lags matters, so `kpss_test` chooses it by the data-dependent rule of Hobijn, Franses and Ooms unless a fixed value is given.
+
+The example runs ADF and KPSS together on 1,000 simulated series of length 200 from each of five processes and tabulates the four joint outcomes at 5%. "ADF only" means ADF rejects a unit root and KPSS does not reject stationarity, which points to stationarity. "KPSS only" points to a unit root. The two processes marked * use trend versions of both tests. It then measures how often KPSS falsely rejects level stationarity for AR(1) series as \(\phi\) approaches one, using three bandwidth rules.
+
+```{cpp, id=kpss, file="figures/kpss_size.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/unit_root.hpp>
+
+#include <filesystem>
+#include <functional>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::UnitRootTrend;
+
+std::vector<double> ar1(double phi, double drift, std::size_t n, std::mt19937_64& random) {
+    std::normal_distribution<double> noise;
+    std::vector<double> y(n);
+    double level = 0;
+    for (std::size_t t = 0; t < n + 100; ++t) {
+        level = phi * level + noise(random);
+        if (t >= 100)
+            y[t - 100] = 10 + drift * double(t - 100) + level;
+    }
+    return y;
+}
+
+int main() {
+    std::mt19937_64 random(17);
+    const std::size_t n = 200;
+    const int replicates = 1000;
+    struct Process { const char* name; double phi, drift; UnitRootTrend trend; };
+    const std::vector<Process> processes{
+        {"AR(1), φ = 0.5", .5, 0, UnitRootTrend::constant},
+        {"AR(1), φ = 0.95", .95, 0, UnitRootTrend::constant},
+        {"Random walk", 1, 0, UnitRootTrend::constant},
+        {"Trend + AR(1), φ = 0.7 *", .7, .05, UnitRootTrend::linear},
+        {"Random walk with drift *", 1, .05, UnitRootTrend::linear},
+    };
+    std::println("| Process | ADF only | KPSS only | Both | Neither |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (const auto& p : processes) {
+        int outcome[4] = {0, 0, 0, 0};
+        for (int r = 0; r < replicates; ++r) {
+            const auto y = ar1(p.phi, p.drift, n, random);
+            const auto d = dm::stats::augmented_dickey_fuller(y, {.trend = p.trend});
+            const bool adf = d.p_value < .05;
+            const auto k = dm::stats::kpss_test(y, {.trend = p.trend});
+            const bool kpss = k.statistic > k.critical.five_percent;
+            ++outcome[adf && !kpss ? 0 : !adf && kpss ? 1 : adf && kpss ? 2 : 3];
+        }
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", p.name,
+                     outcome[0] / double(replicates), outcome[1] / double(replicates),
+                     outcome[2] / double(replicates), outcome[3] / double(replicates));
+    }
+
+    // Size of the 5% level-stationarity test for stationary AR(1) series.
+    const std::vector<double> phis{0, .3, .5, .7, .8, .9, .95};
+    std::vector<double> automatic, short_rule, long_rule;
+    for (const double phi : phis) {
+        int a = 0, s = 0, l = 0;
+        for (int r = 0; r < replicates; ++r) {
+            const auto y = ar1(phi, 0, n, random);
+            a += dm::stats::kpss_test(y).statistic > .463;
+            s += dm::stats::kpss_test(y, {.lags = 4}).statistic > .463;
+            l += dm::stats::kpss_test(y, {.lags = 15}).statistic > .463;
+        }
+        automatic.push_back(a / double(replicates));
+        short_rule.push_back(s / double(replicates));
+        long_rule.push_back(l / double(replicates));
+    }
+    std::println("\n| φ | Automatic lags | 4 lags | 15 lags |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    for (std::size_t i = 0; i < phis.size(); ++i)
+        std::println("| {:.2f} | {:.3f} | {:.3f} | {:.3f} |", phis[i], automatic[i],
+                     short_rule[i], long_rule[i]);
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.line({0, .95}, {.05, .05}, "Nominal 5%", {150, 154, 160}, 1)
+        .line(phis, short_rule, "4 lags", {176, 72, 43}, 1.6)
+        .line(phis, automatic, "Automatic (Hobijn et al.)", {26, 90, 147}, 1.8)
+        .line(phis, long_rule, "15 lags", {46, 139, 87}, 1.6)
+        .points(phis, automatic, "", {26, 90, 147}, 5)
+        .title("KPSS false rejections of a stationary AR(1), n = 200")
+        .x_label("Autoregressive coefficient φ")
+        .y_label("Rejection rate at 5%")
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/kpss_size.svg");
+}
+```
+// result_begin: markdown
+| Process | ADF only | KPSS only | Both | Neither |
+| --- | ---: | ---: | ---: | ---: |
+| AR(1), φ = 0.5 | 0.914 | 0.001 | 0.082 | 0.003 |
+| AR(1), φ = 0.95 | 0.248 | 0.359 | 0.092 | 0.301 |
+| Random walk | 0.023 | 0.814 | 0.029 | 0.134 |
+| Trend + AR(1), φ = 0.7 * | 0.861 | 0.004 | 0.129 | 0.006 |
+| Random walk with drift * | 0.045 | 0.814 | 0.027 | 0.114 |
+
+| φ | Automatic lags | 4 lags | 15 lags |
+| ---: | ---: | ---: | ---: |
+| 0.00 | 0.044 | 0.045 | 0.032 |
+| 0.30 | 0.061 | 0.062 | 0.041 |
+| 0.50 | 0.082 | 0.105 | 0.065 |
+| 0.70 | 0.103 | 0.159 | 0.070 |
+| 0.80 | 0.158 | 0.280 | 0.083 |
+| 0.90 | 0.290 | 0.521 | 0.168 |
+| 0.95 | 0.483 | 0.743 | 0.324 |
+\image(figures/kpss_size.svg)
+// result_end
+\caption(Proportion of stationary AR(1) series of length 200 for which the 5% KPSS level test rejects stationarity, with automatic, short (4) and long (15) Bartlett lags.)
+\alttext(All three curves start near 5 percent at φ = 0. As φ rises they climb: at φ = 0.95 the 4-lag rule rejects 74 percent of the time, the automatic rule 48 percent and the 15-lag rule 32 percent.)
+
+The two tests agree for clearly separated cases. Stationary AR(0.5) series and trend-stationary series are classified as stationary about 90% of the time, and random walks, with or without drift, as unit roots about 81% of the time. The near-unit-root case \(\phi=0.95\) is spread across all four outcomes, and in 30% of samples neither test rejects. With 200 observations the data cannot separate slow mean reversion from a unit root. Using the two tests together makes this visible, while either test alone would give a confident-looking but unreliable answer.
+
+The size table shows the main weakness of KPSS. The null includes every stationary process, but in a finite sample a persistent AR(1) looks like a random walk. A short bandwidth then underestimates the long-run variance and rejects far too often. Longer bandwidths protect the size at the cost of power, and the automatic rule increases the lag count with the estimated persistence, so it falls between the fixed rules. Statistics, automatically chosen lags and interpolated p-values agree with `statsmodels.tsa.stattools.kpss`.
+
+[Kwiatkowski, Phillips, Schmidt and Shin (1992)|https://doi.org/10.1016/0304-4076(92)90104-Y] · [Hobijn, Franses and Ooms (2004)|https://doi.org/10.1111/j.1467-9574.2004.00272.x] · [Caner and Kilian (2001), size distortions|https://doi.org/10.1016/S0261-5606(01)00024-2]

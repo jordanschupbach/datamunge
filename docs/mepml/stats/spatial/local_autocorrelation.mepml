@@ -1,0 +1,188 @@
+//? Title: Local Moran and Getis-Ord statistics
+//? Exports: both
+//? Lang: en
+
+> Locate clusters and spatial outliers with location-specific statistics, calibrate them by conditional permutation, and control the false discoveries that come from testing every location at once
+
+A global statistic says whether a map is spatially autocorrelated, but not where. Local indicators of spatial association give each location its own statistic. The local Moran statistic
+
+\[
+I_i=\frac{z_i}{m_2}\sum_jw_{ij}z_j,\qquad m_2=\frac1n\sum_jz_j^2,
+\]
+
+is large and positive when location \(i\) and its neighbours deviate from the mean in the same direction, giving a high-high (hot) or low-low (cold) cluster. It is negative when they deviate in opposite directions, giving a spatial outlier. The local \(I_i\) sum to a multiple of global Moran's \(I\). The Getis–Ord statistic
+
+\[
+G_i^*=\frac{\sum_jw_{ij}x_j}{\sum_jx_j}\quad(\text{self included}),
+\]
+
+compares the neighbourhood total with what random placement would give. A large positive \(z\) marks a hot spot and a large negative \(z\) a cold spot, but \(G_i^*\) does not detect outliers. Each location's null distribution is calibrated by conditional randomisation: \(x_i\) stays at location \(i\) and the other \(n-1\) values are reassigned at random.
+
+`local_morans_i` and `local_getis_ord` return, for each location, the statistic, its analytic conditional (or total) moments, the \(z\)-score and p-value, an optional conditional-permutation p-value, and the Moran-scatterplot quadrant. The tests reproduce `spdep::localmoran` (conditional and total moments, all alternatives) and `spdep::localG` (\(G_i\) and \(G_i^*\), binary and row-standardised) to \(10^{-12}\). They also check that the permutation moments agree with the conditional moments.
+
+With \(n\) locations there are \(n\) tests, so about \(0.05n\) locations are flagged at \(\alpha=0.05\) even with no structure at all. The neighbouring tests are also correlated, because neighbourhoods overlap. The study uses a \(20\times20\) lattice with rook contiguity. Independent \(N(0,1)\) noise has a disc of radius 3 raised by 1.5 (the hot spot) and another disc lowered by 1.5 (the cold spot). Detection is measured inside the discs, and false positives in cells more than two cells from either disc. A second set of pure-noise maps measures how often a map shows any false cluster at all. Each statistic is used with and without Benjamini–Hochberg control of the false discovery rate over the 400 locations. Local Moran uses 999 conditional permutations, \(G_i^*\) its analytic \(z\)-score, and there are 100 maps of each kind.
+
+```{cpp, id=lisa, file="figures/local_autocorrelation.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/p_adjust.hpp>
+#include <datamunge/stats/spatial_autocorrelation.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+using dm::stats::LisaQuadrant;
+constexpr int side = 20, n = side * side;
+
+int region(int cell) {  // 1 hot disc, -1 cold disc, 0 null (far), 2 buffer
+    const double x = cell % side, y = cell / side;
+    const double dh = std::hypot(x - 5, y - 5), dc = std::hypot(x - 14, y - 14);
+    if (dh <= 3) return 1;
+    if (dc <= 3) return -1;
+    return (dh > 5 && dc > 5) ? 0 : 2;
+}
+
+std::vector<double> simulate(dm::random::SplitMix64& rng, bool spots) {
+    std::vector<double> v(n);
+    for (int c = 0; c < n; ++c) {
+        v[c] = rng.normal();
+        if (spots)
+            v[c] += 1.5 * (region(c) == 1) - 1.5 * (region(c) == -1);
+    }
+    return v;
+}
+
+// Flags: +1 hot / high-high, -1 cold / low-low, 0 not significant (outliers count as 0).
+std::vector<int> flag_moran(const std::vector<dm::stats::LocalStatistic>& s, bool fdr) {
+    std::vector<double> p;
+    for (const auto& v : s)
+        p.push_back(v.permutation_p_value);
+    if (fdr)
+        p = dm::stats::p_adjust(p, dm::stats::PAdjustMethod::BH);
+    std::vector<int> f(s.size(), 0);
+    for (std::size_t i = 0; i < s.size(); ++i)
+        if (p[i] <= 0.05 && s[i].statistic > 0)
+            f[i] = s[i].quadrant == LisaQuadrant::high_high ? 1 : -1;
+    return f;
+}
+std::vector<int> flag_gstar(const std::vector<dm::stats::LocalStatistic>& s, bool fdr) {
+    std::vector<double> p;
+    for (const auto& v : s)
+        p.push_back(v.p_value);
+    if (fdr)
+        p = dm::stats::p_adjust(p, dm::stats::PAdjustMethod::BH);
+    std::vector<int> f(s.size(), 0);
+    for (std::size_t i = 0; i < s.size(); ++i)
+        if (p[i] <= 0.05)
+            f[i] = s[i].z > 0 ? 1 : -1;
+    return f;
+}
+
+int main() {
+    Matrix xy(n, 2);
+    for (int c = 0; c < n; ++c)
+        xy(c, 0) = c % side, xy(c, 1) = c / side;
+    const auto rook = dm::stats::distance_band_weights(xy, 0, 1.0);
+    const auto w = dm::stats::row_standardize(rook);
+    Matrix self = rook;
+    for (int c = 0; c < n; ++c)
+        self(c, c) = 1;
+    const auto wstar = dm::stats::row_standardize(self);
+
+    dm::random::SplitMix64 rng(99);
+    const int maps = 100;
+    const char* names[4]{"Local Moran, unadjusted", "Local Moran, BH FDR",
+                         "Gi*, unadjusted", "Gi*, BH FDR"};
+    double hot[4]{}, cold[4]{}, false_rate[4]{}, any_null[4]{};
+    std::vector<double> example_z;
+    for (int r = 0; r < maps; ++r) {
+        for (const bool spots : {true, false}) {
+            const auto x = simulate(rng, spots);
+            const auto lm = dm::stats::local_morans_i(
+                x, w, {.permutations = 999, .seed = rng.next_u64()});
+            const auto gs = dm::stats::local_getis_ord(x, wstar, true);
+            const std::vector<int> flags[4]{flag_moran(lm, false), flag_moran(lm, true),
+                                            flag_gstar(gs, false), flag_gstar(gs, true)};
+            if (spots && r == 0)
+                for (const auto& s : gs)
+                    example_z.push_back(s.z);
+            for (int m = 0; m < 4; ++m) {
+                int nh = 0, nc = 0, nn = 0, fh = 0, fc = 0, fn = 0, any = 0;
+                for (int c = 0; c < n; ++c) {
+                    const int g = region(c);
+                    if (g == 1) ++nh, fh += flags[m][c] == 1;
+                    if (g == -1) ++nc, fc += flags[m][c] == -1;
+                    if (g == 0) ++nn, fn += flags[m][c] != 0;
+                    any += flags[m][c] != 0;
+                }
+                if (spots) {
+                    hot[m] += double(fh) / nh / maps;
+                    cold[m] += double(fc) / nc / maps;
+                    false_rate[m] += double(fn) / nn / maps;
+                } else {
+                    any_null[m] += (any > 0) / double(maps);
+                }
+            }
+        }
+    }
+    std::println("| Method | Hot-spot cells found | Cold-spot cells found | "
+                 "False positives (null cells) | Pure-noise maps with any cluster |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (int m = 0; m < 4; ++m)
+        std::println("| {} | {:.3f} | {:.3f} | {:.4f} | {:.2f} |", names[m], hot[m],
+                     cold[m], false_rate[m], any_null[m]);
+
+    // Gi* z-scores of the first simulated map with spots.
+    std::vector<double> gx, gy;
+    for (int k = 0; k < side; ++k)
+        gx.push_back(k), gy.push_back(k);
+    std::vector<std::vector<double>> code(side, std::vector<double>(side));
+    for (int c = 0; c < n; ++c)
+        code[c % side][c / side] = std::clamp(example_z[c], -4.0, 4.0);
+    auto plot = dm::graphics::RPlot::create();
+    plot.image(gx, gy, code,
+               {{33, 82, 150}, {120, 160, 210}, {240, 240, 240}, {230, 140, 120},
+                {178, 34, 34}},
+               -4, 4)
+        .title("Gi* z-scores of one simulated map")
+        .x_label("Column (hot disc at (5, 5), cold disc at (14, 14); z clipped to +-4)")
+        .y_label("Row")
+        .size(520, 480);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/local_autocorrelation.svg");
+}
+```
+// result_begin: markdown
+| Method | Hot-spot cells found | Cold-spot cells found | False positives (null cells) | Pure-noise maps with any cluster |
+| --- | ---: | ---: | ---: | ---: |
+| Local Moran, unadjusted | 0.595 | 0.588 | 0.0303 | 1.00 |
+| Local Moran, BH FDR | 0.113 | 0.115 | 0.0003 | 0.00 |
+| Gi*, unadjusted | 0.667 | 0.657 | 0.0246 | 1.00 |
+| Gi*, BH FDR | 0.251 | 0.250 | 0.0003 | 0.02 |
+\image(figures/local_autocorrelation.svg)
+// result_end
+
+Without adjustment, both statistics find about 60–67% of the cells inside the shifted discs. They also flag 2.5–3% of the null cells far from either disc, and every pure-noise map shows at least one "cluster". With 400 tests, a map of unadjusted local p-values always contains apparent hot and cold spots, and because neighbouring statistics share data, the false spots also clump together like real ones. (The false-positive rate is below 5% because only high-high and low-low or signed hot and cold calls are counted.) Benjamini–Hochberg control of the false discovery rate removes nearly all of them: 0.03% of null cells, and false clusters in at most 2% of noise maps. The cost is power, which drops to 11% of disc cells for local Moran and 25% for \(G_i^*\).
+
+\(G_i^*\) is the more powerful detector of these spots. It includes the cell's own value, so a shifted cell inside a shifted neighbourhood counts twice, and its analytic \(z\)-score is not limited by the \(1/1000\) resolution of 999 permutations, which matters once p-values are compared with BH's thresholds of \(0.05k/400\). Local Moran answers a different question. It needs a cell and its neighbours to deviate together relative to the global mean, it also detects spatial outliers (high-low and low-high), and its conditional-permutation p-value makes no normality assumption. The map shows the typical appearance of a real spot under \(G_i^*\): a coherent block of large \(|z|\) at each disc, surrounded by scattered moderate values from the noise. Its edges are blurred because border cells average over neighbours both inside and outside.
+
+>> Practical guidance
+
+- Report local statistics with a multiplicity adjustment, either the false discovery rate or a stricter \(\alpha\) chosen in advance. An unadjusted LISA map of noise always contains clusters.
+- Use enough permutations for the adjusted thresholds. With \(n\) locations and FDR control, the smallest attainable p-value \(1/(R+1)\) should be well below \(0.05/n\).
+- Use \(G_i^*\) to find hot and cold spots of a nonnegative variable, and local Moran when spatial outliers matter or the variable has no natural zero.
+- Choose the neighbourhood size in advance and report it. Larger neighbourhoods find broad spots and blur small ones.
+- Treat significant local statistics as descriptive leads, not confirmed clusters. Their tests are correlated and conditional on the chosen weights.
+
+>> References
+
+- L. Anselin (1995). Local indicators of spatial association—LISA. *Geographical Analysis* 27(2), 93-115. doi:10.1111/j.1538-4632.1995.tb00338.x
+- J. K. Ord and A. Getis (1995). Local spatial autocorrelation statistics: distributional issues and an application. *Geographical Analysis* 27(4), 286-306. doi:10.1111/j.1538-4632.1995.tb00912.x
+- R. R. Sokal, N. L. Oden and B. A. Thomson (1998). Local spatial autocorrelation in a biological model. *Geographical Analysis* 30(4), 331-354. doi:10.1111/j.1538-4632.1998.tb00406.x
+- Y. Benjamini and Y. Hochberg (1995). Controlling the false discovery rate: a practical and powerful approach to multiple testing. *Journal of the Royal Statistical Society B* 57(1), 289-300. doi:10.1111/j.2517-6161.1995.tb02031.x
+- R. S. Bivand and D. W. S. Wong (2018). Comparing implementations of global and local indicators of spatial association. *TEST* 27(3), 716-748. doi:10.1007/s11749-018-0599-x

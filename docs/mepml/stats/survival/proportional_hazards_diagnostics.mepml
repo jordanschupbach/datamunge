@@ -1,0 +1,135 @@
+//? Title: Check proportional hazards with scaled Schoenfeld residuals
+//? Exports: both
+//? Lang: en
+
+> Test whether a Cox coefficient stays constant over follow-up, and see how it changes
+
+A Cox model assumes that each covariate multiplies the hazard by the same factor at every time. Grambsch and Therneau's diagnostic embeds that model in a larger one with time-varying coefficients \(\beta_k(t)=\beta_k+\gamma_k g(t)\), where \(g\) is a chosen time scale. It then tests \(\gamma_k=0\) by a score test at the fitted \(\hat\beta\). The test needs only the Schoenfeld residuals \(r_i=x_i-\bar x(t_i)\), the difference between the failing subject's covariates and the risk-weighted mean of the risk set, and the information matrix. Rescaled as \(\hat\beta+d\,I^{-1}r_i\), the residuals have expectation close to \(\beta(t_i)\). A smooth of them against \(g(t)\) is therefore a picture of how the coefficient changes.
+
+R's `cox.zph` defaults to \(g(t)=1-\hat S(t-)\), the Kaplan–Meier distribution function. This spreads events evenly along the axis and keeps a few long survivors from dominating, as they would with \(g(t)=t\).
+
+The example simulates 300 subjects with two binary covariates and independent censoring uniform on (0, 4):
+- \(x_1\) has a constant log hazard ratio of 0.5.
+- \(x_2\) has a protective effect of \(-1\) that ends at time 0.5. Its average coefficient is moderate, but it is far from constant.
+
+It estimates the size and power of the per-covariate tests under three time scales, then plots the scaled residuals for \(x_2\) from one larger sample of 1000.
+
+```{cpp, id=zph, file="figures/ph_diagnostics.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/cox_counting.hpp>
+#include <datamunge/stats/lowess.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::CountingRecord;
+using dm::stats::TimeTransform;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+struct Data {
+    std::vector<CountingRecord> records;
+    Matrix x;
+};
+
+// Baseline hazard 1; x1 multiplies it by exp(0.5) throughout, x2 by exp(-1) before t = 0.5.
+Data simulate(std::size_t n, std::mt19937_64& random) {
+    std::exponential_distribution<double> unit(1);
+    std::bernoulli_distribution coin(.5);
+    Data d{{}, Matrix(n, 2)};
+    for (std::size_t i = 0; i < n; ++i) {
+        const double x1 = coin(random), x2 = coin(random);
+        const double early = std::exp(.5 * x1 - x2), late = std::exp(.5 * x1);
+        const double e = unit(random);
+        const double t = e < early * .5 ? e / early : .5 + (e - early * .5) / late;
+        const double c = 4 * std::uniform_real_distribution<double>(0, 1)(random);
+        d.records.push_back({0, std::min(t, c), t <= c});
+        d.x(i, 0) = x1;
+        d.x(i, 1) = x2;
+    }
+    return d;
+}
+
+int main() {
+    std::mt19937_64 random(12);
+    const TimeTransform transforms[3]{TimeTransform::km, TimeTransform::rank,
+                                      TimeTransform::identity};
+    const char* names[3]{"1 − KM(t−)", "rank(t)", "t"};
+    double reject[3][3]{};
+    const int reps = 1000;
+    for (int r = 0; r < reps; ++r) {
+        const auto d = simulate(300, random);
+        const auto fit = dm::stats::fit_cox_counting(d.records, d.x);
+        for (int k = 0; k < 3; ++k) {
+            const auto t = dm::stats::test_proportional_hazards(d.records, d.x, fit, {},
+                                                                transforms[k]);
+            reject[k][0] += t.terms[0].p_value < .05;
+            reject[k][1] += t.terms[1].p_value < .05;
+            reject[k][2] += t.global.p_value < .05;
+        }
+    }
+    std::println("| g(t) | x1 (proportional): size | x2 (waning): power | Global: power |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (int k = 0; k < 3; ++k)
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} |", names[k], reject[k][0] / reps,
+                     reject[k][1] / reps, reject[k][2] / reps);
+
+    const auto d = simulate(1000, random);
+    const auto fit = dm::stats::fit_cox_counting(d.records, d.x);
+    const auto t = dm::stats::test_proportional_hazards(d.records, d.x, fit);
+    std::println("\nOne sample of 1000: fitted beta2 = {:.3f}; x2 test p = {:.2g}, "
+                 "x1 test p = {:.2f}.",
+                 fit.coefficients[1], t.terms[1].p_value, t.terms[0].p_value);
+    std::vector<double> g, y;
+    for (std::size_t r = 0; r < t.event_times.size(); ++r) {
+        g.push_back(t.transformed_times[r]);
+        y.push_back(t.scaled_schoenfeld(r, 1));
+    }
+    const auto smooth = dm::stats::lowess(g, y, .4);
+    // True beta(t) on the KM scale: -1 until the pooled curve passes t = 0.5.
+    double g_half = 0;
+    for (std::size_t r = 0; r < t.event_times.size(); ++r)
+        if (t.event_times[r] < .5)
+            g_half = t.transformed_times[r];
+    auto plot = dm::graphics::RPlot::create();
+    plot.points(g, y, {170, 175, 185}, 2.5)
+        .line({0, g_half, g_half, 1}, {-1, -1, 0, 0}, "True coefficient of x2",
+              {46, 139, 87}, 2)
+        .line({0, 1}, {fit.coefficients[1], fit.coefficients[1]}, "Constant Cox estimate",
+              {176, 72, 43}, 1.5)
+        .line(smooth.x, smooth.y, "Lowess of scaled residuals", {26, 90, 147}, 2.2)
+        .title("Scaled Schoenfeld residuals for the waning covariate")
+        .x_label("1 − KM(t−)")
+        .y_label("Coefficient of x2")
+        .ylim(-4, 4.5)
+        .size(700, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/ph_diagnostics.svg");
+}
+```
+// result_begin: markdown
+| g(t) | x1 (proportional): size | x2 (waning): power | Global: power |
+| --- | ---: | ---: | ---: |
+| 1 − KM(t−) | 0.059 | 0.838 | 0.754 |
+| rank(t) | 0.058 | 0.850 | 0.775 |
+| t | 0.062 | 0.703 | 0.621 |
+
+One sample of 1000: fitted beta2 = -0.497; x2 test p = 1.9e-05, x1 test p = 0.82.
+\image(figures/ph_diagnostics.svg)
+// result_end
+\caption(Scaled Schoenfeld residuals for x₂ (grey points) against 1 − KM(t−) in one simulated sample of 1000, with a lowess smooth (blue), the true time-varying coefficient (green step) and the constant Cox estimate (orange).)
+\alttext(Grey residual points scatter in two bands between about −3 and 2.5. The blue lowess curve starts near −1 at the left, rises through the region where the green true coefficient steps from −1 to 0, and levels off near 0 on the right. The orange horizontal line at about −0.5 sits between the two regimes.)
+
+All three time scales hold the nominal 5% level for the proportional covariate, at 5.8–6.2%. They differ in power for the waning effect. The Kaplan–Meier and rank scales detect it in 84–85% of samples, the raw time scale in 70%. Here the coefficient changes early, where events are dense. On the raw scale, the few long survivors are spread far to the right and carry leverage that the change itself does not deserve. Without censoring before the last event, \(1-\hat S(t-)\) is an affine function of the rank, and the two tests coincide exactly.
+
+The figure shows what the test is detecting. The Cox estimate of \(-0.50\) averages a strong early effect with no effect at all, and describes neither period. The smoothed residuals follow the true step from \(-1\) to 0, rounded off by the smoothing. The residuals are individually noisy (a binary covariate gives only a few possible values per risk set), so the smooth, not the points, carries the information. The usual remedies for a detected violation are:
+- stratifying by the offending covariate if it is a nuisance factor
+- splitting follow-up and estimating a separate coefficient per period, with the counting-process model
+- reporting a time-restricted summary such as the RMST
+
+The per-term and global statistics and p-values match R's `cox.zph` for all four transforms (`km`, `rank`, `identity`, `log`) with Efron and Breslow ties on the `veteran` data. They also match on a stratified start/stop fit to the heart-transplant data. The scaled residuals and transformed times match as well, including per-stratum scaling.
+
+[Grambsch and Therneau (1994)|https://doi.org/10.1093/biomet/81.3.515] · [Schoenfeld (1982)|https://doi.org/10.1093/biomet/69.1.239]

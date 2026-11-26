@@ -1,0 +1,208 @@
+//? Title: Sequential Monte Carlo samplers
+//? Exports: both
+//? Lang: en
+
+> Move a cloud of weighted particles from the prior to the posterior through tempered intermediate distributions, estimating the marginal likelihood along the way and keeping every mode the prior can reach
+
+Sequential Monte Carlo (SMC) samples a posterior by gradually introducing the likelihood. With prior \(p(\theta)\) and likelihood \(L(\theta)\), the tempered distributions
+
+\[
+\pi_\phi(\theta)\propto p(\theta)\,L(\theta)^{\phi},\qquad 0=\phi_0<\phi_1<\dots<\phi_T=1,
+\]
+
+run from the prior to the posterior. \(N\) particles start as prior draws. Moving from \(\phi_{t-1}\) to \(\phi_t\), each particle is reweighted by \(L(\theta_i)^{\phi_t-\phi_{t-1}}\), and the weighted mean of these increments estimates the ratio \(Z_{\phi_t}/Z_{\phi_{t-1}}\) of normalising constants. Their product is an unbiased estimate of the evidence \(Z=\int p(\theta)L(\theta)\,d\theta\). When the weights become uneven the particles are resampled, then moved by a few Metropolis steps that leave \(\pi_{\phi_t}\) invariant, which restores diversity.
+
+`sequential_monte_carlo` chooses each next temperature adaptively. It bisects for the \(\phi_t\) at which the conditional effective sample size of the incremental weights falls to a target fraction (0.5 by default), so the schedule takes small steps where the likelihood is informative and large steps elsewhere. Resampling is systematic. The moves are random-walk Metropolis with the current weighted particle covariance as proposal shape, and the proposal scale is adapted towards 30% acceptance. The tests check the evidence and posterior means against exact conjugate results, the unbiasedness of the evidence over repeated runs, and recovery of both modes of a bimodal posterior.
+
+The first experiment measures evidence accuracy in a normal-means model \(\theta\sim N(0,3^2I_d)\), \(y_j\sim N(\theta_j,1)\), whose evidence is exact. For \(d\in\{2,10,25\}\) and \(N\in\{250,1000,4000\}\), 40 independent runs give the bias and SD of \(\log\hat Z\). The second experiment uses a two-dimensional posterior with two well-separated modes holding 30% and 70% of the mass. It compares the mass that SMC puts on the smaller mode with that from a random-walk Metropolis chain started at the larger mode. The figure shows the adaptive temperature schedules.
+
+```{cpp, id=smc, file="figures/smc.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/bayes/rwm.hpp>
+#include <datamunge/bayes/smc.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Vec = std::vector<double>;
+const double log2pi = std::log(2 * std::numbers::pi);
+
+double log_sum_exp2(double a, double b) {
+    const double m = std::max(a, b);
+    return m + std::log(std::exp(a - m) + std::exp(b - m));
+}
+
+// Bimodal target on R^2: prior N(0, 4^2 I); likelihood mixes bumps at (-3, -3) and (3, 3).
+double bimodal_log_lik(const Vec& t) {
+    const auto bump = [&](double c, double w) {
+        const double a = t[0] - c, b = t[1] - c;
+        return std::log(w) - (a * a + b * b) / (2 * 0.3 * 0.3);
+    };
+    return log_sum_exp2(bump(-3, 0.3), bump(3, 0.7));
+}
+double bimodal_log_prior(const Vec& t) {
+    return -(t[0] * t[0] + t[1] * t[1]) / 32 - log2pi - 2 * std::log(4.0);
+}
+
+struct BimodalPosterior : dm::optim::ArbitraryFunction {
+    double evaluate(const Vec& t) override {
+        return bimodal_log_prior(t) + bimodal_log_lik(t);
+    }
+};
+
+int main() {
+    dm::random::SplitMix64 data_rng(7);
+    std::println("| Dimension | Particles | Proposal, moves | Stages | Bias of log Z | SD of log Z |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: |");
+    std::vector<Vec> schedules;
+    for (const std::size_t d : {2u, 10u, 25u}) {
+        Vec y(d);
+        for (double& v : y)
+            v = 3 * data_rng.normal() + data_rng.normal();
+        const double tau = 3;
+        double exact = 0;
+        for (const double v : y)
+            exact += -0.5 * v * v / (1 + tau * tau) - 0.5 * (log2pi + std::log(1 + tau * tau));
+        const auto prior = [&](const Vec& t) {
+            double s = 0;
+            for (const double v : t)
+                s += -0.5 * v * v / (tau * tau) - 0.5 * log2pi - std::log(tau);
+            return s;
+        };
+        const auto lik = [&](const Vec& t) {
+            double s = 0;
+            for (std::size_t j = 0; j < d; ++j)
+                s += -0.5 * (y[j] - t[j]) * (y[j] - t[j]) - 0.5 * log2pi;
+            return s;
+        };
+        const auto draw = [&](dm::random::SplitMix64& g) {
+            Vec t(d);
+            for (double& v : t)
+                v = tau * g.normal();
+            return t;
+        };
+        using P = dm::bayes::SmcProposal;
+        struct Setting {
+            std::size_t n, moves;
+            P proposal;
+        };
+        std::vector<Setting> settings{{250, 5, P::full_covariance}, {1000, 5, P::full_covariance},
+                                      {4000, 5, P::full_covariance}};
+        if (d == 25)
+            for (const P p : {P::full_covariance, P::diagonal})
+                settings.insert(settings.end(), {{1000, 25, p}, {4000, 25, p}});
+        for (const auto [n, moves, proposal] : settings) {
+            const int runs = 40;
+            double m = 0, q = 0, stages = 0;
+            for (int r = 0; r < runs; ++r) {
+                const auto res = dm::bayes::sequential_monte_carlo(
+                    prior, lik, draw,
+                    {.particles = n, .mcmc_steps = moves, .proposal = proposal,
+                     .seed = 1000u * d + 31u * n + r});
+                const double e = res.log_evidence - exact;
+                m += e / runs, q += e * e / runs;
+                stages += double(res.stages.size()) / runs;
+                if (n == 4000 && moves == 5 && r == 0) {
+                    Vec phi{0.0};
+                    for (const auto& s : res.stages)
+                        phi.push_back(s.temperature);
+                    schedules.push_back(phi);
+                }
+            }
+            const char* shape = proposal == P::diagonal ? "diagonal" : "full";
+            std::println("| {} | {} | {}, {} | {:.1f} | {:+.3f} | {:.3f} |", d, n, shape, moves,
+                         stages, m, std::sqrt(q - m * m));
+        }
+    }
+
+    // Mass on the smaller mode (true 0.3): SMC against a random-walk chain.
+    double smc_mass = 0;
+    for (int r = 0; r < 20; ++r) {
+        const auto res = dm::bayes::sequential_monte_carlo(
+            bimodal_log_prior, bimodal_log_lik,
+            [](dm::random::SplitMix64& g) { return Vec{4 * g.normal(), 4 * g.normal()}; },
+            {.particles = 2000, .seed = 500u + r});
+        for (std::size_t i = 0; i < res.particles.size(); ++i)
+            smc_mass += std::exp(res.log_weights[i]) * (res.particles[i][0] < 0) / 20;
+    }
+    BimodalPosterior target;
+    double rwm_mass = 0;
+    for (int r = 0; r < 20; ++r) {
+        dm::bayes::RandomWalkMetropolis rwm({.num_samples = 20000, .num_warmup = 2000,
+                                             .initial_step_size = 0.3, .seed = 900u + r});
+        const auto out = rwm.sample(target, {3.0, 3.0});
+        double c = 0;
+        for (const auto& s : out.samples)
+            c += s[0] < 0;
+        rwm_mass += c / double(out.samples.size()) / 20;
+    }
+    std::println("\nMass on the smaller mode (true 0.300), mean of 20 runs: SMC {:.3f}, "
+                 "random-walk Metropolis {:.3f}.", smc_mass, rwm_mass);
+
+    auto plot = dm::graphics::RPlot::create();
+    const char* labels[3]{"d = 2", "d = 10", "d = 25"};
+    const dm::graphics::RGBA colors[3]{{26, 90, 147}, {44, 140, 90}, {176, 72, 43}};
+    for (int k = 0; k < 3; ++k) {
+        Vec stage;
+        for (std::size_t j = 0; j < schedules[k].size(); ++j)
+            stage.push_back(double(j));
+        plot.line(stage, schedules[k], labels[k], colors[k], 2)
+            .points(stage, schedules[k], "", colors[k], 4);
+    }
+    plot.y_limits(0, 1.3)
+        .title("Adaptive temperature schedules, N = 4000")
+        .x_label("Stage")
+        .y_label("Inverse temperature phi")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/smc.svg");
+}
+```
+// result_begin: markdown
+| Dimension | Particles | Proposal, moves | Stages | Bias of log Z | SD of log Z |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 2 | 250 | full, 5 | 3.0 | -0.006 | 0.164 |
+| 2 | 1000 | full, 5 | 3.0 | -0.012 | 0.070 |
+| 2 | 4000 | full, 5 | 3.0 | -0.000 | 0.035 |
+| 10 | 250 | full, 5 | 7.0 | -0.305 | 0.948 |
+| 10 | 1000 | full, 5 | 7.0 | -0.031 | 0.433 |
+| 10 | 4000 | full, 5 | 7.0 | +0.009 | 0.236 |
+| 25 | 250 | full, 5 | 10.0 | -3.382 | 3.764 |
+| 25 | 1000 | full, 5 | 11.0 | -0.451 | 2.131 |
+| 25 | 4000 | full, 5 | 11.0 | +0.396 | 1.452 |
+| 25 | 1000 | full, 25 | 11.0 | +0.731 | 0.311 |
+| 25 | 4000 | full, 25 | 11.0 | +0.179 | 0.185 |
+| 25 | 1000 | diagonal, 25 | 11.1 | +0.024 | 0.332 |
+| 25 | 4000 | diagonal, 25 | 11.0 | -0.009 | 0.162 |
+
+Mass on the smaller mode (true 0.300), mean of 20 runs: SMC 0.296, random-walk Metropolis 0.000.
+\image(figures/smc.svg)
+// result_end
+
+In two dimensions, three stages are enough and the evidence is accurate to a few hundredths with 1000 particles. The adaptive schedule lengthens with dimension (3, 7 and 11 stages), because the conditional ESS criterion limits how much new information each step may add, and the likelihood carries more information when there are more parameters. The schedules in the figure start with very small steps, where the prior and the likelihood disagree most, and grow as the particles concentrate.
+
+Precision depends on the moves. With only five random-walk sweeps per stage in 25 dimensions, the particles do not reach equilibrium between stages. The SD of \(\log\hat Z\) is then 1.5 even with 4000 particles, and with few particles \(\log\hat Z\) is badly biased downwards. That is expected: \(\hat Z\) is unbiased, so a noisy estimate is biased downwards on the log scale. Twenty-five sweeps reduce the SD to 0.19. They also reveal a second effect, a positive bias of 0.73 at \(N=1000\) that shrinks roughly as \(1/N\). It comes from estimating the full \(25\times25\) proposal covariance from the same particles that are then moved. Each particle's kernel depends weakly on its own position, so the population is not exactly invariant. Adapting only the 25 variances (`SmcProposal::diagonal`) removes it: the bias is +0.02 and −0.01, within Monte Carlo error. In this experiment the bias was located by checking that a fixed, population-independent proposal gave no bias, and that it shrank with \(N\) but not with a fixed temperature schedule.
+
+The bimodal example shows why SMC is used even when the evidence is not needed. A random-walk chain started in the larger mode never crosses to the other, and puts no mass on a mode that holds 30% of the posterior. SMC starts from prior draws that cover both modes, and tempering moves the mass between them through the weights rather than through the moves. Its average estimate of 0.296 is within Monte Carlo error of 0.300.
+
+>> Practical guidance
+
+- Supply a normalised log prior if the evidence is needed. Only the likelihood is tempered, so the prior's constant enters the estimate.
+- Keep the conditional ESS target between 0.3 and 0.9. Higher values give more stages and lower variance at proportionally higher cost.
+- Increase the number of move sweeps until \(\log\hat Z\) and the posterior summaries stop changing, and check the per-stage acceptance rates in `stages`.
+- For evidence in more than about ten dimensions, prefer the diagonal proposal or many more particles than parameters squared. Use the full covariance when strong correlation makes diagonal moves too slow.
+- Run SMC several times with different seeds and report the spread of \(\log\hat Z\) as its Monte Carlo error. A single run carries no internal error estimate.
+
+>> References
+
+- P. Del Moral, A. Doucet and A. Jasra (2006). Sequential Monte Carlo samplers. *Journal of the Royal Statistical Society B* 68(3), 411-436. doi:10.1111/j.1467-9868.2006.00553.x
+- N. Chopin (2002). A sequential particle filter method for static models. *Biometrika* 89(3), 539-552. doi:10.1093/biomet/89.3.539
+- Y. Zhou, A. M. Johansen and J. A. D. Aston (2016). Toward automatic model comparison: an adaptive sequential Monte Carlo approach. *Journal of Computational and Graphical Statistics* 25(3), 701-726. doi:10.1080/10618600.2015.1060885
+- A. Beskos, A. Jasra, N. Kantas and A. Thiery (2016). On the convergence of adaptive sequential Monte Carlo methods. *Annals of Applied Probability* 26(2), 1111-1146. doi:10.1214/15-AAP1113
+- N. Chopin and O. Papaspiliopoulos (2020). *An Introduction to Sequential Monte Carlo*. Springer.

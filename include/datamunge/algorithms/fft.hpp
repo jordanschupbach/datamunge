@@ -1,7 +1,8 @@
 #pragma once
 
 /// @file fft.hpp
-/// @brief Copy-owned radix-2 Cooley-Tukey FFT, with an unnormalized forward and 1/N inverse.
+/// @brief Copy-owned radix-2 Cooley-Tukey FFT and a Bluestein transform for any length, with an
+///        unnormalized forward and 1/N inverse.
 #include <cmath>
 #include <complex>
 #include <cstddef>
@@ -106,6 +107,62 @@ inline std::vector<std::complex<double>> fft_real(const std::vector<double>& x) 
   for (std::size_t i = 0; i < x.size(); ++i)
     a[i] = std::complex<double>(x[i], 0.0);
   return fft(std::move(a), false);
+}
+
+/// @brief Forward or inverse DFT of any length, by Bluestein's chirp-z algorithm.
+/// Same conventions as fft(): the forward uses exp(-2*pi*i*k*t/N) with no scaling and the
+/// inverse divides by N. Powers of two go straight to fft(). Other lengths are rewritten as a
+/// convolution with the chirp exp(-i*pi*k^2/N) and evaluated with power-of-two transforms of
+/// length at least 2N-1, so the cost is O(N log N) for every N. The chirp phase uses k^2 mod 2N
+/// to keep it accurate for long inputs. Empty input returns empty.
+/// @param a Owned samples of any length.
+/// @param inverse False (default) for forward; true for normalized inverse.
+/// @return Owned N complex coefficients in standard unshifted bin order, or inverse samples.
+/// @par Example
+/// @code
+/// const auto x = dm::algorithms::dft_any_length({{1, 0}, {2, 0}, {3, 0}});
+/// std::print("{:.1f} {:.3f}\n", x[1].real(), x[1].imag()); // -1.5 0.866
+/// @endcode
+/// @par References
+/// - L. I. Bluestein (1970). "A linear filtering approach to the computation of discrete
+///   Fourier transform." IEEE Transactions on Audio and Electroacoustics 18(4), 451-455.
+///   https://doi.org/10.1109/TAU.1970.1162132
+/// @see fft()
+inline std::vector<std::complex<double>> dft_any_length(
+    std::vector<std::complex<double>> a,
+    bool                              inverse = false) {
+  const std::size_t n = a.size();
+  if (n == 0 || is_power_of_two(n))
+    return fft(std::move(a), inverse);
+  std::size_t m = 1;
+  while (m < 2 * n - 1)
+    m <<= 1;
+  const double sign = inverse ? 1.0 : -1.0;
+  std::vector<std::complex<double>> chirp(n);
+  for (std::size_t k = 0; k < n; ++k) {
+    const std::size_t k2 = static_cast<std::size_t>(
+        (static_cast<unsigned long long>(k) * k) % (2ULL * n));
+    const double theta = sign * std::numbers::pi_v<double> * static_cast<double>(k2) /
+                         static_cast<double>(n);
+    chirp[k] = std::complex<double>(std::cos(theta), std::sin(theta));
+  }
+  std::vector<std::complex<double>> u(m), v(m);
+  for (std::size_t k = 0; k < n; ++k)
+    u[k] = a[k] * chirp[k];
+  v[0] = std::conj(chirp[0]);
+  for (std::size_t k = 1; k < n; ++k)
+    v[k] = v[m - k] = std::conj(chirp[k]);
+  u = fft(std::move(u));
+  v = fft(std::move(v));
+  for (std::size_t k = 0; k < m; ++k)
+    u[k] *= v[k];
+  u = fft(std::move(u), true);
+  for (std::size_t k = 0; k < n; ++k) {
+    a[k] = u[k] * chirp[k];
+    if (inverse)
+      a[k] /= static_cast<double>(n);
+  }
+  return a;
 }
 
 } // namespace datamunge::algorithms

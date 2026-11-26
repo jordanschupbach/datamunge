@@ -1,0 +1,136 @@
+//? Title: Regress recurrent events with the Andersen–Gill model and cluster-robust variance
+//? Exports: both
+//? Lang: en
+
+> Use every event a subject has, and let the subject, not the event, be the unit of uncertainty
+
+Infections, hospital admissions, tumour recurrences and machine faults can happen more than once to the same subject. Analysing only the first event discards information. The Andersen–Gill (AG) model uses all of them. Each subject's follow-up is split at its events into counting-process records \((t_{j-1},t_j]\), and a Cox model
+\[\lambda_i(t)=Y_i(t)\,\lambda_0(t)\,e^{x_i^\top\beta}\]
+is fitted to the records as if they were independent.
+
+Events within a subject are usually not independent. Some subjects are simply more prone than others, so their events cluster. The point estimate still targets the marginal rate ratio. Lin, Wei, Yang and Ying (2000) showed this holds as long as the mean rate is proportional, but the model-based variance treats each event as new information and is too small. The fix is the Lin–Wei robust sandwich, as in R's `coxph(... + cluster(id))`. Each record's score residual is turned into an influence (dfbeta) on \(\hat\beta\). The influences are summed within subjects, and the variance is the sum of squared subject influences.
+
+The example simulates 200 subjects, half treated. Each subject has a gamma frailty with mean 1 and variance \(\theta\). Events follow a Poisson process with rate \(0.5\,Z_i e^{-0.5x_i}\) per year over uniform follow-up on (2, 5) years. For each \(\theta\), 400 replications compare the model-based and robust intervals for the AG coefficient, and the coefficient from a Cox model of the first event only. The table gives the mean events per subject, the AG mean and empirical SD, both standard errors with their coverage, and the mean first-event coefficient.
+
+```{cpp, id=ag, file="figures/andersen_gill.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/cox_counting.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::CountingRecord;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+const double beta = -.5;
+
+struct Sample {
+    std::vector<CountingRecord> records, first;
+    std::vector<double> x, x_first;
+    std::vector<int> id;
+};
+
+Sample simulate(std::size_t n, double theta, std::mt19937_64& random) {
+    std::uniform_real_distribution<double> u(0, 1);
+    Sample s;
+    for (std::size_t i = 0; i < n; ++i) {
+        const double x = i % 2;
+        const double z = theta > 0
+            ? std::gamma_distribution<double>(1 / theta, theta)(random) : 1.0;
+        const double rate = .5 * z * std::exp(beta * x), end = 2 + 3 * u(random);
+        double t = 0;
+        bool first = true;
+        while (true) {
+            const double next = t + std::exponential_distribution<double>(rate)(random);
+            const bool event = next < end;
+            const double stop = event ? next : end;
+            s.records.push_back({t, stop, event});
+            s.x.push_back(x);
+            s.id.push_back(int(i));
+            if (first) {
+                s.first.push_back({0, stop, event});
+                s.x_first.push_back(x);
+                first = false;
+            }
+            if (!event)
+                break;
+            t = next;
+        }
+    }
+    return s;
+}
+
+int main() {
+    std::mt19937_64 random(4);
+    const int reps = 400;
+    const std::vector<double> thetas{0, .25, .5, 1};
+    std::vector<double> naive_cover, robust_cover;
+    std::println("| θ | Events | AG mean | SD | Model SE | Cover "
+                 "| Robust SE | Cover | First event |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const double theta : thetas) {
+        double mean = 0, square = 0, model = 0, robust = 0;
+        double cm = 0, cr = 0, first = 0, events = 0;
+        for (int r = 0; r < reps; ++r) {
+            const auto s = simulate(200, theta, random);
+            const auto f = dm::stats::fit_cox_counting(s.records, Matrix(s.x.size(), 1, s.x),
+                                                       {.clusters = s.id});
+            const double b = f.coefficients[0];
+            mean += b / reps;
+            square += b * b / reps;
+            model += f.standard_errors[0] / reps;
+            robust += f.robust_standard_errors[0] / reps;
+            cm += std::abs(b - beta) <= 1.96 * f.standard_errors[0];
+            cr += std::abs(b - beta) <= 1.96 * f.robust_standard_errors[0];
+            const Matrix x_first(s.x_first.size(), 1, s.x_first);
+            first += dm::stats::fit_cox_counting(s.first, x_first).coefficients[0] / reps;
+            events += double(f.events) / 200 / reps;
+        }
+        naive_cover.push_back(cm / reps);
+        robust_cover.push_back(cr / reps);
+        std::println("| {:.2f} | {:.2f} | {:+.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} "
+                     "| {:.3f} | {:+.3f} |", theta, events, mean,
+                     std::sqrt(square - mean * mean), model, cm / reps, robust,
+                     cr / reps, first);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    const std::vector<double> nominal(thetas.size(), .95);
+    plot.line(thetas, nominal, "Nominal 95%", {170, 170, 170}, 1.5)
+        .line(thetas, naive_cover, "Model-based variance", {176, 72, 43}, 2)
+        .points(thetas, naive_cover, dm::graphics::RGBA{176, 72, 43}, 4)
+        .line(thetas, robust_cover, "Cluster-robust variance", {26, 90, 147}, 2)
+        .points(thetas, robust_cover, dm::graphics::RGBA{26, 90, 147}, 4)
+        .title("Coverage of 95% intervals for the Andersen-Gill coefficient")
+        .x_label("Frailty variance")
+        .y_label("Coverage")
+        .ylim(.5, 1.2)
+        .size(700, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/andersen_gill.svg");
+}
+```
+// result_begin: markdown
+| θ | Events | AG mean | SD | Model SE | Cover | Robust SE | Cover | First event |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.00 | 1.40 | -0.508 | 0.126 | 0.124 | 0.943 | 0.123 | 0.938 | -0.509 |
+| 0.25 | 1.41 | -0.496 | 0.132 | 0.124 | 0.932 | 0.142 | 0.968 | -0.438 |
+| 0.50 | 1.40 | -0.520 | 0.174 | 0.125 | 0.833 | 0.160 | 0.922 | -0.427 |
+| 1.00 | 1.41 | -0.508 | 0.192 | 0.124 | 0.825 | 0.189 | 0.940 | -0.358 |
+\image(figures/andersen_gill.svg)
+// result_end
+\caption(Coverage of nominal 95% intervals for the Andersen–Gill treatment coefficient as subject heterogeneity (gamma frailty variance) increases. 400 replications of 200 subjects per point. The y-axis extends above 1 only to make room for the legend.)
+\alttext(A grey horizontal line marks 0.95. The blue robust-variance line stays between about 0.92 and 0.97 at every frailty variance. The orange model-based line starts near 0.94 at zero frailty and drops to about 0.83 at frailty variances 0.5 and 1.)
+
+Without heterogeneity (\(\theta=0\)), events within a subject really are independent and the two variances agree. As \(\theta\) grows, the AG estimate stays centred on −0.5, but its spread grows, from 0.126 to 0.192. The model-based standard error stays at 0.124 because it only counts events, and coverage falls to 83%. The robust standard error tracks the empirical spread and keeps coverage within simulation error of 95%.
+
+The first-event analysis is a warning in the other direction. Under frailty, the most event-prone untreated subjects fail first and leave the risk set, so later risk sets are selected. The hazard ratio for the first event is attenuated, here to −0.36 at \(\theta=1\), even though the treatment's effect on the event rate is constant. The AG model with robust variance estimates the marginal rate ratio without this distortion. It only requires that the marginal event rate, not the subject-specific intensity, be proportional.
+
+When the event number itself should change the baseline (a second recurrence is different from a first), stratify by event number as well as clustering by subject, which gives the Prentice–Williams–Peterson model. In this library that is `strata` together with `clusters`.
+
+The robust and model-based covariances and the robust Wald test match `coxph(... + cluster(id))` on `bladder2` (Efron and Breslow ties, and stratified by event number) and on `cgd`.
+
+[Andersen and Gill (1982)|https://doi.org/10.1214/aos/1176345976] · [Lin and Wei (1989)|https://doi.org/10.1080/01621459.1989.10478874] · [Lin, Wei, Yang and Ying (2000)|https://doi.org/10.1111/1467-9868.00259]

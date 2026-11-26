@@ -1,0 +1,207 @@
+//? Title: Graded response model
+//? Exports: both
+//? Lang: en
+
+> Model Likert-type items with ordered categories on one latent scale, estimate each item's thresholds and discrimination, draw category response curves and test information, and see what dichotomizing the items would cost
+
+Many questionnaire items have ordered response categories such as *strongly disagree* to *strongly agree*. Samejima's graded response model (GRM) extends the 2PL to such items through cumulative curves. For item \(j\) with categories \(0,\dots,K_j-1\),
+
+\[P(X_j\ge k\mid\theta)=\frac{1}{1+\exp\{-a_j(\theta-b_{jk})\}},\qquad k=1,\dots,K_j-1,\]
+
+with increasing thresholds \(b_{j1}<\dots<b_{j,K_j-1}\). The probability of category \(k\) is the difference between adjacent cumulative curves. Threshold \(b_{jk}\) is the ability at which a respondent is equally likely to answer below \(k\) or at or above it. The discrimination \(a_j\) is shared by all of an item's curves. Item information \(\sum_k(P_k')^2/P_k\) spreads across the range spanned by the thresholds, so a polytomous item measures over a wider range than a binary one.
+
+`fit_graded_response` estimates the thresholds and discriminations, optionally with one common discrimination, by marginal maximum likelihood. The latent trait is N(0, 1) and integrated by Gauss–Hermite quadrature. Standard errors come from the observed information. `graded_category_probabilities`, `graded_item_information`, `graded_test_information` and `graded_scores` (MAP and EAP) complete the analysis. The tests reproduce `ltm::grm` estimates, log-likelihoods and factor scores on the Science and Environment data; on Environment, our log-likelihood is about \(10^{-6}\) higher than ltm's. They also check that the GRM reduces to the 2PL for binary items. The threshold standard errors match a direct numerical observed information. `summary.grm` in ltm overstates them for every threshold after the first: its delta method misses its own cumulative-increment parameterization, giving 0.66 instead of 0.39 for the second Comfort threshold.
+
+The example analyses four items from the 1992 Eurobarometer survey of attitudes to science and technology (ltm's `Science` data, n = 392). The items are *Comfort* (science makes life healthier, easier and more comfortable), *Work* (technology will make work more interesting), *Future* (more opportunities for future generations) and *Benefit* (benefits outweigh harmful effects), each on a four-point scale. The simulation uses six five-category items, with discriminations 0.8–2.0 and thresholds spread around each item's location. It checks parameter recovery and coverage, and compares ability estimates from the GRM with those from a 2PL fitted after splitting every item at its middle category. There are 200 samples at each of n = 300 and n = 1000.
+
+```{cpp, id=grm, file="figures/graded_response.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/item_response.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+// ltm::Science items Comfort, Work, Future, Benefit (0 = strongly disagree ... 3 = strongly
+// agree) as response patterns with frequencies.
+const std::vector<std::pair<std::string, int>> science{
+    {"0000", 2}, {"0210", 1}, {"0312", 1}, {"0320", 1}, {"1000", 1}, {"1013", 1},
+    {"1100", 1}, {"1111", 4}, {"1112", 2}, {"1120", 1}, {"1121", 1}, {"1122", 1},
+    {"1132", 1}, {"1202", 1}, {"1211", 2}, {"1212", 1}, {"1221", 3}, {"1222", 3},
+    {"1223", 2}, {"1230", 1}, {"1232", 2}, {"1310", 1}, {"1332", 2}, {"1333", 1},
+    {"2000", 1}, {"2002", 2}, {"2011", 2}, {"2012", 4}, {"2021", 5}, {"2022", 5},
+    {"2023", 3}, {"2032", 1}, {"2033", 1}, {"2101", 1}, {"2103", 1}, {"2110", 1},
+    {"2111", 10}, {"2112", 7}, {"2120", 1}, {"2121", 16}, {"2122", 22}, {"2123", 5},
+    {"2130", 1}, {"2131", 1}, {"2132", 3}, {"2133", 2}, {"2202", 2}, {"2210", 1},
+    {"2211", 13}, {"2212", 10}, {"2213", 2}, {"2220", 5}, {"2221", 23}, {"2222", 52},
+    {"2223", 8}, {"2231", 7}, {"2232", 13}, {"2233", 12}, {"2302", 1}, {"2312", 1},
+    {"2321", 2}, {"2322", 4}, {"2323", 4}, {"2330", 1}, {"2331", 1}, {"2332", 6},
+    {"2333", 3}, {"3003", 1}, {"3011", 1}, {"3013", 2}, {"3023", 1}, {"3110", 1},
+    {"3112", 3}, {"3122", 8}, {"3123", 2}, {"3131", 1}, {"3133", 1}, {"3212", 1},
+    {"3221", 2}, {"3222", 21}, {"3223", 3}, {"3231", 2}, {"3232", 5}, {"3233", 8},
+    {"3321", 1}, {"3322", 2}, {"3323", 3}, {"3331", 2}, {"3332", 6}, {"3333", 12}};
+
+// Simulation design: six five-category items.
+const std::vector<double> a_true{0.8, 1.0, 1.3, 1.5, 1.8, 2.0};
+const std::vector<double> loc{-1.0, -0.5, 0.0, 0.3, 0.6, 1.0};
+const std::vector<double> step{-1.5, -0.5, 0.5, 1.5};
+
+Matrix simulate(dm::random::SplitMix64& rng, std::size_t n, std::vector<double>& theta) {
+    Matrix x(n, 6, 0.0);
+    theta.assign(n, 0.0);
+    for (std::size_t i = 0; i < n; ++i) {
+        theta[i] = rng.normal();
+        for (std::size_t j = 0; j < 6; ++j) {
+            const double u = rng.uniform01();
+            double c = 0;
+            for (const double s : step)  // count cumulative curves exceeded
+                c += u < 1 / (1 + std::exp(-a_true[j] * (theta[i] - loc[j] - s)));
+            x(i, j) = c;
+        }
+    }
+    return x;
+}
+
+int main() {
+    Matrix x(392, 4, 0.0);
+    std::size_t row = 0;
+    for (const auto& [pattern, count] : science)
+        for (int c = 0; c < count; ++c, ++row)
+            for (std::size_t j = 0; j < 4; ++j)
+                x(row, j) = pattern[j] - '0';
+    const auto f = dm::stats::fit_graded_response(x);
+    const auto c = dm::stats::fit_graded_response(x, {.common_discrimination = true});
+    const char* names[4] = {"Comfort", "Work", "Future", "Benefit"};
+    std::println("| Item | b1 (SE) | b2 (SE) | b3 (SE) | a (SE) | Information at 0 |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (std::size_t j = 0; j < 4; ++j) {
+        const auto& it = f.items[j];
+        std::string row_text = std::format("| {} |", names[j]);
+        for (std::size_t k = 0; k < 3; ++k)
+            row_text +=
+                std::format(" {:.2f} ({:.2f}) |", it.thresholds[k], it.threshold_se[k]);
+        std::println("{} {:.2f} ({:.2f}) | {:.2f} |", row_text, it.discrimination,
+                     it.discrimination_se, dm::stats::graded_item_information(it, 0));
+    }
+    const double lr = 2 * (f.log_likelihood - c.log_likelihood);
+    std::println("\nLog-likelihood {:.2f} (common discrimination {:.2f}, a = {:.2f}); "
+                 "LR test of equal discriminations {:.2f} on 3 df, p = {:.4f}; "
+                 "AIC {:.1f} vs {:.1f}.\n",
+                 f.log_likelihood, c.log_likelihood, c.items[0].discrimination, lr,
+                 dm::random::chi_squared_survival(lr, 3), f.aic, c.aic);
+
+    std::println("| n | Median abs. error a | Coverage a | Median abs. error b | "
+                 "Coverage b | GRM EAP RMSE | Mean GRM EAP SD | "
+                 "Dichotomized 2PL EAP RMSE |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+    dm::random::SplitMix64 rng(5);
+    const int reps = 200;
+    for (const std::size_t n : {300uz, 1000uz}) {
+        std::vector<double> ea, eb;
+        double ca = 0, cb = 0, rmse = 0, sd = 0, rmse2 = 0;
+        for (int r = 0; r < reps; ++r) {
+            std::vector<double> theta;
+            const Matrix s = simulate(rng, n, theta);
+            const auto g = dm::stats::fit_graded_response(s);
+            for (std::size_t j = 0; j < 6; ++j) {
+                const auto& it = g.items[j];
+                ea.push_back(std::abs(it.discrimination - a_true[j]));
+                ca += std::abs(it.discrimination - a_true[j]) <=
+                      1.96 * it.discrimination_se;
+                for (std::size_t k = 0; k < 4; ++k) {
+                    const double e = it.thresholds[k] - (loc[j] + step[k]);
+                    eb.push_back(std::abs(e));
+                    cb += std::abs(e) <= 1.96 * it.threshold_se[k];
+                }
+            }
+            Matrix d(n, 6, 0.0);  // split at the middle category: 3 or 4 versus 0-2
+            for (std::size_t i = 0; i < n; ++i)
+                for (std::size_t j = 0; j < 6; ++j)
+                    d(i, j) = s(i, j) >= 3 ? 1.0 : 0.0;
+            const auto sc = dm::stats::graded_scores(g, s);
+            const auto sc2 = dm::stats::irt_scores(dm::stats::fit_irt(d), d);
+            for (std::size_t i = 0; i < n; ++i) {
+                rmse += std::pow(sc[i].eap - theta[i], 2) / double(n * reps);
+                sd += sc[i].eap_sd / double(n * reps);
+                rmse2 += std::pow(sc2[i].eap - theta[i], 2) / double(n * reps);
+            }
+        }
+        auto median = [](std::vector<double> v) {
+            std::ranges::nth_element(v, v.begin() + v.size() / 2);
+            return v[v.size() / 2];
+        };
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | "
+                     "{:.3f} |", n, median(ea), ca / (6.0 * reps), median(eb),
+                     cb / (24.0 * reps), std::sqrt(rmse), sd, std::sqrt(rmse2));
+    }
+
+    // Category response curves of the Work item and the test information.
+    auto plot = dm::graphics::RPlot::create();
+    std::vector<double> grid;
+    for (double t = -4; t <= 3.0001; t += 0.05) grid.push_back(t);
+    const char* cats[4] = {"Strongly disagree", "Disagree", "Agree", "Strongly agree"};
+    const dm::graphics::RGBA col[4] = {{176, 72, 43}, {222, 143, 61}, {67, 140, 70},
+                                       {26, 90, 147}};
+    for (std::size_t k = 0; k < 4; ++k) {
+        std::vector<double> p;
+        for (const double t : grid)
+            p.push_back(dm::stats::graded_category_probabilities(f.items[1], t)[k]);
+        plot.line(grid, p, std::format("Work: {}", cats[k]), col[k], 2);
+    }
+    std::vector<double> info;
+    for (const double t : grid)
+        info.push_back(dm::stats::graded_test_information(f, t) / 4);
+    plot.line(grid, info, "Test information / 4", {80, 80, 80}, 1.5)
+        .y_limits(0, 1.25)
+        .title("Category response curves (Work) and test information")
+        .x_label("Attitude to science theta")
+        .y_label("Probability  |  information / 4")
+        .size(680, 430);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/graded_response.svg");
+}
+```
+// result_begin: markdown
+| Item | b1 (SE) | b2 (SE) | b3 (SE) | a (SE) | Information at 0 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Comfort | -4.67 (0.81) | -2.54 (0.39) | 1.41 (0.23) | 1.04 (0.19) | 0.21 |
+| Work | -2.39 (0.30) | -0.74 (0.13) | 1.85 (0.23) | 1.23 (0.18) | 0.38 |
+| Future | -2.28 (0.26) | -0.96 (0.12) | 0.86 (0.11) | 2.30 (0.49) | 0.92 |
+| Benefit | -3.06 (0.45) | -0.91 (0.16) | 1.54 (0.23) | 1.09 (0.18) | 0.32 |
+
+Log-likelihood -1608.87 (common discrimination -1613.90, a = 1.32); LR test of equal discriminations 10.06 on 3 df, p = 0.0181; AIC 3249.7 vs 3253.8.
+
+| n | Median abs. error a | Coverage a | Median abs. error b | Coverage b | GRM EAP RMSE | Mean GRM EAP SD | Dichotomized 2PL EAP RMSE |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 300 | 0.132 | 0.950 | 0.113 | 0.957 | 0.482 | 0.471 | 0.639 |
+| 1000 | 0.071 | 0.957 | 0.059 | 0.954 | 0.477 | 0.472 | 0.638 |
+\image(figures/graded_response.svg)
+// result_end
+
+The four science items are answered mostly in the agreeing categories. The lowest thresholds lie far below the mean (−4.7 for Comfort): strong disagreement takes a very negative attitude, which is why that threshold has a large standard error. *Future* discriminates best (a = 2.3), and it carries most of the test information near the population mean (0.92 at \(\theta=0\), against 0.21–0.38 for the other items). The likelihood-ratio test rejects a common discrimination (\(\chi^2=10.1\) on 3 df, \(p=0.018\)), and AIC agrees. The figure shows the Work item's category curves: each middle category is most likely over a band of attitudes between its two thresholds. The test information is spread from about −3 to +2 because the item thresholds are spread, unlike the single peak of a binary test.
+
+In the simulation, the observed-information standard errors give nominal 95% coverage for discriminations and thresholds at n = 300. Median errors fall from 0.13 to 0.07 for discriminations, and from 0.11 to 0.06 for thresholds, between n = 300 and n = 1000. The ability results show what is lost by dichotomizing. With all five categories, six items give EAP abilities with an error of 0.48 SD. Splitting each item at its middle category and fitting a 2PL raises that to 0.64 SD, the information of roughly half as many items. The GRM posterior SD (0.47) matches its actual error, so its uncertainty is again well calibrated.
+
+>> Practical guidance
+
+- Use the GRM, or a similar ordinal IRT model, for Likert items instead of dichotomizing or treating category codes as interval data. The categories carry information, and the thresholds show whether respondents use them as intended.
+- Check every threshold's estimate and standard error. Rarely used extreme categories give imprecise thresholds; collapsing them is reasonable when theory permits and the threshold is far outside the population.
+- Compare a common-discrimination model with the free model by likelihood ratio or information criteria. Inspect item information curves to see which items measure where, and use them to shorten or extend a scale.
+- Compute standard errors from the observed information of the parameters being reported. In R, `ltm::summary.grm` gives too-large threshold SEs beyond the first threshold; `mirt` or a direct Hessian is safer.
+
+>> References
+
+- F. Samejima (1969). Estimation of latent ability using a response pattern of graded scores. *Psychometrika Monograph Supplement* 34(4, Pt. 2), No. 17. doi:10.1007/BF03372160
+- R. D. Bock and M. Aitkin (1981). Marginal maximum likelihood estimation of item parameters: Application of an EM algorithm. *Psychometrika* 46(4), 443-459. doi:10.1007/BF02293801
+- D. Rizopoulos (2006). ltm: An R package for latent variable modeling and item response theory analyses. *Journal of Statistical Software* 17(5), 1-25. doi:10.18637/jss.v017.i05
+- S. E. Embretson and S. P. Reise (2000). *Item Response Theory for Psychologists*. Lawrence Erlbaum.
+- D. Bartholomew, M. Knott and I. Moustaki (2011). *Latent Variable Models and Factor Analysis: A Unified Approach*, 3rd ed. Wiley. doi:10.1002/9781119970583

@@ -1,0 +1,121 @@
+//? Title: Fit Cox models with delayed entry and time-varying covariates
+//? Exports: both
+//? Lang: en
+
+> Let each subject's covariates and risk-set membership change during follow-up
+
+Cox's partial likelihood compares, at each event time \(t\), the subject who failed with everyone at risk just before \(t\). Nothing in it requires covariates to be fixed or every subject to be observed from time zero. Writing follow-up in counting-process form as intervals \((\text{start},\text{stop}]\), each with constant covariates, handles both:
+- A subject who enters late has a first interval that starts at the entry time.
+- A covariate that changes, such as receiving a transplant or starting a drug, is handled by ending one interval and opening another with the new value.
+
+A record is in the risk set at \(t\) when start \(<t\le\) stop, and the likelihood is otherwise unchanged:
+\[\ell(\beta)=\sum_{\text{events}}\Big[x_i(t)^\top\beta-\log\!\!\sum_{j:\,\text{start}_j<t\le\text{stop}_j}\!\!e^{x_j(t)^\top\beta}\Big].\]
+
+The classic mistake this avoids is immortal-time bias. Defining "treated" as "ever received the treatment" and fixing it at baseline credits the treated group with the time before treatment, during which they could not have died, or they would never have been treated. The example simulates a transplant-like intervention given at a random time with hazard 1.5, to subjects whose death hazard is 1 before the intervention and \(e^\beta\) after it, with censoring at time 3. It compares the time-varying analysis with the baseline "ever treated" indicator across true effects \(\beta\).
+
+```{cpp, id=coxtv, file="figures/cox_time_varying.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/cox_counting.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::CountingRecord;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+struct Data {
+    std::vector<CountingRecord> split, baseline;
+    std::vector<double> x_split, x_baseline;
+};
+
+// Death hazard 1 before treatment and exp(beta) after; treatment time ~ Exp(1.5).
+Data simulate(std::size_t n, double beta, std::mt19937_64& random) {
+    std::exponential_distribution<double> unit(1), treat(1.5);
+    Data d;
+    for (std::size_t i = 0; i < n; ++i) {
+        const double e = unit(random), c = treat(random);
+        const double death = e < c ? e : c + (e - c) / std::exp(beta);
+        const double stop = std::min(death, 3.0);
+        const bool event = death <= 3.0;
+        if (c < stop) {
+            d.split.push_back({0, c, false});
+            d.x_split.push_back(0);
+            d.split.push_back({c, stop, event});
+            d.x_split.push_back(1);
+        } else {
+            d.split.push_back({0, stop, event});
+            d.x_split.push_back(0);
+        }
+        d.baseline.push_back({0, stop, event});
+        d.x_baseline.push_back(c < stop ? 1 : 0);
+    }
+    return d;
+}
+
+int main() {
+    std::mt19937_64 random(8);
+    const std::size_t n = 200;
+    const int reps = 1000;
+    std::vector<double> truth, mean_tv, mean_ever;
+    std::println("| True β | Time-varying: mean | coverage | Ever treated: mean | coverage |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    for (double beta = -.6; beta <= .61; beta += .3) {
+        double sum_tv = 0, sum_ever = 0;
+        int cover_tv = 0, cover_ever = 0;
+        for (int r = 0; r < reps; ++r) {
+            const auto d = simulate(n, beta, random);
+            const auto tv = dm::stats::fit_cox_counting(
+                d.split, Matrix(d.x_split.size(), 1, d.x_split));
+            const auto ever = dm::stats::fit_cox_counting(
+                d.baseline, Matrix(d.x_baseline.size(), 1, d.x_baseline));
+            sum_tv += tv.coefficients[0];
+            sum_ever += ever.coefficients[0];
+            cover_tv += std::abs(tv.coefficients[0] - beta) <= 1.96 * tv.standard_errors[0];
+            cover_ever +=
+                std::abs(ever.coefficients[0] - beta) <= 1.96 * ever.standard_errors[0];
+        }
+        truth.push_back(beta);
+        mean_tv.push_back(sum_tv / reps);
+        mean_ever.push_back(sum_ever / reps);
+        std::println("| {:.1f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", beta, mean_tv.back(),
+                     cover_tv / double(reps), mean_ever.back(), cover_ever / double(reps));
+    }
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.line({-.7, .7}, {-.7, .7}, "Truth", {150, 154, 160}, 1.2)
+        .line(truth, mean_tv, "Time-varying covariate", {26, 90, 147}, 2)
+        .line(truth, mean_ever, "Ever treated at baseline", {176, 72, 43}, 2)
+        .title("Immortal-time bias in the treatment log hazard ratio")
+        .x_label("True log hazard ratio β")
+        .y_label("Mean estimate over 1000 trials")
+        .ylim(-2.2, 1.4)
+        .size(700, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/cox_time_varying.svg");
+}
+```
+// result_begin: markdown
+| True β | Time-varying: mean | coverage | Ever treated: mean | coverage |
+| ---: | ---: | ---: | ---: | ---: |
+| -0.6 | -0.605 | 0.952 | -2.024 | 0.000 |
+| -0.3 | -0.314 | 0.949 | -1.760 | 0.000 |
+| 0.0 | 0.001 | 0.962 | -1.509 | 0.000 |
+| 0.3 | 0.294 | 0.943 | -1.270 | 0.000 |
+| 0.6 | 0.592 | 0.956 | -1.049 | 0.000 |
+\image(figures/cox_time_varying.svg)
+// result_end
+\caption(Mean estimated treatment log hazard ratio over 1000 simulated cohorts of 200, by true value, for the time-varying analysis (blue) and the baseline "ever treated" indicator (orange). The grey line is the truth.)
+\alttext(The blue time-varying curve lies on the grey identity line from −0.6 to 0.6. The orange "ever treated" curve runs parallel to it, about 1.4 to 1.6 units lower, between about −2.0 and −1.0, so it stays strongly negative even where the true effect is harmful.)
+
+The time-varying analysis is unbiased, with estimates within 0.015 of the truth and 94–96% coverage of the 95% Wald interval. The "ever treated" analysis is badly wrong. A treatment with no effect (\(\beta=0\)) appears to cut the hazard by 78% (\(e^{-1.51}=0.22\)), and a harmful treatment (\(\beta=0.6\), hazard ratio 1.8) appears strongly protective. Its interval never covers the truth.
+
+The bias is not a small-sample artefact. Subjects who die early have little chance to be treated, so the "treated" group is enriched for long survivors by construction. With treatment hazard 1.5 and death hazard 1, this guaranteed survival time is large. The bias shrinks only if treatment happens almost immediately, and then the question it answers is a different one. Landmark analysis and time-varying covariates are the standard remedies, and the second uses all the data.
+
+Delayed entry uses the same machinery: a subject's first record simply starts at the entry time, and the Nelson–Aalen report shows the bias from ignoring it. Coefficients, standard errors, both log likelihoods, and the likelihood-ratio, Wald and score tests match R's `coxph(Surv(start, stop, event) ~ ...)` on the Stanford heart-transplant data (transplant status changes during follow-up), with Efron and Breslow ties. They also match on a simulated left-truncated sample where many entry times coincide with other subjects' exit times. The baseline cumulative hazard matches `basehaz` after accounting for its centering, and splitting a record at a non-event time leaves the fit unchanged.
+
+[Andersen and Gill (1982)|https://doi.org/10.1214/aos/1176345976] · [Suissa (2008), immortal time bias|https://doi.org/10.1093/aje/kwm324]

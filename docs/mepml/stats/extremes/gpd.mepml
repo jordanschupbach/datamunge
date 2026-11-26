@@ -1,0 +1,187 @@
+//? Title: Generalized Pareto fitting
+//? Exports: both
+//? Lang: en
+
+> Model all observations above a high threshold with the generalized Pareto distribution, choose the threshold with diagnostics, and turn the fit into return levels at the rate observations arrive
+
+Block maxima discard everything except one value per block. The **peaks-over-threshold** approach uses every observation above a high threshold \(u\). If maxima are approximately GEV, then excesses \(Y=X-u\) given \(X>u\) are approximately **generalized Pareto** (Pickands 1975; Balkema and de Haan 1974):
+
+\[P(Y\le y\mid X>u)=1-\bigl(1+\xi y/\sigma_u\bigr)_+^{-1/\xi},\]
+
+with the same shape \(\xi\) as the GEV and a scale that depends on the threshold. If the model holds above \(u_0\), it holds above every \(u>u_0\), with \(\sigma_u=\sigma_{u_0}+\xi(u-u_0)\). Two diagnostics follow. The **mean residual life** \(E(X-u\mid X>u)=(\sigma_{u_0}+\xi u)/(1-\xi)\) is linear in \(u\), and both \(\hat\xi(u)\) and the **modified scale** \(\sigma^*=\sigma_u-\xi u\) are constant. With exceedance probability \(\zeta_u=P(X>u)\) and \(n_y\) observations per year, the level exceeded once in \(T\) years on average is (with \(m=Tn_y\))
+
+\[x_m=u+\frac{\sigma}{\xi}\bigl[(m\zeta_u)^\xi-1\bigr].\]
+
+`fit_gpd` fits the excesses by maximum likelihood, or by the exponential model (\(\xi=0\)). `gpd_return_level` gives \(x_m\) for any rate of observations per period, with a delta-method interval that includes the binomial uncertainty in \(\hat\zeta_u\), and a profile-likelihood interval. `threshold_diagnostics` gives the mean residual life and parameter-stability rows over a grid of thresholds. The tests use Coles's (2001) daily rainfall series, 17,531 days from south-west England. They reproduce tight R fits with exact symbolic-Hessian standard errors, the delta-method and root-found profile limits of the 100-year level, the exact exponential estimate (the mean excess), `ismev::gpd.fit` and `extRemes` distribution functions.
+
+The example works through the threshold choice for the rainfall series, fits at \(u=30\) mm, and shows how the 100-year daily rainfall depends on the threshold. The simulation draws 40 years of daily values from a distribution whose tail is only asymptotically generalized Pareto (absolute \(t_3\), \(\xi=1/3\)). It then measures the bias–variance trade-off of the threshold and the coverage of the intervals.
+
+```{cpp, id=gpd, file="figures/gpd.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/gpd.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <fstream>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+
+std::vector<double> read_series(const std::string& path) {
+    std::ifstream in(path);
+    std::vector<double> v;
+    for (std::string line; std::getline(in, line);)
+        if (!line.empty() && line[0] != '#') v.push_back(std::stod(line));
+    return v;
+}
+
+std::string ci(double lo, double hi) { return std::format("[{:.1f}, {:.1f}]", lo, hi); }
+
+int main() {
+    const auto rain = read_series("data/rain.txt");
+    const double per_year = static_cast<double>(rain.size()) / 48;  // 1914-1962
+    std::println("{} daily values, {:.2f} per year; maximum {:.1f} mm.\n", rain.size(),
+                 per_year, std::ranges::max(rain));
+
+    std::println("| Threshold u (mm) | Exceedances | Mean excess [95%] | xi [95%] | "
+                 "Modified scale sigma* [95%] |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    const std::vector<double> grid{10, 15, 20, 25, 30, 35, 40, 50};
+    const auto diag = dm::stats::threshold_diagnostics(rain, grid);
+    for (const auto& d : diag)
+        std::println("| {:.0f} | {} | {:.2f} [{:.2f}, {:.2f}] | {:.3f} [{:.3f}, {:.3f}] | "
+                     "{:.2f} [{:.2f}, {:.2f}] |", d.threshold, d.exceedances, d.mean_excess,
+                     d.mean_excess_lower, d.mean_excess_upper, d.shape, d.shape_lower,
+                     d.shape_upper, d.modified_scale, d.modified_scale_lower,
+                     d.modified_scale_upper);
+
+    const auto f = dm::stats::fit_gpd(rain, 30);
+    const auto e = dm::stats::fit_gpd(rain, 30, {.exponential = true});
+    const double lr = 2 * (f.log_likelihood - e.log_likelihood);
+    std::println("\nAt u = 30: sigma = {:.3f} (SE {:.3f}), xi = {:.3f} (SE {:.3f}), "
+                 "zeta = {:.5f}; LR test of xi = 0: chi2 = {:.2f}, p = {:.4f}.\n", f.scale,
+                 f.scale_se, f.shape, f.shape_se, f.exceedance_rate, lr,
+                 dm::random::chi_squared_survival(lr, 1));
+    std::println("| Return period (years) | GPD level (mm) | Delta 95% | Profile 95% | "
+                 "Exponential level | Exponential profile 95% |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const double period : {10.0, 100.0, 1000.0}) {
+        const auto r = dm::stats::gpd_return_level(f, rain, period, per_year);
+        const auto x = dm::stats::gpd_return_level(e, rain, period, per_year);
+        std::println("| {:.0f} | {:.1f} | {} | {} | {:.1f} | {} |", period, r.level,
+                     ci(r.wald_lower, r.wald_upper), ci(r.profile_lower, r.profile_upper),
+                     x.level, ci(x.profile_lower, x.profile_upper));
+    }
+
+    // Sensitivity of the 100-year level to the threshold.
+    std::vector<double> us, lev, lo, hi;
+    for (double u = 12; u <= 42; u += 1.5) {
+        const auto g = dm::stats::fit_gpd(rain, u);
+        const auto r = dm::stats::gpd_return_level(g, rain, 100, per_year);
+        us.push_back(u), lev.push_back(r.level);
+        lo.push_back(r.profile_lower), hi.push_back(r.profile_upper);
+    }
+
+    // Simulation: 40 years of daily |t3| values (xi = 1/3); true 100-year level known.
+    dm::random::SplitMix64 rng(19);
+    const std::size_t days = 40 * 365;
+    const double truth = dm::random::student_t_quantile(1 - 0.5 / (100 * 365.0), 3);
+    std::println("\n| Threshold (quantile) | Mean exceedances | Mean xi (truth 0.333) | "
+                 "Median 100-yr level (truth {:.1f}) | RMSE of log level | "
+                 "Profile coverage |", truth);
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const double q : {0.90, 0.95, 0.98, 0.995}) {
+        const double u = dm::random::student_t_quantile(0.5 + q / 2, 3);  // |t3| quantile
+        const int reps = 200;
+        double k = 0, xi = 0, mse = 0, cover = 0;
+        std::vector<double> levels;
+        for (int r = 0; r < reps; ++r) {
+            std::vector<double> x(days);
+            for (auto& v : x) {
+                const double p = rng.uniform01() * 0.999999 + 5e-7;
+                v = std::abs(dm::random::student_t_quantile(p, 3));
+            }
+            const auto g = dm::stats::fit_gpd(x, u);
+            const auto rl = dm::stats::gpd_return_level(g, x, 100, 365);
+            k += g.exceedances / double(reps), xi += g.shape / reps;
+            levels.push_back(rl.level);
+            mse += std::pow(std::log(rl.level / truth), 2) / reps;
+            const bool inside = rl.profile_lower <= truth && truth <= rl.profile_upper;
+            cover += inside / double(reps);
+        }
+        std::ranges::sort(levels);
+        std::println("| {:.3f} | {:.0f} | {:.3f} | {:.1f} | {:.3f} | {:.3f} |", q, k, xi,
+                     levels[levels.size() / 2], std::sqrt(mse), cover);
+    }
+
+    auto fig = dm::graphics::RPlot::create();
+    fig.line(us, hi, "95% profile interval", {140, 182, 222}, 1.5)
+        .line(us, lo, "", {140, 182, 222}, 1.5)
+        .line(us, lev, "100-year daily rainfall", {26, 90, 147}, 2.5)
+        .abline_v(30, {170, 170, 170})
+        .y_limits(40, 330)
+        .title("Threshold sensitivity of the 100-year daily rainfall")
+        .x_label("Threshold u (mm)")
+        .y_label("Return level (mm)")
+        .size(640, 410);
+    std::filesystem::create_directories("build");
+    fig.save_svg("build/gpd.svg");
+}
+```
+// result_begin: markdown
+17531 daily values, 365.23 per year; maximum 86.6 mm.
+
+| Threshold u (mm) | Exceedances | Mean excess [95%] | xi [95%] | Modified scale sigma* [95%] |
+| ---: | ---: | ---: | ---: | ---: |
+| 10 | 2003 | 7.83 [7.47, 8.20] | 0.051 [0.006, 0.095] | 6.93 [6.10, 7.76] |
+| 15 | 1046 | 8.04 [7.51, 8.56] | 0.053 [-0.006, 0.112] | 6.81 [5.42, 8.20] |
+| 20 | 570 | 7.87 [7.13, 8.62] | 0.132 [0.038, 0.226] | 4.19 [1.65, 6.72] |
+| 25 | 286 | 8.64 [7.50, 9.77] | 0.108 [-0.014, 0.230] | 5.01 [1.00, 9.02] |
+| 30 | 152 | 9.08 [7.38, 10.79] | 0.184 [-0.014, 0.383] | 1.91 [-5.45, 9.26] |
+| 35 | 81 | 10.15 [7.61, 12.70] | 0.186 [-0.110, 0.482] | 1.82 [-10.88, 14.52] |
+| 40 | 44 | 11.94 [8.34, 15.55] | 0.013 [-0.336, 0.363] | 11.25 [-7.14, 29.63] |
+| 50 | 17 | 13.48 [7.52, 19.45] | -0.391 [-1.419, 0.637] | 39.12 [-33.65, 111.89] |
+
+At u = 30: sigma = 7.440 (SE 0.959), xi = 0.184 (SE 0.101), zeta = 0.00867; LR test of xi = 0: chi2 = 4.60, p = 0.0320.
+
+| Return period (years) | GPD level (mm) | Delta 95% | Profile 95% | Exponential level | Exponential profile 95% |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 10 | 66.0 | [55.7, 76.3] | [58.5, 81.3] | 61.4 | [56.9, 67.0] |
+| 100 | 106.3 | [65.5, 147.2] | [80.9, 185.0] | 82.3 | [74.8, 91.6] |
+| 1000 | 168.1 | [51.8, 284.4] | [103.7, 454.6] | 103.2 | [92.7, 116.2] |
+
+| Threshold (quantile) | Mean exceedances | Mean xi (truth 0.333) | Median 100-yr level (truth 43.1) | RMSE of log level | Profile coverage |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.900 | 1459 | 0.285 | 37.6 | 0.203 | 0.875 |
+| 0.950 | 729 | 0.302 | 40.0 | 0.214 | 0.935 |
+| 0.980 | 291 | 0.313 | 40.9 | 0.274 | 0.940 |
+| 0.995 | 73 | 0.266 | 40.2 | 0.368 | 0.910 |
+\image(figures/gpd.svg)
+// result_end
+
+Choosing the threshold is a bias–variance trade-off, and the diagnostics frame it. Below about 20 mm, \(\hat\xi\) and \(\sigma^*\) drift with the threshold: the estimated shape is near 0.05, while above 20 mm it settles around 0.1–0.19. From 20 mm upward the estimates are stable within their (widening) intervals, and the mean excess rises roughly linearly. Above about 40 mm too few exceedances remain for any conclusion. Coles's choice of \(u=30\) mm keeps 152 exceedances, about three a year, and sits comfortably inside the stable region.
+
+At \(u=30\) the shape is positive (\(\hat\xi=0.18\)), and the LR test rejects the exponential tail (p = 0.032). This matters most for long return periods. The 100-year daily rainfall is 106 mm under the GPD and 82 mm under the exponential. Its profile interval [81, 185] is strongly right-skewed. The delta-method interval [66, 147] understates the upper limit and allows implausibly low values. At 1000 years, the delta interval's lower limit (52 mm) is below the 10-year level. The exponential intervals are much narrower, because fixing \(\xi\) removes the main source of uncertainty. The figure shows the 100-year estimate is stable for thresholds between about 20 and 42 mm, while the upper profile limit is sensitive to the threshold.
+
+The simulation shows the trade-off directly. With a 90% threshold, about 1460 exceedances give the smallest RMSE, but the absolute \(t_3\) tail is not yet generalized Pareto there. \(\hat\xi\) is biased downward (0.285 against 1/3), the 100-year level is underestimated (median 37.6 against 43.1), and profile coverage is 88%. At the 95% and 98% quantiles the bias is smaller and coverage is close to nominal (94%), at the cost of more variance. With the 99.5% quantile, only 73 exceedances remain, the RMSE grows by 80%, and coverage falls to 91%.
+
+>> Practical guidance
+
+- Choose the threshold from mean residual life and stability plots: the lowest threshold above which \(\hat\xi\) and \(\sigma^*\) are constant within their intervals. Then report how key return levels change over a range of nearby thresholds.
+- State the observation rate explicitly. Return levels depend on \(m=Tn_y\) and on \(\hat\zeta_u\), and quote profile-likelihood intervals for long return periods.
+- Exceedances must be approximately independent. For serially dependent data such as daily rainfall or temperatures, decluster runs of exceedances (for example, runs declustering using the extremal index), or adjust the return-level calculation for clustering.
+- Test \(\xi=0\) with the likelihood ratio, but do not adopt the exponential tail merely because the test does not reject. Its intervals understate the extrapolation uncertainty.
+
+>> References
+
+- S. Coles (2001). *An Introduction to Statistical Modeling of Extreme Values*, ch. 4. Springer. doi:10.1007/978-1-4471-3675-0
+- J. Pickands (1975). Statistical inference using extreme order statistics. *Annals of Statistics* 3(1), 119-131. doi:10.1214/aos/1176343003
+- A. A. Balkema and L. de Haan (1974). Residual life time at great age. *Annals of Probability* 2(5), 792-804. doi:10.1214/aop/1176996548
+- A. C. Davison and R. L. Smith (1990). Models for exceedances over high thresholds. *Journal of the Royal Statistical Society B* 52(3), 393-442. doi:10.1111/j.2517-6161.1990.tb01796.x
+- C. Scarrott and A. MacDonald (2012). A review of extreme value threshold estimation and uncertainty quantification. *REVSTAT* 10(1), 33-60.

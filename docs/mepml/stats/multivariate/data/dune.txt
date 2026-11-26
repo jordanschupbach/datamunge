@@ -1,0 +1,22 @@
+# Dutch dune meadows: cover class of 30 plant species in 20 sites, with site management (BF biological, HF hobby, NM nature conservation, SF standard farming), A1 horizon thickness (cm), land use and moisture (Jongman, ter Braak and van Tongeren 1987; R package vegan, data dune and dune.env).
+# Management A1 Use Moisture Achimill Agrostol Airaprae Alopgeni Anthodor Bellpere Bromhord Chenalbu Cirsarve Comapalu Eleopalu Elymrepe Empenigr Hyporadi Juncarti Juncbufo Lolipere Planlanc Poaprat Poatriv Ranuflam Rumeacet Sagiproc Salirepe Scorautu Trifprat Trifrepe Vicilath Bracruta Callcusp
+SF 2.8 Haypastu 1 1 0 0 0 0 0 0 0 0 0 0 4 0 0 0 0 7 0 4 2 0 0 0 0 0 0 0 0 0 0
+BF 3.5 Haypastu 1 3 0 0 2 0 3 4 0 0 0 0 4 0 0 0 0 5 0 4 7 0 0 0 0 5 0 5 0 0 0
+SF 4.3 Haypastu 2 0 4 0 7 0 2 0 0 0 0 0 4 0 0 0 0 6 0 5 6 0 0 0 0 2 0 2 0 2 0
+SF 4.2 Haypastu 2 0 8 0 2 0 2 3 0 2 0 0 4 0 0 0 0 5 0 4 5 0 0 5 0 2 0 1 0 2 0
+HF 6.3 Hayfield 1 2 0 0 0 4 2 2 0 0 0 0 4 0 0 0 0 2 5 2 6 0 5 0 0 3 2 2 0 2 0
+HF 4.3 Haypastu 1 2 0 0 0 3 0 0 0 0 0 0 0 0 0 0 0 6 5 3 4 0 6 0 0 3 5 5 0 6 0
+HF 2.8 Pasture 1 2 0 0 0 2 0 2 0 0 0 0 0 0 0 0 2 6 5 4 5 0 3 0 0 3 2 2 0 2 0
+HF 4.2 Pasture 5 0 4 0 5 0 0 0 0 0 0 4 0 0 0 4 0 4 0 4 4 2 0 2 0 3 0 2 0 2 0
+HF 3.7 Hayfield 4 0 3 0 3 0 0 0 0 0 0 0 6 0 0 4 4 2 0 4 5 0 2 2 0 2 0 3 0 2 0
+BF 3.3 Hayfield 2 4 0 0 0 4 2 4 0 0 0 0 0 0 0 0 0 6 3 4 4 0 0 0 0 3 0 6 1 2 0
+BF 3.5 Pasture 1 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 7 3 4 0 0 0 2 0 5 0 3 2 4 0
+SF 5.8 Haypastu 4 0 4 0 8 0 0 0 0 0 0 0 0 0 0 0 4 0 0 0 4 0 2 4 0 2 0 3 0 4 0
+SF 6 Haypastu 5 0 5 0 5 0 0 0 1 0 0 0 0 0 0 0 3 0 0 2 9 2 0 2 0 2 0 2 0 0 0
+NM 9.3 Pasture 5 0 4 0 0 0 0 0 0 0 2 4 0 0 0 0 0 0 0 0 0 2 0 0 0 2 0 6 0 0 4
+NM 11.5 Haypastu 5 0 4 0 0 0 0 0 0 0 2 5 0 0 0 3 0 0 0 0 0 2 0 0 0 2 0 1 0 4 0
+SF 5.7 Pasture 5 0 7 0 4 0 0 0 0 0 0 8 0 0 0 3 0 0 0 0 2 2 0 0 0 0 0 0 0 4 3
+NM 4 Hayfield 2 2 0 2 0 4 0 0 0 0 0 0 0 0 2 0 0 0 2 1 0 0 0 0 0 2 0 0 0 0 0
+NM 4.6 Hayfield 1 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 2 3 3 0 0 0 0 3 5 0 2 1 6 0
+NM 3.7 Hayfield 5 0 0 3 0 4 0 0 0 0 0 0 0 2 5 0 0 0 0 0 0 0 0 3 3 6 0 2 0 3 0
+NM 3.5 Hayfield 5 0 5 0 0 0 0 0 0 0 0 4 0 0 0 4 0 0 0 0 0 4 0 0 5 2 0 0 0 4 3

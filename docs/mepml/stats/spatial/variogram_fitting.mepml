@@ -1,0 +1,205 @@
+//? Title: Variogram model fitting
+//? Exports: both
+//? Lang: en
+
+> Fit nugget, sill and range of a parametric variogram by weighted least squares, compare weighting schemes, and see what a wrong model shape costs at short lags
+
+Kriging and other geostatistical predictions need a valid variogram, one that yields nonnegative variances for every linear combination. The binned empirical variogram does not guarantee this, so a parametric model is fitted to it. The usual model is a nugget plus one structured component,
+
+\[
+\gamma(h)=c_0+c_1\,\rho(h/a),\qquad h>0,
+\]
+
+with nugget \(c_0\ge0\), partial sill \(c_1\ge0\) and range or scale \(a>0\). The shape \(\rho\) can be spherical, exponential, Gaussian or Matérn with smoothness \(\kappa\). The fit minimises the weighted residual sum of squares \(\sum_jw_j(\hat\gamma_j-\gamma(h_j))^2\). The weights determine which lags matter most:
+
+- \(w_j=N_j\) trusts bins with many pairs.
+- \(w_j=N_j/h_j^2\) (gstat's default) also emphasises short lags, which matter most for prediction.
+- \(w_j=N_j/\gamma(h_j)^2\) (Cressie 1985) approximates generalised least squares for a variogram's own variance and is iterated.
+- \(w_j=1\) is ordinary least squares.
+
+`fit_variogram` solves the problem exactly in the linear parameters. For each range, the nonnegative weighted least-squares sills are found by comparing the unconstrained solution with the two boundary solutions. The range is then profiled over a log-spaced grid and refined by golden-section search. This finds the global optimum, which gstat's iterative `fit.variogram` approaches from its starting values. The tests match an independent R computation of that optimum to \(10^{-6}\) for every shape and fixed weighting. They also show that gstat converges to the same point for the spherical and Matérn models, but stops at a larger SSE for the Gaussian model, with a convergence warning. `variogram_model_value` and `variogram_model_covariance` evaluate the fitted model, matching `gstat::variogramLine`.
+
+The study simulates 300 Gaussian fields at 200 random points in a \(20\times20\) square. The true variogram is exponential with nugget 0.1, partial sill 1 and scale 3 (practical range 9). Empirical variograms use 12 lags of width 0.8. The first table compares the weighting schemes for the correctly specified exponential model. The second fits four shapes with the default weights and reports the fitted semivariance at \(h=0.5\), where kriging weights are decided. The truth there is \(0.1+1-e^{-1/6}=0.254\).
+
+```{cpp, id=fit, file="figures/variogram_fitting.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/geostatistics.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+using K = dm::stats::VariogramModelKind;
+using W = dm::stats::VariogramWeighting;
+
+// Gaussian field with exponential covariance exp(-h / 3) plus nugget 0.1, by Cholesky.
+std::vector<double> field(dm::random::SplitMix64& rng, const Matrix& xy) {
+    const std::size_t n = xy.rows();
+    std::vector<double> l(n * n, 0.0), out(n, 0.0), z(n);
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t j = 0; j <= i; ++j) {
+            const double h = std::hypot(xy(i, 0) - xy(j, 0), xy(i, 1) - xy(j, 1));
+            double s = std::exp(-h / 3);
+            for (std::size_t k = 0; k < j; ++k)
+                s -= l[i * n + k] * l[j * n + k];
+            l[i * n + j] = i == j ? std::sqrt(s) : s / l[j * n + j];
+        }
+    for (double& v : z)
+        v = rng.normal();
+    for (std::size_t i = 0; i < n; ++i) {
+        for (std::size_t k = 0; k <= i; ++k)
+            out[i] += l[i * n + k] * z[k];
+        out[i] += std::sqrt(0.1) * rng.normal();
+    }
+    return out;
+}
+
+double quantile(std::vector<double> v, double p) {
+    std::ranges::sort(v);
+    const double pos = p * (v.size() - 1);
+    const auto i = static_cast<std::size_t>(pos);
+    return i + 1 < v.size() ? v[i] + (pos - i) * (v[i + 1] - v[i]) : v[i];
+}
+double mean(const std::vector<double>& v) {
+    double s = 0;
+    for (const double x : v)
+        s += x;
+    return s / v.size();
+}
+double sd(const std::vector<double>& v) {
+    const double m = mean(v);
+    double s = 0;
+    for (const double x : v)
+        s += (x - m) * (x - m);
+    return std::sqrt(s / (v.size() - 1));
+}
+
+int main() {
+    dm::random::SplitMix64 rng(17);
+    std::vector<double> bounds;
+    for (int k = 0; k <= 12; ++k)
+        bounds.push_back(0.8 * k);
+    const W weights[4]{W::pairs_over_distance_squared, W::pairs, W::cressie, W::uniform};
+    const char* weight_names[4]{"N / h^2 (gstat default)", "N", "Cressie N / gamma^2",
+                                "Unweighted"};
+    const K kinds[4]{K::exponential, K::spherical, K::gaussian, K::matern};
+    const char* kind_names[4]{"Exponential (true)", "Spherical", "Gaussian",
+                              "Matern, kappa 1.5"};
+    std::vector<double> nug[4], sill[4], range[4], at0[4], g05[4], sse[4];
+    const int reps = 300;
+    std::vector<std::vector<double>> curves;
+    std::vector<double> example_h, example_g;
+    for (int r = 0; r < reps; ++r) {
+        Matrix xy(200, 2);
+        for (std::size_t i = 0; i < 200; ++i)
+            xy(i, 0) = 20 * rng.uniform01(), xy(i, 1) = 20 * rng.uniform01();
+        const auto z = field(rng, xy);
+        const auto bins = dm::stats::empirical_variogram(xy, z, {.boundaries = bounds});
+        for (int m = 0; m < 4; ++m) {
+            const dm::stats::VariogramModel start{
+                .kind = K::exponential, .nugget = 0.1, .partial_sill = 1, .range = 3};
+            const auto f = dm::stats::fit_variogram(bins, start, {.weighting = weights[m]});
+            nug[m].push_back(f.model.nugget);
+            sill[m].push_back(f.model.nugget + f.model.partial_sill);
+            range[m].push_back(3 * f.model.range);  // practical range of the exponential
+            at0[m].push_back(f.model.nugget < 1e-9);
+        }
+        for (int m = 0; m < 4; ++m) {
+            const dm::stats::VariogramModel start{.kind = kinds[m], .kappa = 1.5};
+            const auto f = dm::stats::fit_variogram(bins, start);
+            g05[m].push_back(dm::stats::variogram_model_value(f.model, 0.5));
+            sse[m].push_back(f.weighted_sse);
+            if (r == 0) {
+                std::vector<double> c;
+                for (double h = 0.02; h <= 9.6; h += 0.02)
+                    c.push_back(dm::stats::variogram_model_value(f.model, h));
+                curves.push_back(c);
+            }
+        }
+        if (r == 0)
+            for (const auto& b : bins)
+                example_h.push_back(b.distance), example_g.push_back(b.gamma);
+    }
+    std::println("| Weights | Nugget (true 0.1): mean (SD) | "
+                 "Sill (true 1.1): median [IQR] | "
+                 "Practical range (true 9): median [IQR] | Nugget fitted as 0 |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (int m = 0; m < 4; ++m)
+        std::println("| {} | {:.3f} ({:.3f}) | {:.2f} [{:.2f}, {:.2f}] | "
+                     "{:.1f} [{:.1f}, {:.1f}] | {:.2f} |",
+                     weight_names[m], mean(nug[m]), sd(nug[m]), quantile(sill[m], 0.5),
+                     quantile(sill[m], 0.25), quantile(sill[m], 0.75),
+                     quantile(range[m], 0.5), quantile(range[m], 0.25),
+                     quantile(range[m], 0.75), mean(at0[m]));
+    std::println("\n| Fitted shape | Fitted gamma(0.5), true 0.254 | "
+                 "Mean weighted SSE relative to exponential |");
+    std::println("| --- | ---: | ---: |");
+    for (int m = 0; m < 4; ++m) {
+        std::vector<double> ratio;
+        for (int r = 0; r < reps; ++r)
+            ratio.push_back(sse[m][r] / sse[0][r]);
+        std::println("| {} | {:.3f} ({:.3f}) | {:.2f} |", kind_names[m], mean(g05[m]),
+                     sd(g05[m]), mean(ratio));
+    }
+
+    std::vector<double> grid, truth;
+    for (double h = 0.02; h <= 9.6; h += 0.02) {
+        grid.push_back(h);
+        truth.push_back(1.1 - std::exp(-h / 3));
+    }
+    const dm::graphics::RGBA colours[4]{
+        {26, 90, 147}, {176, 72, 43}, {67, 140, 70}, {120, 80, 160}};
+    auto plot = dm::graphics::RPlot::create();
+    plot.points(example_h, example_g, "Empirical (one field)", {60, 60, 60}, 5)
+        .line(grid, truth, "Truth", {0, 0, 0}, 2.5);
+    for (int m = 0; m < 4; ++m)
+        plot.line(grid, curves[m], kind_names[m], colours[m], 1.4);
+    plot.y_limits(0, 2.3)
+        .title("Four shapes fitted to one empirical variogram")
+        .x_label("Lag distance")
+        .y_label("Semivariance")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/variogram_fitting.svg");
+}
+```
+// result_begin: markdown
+| Weights | Nugget (true 0.1): mean (SD) | Sill (true 1.1): median [IQR] | Practical range (true 9): median [IQR] | Nugget fitted as 0 |
+| --- | ---: | ---: | ---: | ---: |
+| N / h^2 (gstat default) | 0.093 (0.075) | 1.09 [0.91, 1.34] | 8.6 [6.5, 11.5] | 0.18 |
+| N | 0.104 (0.115) | 1.10 [0.92, 1.40] | 8.8 [6.0, 13.9] | 0.35 |
+| Cressie N / gamma^2 | 0.097 (0.087) | 1.09 [0.91, 1.35] | 8.7 [6.2, 12.4] | 0.19 |
+| Unweighted | 0.093 (0.083) | 1.08 [0.91, 1.37] | 8.6 [6.2, 12.1] | 0.23 |
+
+| Fitted shape | Fitted gamma(0.5), true 0.254 | Mean weighted SSE relative to exponential |
+| --- | ---: | ---: |
+| Exponential (true) | 0.255 (0.047) | 1.00 |
+| Spherical | 0.265 (0.049) | 1.35 |
+| Gaussian | 0.276 (0.051) | 2.07 |
+| Matern, kappa 1.5 | 0.264 (0.050) | 1.21 |
+\image(figures/variogram_fitting.svg)
+// result_end
+
+All four weightings recover the nugget and sill without bias in the median. Their main difference is in variability. The \(N_j\) weights trust the many pairs at long lags. They give the most variable range (IQR 6.0 to 13.9) and set the nugget to zero in 35% of fits, against 18% for the gstat default \(N_j/h_j^2\), which keeps the short lags influential. Cressie's iterated weights and plain least squares fall in between. The sill distribution is right-skewed whichever weighting is used: when the empirical variogram is still rising at the last lag, the fit can trade a longer range for a higher sill. The data cannot separate these well, which is why the means are pulled up by a few fits.
+
+The figure shows why the variogram from a single realisation needs care. Its plateau is near 0.7, well below the true sill of 1.1, because 200 values in a domain only about twice the practical range carry limited information about the sill. Every shape fits these points about equally well. The four curves differ mainly very close to the origin, where the Gaussian shape is flat and must make up for it with a larger nugget. In the second table, a misspecified shape raises the fitted semivariance at \(h=0.5\) by 0.01–0.02 (Gaussian 0.276 against a true 0.254), and the SSE ratio identifies the exponential as the best fit on average. Errors at this scale feed directly into the kriging weights and the prediction variance near data points. They matter more than the sampling error of the sill.
+
+>> Practical guidance
+
+- Fit the variogram to the residuals of any trend, and use lags up to about half the domain size.
+- Prefer weights that emphasise short lags (\(N_j/h_j^2\) or Cressie's), since prediction depends mainly on the variogram near the origin.
+- Check fits that reach a bound. A zero nugget, a zero partial sill or a range at the edge of the search interval usually means the bins cannot identify the model.
+- Choose the shape from the behaviour near the origin. Linear growth suggests the exponential or spherical shape, parabolic growth the Gaussian or a Matérn with larger \(\kappa\). Compare weighted SSE only among shapes fitted with the same weights.
+- Treat the sill and range from one realisation as uncertain. A domain only a few ranges wide cannot pin them down. Likelihood-based fitting or cross-validation of the kriging predictions can show how much that matters.
+
+>> References
+
+- N. Cressie (1985). Fitting variogram models by weighted least squares. *Journal of the International Association for Mathematical Geology* 17(5), 563-586. doi:10.1007/BF01032109
+- N. Cressie (1993). *Statistics for Spatial Data*, revised edition. Wiley. doi:10.1002/9781119115151
+- M. L. Stein (1999). *Interpolation of Spatial Data: Some Theory for Kriging*. Springer. doi:10.1007/978-1-4612-1494-6
+- E. J. Pebesma (2004). Multivariable geostatistics in S: the gstat package. *Computers & Geosciences* 30(7), 683-691. doi:10.1016/j.cageo.2004.03.012

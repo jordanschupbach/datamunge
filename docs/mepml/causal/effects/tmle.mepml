@@ -1,0 +1,181 @@
+//? Title: Targeted maximum likelihood estimation of the average treatment effect
+//? Exports: both
+//? Lang: en
+
+> Update initial outcome predictions along the propensity score so the plug-in estimate solves the efficient influence-function equation
+
+AIPW corrects an outcome-regression estimate by adding a weighted average of residuals. Targeted maximum likelihood estimation (TMLE) makes the same correction in a different way. It changes the outcome predictions themselves, then plugs the updated predictions into the definition of the effect. Starting from initial predictions \(\bar Q(a,X)\), on a [0, 1] scale, and propensities \(\hat e(X)\), TMLE fits a one-parameter logistic fluctuation per arm:
+
+\[
+\mathrm{logit}\,\bar Q^*(1,X)=\mathrm{logit}\,\bar Q(1,X)+\varepsilon_1/\hat e(X),\qquad
+\mathrm{logit}\,\bar Q^*(0,X)=\mathrm{logit}\,\bar Q(0,X)+\varepsilon_0/\{1-\hat e(X)\}.
+\]
+
+The \(\varepsilon\) are estimated by maximum likelihood, with the initial fit as an offset. At the solution, the weighted residuals of the updated fit average to zero in each arm. The plug-in \(\frac1n\sum_i\{\bar Q^*(1,X_i)-\bar Q^*(0,X_i)\}\) therefore solves the same efficient influence-function equation as AIPW, and is doubly robust and efficient. The difference is that TMLE is a substitution estimator. Its potential-outcome means are averages of probabilities, so they stay inside [0, 1] for a binary outcome however extreme the weights are, whereas AIPW can return impossible values.
+
+`targeted_mle` shares the cross-fitted nuisance machinery and learner callbacks with `cross_fitted_aipw`. It reports the targeted and initial estimates, the fluctuation coefficients and the influence-function standard error. Given the same initial predictions and propensities, the unit tests reproduce the R tmle package (logistic fluctuation, `target.gwt = FALSE`) exactly.
+
+The simulation has a binary outcome and two normal confounders. Treatment follows a logistic model with strength \(\alpha\). With \(\alpha=1\) overlap is moderate, and with \(\alpha=2.5\) many units have propensities below 2% or above 98%. The true outcome model includes a term in \(x_1^2\) that the main-effects logistic outcome model omits, while the logistic propensity model is correct. Every estimator therefore relies on the weights, and poor overlap makes the weights extreme. There are 1000 samples of n = 400, propensities are clipped only at [0.001, 0.999], and the parametric nuisances are fitted on the full sample.
+
+```{cpp, id=tmle, file="figures/tmle.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/causal/aipw.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+double risk(double x1, double x2, int a) {
+    return 1 / (1 + std::exp(-(-0.5 + x1 - 0.5 * x2 + 0.6 * (x1 * x1 - 1) + 0.8 * a)));
+}
+
+int main() {
+    // Logistic outcome learner: the propensity learner applied to a 0/1 outcome.
+    const auto logistic_outcome = [](const Matrix& x, const std::vector<double>& y,
+                                     const Matrix& t) {
+        const std::vector<int> labels(y.begin(), y.end());
+        return dm::causal::logistic_propensity_learner(x, labels, t);
+    };
+    dm::random::SplitMix64 rng(2006);
+    double truth = 0; // population ATE by Monte Carlo
+    const int big = 1000000;
+    for (int i = 0; i < big; ++i) {
+        const double x1 = rng.normal(), x2 = rng.normal();
+        truth += (risk(x1, x2, 1) - risk(x1, x2, 0)) / big;
+    }
+    std::println("True ATE: {:.4f}.\n", truth);
+    const std::vector<std::string> names{"IPW", "AIPW", "TMLE"};
+    const int reps = 1000;
+    const std::size_t n = 400;
+    std::vector<double> plot_aipw, plot_tmle;
+    for (const double alpha : {1.0, 2.5}) {
+        double sum[3]{}, sq[3]{}, cover[3]{}, outside = 0, worst[3]{}, small = 0;
+        for (int r = 0; r < reps; ++r) {
+            Matrix x(n, 2);
+            std::vector<int> a(n);
+            std::vector<double> y(n);
+            for (std::size_t i = 0; i < n; ++i) {
+                x(i, 0) = rng.normal();
+                x(i, 1) = rng.normal();
+                const double e = 1 / (1 + std::exp(-alpha * (x(i, 0) + 0.5 * x(i, 1))));
+                small += (e < 0.02 || e > 0.98) / double(n * reps);
+                a[i] = rng.uniform01() < e;
+                y[i] = rng.uniform01() < risk(x(i, 0), x(i, 1), a[i]);
+            }
+            const auto ai = dm::causal::cross_fitted_aipw(
+                y, a, x, {.folds = 1, .propensity_bound = 0.001, .outcome = logistic_outcome});
+            const auto tm = dm::causal::targeted_mle(
+                y, a, x, {.folds = 1, .propensity_bound = 0.001, .outcome = logistic_outcome});
+            // Horvitz-Thompson IPW with its influence-function standard error.
+            std::vector<double> phi(n);
+            double ipw = 0;
+            for (std::size_t i = 0; i < n; ++i) {
+                const double e = ai.propensity[i];
+                phi[i] = a[i] * y[i] / e - (1 - a[i]) * y[i] / (1 - e);
+                ipw += phi[i] / n;
+            }
+            double ss = 0;
+            for (const double v : phi)
+                ss += (v - ipw) * (v - ipw);
+            const double ipw_se = std::sqrt(ss / (n - 1) / n);
+            const double est[3]{ipw, ai.ate, tm.ate};
+            const double se[3]{ipw_se, ai.standard_error, tm.standard_error};
+            for (int k = 0; k < 3; ++k) {
+                sum[k] += (est[k] - truth) / reps;
+                sq[k] += (est[k] - truth) * (est[k] - truth) / reps;
+                cover[k] += (std::abs(est[k] - truth) <= 1.96 * se[k]) / double(reps);
+                worst[k] = std::max(worst[k], std::abs(est[k]));
+            }
+            outside += (ai.treated_mean < 0 || ai.treated_mean > 1 || ai.control_mean < 0 ||
+                        ai.control_mean > 1) / double(reps);
+            if (alpha > 2) {
+                plot_aipw.push_back(ai.ate);
+                plot_tmle.push_back(tm.ate);
+            }
+        }
+        std::println("Treatment strength {} ({:.1f}% of propensities outside [0.02, 0.98]):\n",
+                     alpha, 100 * small);
+        std::println("| Estimator | Bias | Emp. SD | RMSE | Coverage | Largest abs. estimate |");
+        std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+        for (int k = 0; k < 3; ++k)
+            std::println("| {} | {:+.4f} | {:.4f} | {:.4f} | {:.3f} | {:.3f} |", names[k],
+                         sum[k], std::sqrt(sq[k] - sum[k] * sum[k]), std::sqrt(sq[k]), cover[k],
+                         worst[k]);
+        std::println("\nAIPW potential-outcome means outside [0, 1] in {:.1f}% of samples.\n",
+                     100 * outside);
+    }
+    std::vector<std::size_t> order(plot_aipw.size());
+    for (std::size_t i = 0; i < order.size(); ++i)
+        order[i] = i;
+    std::ranges::sort(order,
+                      [&](std::size_t l, std::size_t r) { return plot_aipw[l] < plot_aipw[r]; });
+    std::vector<double> xs, ya, yt;
+    for (std::size_t k = 0; k < order.size(); ++k) {
+        xs.push_back(double(k + 1));
+        ya.push_back(plot_aipw[order[k]]);
+        yt.push_back(plot_tmle[order[k]]);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.points(xs, ya, "AIPW", {176, 72, 43}, 3)
+        .points(xs, yt, "TMLE (same sample)", {26, 90, 147}, 3)
+        .abline_h(truth, {60, 60, 60}, 1)
+        .title("Poor overlap: AIPW and TMLE by sample")
+        .x_label("Sample rank of the AIPW estimate")
+        .y_label("Estimated ATE (line: truth)")
+        .size(680, 430);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/tmle.svg");
+}
+```
+// result_begin: markdown
+True ATE: 0.1527.
+
+Treatment strength 1 (0.1% of propensities outside [0.02, 0.98]):
+
+| Estimator | Bias | Emp. SD | RMSE | Coverage | Largest abs. estimate |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| IPW | -0.0005 | 0.0660 | 0.0660 | 0.992 | 0.430 |
+| AIPW | +0.0005 | 0.0589 | 0.0589 | 0.947 | 0.409 |
+| TMLE | +0.0002 | 0.0554 | 0.0554 | 0.937 | 0.321 |
+
+AIPW potential-outcome means outside [0, 1] in 0.0% of samples.
+
+Treatment strength 2.5 (16.4% of propensities outside [0.02, 0.98]):
+
+| Estimator | Bias | Emp. SD | RMSE | Coverage | Largest abs. estimate |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| IPW | +0.0095 | 0.2685 | 0.2687 | 0.989 | 2.720 |
+| AIPW | +0.0073 | 0.2249 | 0.2251 | 0.936 | 2.653 |
+| TMLE | -0.0108 | 0.0994 | 0.1000 | 0.786 | 0.464 |
+
+AIPW potential-outcome means outside [0, 1] in 1.7% of samples.
+
+\image(figures/tmle.svg)
+// result_end
+
+With moderate overlap the two doubly robust estimators behave alike. Both are unbiased with near-nominal coverage, and both are more precise than IPW, whose interval is conservative because the Horvitz–Thompson influence function ignores the estimated propensity. TMLE is already slightly more precise (SD 0.055 against 0.059).
+
+With poor overlap they separate sharply. AIPW stays nearly unbiased on average, but its sampling distribution has long tails. In a few samples, a treated unit with a propensity of 0.01 and an unexpected outcome gets a weight of 100. The correction term then dominates, and the estimate of a difference in probabilities reaches 2.65. In 1.7% of samples a potential-outcome mean falls outside [0, 1]. TMLE puts the same information through the logistic fluctuation, so each \(\bar Q^*\) remains a probability and an extreme weight can only push predictions toward 0 or 1. Its SD is less than half of AIPW's (0.099 against 0.225) and its largest estimate is 0.46. The figure shows the same 1000 samples. The two estimators agree in the middle, and TMLE does not follow AIPW into the tails.
+
+TMLE pays for that stability in honesty of the interval. Its influence-function standard error assumes the asymptotic regime in which the weights are well behaved. With 16% of propensities beyond [0.02, 0.98], that variance estimate is too small, and coverage is 79%, despite the much smaller RMSE. AIPW's coverage looks better (94%) only because its own extreme draws inflate its standard error in exactly those samples. Neither interval is trustworthy under severe positivity problems. The remedies change the question rather than the estimator: restrict to the region of overlap, target the overlap-weighted or treated effect, or use a variance estimate that does not rely on asymptotic normality, such as the bootstrap.
+
+>> Practical guidance
+
+- Prefer TMLE for bounded outcomes (probabilities, proportions, scores with natural limits) and whenever some propensities are small. Its estimates always respect the outcome bounds.
+- Use flexible, cross-fitted learners for the initial fit, as for AIPW. The targeting step corrects first-order bias but not inconsistent nuisance estimates.
+- Report the distribution of propensities and the number clipped. Many values near 0 or 1 signal a positivity problem that no estimator can repair.
+- Compare the initial and targeted estimates. A large change means the initial outcome model was poor and the result leans on the propensity model.
+
+>> References
+
+- M. J. van der Laan and D. Rubin (2006). Targeted maximum likelihood learning. *The International Journal of Biostatistics* 2(1). doi:10.2202/1557-4679.1043
+- S. Gruber and M. J. van der Laan (2012). tmle: An R package for targeted maximum likelihood estimation. *Journal of Statistical Software* 51(13), 1-35. doi:10.18637/jss.v051.i13
+- M. J. van der Laan and S. Rose (2011). *Targeted Learning: Causal Inference for Observational and Experimental Data*. Springer.
+- M. L. Petersen, K. E. Porter, S. Gruber, Y. Wang and M. J. van der Laan (2012). Diagnosing and responding to violations in the positivity assumption. *Statistical Methods in Medical Research* 21(1), 31-54. doi:10.1177/0962280210386207

@@ -1,0 +1,143 @@
+//? Title: Test and model volatility clustering with ARCH and GARCH
+//? Exports: both
+//? Lang: en
+
+> Let today's variance depend on yesterday's shocks
+
+Financial returns are close to serially uncorrelated, but their magnitudes are not: large moves cluster. Engle's ARCH-LM test detects this by regressing \(e_t^2\) on its own lags. Under homoskedasticity, \(mR^2\) is approximately \(\chi^2_L\). A GARCH(p, q) model then describes the conditional variance:
+\[\sigma_t^2=\omega+\sum_{i=1}^p\alpha_i\varepsilon_{t-i}^2+\sum_{j=1}^q\beta_j\sigma_{t-j}^2,\qquad \varepsilon_t=\sigma_tz_t.\]
+The persistence \(\sum\alpha_i+\sum\beta_j<1\) controls how slowly a volatility shock decays. Multi-step forecasts decay geometrically toward the unconditional variance \(\omega/(1-\text{persistence})\).
+
+`fit_garch` maximizes the Gaussian likelihood, so when the shocks \(z_t\) are not normal it is a quasi-maximum-likelihood estimator. The estimates stay consistent, but the inverse-Hessian standard errors are then wrong. The Bollerslev–Wooldridge sandwich \(H^{-1}JH^{-1}\) corrects them. The example checks the ARCH-LM test before and after fitting a GARCH(1,1), and compares the coverage of 95% intervals built from the two kinds of standard error when the true shocks are Gaussian and when they are Student-t with 5 degrees of freedom.
+
+```{cpp, id=garch, file="figures/garch_volatility.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/garch.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+
+// GARCH(1,1) returns with mean 0.05, omega 0.05, alpha 0.08, beta 0.9; shocks normal or
+// Student-t(5) scaled to unit variance.
+std::vector<double> simulate(std::size_t n, bool fat_tails, std::mt19937_64& random) {
+    std::normal_distribution<double> normal;
+    std::student_t_distribution<double> t5(5);
+    std::vector<double> y;
+    double s2 = .05 / (1 - .98), e = 0;
+    for (std::size_t t = 0; t < n + 200; ++t) {
+        s2 = .05 + .08 * e * e + .9 * s2;
+        const double z = fat_tails ? t5(random) * std::sqrt(3.0 / 5.0) : normal(random);
+        e = std::sqrt(s2) * z;
+        if (t >= 200)
+            y.push_back(.05 + e);
+    }
+    return y;
+}
+
+int main() {
+    std::mt19937_64 random(21);
+    const auto y = simulate(1500, true, random);
+    const auto fit = dm::stats::fit_garch(y);
+    std::vector<double> demeaned = fit.residuals;
+    const auto before = dm::stats::arch_lm_test(demeaned, 5);
+    const auto after = dm::stats::arch_lm_test(fit.standardized_residuals, 5);
+    std::println("| Series | ARCH-LM (5 lags) | p-value |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| Returns minus mean | {:.1f} | {:.2e} |", before.lm, before.lm_p_value);
+    std::println("| Standardized GARCH residuals | {:.2f} | {:.3f} |", after.lm,
+                 after.lm_p_value);
+    const auto& se = fit.standard_errors;
+    std::println("\nFit: μ = {:.3f}, ω = {:.3f}, α = {:.3f}, β = {:.3f} "
+                 "(robust s.e. {:.3f}, {:.3f}, {:.3f}, {:.3f}); persistence {:.3f}.", fit.mu,
+                 fit.omega, fit.alpha[0], fit.beta[0], se[0], se[1], se[2], se[3],
+                 fit.persistence);
+
+    // Coverage of nominal 95% intervals for alpha and beta, n = 1500.
+    const int replicates = 300;
+    std::println("\n| Shocks | α, classical | α, robust | β, classical | β, robust |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (const bool fat : {false, true}) {
+        int ac = 0, ar = 0, bc = 0, br = 0, used = 0;
+        for (int r = 0; r < replicates; ++r) {
+            const auto f = dm::stats::fit_garch(simulate(1500, fat, random));
+            const auto& robust = f.standard_errors;
+            const auto& classical = f.classical_standard_errors;
+            if (!std::isfinite(robust[2]) || !std::isfinite(classical[2]))
+                continue;
+            ++used;
+            const auto in = [](double est, double se, double truth) {
+                return std::abs(est - truth) <= 1.96 * se;
+            };
+            ac += in(f.alpha[0], classical[2], .08);
+            ar += in(f.alpha[0], robust[2], .08);
+            bc += in(f.beta[0], classical[3], .9);
+            br += in(f.beta[0], robust[3], .9);
+        }
+        const double m = used;
+        const char* label = fat ? "Student-t(5)" : "Normal";
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", label, ac / m, ar / m,
+                     bc / m, br / m);
+    }
+
+    // Last 250 returns with +-2 conditional standard deviations, then a 60-day forecast band.
+    const auto forecast = dm::stats::forecast_garch_variance(fit, 60);
+    std::vector<double> t, r, upper, lower, tf, fu, fl, longrun_t, longrun;
+    for (std::size_t i = y.size() - 250; i < y.size(); ++i) {
+        t.push_back(double(i));
+        r.push_back(y[i]);
+        upper.push_back(fit.mu + 2 * std::sqrt(fit.conditional_variance[i]));
+        lower.push_back(fit.mu - 2 * std::sqrt(fit.conditional_variance[i]));
+    }
+    for (std::size_t h = 0; h < forecast.size(); ++h) {
+        tf.push_back(double(y.size() + h));
+        fu.push_back(fit.mu + 2 * std::sqrt(forecast[h]));
+        fl.push_back(fit.mu - 2 * std::sqrt(forecast[h]));
+    }
+    const double band = 2 * std::sqrt(fit.unconditional_variance);
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(t, r, "Returns", {150, 154, 160}, .9)
+        .line(t, upper, "±2 conditional s.d.", {26, 90, 147}, 1.4)
+        .line(t, lower, "", {26, 90, 147}, 1.4)
+        .line(tf, fu, "Forecast ±2 s.d.", {176, 72, 43}, 1.6)
+        .line(tf, fl, "", {176, 72, 43}, 1.6)
+        .line({tf.front(), tf.back()}, {fit.mu + band, fit.mu + band}, "Unconditional ±2 s.d.",
+              {46, 139, 87}, 1)
+        .line({tf.front(), tf.back()}, {fit.mu - band, fit.mu - band}, "", {46, 139, 87}, 1)
+        .title("GARCH(1,1) volatility bands and forecast")
+        .ylim(-5, 7.5)
+        .x_label("Day")
+        .y_label("Return")
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/garch_volatility.svg");
+}
+```
+// result_begin: markdown
+| Series | ARCH-LM (5 lags) | p-value |
+| --- | ---: | ---: |
+| Returns minus mean | 67.5 | 3.36e-13 |
+| Standardized GARCH residuals | 3.98 | 0.553 |
+
+Fit: μ = 0.013, ω = 0.043, α = 0.070, β = 0.911 (robust s.e. 0.033, 0.025, 0.026, 0.033); persistence 0.980.
+
+| Shocks | α, classical | α, robust | β, classical | β, robust |
+| --- | ---: | ---: | ---: | ---: |
+| Normal | 0.927 | 0.927 | 0.947 | 0.947 |
+| Student-t(5) | 0.697 | 0.857 | 0.743 | 0.900 |
+\image(figures/garch_volatility.svg)
+// result_end
+\caption(The last 250 simulated returns with the fitted band of ±2 conditional standard deviations, followed by a 60-day forecast band that widens or narrows toward the unconditional ±2 standard deviation level.)
+\alttext(Grey daily returns fluctuate around zero. The blue band follows the clusters, widening after large moves and narrowing in calm spells. After the sample ends, an orange forecast band runs for 60 days and moves gradually toward two flat green lines at the unconditional ±2 standard deviation level.)
+
+The ARCH-LM test leaves no doubt about volatility clustering in the raw returns (\(p\approx10^{-13}\)). After dividing by the fitted \(\hat\sigma_t\), the standardized residuals show none (\(p=0.55\)), so a single GARCH(1,1) captures the dependence in squared returns. The estimated persistence of 0.98 means a volatility shock has a half-life of about \(\ln0.5/\ln0.98\approx34\) days, which is why the forecast band in the figure approaches its long-run level only slowly.
+
+The coverage table shows why the sandwich matters. With Gaussian shocks the two kinds of standard error agree and both intervals cover close to the nominal rate, with a small shortfall for \(\alpha\) at \(n=1500\). With Student-t(5) shocks the likelihood is misspecified. The inverse Hessian then understates the variance of \(\hat\alpha\) and \(\hat\beta\), and its "95%" intervals cover only about 70–74% of the time. The Bollerslev–Wooldridge standard errors restore most of the gap (86–90%). The rest comes from the heavy tails of the scores, which make the outer-product matrix \(J\) slow to converge. For fat-tailed returns, a Student-t likelihood or a bootstrap is the next step.
+
+Estimates, log likelihoods, conditional volatilities, AIC and BIC, variance forecasts, and robust and classical standard errors match the Python `arch` package at interior optima. This includes its backcast, an exponentially weighted (λ = 0.94) mean of the first 75 squared residuals. ARCH-LM statistics and both p-values match statsmodels' `het_arch`. At a boundary optimum, where `arch` sets a coefficient exactly to zero, `fit_garch` stops just inside the parameter space, within \(10^{-6}\) of the log likelihood.
+
+[Engle (1982)|https://doi.org/10.2307/1912773] · [Bollerslev (1986)|https://doi.org/10.1016/0304-4076(86)90063-1] · [Bollerslev and Wooldridge (1992)|https://doi.org/10.1080/07474939208800229]

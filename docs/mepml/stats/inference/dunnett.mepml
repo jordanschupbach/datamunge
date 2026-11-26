@@ -1,0 +1,126 @@
+//? Title: Compare several treatments with one control using Dunnett's procedure
+//? Exports: both
+//? Lang: en
+
+> Adjust many-to-one comparisons using their joint distribution
+
+A trial that compares several doses with one placebo makes one comparison per dose. Each comparison uses the same placebo mean and the same pooled variance, so the statistics are positively correlated. For group sizes \(n_j\) and control size \(n_0\), the correlation between the comparisons for doses \(j\) and \(l\) is \(\sqrt{n_jn_l/((n_j+n_0)(n_l+n_0))}\). Dunnett's procedure uses the joint multivariate \(t\) law of these statistics. Its simultaneous critical value is therefore smaller than the Bonferroni value, while the family-wise error rate remains exactly at the nominal level.
+
+`dunnett_test` returns each treatment-minus-control difference with its standard error, its \(t\) statistic, and a single-step adjusted p-value. It also returns simultaneous confidence limits. The multivariate \(t\) probabilities come from `mvt_rectangle_probability`, which extends Genz's lattice method with one more coordinate for the chi-square scale.
+
+The example compares four doses with placebo; the group sizes are unequal. It then checks the family-wise error rate by simulating 20,000 experiments in which no dose has an effect. Unadjusted, Bonferroni and Dunnett critical values are applied to the same simulated statistics.
+
+```{cpp, id=dunnett, file="figures/dunnett_intervals.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/stats/dunnett.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+
+int main() {
+    // Reduction in systolic blood pressure (mmHg): placebo, then doses 5, 10, 20 and 40 mg.
+    std::mt19937_64 random(4);
+    const std::vector<double> effect{0, 1, 4, 6, 6.5};
+    const std::vector<std::size_t> size{12, 8, 8, 10, 9};
+    std::vector<std::vector<double>> groups(5);
+    for (std::size_t g = 0; g < 5; ++g) {
+        std::normal_distribution<double> law(5 + effect[g], 4);
+        for (std::size_t i = 0; i < size[g]; ++i)
+            groups[g].push_back(law(random));
+    }
+    const auto d = dm::stats::dunnett_test(groups);
+    const char* names[]{"Placebo", "5 mg", "10 mg", "20 mg", "40 mg"};
+    std::println("| Dose − placebo | Difference | SE | t | Adjusted p | 95% simultaneous interval |");
+    std::println("| --- | ---: | ---: | ---: | ---: | --- |");
+    for (const auto& c : d.comparisons)
+        std::println("| {} | {:.2f} | {:.2f} | {:.3f} | {:.4f} | [{:.2f}, {:.2f}] |", names[c.treatment],
+                     c.estimate, c.std_error, c.statistic, c.p_value, c.conf_low, c.conf_high);
+    const double m = d.comparisons.size();
+    const double bonferroni = dm::random::student_t_quantile(1 - .025 / m, d.df);
+    const double unadjusted = dm::random::student_t_quantile(.975, d.df);
+    std::println("\nCritical values with {} error df: Dunnett {:.4f}, Bonferroni {:.4f}, "
+                 "unadjusted {:.4f}. Largest integration error {:.1e}.\n",
+                 d.df, d.critical_value, bonferroni, unadjusted, d.integration_error);
+
+    // Family-wise error under the global null, applying each critical value to the same draws.
+    std::normal_distribution<double> noise(0, 4);
+    std::size_t any_dunnett = 0, any_bonferroni = 0, any_unadjusted = 0;
+    const int replicates = 20000;
+    for (int r = 0; r < replicates; ++r) {
+        std::vector<double> mean(5);
+        double ss = 0;
+        for (std::size_t g = 0; g < 5; ++g) {
+            std::vector<double> y(size[g]);
+            for (auto& v : y)
+                v = noise(random);
+            for (const double v : y)
+                mean[g] += v / size[g];
+            for (const double v : y)
+                ss += (v - mean[g]) * (v - mean[g]);
+        }
+        const double s = std::sqrt(ss / d.df);
+        double largest = 0;
+        for (std::size_t g = 1; g < 5; ++g)
+            largest = std::max(largest, std::abs(mean[g] - mean[0]) /
+                                            (s * std::sqrt(1.0 / size[g] + 1.0 / size[0])));
+        any_dunnett += largest > d.critical_value;
+        any_bonferroni += largest > bonferroni;
+        any_unadjusted += largest > unadjusted;
+    }
+    std::println("| Critical value | Family-wise error rate |");
+    std::println("| --- | ---: |");
+    std::println("| Unadjusted | {:.4f} |", double(any_unadjusted) / replicates);
+    std::println("| Bonferroni | {:.4f} |", double(any_bonferroni) / replicates);
+    std::println("| Dunnett | {:.4f} |", double(any_dunnett) / replicates);
+
+    std::vector<double> position, estimate, lower, upper;
+    for (const auto& c : d.comparisons) {
+        position.push_back(double(c.treatment));
+        estimate.push_back(c.estimate);
+        lower.push_back(c.conf_low);
+        upper.push_back(c.conf_high);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line({.5, 4.5}, {0, 0}, "No difference", {150, 154, 160}, 1)
+        .error_bars(position, lower, upper, .15, {26, 90, 147})
+        .points(position, estimate, "Difference from placebo", {26, 90, 147}, 6)
+        .title("95% simultaneous Dunnett intervals")
+        .x_label("Dose group (1 = 5 mg, 2 = 10 mg, 3 = 20 mg, 4 = 40 mg)")
+        .y_label("Reduction minus placebo (mmHg)")
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/dunnett_intervals.svg");
+}
+```
+// result_begin: markdown
+| Dose − placebo | Difference | SE | t | Adjusted p | 95% simultaneous interval |
+| --- | ---: | ---: | ---: | ---: | --- |
+| 5 mg | 1.02 | 1.83 | 0.555 | 0.9551 | [-3.67, 5.70] |
+| 10 mg | 2.18 | 1.83 | 1.188 | 0.6046 | [-2.51, 6.87] |
+| 20 mg | 5.93 | 1.72 | 3.450 | 0.0049 | [1.54, 10.33] |
+| 40 mg | 8.04 | 1.77 | 4.541 | 0.0002 | [3.51, 12.57] |
+
+Critical values with 42 error df: Dunnett 2.5565, Bonferroni 2.6098, unadjusted 2.0181. Largest integration error 9.6e-06.
+
+| Critical value | Family-wise error rate |
+| --- | ---: |
+| Unadjusted | 0.1638 |
+| Bonferroni | 0.0442 |
+| Dunnett | 0.0508 |
+\image(figures/dunnett_intervals.svg)
+// result_end
+\caption(Treatment-minus-placebo differences with 95% simultaneous Dunnett intervals; the 20 mg and 40 mg intervals exclude zero.)
+\alttext(Four intervals are plotted against dose group. The two lower doses have intervals that cross zero; the 20 mg and 40 mg intervals lie entirely above zero.)
+
+The 20 mg and 40 mg doses differ significantly from placebo after adjustment; the two lower doses do not. With 42 error degrees of freedom the Dunnett critical value is 2.557, compared with 2.610 for Bonferroni. Bonferroni ignores the positive correlation between the comparisons and is therefore conservative. In the null simulation its family-wise error rate is 4.4%, while Dunnett's is 5.1%, which agrees with 5% within simulation error (standard error 0.0015). Without adjustment, at least one false positive occurs in 16% of experiments.
+
+The procedure assumes normal errors with equal variances in all groups. When variances differ, unequal-variance or resampling methods are needed. The adjusted p-values are single-step values: each is calibrated against the maximum of all comparisons. Step-down procedures can reject more often while controlling the same error rate.
+
+[Dunnett (1955)|https://doi.org/10.1080/01621459.1955.10501294] · [Genz and Bretz (2002)|https://doi.org/10.1198/106186002394] · [Hothorn, Bretz and Westfall (2008)|https://doi.org/10.1002/bimj.200810425] · [R multcomp|https://cran.r-project.org/package=multcomp]

@@ -1,0 +1,149 @@
+//? Title: Rayleigh and Kuiper tests
+//? Exports: both
+//? Lang: en
+
+> Test whether directions are uniformly spread around the circle, calibrate the tests in small samples, and choose the test whose power matches the departure that matters
+
+Before summarising a mean direction, one usually asks whether there is any preferred direction at all. Three tests are standard:
+
+- The Rayleigh test uses the mean resultant length \(\bar R\). Under uniformity \(2n\bar R^2\) is approximately \(\chi^2_2\), so \(P\approx e^{-n\bar R^2}\), and Greenwood and Durand's correction improves this approximation for \(n<50\). It is the most powerful invariant test against von Mises alternatives.
+- The V test assumes the alternative's direction \(\mu_0\) is known and uses the projected resultant \(\bar R_0=\frac1n\sum\cos(\theta_j-\mu_0)\), giving more power when the direction is right.
+- Kuiper's test compares the empirical distribution with the hypothesised one through \(V=D^++D^-\). Unlike Kolmogorov–Smirnov, \(V\) does not depend on where the circle is cut, and it detects any departure from the null, including multimodal ones that leave \(\bar R\approx0\).
+
+`rayleigh_test`, `rayleigh_test_direction` and `kuiper_test` return the statistics and p-values of the `circular` package: Rayleigh with the small-sample correction, the V test with its Edgeworth correction, and Kuiper with Stephens' modified \(V^*\). `circular` only compares \(V^*\) with a table of critical values; here the p-value comes from its asymptotic tail series. All three tests accept a Monte Carlo calibration from simulated uniform samples, and Kuiper accepts any continuous null CDF. The tests match `circular::rayleigh.test` (with and without \(\mu\), \(n\) below and above 50) and `kuiper.test` to \(10^{-12}\). They also check Kuiper against a von Mises null by numerical integration, and compare the analytic p-values with Monte Carlo ones.
+
+The study first estimates the size at \(\alpha=0.05\) for \(n=5\), 10 and 25 from 4000 uniform samples. Kuiper's Monte Carlo p-value uses 199 simulations. It then compares power against unimodal von Mises departures (\(n=30\)) and an axial alternative (two von Mises components at 0 and \(\pi\) with \(\kappa=2\), \(n=30\) and 100), with the V test given either the right direction or one off by 90°. Each power setting uses 2000 samples.
+
+```{cpp, id=unif, file="figures/uniformity_tests.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/circular.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+const double pi = std::numbers::pi;
+
+std::vector<double> axial(std::size_t n, double kappa, std::uint64_t seed) {
+    auto x = dm::stats::von_mises_sample(n, 0.0, kappa, seed);
+    for (std::size_t i = 0; i < n; i += 2)
+        x[i] += pi;  // half the points around pi
+    return x;
+}
+
+int main() {
+    dm::random::SplitMix64 rng(2);
+    std::println("| n | Rayleigh, exp(-n R^2) | Rayleigh, corrected | Kuiper, asymptotic | "
+                 "Kuiper, Monte Carlo |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    for (const std::size_t n : {5, 10, 25}) {
+        double raw = 0, cor = 0, ka = 0, km = 0;
+        const int reps = 4000;
+        for (int r = 0; r < reps; ++r) {
+            const auto x = dm::stats::von_mises_sample(n, 0.0, 0.0, rng.next_u64());
+            const auto ray = dm::stats::rayleigh_test(x);
+            raw += std::exp(-double(n) * ray.statistic * ray.statistic) <= 0.05;
+            cor += ray.p_value <= 0.05;
+            const auto k = dm::stats::kuiper_test(
+                x, {}, {.simulations = 199, .seed = rng.next_u64()});
+            ka += k.p_value <= 0.05;
+            km += k.monte_carlo_p_value <= 0.05;
+        }
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", n, raw / reps,
+                     cor / reps, ka / reps, km / reps);
+    }
+
+    std::println("\n| Alternative | n | Rayleigh | V test, right direction | "
+                 "V test, direction off by 90 degrees | Kuiper |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    struct Alt {
+        const char* name;
+        double kappa;
+        bool axial;
+        std::size_t n;
+    };
+    for (const Alt a : {Alt{"von Mises, kappa 0.5", 0.5, false, 30},
+                        Alt{"von Mises, kappa 1", 1.0, false, 30},
+                        Alt{"Axial, kappa 2", 2.0, true, 30},
+                        Alt{"Axial, kappa 2", 2.0, true, 100}}) {
+        double pr = 0, pv = 0, pw = 0, pk = 0;
+        const int reps = 2000;
+        for (int r = 0; r < reps; ++r) {
+            const auto x = a.axial ? axial(a.n, a.kappa, rng.next_u64())
+                                   : dm::stats::von_mises_sample(a.n, 0.0, a.kappa,
+                                                                 rng.next_u64());
+            pr += dm::stats::rayleigh_test(x).p_value <= 0.05;
+            pv += dm::stats::rayleigh_test_direction(x, 0.0).p_value <= 0.05;
+            pw += dm::stats::rayleigh_test_direction(x, pi / 2).p_value <= 0.05;
+            pk += dm::stats::kuiper_test(x).p_value <= 0.05;
+        }
+        std::println("| {} | {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", a.name, a.n,
+                     pr / reps, pv / reps, pw / reps, pk / reps);
+    }
+
+    // Power curves against unimodal von Mises departures, n = 30.
+    std::vector<double> kappas, ray, vt, kui;
+    for (double kappa = 0; kappa <= 1.2001; kappa += 0.1) {
+        double pr = 0, pv = 0, pk = 0;
+        const int reps = 1000;
+        for (int r = 0; r < reps; ++r) {
+            const auto x = dm::stats::von_mises_sample(30, 0.0, kappa, rng.next_u64());
+            pr += dm::stats::rayleigh_test(x).p_value <= 0.05;
+            pv += dm::stats::rayleigh_test_direction(x, 0.0).p_value <= 0.05;
+            pk += dm::stats::kuiper_test(x).p_value <= 0.05;
+        }
+        kappas.push_back(kappa);
+        ray.push_back(pr / reps), vt.push_back(pv / reps), kui.push_back(pk / reps);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(kappas, vt, "V test (known direction)", {26, 90, 147}, 2)
+        .line(kappas, ray, "Rayleigh", {176, 72, 43}, 2)
+        .line(kappas, kui, "Kuiper", {67, 140, 70}, 2)
+        .abline_h(0.05, {150, 150, 150})
+        .y_limits(0, 1.25)
+        .title("Power against von Mises departures, n = 30")
+        .x_label("Concentration kappa")
+        .y_label("Rejection rate at 5%")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/uniformity_tests.svg");
+}
+```
+// result_begin: markdown
+| n | Rayleigh, exp(-n R^2) | Rayleigh, corrected | Kuiper, asymptotic | Kuiper, Monte Carlo |
+| ---: | ---: | ---: | ---: | ---: |
+| 5 | 0.042 | 0.051 | 0.049 | 0.050 |
+| 10 | 0.044 | 0.049 | 0.049 | 0.052 |
+| 25 | 0.052 | 0.053 | 0.057 | 0.057 |
+
+| Alternative | n | Rayleigh | V test, right direction | V test, direction off by 90 degrees | Kuiper |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| von Mises, kappa 0.5 | 30 | 0.363 | 0.582 | 0.047 | 0.323 |
+| von Mises, kappa 1 | 30 | 0.921 | 0.977 | 0.035 | 0.881 |
+| Axial, kappa 2 | 30 | 0.004 | 0.005 | 0.026 | 0.036 |
+| Axial, kappa 2 | 100 | 0.005 | 0.003 | 0.022 | 0.397 |
+\image(figures/uniformity_tests.svg)
+// result_end
+
+All four calibrations hold their size. The uncorrected Rayleigh p-value \(e^{-n\bar R^2}\) is conservative for small samples (4.2% at \(n=5\)), and Greenwood and Durand's correction brings it to 5.1%. Stephens' modification makes Kuiper's asymptotic p-value accurate even at \(n=5\), matching the Monte Carlo calibration.
+
+Power depends on matching the test to the departure. Against von Mises alternatives the Rayleigh test beats Kuiper slightly at every concentration (92% vs 88% at \(\kappa=1\)). The V test, given the right direction, is much stronger at small \(\kappa\) (58% vs 36% at \(\kappa=0.5\)). The V test's gain comes from a one-sided bet. Off by 90° it falls below 5%, and a direction chosen after looking at the data invalidates it. Axial data defeat all the resultant-based tests: two opposite clusters cancel, so \(\bar R\) is smaller than under uniformity, and Rayleigh rejects under 1% of the time even at \(n=100\). Kuiper is the only test that responds, but this departure is subtle for an EDF test: 4% at \(n=30\) and 40% at \(n=100\). For suspected axial data, double the angles first. \(2\theta\) turns two antipodal modes into one, and the Rayleigh test of the doubled angles then has its usual power.
+
+>> Practical guidance
+
+- Use the Rayleigh test when the alternative of interest is a single preferred direction. Use the V test only when that direction is fixed in advance by theory or design, for example a homing direction or a scheduled time.
+- Use Kuiper's test when the shape of the departure is unknown or may be multimodal, or to test fit to any specified circular distribution through its CDF. Use its Monte Carlo p-value for very small samples or when the null CDF has estimated parameters, in which case simulate from the fitted model instead.
+- Test axial data (orientations without a head, such as fault lines) after doubling the angles; report the axis as half the mean of the doubled angles.
+- A non-significant Rayleigh test does not mean the directions are uniform, only that there is no single mean direction. Check \(\bar R\) of the doubled angles or use Kuiper before concluding uniformity.
+
+>> References
+
+- J. A. Greenwood and D. Durand (1955). The distribution of length and components of the sum of n random unit vectors. *Annals of Mathematical Statistics* 26(2), 233-246. doi:10.1214/aoms/1177728540
+- N. H. Kuiper (1960). Tests concerning random points on a circle. *Indagationes Mathematicae* 63, 38-47.
+- M. A. Stephens (1970). Use of the Kolmogorov-Smirnov, Cramér-von Mises and related statistics without extensive tables. *Journal of the Royal Statistical Society B* 32(1), 115-122.
+- N. I. Fisher (1993). *Statistical Analysis of Circular Data*. Cambridge University Press. doi:10.1017/CBO9780511564345
+- K. V. Mardia and P. E. Jupp (2000). *Directional Statistics*. Wiley. doi:10.1002/9780470316979

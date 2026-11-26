@@ -1,0 +1,184 @@
+//? Title: Rosenbaum sensitivity bounds
+//? Exports: both
+//? Lang: en
+
+> Ask how much hidden bias would be needed to explain away a matched-study finding, by bounding the randomisation p-value as the allowed odds of differential treatment assignment grows
+
+Matching on observed covariates removes overt bias but cannot remove bias from an unobserved covariate \(U\). Rosenbaum's model says that two units in the same matched set, alike in their observed covariates, may differ in their odds of receiving treatment by at most a factor \(\Gamma\ge1\):
+
+\[
+\frac{1}{\Gamma}\le\frac{\pi_{ij}(1-\pi_{ik})}{\pi_{ik}(1-\pi_{ij})}\le\Gamma .
+\]
+
+At \(\Gamma=1\), treatment is as good as randomised within sets and the usual randomisation test applies. For \(\Gamma>1\), the null distribution of a test statistic is no longer known, but it is bounded: the p-value lies between `p_lower` and `p_upper`, the values under the assignment probabilities most and least favourable to a treatment effect. A study is called insensitive to bias of size \(\Gamma\) if `p_upper` stays below \(\alpha\). The largest such \(\Gamma\) is the sensitivity value, the amount of hidden bias needed to explain the finding away.
+
+The module provides three tests:
+
+- `rosenbaum_wilcoxon`: the signed-rank test in matched pairs, with the bounds of R's `rbounds::psens`.
+- `rosenbaum_sign_test`: exact binomial bounds for the sign or McNemar test on discordant pairs.
+- `rosenbaum_m_test`: Huber-type m-tests in matched sets with one treated unit and a variable number of controls. It uses the separable approximation and reproduces `sensitivitymv::senmv`.
+
+`rosenbaum_sensitivity_value` finds the sensitivity value. `rosenbaum_amplify` restates \(\Gamma\) as an unobserved covariate that increases the odds of treatment by \(\Lambda\) and the odds of a higher response by \(\Delta\). The tests reproduce `senmv` on the mercury and tbmetaphase sets to \(10^{-10}\), and `psens` on the erpcp pairs.
+
+The simulation checks two properties. First, the bound is valid. It uses 250 pairs with no treatment effect. Within each pair, the unit with the larger \(U\) is treated with probability \(\Gamma_0/(1+\Gamma_0)\) for a true hidden bias \(\Gamma_0=2\), and the response is \(2U\) plus small noise, so \(U\) nearly determines which unit responds more. The ordinary test (\(\Gamma=1\)) then rejects far too often, but the bound at the true \(\Gamma\) must not. Second, the power of a sensitivity analysis is examined. With no hidden bias and a true effect giving pair differences \(N(0.5,1)\), the figure shows how often each test still rejects at \(\alpha=0.05\) when bias up to \(\Gamma\) is allowed. The curves fall to zero near each test's design sensitivity, which is the largest \(\Gamma\) a test could withstand in an infinitely large study.
+
+```{cpp, id=rosenbaum, file="figures/rosenbaum_bounds.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/causal/rosenbaum.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <utility>
+#include <vector>
+
+namespace dm = datamunge;
+namespace dc = datamunge::causal;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+struct Pairs {
+    Matrix y;                   // treated, control
+    std::vector<double> d;      // treated minus control
+    std::size_t positive = 0, negative = 0;
+};
+
+Pairs finish(Matrix y) {
+    Pairs p{y, {}};
+    for (std::size_t i = 0; i < y.rows(); ++i) {
+        p.d.push_back(y(i, 0) - y(i, 1));
+        p.positive += p.d.back() > 0;
+        p.negative += p.d.back() < 0;
+    }
+    return p;
+}
+
+// Null effect, hidden bias gamma0: the higher-U unit is treated with odds gamma0.
+Pairs biased(dm::random::SplitMix64& rng, std::size_t n, double gamma0) {
+    Matrix y(n, 2);
+    for (std::size_t i = 0; i < n; ++i) {
+        double u1 = rng.normal(), u2 = rng.normal();
+        if (u1 < u2)
+            std::swap(u1, u2);
+        const bool high_treated = rng.uniform01() < gamma0 / (1 + gamma0);
+        const double hi = 2 * u1 + 0.1 * rng.normal(), lo = 2 * u2 + 0.1 * rng.normal();
+        y(i, 0) = high_treated ? hi : lo;
+        y(i, 1) = high_treated ? lo : hi;
+    }
+    return finish(y);
+}
+
+// No hidden bias, additive effect 0.5 with N(0.5, 1) pair differences.
+Pairs favourable(dm::random::SplitMix64& rng, std::size_t n) {
+    Matrix y(n, 2);
+    for (std::size_t i = 0; i < n; ++i) {
+        y(i, 1) = rng.normal() / std::sqrt(2.0);
+        y(i, 0) = 0.5 + rng.normal() / std::sqrt(2.0);
+    }
+    return finish(y);
+}
+
+int main() {
+    dm::random::SplitMix64 rng(2002);
+    const std::size_t n = 250;
+    const int reps = 1000;
+    const std::vector<double> check{1.0, 1.5, 2.0, 2.5};
+    std::vector<double> wil(check.size()), mt(check.size()), sgn(check.size());
+    for (int r = 0; r < reps; ++r) {
+        const Pairs p = biased(rng, n, 2.0);
+        for (std::size_t g = 0; g < check.size(); ++g) {
+            wil[g] += dc::rosenbaum_wilcoxon(p.d, check[g]).p_upper < 0.05;
+            mt[g] += dc::rosenbaum_m_test(p.y, check[g]).p_upper < 0.05;
+            const auto s = dc::rosenbaum_sign_test(p.positive, p.negative, check[g]);
+            sgn[g] += s.p_upper < 0.05;
+        }
+    }
+    std::println("Null effect, true hidden bias 2: rejection rate of p_upper < 0.05.\n");
+    std::println("| Allowed Gamma | Wilcoxon | m-test (Huber) | Sign test |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    for (std::size_t g = 0; g < check.size(); ++g)
+        std::println("| {:.1f} | {:.3f} | {:.3f} | {:.3f} |", check[g], wil[g] / reps,
+                     mt[g] / reps, sgn[g] / reps);
+
+    // Power of the sensitivity analysis in the favourable situation.
+    std::vector<double> grid;
+    for (double g = 1; g <= 4.0001; g += 0.25)
+        grid.push_back(g);
+    std::vector<double> pw(grid.size()), pm(grid.size()), ps(grid.size());
+    const int power_reps = 400;
+    for (int r = 0; r < power_reps; ++r) {
+        const Pairs p = favourable(rng, n);
+        for (std::size_t g = 0; g < grid.size(); ++g) {
+            const double w = 1.0 / power_reps;
+            pw[g] += w * (dc::rosenbaum_wilcoxon(p.d, grid[g]).p_upper < 0.05);
+            pm[g] += w * (dc::rosenbaum_m_test(p.y, grid[g]).p_upper < 0.05);
+            const auto s = dc::rosenbaum_sign_test(p.positive, p.negative, grid[g]);
+            ps[g] += w * (s.p_upper < 0.05);
+        }
+    }
+
+    // One study in detail: sensitivity values and their amplification.
+    const Pairs p = favourable(rng, n);
+    const auto sv = [](auto upper) { return dc::rosenbaum_sensitivity_value(upper, 0.05); };
+    const double gw = sv([&](double g) { return dc::rosenbaum_wilcoxon(p.d, g).p_upper; });
+    const double gm = sv([&](double g) { return dc::rosenbaum_m_test(p.y, g).p_upper; });
+    const double gs = sv([&](double g) {
+        return dc::rosenbaum_sign_test(p.positive, p.negative, g).p_upper;
+    });
+    std::println("\nOne favourable study: sensitivity values {:.2f} (Wilcoxon), "
+                 "{:.2f} (m-test), {:.2f} (sign).", gw, gm, gs);
+    std::println("Gamma = {:.2f} equals an unobserved covariate with "
+                 "(Lambda, Delta) = (3, {:.2f}) or (5, {:.2f}).", gw,
+                 dc::rosenbaum_amplify(gw, 3), dc::rosenbaum_amplify(gw, 5));
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(grid, pw, "Wilcoxon signed rank", {26, 90, 147}, 2)
+        .line(grid, pm, "m-test (Huber, trim 2.5)", {44, 140, 90}, 2)
+        .line(grid, ps, "Sign test", {176, 72, 43}, 2)
+        .abline_v(3.17, {26, 90, 147}, 1)
+        .abline_v(2.24, {176, 72, 43}, 1)
+        .y_limits(0, 1.25)
+        .title("Power of a sensitivity analysis, 250 pairs, effect 0.5 SD")
+        .x_label("Allowed hidden bias Gamma (vertical lines: design sensitivities)")
+        .y_label("P(upper-bound p-value < 0.05)")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/rosenbaum_bounds.svg");
+}
+```
+// result_begin: markdown
+Null effect, true hidden bias 2: rejection rate of p_upper < 0.05.
+
+| Allowed Gamma | Wilcoxon | m-test (Huber) | Sign test |
+| ---: | ---: | ---: | ---: |
+| 1.0 | 0.997 | 0.996 | 1.000 |
+| 1.5 | 0.606 | 0.574 | 0.620 |
+| 2.0 | 0.053 | 0.052 | 0.032 |
+| 2.5 | 0.002 | 0.003 | 0.001 |
+
+One favourable study: sensitivity values 2.35 (Wilcoxon), 2.55 (m-test), 1.69 (sign).
+Gamma = 2.35 equals an unobserved covariate with (Lambda, Delta) = (3, 9.32) or (5, 4.06).
+\image(figures/rosenbaum_bounds.svg)
+// result_end
+
+The bound behaves as the theory says. With a true hidden bias of 2 and no effect, the ordinary randomisation tests reject in almost every sample (99.6% to 100%), so they would confidently report an effect that does not exist. Allowing \(\Gamma=1.5\) still leaves rejection rates near 60%. At the true \(\Gamma=2\) the rates fall to the nominal 5% (5.3% and 5.2% for the normal-approximation tests, within Monte Carlo error of 0.7%, and 3.2% for the exact, discrete sign test). Above the true bias they are conservative. The upper bound is attained here because the simulation is the worst case: \(U\) almost perfectly orders the responses within each pair. In less extreme settings the bound is conservative even at the true \(\Gamma\).
+
+The figure shows that the choice of test statistic matters even with no bias. All three tests have full power at \(\Gamma=1\), but the sign test loses it by \(\Gamma\approx2\), while the Wilcoxon and the Huber m-test keep half their power up to about \(\Gamma=2.4\) and \(2.6\). The vertical lines mark design sensitivities for \(N(0.5,1)\) pair differences: \(p/(1-p)\) with \(p=\Phi(0.5)\) for the sign test (2.24) and with \(p=P(D_i+D_j>0)=\Phi(0.5\sqrt2)\) for the Wilcoxon (3.17). As the number of pairs grows, power tends to 1 below these values and to 0 above them, so a larger study cannot overcome an insensitive statistic. The sign test discards the size of each difference. It therefore reports that a finding is sensitive to moderate bias even when a more efficient statistic shows it is robust.
+
+The sensitivity value of the single study, \(\Gamma=2.35\) for the Wilcoxon, can be restated with the amplification. Hidden bias of that size corresponds to an unobserved covariate that triples the odds of treatment and raises the odds of a higher response about ninefold, or one that multiplies the treatment odds by 5 and the response odds by about 4. This makes it easier to compare the sensitivity value with the strongest measured covariates.
+
+>> Practical guidance
+
+- Report the sensitivity value alongside the matched-sample estimate, together with the amplification \((\Lambda,\Delta)\) that makes \(\Gamma\) concrete.
+- Compare \(\Gamma\) with the effects of observed covariates on treatment: if no measured covariate has an odds ratio near \(\Gamma\), an unmeasured one of that size is less plausible.
+- Choose the test statistic before looking at the outcomes, preferring statistics with high design sensitivity (m-tests, or the Wilcoxon over the sign test). Do not search across statistics for the largest \(\Gamma\).
+- Use `rosenbaum_m_test` for matched sets with several controls or variable set sizes, and `rosenbaum_sign_test` for binary outcomes in pairs, using its discordant-pair counts.
+- A large sensitivity value does not show that there is no bias. It shows only how large the bias would have to be to change the conclusion.
+
+>> References
+
+- P. R. Rosenbaum (1987). Sensitivity analysis for certain permutation inferences in matched observational studies. *Biometrika* 74(1), 13-26. doi:10.1093/biomet/74.1.13
+- P. R. Rosenbaum (2002). *Observational Studies*, 2nd edition. Springer.
+- J. L. Gastwirth, A. M. Krieger and P. R. Rosenbaum (2000). Asymptotic separability in sensitivity analysis. *Journal of the Royal Statistical Society B* 62(3), 545-555. doi:10.1111/1467-9868.00249
+- P. R. Rosenbaum (2007). Sensitivity analysis for m-estimates, tests, and confidence intervals in matched observational studies. *Biometrics* 63(2), 456-464. doi:10.1111/j.1541-0420.2006.00717.x
+- P. R. Rosenbaum and J. H. Silber (2009). Amplification of sensitivity analysis in matched observational studies. *Journal of the American Statistical Association* 104(488), 1398-1405. doi:10.1198/jasa.2009.tm08470

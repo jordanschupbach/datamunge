@@ -1,0 +1,235 @@
+//? Title: Impute missing values by chained equations with predictive mean matching
+//? Exports: both
+//? Lang: en
+
+> Create several completed datasets whose differences reflect the uncertainty about the missing values
+
+Multiple imputation replaces each missing value with m plausible draws from its predictive distribution. Each completed dataset is analyzed as if it had no missing values, and the m results are combined by Rubin's rules. Multiple imputation by chained equations (MICE, or fully conditional specification) builds the joint predictive distribution from one regression per incomplete variable. It cycles through the variables, imputing each from the current values of all the others, in a Gibbs-like sampler. `mice_impute` follows R's `mice` package.
+- Each chain starts from random draws of the observed values.
+- In each iteration, the regression parameters are drawn from their posterior (\(\sigma^{*2}=\mathrm{RSS}/\chi^2\) and \(\beta^*=\hat\beta+\sigma^*Lz\)) so that the imputations reflect parameter uncertainty.
+- Predictive mean matching (PMM) compares \(x^\top\beta^*\) for each missing case with \(x^\top\hat\beta\) for the observed cases, and imputes the value of a random donor among the five closest. Imputations are therefore always observed values, which keeps skewness, bounds and discreteness.
+- The `norm` method draws from the normal regression model.
+
+The simulation uses n = 400 cases. A covariate \(x\sim N(0,1)\) is always observed. The outcome \(y=\exp(0.5+0.6x+0.5e)\) is right-skewed and positive, and 35% of its values are missing at random, more often for high \(x\). An auxiliary variable \(w=\log y+N(0,0.4^2)\), strongly related to the outcome, is 20% MCAR missing. The targets are the population mean of \(y\) and the tail probability \(P(y>4)\), computed from a population of one million. Five methods are compared over 300 samples:
+- complete-case analysis;
+- single imputation from the regression of \(y\) on \(x\), filling in fitted values and analyzing the data as complete;
+- MICE with the normal model;
+- MICE with PMM;
+- MICE with the normal model applied to \(\log y\), with the imputations transformed back.
+
+All three MICE methods use m = 10 imputations, 10 iterations, and Rubin's rules with Barnard–Rubin degrees of freedom.
+
+```{cpp, id=mice, file="figures/mice.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/multiple_imputation.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <limits>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+using dm::stats::ImputationMethod;
+
+struct Row { double x, y, w; };
+
+Row draw(dm::random::RandomGenerator& rng) {
+    const double x = rng.normal(), log_y = 0.5 + 0.6 * x + 0.5 * rng.normal();
+    return {x, std::exp(log_y), log_y + 0.4 * rng.normal()};
+}
+
+// Estimate and variance of a mean and of a proportion from one complete column.
+void summaries(const std::vector<double>& y, double out[4]) {
+    double s = 0, t = 0;
+    for (const double v : y) {
+        s += v;
+        t += v > 4;
+    }
+    const double n = double(y.size()), m = s / n, p = t / n;
+    double ss = 0;
+    for (const double v : y)
+        ss += (v - m) * (v - m);
+    out[0] = m;
+    out[1] = ss / (n - 1) / n;
+    out[2] = p;
+    out[3] = p * (1 - p) / n;
+}
+
+int main() {
+    dm::random::SplitMix64 rng(1999);
+    const double na = std::numeric_limits<double>::quiet_NaN();
+    double mu = 0, tail = 0;
+    for (int i = 0; i < 1000000; ++i) {
+        const double y = draw(rng).y;
+        mu += y / 1e6;
+        tail += (y > 4) / 1e6;
+    }
+    const char* names[5]{"Complete cases", "Single regression imputation", "MICE, normal model",
+                         "MICE, PMM", "MICE, normal model on log y"};
+    const int reps = 300;
+    const std::size_t n = 400;
+    double bias[5][2]{}, cover[5][2]{}, negative = 0, imputed = 0;
+    Matrix chains;
+    for (int r = 0; r < reps; ++r) {
+        Matrix d(n, 3);
+        for (std::size_t i = 0; i < n; ++i) {
+            const Row v = draw(rng);
+            d(i, 0) = v.x;
+            d(i, 1) = rng.uniform01() < 1 / (1 + std::exp(-(-0.8 + 1.2 * v.x))) ? na : v.y;
+            d(i, 2) = rng.uniform01() < 0.2 ? na : v.w;
+        }
+        double result[5][4];
+        // Complete cases.
+        std::vector<double> cc;
+        for (std::size_t i = 0; i < n; ++i)
+            if (!std::isnan(d(i, 1)))
+                cc.push_back(d(i, 1));
+        summaries(cc, result[0]);
+        // Single imputation: least-squares fit of y on x, fitted values for the missing.
+        double sx = 0, sy = 0, sxx = 0, sxy = 0, c = 0;
+        for (std::size_t i = 0; i < n; ++i)
+            if (!std::isnan(d(i, 1))) {
+                sx += d(i, 0);
+                sy += d(i, 1);
+                sxx += d(i, 0) * d(i, 0);
+                sxy += d(i, 0) * d(i, 1);
+                c += 1;
+            }
+        const double slope = (sxy - sx * sy / c) / (sxx - sx * sx / c);
+        const double icept = (sy - slope * sx) / c;
+        std::vector<double> single;
+        for (std::size_t i = 0; i < n; ++i)
+            single.push_back(std::isnan(d(i, 1)) ? icept + slope * d(i, 0) : d(i, 1));
+        summaries(single, result[1]);
+        // MICE: normal model, PMM, and normal model on log y (imputed on the log scale and
+        // transformed back), each pooled by Rubin's rules.
+        Matrix logged = d;
+        for (std::size_t i = 0; i < n; ++i)
+            logged(i, 1) = std::log(d(i, 1)); // NaN stays NaN
+        for (int k = 0; k < 3; ++k) {
+            const auto method = k == 1 ? ImputationMethod::pmm : ImputationMethod::norm;
+            auto imp = dm::stats::mice_impute(k == 2 ? logged : d, rng,
+                                              {.imputations = 10, .iterations = 10,
+                                               .methods = {method, method, method}});
+            if (k == 2)
+                for (auto& comp : imp.completed)
+                    for (std::size_t i = 0; i < n; ++i)
+                        comp(i, 1) = std::exp(comp(i, 1));
+            std::vector<std::vector<double>> est_mean, est_tail;
+            std::vector<Matrix> var_mean, var_tail;
+            for (const auto& comp : imp.completed) {
+                std::vector<double> y;
+                for (std::size_t i = 0; i < n; ++i) {
+                    y.push_back(comp(i, 1));
+                    if (k == 0 && std::isnan(d(i, 1))) {
+                        negative += comp(i, 1) < 0;
+                        imputed += 1;
+                    }
+                }
+                double s[4];
+                summaries(y, s);
+                est_mean.push_back({s[0]});
+                var_mean.push_back(Matrix(1, 1, s[1]));
+                est_tail.push_back({s[2]});
+                var_tail.push_back(Matrix(1, 1, s[3]));
+            }
+            const auto pm = dm::stats::pool_rubin(est_mean, var_mean, double(n - 1));
+            const auto pt = dm::stats::pool_rubin(est_tail, var_tail, double(n - 1));
+            const auto& a = pm.parameters[0];
+            const auto& b = pt.parameters[0];
+            result[2 + k][0] = a.estimate;
+            result[2 + k][1] = a.total;
+            result[2 + k][2] = b.estimate;
+            result[2 + k][3] = b.total;
+            cover[2 + k][0] += (a.lower <= mu && mu <= a.upper) / double(reps);
+            cover[2 + k][1] += (b.lower <= tail && tail <= b.upper) / double(reps);
+            if (r == 0 && k == 1)
+                chains = Matrix(10, 5);
+            if (r == 0 && k == 1)
+                for (std::size_t c2 = 0; c2 < 5; ++c2)
+                    for (std::size_t it = 0; it < 10; ++it)
+                        chains(it, c2) = imp.chain_means[c2](it, 1);
+        }
+        for (int m = 0; m < 5; ++m) {
+            bias[m][0] += (result[m][0] - mu) / reps;
+            bias[m][1] += (result[m][2] - tail) / reps;
+            if (m < 2) {
+                cover[m][0] += (std::abs(result[m][0] - mu) <= 1.96 * std::sqrt(result[m][1])) /
+                               double(reps);
+                cover[m][1] += (std::abs(result[m][2] - tail) <= 1.96 * std::sqrt(result[m][3])) /
+                               double(reps);
+            }
+        }
+    }
+    std::println("Population mean of y {:.3f}; P(y > 4) = {:.3f}.\n", mu, tail);
+    std::println("| Method | Bias mean | Coverage mean | Bias P(y>4) | Coverage P(y>4) |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (int m = 0; m < 5; ++m)
+        std::println("| {} | {:+.3f} | {:.3f} | {:+.4f} | {:.3f} |", names[m], bias[m][0],
+                     cover[m][0], bias[m][1], cover[m][1]);
+    std::println("\nNormal-model imputations of the positive outcome that were negative: {:.1f}%.",
+                 100 * negative / imputed);
+
+    auto plot = dm::graphics::RPlot::create();
+    const dm::graphics::RGBA colors[5]{{26, 90, 147}, {176, 72, 43}, {80, 150, 90}, {150, 100, 170},
+                                       {200, 150, 40}};
+    std::vector<double> iteration;
+    for (int it = 1; it <= 10; ++it)
+        iteration.push_back(it);
+    for (std::size_t c2 = 0; c2 < 5; ++c2) {
+        std::vector<double> means;
+        for (std::size_t it = 0; it < 10; ++it)
+            means.push_back(chains(it, c2));
+        plot.line(iteration, means, "Imputation " + std::to_string(c2 + 1), colors[c2], 1.5);
+    }
+    plot.title("Mean of imputed y by iteration (PMM)")
+        .x_label("Iteration")
+        .y_label("Mean of imputed values")
+        .size(640, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/mice.svg");
+}
+```
+// result_begin: markdown
+Population mean of y 2.239; P(y > 4) = 0.128.
+
+| Method | Bias mean | Coverage mean | Bias P(y>4) | Coverage P(y>4) |
+| --- | ---: | ---: | ---: | ---: |
+| Complete cases | -0.468 | 0.003 | -0.0587 | 0.087 |
+| Single regression imputation | -0.121 | 0.557 | -0.0499 | 0.180 |
+| MICE, normal model | -0.123 | 0.633 | -0.0141 | 0.767 |
+| MICE, PMM | -0.059 | 0.850 | -0.0021 | 0.940 |
+| MICE, normal model on log y | +0.010 | 0.960 | +0.0013 | 0.977 |
+
+Normal-model imputations of the positive outcome that were negative: 3.1%.
+\image(figures/mice.svg)
+// result_end
+
+Complete-case analysis fails badly. The missing outcomes belong mostly to cases with high \(x\), and therefore high \(y\), so the mean is biased by −0.47 and the intervals almost never cover. Single regression imputation recovers most of the bias in the mean, but it fills in values on the regression line. That removes their variability, so it misses the tail (the \(P(y>4)\) bias barely improves), and treating the fills as data gives intervals that cover only 56% and 18% of the time.
+
+Multiple imputation adds the missing variability back and accounts for it through the between-imputation variance. How well it works depends on the imputation model.
+- The normal model imputes on the wrong scale. It imputes symmetric noise around a linear fit to a skewed, curved relation, which underestimates the mean and produces impossible negative values (3.1% of imputations).
+- PMM is more robust. Imputing observed values keeps the skewness and positivity, and it reproduces the tail almost exactly (coverage 94%). Its mean is still biased by −0.06, however, because the largest outcomes belong to high-\(x\) cases, which are mostly missing. Their few observed neighbors make a thin donor pool at the top of the range, so imputations are drawn from slightly lower values. A unit test shows the same effect in a bivariate normal setting.
+- The normal model on \(\log y\) is correct here, because \(x\), \(\log y\) and \(w\) are jointly normal. It is unbiased for both targets, and its coverage is slightly conservative (96–98%), which is typical of Rubin's rules with a congenial model.
+
+The figure shows the standard convergence check: the mean of the imputed values in five chains over ten iterations. The chains mix within two or three iterations and then fluctuate around a common level with no trend, so ten iterations are ample for this structure. Chains that trend or separate indicate feedback between poorly specified models and need more iterations or simpler models.
+
+The pooling step matches `mice::pool` exactly, as do the D1 multiparameter tests of `mice::D1` and `mitml`. Imputations cannot match R draw for draw because the random-number generators differ. Instead, unit tests check that observed values are kept, that PMM imputes only observed values, that runs with the same seed are reproducible, and that the pooled estimates are unbiased under MAR.
+
+>> Practical guidance
+
+- Include in each imputation model every variable of the analysis model (including the outcome), plus auxiliary variables that predict missingness or the incomplete variables.
+- Use PMM as a robust default for skewed, bounded or discrete variables. Check for bias when missingness concentrates in a region with few donors.
+- When a transformation makes the relations linear and the residuals normal, imputing on that scale and transforming back is more efficient and less biased than any model on the raw scale.
+- Use at least m = 10-20 imputations when the fraction of missing information is substantial (see `fmi` from `pool_rubin`). More imputations stabilize the p-values and degrees of freedom.
+- Plot `chain_means` to check convergence, and compare the distributions of observed and imputed values.
+
+>> References
+
+- S. van Buuren and K. Groothuis-Oudshoorn (2011). mice: Multivariate imputation by chained equations in R. *Journal of Statistical Software* 45(3), 1-67. doi:10.18637/jss.v045.i03
+- S. van Buuren (2018). *Flexible Imputation of Missing Data*, 2nd ed. CRC Press.
+- R. J. A. Little (1988). Missing-data adjustments in large surveys. *Journal of Business and Economic Statistics* 6(3), 287-296. doi:10.1080/07350015.1988.10509663
+- D. B. Rubin (1987). *Multiple Imputation for Nonresponse in Surveys*. Wiley.

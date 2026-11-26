@@ -1,0 +1,155 @@
+//? Title: Global Moran I and Geary C
+//? Exports: both
+//? Lang: en
+
+> Test whether nearby locations have similar values, using a spatial weights matrix to define "nearby", and compare normal-approximation and permutation calibration of Moran's I and Geary's C
+
+Spatial autocorrelation tests ask whether a variable is more alike (or less alike) at neighbouring locations than random placement would make it. A weights matrix \(W\) defines the neighbours, for example the \(k\) nearest points or all points within a distance band, and is often row-standardised so that each location's neighbours share a total weight of one. Two classical statistics summarise the association:
+
+\[
+I=\frac{n}{S_0}\frac{\sum_{ij}w_{ij}z_iz_j}{\sum_iz_i^2},\qquad
+C=\frac{(n-1)\sum_{ij}w_{ij}(x_i-x_j)^2}{2S_0\sum_iz_i^2},
+\]
+
+with \(z=x-\bar x\) and \(S_0=\sum w_{ij}\). Moran's \(I\) is a cross-product, like a correlation, with expectation \(-1/(n-1)\) under no autocorrelation. Geary's \(C\) is based on squared differences: its expectation is 1, and values below 1 indicate positive autocorrelation. Each test needs a reference distribution. The normality assumption treats the values as independent normal. The randomisation assumption treats the observed values as fixed and permutes them over the locations, which brings the sample kurtosis into the variance. The permutation test approximates that randomisation distribution by Monte Carlo instead of a normal approximation.
+
+`morans_i` and `gearys_c` provide all three calibrations and the three alternatives. `knn_weights`, `distance_band_weights` and `row_standardize` build the weights. The tests reproduce `spdep` (`moran.test`, `geary.test`, `knearneigh`, `dnearneigh`) to \(10^{-12}\) for every variance assumption and alternative, and check that the permutation mean and SD agree with the analytic randomisation moments.
+
+The first experiment checks the size of each calibration. It uses 50 uniform random points, 5-nearest-neighbour row-standardised weights, values with no spatial structure that are either normal or strongly skewed (log-normal with \(\sigma=1.5\)), 2000 replications, and 199 permutations each. The second experiment measures power. The values come from a Gaussian random field with exponential covariance \(e^{-d/\rho}\), and the figure shows rejection rates of the randomisation tests as the range \(\rho\) grows.
+
+```{cpp, id=moran, file="figures/global_autocorrelation.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/spatial_autocorrelation.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+using dm::stats::SpatialAutocorrelationOptions;
+
+Matrix random_points(dm::random::SplitMix64& rng, std::size_t n) {
+    Matrix xy(n, 2);
+    for (std::size_t i = 0; i < n; ++i)
+        xy(i, 0) = 10 * rng.uniform01(), xy(i, 1) = 10 * rng.uniform01();
+    return xy;
+}
+
+// Gaussian random field with covariance exp(-d / range) (white noise when range = 0).
+std::vector<double> field(dm::random::SplitMix64& rng, const Matrix& xy, double range) {
+    const std::size_t n = xy.rows();
+    std::vector<double> l(n * n, 0.0), z(n), out(n, 0.0);
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t j = 0; j <= i; ++j) {
+            const double d = std::hypot(xy(i, 0) - xy(j, 0), xy(i, 1) - xy(j, 1));
+            double s = i == j ? 1.0 : (range > 0 ? std::exp(-d / range) : 0.0);
+            for (std::size_t k = 0; k < j; ++k)
+                s -= l[i * n + k] * l[j * n + k];
+            l[i * n + j] = i == j ? std::sqrt(s) : s / l[j * n + j];
+        }
+    for (double& v : z)
+        v = rng.normal();
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t k = 0; k <= i; ++k)
+            out[i] += l[i * n + k] * z[k];
+    return out;
+}
+
+int main() {
+    dm::random::SplitMix64 rng(2024);
+    const std::size_t n = 50;
+    const int reps = 2000;
+    std::println("Size at the 5% level (one-sided, positive autocorrelation), "
+                 "no spatial structure:\n");
+    std::println("| Statistic and data | Normality | Randomisation | Permutation (199) |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (const bool geary : {false, true})
+        for (const bool skewed : {false, true}) {
+            double rej[3]{};
+            for (int r = 0; r < reps; ++r) {
+                const Matrix xy = random_points(rng, n);
+                const auto w = dm::stats::row_standardize(dm::stats::knn_weights(xy, 5));
+                std::vector<double> x(n);
+                for (double& v : x)
+                    v = skewed ? std::exp(1.5 * rng.normal()) : rng.normal();
+                const auto test = [&](const SpatialAutocorrelationOptions& o) {
+                    return geary ? dm::stats::gearys_c(x, w, o)
+                                 : dm::stats::morans_i(x, w, o);
+                };
+                const auto perm = test({.permutations = 199, .seed = rng.next_u64()});
+                rej[0] += test({.randomisation = false}).p_value < 0.05;
+                rej[1] += perm.p_value < 0.05;
+                rej[2] += perm.permutation_p_value <= 0.05;
+            }
+            std::println("| {}, {} values | {:.3f} | {:.3f} | {:.3f} |",
+                         geary ? "Geary C" : "Moran I", skewed ? "log-normal" : "normal",
+                         rej[0] / reps, rej[1] / reps, rej[2] / reps);
+        }
+
+    // Power against a Gaussian random field with exponential covariance.
+    const std::vector<double> ranges{0.0, 0.1, 0.25, 0.5, 0.75, 1.0, 1.5};
+    std::vector<double> power_moran, power_geary;
+    for (const double range : ranges) {
+        double pm = 0, pg = 0;
+        for (int r = 0; r < 500; ++r) {
+            const Matrix xy = random_points(rng, n);
+            const auto w = dm::stats::row_standardize(dm::stats::knn_weights(xy, 5));
+            const auto x = field(rng, xy, range);
+            pm += (dm::stats::morans_i(x, w).p_value < 0.05) / 500.0;
+            pg += (dm::stats::gearys_c(x, w).p_value < 0.05) / 500.0;
+        }
+        power_moran.push_back(pm);
+        power_geary.push_back(pg);
+    }
+    std::println("\nPower at range 0.5: Moran {:.3f}, Geary {:.3f}.", power_moran[3],
+                 power_geary[3]);
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(ranges, power_moran, "Moran I", {26, 90, 147}, 2)
+        .points(ranges, power_moran, "", {26, 90, 147}, 5)
+        .line(ranges, power_geary, "Geary C", {176, 72, 43}, 2)
+        .points(ranges, power_geary, "", {176, 72, 43}, 5)
+        .abline_h(0.05, {150, 150, 150}, 1)
+        .y_limits(0, 1.25)
+        .title("Power of global autocorrelation tests")
+        .x_label("Range of the exponential covariance (50 points in 10 x 10, 5-NN weights)")
+        .y_label("Rejection rate at 5%")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/global_autocorrelation.svg");
+}
+```
+// result_begin: markdown
+Size at the 5% level (one-sided, positive autocorrelation), no spatial structure:
+
+| Statistic and data | Normality | Randomisation | Permutation (199) |
+| --- | ---: | ---: | ---: |
+| Moran I, normal values | 0.065 | 0.066 | 0.056 |
+| Moran I, log-normal values | 0.034 | 0.058 | 0.039 |
+| Geary C, normal values | 0.057 | 0.057 | 0.051 |
+| Geary C, log-normal values | 0.139 | 0.049 | 0.046 |
+
+Power at range 0.5: Moran 0.364, Geary 0.320.
+\image(figures/global_autocorrelation.svg)
+// result_end
+
+With normal values, every calibration holds its level to within Monte Carlo error. The normal approximations run slightly high, at 6.5% for Moran, because the null distribution of \(I\) is skewed in samples this small, and the permutation test is closest to 5%. Skewed values separate the calibrations. Under the normality assumption, Moran's test becomes conservative (3.4%), and Geary's becomes badly anticonservative (13.9%). Geary's statistic squares differences, so a few extreme values dominate its variance, and the normality formula ignores this. The randomisation variance corrects for it through the sample kurtosis and restores the level, and the permutation test needs no approximation at all. The default of `randomisation = true` follows from this, and permutations are the safest choice when the data are heavy-tailed or the sample is small.
+
+The power curves start at the nominal level for white noise and rise as the correlation range grows relative to the spacing of the points. The mean nearest-neighbour distance here is about 0.7. Moran's \(I\) is slightly more powerful than Geary's \(C\) at every range, as expected for a Gaussian field. \(I\) responds to similarity in the deviations from the global mean, which a smooth field produces, while \(C\) responds to local differences and is relatively more sensitive to local, short-range structure. Both tests measure global association only. A significant \(I\) does not show where the clustering is, and a pattern with clusters of opposite sign can cancel. The local statistics in the next report address this.
+
+>> Practical guidance
+
+- Choose the weights for substantive reasons (contiguity, a distance band matching the scale of interaction, k nearest neighbours for irregular densities) before looking at the result, and report them. The test answers "autocorrelated at this scale".
+- Row-standardise unless the number of neighbours itself matters. With binary weights, locations with many neighbours dominate the statistic.
+- Use the randomisation variance or a permutation test, especially for skewed data or Geary's \(C\). Report the permutation p-value with the (1 + count) / (1 + permutations) convention.
+- For regression residuals, use tests designed for residuals (such as `spdep::lm.morantest`). Permuting residuals ignores the fact that they are correlated through the fitted model.
+- Islands (locations with no neighbours) contribute nothing. Check for them, or widen the band, before testing.
+
+>> References
+
+- P. A. P. Moran (1950). Notes on continuous stochastic phenomena. *Biometrika* 37(1/2), 17-23. doi:10.2307/2332142
+- R. C. Geary (1954). The contiguity ratio and statistical mapping. *The Incorporated Statistician* 5(3), 115-146. doi:10.2307/2986645
+- A. D. Cliff and J. K. Ord (1981). *Spatial Processes: Models and Applications*. Pion.
+- R. S. Bivand and D. W. S. Wong (2018). Comparing implementations of global and local indicators of spatial association. *TEST* 27(3), 716-748. doi:10.1007/s11749-018-0599-x

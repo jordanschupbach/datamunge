@@ -1,0 +1,169 @@
+//? Title: Egger regression
+//? Exports: both
+//? Lang: en
+
+> Test for small-study effects by regressing effect sizes on their precision, choose a predictor that does not manufacture asymmetry, and see how much the limit estimate corrects a meta-analysis distorted by selective publication
+
+When small studies are published mainly if they are significant, a funnel plot of effect against standard error becomes asymmetric: imprecise studies show larger effects than precise ones. Egger's test regresses the effects on their standard errors, \(y_i=\beta_0+\beta_1\sqrt{v_i}\), weighting by \(1/v_i\) with a multiplicative dispersion. It then tests \(\beta_1=0\), which is the same as testing the intercept in Egger's original regression of \(y_i/\sqrt{v_i}\) on \(1/\sqrt{v_i}\). The intercept \(\beta_0\) is the "limit estimate", the effect predicted for an infinitely precise study. It is the PET estimator, and with \(v_i\) as the predictor it is PEESE.
+
+Two choices change the test:
+
+- **Predictor.** For log odds ratios the standard error depends on the effect itself: strong effects come with smaller cell counts and larger standard errors. Egger's predictor is therefore correlated with the effect even without any bias. Peters et al. (2006) use \(1/n\) instead, and \(1/\sqrt n\) is a middle ground.
+- **Model.** The weighted regression (`metafor::regtest(model = "lm")`) absorbs heterogeneity multiplicatively. A random-effects meta-regression adds \(\tau^2\).
+
+`egger_test` offers the standard error, variance, \(n\), \(1/n\) and \(1/\sqrt n\) as predictors; the weighted regression (inverse-variance or equal weights) or the random-effects model (any \(\tau^2\) estimator, Wald or Hartung–Knapp); and the limit estimate with its interval. The tests reproduce `metafor::regtest` for all five predictors, both models (including Hartung–Knapp), and an unweighted `lm`.
+
+The simulation generates 20 two-arm trials with binary outcomes. Each trial has 20–300 participants per arm, a control risk of 0.3, and log odds ratios \(\theta_i\sim N(\mu,0.05)\). Three scenarios are compared, with 2000 meta-analyses each:
+
+- no bias and \(\mu=0\);
+- no bias with a strong effect, \(\mu=\log0.3\);
+- selective publication with \(\mu=\log0.8\). A trial whose one-sided p-value for benefit exceeds 0.05 is published with probability 0.2, and trials are drawn until 20 are published.
+
+The table reports rejection rates of the conventional 10% asymmetry tests, and the mean random-effects (REML) and PET limit estimates.
+
+```{cpp, id=egger, file="figures/egger_regression.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/meta_analysis.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::SmallStudyModel;
+using dm::stats::SmallStudyPredictor;
+
+struct Trials {
+    std::vector<double> y, v, n;
+};
+
+// Binomial draw by inversion (small n, fine for a simulation).
+double binomial(dm::random::SplitMix64& rng, int n, double p) {
+    int s = 0;
+    for (int i = 0; i < n; ++i)
+        s += rng.uniform01() < p;
+    return s;
+}
+
+Trials simulate(dm::random::SplitMix64& rng, double mu, bool selective) {
+    Trials t;
+    const double tau2 = 0.05, p0 = 0.3;
+    while (t.y.size() < 20) {
+        const int m = 20 + static_cast<int>(281 * rng.uniform01());
+        const double theta = mu + std::sqrt(tau2) * rng.normal();
+        const double odds1 = p0 / (1 - p0) * std::exp(theta), p1 = odds1 / (1 + odds1);
+        double a = binomial(rng, m, p1), c = binomial(rng, m, p0);
+        double b = m - a, d = m - c;
+        if (a == 0 || b == 0 || c == 0 || d == 0)
+            a += 0.5, b += 0.5, c += 0.5, d += 0.5;
+        const double y = std::log(a * d / (b * c)), v = 1 / a + 1 / b + 1 / c + 1 / d;
+        // One-sided p-value for benefit (log OR < 0).
+        const double p = dm::random::normal_cdf(y / std::sqrt(v));
+        if (selective && p > 0.05 && rng.uniform01() > 0.2)
+            continue;
+        t.y.push_back(y), t.v.push_back(v), t.n.push_back(2.0 * m);
+    }
+    return t;
+}
+
+int main() {
+    dm::random::SplitMix64 rng(21);
+    std::println("| Scenario | true mu | Egger (WLS) rejects | Egger (random effects) | "
+                 "Peters (1/n) | Mean RE estimate | Mean PET limit estimate |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: | ---: |");
+    struct Scenario {
+        const char* name;
+        double mu;
+        bool selective;
+    };
+    const Scenario scenarios[3]{
+        {"No bias, no effect", 0.0, false},
+        {"No bias, strong effect (OR 0.3)", std::log(0.3), false},
+        {"Selective publication (OR 0.8)", std::log(0.8), true}};
+    for (const Scenario s : scenarios) {
+        double eg = 0, egr = 0, pe = 0, re = 0, pet = 0;
+        const int reps = 2000;
+        for (int r = 0; r < reps; ++r) {
+            const auto t = simulate(rng, s.mu, s.selective);
+            eg += dm::stats::egger_test(t.y, t.v).p_value <= 0.10;
+            const auto egger_re = dm::stats::egger_test(
+                t.y, t.v, {.model = SmallStudyModel::random_effects});
+            egr += egger_re.p_value <= 0.10;
+            const auto peters = dm::stats::egger_test(
+                t.y, t.v,
+                {.predictor = SmallStudyPredictor::inverse_sample_size,
+                 .sample_sizes = t.n});
+            pe += peters.p_value <= 0.10;
+            re += dm::stats::random_effects_meta(t.y, t.v).estimate / reps;
+            pet += dm::stats::egger_test(t.y, t.v).limit_estimate / reps;
+        }
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", s.name,
+                     s.mu, eg / reps, egr / reps, pe / reps, re, pet);
+    }
+
+    // Funnel plot of one selectively published meta-analysis with Egger's line.
+    dm::random::SplitMix64 one(5);
+    const auto t = simulate(one, std::log(0.8), true);
+    const auto e = dm::stats::egger_test(t.y, t.v);
+    const auto m = dm::stats::random_effects_meta(t.y, t.v);
+    std::vector<double> se(t.v.size()), neg;
+    for (std::size_t i = 0; i < se.size(); ++i)
+        se[i] = std::sqrt(t.v[i]), neg.push_back(-se[i]);
+    const double smax = *std::ranges::max_element(se) * 1.1;
+    auto plot = dm::graphics::RPlot::create();
+    plot.line({m.estimate - 1.96 * smax, m.estimate, m.estimate + 1.96 * smax},
+              {-smax, 0, -smax}, "Pseudo 95% region around the RE estimate",
+              {160, 160, 160}, 1)
+        .points(t.y, neg, "Published trials", {60, 60, 60}, 6)
+        .line({e.limit_estimate, e.limit_estimate + e.slope * smax}, {0, -smax},
+              "Egger regression line", {176, 72, 43}, 2)
+        .abline_v(std::log(0.8), {26, 90, 147})
+        .abline_v(0.0, {200, 200, 200})
+        .y_ticks({0, -0.2, -0.4, -0.6, -0.8}, {"0", "0.2", "0.4", "0.6", "0.8"})
+        .title("Funnel plot, selective publication (true OR 0.8)")
+        .x_label("Log odds ratio")
+        .y_label("Standard error")
+        .size(640, 430);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/egger_regression.svg");
+    std::println("\nFigure: Egger p = {:.3f}, RE estimate {:.3f}, PET limit estimate "
+                 "{:.3f} [{:.3f}, {:.3f}], true log OR {:.3f}.", e.p_value, m.estimate,
+                 e.limit_estimate, e.limit_lower, e.limit_upper, std::log(0.8));
+}
+```
+// result_begin: markdown
+| Scenario | true mu | Egger (WLS) rejects | Egger (random effects) | Peters (1/n) | Mean RE estimate | Mean PET limit estimate |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| No bias, no effect | 0.000 | 0.090 | 0.126 | 0.060 | 0.005 | 0.080 |
+| No bias, strong effect (OR 0.3) | -1.204 | 0.268 | 0.287 | 0.066 | -1.187 | -0.891 |
+| Selective publication (OR 0.8) | -0.223 | 0.209 | 0.259 | 0.102 | -0.426 | -0.194 |
+
+Figure: Egger p = 0.048, RE estimate -0.361, PET limit estimate 0.060 [-0.368, 0.489], true log OR -0.223.
+\image(figures/egger_regression.svg)
+// result_end
+
+Three findings stand out:
+
+1. **Egger's test with log odds ratios rejects too often without any bias.** With no effect it rejects 9% of the time at the 10% level (13% with the random-effects model). With a strong true effect (OR 0.3) and no selection it rejects 27–29% of the time. The artifact is mechanical. A trial whose observed log OR is more extreme has fewer events in one arm, hence a larger standard error, so effect and standard error are correlated by construction. Peters' predictor \(1/n\) does not depend on the observed effect, and it holds its size (6–7%) in both scenarios.
+2. **Power is low.** Under selective publication that shifts the random-effects estimate from the true log OR of \(-0.22\) to \(-0.43\), nearly doubling the apparent effect, Egger's test detects asymmetry in only 21–26% of meta-analyses of 20 trials, and Peters' test in 10%. A non-significant asymmetry test is weak evidence of no bias.
+3. **The limit estimate corrects on average but costs precision.** PET averages \(-0.19\) under selection, close to the true \(-0.22\). Without bias it overcorrects strong effects (\(-0.89\) for a true \(-1.20\)), for the same reason that Egger's test is anti-conservative. In the funnel plot, PET extrapolates the Egger line to SE = 0 at 0.06, with an interval from \(-0.37\) to \(0.49\), much wider than the random-effects interval.
+
+>> Practical guidance
+
+- Test for small-study effects only with about 10 or more studies, and read the result as a sensitivity check, not a verdict. Asymmetry can come from heterogeneity correlated with study size (sicker populations in small trials, different doses) as well as from bias.
+- For odds ratios, and for other effects whose variance depends on the effect (risk differences, raw proportions), use the inverse sample size (Peters) or the arcsine-based predictors. Use Egger's standard-error predictor for continuous outcomes and log risk ratios with moderate effects.
+- Use the weighted regression (classical Egger) unless there is a specific reason for the random-effects version. The latter was the more liberal of the two here.
+- Report the limit estimate (PET, or PEESE when PET is significant) next to the random-effects estimate as a bias-adjusted sensitivity analysis. Do not replace the main estimate with it: its interval is wide, and it overcorrects real effects in odds-ratio meta-analyses.
+
+>> References
+
+- M. Egger, G. Davey Smith, M. Schneider and C. Minder (1997). Bias in meta-analysis detected by a simple, graphical test. *BMJ* 315(7109), 629-634. doi:10.1136/bmj.315.7109.629
+- J. L. Peters, A. J. Sutton, D. R. Jones, K. R. Abrams and L. Rushton (2006). Comparison of two methods to detect publication bias in meta-analysis. *JAMA* 295(6), 676-680. doi:10.1001/jama.295.6.676
+- J. A. C. Sterne, A. J. Sutton, J. P. A. Ioannidis, et al. (2011). Recommendations for examining and interpreting funnel plot asymmetry in meta-analyses of randomised controlled trials. *BMJ* 343, d4002. doi:10.1136/bmj.d4002
+- T. D. Stanley and H. Doucouliagos (2014). Meta-regression approximations to reduce publication selection bias. *Research Synthesis Methods* 5(1), 60-78. doi:10.1002/jrsm.1095
+- W. Viechtbauer (2010). Conducting meta-analyses in R with the metafor package. *Journal of Statistical Software* 36(3), 1-48. doi:10.18637/jss.v036.i03

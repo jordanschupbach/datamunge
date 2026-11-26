@@ -1,0 +1,264 @@
+//? Title: Permutational MANOVA and dispersion tests
+//? Exports: both
+//? Lang: en
+
+> Partition variation in a distance matrix among model terms with permutation tests, and test separately whether groups differ in spread, because PERMANOVA alone cannot tell location from dispersion
+
+Community composition, gene expression profiles and other high-dimensional responses are often summarized by a matrix of dissimilarities chosen to suit the data, such as Bray–Curtis for abundances. **PERMANOVA** (Anderson 2001; McArdle and Anderson 2001) extends ANOVA to any such matrix. Gower's centered matrix \(G=-\tfrac12 J D^{(2)} J\) plays the role of the cross-product matrix, and the sum of squares of a model term is the trace of \(G\) projected onto that term's centered design columns. The pseudo-F statistic,
+
+\[F_k=\frac{SS_k/df_k}{SS_{\text{res}}/(n-r-1)},\]
+
+is referred to its permutation distribution, recomputed after permuting the observations, so no distributional assumption is needed. Like ANOVA, terms can be tested sequentially (type I) or marginally, each adjusted for all others.
+
+The null hypothesis of a PERMANOVA permutation test is exchangeability: the groups have the same distribution of points in the distance space. A significant result can therefore reflect different **locations** (centroids), different **dispersions** (spreads), or both. **PERMDISP** (Anderson 2006) separates them. It finds principal coordinates of the distances, including the imaginary axes of a non-Euclidean dissimilarity, computes each observation's distance to its group centroid or spatial median, and compares those distances with a one-way ANOVA whose residuals are permuted.
+
+`permanova` (with `factor_term`, `numeric_term` and `interaction_term`) and `dispersion_test` implement both, along with `bray_curtis_distances`. Permutations are free, restricted within strata, or supplied explicitly. The tests replay vegan's own permutation matrix and reproduce `adonis2` for the overall, sequential and marginal tables (sums of squares, R², pseudo-F and permutation p-values exactly), and `betadisper`/`permutest` for centroids, PCoA eigenvalues (including negative ones), bias adjustment and p-values. Spatial medians are computed exactly by Weiszfeld's algorithm; vegan's `optim` call agrees with them to about 1e-3.
+
+The example analyses the Dutch dune meadow vegetation (Jongman, ter Braak and van Tongeren 1987): 30 species in 20 sites under four management regimes. The simulation shows how unequal dispersions and unbalanced group sizes affect PERMANOVA's error rate, and how PERMDISP diagnoses the problem.
+
+```{cpp, id=permanova, file="figures/permanova.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/permanova.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <fstream>
+#include <print>
+#include <sstream>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+using dm::stats::PermanovaBy;
+
+void print_table(const std::string& title, const dm::stats::Permanova& p) {
+    std::println("{}\n", title);
+    std::println("| Term | Df | Sum of squares | R² | Pseudo-F | p |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (const auto& r : p.rows) {
+        if (std::isnan(r.f))
+            std::println("| {} | {} | {:.4f} | {:.3f} | | |", r.term, r.df,
+                         r.sum_of_squares, r.r_squared);
+        else
+            std::println("| {} | {} | {:.4f} | {:.3f} | {:.3f} | {:.4f} |", r.term, r.df,
+                         r.sum_of_squares, r.r_squared, r.f, r.p_value);
+    }
+    std::println("");
+}
+
+Matrix euclidean(const Matrix& x) {
+    Matrix d(x.rows(), x.rows(), 0.0);
+    for (std::size_t i = 0; i < x.rows(); ++i)
+        for (std::size_t j = i + 1; j < x.rows(); ++j) {
+            double s = 0;
+            for (std::size_t k = 0; k < x.cols(); ++k) s += std::pow(x(i, k) - x(j, k), 2);
+            d(i, j) = d(j, i) = std::sqrt(s);
+        }
+    return d;
+}
+
+int main() {
+    std::ifstream in("data/dune.txt");
+    std::vector<std::string> management, use;
+    std::vector<double> a1, moisture;
+    std::vector<std::vector<double>> cover;
+    for (std::string line; std::getline(in, line);) {
+        if (line.empty() || line[0] == '#') continue;
+        std::istringstream s(line);
+        std::string m, u;
+        double a, mo;
+        s >> m >> a >> u >> mo;
+        management.push_back(m), a1.push_back(a), use.push_back(u), moisture.push_back(mo);
+        cover.emplace_back();
+        for (double v; s >> v;) cover.back().push_back(v);
+    }
+    const std::size_t n = cover.size(), species = cover.front().size();
+    Matrix abundance(n, species, 0.0);
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t k = 0; k < species; ++k) abundance(i, k) = cover[i][k];
+    const auto d = dm::stats::bray_curtis_distances(abundance);
+
+    const auto m = dm::stats::factor_term("Management", management);
+    const auto a = dm::stats::numeric_term("A1", a1);
+    const auto mxa = dm::stats::interaction_term("Management:A1", m, a);
+    const auto u = dm::stats::factor_term("Use", use);
+    const dm::stats::PermanovaOptions opt{.permutations = 9999, .seed = 7};
+    auto by_terms = opt, by_margin = opt;
+    by_margin.by = PermanovaBy::margin;
+    print_table("Sequential terms, Management first:",
+                dm::stats::permanova(d, {m, a, mxa}, by_terms));
+    print_table("Sequential terms, A1 first:", dm::stats::permanova(d, {a, m}, by_terms));
+    print_table("Marginal terms:", dm::stats::permanova(d, {m, a, u}, by_margin));
+
+    std::println("| Center | BF | HF | NM | SF | F | Permutation p |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const auto center : {dm::stats::DispersionCenter::median,
+                              dm::stats::DispersionCenter::centroid}) {
+        const auto disp = dm::stats::dispersion_test(
+            d, management, {.center = center, .permutations = 9999, .seed = 7});
+        const auto& g = disp.group_mean_distances;
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.4f} |",
+                     center == dm::stats::DispersionCenter::median ? "Spatial median"
+                                                                   : "Centroid",
+                     g[0], g[1], g[2], g[3], disp.f, disp.permutation_p_value);
+    }
+    const auto ord = dm::stats::dispersion_test(d, management, {.permutations = 0});
+    double positive = 0, negative = 0;
+    for (const double e : ord.eigenvalues) (e > 0 ? positive : negative) += e;
+    std::println("\nPCoA of Bray–Curtis: {} axes, {} negative; negative eigenvalues sum to "
+                 "{:.3f} ({:.1f}% of the positive sum); axes 1–2 hold {:.1f}%.\n",
+                 ord.eigenvalues.size(),
+                 std::ranges::count_if(ord.eigenvalues, [](double e) { return e < 0; }),
+                 negative, -100 * negative / positive,
+                 100 * (ord.eigenvalues[0] + ord.eigenvalues[1]) / positive);
+
+    // Simulation: Euclidean distances among 10-dimensional normal vectors, two groups.
+    struct Scenario {
+        std::string name;
+        std::size_t n1, n2;
+        double sd1, sd2, shift;
+    };
+    const std::vector<Scenario> scenarios{
+        {"Same distribution, 15 + 15", 15, 15, 1, 1, 0},
+        {"Dispersion 1 vs 2, 15 + 15", 15, 15, 1, 2, 0},
+        {"Dispersion 2 vs 1, small group (10 + 40) more dispersed", 10, 40, 2, 1, 0},
+        {"Dispersion 1 vs 2, large group (10 + 40) more dispersed", 10, 40, 1, 2, 0},
+        {"Same distribution, 10 + 40", 10, 40, 1, 1, 0},
+        {"Location shift 0.6, equal dispersion, 15 + 15", 15, 15, 1, 1, 0.6}};
+    dm::random::SplitMix64 rng(61);
+    const auto normal = [&] {
+        return dm::random::normal_quantile(rng.uniform01() * 0.999999 + 5e-7);
+    };
+    std::println("| Scenario | PERMANOVA rejects | PERMDISP rejects | "
+                 "PERMDISP, bias-adjusted, rejects |");
+    std::println("| --- | ---: | ---: | ---: |");
+    const int reps = 400;
+    for (const auto& sc : scenarios) {
+        double perm_rej = 0, disp_rej = 0, adj_rej = 0;
+        for (int r = 0; r < reps; ++r) {
+            const std::size_t total = sc.n1 + sc.n2;
+            Matrix x(total, 10, 0.0);
+            std::vector<std::string> g(total);
+            for (std::size_t i = 0; i < total; ++i) {
+                const bool first = i < sc.n1;
+                g[i] = first ? "a" : "b";
+                for (std::size_t k = 0; k < 10; ++k)
+                    x(i, k) = (first ? sc.sd1 : sc.sd2) * normal() + (first ? 0 : sc.shift);
+            }
+            const auto dist = euclidean(x);
+            const auto seed = static_cast<std::uint64_t>(r + 1);
+            const auto pm = dm::stats::permanova(dist, {dm::stats::factor_term("g", g)},
+                                                 {.permutations = 199, .seed = seed});
+            const auto pd = dm::stats::dispersion_test(dist, g,
+                                                       {.permutations = 199, .seed = seed});
+            const auto pa = dm::stats::dispersion_test(
+                dist, g, {.bias_adjust = true, .permutations = 199, .seed = seed});
+            perm_rej += pm.rows[0].p_value <= 0.05;
+            disp_rej += pd.permutation_p_value <= 0.05;
+            adj_rej += pa.permutation_p_value <= 0.05;
+        }
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} |", sc.name, perm_rej / reps,
+                     disp_rej / reps, adj_rej / reps);
+    }
+
+    // Figure: first two principal coordinates by management, joined to 2-D centroids.
+    const char* levels[]{"BF", "HF", "NM", "SF"};
+    const dm::graphics::RGBA colors[]{
+        {196, 154, 60}, {26, 90, 147}, {46, 139, 87}, {178, 74, 38}};
+    auto fig = dm::graphics::RPlot::create();
+    for (int l = 0; l < 4; ++l) {
+        std::vector<double> px, py;
+        for (std::size_t i = 0; i < n; ++i)
+            if (management[i] == levels[l])
+                px.push_back(ord.coordinates(i, 0)), py.push_back(ord.coordinates(i, 1));
+        double cx = 0, cy = 0;
+        for (std::size_t k = 0; k < px.size(); ++k)
+            cx += px[k] / px.size(), cy += py[k] / py.size();
+        for (std::size_t k = 0; k < px.size(); ++k)
+            fig.line({cx, px[k]}, {cy, py[k]}, "", colors[l], 1);
+        fig.points(px, py, levels[l], colors[l], 5);
+        fig.points({cx}, {cy}, "", colors[l], 9);
+    }
+    fig.x_limits(-0.6, 0.6)
+        .y_limits(-0.5, 0.7)
+        .title("Dune meadows: principal coordinates of Bray–Curtis")
+        .x_label("PCoA 1")
+        .y_label("PCoA 2")
+        .size(640, 440);
+    std::filesystem::create_directories("build");
+    fig.save_svg("build/permanova.svg");
+}
+```
+// result_begin: markdown
+Sequential terms, Management first:
+
+| Term | Df | Sum of squares | R² | Pseudo-F | p |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Management | 3 | 1.4686 | 0.342 | 3.263 | 0.0006 |
+| A1 | 1 | 0.4409 | 0.103 | 2.939 | 0.0189 |
+| Management:A1 | 3 | 0.5892 | 0.137 | 1.309 | 0.2059 |
+| Residual | 12 | 1.8004 | 0.419 | | |
+| Total | 19 | 4.2990 | 1.000 | | |
+
+Sequential terms, A1 first:
+
+| Term | Df | Sum of squares | R² | Pseudo-F | p |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| A1 | 1 | 0.7230 | 0.168 | 4.538 | 0.0012 |
+| Management | 3 | 1.1865 | 0.276 | 2.483 | 0.0075 |
+| Residual | 15 | 2.3895 | 0.556 | | |
+| Total | 19 | 4.2990 | 1.000 | | |
+
+Marginal terms:
+
+| Term | Df | Sum of squares | R² | Pseudo-F | p |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Management | 3 | 0.8767 | 0.204 | 1.785 | 0.0581 |
+| A1 | 1 | 0.3265 | 0.076 | 1.994 | 0.0863 |
+| Use | 2 | 0.2613 | 0.061 | 0.798 | 0.6354 |
+| Residual | 13 | 2.1282 | 0.495 | | |
+| Total | 19 | 4.2990 | 1.000 | | |
+
+| Center | BF | HF | NM | SF | F | Permutation p |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Spatial median | 0.220 | 0.279 | 0.451 | 0.364 | 1.951 | 0.1647 |
+| Centroid | 0.239 | 0.289 | 0.456 | 0.370 | 3.869 | 0.0291 |
+
+PCoA of Bray–Curtis: 19 axes, 5 negative; negative eigenvalues sum to -0.295 (6.4% of the positive sum); axes 1–2 hold 59.6%.
+
+| Scenario | PERMANOVA rejects | PERMDISP rejects | PERMDISP, bias-adjusted, rejects |
+| --- | ---: | ---: | ---: |
+| Same distribution, 15 + 15 | 0.050 | 0.045 | 0.045 |
+| Dispersion 1 vs 2, 15 + 15 | 0.048 | 1.000 | 1.000 |
+| Dispersion 2 vs 1, small group (10 + 40) more dispersed | 0.613 | 1.000 | 1.000 |
+| Dispersion 1 vs 2, large group (10 + 40) more dispersed | 0.000 | 1.000 | 1.000 |
+| Same distribution, 10 + 40 | 0.050 | 0.080 | 0.050 |
+| Location shift 0.6, equal dispersion, 15 + 15 | 0.965 | 0.022 | 0.022 |
+\image(figures/permanova.svg)
+// result_end
+
+Management explains about a third of the variation in dune vegetation (R² = 0.34, p < 0.001 entered first), and the A1 horizon a further tenth. Their interaction is not significant. Because the terms are correlated (A1 differs between management types), the sequential partition depends on the order: entered first, A1 claims 0.17 rather than 0.10, and Management drops to 0.28. Each term's unique contribution, adjusted for the other terms, is much smaller. In the marginal table with land use added, neither Management (p = 0.058) nor A1 (p = 0.086) reaches 5%. Much of the explained variation is shared among correlated predictors, so the type of sums of squares has to match the question being asked.
+
+The dispersion test changes the interpretation of the Management effect. The nature-conservation sites (NM) are far more variable (mean distance to the group center 0.45) than biologically farmed sites (BF, 0.22), as the ordination shows. Around centroids, the dispersions differ significantly (p = 0.029). Around spatial medians, which resist the outlying NM sites, they do not (p = 0.16). With groups of three to six sites, the two summaries disagree. The PERMANOVA result therefore reflects a shift in composition together with an uncertain difference in spread. The Bray–Curtis PCoA has five negative eigenvalues (6% of the positive inertia). Keeping the imaginary axes, as `dispersion_test` does, means the PCoA-based distances to the center reproduce the original dissimilarities, without first making the dissimilarity Euclidean.
+
+The simulation reproduces the results of Anderson and Walsh (2013). With balanced groups, PERMANOVA is almost unaffected by a twofold difference in dispersion (4.8% rejections at the 5% level), while PERMDISP detects the difference every time. With unbalanced groups, unequal dispersion distorts PERMANOVA. When the smaller group is more dispersed, PERMANOVA rejects 61% of the time with identical centroids, so a significant result here does not establish a location difference. When the larger group is more dispersed, PERMANOVA never rejects, so a real location effect could be missed. PERMDISP holds its level under a pure location shift. Its only flaw shows with unbalanced equal-dispersion groups, where it rejects 8% of the time because distances to a small group's center are biased low. The bias adjustment of Stier et al. (2013) restores 5%.
+
+>> Practical guidance
+
+- Report PERMANOVA together with PERMDISP. A significant PERMANOVA with significant dispersion differences cannot be interpreted as a pure location effect, especially in unbalanced designs. Use balanced designs where possible.
+- Choose sequential or marginal partitions deliberately, and state which was used. With correlated predictors they answer different questions.
+- Use the bias-adjusted dispersion test with unequal group sizes, and compare centroid and spatial-median versions when groups are small or contain outliers.
+- Restrict permutations to strata (blocks, plots, time series) when the design is hierarchical. Free permutation of non-exchangeable units gives invalid p-values.
+
+>> References
+
+- M. J. Anderson (2001). A new method for non-parametric multivariate analysis of variance. *Austral Ecology* 26(1), 32-46. doi:10.1111/j.1442-9993.2001.01070.pp.x
+- B. H. McArdle and M. J. Anderson (2001). Fitting multivariate models to community data: a comment on distance-based redundancy analysis. *Ecology* 82(1), 290-297. doi:10.1890/0012-9658(2001)082[0290:FMMTCD]2.0.CO;2
+- M. J. Anderson (2006). Distance-based tests for homogeneity of multivariate dispersions. *Biometrics* 62(1), 245-253. doi:10.1111/j.1541-0420.2005.00440.x
+- M. J. Anderson and D. C. I. Walsh (2013). PERMANOVA, ANOSIM, and the Mantel test in the face of heterogeneous dispersions: what null hypothesis are you testing? *Ecological Monographs* 83(4), 557-574. doi:10.1890/12-2010.1
+- A. C. Stier, K. M. Geange, K. M. Hanson and B. M. Bolker (2013). Predator density and timing of arrival affect reef fish community assembly. *Ecology* 94(5), 1057-1068. doi:10.1890/11-1983.1
+- R. H. G. Jongman, C. J. F. ter Braak and O. F. R. van Tongeren (1987). *Data Analysis in Community and Landscape Ecology*. Pudoc, Wageningen.
+- J. Oksanen et al. (2025). vegan: Community Ecology Package, R package version 2.7-3.

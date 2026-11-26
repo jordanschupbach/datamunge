@@ -15,6 +15,7 @@
 #include <datamunge/random/poisson_binomial.hpp>
 #include <datamunge/random/count_distributions.hpp>
 #include <datamunge/random/simplex.hpp>
+#include <datamunge/random/variates.hpp>
 #include <datamunge/random/matrix_distributions.hpp>
 #include <datamunge/random/noncentral_distributions.hpp>
 #include <datamunge/algorithms/algorithms.hpp>

@@ -1,0 +1,145 @@
+//? Title: Compare cumulative incidence across groups with Gray's test
+//? Exports: both
+//? Lang: en
+
+> Test whether a cause's incidence differs, rather than its hazard among those still event-free
+
+With competing risks there are two different questions about a cause \(k\), and they can have different answers.
+- Does the rate of cause \(k\) differ among those still event-free? This is a question about the cause-specific hazard. The log-rank test with competing events treated as censored answers it.
+- Does the fraction who ever experience cause \(k\) differ? This is a question about the cumulative incidence \(F_k(t)\). Gray's test answers it.
+
+The two coincide only when the competing hazards are the same across groups. A treatment that prevents the *competing* event leaves more subjects exposed to cause \(k\). It therefore raises cause \(k\)'s incidence without changing its hazard.
+
+Gray's test compares the *subdistribution* hazards \(\lambda_k^*(t)=-d\log\{1-F_k(t)\}/dt\), which are in one-to-one correspondence with the cumulative incidences. Its risk set keeps subjects who failed from other causes, weighted by an estimate of how long they would have remained under observation. It is a \(K\)-sample weighted log-rank-type test with weight \(\{1-\hat F_k(t-)\}^\rho\), with a variance derived by Gray (1988).
+
+The example uses two groups of 200 with relapse (cause 1) and competing death (cause 2) at constant hazards and uniform censoring on (0, 10). It estimates the rejection rates of Gray's test and of the cause-specific log-rank test in four scenarios.
+
+```{cpp, id=gray, file="figures/gray_test.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/multistate.hpp>
+#include <datamunge/stats/survival_tests.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::CompetingRiskObservation;
+
+struct Scenario {
+    std::string name;
+    double relapse[2], death[2]; // cause-specific hazards in groups 0 and 1
+};
+
+void simulate(const Scenario& s, std::size_t per_group, std::mt19937_64& random,
+              std::vector<CompetingRiskObservation>& obs, std::vector<int>& group) {
+    std::uniform_real_distribution<double> u(0, 1);
+    obs.clear();
+    group.clear();
+    for (int g = 0; g < 2; ++g)
+        for (std::size_t i = 0; i < per_group; ++i) {
+            const double total = s.relapse[g] + s.death[g];
+            const double t = std::exponential_distribution<double>(total)(random);
+            const double c = 10 * u(random);
+            const int cause = u(random) < s.relapse[g] / total ? 1 : 2;
+            obs.push_back(t <= c ? CompetingRiskObservation{t, cause}
+                                 : CompetingRiskObservation{c, 0});
+            group.push_back(g);
+        }
+}
+
+int main() {
+    std::mt19937_64 random(15);
+    const std::vector<Scenario> scenarios{
+        {"No difference", {.1, .1}, {.2, .2}},
+        {"Relapse hazard lower in group 1", {.1, .06}, {.2, .2}},
+        {"Death hazard lower in group 1", {.1, .1}, {.2, .08}},
+        {"Both lower in group 1", {.1, .07}, {.2, .1}}};
+    std::println("| Scenario | Gray test (incidence) | Cause-specific log-rank (hazard) |");
+    std::println("| --- | ---: | ---: |");
+    std::vector<CompetingRiskObservation> obs;
+    std::vector<int> group;
+    const int reps = 1000;
+    for (const auto& s : scenarios) {
+        int gray = 0, logrank = 0;
+        for (int r = 0; r < reps; ++r) {
+            simulate(s, 200, random, obs, group);
+            gray += dm::stats::gray_test(obs, group)[0].p_value < .05;
+            std::vector<dm::stats::SurvivalObservation> cause_specific;
+            for (const auto& o : obs)
+                cause_specific.push_back({o.time, o.cause == 1});
+            logrank += dm::stats::survival_group_test(cause_specific, group).p_value < .05;
+        }
+        std::println("| {} | {:.3f} | {:.3f} |", s.name, gray / double(reps),
+                     logrank / double(reps));
+    }
+
+    // True relapse incidence in the third scenario: F1(t) = r/(r+d) (1 - exp(-(r+d) t)).
+    const auto& s = scenarios[2];
+    std::vector<double> grid, truth[2], x[2], y[2];
+    for (double t = 0; t <= 10; t += .05) {
+        grid.push_back(t);
+        for (int g = 0; g < 2; ++g) {
+            const double total = s.relapse[g] + s.death[g];
+            truth[g].push_back(s.relapse[g] / total * (1 - std::exp(-total * t)));
+        }
+    }
+    simulate(s, 400, random, obs, group);
+    for (int g = 0; g < 2; ++g) {
+        std::vector<CompetingRiskObservation> part;
+        for (std::size_t i = 0; i < obs.size(); ++i)
+            if (group[i] == g)
+                part.push_back(obs[i]);
+        const auto e = dm::stats::cumulative_incidence(part);
+        x[g] = {0};
+        y[g] = {0};
+        for (std::size_t i = 0; i < e.times.size(); ++i) {
+            x[g].insert(x[g].end(), {e.times[i], e.times[i]});
+            y[g].insert(y[g].end(), {y[g].back(), e.probabilities(i, 1)});
+        }
+    }
+    const auto test = dm::stats::gray_test(obs, group);
+    std::println("\nOne sample of 400 per group in the third scenario: Gray statistic {:.2f} "
+                 "(p = {:.2g}).", test[0].statistic, test[0].p_value);
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(grid, truth[0], "True, group 0", {150, 185, 215}, 3.5)
+        .line(grid, truth[1], "True, group 1", {225, 170, 150}, 3.5)
+        .line(x[0], y[0], "Aalen–Johansen, group 0", {26, 90, 147}, 1.5)
+        .line(x[1], y[1], "Aalen–Johansen, group 1", {176, 72, 43}, 1.5)
+        .title("Relapse incidence when only the death hazard differs")
+        .x_label("Time")
+        .y_label("Cumulative incidence of relapse")
+        .ylim(0, .8)
+        .size(700, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/gray_test.svg");
+}
+```
+// result_begin: markdown
+| Scenario | Gray test (incidence) | Cause-specific log-rank (hazard) |
+| --- | ---: | ---: |
+| No difference | 0.051 | 0.047 |
+| Relapse hazard lower in group 1 | 0.548 | 0.576 |
+| Death hazard lower in group 1 | 0.355 | 0.051 |
+| Both lower in group 1 | 0.088 | 0.411 |
+
+One sample of 400 per group in the third scenario: Gray statistic 5.87 (p = 0.015).
+\image(figures/gray_test.svg)
+// result_end
+\caption(True (light) and Aalen–Johansen (dark) cumulative incidence of relapse by group when the relapse hazard is the same in both groups (0.1) but the death hazard is 0.2 in group 0 and 0.08 in group 1. One sample of 400 per group.)
+\alttext(Two light true curves rise from 0. The orange group-1 curve rises higher, towards about 0.45 by time 10, while the blue group-0 curve levels off near 0.3. The dark step functions follow their light curves.)
+
+Both tests hold the 5% level under no difference (5.1% and 4.7%), and both detect a relapse hazard that is lower in group 1 at similar rates. They part company in the last two scenarios.
+
+When only the *death* hazard differs, the relapse hazard is identical, and the cause-specific log-rank test stays at its 5% level, correctly for its question. Gray's test rejects 36% of the time, also correctly, because group 1's relapse incidence really is higher: fewer of its members die first, so more live long enough to relapse. The figure shows this.
+
+When both hazards are lower in group 1, the lower relapse rate and the longer exposure nearly cancel in the incidence. Gray's test rejects only 9% of the time, while the cause-specific test rejects 41%. A treatment can therefore lower the relapse rate without changing how many patients relapse.
+
+Neither test is the right one in general. Reporting both, with the cause-specific hazards and the cumulative incidence curves, avoids conclusions that are true but misleading. For example, "the treatment increases relapse" is true of the incidence in the third scenario, but the treatment does nothing to the relapse process itself.
+
+Statistics and p-values match `cmprsk::cuminc` on the `mgus2` data (progression vs death) for two and three groups, for \(\rho=0\), 0.5 and 1, and with strata. The implementation is a port of cmprsk's `crst` routine.
+
+[Gray (1988)|https://doi.org/10.1214/aos/1176350951] · [Latouche, Allignol, Beyersmann, Labopin and Fine (2013)|https://doi.org/10.1016/j.jclinepi.2012.09.017]

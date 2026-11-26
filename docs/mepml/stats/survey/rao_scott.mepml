@@ -1,0 +1,164 @@
+//? Title: Test independence in survey tables with Rao–Scott corrections
+//? Exports: both
+//? Lang: en
+
+> Correct the Pearson chi-square for clustering and unequal weights, and compare with design-based Wald tests
+
+A cross-tabulation from a complex survey is usually computed with the sampling weights, and the Pearson statistic \(X^2\) is then applied as if the observations were independent. Clustering makes units in the same PSU alike. When both variables vary between clusters, the estimated cell proportions are far more variable than under simple random sampling, and \(X^2\) is too large. Rao and Scott (1981, 1984) showed that under independence \(X^2\) is distributed as \(\sum_k\delta_kW_k\), where \(W_k\sim\chi^2_1\) and the \(\delta_k\) are the eigenvalues of a generalized design-effect matrix \(\Delta\). `survey_table_test` computes \(\Delta\) from the linearized covariance of the cell proportions and reports four corrections.
+- The first-order correction divides \(X^2\) by the mean design effect \(\bar\delta\) and compares the result with \(\chi^2_{(R-1)(C-1)}\).
+- The second-order correction divides \(X^2\) by \(\mathrm{tr}\,\Delta\) and compares the result with \(F(d,d\nu)\). Here \(d=(\mathrm{tr}\,\Delta)^2/\mathrm{tr}\,\Delta^2\) also matches the variance, and \(\nu\) (PSUs minus strata) accounts for the instability of the estimated \(\Delta\). This is the default in R's `svychisq`.
+- The Wald test uses the estimated covariance of the interaction contrasts \(\hat N_{rc}-\hat N_{r\cdot}\hat N_{\cdot c}/\hat N\) directly. With few PSUs that covariance is poorly estimated, which inflates the statistic.
+- The adjusted Wald (Fellegi) test scales the Wald statistic by \((\nu-k+1)/(k\nu)\), where \(k=(R-1)(C-1)\), and uses \(F(k,\nu-k+1)\).
+
+The simulation draws cluster samples of 15 or 60 PSUs with 20 units each, and weights of 1 or 3 assigned by PSU. Both variables have strong cluster random effects but are independent in the population. Each setting uses 2000 samples, and the table reports the rejection rate at the 5% level. Column headings give the table size and the number of PSUs, so 3x4/15 is a 3×4 table from 15 PSUs. The last column reports power for the 3×4 table with 60 PSUs, after adding a modest association between the variables.
+
+```{cpp, id=rs, file="figures/rao_scott.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/survey_tables.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+
+// Category drawn from softmax(base + cluster effect + shift).
+std::size_t category(const std::vector<double>& logits, dm::random::RandomGenerator& rng) {
+    double total = 0;
+    for (const double l : logits)
+        total += std::exp(l);
+    double u = rng.uniform01() * total;
+    for (std::size_t k = 0; k < logits.size(); ++k) {
+        u -= std::exp(logits[k]);
+        if (u <= 0)
+            return k;
+    }
+    return logits.size() - 1;
+}
+
+struct Sample {
+    dm::stats::SurveyDesign design;
+    std::vector<std::size_t> rows, cols;
+};
+
+Sample draw(std::size_t psus, std::size_t R, std::size_t C, double association,
+            dm::random::RandomGenerator& rng) {
+    Sample s;
+    for (std::size_t c = 0; c < psus; ++c) {
+        const double weight = rng.uniform01() < 0.5 ? 1 : 3;
+        std::vector<double> u(R), v(C);
+        for (double& x : u)
+            x = 1.2 * rng.normal(); // strong cluster effects on both variables
+        for (double& x : v)
+            x = 1.2 * rng.normal();
+        for (int i = 0; i < 20; ++i) {
+            const std::size_t r = category(u, rng);
+            std::vector<double> lv = v;
+            lv[0] += association * (r == 0 ? 1.0 : -1.0); // within-unit association
+            s.rows.push_back(r);
+            s.cols.push_back(category(lv, rng));
+            s.design.weights.push_back(weight);
+            s.design.clusters.push_back(int(c));
+        }
+    }
+    return s;
+}
+
+int main() {
+    dm::random::SplitMix64 rng(84);
+    const char* names[5]{"Naive Pearson", "Rao-Scott first order", "Rao-Scott second order (F)",
+                         "Wald F", "Adjusted Wald F"};
+    struct Setting { std::size_t psus, R, C; double association; };
+    const Setting settings[5]{{15, 2, 2, 0}, {60, 2, 2, 0}, {15, 3, 4, 0}, {60, 3, 4, 0},
+                              {60, 3, 4, 0.35}};
+    const int reps = 2000;
+    double reject[5][5]{};
+    std::vector<double> null_p[2]; // naive and second-order p-values, 3x4 with 15 PSUs
+    double mean_deff = 0;
+    for (int s = 0; s < 5; ++s)
+        for (int r = 0; r < reps; ++r) {
+            const auto x = draw(settings[s].psus, settings[s].R, settings[s].C,
+                                settings[s].association, rng);
+            const auto t = dm::stats::survey_table_test(x.design, x.rows, x.cols);
+            if (t.rows != settings[s].R || t.cols != settings[s].C) {
+                --r; // a category was not observed; redraw
+                continue;
+            }
+            const double p[5]{t.naive_p_value, t.first_order.p_value, t.second_order.p_value,
+                              t.wald.p_value, t.adjusted_wald.p_value};
+            for (int m = 0; m < 5; ++m)
+                reject[m][s] += (p[m] < 0.05) / double(reps);
+            if (s == 2) {
+                null_p[0].push_back(p[0]);
+                null_p[1].push_back(p[2]);
+                double d = 0;
+                for (const double e : t.design_effects)
+                    d += e / t.design_effects.size();
+                mean_deff += d / reps;
+            }
+        }
+    std::println("| Test | 2x2/15 | 2x2/60 | 3x4/15 | 3x4/60 | Power 3x4/60 |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (int m = 0; m < 5; ++m)
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", names[m], reject[m][0],
+                     reject[m][1], reject[m][2], reject[m][3], reject[m][4]);
+    std::println("\nMean design effect (mean eigenvalue of Delta), 3x4 table with 15 PSUs: {:.2f}.",
+                 mean_deff);
+
+    auto plot = dm::graphics::RPlot::create();
+    std::vector<double> expected;
+    for (std::size_t i = 0; i < null_p[0].size(); ++i)
+        expected.push_back((i + 0.5) / null_p[0].size());
+    const dm::graphics::RGBA colors[2]{{176, 72, 43}, {26, 90, 147}};
+    const char* labels[2]{"Naive Pearson", "Rao-Scott second order"};
+    for (int k = 0; k < 2; ++k) {
+        std::ranges::sort(null_p[k]);
+        plot.line(expected, null_p[k], labels[k], colors[k], 2);
+    }
+    plot.line({0, 1}, {0, 1}, "Uniform (correct size)", {120, 120, 120}, 1)
+        .title("Null p-values, 3x4 table, 15 PSUs")
+        .x_label("Uniform quantile")
+        .y_label("Ordered p-value")
+        .size(560, 460);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/rao_scott.svg");
+}
+```
+// result_begin: markdown
+| Test | 2x2/15 | 2x2/60 | 3x4/15 | 3x4/60 | Power 3x4/60 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Naive Pearson | 0.326 | 0.324 | 0.576 | 0.610 | 0.915 |
+| Rao-Scott first order | 0.097 | 0.063 | 0.164 | 0.072 | 0.396 |
+| Rao-Scott second order (F) | 0.070 | 0.058 | 0.080 | 0.059 | 0.349 |
+| Wald F | 0.048 | 0.055 | 0.188 | 0.074 | 0.354 |
+| Adjusted Wald F | 0.048 | 0.055 | 0.036 | 0.046 | 0.290 |
+
+Mean design effect (mean eigenvalue of Delta), 3x4 table with 15 PSUs: 2.02.
+\image(figures/rao_scott.svg)
+// result_end
+
+Ignoring the design is badly wrong. The naive Pearson test rejects a true null hypothesis in a third of 2×2 samples and in about 60% of 3×4 samples. The design effects are about 2 on average, and the largest eigenvalues are larger still, so \(X^2\) is roughly two to three times its nominal size. More PSUs do not fix this, because the design effect depends on the cluster size and the intracluster correlation, not on the number of clusters.
+
+The first-order correction fixes the mean but not the shape. With 60 PSUs it is close to 5%. With 15 PSUs and a 3×4 table it still rejects 16% of the time, because dividing by \(\bar\delta\) treats the unequal \(\delta_k\) as if they were equal, and \(\bar\delta\) itself is estimated from only 14 degrees of freedom. The second-order F correction accounts for both and stays between 5.8% and 8%. In the figure its null p-values lie much closer to the uniform line than the naive ones, which pile up near zero, but still below it across the whole range (the median p-value is well under 0.5). With this few PSUs the F approximation is tuned to the upper tail that matters for testing, where it rejects 8% at the 5% level, rather than to the whole distribution.
+
+The Wald test is accurate for a 2×2 table, where only one contrast has to be estimated. With six contrasts and 14 degrees of freedom, its covariance estimate is unstable and it rejects 19% of the time. The adjusted Wald correction makes it conservative instead (3.6%). It holds its level in every setting but has the lowest power, 29% against 35% for the second-order Rao–Scott test.
+
+The results match `survey::svychisq` to \(10^{-8}\) for all four statistics on the `apiclus1` cluster sample and two stratified `apistrat` tables. R's `"Chisq"` option reports the unadjusted \(X^2\) with a corrected p-value. `first_order.statistic` is the corrected value \(X^2/\bar\delta\), and the unadjusted value is in `pearson`.
+
+>> Practical guidance
+
+- Use the second-order Rao–Scott F test as the default, as `svychisq` does.
+- With few PSUs and large tables, also check the adjusted Wald test. If only the Rao–Scott test rejects, the conclusion is fragile.
+- Avoid the unadjusted Wald test unless the design degrees of freedom are much larger than \((R-1)(C-1)\).
+- Report `design_effects` with the test. A large leading eigenvalue shows which contrast is most affected by clustering.
+- Collapse sparse categories before testing. Empty or nearly empty cells make \(\Delta\) unstable.
+
+>> References
+
+- J. N. K. Rao and A. J. Scott (1981). The analysis of categorical data from complex sample surveys: chi-squared tests for goodness of fit and independence in two-way tables. *Journal of the American Statistical Association* 76(374), 221-230. doi:10.1080/01621459.1981.10477633
+- J. N. K. Rao and A. J. Scott (1984). On chi-squared tests for multiway contingency tables with cell proportions estimated from survey data. *Annals of Statistics* 12(1), 46-60. doi:10.1214/aos/1176346391
+- D. R. Thomas and J. N. K. Rao (1987). Small-sample comparisons of level and power for simple goodness-of-fit statistics under cluster sampling. *Journal of the American Statistical Association* 82(398), 630-636. doi:10.1080/01621459.1987.10478476
+- T. Lumley (2010). *Complex Surveys: A Guide to Analysis Using R*. Wiley, section 6.3.

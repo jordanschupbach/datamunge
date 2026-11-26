@@ -1,0 +1,185 @@
+//? Title: Empirical variogram
+//? Exports: both
+//? Lang: en
+
+> Estimate how dissimilarity grows with separation, by lag and by direction, and see how the estimator responds to outliers and anisotropy
+
+The semivariogram \(\gamma(h)=\tfrac12E[(Z(s+h)-Z(s))^2]\) describes spatial dependence through dissimilarity. It starts near the nugget \(\gamma(0^+)\), which covers measurement error and micro-scale variation, and rises until the values are uncorrelated, where it levels off at the sill, the total variance, at about the range. The empirical variogram estimates it from point pairs grouped into lag bins:
+
+\[
+\hat\gamma(h_k)=\frac{1}{2|N(h_k)|}\sum_{(i,j)\in N(h_k)}(z_i-z_j)^2,
+\]
+
+where \(N(h_k)\) holds the pairs whose separation falls in bin \(k\). Squared differences are sensitive to outliers, so Cressie and Hawkins proposed a robust alternative based on the mean of \(|z_i-z_j|^{1/2}\). A directional variogram uses only the pairs whose separation vector points within a tolerance of a given azimuth. It reveals anisotropy, where dependence extends further in some directions than in others.
+
+`empirical_variogram` returns, for each bin, the mean pair distance, the semivariance and the pair count. It supports explicit or regular lag boundaries, any set of directions with an angular tolerance, and both estimators. The tests reproduce `gstat::variogram` on the meuse log-zinc data for regular and irregular bins, four directions, narrow tolerances and the Cressie estimator.
+
+The study uses 200 random points in a \(20\times20\) square and a Gaussian field with nugget 0.1, partial sill 1 and exponential correlation \(e^{-h/3}\). The true variogram is therefore \(\gamma(h)=0.1+(1-e^{-h/3})\). Over 300 fields, the table compares the mean and SD of each estimator per lag with the truth, on clean data and with 5% of the values contaminated by \(+4\). The figure uses a geometrically anisotropic field instead, with range 6 along azimuth 45° and 2 along 135°. It shows directional variograms averaged over 100 fields with their true curves.
+
+```{cpp, id=vgm, file="figures/empirical_variogram.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/geostatistics.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <functional>
+#include <numbers>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+using Correlation = std::function<double(double dx, double dy)>;
+
+// Gaussian field: nugget + partial sill 1 with the given correlation, by Cholesky.
+std::vector<double> field(dm::random::SplitMix64& rng, const Matrix& xy,
+                          const Correlation& rho, double nugget) {
+    const std::size_t n = xy.rows();
+    std::vector<double> l(n * n, 0.0), out(n, 0.0), z(n);
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t j = 0; j <= i; ++j) {
+            double s = rho(xy(i, 0) - xy(j, 0), xy(i, 1) - xy(j, 1));
+            if (i == j)
+                s += 1e-10;
+            for (std::size_t k = 0; k < j; ++k)
+                s -= l[i * n + k] * l[j * n + k];
+            l[i * n + j] = i == j ? std::sqrt(s) : s / l[j * n + j];
+        }
+    for (double& v : z)
+        v = rng.normal();
+    for (std::size_t i = 0; i < n; ++i) {
+        for (std::size_t k = 0; k <= i; ++k)
+            out[i] += l[i * n + k] * z[k];
+        out[i] += std::sqrt(nugget) * rng.normal();
+    }
+    return out;
+}
+
+Matrix points(dm::random::SplitMix64& rng, std::size_t n) {
+    Matrix xy(n, 2);
+    for (std::size_t i = 0; i < n; ++i)
+        xy(i, 0) = 20 * rng.uniform01(), xy(i, 1) = 20 * rng.uniform01();
+    return xy;
+}
+
+int main() {
+    dm::random::SplitMix64 rng(31);
+    const std::vector<double> bounds{0, 1, 2, 3, 4, 6, 8};
+    const Correlation iso = [](double dx, double dy) {
+        return std::exp(-std::hypot(dx, dy) / 3);
+    };
+    const int reps = 300;
+    const std::size_t nb = bounds.size() - 1;
+    // [estimator x contamination][bin]: sums and squares; also mean distances.
+    std::vector<std::vector<double>> sum(4, std::vector<double>(nb)), sq = sum;
+    std::vector<double> dist(nb);
+    for (int r = 0; r < reps; ++r) {
+        const Matrix xy = points(rng, 200);
+        auto z = field(rng, xy, iso, 0.1);
+        for (const bool dirty : {false, true}) {
+            if (dirty)
+                for (std::size_t i = 0; i < z.size(); ++i)
+                    if (rng.uniform01() < 0.05)
+                        z[i] += 4;
+            for (const bool cressie : {false, true}) {
+                const auto v = dm::stats::empirical_variogram(
+                    xy, z, {.boundaries = bounds, .cressie = cressie});
+                const int e = 2 * dirty + cressie;
+                for (std::size_t k = 0; k < nb; ++k) {
+                    sum[e][k] += v[k].gamma / reps;
+                    sq[e][k] += v[k].gamma * v[k].gamma / reps;
+                    if (e == 0)
+                        dist[k] += v[k].distance / reps;
+                }
+            }
+        }
+    }
+    std::println("| Mean lag | True gamma | Moments, clean | Cressie, clean | "
+                 "Moments, 5% outliers | Cressie, 5% outliers |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (std::size_t k = 0; k < nb; ++k) {
+        const double truth = 0.1 + 1 - std::exp(-dist[k] / 3);
+        std::print("| {:.2f} | {:.3f}", dist[k], truth);
+        for (int e = 0; e < 4; ++e)
+            std::print(" | {:.3f} ({:.3f})", sum[e][k],
+                       std::sqrt(sq[e][k] - sum[e][k] * sum[e][k]));
+        std::println(" |");
+    }
+
+    // Geometric anisotropy: range 6 along azimuth 45 degrees, 2 along 135 degrees.
+    const double t = std::numbers::pi / 4;
+    const auto aniso_h = [t](double dx, double dy) {
+        const double along = dx * std::sin(t) + dy * std::cos(t);
+        const double across = dx * std::cos(t) - dy * std::sin(t);
+        return std::hypot(along / 6, across / 2);
+    };
+    const Correlation aniso = [&](double dx, double dy) {
+        return std::exp(-aniso_h(dx, dy));
+    };
+    const std::vector<double> lag_bounds{0, 1, 2, 3, 4, 5, 6, 7, 8};
+    std::vector<double> mean45(8), mean135(8), d45(8), d135(8);
+    for (int r = 0; r < 100; ++r) {
+        const Matrix xy = points(rng, 200);
+        const auto z = field(rng, xy, aniso, 0.1);
+        const auto v = dm::stats::empirical_variogram(
+            xy, z,
+            {.boundaries = lag_bounds, .directions = {45, 135}, .angular_tolerance = 22.5});
+        for (const auto& b : v) {
+            const auto k = static_cast<std::size_t>(b.lower);
+            (b.direction == 45 ? mean45 : mean135)[k] += b.gamma / 100;
+            (b.direction == 45 ? d45 : d135)[k] += b.distance / 100;
+        }
+    }
+    std::vector<double> grid, true45, true135;
+    for (double h = 0.05; h <= 8; h += 0.05) {
+        grid.push_back(h);
+        true45.push_back(1.1 - std::exp(-h / 6));
+        true135.push_back(1.1 - std::exp(-h / 2));
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.points(d45, mean45, "", {26, 90, 147}, 6)
+        .line(grid, true45, "Azimuth 45 (range 6)", {26, 90, 147}, 1.5)
+        .points(d135, mean135, "", {176, 72, 43}, 6)
+        .line(grid, true135, "Azimuth 135 (range 2)", {176, 72, 43}, 1.5)
+        .y_limits(0, 1.5)
+        .title("Directional variograms of an anisotropic field")
+        .x_label("Lag distance (points: mean of 100 empirical variograms; lines: truth)")
+        .y_label("Semivariance")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/empirical_variogram.svg");
+}
+```
+// result_begin: markdown
+| Mean lag | True gamma | Moments, clean | Cressie, clean | Moments, 5% outliers | Cressie, 5% outliers |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.66 | 0.298 | 0.297 (0.045) | 0.291 (0.049) | 1.056 (0.319) | 0.553 (0.155) |
+| 1.55 | 0.504 | 0.501 (0.069) | 0.500 (0.072) | 1.255 (0.264) | 0.835 (0.166) |
+| 2.53 | 0.669 | 0.673 (0.101) | 0.677 (0.106) | 1.428 (0.286) | 1.060 (0.203) |
+| 3.52 | 0.790 | 0.805 (0.141) | 0.816 (0.149) | 1.557 (0.312) | 1.224 (0.249) |
+| 5.04 | 0.914 | 0.934 (0.191) | 0.949 (0.205) | 1.685 (0.332) | 1.377 (0.294) |
+| 7.02 | 1.004 | 1.034 (0.249) | 1.057 (0.270) | 1.781 (0.372) | 1.499 (0.363) |
+\image(figures/empirical_variogram.svg)
+// result_end
+
+On clean Gaussian data both estimators track the true variogram closely. The method of moments is unbiased at short lags. Both drift slightly upward at long lags (by 0.03–0.05 at lag 7), where the field's spatial mean is estimated from the same data and few independent pairs are available. Their sampling SD grows with lag, from 0.05 to 0.25, so long-lag bins carry much less information than their large pair counts suggest. The Cressie–Hawkins estimator costs about 5–10% in SD on clean data.
+
+Five percent outliers change the picture. Every pair that includes a contaminated value contributes \((4+\epsilon)^2\), so the method-of-moments variogram rises by about 0.75 at all lags. That looks like a large nugget, and a fitted model would assign most of the variance to it. The robust estimator removes about two thirds of the shift at short lags (0.55 against a truth of 0.30) and has half the SD. It is not immune to the outliers, but it keeps the shape of the variogram recognisable.
+
+In the figure, the azimuth-135° variogram reaches the sill within about four units, while the azimuth-45° variogram is still rising at eight. The empirical points follow the true curves. The 45° points lie slightly above their curve because a ±22.5° sector also contains pairs in directions with shorter effective ranges. Directional variograms with different ranges but a common sill indicate geometric anisotropy, which a fitted model can remove by rescaling the coordinates.
+
+>> Practical guidance
+
+- Remove a large-scale trend before estimating the variogram (pass regression residuals). Otherwise the variogram keeps rising and is not bounded by a sill.
+- Use lags up to about half of the maximum distance, and check the pair counts. Bins with fewer than about 30 pairs are unreliable.
+- Use the Cressie–Hawkins estimator, or compare the two estimators, when outliers or heavy tails are possible. A large gap between them signals contamination.
+- Check anisotropy with at least four directions before assuming an isotropic model. Narrow tolerances sharpen the directions but leave fewer pairs.
+- Treat the empirical variogram as the input to a fitted model, not as a final estimate. Its bins are correlated and their precision falls with lag.
+
+>> References
+
+- G. Matheron (1963). Principles of geostatistics. *Economic Geology* 58(8), 1246-1266. doi:10.2113/gsecongeo.58.8.1246
+- N. Cressie and D. M. Hawkins (1980). Robust estimation of the variogram: I. *Journal of the International Association for Mathematical Geology* 12(2), 115-125. doi:10.1007/BF01035243
+- N. Cressie (1993). *Statistics for Spatial Data*, revised edition. Wiley. doi:10.1002/9781119115151
+- E. J. Pebesma (2004). Multivariable geostatistics in S: the gstat package. *Computers & Geosciences* 30(7), 683-691. doi:10.1016/j.cageo.2004.03.012

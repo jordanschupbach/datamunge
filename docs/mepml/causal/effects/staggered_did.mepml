@@ -1,0 +1,202 @@
+//? Title: Difference in differences with staggered adoption
+//? Exports: both
+//? Lang: en
+
+> Estimate cohort-by-period effects against clean comparison units and aggregate them by event time
+
+When units adopt a treatment at different times, the usual two-way fixed-effects (TWFE) regression of the outcome on a treatment dummy, unit effects and period effects is not a difference in differences in any simple sense. Goodman-Bacon showed that its coefficient averages all two-by-two comparisons, including "forbidden" ones that use already-treated units as controls for later adopters. If effects grow over time, the change in already-treated units' outcomes is subtracted as if it were a trend. Some comparisons then get negative weight, and the TWFE estimate can lie outside the range of every unit's effect, or even take the wrong sign.
+
+Callaway and Sant'Anna avoid this by estimating each cohort's effect in each period separately against clean comparisons only:
+
+\[
+ATT(g,t)=E[Y_t-Y_{g-1}\mid G=g]-E[Y_t-Y_{g-1}\mid C],
+\]
+
+where \(C\) contains never-treated units or units not yet treated by period \(t\). These building blocks are then averaged by event time \(e=t-g\) (an event study), by cohort, or overall, with weights proportional to cohort size. `staggered_did` implements the unconditional version for balanced panels. It supports either comparison group, varying or universal base periods, and anticipation, and gives influence-function standard errors that include the estimated aggregation weights. On the `mpdta` minimum-wage panel, the tests reproduce the did package's `att_gt` and `aggte` results (group-time, dynamic, group and simple) for all four settings.
+
+The simulation has 300 units observed for 10 periods. Units adopt in period 4, 6 or 8 (80 units each), and 60 are never treated. Outcomes have unit and period effects and noise with SD 1. The treatment effect grows with time since adoption, by 0.3 per period for the earliest cohort, 0.2 for the middle one and 0.1 for the latest. Effects are therefore both dynamic and heterogeneous across cohorts, the setting in which static TWFE fails. The table compares, over 500 panels, the TWFE coefficient with the Callaway–Sant'Anna simple aggregate (post-treatment ATT(g, t) weighted by cohort size) and the average of the event-study effects. Each is scored against its own true value. The figure shows one panel's event study with the true dynamic effects.
+
+```{cpp, id=did, file="figures/staggered_did.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/causal/staggered_did.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <map>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+
+struct Panel {
+    std::vector<double> unit, period, cohort, y, treated;
+};
+
+double effect(double g, double t) {
+    if (g == 0 || t < g)
+        return 0;
+    const double slope = g == 4 ? 0.3 : g == 6 ? 0.2 : 0.1;
+    return slope * (t - g + 1);
+}
+
+Panel simulate(dm::random::SplitMix64& rng) {
+    Panel p;
+    std::vector<double> period_effect(11);
+    for (int t = 1; t <= 10; ++t)
+        period_effect[t] = 0.2 * t + 0.3 * rng.normal();
+    for (int i = 0; i < 300; ++i) {
+        const double g = i < 80 ? 4 : i < 160 ? 6 : i < 240 ? 8 : 0;
+        const double alpha = rng.normal() + (g == 4 ? 0.5 : 0.0);
+        for (int t = 1; t <= 10; ++t) {
+            p.unit.push_back(i);
+            p.period.push_back(t);
+            p.cohort.push_back(g);
+            p.treated.push_back(g > 0 && t >= g);
+            p.y.push_back(alpha + period_effect[t] + effect(g, t) + rng.normal());
+        }
+    }
+    return p;
+}
+
+// Static TWFE coefficient by two-way within transformation (balanced panel).
+double twfe(const Panel& p) {
+    const std::size_t n = 300, T = 10;
+    std::vector<double> ui(n), di(n), ut(T), dt(T);
+    double um = 0, dm_ = 0;
+    for (std::size_t r = 0; r < p.y.size(); ++r) {
+        const auto i = std::size_t(p.unit[r]), t = std::size_t(p.period[r]) - 1;
+        ui[i] += p.y[r] / T;
+        di[i] += p.treated[r] / T;
+        ut[t] += p.y[r] / n;
+        dt[t] += p.treated[r] / n;
+        um += p.y[r] / (n * T);
+        dm_ += p.treated[r] / (n * T);
+    }
+    double sxy = 0, sxx = 0;
+    for (std::size_t r = 0; r < p.y.size(); ++r) {
+        const auto i = std::size_t(p.unit[r]), t = std::size_t(p.period[r]) - 1;
+        const double yy = p.y[r] - ui[i] - ut[t] + um;
+        const double dd = p.treated[r] - di[i] - dt[t] + dm_;
+        sxy += dd * yy;
+        sxx += dd * dd;
+    }
+    return sxy / sxx;
+}
+
+int main() {
+    // True targets: the simple aggregate (post ATT(g,t) weighted by cohort size,
+    // equal here) and the average of event-study effects over e >= 0.
+    double simple_truth = 0, count = 0;
+    std::map<int, std::vector<double>> by_e;
+    for (const double g : {4.0, 6.0, 8.0})
+        for (int t = 1; t <= 10; ++t)
+            if (t >= g) {
+                simple_truth += effect(g, t);
+                count += 1;
+                by_e[int(t - g)].push_back(effect(g, t));
+            }
+    simple_truth /= count;
+    double dynamic_truth = 0;
+    for (const auto& [e, v] : by_e) {
+        double m = 0;
+        for (const double x : v)
+            m += x / double(v.size());
+        dynamic_truth += m / double(by_e.size());
+    }
+    dm::random::SplitMix64 rng(2021);
+    const int reps = 500;
+    double est[3][2]{}, cover[2]{};
+    for (int r = 0; r < reps; ++r) {
+        const auto p = simulate(rng);
+        const auto cs = dm::causal::staggered_did(p.unit, p.period, p.cohort, p.y);
+        const double values[3]{twfe(p), cs.simple.att, cs.dynamic_overall.att};
+        const double truth[3]{simple_truth, simple_truth, dynamic_truth};
+        for (int k = 0; k < 3; ++k) {
+            est[k][0] += (values[k] - truth[k]) / reps;
+            est[k][1] += (values[k] - truth[k]) * (values[k] - truth[k]) / reps;
+        }
+        cover[0] += std::abs(cs.simple.att - simple_truth) <=
+                    1.96 * cs.simple.standard_error;
+        cover[1] += std::abs(cs.dynamic_overall.att - dynamic_truth) <=
+                    1.96 * cs.dynamic_overall.standard_error;
+    }
+    std::println("True simple ATT {:.3f}; true average dynamic effect {:.3f}.\n",
+                 simple_truth, dynamic_truth);
+    std::println("| Estimator | Target | Bias | RMSE | Coverage |");
+    std::println("| --- | --- | ---: | ---: | ---: |");
+    const char* names[3]{"Static TWFE", "Callaway-Sant'Anna, simple",
+                         "Callaway-Sant'Anna, dynamic"};
+    const char* targets[3]{"Simple ATT", "Simple ATT", "Mean dynamic effect"};
+    for (int k = 0; k < 3; ++k) {
+        const auto cov =
+            k == 0 ? std::string("-") : std::format("{:.3f}", cover[k - 1] / reps);
+        std::println("| {} | {} | {:+.3f} | {:.3f} | {} |", names[k], targets[k],
+                     est[k][0], std::sqrt(est[k][1]), cov);
+    }
+
+    const auto p = simulate(rng);
+    const auto cs = dm::causal::staggered_did(p.unit, p.period, p.cohort, p.y);
+    std::vector<double> e, att, lo, hi, truth;
+    for (const auto& ev : cs.event_study) {
+        e.push_back(ev.key);
+        att.push_back(ev.att);
+        lo.push_back(ev.lower);
+        hi.push_back(ev.upper);
+        double m = 0;
+        if (ev.key >= 0) {
+            for (const double x : by_e[int(ev.key)])
+                m += x / double(by_e[int(ev.key)].size());
+        }
+        truth.push_back(m);
+    }
+    std::println("\nOne panel: static TWFE {:.3f}, simple aggregate {:.3f} (SE {:.3f}).",
+                 twfe(p), cs.simple.att, cs.simple.standard_error);
+    auto plot = dm::graphics::RPlot::create();
+    plot.ribbon(e, lo, hi, {26, 90, 147, 0.2})
+        .line(e, att, "Event-study estimate (95% pointwise CI)", {26, 90, 147}, 2)
+        .line(e, truth, "True dynamic effect", {176, 72, 43}, 2)
+        .abline_h(0, {60, 60, 60}, 1)
+        .abline_h(twfe(p), {120, 120, 120}, 1)
+        .title("Event study (grey line: static TWFE estimate)")
+        .x_label("Periods since adoption")
+        .y_label("Effect")
+        .size(660, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/staggered_did.svg");
+}
+```
+// result_begin: markdown
+True simple ATT 0.800; true average dynamic effect 1.050.
+
+| Estimator | Target | Bias | RMSE | Coverage |
+| --- | --- | ---: | ---: | ---: |
+| Static TWFE | Simple ATT | -0.505 | 0.509 | - |
+| Callaway-Sant'Anna, simple | Simple ATT | +0.002 | 0.111 | 0.952 |
+| Callaway-Sant'Anna, dynamic | Mean dynamic effect | +0.003 | 0.124 | 0.942 |
+
+One panel: static TWFE 0.261, simple aggregate 0.745 (SE 0.118).
+\image(figures/staggered_did.svg)
+// result_end
+
+The static TWFE coefficient averages to 0.30 when every unit's effect is positive and the target is 0.80. Most of the gap comes from forbidden comparisons. When the period-8 cohort adopts, the earliest cohort is used as its control, but its outcomes are still rising because of its own growing effect. That rise is subtracted from the late cohort's change, so the late cohort's effect is understated, and comparisons like it get negative weight in the TWFE average. With more periods or steeper effect growth the coefficient can even turn negative. No amount of data fixes this, because it is a property of the estimand TWFE converges to, not of noise.
+
+The Callaway–Sant'Anna estimators compare each cohort only with never-treated units and keep each comparison's base period before adoption. They are unbiased for their targets, and their influence-function intervals cover at the nominal rate. The event study in the figure tracks the true dynamic effects. Its pre-adoption estimates scatter around zero, which is the usual check of parallel trends: here it passes, because the simulated trends are parallel by construction. The pre-period estimates use consecutive-period (varying) base periods, so they measure period-to-period deviations rather than cumulative drift. The universal base period makes them comparable with the post-period effects.
+
+The aggregation weights need care too. The "simple" aggregate weights each post-treatment ATT(g, t) by cohort size, so cohorts observed for longer after adoption contribute more cells. The average of the event-study effects weights event times equally. Here the two differ (0.80 against 1.05) because long horizons are only observed for the earliest cohort, which also has the largest effects. Which summary to report depends on the question. The event study shows how the effect evolves, while the cohort and simple aggregates describe the treated observations actually seen.
+
+>> Practical guidance
+
+- Do not rely on a static or event-study TWFE regression when adoption is staggered and effects may vary over time or across cohorts. Estimate group-time effects against clean comparisons and aggregate them explicitly.
+- Choose the comparison group deliberately. Never-treated units must be comparable to the adopters. Not-yet-treated units use more data but assume the eventual adopters are on the same trend before they adopt.
+- Inspect the pre-adoption event-study estimates, but remember that they test parallel trends only before treatment, with limited power. Specify `anticipation` when units may react before formal adoption.
+- Report event-time effects only at horizons supported by several cohorts. Long horizons often rest on a single early cohort.
+
+>> References
+
+- B. Callaway and P. H. C. Sant'Anna (2021). Difference-in-differences with multiple time periods. *Journal of Econometrics* 225(2), 200-230. doi:10.1016/j.jeconom.2020.12.001
+- A. Goodman-Bacon (2021). Difference-in-differences with variation in treatment timing. *Journal of Econometrics* 225(2), 254-277. doi:10.1016/j.jeconom.2021.03.014
+- L. Sun and S. Abraham (2021). Estimating dynamic treatment effects in event studies with heterogeneous treatment effects. *Journal of Econometrics* 225(2), 175-199. doi:10.1016/j.jeconom.2020.09.006
+- C. de Chaisemartin and X. D'Haultfoeuille (2020). Two-way fixed effects estimators with heterogeneous treatment effects. *American Economic Review* 110(9), 2964-2996. doi:10.1257/aer.20181169

@@ -1,0 +1,146 @@
+//? Title: Estimate population totals and means with Horvitz–Thompson and Hájek weighting
+//? Exports: both
+//? Lang: en
+
+> Undo unequal selection probabilities by weighting each sampled unit by how many units it represents
+
+Surveys often sample units with unequal probabilities on purpose. Examples are selecting large businesses with higher probability, oversampling small regions, or sampling with probability proportional to a size measure (PPS). The sample then over-represents high-probability units, and its plain mean is biased for the population mean. If unit \(i\) was included with probability \(\pi_i\), it stands for \(1/\pi_i\) population units, which gives two estimators.
+- The Horvitz–Thompson (HT) total \(\hat t_y=\sum_{i\in s}y_i/\pi_i\) is exactly design-unbiased. Dividing by the known population size \(N\) gives the HT mean.
+- The Hájek mean \(\hat t_y/\hat N\), with \(\hat N=\sum_{i\in s}1/\pi_i\), divides by the *estimated* population size. It is a ratio estimator: slightly biased, but its errors in the numerator and denominator cancel.
+
+Which one is better depends on how \(y\) relates to \(\pi\). HT is precise when \(y_i/\pi_i\) is nearly constant, which is the point of PPS sampling. If \(y\) does not grow with \(\pi\), then \(y_i/\pi_i\) varies as much as the weights do, and the HT total also inherits any randomness in the sample size.
+
+The example draws fixed-size PPS samples of \(n=200\) from \(N=2000\) units, with \(\pi_i\propto x_i\) for a lognormal size \(x\). Units whose \(\pi_i\) would exceed 1 are taken with certainty and the rest are rescaled. Selection is randomized systematic: random order, cumulative \(\pi\), random start. Over 2000 samples, the unweighted, HT and Hájek means are compared in two populations:
+- \(y=2x+\varepsilon\), proportional to size;
+- \(y\sim N(50,10^2)\), unrelated to size.
+
+```{cpp, id=ht, file="figures/horvitz_thompson.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/survey.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+
+int main() {
+    std::mt19937_64 random(8);
+    const std::size_t N = 2000;
+    std::lognormal_distribution<double> size_dist(3, .8);
+    std::normal_distribution<double> noise(0, 1);
+    std::vector<double> x(N), pi(N), y_prop(N), y_flat(N);
+    for (std::size_t i = 0; i < N; ++i) {
+        x[i] = size_dist(random);
+        y_prop[i] = 2 * x[i] + 5 * noise(random);
+        y_flat[i] = 50 + 10 * noise(random);
+    }
+    // pi proportional to x with sum 200; units that would exceed 1 are taken with certainty.
+    std::vector<char> certain(N, 0);
+    for (bool changed = true; changed;) {
+        changed = false;
+        double rest = 0, slots = 200;
+        for (std::size_t i = 0; i < N; ++i)
+            certain[i] ? slots -= 1 : rest += x[i];
+        for (std::size_t i = 0; i < N; ++i) {
+            pi[i] = certain[i] ? 1.0 : slots * x[i] / rest;
+            if (pi[i] > 1 && !certain[i])
+                certain[i] = changed = true;
+        }
+    }
+    struct Population { std::string name; const std::vector<double>* y; };
+    const std::vector<Population> populations{{"y proportional to size", &y_prop},
+                                              {"y unrelated to size", &y_flat}};
+    std::println("| Population | Estimator | Bias | RMSE | 95% coverage |");
+    std::println("| --- | --- | ---: | ---: | ---: |");
+    std::vector<double> nhat, ht_flat, hajek_flat;
+    std::vector<std::size_t> order(N);
+    for (std::size_t i = 0; i < N; ++i)
+        order[i] = i;
+    const int reps = 2000;
+    std::uniform_real_distribution<double> u(0, 1);
+    for (const auto& pop : populations) {
+        const auto& y = *pop.y;
+        double mu = 0;
+        for (const double v : y)
+            mu += v / N;
+        double bias[3]{}, mse[3]{}, cover[3]{};
+        for (int r = 0; r < reps; ++r) {
+            // Randomized systematic PPS: exactly 200 units.
+            std::ranges::shuffle(order, random);
+            std::vector<double> ys, ps;
+            double cumulative = 0, next = u(random);
+            for (const std::size_t i : order) {
+                cumulative += pi[i];
+                if (cumulative > next) {
+                    ys.push_back(y[i]);
+                    ps.push_back(pi[i]);
+                    next += 1;
+                }
+            }
+            const auto e = dm::stats::horvitz_thompson(ys, ps, {.population_size = double(N)});
+            double naive = 0, naive_ss = 0;
+            for (const double v : ys)
+                naive += v / ys.size();
+            for (const double v : ys)
+                naive_ss += (v - naive) * (v - naive);
+            const double naive_se = std::sqrt(naive_ss / (ys.size() - 1) / ys.size());
+            const dm::stats::SurveyEstimate est[3]{
+                {naive, naive_se, naive - 1.96 * naive_se, naive + 1.96 * naive_se},
+                *e.ht_mean, e.hajek_mean};
+            for (int k = 0; k < 3; ++k) {
+                bias[k] += (est[k].estimate - mu) / reps;
+                mse[k] += (est[k].estimate - mu) * (est[k].estimate - mu) / reps;
+                cover[k] += est[k].lower <= mu && mu <= est[k].upper;
+            }
+            if (pop.y == &y_flat && r < 600) {
+                nhat.push_back(e.estimated_population_size / N);
+                ht_flat.push_back(e.ht_mean->estimate);
+                hajek_flat.push_back(e.hajek_mean.estimate);
+            }
+        }
+        const char* names[3]{"Unweighted sample mean", "Horvitz–Thompson mean", "Hájek mean"};
+        for (int k = 0; k < 3; ++k)
+            std::println("| {} | {} | {:+.2f} | {:.2f} | {:.3f} |", pop.name, names[k],
+                         bias[k], std::sqrt(mse[k]), cover[k] / reps);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.points(nhat, ht_flat, "Horvitz–Thompson mean", {176, 72, 43}, 2.5)
+        .points(nhat, hajek_flat, "Hájek mean", {26, 90, 147}, 2.5)
+        .title("Mean of y unrelated to size, by estimated N")
+        .x_label("Estimated population size / true N")
+        .y_label("Estimated mean")
+        .size(700, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/horvitz_thompson.svg");
+}
+```
+// result_begin: markdown
+| Population | Estimator | Bias | RMSE | 95% coverage |
+| --- | --- | ---: | ---: | ---: |
+| y proportional to size | Unweighted sample mean | +48.17 | 48.36 | 0.000 |
+| y proportional to size | Horvitz–Thompson mean | -0.02 | 0.49 | 0.959 |
+| y proportional to size | Hájek mean | +0.22 | 3.60 | 0.955 |
+| y unrelated to size | Unweighted sample mean | +0.05 | 0.65 | 0.964 |
+| y unrelated to size | Horvitz–Thompson mean | -0.03 | 3.47 | 0.937 |
+| y unrelated to size | Hájek mean | +0.01 | 0.95 | 0.946 |
+\image(figures/horvitz_thompson.svg)
+// result_end
+\caption(Horvitz–Thompson (orange) and Hájek (blue) estimates of the mean of a variable unrelated to the size measure, for 600 fixed-size PPS samples, plotted against the sample's estimated population size divided by the true N.)
+\alttext(The orange points fall along a rising straight line from about 42 to 62 as estimated N over N goes from about 0.85 to 1.3. The blue points form a narrow horizontal band near 50 across the same range.)
+
+The unweighted mean is badly biased when \(y\) grows with size (+48), because large units are over-sampled. Both weighted means remove the bias, but their precision differs sharply between the two populations.
+- When \(y\) is proportional to size, \(y_i/\pi_i\) is almost constant, so every sample gives nearly the same HT total. Its RMSE (0.49) is seven times smaller than the Hájek mean's (3.60). Dividing by \(\hat N\) adds the noise of \(\hat N\) to an estimator that had very little.
+- When \(y\) is unrelated to size, HT's RMSE is 3.5 times the Hájek mean's. The HT total is roughly \(\bar y\hat N\), so it rises and falls with \(\hat N\), as the figure shows. The Hájek ratio cancels that variation. In this population, the unweighted mean happens to be unbiased and is the most precise.
+
+In practice a survey measures many variables with one set of weights, and most of them are not proportional to the size measure. That is why design-based software reports Hájek means by default (`svymean`), and reserves HT for totals. A model-assisted estimator (calibration, GREG) can get the best of both, using \(x\) to remove what the weights cannot.
+
+The with-replacement standard errors gave 94–96% coverage under this fixed-size design. They ignore the finite-population correction, which is small here (\(n/N=0.1\)). They also assume a fixed sample size. Under Poisson sampling, where each unit is included independently and \(n\) is random, an HT total of a size-proportional \(y\) also varies with \(n\), and the with-replacement formula misses it. In a check with this population, its coverage fell to about 22%. Exact variances for such designs need the second-order inclusion probabilities, which is the next estimator in this series.
+
+The total, Hájek mean, Horvitz–Thompson mean and intervals match `survey::svytotal` and `svymean` with `svydesign(ids = ~1, probs = ~p)` on the `apistrat` schools data.
+
+[Horvitz and Thompson (1952)|https://doi.org/10.1080/01621459.1952.10483446] · [Särndal, Swensson and Wretman (1992)|https://doi.org/10.1007/978-1-4612-4378-6]

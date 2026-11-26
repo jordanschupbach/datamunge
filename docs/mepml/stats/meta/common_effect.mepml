@@ -1,0 +1,163 @@
+//? Title: Common-effect meta-analysis
+//? Exports: both
+//? Lang: en
+
+> Pool study estimates by inverse-variance weighting, read Cochran's Q and I² to judge whether one common effect is plausible, and see how fast the common-effect interval loses coverage when it is not
+
+A meta-analysis combines effect estimates \(y_i\) from \(k\) studies, each with a known sampling variance \(v_i\). The common-effect (also called fixed-effect or equal-effects) model assumes every study estimates the same true effect \(\theta\). The best linear unbiased estimate is then the inverse-variance weighted mean
+
+\[\hat\theta=\frac{\sum w_iy_i}{\sum w_i},\qquad w_i=\frac1{v_i},\qquad \operatorname{SE}(\hat\theta)=\Big(\sum w_i\Big)^{-1/2}.\]
+
+Large, precise studies dominate the weights. Cochran's \(Q=\sum w_i(y_i-\hat\theta)^2\) is approximately \(\chi^2_{k-1}\) when the assumption holds, which gives a test of homogeneity. Two descriptive measures of how much the estimates vary beyond sampling error follow from it:
+
+- \(I^2=\max(0,(Q-df)/Q)\), the share of total variability due to heterogeneity;
+- \(H^2=Q/df\).
+
+`common_effect_meta` returns the pooled estimate, its standard error, the Wald test and interval, the normalised weights, \(Q\) with its p-value, \(I^2\) (in percent) and \(H^2\). The tests reproduce `metafor::rma(yi, vi, method = "EE")` to \(10^{-10}\) on the BCG vaccine trials and on a homogeneous example. They also check the weights and a 90% interval.
+
+The example pools the log risk ratios of tuberculosis in the 13 BCG vaccine trials (Colditz et al., 1994). The simulation then measures the coverage of the 95% interval for the average effect \(\mu\) when the true study effects vary as \(\theta_i\sim N(\mu,\tau^2)\). It also records the mean \(I^2\) and the power of the Q test. Each study variance is drawn uniformly from \([0.01, 0.2]\), and there are 4000 meta-analyses per setting.
+
+```{cpp, id=fe, file="figures/common_effect.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/meta_analysis.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+
+struct Trial {
+    const char* name;
+    double tpos, tneg, cpos, cneg;  // vaccinated and control cases / non-cases
+};
+
+int main() {
+    const std::vector<Trial> bcg{{"Aronson 1948", 4, 119, 11, 128},
+                                 {"Ferguson & Simes 1949", 6, 300, 29, 274},
+                                 {"Rosenthal 1960", 3, 228, 11, 209},
+                                 {"Hart & Sutherland 1977", 62, 13536, 248, 12619},
+                                 {"Frimodt-Moller 1973", 33, 5036, 47, 5761},
+                                 {"Stein & Aronson 1953", 180, 1361, 372, 1079},
+                                 {"Vandiviere 1973", 8, 2537, 10, 619},
+                                 {"TPT Madras 1980", 505, 87886, 499, 87892},
+                                 {"Coetzee & Berjak 1968", 29, 7470, 45, 7232},
+                                 {"Rosenthal 1961", 17, 1699, 65, 1600},
+                                 {"Comstock 1974", 186, 50448, 141, 27197},
+                                 {"Comstock & Webster 1969", 5, 2493, 3, 2338},
+                                 {"Comstock 1976", 27, 16886, 29, 17825}};
+    // Log risk ratio and its delta-method variance.
+    std::vector<double> y, v;
+    for (const auto& t : bcg) {
+        const double n1 = t.tpos + t.tneg, n0 = t.cpos + t.cneg;
+        y.push_back(std::log((t.tpos / n1) / (t.cpos / n0)));
+        v.push_back(1 / t.tpos - 1 / n1 + 1 / t.cpos - 1 / n0);
+    }
+    const auto m = dm::stats::common_effect_meta(y, v);
+    std::println("BCG trials: pooled log risk ratio {:.4f} (SE {:.4f}), risk ratio {:.3f} "
+                 "[{:.3f}, {:.3f}]; Q = {:.1f} on {} df (p = {:.1e}), I2 = {:.1f}%, "
+                 "H2 = {:.2f}. "
+                 "The two largest weights are {:.1f}% (TPT Madras) and {:.1f}% "
+                 "(Stein & Aronson).\n",
+                 m.estimate, m.standard_error, std::exp(m.estimate), std::exp(m.lower),
+                 std::exp(m.upper), m.q, m.q_df, m.q_p_value, m.i2, m.h2,
+                 100 * m.weights[7], 100 * m.weights[5]);
+
+    dm::random::SplitMix64 rng(6);
+    std::println("| k | tau | Coverage of mu | Mean I2 (%) | Q test rejects at 5% |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    for (const double tau : {0.0, 0.1, 0.2, 0.4})
+        for (const std::size_t k : {5, 13, 40}) {
+            double cover = 0, i2 = 0, rej = 0;
+            const int reps = 4000;
+            for (int r = 0; r < reps; ++r) {
+                std::vector<double> yy(k), vv(k);
+                for (std::size_t i = 0; i < k; ++i) {
+                    vv[i] = 0.01 + 0.19 * rng.uniform01();
+                    yy[i] = 0.3 + tau * rng.normal() + std::sqrt(vv[i]) * rng.normal();
+                }
+                const auto f = dm::stats::common_effect_meta(yy, vv);
+                cover += f.lower <= 0.3 && 0.3 <= f.upper;
+                i2 += f.i2 / reps;
+                rej += f.q_p_value <= 0.05;
+            }
+            std::println("| {} | {} | {:.3f} | {:.1f} | {:.3f} |", k, tau, cover / reps, i2,
+                         rej / reps);
+        }
+
+    // Forest plot of the BCG trials with the common-effect diamond.
+    const std::size_t k = y.size();
+    std::vector<double> pos, lo, hi;
+    std::vector<std::string> labels;
+    for (std::size_t i = 0; i < k; ++i) {
+        pos.push_back(double(k - i) + 1);
+        lo.push_back(y[i] - 1.96 * std::sqrt(v[i]));
+        hi.push_back(y[i] + 1.96 * std::sqrt(v[i]));
+        labels.push_back(std::format("{} ({:.1f}%)", bcg[i].name, 100 * m.weights[i]));
+    }
+    pos.push_back(0.0);
+    labels.push_back("Common effect");
+    auto plot = dm::graphics::RPlot::create();
+    plot.forest(std::vector<double>(pos.begin(), pos.end() - 1), y, lo, hi, {60, 60, 60})
+        .polygon({m.lower, m.estimate, m.upper, m.estimate}, {0, 0.35, 0, -0.35},
+                 {26, 90, 147})
+        .abline_v(0.0, {150, 150, 150})
+        .abline_v(m.estimate, {26, 90, 147, 0.5})
+        .y_ticks(pos, labels)
+        .margins(205, 30, 60, 70)
+        .title("BCG vaccine trials: log risk ratio of tuberculosis")
+        .y_label("")
+        .x_label("Log risk ratio (95% interval); weight in parentheses")
+        .size(720, 520);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/common_effect.svg");
+}
+```
+// result_begin: markdown
+BCG trials: pooled log risk ratio -0.4303 (SE 0.0405), risk ratio 0.650 [0.601, 0.704]; Q = 152.2 on 12 df (p = 2.0e-26), I2 = 92.1%, H2 = 12.69. The two largest weights are 41.4% (TPT Madras) and 23.8% (Stein & Aronson).
+
+| k | tau | Coverage of mu | Mean I2 (%) | Q test rejects at 5% |
+| ---: | ---: | ---: | ---: | ---: |
+| 5 | 0 | 0.945 | 13.1 | 0.050 |
+| 13 | 0 | 0.948 | 10.2 | 0.047 |
+| 40 | 0 | 0.950 | 7.2 | 0.054 |
+| 5 | 0.1 | 0.926 | 17.5 | 0.081 |
+| 13 | 0.1 | 0.910 | 16.2 | 0.107 |
+| 40 | 0.1 | 0.910 | 13.7 | 0.170 |
+| 5 | 0.2 | 0.834 | 26.5 | 0.176 |
+| 13 | 0.2 | 0.834 | 30.3 | 0.331 |
+| 40 | 0.2 | 0.816 | 34.6 | 0.688 |
+| 5 | 0.4 | 0.651 | 49.6 | 0.510 |
+| 13 | 0.4 | 0.605 | 62.3 | 0.858 |
+| 40 | 0.4 | 0.585 | 68.5 | 0.998 |
+\image(figures/common_effect.svg)
+// result_end
+
+BCG vaccination reduces the risk of tuberculosis: the pooled risk ratio is 0.65 [0.60, 0.70]. The pooled number is not a credible summary of the trials, though. \(Q=152\) on 12 degrees of freedom (\(p\approx2\times10^{-26}\)) and \(I^2=92\%\): almost all the spread in the forest plot is real variation between trials, not sampling error. The individual risk ratios range from about 0.2 to above 1. Inverse-variance weighting also gives 41% of the weight to one trial (TPT Madras, risk ratio about 1.0) and 65% to two trials. The common-effect estimate is largely a statement about those two trials.
+
+The simulation shows what heterogeneity does to inference about the average effect \(\mu\):
+
+- Without heterogeneity the interval covers 95% at every \(k\), and the Q test holds its 5% size. \(I^2\) still averages 7–13%, because it is truncated at 0 and so biased upward when the true value is 0.
+- With moderate heterogeneity (\(\tau=0.2\), about the size of a typical study's standard error), coverage falls to 82–83%.
+- At \(\tau=0.4\), coverage falls to 59–65%.
+
+Adding studies does not help: the interval narrows around the weighted mean while ignoring the between-study variance. With few studies the Q test is weak, rejecting only 18% of the time at \(k=5\) and \(\tau=0.2\). A non-significant Q therefore does not justify the common-effect model.
+
+>> Practical guidance
+
+- Use the common-effect model when the studies are close replicates (same population, intervention and outcome definition), or when the inferential target is explicitly the weighted average of the included studies, not a population of studies.
+- Always report \(Q\), its p-value and \(I^2\) with the pooled estimate. Treat \(I^2\) as descriptive: it depends on study precision as well as on the size of the between-study variance.
+- Do not choose between common- and random-effects models by the Q test. Its low power with few studies makes that a pre-test that inherits the common-effect model's undercoverage.
+- Look at the weights. When one or two studies carry most of the weight, say so, and check that the conclusion does not rest on them alone.
+
+>> References
+
+- W. G. Cochran (1954). The combination of estimates from different experiments. *Biometrics* 10(1), 101-129. doi:10.2307/3001666
+- J. P. T. Higgins and S. G. Thompson (2002). Quantifying heterogeneity in a meta-analysis. *Statistics in Medicine* 21(11), 1539-1558. doi:10.1002/sim.1186
+- G. A. Colditz, T. F. Brewer, C. S. Berkey, et al. (1994). Efficacy of BCG vaccine in the prevention of tuberculosis: meta-analysis of the published literature. *JAMA* 271(9), 698-702. doi:10.1001/jama.1994.03510330076038
+- W. Viechtbauer (2010). Conducting meta-analyses in R with the metafor package. *Journal of Statistical Software* 36(3), 1-48. doi:10.18637/jss.v036.i03
+- M. Borenstein, L. V. Hedges, J. P. T. Higgins and H. R. Rothstein (2009). *Introduction to Meta-Analysis*. Wiley. doi:10.1002/9780470743386

@@ -1,0 +1,127 @@
+//? Title: Bound a population fraction with statistical tolerance limits
+//? Exports: both
+//? Lang: en
+
+> Cover a fraction of the population, not just its mean
+
+A confidence interval for a mean says where the population average lies. A tolerance interval says where a stated fraction \(P\) of individual values lies. It does so with confidence \(\gamma\) that the interval really contains at least that fraction. Such intervals are used to set specification limits and to check whether a process meets them.
+
+`normal_tolerance_interval` returns \(\bar x\pm ks\), where the factor \(k\) is exact for a normal population. One-sided factors are noncentral \(t\) quantiles. The two-sided factor solves the exact coverage equation by numerical integration. `nonparametric_tolerance_interval` uses order statistics, whose coverage has a beta distribution for any continuous population. This needs larger samples. For 90% content with 95% confidence, a one-sided bound needs at least 29 observations and a two-sided interval at least 46. With fewer, the result reports `feasible = false` and infinite limits.
+
+The example sets 90%/95% limits for 60 fill weights. It then simulates 4000 samples of 60 from a normal and from a lognormal population. For each sample it computes the exact population fraction below the 90%/95% upper bound, called its content. The estimated confidence is the proportion of samples whose content is at least 0.9.
+
+```{cpp, id=tolerance-limits, file="figures/tolerance_content.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/tolerance_limits.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::ToleranceSide;
+
+double phi(double x) { return .5 * std::erfc(-x / std::numbers::sqrt2); }
+
+int main() {
+    std::mt19937_64 random(30);
+    std::normal_distribution<double> fill(500, 2.5);
+    std::vector<double> grams(60);
+    for (auto& v : grams)
+        v = fill(random);
+    std::println("| Limits | Lower | Upper | Factor or ranks | Confidence |");
+    std::println("| --- | ---: | ---: | --- | ---: |");
+    const auto two = dm::stats::normal_tolerance_interval(grams, .9, .95);
+    const auto howe = dm::stats::normal_tolerance_interval(grams, .9, .95, ToleranceSide::two_sided,
+                                                           dm::stats::NormalToleranceMethod::howe);
+    const auto low = dm::stats::normal_tolerance_interval(grams, .9, .95, ToleranceSide::lower);
+    const auto order = dm::stats::nonparametric_tolerance_interval(grams, .9, .95);
+    const auto order_low = dm::stats::nonparametric_tolerance_interval(grams, .9, .95,
+                                                                       ToleranceSide::lower);
+    std::println("| Normal, two-sided exact | {:.2f} | {:.2f} | k = {:.4f} | 0.95 |", two.lower,
+                 two.upper, two.factor);
+    std::println("| Normal, two-sided Howe | {:.2f} | {:.2f} | k = {:.4f} | ≈0.95 |", howe.lower,
+                 howe.upper, howe.factor);
+    std::println("| Normal, lower bound | {:.2f} | ∞ | k = {:.4f} | 0.95 |", low.lower, low.factor);
+    std::println("| Order statistics, two-sided | {:.2f} | {:.2f} | {} and {} | {:.4f} |", order.lower,
+                 order.upper, order.lower_rank, order.upper_rank, order.achieved_confidence);
+    std::println("| Order statistics, lower bound | {:.2f} | ∞ | {} | {:.4f} |\n", order_low.lower,
+                 order_low.lower_rank, order_low.achieved_confidence);
+
+    // Content of each upper bound, the true P(X <= U), for normal and lognormal populations.
+    std::lognormal_distribution<double> skewed(0, .8);
+    std::normal_distribution<double> standard;
+    std::vector<double> normal_content[2], order_content[2];
+    const int replicates = 4000;
+    for (int law = 0; law < 2; ++law) {
+        const auto cdf = [&](double x) {
+            return law == 0 ? phi(x) : (x <= 0 ? 0.0 : phi(std::log(x) / .8));
+        };
+        for (int r = 0; r < replicates; ++r) {
+            std::vector<double> x(60);
+            for (auto& v : x)
+                v = law == 0 ? standard(random) : skewed(random);
+            const auto a = dm::stats::normal_tolerance_interval(x, .9, .95, ToleranceSide::upper);
+            const auto b = dm::stats::nonparametric_tolerance_interval(x, .9, .95,
+                                                                       ToleranceSide::upper);
+            normal_content[law].push_back(cdf(a.upper));
+            order_content[law].push_back(cdf(b.upper));
+        }
+    }
+    std::println("| Population | Method | Confidence that content ≥ 0.9 | Median content |");
+    std::println("| --- | --- | ---: | ---: |");
+    for (int law = 0; law < 2; ++law)
+        for (int method = 0; method < 2; ++method) {
+            auto c = method == 0 ? normal_content[law] : order_content[law];
+            double hit = 0;
+            for (const double v : c)
+                hit += v >= .9;
+            std::ranges::nth_element(c, c.begin() + c.size() / 2);
+            std::println("| {} | {} | {:.3f} | {:.3f} |", law ? "Lognormal" : "Normal",
+                         method ? "Order statistics" : "Normal theory", hit / replicates,
+                         c[c.size() / 2]);
+        }
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.ecdf(normal_content[0], "Normal theory, normal data", {26, 90, 147})
+        .ecdf(normal_content[1], "Normal theory, lognormal data", {176, 72, 43})
+        .ecdf(order_content[1], "Order statistics, lognormal data", {64, 140, 80})
+        .line({.9, .9}, {0, 1}, "Target fraction 0.9", {150, 154, 160}, 1)
+        .title("Population content of 90%/95% upper tolerance bounds, n = 60")
+        .x_label("Population fraction below the bound")
+        .y_label("Cumulative proportion of samples")
+        .x_limits(.75, 1)
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/tolerance_content.svg");
+}
+```
+// result_begin: markdown
+| Limits | Lower | Upper | Factor or ranks | Confidence |
+| --- | ---: | ---: | --- | ---: |
+| Normal, two-sided exact | 495.26 | 505.04 | k = 1.9599 | 0.95 |
+| Normal, two-sided Howe | 495.26 | 505.04 | k = 1.9578 | ≈0.95 |
+| Normal, lower bound | 496.13 | ∞ | k = 1.6089 | 0.95 |
+| Order statistics, two-sided | 495.52 | 507.15 | 1 and 60 | 0.9862 |
+| Order statistics, lower bound | 495.89 | ∞ | 2 | 0.9862 |
+
+| Population | Method | Confidence that content ≥ 0.9 | Median content |
+| --- | --- | ---: | ---: |
+| Normal | Normal theory | 0.950 | 0.945 |
+| Normal | Order statistics | 0.987 | 0.972 |
+| Lognormal | Normal theory | 0.818 | 0.932 |
+| Lognormal | Order statistics | 0.986 | 0.973 |
+\image(figures/tolerance_content.svg)
+// result_end
+\caption(Distribution of the population content of 90%/95% upper tolerance bounds over 4000 samples of 60. The target is that at most 5% of samples fall left of 0.9.)
+\alttext(For normal data the normal-theory curve crosses 0.9 at about 5 percent. For lognormal data the normal-theory curve crosses at about 18 percent, while the order-statistic curve stays near 1 percent.)
+
+The exact two-sided factor for \(n=60\) is 1.9599 and the one-sided factor is 1.6089. Both match `K.factor` in the R tolerance package. Howe's approximation is within 0.2% of the exact factor. The order-statistic interval is the sample range. It attains 98.6% confidence, more than requested, because the binomial confidence can only take discrete values.
+
+For normal data, the normal-theory upper bound covers 90% of the population in 95.0% of samples, as designed. For right-skewed lognormal data the same bound attains only 81.8% confidence because the normal model understates the upper tail. The order-statistic bound keeps its guarantee for both populations. It is more conservative, with a median content of 0.97 rather than 0.95.
+
+[Odeh (1978)|https://doi.org/10.1080/03610917808812070] · [Howe (1969)|https://doi.org/10.1080/01621459.1969.10500999] · [Wilks (1941)|https://doi.org/10.1214/aoms/1177731788] · [Krishnamoorthy and Mathew (2009)|https://doi.org/10.1002/9780470473900] · [R tolerance|https://cran.r-project.org/package=tolerance]

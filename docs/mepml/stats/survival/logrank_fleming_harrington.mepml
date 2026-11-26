@@ -1,0 +1,133 @@
+//? Title: Compare survival curves with log-rank and Fleming–Harrington tests
+//? Exports: both
+//? Lang: en
+
+> Choose where in follow-up a survival test should look for a difference
+
+The log-rank test compares groups one event time at a time. At each distinct event time \(t\), the \(d\) deaths are shared among the \(n\) subjects at risk, and a group with \(n_g\) of them is expected to contribute \(d\,n_g/n\) deaths if all groups share one hazard. Summing observed minus expected deaths over event times gives a vector \(O-E\). Its hypergeometric covariance \(V\) gives the chi-square statistic \((O-E)^\top V^{-}(O-E)\) on \(G-1\) degrees of freedom. Strata are handled by forming risk sets within each stratum and summing \(O-E\) and \(V\) across strata.
+
+Every event time counts equally in the log-rank sum, which makes it the most powerful rank test when hazards are proportional. Harrington and Fleming weight each time by \(w(t)=\hat S(t-)^\rho\{1-\hat S(t-)\}^\gamma\), where \(\hat S\) is the pooled Kaplan–Meier estimate just before \(t\):
+- \(G(0,0)\) is the log-rank test.
+- \(G(1,0)\) is the Peto–Peto–Prentice generalized Wilcoxon test, which emphasizes early differences.
+- \(G(0,1)\) emphasizes late differences, such as a treatment whose effect is delayed.
+- \(G(1,1)\) emphasizes the middle of follow-up.
+
+The example compares the size and power of these four weights in three two-arm trials of 150 subjects per arm, with control hazard 1 and administrative censoring at time 2. The treatment arm has a hazard ratio of 0.6 throughout, of 0.4 until time 0.5 and 1 afterwards (early effect), or of 1 until 0.5 and 0.4 afterwards (delayed effect).
+
+```{cpp, id=logrank, file="figures/logrank_power.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/survival_tests.hpp>
+
+#include <algorithm>
+#include <array>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::SurvivalGroupTestOptions;
+using dm::stats::SurvivalObservation;
+
+// Piecewise-exponential lifetime: hazard h1 before time c, h2 afterwards.
+double lifetime(double h1, double h2, double c, std::mt19937_64& random) {
+    const double e = std::exponential_distribution<double>(1)(random);
+    return e < h1 * c ? e / h1 : c + (e - h1 * c) / h2;
+}
+
+struct Scenario {
+    std::string name;
+    double early_ratio, late_ratio;
+};
+
+struct Trial {
+    std::vector<SurvivalObservation> records;
+    std::vector<int> arm;
+};
+
+Trial simulate(std::size_t per_arm, const Scenario& s, std::mt19937_64& random) {
+    Trial trial;
+    for (int arm = 0; arm < 2; ++arm)
+        for (std::size_t i = 0; i < per_arm; ++i) {
+            const double t = arm == 0 ? lifetime(1, 1, .5, random)
+                                      : lifetime(s.early_ratio, s.late_ratio, .5, random);
+            trial.records.push_back({std::min(t, 2.0), t <= 2.0});
+            trial.arm.push_back(arm);
+        }
+    return trial;
+}
+
+const std::array<SurvivalGroupTestOptions, 4> weights{
+    SurvivalGroupTestOptions{}, {.rho = 1}, {.gamma = 1}, {.rho = 1, .gamma = 1}};
+
+std::array<double, 4> rejection(std::size_t per_arm, const Scenario& s, int reps,
+                                std::mt19937_64& random) {
+    std::array<double, 4> rate{};
+    for (int r = 0; r < reps; ++r) {
+        const auto trial = simulate(per_arm, s, random);
+        for (std::size_t k = 0; k < weights.size(); ++k)
+            rate[k] += dm::stats::survival_group_test(trial.records, trial.arm, weights[k])
+                           .p_value < .05;
+    }
+    for (double& v : rate)
+        v /= reps;
+    return rate;
+}
+
+int main() {
+    std::mt19937_64 random(2024);
+    const std::vector<Scenario> scenarios{{"No difference (size)", 1, 1},
+                                          {"Proportional, HR 0.6", .6, .6},
+                                          {"Early effect", .4, 1},
+                                          {"Delayed effect", 1, .4}};
+    std::println("| Scenario | Log-rank G(0,0) | Peto G(1,0) | Late G(0,1) | Middle G(1,1) |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (const auto& s : scenarios) {
+        const auto rate = rejection(150, s, 2000, random);
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", s.name, rate[0], rate[1],
+                     rate[2], rate[3]);
+    }
+
+    // Power against sample size under the delayed effect.
+    std::vector<double> sizes;
+    std::array<std::vector<double>, 4> power;
+    for (std::size_t n = 25; n <= 300; n += 25) {
+        const auto rate = rejection(n, scenarios[3], 1000, random);
+        sizes.push_back(double(n));
+        for (std::size_t k = 0; k < 4; ++k)
+            power[k].push_back(rate[k]);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(sizes, power[0], "Log-rank G(0,0)", {26, 90, 147}, 2)
+        .line(sizes, power[1], "Peto G(1,0)", {176, 72, 43}, 2)
+        .line(sizes, power[2], "Late G(0,1)", {46, 139, 87}, 2)
+        .line(sizes, power[3], "Middle G(1,1)", {120, 81, 169}, 2)
+        .title("Power under a delayed treatment effect")
+        .x_label("Subjects per arm")
+        .y_label("Rejection rate at 5%")
+        .ylim(0, 1.3)
+        .size(700, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/logrank_power.svg");
+}
+```
+// result_begin: markdown
+| Scenario | Log-rank G(0,0) | Peto G(1,0) | Late G(0,1) | Middle G(1,1) |
+| --- | ---: | ---: | ---: | ---: |
+| No difference (size) | 0.052 | 0.049 | 0.057 | 0.045 |
+| Proportional, HR 0.6 | 0.980 | 0.964 | 0.931 | 0.960 |
+| Early effect | 0.669 | 0.909 | 0.113 | 0.289 |
+| Delayed effect | 0.905 | 0.560 | 0.991 | 0.959 |
+\image(figures/logrank_power.svg)
+// result_end
+\caption(Power of four Fleming–Harrington weights at the 5% level under a delayed treatment effect (hazard ratio 1 until time 0.5, then 0.4), by subjects per arm. 1000 trials per point.)
+\alttext(Four rising curves. The green late-weighted G(0,1) curve is highest, followed closely by the purple G(1,1) curve and the blue log-rank curve. The orange Peto G(1,0) curve is clearly lowest throughout and is still well below 1 at 300 subjects per arm.)
+
+All four weights hold the 5% level when the arms do not differ (4.5–5.7% over 2000 trials, within simulation error). Under proportional hazards the log-rank test is the most powerful, as theory says, but the other weights lose only a few points. The non-proportional scenarios are different. With an early effect, the Peto weight reaches 91% power against 67% for the log-rank, and the late weight is almost useless at 11%. With a delayed effect the ordering reverses: the late weight reaches 99%, the log-rank 91% and the Peto weight 56%.
+
+A weight tuned to the wrong part of follow-up can lose most of the power, while the log-rank test is never the worst choice. That asymmetry, and the need to fix the weight before seeing the data, is why trials prespecify the log-rank test unless there is a mechanistic reason to expect a delayed effect, as with some immunotherapies. Maximum-combination tests that take the best of several weights with a multiplicity correction are a compromise.
+
+Observed and expected counts, their covariance and the chi-square match R's `survdiff` for three groups with \(\rho\in\{0,0.5,1\}\) and with strata. \(\gamma>0\), which `survdiff` does not offer, is checked against direct two-group sums.
+
+[Harrington and Fleming (1982)|https://doi.org/10.1093/biomet/69.3.553] · [Mantel (1966)|https://pubmed.ncbi.nlm.nih.gov/5910392/]

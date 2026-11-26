@@ -1,0 +1,154 @@
+//? Title: Mediation by g-computation
+//? Exports: both
+//? Lang: en
+
+> Split a treatment effect into the part that runs through a mediator and the part that does not, using the mediation formula over fitted mediator and outcome models
+
+Mediation analysis asks how a treatment works: a job-training programme may reduce depression partly by increasing job-search confidence, or a drug may lower risk partly through blood pressure. With \(Y(a,m)\) the potential outcome under treatment \(a\) and mediator \(m\), and \(M(a)\) the mediator under treatment \(a\), the total effect splits into a natural direct effect and a natural indirect effect:
+
+\[
+\underbrace{E[Y(1,M(1))]-E[Y(0,M(0))]}_{\text{total}}
+=\underbrace{E[Y(1,M(0))]-E[Y(0,M(0))]}_{\text{natural direct}}
++\underbrace{E[Y(1,M(1))]-E[Y(1,M(0))]}_{\text{natural indirect}}.
+\]
+
+The cross-world quantity \(E[Y(1,M(0))]\) is never observed for anyone. Under sequential ignorability (no unmeasured treatment–outcome, treatment–mediator or mediator–outcome confounding given covariates \(C\), and no mediator–outcome confounder affected by treatment), it is identified by the mediation formula
+
+\[
+E[Y(a,M(a'))]=E_C\!\int E[Y\mid A=a,M=m,C]\,dF(m\mid A=a',C).
+\]
+
+`mediation_analysis` fits a linear or logistic mediator model and a linear or logistic outcome model (with an optional treatment-by-mediator term), and evaluates this formula exactly. It sums over a binary mediator, uses the closed form for a linear mediator and outcome, and uses Gauss–Hermite quadrature (`normal_gauss_hermite`, now a reusable core rule) for a normal mediator with a logistic outcome. It reports both versions of each effect, the indirect effect at the control and treated levels \(\delta(0),\delta(1)\) and the direct effect at the control and treated mediator \(\zeta(0),\zeta(1)\), together with the total and the proportion mediated, using a nonparametric bootstrap for intervals. On the JOBS II data from R's `mediation` package, the tests reproduce that package where its estimates are exact, and an exact R g-formula for logistic outcomes and binary mediators.
+
+The classical alternative is the product of coefficients: the treatment effect on the mediator times the mediator effect on the outcome, from models without interaction. It equals the indirect effect only when the mediator's effect on the outcome does not depend on treatment. The simulation has 500 units with a covariate \(C\), treatment \(A\) depending on \(C\), mediator \(M=0.5+0.8A+0.5C+0.6U+\varepsilon_M\), and outcome \(Y=0.2+0.4A+0.6M+0.5AM+0.4C+\kappa U+\varepsilon_Y\). Here \(U\) is an unmeasured mediator–outcome confounder. With \(\kappa=0\) the true natural indirect effect is \((0.6+0.5)\times0.8=0.88\) and the natural direct effect is \(0.4+0.5\,E[M(0)]=0.65\). The table compares, over 1000 samples, the product of coefficients with g-computation with the interaction term, using 199 bootstrap resamples for the intervals. The figure shows the bias of the g-computation indirect effect as the unmeasured confounding \(\kappa\) grows.
+
+```{cpp, id=mediation, file="figures/mediation.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/causal/mediation.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+struct Sample {
+    std::vector<double> y, a, m;
+    Matrix c;
+};
+
+Sample draw(dm::random::SplitMix64& rng, std::size_t n, double kappa) {
+    Sample s{{}, {}, {}, Matrix(n, 1)};
+    for (std::size_t i = 0; i < n; ++i) {
+        const double c = rng.normal(), u = rng.normal();
+        const double a = rng.uniform01() < 1 / (1 + std::exp(-0.4 * c));
+        const double m = 0.5 + 0.8 * a + 0.5 * c + 0.6 * u + rng.normal();
+        s.c(i, 0) = c;
+        s.a.push_back(a);
+        s.m.push_back(m);
+        s.y.push_back(0.2 + 0.4 * a + 0.6 * m + 0.5 * a * m + 0.4 * c + kappa * u + rng.normal());
+    }
+    return s;
+}
+
+int main() {
+    dm::random::SplitMix64 rng(1986);
+    const int reps = 1000;
+    struct Row {
+        std::string name;
+        double truth, sum = 0, sq = 0, cover = 0;
+    };
+    std::vector<Row> rows{{"Product of coefficients (indirect)", 0.88},
+                          {"g-computation, natural indirect delta(1)", 0.88},
+                          {"g-computation, natural direct zeta(0)", 0.65},
+                          {"g-computation, total effect", 1.53}};
+    const auto add = [](Row& r, const dm::causal::MediationEffect& e) {
+        r.sum += e.estimate - r.truth;
+        r.sq += (e.estimate - r.truth) * (e.estimate - r.truth);
+        r.cover += e.lower <= r.truth && r.truth <= e.upper;
+    };
+    for (int r = 0; r < reps; ++r) {
+        const Sample s = draw(rng, 500, 0.0);
+        const auto product = dm::causal::mediation_analysis(
+            s.y, s.a, s.m, s.c, {.interaction = false, .bootstrap = 199, .seed = 7u + r});
+        const auto g = dm::causal::mediation_analysis(
+            s.y, s.a, s.m, s.c, {.bootstrap = 199, .seed = 7u + r});
+        add(rows[0], product.indirect_treated);
+        add(rows[1], g.indirect_treated);
+        add(rows[2], g.direct_control);
+        add(rows[3], g.total);
+    }
+    std::println("| Estimator (n = 500) | Truth | Bias | SD | Bootstrap coverage |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (const auto& row : rows) {
+        const double bias = row.sum / reps;
+        std::println("| {} | {:.2f} | {:+.3f} | {:.3f} | {:.3f} |", row.name, row.truth, bias,
+                     std::sqrt(row.sq / reps - bias * bias), row.cover / reps);
+    }
+
+    // Unmeasured mediator-outcome confounding: U raises M (0.6) and Y (kappa).
+    const std::vector<double> kappa{0.0, 0.2, 0.4, 0.6, 0.8, 1.0};
+    std::vector<double> bias_indirect, bias_direct;
+    for (const double k : kappa) {
+        double bi = 0, bd = 0;
+        for (int r = 0; r < 400; ++r) {
+            const Sample s = draw(rng, 500, k);
+            const auto g = dm::causal::mediation_analysis(s.y, s.a, s.m, s.c);
+            bi += (g.indirect_treated.estimate - 0.88) / 400;
+            bd += (g.direct_control.estimate - 0.65) / 400;
+        }
+        bias_indirect.push_back(bi);
+        bias_direct.push_back(bd);
+    }
+    std::println("\nAt kappa = 1: bias of the indirect effect {:+.3f}, of the direct effect {:+.3f}.",
+                 bias_indirect.back(), bias_direct.back());
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(kappa, bias_indirect, "Natural indirect effect", {26, 90, 147}, 2)
+        .points(kappa, bias_indirect, "", {26, 90, 147}, 5)
+        .line(kappa, bias_direct, "Natural direct effect", {176, 72, 43}, 2)
+        .points(kappa, bias_direct, "", {176, 72, 43}, 5)
+        .abline_h(0, {120, 120, 120}, 1)
+        .y_limits(-0.45, 0.65)
+        .title("Bias from an unmeasured mediator-outcome confounder")
+        .x_label("Effect of the confounder on the outcome (kappa)")
+        .y_label("Bias of the g-computation estimate")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/mediation.svg");
+}
+```
+// result_begin: markdown
+| Estimator (n = 500) | Truth | Bias | SD | Bootstrap coverage |
+| --- | ---: | ---: | ---: | ---: |
+| Product of coefficients (indirect) | 0.88 | -0.202 | 0.097 | 0.468 |
+| g-computation, natural indirect delta(1) | 0.88 | -0.001 | 0.124 | 0.939 |
+| g-computation, natural direct zeta(0) | 0.65 | -0.000 | 0.106 | 0.948 |
+| g-computation, total effect | 1.53 | -0.001 | 0.126 | 0.947 |
+
+At kappa = 1: bias of the indirect effect +0.340, of the direct effect -0.358.
+\image(figures/mediation.svg)
+// result_end
+
+The product of coefficients is biased by −0.20, almost a quarter of the indirect effect, and its intervals cover only 47% of the time. The no-interaction outcome model forces a single mediator slope, which averages the slope among the untreated (0.6) and treated (1.1). Multiplying that average by the treatment's effect on the mediator gives neither \(\delta(0)=0.48\) nor \(\delta(1)=0.88\). g-computation with the interaction term recovers all the effects without bias, and its bootstrap intervals cover at close to the nominal 95% (93.9% to 94.8%). With an interaction, the natural indirect effect also depends on the reference level: here \(\delta(0)=0.48\) and \(\delta(1)=0.88\), and the direct effect differs in the same way. Which pair answers the scientific question has to be decided. For "how much of the effect of treatment would remain if the mediator were held at its untreated level", the decomposition is \(\zeta(0)+\delta(1)\).
+
+The figure shows the main threat. An unmeasured variable \(U\) that raises both the mediator and the outcome makes the mediator look more effective than it is, because part of its association with the outcome is due to \(U\). The indirect effect is then overstated, by 0.34 when \(\kappa=1\), and the direct effect is understated by almost the same amount. The total effect, which does not depend on the mediator–outcome assumption, stays nearly unbiased. Randomising the treatment does not protect against this: \(A\) here depends only on the measured \(C\), and the bias comes entirely from the mediator–outcome relation, which randomisation of \(A\) leaves confounded. The decomposition is only as credible as the assumption that all mediator–outcome confounders are measured.
+
+>> Practical guidance
+
+- State the four identification assumptions explicitly. Treatment randomisation secures only the treatment–mediator and treatment–outcome parts, so measure and adjust for confounders of the mediator–outcome relation.
+- Allow a treatment-by-mediator interaction unless there is a strong reason not to, and report \(\delta(0)\), \(\delta(1)\), \(\zeta(0)\) and \(\zeta(1)\) when they differ.
+- Do not use the product of coefficients or the difference method with interactions or nonlinear models. Evaluate the mediation formula instead.
+- Use bootstrap intervals for the effects and the proportion mediated. The proportion mediated is unstable when the total effect is small.
+- Assess sensitivity to unmeasured mediator–outcome confounding, for example by adding a hypothetical confounder of plausible strength, as in the figure.
+
+>> References
+
+- J. Pearl (2001). Direct and indirect effects. *Proceedings of the 17th Conference on Uncertainty in Artificial Intelligence*, 411-420.
+- K. Imai, L. Keele and D. Tingley (2010). A general approach to causal mediation analysis. *Psychological Methods* 15(4), 309-334. doi:10.1037/a0020761
+- T. J. VanderWeele and S. Vansteelandt (2009). Conceptual issues concerning mediation, interventions and composition. *Statistics and Its Interface* 2(4), 457-468.
+- D. Tingley, T. Yamamoto, K. Hirose, L. Keele and K. Imai (2014). mediation: R package for causal mediation analysis. *Journal of Statistical Software* 59(5), 1-38. doi:10.18637/jss.v059.i05
+- T. J. VanderWeele (2015). *Explanation in Causal Inference: Methods for Mediation and Interaction*. Oxford University Press.

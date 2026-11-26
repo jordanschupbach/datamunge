@@ -1,0 +1,151 @@
+//? Title: Select predictors with a false discovery rate guarantee using model-X knockoffs
+//? Exports: both
+//? Lang: en
+
+> Construct a knockoff for each predictor and compare them
+
+A knockoff copy of the predictors is drawn so that swapping any predictor with its copy leaves the joint distribution unchanged, while the copies are independent of the response given the originals. A null predictor is then no more important than its copy, so the statistic \(W_j\) is symmetric about zero for every null. Large positive values favor a real association.
+
+The example draws Gaussian knockoffs for 30 predictors with AR(1) correlation 0.5 and known moments. The SDP rule chooses the covariance gap \(s\) so that each knockoff is as weakly correlated with its original as joint validity allows. Eight predictors affect the response with coefficients ±0.3. The statistic is the lasso coefficient difference \(W_j=|\hat\beta_j|-|\hat\beta_{j+30}|\), fitted at a fixed penalty to all 60 standardized columns. Knockoff+ selects \(W_j\ge T\) with target false discovery rate 0.2.
+
+A second loop repeats the analysis on 100 fresh samples with fresh knockoffs. It estimates the false discovery rate as the mean false discovery proportion and also reports power.
+
+```{cpp, id=model-x-knockoffs, file="figures/knockoff_statistics.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/linalg/cholesky.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/elastic_net.hpp>
+#include <datamunge/stats/knockoffs.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <random>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+constexpr std::size_t p = 30, n = 250;
+const std::vector<std::size_t> signals{2, 5, 9, 13, 17, 21, 25, 28};
+
+// Draws n rows from N(0, Sigma) and the response y = X beta + N(0, 1).
+void simulate(const Matrix& root, std::mt19937_64& random, Matrix& x, std::vector<double>& y) {
+    std::normal_distribution<double> normal;
+    x = Matrix(n, p);
+    y.assign(n, 0);
+    std::vector<double> z(p);
+    for (std::size_t i = 0; i < n; ++i) {
+        for (auto& v : z)
+            v = normal(random);
+        for (std::size_t j = 0; j < p; ++j)
+            for (std::size_t k = 0; k <= j; ++k)
+                x(i, j) += root(j, k) * z[k];
+        for (std::size_t s = 0; s < signals.size(); ++s)
+            y[i] += (s % 2 ? -.3 : .3) * x(i, signals[s]);
+        y[i] += normal(random);
+    }
+}
+
+// Lasso coefficient difference W_j = |b_j| - |b_{j+p}| at a fixed penalty on standardized predictors.
+std::vector<double> lasso_difference(const Matrix& x, const Matrix& knockoffs, const std::vector<double>& y) {
+    dm::dstruct::DataFrame frame;
+    frame.add_column("y", y);
+    std::string formula = "y ~ ";
+    for (int block = 0; block < 2; ++block)
+        for (std::size_t j = 0; j < p; ++j) {
+            const auto name = std::format("{}{}", block ? "K" : "X", j + 1);
+            std::vector<double> column(n);
+            for (std::size_t i = 0; i < n; ++i)
+                column[i] = block ? knockoffs(i, j) : x(i, j);
+            frame.add_column(name, column);
+            formula += (block || j ? " + " : "") + name;
+        }
+    const dm::stats::Lasso fit(frame, formula, {.lambda = .05});
+    std::vector<double> w(p);
+    for (std::size_t j = 0; j < p; ++j)
+        w[j] = std::abs(fit.coefficients()[j]) - std::abs(fit.coefficients()[j + p]);
+    return w;
+}
+
+int main() {
+    Matrix sigma(p, p);
+    for (std::size_t i = 0; i < p; ++i)
+        for (std::size_t j = 0; j < p; ++j)
+            sigma(i, j) = std::pow(.5, std::abs(static_cast<double>(i) - static_cast<double>(j)));
+    const auto root = dm::linalg::cholesky(sigma).L;
+    const std::vector<double> mean(p, 0);
+    const auto is_signal = [](std::size_t j) { return std::ranges::contains(signals, j); };
+
+    std::mt19937_64 random(2026);
+    Matrix x;
+    std::vector<double> y;
+    simulate(root, random, x, y);
+    const auto fit = dm::stats::knockoff_filter(x, y, mean, sigma, lasso_difference,
+        {.fdr = .2, .knockoffs = {.seed = 3}});
+    std::size_t false_hits = 0;
+    std::print("Threshold {:.4f}; selected", fit.threshold);
+    for (const auto j : fit.selected) {
+        std::print(" X{}{}", j + 1, is_signal(j) ? "" : "*");
+        false_hits += !is_signal(j);
+    }
+    std::println(".\n\n{} of {} selections are nulls (marked *); {} of {} signals found.\n",
+        false_hits, fit.selected.size(), fit.selected.size() - false_hits, signals.size());
+
+    // Repeat with fresh data and fresh knockoffs to estimate FDR and power.
+    const std::size_t replicates = 100;
+    double fdp = 0, power = 0, empty = 0;
+    for (std::size_t r = 0; r < replicates; ++r) {
+        simulate(root, random, x, y);
+        const auto again = dm::stats::knockoff_filter(x, y, mean, sigma, lasso_difference,
+            {.fdr = .2, .knockoffs = {.seed = 100 + r}});
+        const auto hits = std::ranges::count_if(again.selected, is_signal);
+        const auto total = again.selected.size();
+        fdp += total ? static_cast<double>(total - hits) / total : 0;
+        power += static_cast<double>(hits) / signals.size();
+        empty += total == 0;
+    }
+    std::println("| Replicates | Mean false discovery proportion | Mean power | Empty selections |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    std::println("| {} | {:.3f} | {:.3f} | {} |", replicates, fdp / replicates, power / replicates, empty);
+
+    auto plot = dm::graphics::RPlot::create();
+    std::vector<double> sx, sw, nx, nw;
+    for (std::size_t j = 0; j < p; ++j) {
+        auto& xs = is_signal(j) ? sx : nx;
+        auto& ws = is_signal(j) ? sw : nw;
+        xs.push_back(j + 1.0);
+        ws.push_back(fit.statistics[j]);
+    }
+    plot.line({0, p + 1.0}, {0, 0}, "", {160, 164, 170}, 1);
+    if (std::isfinite(fit.threshold))
+        plot.line({0, p + 1.0}, {fit.threshold, fit.threshold}, "Threshold", {120, 124, 132}, 1.4);
+    plot.points(sx, sw, "Signal", {26, 90, 147}, 5)
+        .points(nx, nw, "Null", {176, 72, 43}, 5)
+        .title("Lasso coefficient difference by predictor")
+        .x_label("Predictor").y_label("W")
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/knockoff_statistics.svg");
+}
+```
+// result_begin: markdown
+Threshold 0.1346; selected X3 X6 X10 X14 X18 X22 X26.
+
+0 of 7 selections are nulls (marked *); 7 of 8 signals found.
+
+| Replicates | Mean false discovery proportion | Mean power | Empty selections |
+| ---: | ---: | ---: | ---: |
+| 100 | 0.183 | 0.904 | 1 |
+\image(figures/knockoff_statistics.svg)
+// result_end
+\caption(Knockoff statistics for one sample; predictors on or above the horizontal threshold are selected.)
+\alttext(Seven of the eight signal predictors have statistics above the knockoff+ threshold. Null predictors cluster near zero with both signs.)
+
+In this sample knockoff+ selects seven of the eight signals and no nulls. The negative statistics of the nulls estimate how many nulls exceed a positive threshold, which is how the threshold is set. Across the replicates the mean false discovery proportion is close to, and below, the 0.2 target.
+
+The guarantee requires the knockoff law to match the predictor law. Here the mean and covariance are known. With estimated moments the knockoffs are approximate and so is the error control.
+
+[Candès, Fan, Janson and Lv (2018)|https://doi.org/10.1111/rssb.12265] · [Barber and Candès (2015)|https://doi.org/10.1214/15-AOS1337]

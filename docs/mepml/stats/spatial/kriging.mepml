@@ -1,0 +1,213 @@
+//? Title: Ordinary and universal kriging
+//? Exports: both
+//? Lang: en
+
+> Predict a spatial field with uncertainty, compare a constant unknown mean with a covariate trend, and check whether kriging variances stay calibrated when the variogram is estimated and when predictions extrapolate
+
+Kriging is best linear unbiased prediction for spatially correlated data. To predict \(Z(s_0)\) from observations \(z\), ordinary kriging assumes an unknown constant mean and chooses weights \(\lambda\) that minimise the prediction variance subject to \(\sum\lambda_i=1\). Universal kriging assumes the mean is linear in known covariates, \(E\,Z(s)=x(s)^\top\beta\), and constrains \(X^\top\lambda=x_0\). Both have the generalised-least-squares form
+
+\[
+\hat Z(s_0)=x_0^\top\hat\beta+c_0^\top C^{-1}(z-X\hat\beta),\qquad
+\sigma_K^2=C(0)-c_0^\top C^{-1}c_0+u^\top(X^\top C^{-1}X)^{-1}u,
+\]
+
+with \(u=x_0-X^\top C^{-1}c_0\). Here \(C\) and \(c_0\) are covariances from the variogram model, and the last term accounts for estimating \(\beta\). Simple kriging uses a known mean and drops that term.
+
+`simple_kriging`, `ordinary_kriging` and `universal_kriging` return predictions, kriging variances and the GLS trend coefficients. Each works with a global neighbourhood or with the nearest `max_neighbours` observations within `max_distance`. `kriging_cross_validation` gives leave-one-out predictions, residuals and z-scores. The tests reproduce `gstat::krige` on the meuse data for simple, ordinary and universal kriging (with \(\sqrt{\text{dist}}\) as the covariate), for global and `nmax` neighbourhoods, and for spherical and exponential models. They also reproduce `gstat::krige.cv` for ordinary and universal kriging, all to \(10^{-9}\).
+
+The study uses a field with a linear trend: \(Z(s)=0.15\,s_x+W(s)+\varepsilon\), where \(W\) is a Gaussian process with exponential covariance (partial sill 1, scale 3) and \(\varepsilon\) has nugget variance 0.1. There are 150 observations uniformly in \(x\in[0,15]\), \(y\in[0,20]\). Predictions are made at 40 random interior points in the same region and at 40 extrapolation points with \(x\in[15,20]\). Over 200 fields, the variogram is either the true one (oracle) or fitted to the data with `fit_variogram` (exponential, default weights). For universal kriging the fit uses the residuals of an ordinary least-squares trend in \(s_x\) and \(s_y\).
+
+```{cpp, id=krige, file="figures/kriging.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/geostatistics.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+using dm::stats::VariogramModel;
+using K = dm::stats::VariogramModelKind;
+
+const VariogramModel truth{
+    .kind = K::exponential, .nugget = 0.1, .partial_sill = 1, .range = 3};
+
+// Joint draw of 0.15 x + W + nugget at all rows of xy (observations and targets).
+std::vector<double> field(dm::random::SplitMix64& rng, const Matrix& xy) {
+    const std::size_t n = xy.rows();
+    std::vector<double> l(n * n, 0.0), out(n, 0.0), z(n);
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t j = 0; j <= i; ++j) {
+            double s = std::exp(-std::hypot(xy(i, 0) - xy(j, 0), xy(i, 1) - xy(j, 1)) / 3);
+            for (std::size_t k = 0; k < j; ++k)
+                s -= l[i * n + k] * l[j * n + k];
+            l[i * n + j] = i == j ? std::sqrt(s) : s / l[j * n + j];
+        }
+    for (double& v : z)
+        v = rng.normal();
+    for (std::size_t i = 0; i < n; ++i) {
+        for (std::size_t k = 0; k <= i; ++k)
+            out[i] += l[i * n + k] * z[k];
+        out[i] += 0.15 * xy(i, 0) + std::sqrt(0.1) * rng.normal();
+    }
+    return out;
+}
+
+Matrix rows(const Matrix& a, std::size_t from, std::size_t count) {
+    Matrix out(count, a.cols());
+    for (std::size_t i = 0; i < count; ++i)
+        for (std::size_t j = 0; j < a.cols(); ++j)
+            out(i, j) = a(from + i, j);
+    return out;
+}
+Matrix linear_trend(const Matrix& xy) {
+    Matrix x(xy.rows(), 3);
+    for (std::size_t i = 0; i < xy.rows(); ++i)
+        x(i, 0) = 1, x(i, 1) = xy(i, 0), x(i, 2) = xy(i, 1);
+    return x;
+}
+VariogramModel fitted(const Matrix& xy, const std::vector<double>& v) {
+    std::vector<double> bounds;
+    for (int k = 0; k <= 12; ++k)
+        bounds.push_back(0.8 * k);
+    const auto bins = dm::stats::empirical_variogram(xy, v, {.boundaries = bounds});
+    return dm::stats::fit_variogram(bins, {.kind = K::exponential}).model;
+}
+
+struct Score {
+    double se[2]{}, cover[2]{}, z2[2]{};
+    void add(const dm::stats::KrigingResult& k, const std::vector<double>& actual) {
+        for (std::size_t t = 0; t < actual.size(); ++t) {
+            const int part = t < actual.size() / 2 ? 0 : 1;
+            const double e = actual[t] - k.prediction[t], sd = std::sqrt(k.variance[t]);
+            se[part] += e * e;
+            cover[part] += std::abs(e) <= 1.959964 * sd;
+            z2[part] += e * e / (sd * sd);
+        }
+    }
+};
+
+int main() {
+    dm::random::SplitMix64 rng(8);
+    const std::size_t n = 150, m = 80;
+    const char* names[5]{"Ordinary, fitted variogram", "Ordinary, true variogram",
+                         "Universal, fitted residual variogram",
+                         "Universal, true variogram",
+                         "Ordinary, fitted, 16 nearest"};
+    Score score[5];
+    const int reps = 200;
+    for (int r = 0; r < reps; ++r) {
+        Matrix all(n + m, 2);
+        for (std::size_t i = 0; i < n + m; ++i) {
+            const bool extrapolate = i >= n + m / 2;
+            all(i, 0) = extrapolate ? 15 + 5 * rng.uniform01() : 15 * rng.uniform01();
+            all(i, 1) = 20 * rng.uniform01();
+        }
+        const auto z = field(rng, all);
+        const Matrix xy = rows(all, 0, n), targets = rows(all, n, m);
+        const std::vector<double> obs(z.begin(), z.begin() + n);
+        const std::vector<double> actual(z.begin() + n, z.end());
+        const Matrix x = linear_trend(xy), x0 = linear_trend(targets);
+        // GLS with an identity covariance (pure nugget) is OLS: residuals for the
+        // universal-kriging variogram.
+        const VariogramModel white{.kind = K::exponential, .nugget = 1, .partial_sill = 0};
+        const auto beta = dm::stats::universal_kriging(xy, obs, x, targets, x0, white)
+                              .trend_coefficients;
+        std::vector<double> resid(n);
+        for (std::size_t i = 0; i < n; ++i)
+            resid[i] = obs[i] - beta[0] - beta[1] * xy(i, 0) - beta[2] * xy(i, 1);
+        const VariogramModel raw_fit = fitted(xy, obs), resid_fit = fitted(xy, resid);
+        score[0].add(dm::stats::ordinary_kriging(xy, obs, targets, raw_fit), actual);
+        score[1].add(dm::stats::ordinary_kriging(xy, obs, targets, truth), actual);
+        score[2].add(dm::stats::universal_kriging(xy, obs, x, targets, x0, resid_fit),
+                     actual);
+        score[3].add(dm::stats::universal_kriging(xy, obs, x, targets, x0, truth), actual);
+        score[4].add(dm::stats::ordinary_kriging(xy, obs, targets, raw_fit,
+                                                 {.max_neighbours = 16}),
+                     actual);
+    }
+    const double per = reps * (m / 2.0);
+    std::println("| Method | RMSE, interior | 95% coverage, interior | "
+                 "RMSE, extrapolation | "
+                 "95% coverage, extrapolation | Mean z^2, extrapolation |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (int k = 0; k < 5; ++k)
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.2f} |", names[k],
+                     std::sqrt(score[k].se[0] / per), score[k].cover[0] / per,
+                     std::sqrt(score[k].se[1] / per), score[k].cover[1] / per,
+                     score[k].z2[1] / per);
+
+    // One field along the transect y = 10, observations within 1 of it shown as points.
+    Matrix all(n + 201, 2);
+    for (std::size_t i = 0; i < n; ++i)
+        all(i, 0) = 15 * rng.uniform01(), all(i, 1) = 20 * rng.uniform01();
+    std::vector<double> tx;
+    for (std::size_t k = 0; k <= 200; ++k) {
+        tx.push_back(0.1 * k);
+        all(n + k, 0) = 0.1 * k, all(n + k, 1) = 10;
+    }
+    const auto z = field(rng, all);
+    const Matrix xy = rows(all, 0, n), line = rows(all, n, 201);
+    const std::vector<double> obs(z.begin(), z.begin() + n), actual(z.begin() + n, z.end());
+    const auto ok = dm::stats::ordinary_kriging(xy, obs, line, truth);
+    const auto uk = dm::stats::universal_kriging(xy, obs, linear_trend(xy), line,
+                                                 linear_trend(line), truth);
+    std::vector<double> ok_lo, ok_hi, uk_lo, uk_hi, px, py;
+    for (std::size_t k = 0; k <= 200; ++k) {
+        ok_lo.push_back(ok.prediction[k] - 1.96 * std::sqrt(ok.variance[k]));
+        ok_hi.push_back(ok.prediction[k] + 1.96 * std::sqrt(ok.variance[k]));
+        uk_lo.push_back(uk.prediction[k] - 1.96 * std::sqrt(uk.variance[k]));
+        uk_hi.push_back(uk.prediction[k] + 1.96 * std::sqrt(uk.variance[k]));
+    }
+    for (std::size_t i = 0; i < n; ++i)
+        if (std::abs(xy(i, 1) - 10) < 1)
+            px.push_back(xy(i, 0)), py.push_back(obs[i]);
+    auto plot = dm::graphics::RPlot::create();
+    plot.ribbon(tx, ok_lo, ok_hi, {176, 72, 43, 0.18})
+        .ribbon(tx, uk_lo, uk_hi, {26, 90, 147, 0.22})
+        .line(tx, actual, "True field", {0, 0, 0}, 1.2)
+        .line(tx, ok.prediction, "Ordinary kriging", {176, 72, 43}, 2)
+        .line(tx, uk.prediction, "Universal kriging", {26, 90, 147}, 2)
+        .points(px, py, "Observations within 1 of the transect", {80, 80, 80}, 5)
+        .abline_v(15, {120, 120, 120})
+        .y_limits(-3.5, 8.5)
+        .title("Kriging along y = 10 with 95% intervals")
+        .x_label("x (observations only for x < 15; right of the line is extrapolation)")
+        .y_label("Z")
+        .size(620, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/kriging.svg");
+}
+```
+// result_begin: markdown
+| Method | RMSE, interior | 95% coverage, interior | RMSE, extrapolation | 95% coverage, extrapolation | Mean z^2, extrapolation |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Ordinary, fitted variogram | 0.638 | 0.942 | 1.322 | 0.869 | 1.69 |
+| Ordinary, true variogram | 0.635 | 0.952 | 1.441 | 0.813 | 2.13 |
+| Universal, fitted residual variogram | 0.637 | 0.943 | 1.087 | 0.917 | 1.28 |
+| Universal, true variogram | 0.632 | 0.954 | 1.077 | 0.941 | 1.07 |
+| Ordinary, fitted, 16 nearest | 0.636 | 0.943 | 1.186 | 0.917 | 1.29 |
+\image(figures/kriging.svg)
+// result_end
+
+Inside the data region all five predictors are practically equivalent: RMSE 0.63–0.64 and 95% intervals covering 94–95% of true values. The plug-in variogram costs very little. Within the range of the data, the local covariance structure dominates and the mean model hardly matters, because the trend is absorbed by nearby observations.
+
+Extrapolation separates them. Ordinary kriging assumes a constant mean, so beyond the data its predictions revert to the GLS mean. In the figure the red curve flattens right of \(x=15\) while the true field keeps rising. Its intervals reach only 81% coverage with the true variogram, and the mean squared z-score of 2.1 shows they are too narrow. The fitted variogram gives somewhat better coverage (87%) for the wrong reason: the unremoved trend inflates the empirical variogram, which widens the intervals. Universal kriging extrapolates the linear trend and accounts for its estimation uncertainty through the \(u^\top(X^\top C^{-1}X)^{-1}u\) term. That term widens the blue band as the target moves away from the data, and it brings coverage to 94% with the true residual variogram and 92% with the fitted one. A 16-nearest-neighbour ordinary kriging partly mimics a trend by re-estimating the mean locally, and its coverage of 92% matches universal kriging with a fitted variogram. It cannot, however, continue the trend beyond the data.
+
+>> Practical guidance
+
+- Use ordinary kriging for interpolation within a dense network. Use universal kriging, or kriging of residuals, when a covariate or coordinate trend is real and predictions extend beyond the data or into sparse areas.
+- Estimate the variogram from detrended residuals when using universal kriging. A variogram of the raw data includes the trend, and it overstates both the sill and the range.
+- Check calibration by leave-one-out cross-validation. The mean error should be near 0, and the mean squared z-score near 1. Values well above 1 mean the intervals are too narrow.
+- Treat kriging variances as conditional on the variogram. They do not include variogram estimation uncertainty, so they are optimistic for small samples. Simulation or Bayesian kriging accounts for it.
+- Prefer local neighbourhoods for large data sets or non-stationary means. Keep enough neighbours (typically 16 to 50) for a stable trend estimate in each neighbourhood.
+
+>> References
+
+- G. Matheron (1963). Principles of geostatistics. *Economic Geology* 58(8), 1246-1266. doi:10.2113/gsecongeo.58.8.1246
+- N. Cressie (1993). *Statistics for Spatial Data*, revised edition. Wiley. doi:10.1002/9781119115151
+- M. L. Stein (1999). *Interpolation of Spatial Data: Some Theory for Kriging*. Springer. doi:10.1007/978-1-4612-1494-6
+- E. J. Pebesma (2004). Multivariable geostatistics in S: the gstat package. *Computers & Geosciences* 30(7), 683-691. doi:10.1016/j.cageo.2004.03.012

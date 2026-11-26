@@ -1,0 +1,196 @@
+//? Title: Acceptance sampling by attributes
+//? Exports: both
+//? Lang: en
+
+> Design a single sampling plan, which inspects n items and accepts the lot if at most c are nonconforming, so that good lots are rarely rejected and bad lots rarely accepted, and see what the plan delivers under rectifying inspection
+
+A single sampling plan \((n,c)\) is judged by its **operating characteristic** (OC) curve: the probability \(P_a(p)\) of accepting a lot whose fraction nonconforming is \(p\). The design fixes two points on that curve:
+
+- the *producer's risk point*: lots at the acceptable quality level (AQL) should be accepted with probability at least \(1-\alpha\);
+- the *consumer's risk point*: lots at the rejectable quality level (RQL, or LTPD) should be accepted with probability at most \(\beta\).
+
+The number of nonconforming items in the sample is hypergeometric for an isolated lot of size \(N\) (a type A OC), binomial for lots from a continuing process (type B), and Poisson when counting defects per unit. Under *rectifying inspection*, rejected lots are screened 100% and nonconforming items replaced. The plan then determines the average outgoing quality \(AOQ(p)=pP_a(p)(N-n)/N\), its worst case (the AOQL), and the average total inspection \(ATI=n+(1-P_a)(N-n)\).
+
+`acceptance_probability` evaluates the OC under each model. `find_attribute_plan` finds the smallest plan meeting both risk points, using the search of `AcceptanceSampling::find.plan`. `rectifying_performance` and `average_outgoing_quality_limit` give the AOQ, ATI and AOQL. The tests reproduce `AcceptanceSampling` plans for 24 risk-point combinations under all three models, and its OC values to \(10^{-12}\). They check that no smaller n meets the risk points, and compare AOQ, ATI and AOQL with direct computation in R.
+
+The example designs a plan for AQL 1% (\(\alpha=5\%\)) and RQL 6% (\(\beta=10\%\)), and compares it with the zero-acceptance-number plan that meets only the consumer point. A simulation of 20000 lots of 1000 checks the realized risks. Lots come from a stable process at the AQL or the RQL, or from a process whose lot quality varies (a Beta distribution with mean 1% and SD 1.5%).
+
+```{cpp, id=as, file="figures/acceptance_sampling.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/acceptance_sampling.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <numeric>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::AttributePlan;
+using dm::stats::SamplingModel;
+
+// A lot of N items with d nonconforming; inspect n without replacement.
+std::size_t sample_defects(dm::random::SplitMix64& rng, std::size_t lot, std::size_t d,
+                           std::size_t n) {
+    std::size_t found = 0, left = lot, bad = d;
+    for (std::size_t i = 0; i < n; ++i, --left) {
+        if (rng.uniform01() * static_cast<double>(left) < static_cast<double>(bad))
+            ++found, --bad;
+    }
+    return found;
+}
+
+std::size_t binomial_draw(dm::random::SplitMix64& rng, std::size_t n, double p) {
+    std::size_t s = 0;
+    for (std::size_t i = 0; i < n; ++i) s += rng.uniform01() < p;
+    return s;
+}
+
+// Gamma variate (Marsaglia-Tsang; shape < 1 by boosting), for Beta = G1 / (G1 + G2).
+double gamma_draw(dm::random::SplitMix64& rng, double shape) {
+    if (shape < 1)
+        return gamma_draw(rng, shape + 1) * std::pow(rng.uniform01(), 1 / shape);
+    const double d = shape - 1.0 / 3, c = 1 / std::sqrt(9 * d);
+    while (true) {
+        const double z = rng.normal(), v = std::pow(1 + c * z, 3);
+        if (v > 0 && std::log(rng.uniform01()) < 0.5 * z * z + d - d * v + d * std::log(v))
+            return d * v;
+    }
+}
+
+int main() {
+    const double aql = 0.01, alpha = 0.05, rql = 0.06, beta = 0.10;
+    std::println("| Model | Lot size | n | c | P(accept) at AQL | P(accept) at RQL |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    const auto row = [&](const char* name, dm::stats::SamplingOptions o, std::string lot) {
+        const auto p = dm::stats::find_attribute_plan(aql, alpha, rql, beta, o);
+        std::println("| {} | {} | {} | {} | {:.4f} | {:.4f} |", name, lot, p.n, p.c,
+                     dm::stats::acceptance_probability(p, aql, o),
+                     dm::stats::acceptance_probability(p, rql, o));
+    };
+    row("Binomial (type B)", {}, "-");
+    row("Poisson", {.model = SamplingModel::poisson}, "-");
+    for (const std::size_t lot : {100uz, 200uz, 500uz, 1000uz, 5000uz})
+        row("Hypergeometric (type A)",
+            {.model = SamplingModel::hypergeometric, .lot_size = lot}, std::to_string(lot));
+
+    const auto plan = dm::stats::find_attribute_plan(aql, alpha, rql, beta);
+    // Zero-acceptance plan meeting only the consumer point.
+    AttributePlan zero{1, 0};
+    while (dm::stats::acceptance_probability(zero, rql) > beta) ++zero.n;
+    const std::size_t lot = 1000;
+    std::println("\n| Plan | P(accept) at AQL | P(accept) at RQL | AOQL (at p) | "
+                 "ATI at AQL | ATI at RQL |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (const auto& p : {plan, zero}) {
+        const auto a = dm::stats::average_outgoing_quality_limit(p, lot);
+        std::println("| n = {}, c = {} | {:.3f} | {:.3f} | {:.4f} ({:.3f}) | {:.0f} | "
+                     "{:.0f} |", p.n, p.c, dm::stats::acceptance_probability(p, aql),
+                     dm::stats::acceptance_probability(p, rql), a.aoql, a.quality,
+                     dm::stats::rectifying_performance(p, aql, lot).ati,
+                     dm::stats::rectifying_performance(p, rql, lot).ati);
+    }
+
+    // Simulation: 20000 lots of 1000 from three processes, inspected with the plan.
+    dm::random::SplitMix64 rng(13);
+    const int lots = 20000;
+    std::println("\n| Lots from | Accepted (simulated) | Binomial OC | Mean incoming p | "
+                 "Mean outgoing p (rectifying) |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    const double mean = 0.01, sd = 0.015;  // Beta with this mean and SD
+    const double k = mean * (1 - mean) / (sd * sd) - 1, a = mean * k, b = (1 - mean) * k;
+    for (int scenario = 0; scenario < 3; ++scenario) {
+        double accepted = 0, in = 0, out = 0;
+        for (int l = 0; l < lots; ++l) {
+            double p = scenario == 0 ? aql : rql;
+            if (scenario == 2) {
+                const double g1 = gamma_draw(rng, a), g2 = gamma_draw(rng, b);
+                p = g1 / (g1 + g2);
+            }
+            const std::size_t d = binomial_draw(rng, lot, p);
+            const bool ok = sample_defects(rng, lot, d, plan.n) <= plan.c;
+            accepted += ok;
+            in += static_cast<double>(d) / lot / lots;
+            // Accepted lots ship their uninspected defects; rejected lots are screened.
+            if (ok) {
+                const double sampled = static_cast<double>(d) * plan.n / lot;  // expected
+                out += (d - sampled) / lot / lots;
+            }
+        }
+        const char* name[3] = {"Process at AQL (1%)", "Process at RQL (6%)",
+                               "Varying process (Beta, mean 1%, SD 1.5%)"};
+        const double pa = dm::stats::acceptance_probability(plan, scenario ? rql : aql);
+        const std::string oc = scenario < 2 ? std::format("{:.4f}", pa) : std::string("-");
+        std::println("| {} | {:.4f} | {} | {:.4f} | {:.4f} |", name[scenario],
+                     accepted / lots, oc, in, out);
+    }
+
+    // OC curves.
+    std::vector<double> ps, oc1, oc0;
+    for (double p = 0; p <= 0.12; p += 0.001) {
+        ps.push_back(p);
+        oc1.push_back(dm::stats::acceptance_probability(plan, p));
+        oc0.push_back(dm::stats::acceptance_probability(zero, p));
+    }
+    auto fig = dm::graphics::RPlot::create();
+    fig.line(ps, oc1, std::format("n = {}, c = {}", plan.n, plan.c), {26, 90, 147}, 2.5)
+        .line(ps, oc0, std::format("n = {}, c = 0", zero.n), {176, 72, 43}, 2)
+        .points({aql, rql}, {1 - alpha, beta}, "Risk points", {17, 24, 39}, 7)
+        .abline_v(aql, {170, 170, 170})
+        .abline_v(rql, {170, 170, 170})
+        .y_limits(0, 1.12)
+        .title("Operating characteristic curves")
+        .x_label("Lot fraction nonconforming p")
+        .y_label("Probability of acceptance")
+        .size(640, 410);
+    std::filesystem::create_directories("build");
+    fig.save_svg("build/acceptance_sampling.svg");
+}
+```
+// result_begin: markdown
+| Model | Lot size | n | c | P(accept) at AQL | P(accept) at RQL |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Binomial (type B) | - | 110 | 3 | 0.9750 | 0.0980 |
+| Poisson | - | 112 | 3 | 0.9728 | 0.0976 |
+| Hypergeometric (type A) | 100 | 51 | 1 | 1.0000 | 0.0933 |
+| Hypergeometric (type A) | 200 | 76 | 2 | 1.0000 | 0.0998 |
+| Hypergeometric (type A) | 500 | 83 | 2 | 0.9657 | 0.0973 |
+| Hypergeometric (type A) | 1000 | 85 | 2 | 0.9541 | 0.0987 |
+| Hypergeometric (type A) | 5000 | 109 | 3 | 0.9772 | 0.0994 |
+
+| Plan | P(accept) at AQL | P(accept) at RQL | AOQL (at p) | ATI at AQL | ATI at RQL |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| n = 110, c = 3 | 0.975 | 0.098 | 0.0157 (0.027) | 132 | 913 |
+| n = 38, c = 0 | 0.683 | 0.095 | 0.0092 (0.026) | 343 | 908 |
+
+| Lots from | Accepted (simulated) | Binomial OC | Mean incoming p | Mean outgoing p (rectifying) |
+| --- | ---: | ---: | ---: | ---: |
+| Process at AQL (1%) | 0.9738 | 0.9750 | 0.0100 | 0.0086 |
+| Process at RQL (6%) | 0.0978 | 0.0980 | 0.0599 | 0.0049 |
+| Varying process (Beta, mean 1%, SD 1.5%) | 0.9012 | - | 0.0102 | 0.0053 |
+\image(figures/acceptance_sampling.svg)
+// result_end
+
+For lots from a continuing process (binomial OC), the risk points require inspecting 110 items and accepting with at most 3 nonconforming. The realized risks are 2.5% at the AQL and 9.8% at the RQL. Plans for isolated lots (hypergeometric) are smaller, because sampling without replacement from a small lot is more informative. For lots of 100 the plan is n = 51 with c = 1: half the lot. Lot size matters only when the sample is a sizeable fraction of the lot; by N = 5000 the plan is essentially the binomial one. The Poisson approximation asks for slightly more (n = 112).
+
+The zero-acceptance plan (n = 38, c = 0) protects the consumer just as well, with 9.5% acceptance at 6%. It is three times smaller, but it rejects 32% of lots at the AQL. Under rectifying inspection that means screening an average of 343 items per lot of 1000 at good quality, against 132 for the c = 3 plan. Its lower AOQL (0.92% against 1.57%) is bought with that extra inspection. The OC curves show why: with c = 0, acceptance falls steeply from p = 0 and there is no shoulder protecting good lots.
+
+The simulation confirms the type B risks: 97.4% of lots from a process at the AQL are accepted (theory 97.5%), and 9.8% at the RQL. When lot quality varies around the same 1% mean, only 90% of lots pass. Sampling preferentially rejects the occasional bad lot, and with rectification the average outgoing quality falls to 0.53%, half the incoming level. Acceptance sampling screens lots; it cannot improve the process that makes them.
+
+>> Practical guidance
+
+- Choose the risk points from consequences: the AQL is the quality you consider acceptable as a process average, and the RQL is quality you must not accept. Then pick the OC model that matches the situation: type A for an isolated lot, type B for a stream of lots from a process.
+- Avoid c = 0 plans unless the producer risk at the AQL is acceptable. They are small, but they reject many good lots and force costly screening.
+- Under rectifying inspection, report the AOQL and the ATI at the expected process quality, since these drive cost and outgoing quality.
+- Treat acceptance sampling as an audit, not quality control. Persistent rejections call for process improvement, with control charts and capability studies, rather than more inspection.
+
+>> References
+
+- H. F. Dodge and H. G. Romig (1959). *Sampling Inspection Tables: Single and Double Sampling*, 2nd ed. Wiley.
+- D. C. Montgomery (2019). *Introduction to Statistical Quality Control*, 8th ed., ch. 15. Wiley.
+- E. G. Schilling and D. V. Neubauer (2017). *Acceptance Sampling in Quality Control*, 3rd ed. CRC Press. doi:10.4324/9781315120744
+- A. Kiermeier (2008). Visualizing and assessing acceptance sampling plans: The R package AcceptanceSampling. *Journal of Statistical Software* 26(6), 1-20. doi:10.18637/jss.v026.i06
+- ISO 2859-1:1999. *Sampling procedures for inspection by attributes — Part 1: Sampling schemes indexed by acceptance quality limit (AQL) for lot-by-lot inspection*.

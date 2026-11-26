@@ -1,0 +1,214 @@
+//? Title: Generalized extreme value fitting
+//? Exports: both
+//? Lang: en
+
+> Fit the generalized extreme value distribution to block maxima, decide whether the simpler Gumbel limit is adequate, and estimate return levels with intervals that respect the skewed uncertainty of extrapolation
+
+The maximum of many independent observations, suitably normalized, can only converge to one family of limits: the **generalized extreme value** (GEV) distribution
+
+\[G(z)=\exp\Bigl\{-\bigl[1+\xi(z-\mu)/\sigma\bigr]_+^{-1/\xi}\Bigr\},\]
+
+with location \(\mu\), scale \(\sigma\) and shape \(\xi\) (Fisher–Tippett–Gnedenko). The shape decides the tail. \(\xi>0\) is a heavy Fréchet-type tail, \(\xi<0\) a bounded tail with upper endpoint \(\mu-\sigma/\xi\), and the limit \(\xi\to0\) is the light-tailed **Gumbel** distribution \(\exp\{-e^{-(z-\mu)/\sigma}\}\). Fitting annual (or other block) maxima gives the **return level** \(z_T\) exceeded on average once every \(T\) blocks, the \(1-1/T\) quantile
+
+\[z_T=\mu+\frac{\sigma}{\xi}\bigl[y_T^{-\xi}-1\bigr],\qquad y_T=-\log(1-1/T).\]
+
+`gev_cdf`, `gev_quantile` and `gev_log_density` are continuous through \(\xi=0\). `fit_gev` uses maximum likelihood (Newton–Raphson, started from the L-moment estimates of Hosking, Wallis and Wood) or L-moments alone, and can fix \(\xi=0\) for the Gumbel model. `gumbel_test` is the likelihood-ratio test of \(\xi=0\), and `gev_return_level` gives delta-method and profile-likelihood intervals. The tests use the Port Pirie and Fremantle sea-level series of Coles (2001). They reproduce tight R optimizations (with standard errors from the exact symbolic Hessian), the profile limits found by root finding, `extRemes` L-moment fits and distribution functions, and `ismev::gev.fit`.
+
+The example fits 65 annual maximum sea levels at Port Pirie, South Australia, and 86 at Fremantle, Western Australia. The simulation (500 samples per cell) asks how well Wald and profile intervals cover the 100-year level from 30 or 60 years of data, and what the Gumbel model gives when the true tail is heavy.
+
+```{cpp, id=gev, file="figures/gev.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/gev.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::GevMethod;
+
+// Annual maximum sea levels (m), Coles (2001).
+const std::vector<double> port_pirie{
+    4.03, 3.83, 3.65, 3.88, 4.01, 4.08, 4.18, 3.8,  4.36, 3.96, 3.98, 4.69, 3.85,
+    3.96, 3.85, 3.93, 3.75, 3.63, 3.57, 4.25, 3.97, 4.05, 4.24, 4.22, 3.73, 4.37,
+    4.06, 3.71, 3.96, 4.06, 4.55, 3.79, 3.89, 4.11, 3.85, 3.86, 3.86, 4.21, 4.01,
+    4.11, 4.24, 3.96, 4.21, 3.74, 3.85, 3.88, 3.66, 4.11, 3.71, 4.18, 3.9,  3.78,
+    3.91, 3.72, 4,    3.66, 3.62, 4.33, 4.55, 3.75, 4.08, 3.9,  3.88, 3.94, 4.33};
+const std::vector<double> fremantle{
+    1.58, 1.71, 1.4,  1.34, 1.43, 1.19, 1.55, 1.34, 1.37, 1.46, 1.92, 1.37, 1.19, 1.4,
+    1.28, 1.52, 1.52, 1.58, 1.49, 1.65, 1.37, 1.49, 1.46, 1.34, 1.74, 1.62, 1.46, 1.71,
+    1.74, 1.55, 1.43, 1.62, 1.49, 1.58, 1.34, 1.37, 1.62, 1.31, 1.43, 1.49, 1.55, 1.71,
+    1.49, 1.46, 1.52, 1.58, 1.65, 1.49, 1.52, 1.52, 1.49, 1.62, 1.86, 1.58, 1.62, 1.46,
+    1.43, 1.46, 1.62, 1.68, 1.83, 1.62, 1.46, 1.58, 1.77, 1.62, 1.71, 1.46, 1.6,  1.5,
+    1.6,  1.9,  1.7,  1.4,  1.8,  1.37, 1.46, 1.61, 1.43, 1.67, 1.62, 1.57, 1.56, 1.46,
+    1.7,  1.51};
+
+std::string ci(double lo, double hi) { return std::format("[{:.3f}, {:.3f}]", lo, hi); }
+
+int main() {
+    std::println("| Series | Model | mu (SE) | sigma (SE) | xi (SE) | log-lik | AIC |");
+    std::println("| --- | --- | ---: | ---: | ---: | ---: | ---: |");
+    for (const auto& [name, x] : {std::pair{"Port Pirie", &port_pirie},
+                                  std::pair{"Fremantle", &fremantle}}) {
+        const auto ml = dm::stats::fit_gev(*x);
+        const auto lm = dm::stats::fit_gev(*x, {.method = GevMethod::l_moments});
+        const auto gu = dm::stats::fit_gev(*x, {.gumbel = true});
+        std::println("| {} | GEV, ML | {:.4f} ({:.4f}) | {:.4f} ({:.4f}) | "
+                     "{:.4f} ({:.4f}) | {:.3f} | {:.2f} |", name, ml.location,
+                     ml.location_se, ml.scale, ml.scale_se, ml.shape, ml.shape_se,
+                     ml.log_likelihood, ml.aic);
+        std::println("| {} | GEV, L-moments | {:.4f} | {:.4f} | {:.4f} | {:.3f} | |", name,
+                     lm.location, lm.scale, lm.shape, lm.log_likelihood);
+        std::println("| {} | Gumbel, ML | {:.4f} ({:.4f}) | {:.4f} ({:.4f}) | 0 | {:.3f} | "
+                     "{:.2f} |", name, gu.location, gu.location_se, gu.scale, gu.scale_se,
+                     gu.log_likelihood, gu.aic);
+        const auto t = dm::stats::gumbel_test(*x);
+        std::println("| {} | LR test of xi = 0 | | | chi2 = {:.3f} | p = {:.4f} | |", name,
+                     t.statistic, t.p_value);
+    }
+
+    std::println("\n| Series | Return period (years) | GEV level | Wald 95% | "
+                 "Profile 95% | Gumbel level | Gumbel profile 95% |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const auto& [name, x] : {std::pair{"Port Pirie", &port_pirie},
+                                  std::pair{"Fremantle", &fremantle}}) {
+        const auto ml = dm::stats::fit_gev(*x);
+        const auto gu = dm::stats::fit_gev(*x, {.gumbel = true});
+        for (const double period : {10.0, 100.0, 1000.0}) {
+            const auto r = dm::stats::gev_return_level(ml, *x, period);
+            const auto g = dm::stats::gev_return_level(gu, *x, period);
+            std::println("| {} | {:.0f} | {:.3f} | {} | {} | {:.3f} | {} |", name, period,
+                         r.level, ci(r.wald_lower, r.wald_upper),
+                         ci(r.profile_lower, r.profile_upper), g.level,
+                         ci(g.profile_lower, g.profile_upper));
+        }
+    }
+
+    // Simulation: 100-year level from n years of GEV(0, 1, 0.1) maxima.
+    dm::random::SplitMix64 rng(5);
+    const double xi = 0.1, truth = dm::stats::gev_quantile(0.99, 0, 1, xi);
+    std::println("\n| Years of data | Estimator | Median 100-yr level (truth {:.2f}) | "
+                 "Wald coverage | Profile coverage | Mean xi |", truth);
+    std::println("| ---: | --- | ---: | ---: | ---: | ---: |");
+    for (const std::size_t n : {30uz, 60uz}) {
+        const int reps = 500;
+        std::vector<double> lev_g, lev_u, lev_l;
+        double wald = 0, prof = 0, gumbel_prof = 0, xi_ml = 0, xi_lm = 0;
+        for (int r = 0; r < reps; ++r) {
+            std::vector<double> x(n);
+            for (auto& v : x) v = dm::stats::gev_quantile(rng.uniform01(), 0, 1, xi);
+            const auto f = dm::stats::fit_gev(x);
+            const auto g = dm::stats::fit_gev(x, {.gumbel = true});
+            const auto l = dm::stats::fit_gev(x, {.method = GevMethod::l_moments});
+            const auto rf = dm::stats::gev_return_level(f, x, 100);
+            const auto rg = dm::stats::gev_return_level(g, x, 100);
+            lev_g.push_back(rf.level), lev_u.push_back(rg.level);
+            lev_l.push_back(dm::stats::gev_quantile(0.99, l.location, l.scale, l.shape));
+            wald += (rf.wald_lower <= truth && truth <= rf.wald_upper) / double(reps);
+            prof += (rf.profile_lower <= truth && truth <= rf.profile_upper) / double(reps);
+            gumbel_prof +=
+                (rg.profile_lower <= truth && truth <= rg.profile_upper) / double(reps);
+            xi_ml += f.shape / reps, xi_lm += l.shape / reps;
+        }
+        const auto median = [](std::vector<double> v) {
+            std::ranges::sort(v);
+            return v[v.size() / 2];
+        };
+        std::println("| {} | GEV, ML | {:.2f} | {:.3f} | {:.3f} | {:.3f} |", n,
+                     median(lev_g), wald, prof, xi_ml);
+        std::println("| {} | GEV, L-moments | {:.2f} | | | {:.3f} |", n, median(lev_l),
+                     xi_lm);
+        std::println("| {} | Gumbel, ML | {:.2f} | | {:.3f} | 0 |", n, median(lev_u),
+                     gumbel_prof);
+    }
+
+    // Return-level plot for Port Pirie: plotting positions, GEV and Gumbel curves.
+    const auto ml = dm::stats::fit_gev(port_pirie);
+    const auto gu = dm::stats::fit_gev(port_pirie, {.gumbel = true});
+    std::vector<double> sorted = port_pirie;
+    std::ranges::sort(sorted);
+    std::vector<double> emp_t, emp_z;
+    const double n = static_cast<double>(sorted.size());
+    for (std::size_t i = 0; i < sorted.size(); ++i) {
+        const double p = (static_cast<double>(i) + 1) / (n + 1);
+        emp_t.push_back(std::log10(1 / (1 - p))), emp_z.push_back(sorted[i]);
+    }
+    std::vector<double> lt, zg, zu, lo, hi;
+    for (double l = 0.05; l <= 3.0001; l += 0.1) {
+        const double period = std::pow(10.0, l);
+        if (period <= 1.01) continue;
+        const auto r = dm::stats::gev_return_level(ml, port_pirie, period);
+        lt.push_back(l), zg.push_back(r.level), lo.push_back(r.profile_lower);
+        hi.push_back(r.profile_upper);
+        zu.push_back(dm::stats::gev_return_level(gu, port_pirie, period).level);
+    }
+    auto fig = dm::graphics::RPlot::create();
+    fig.line(lt, hi, "GEV 95% profile interval", {140, 182, 222}, 1.5)
+        .line(lt, lo, "", {140, 182, 222}, 1.5)
+        .line(lt, zg, "GEV fit", {26, 90, 147}, 2.5)
+        .line(lt, zu, "Gumbel fit", {176, 72, 43}, 2)
+        .points(emp_t, emp_z, "Annual maxima", {17, 24, 39}, 5)
+        .y_limits(3.5, 7.2)
+        .title("Port Pirie annual maximum sea level: return-level plot")
+        .x_label("log10 return period (years)")
+        .y_label("Return level (m)")
+        .size(640, 420);
+    std::filesystem::create_directories("build");
+    fig.save_svg("build/gev.svg");
+}
+```
+// result_begin: markdown
+| Series | Model | mu (SE) | sigma (SE) | xi (SE) | log-lik | AIC |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Port Pirie | GEV, ML | 3.8747 (0.0279) | 0.1980 (0.0202) | -0.0501 (0.0983) | 4.339 | -2.68 |
+| Port Pirie | GEV, L-moments | 3.8732 | 0.2033 | -0.0515 | 4.295 | |
+| Port Pirie | Gumbel, ML | 3.8694 (0.0255) | 0.1949 (0.0189) | 0 | 4.218 | -4.44 |
+| Port Pirie | LR test of xi = 0 | | | chi2 = 0.243 | p = 0.6222 | |
+| Fremantle | GEV, ML | 1.4823 (0.0167) | 0.1413 (0.0115) | -0.2174 (0.0638) | 43.567 | -81.13 |
+| Fremantle | GEV, L-moments | 1.4807 | 0.1391 | -0.1963 | 43.512 | |
+| Fremantle | Gumbel, ML | 1.4663 (0.0159) | 0.1394 (0.0108) | 0 | 39.191 | -74.38 |
+| Fremantle | LR test of xi = 0 | | | chi2 = 8.751 | p = 0.0031 | |
+
+| Series | Return period (years) | GEV level | Wald 95% | Profile 95% | Gumbel level | Gumbel profile 95% |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Port Pirie | 10 | 4.296 | [4.188, 4.404] | [4.205, 4.445] | 4.308 | [4.210, 4.432] |
+| Port Pirie | 100 | 4.688 | [4.377, 5.000] | [4.490, 5.261] | 4.766 | [4.596, 4.986] |
+| Port Pirie | 1000 | 5.031 | [4.376, 5.686] | [4.661, 6.465] | 5.216 | [4.973, 5.532] |
+| Fremantle | 10 | 1.734 | [1.690, 1.778] | [1.693, 1.786] | 1.780 | [1.720, 1.852] |
+| Fremantle | 100 | 1.893 | [1.810, 1.976] | [1.834, 2.022] | 2.108 | [2.006, 2.233] |
+| Fremantle | 1000 | 1.987 | [1.851, 2.124] | [1.901, 2.218] | 2.429 | [2.286, 2.610] |
+
+| Years of data | Estimator | Median 100-yr level (truth 5.84) | Wald coverage | Profile coverage | Mean xi |
+| ---: | --- | ---: | ---: | ---: | ---: |
+| 30 | GEV, ML | 5.62 | 0.864 | 0.932 | 0.092 |
+| 30 | GEV, L-moments | 5.59 | | | 0.078 |
+| 30 | Gumbel, ML | 4.83 | | 0.764 | 0 |
+| 60 | GEV, ML | 5.67 | 0.882 | 0.956 | 0.090 |
+| 60 | GEV, L-moments | 5.74 | | | 0.085 |
+| 60 | Gumbel, ML | 4.78 | | 0.576 | 0 |
+\image(figures/gev.svg)
+// result_end
+
+At Port Pirie the shape estimate is \(-0.05\) with a standard error of 0.10, and the likelihood-ratio test cannot distinguish the GEV from the Gumbel (p = 0.62). AIC prefers the simpler model. L-moments give almost the same parameters. Fremantle is different. Its shape is clearly negative (\(-0.22\), SE 0.064; LR p = 0.003), so sea levels there have an estimated upper bound of about 2.13 m. Forcing a Gumbel fit there overstates the 1000-year level by 0.44 m, and its interval [2.29, 2.61] lies entirely above the GEV interval [1.90, 2.22].
+
+The return-level table shows why profile-likelihood intervals are preferred for long periods. The likelihood for a high quantile is skewed: values far above the estimate remain plausible, values far below do not. For the Port Pirie 1000-year level, the symmetric Wald interval [4.38, 5.69] has a lower limit below the 100-year estimate, while the profile interval [4.66, 6.47] extends much further upward. Under the Gumbel model the same interval is only [4.97, 5.53], because a fixed \(\xi=0\) removes the dominant source of uncertainty at long return periods. Preferring the Gumbel model because a test cannot reject it gives intervals that are too narrow.
+
+The simulation confirms this. With a true shape of 0.1, the profile interval for the 100-year level covers 93% of the time from 30 years of data and 96% from 60, while the Wald interval covers only 86–88%. Both estimators of \(\xi\) are slightly biased toward zero, with L-moments more so at n = 30. Those biases are small next to the Gumbel model's: it puts the median 100-year level near 4.8 instead of 5.84, and its interval covers the truth only 76% of the time with 30 years of data, and 58% with 60. More data do not rescue a misspecified tail.
+
+>> Practical guidance
+
+- Fit the GEV and report \(\hat\xi\) with its uncertainty. Use the Gumbel model only with strong external reasons, since a nonsignificant LR test is weak evidence when n is a few decades.
+- Report long return levels with profile-likelihood intervals, not Wald or delta-method intervals.
+- Use L-moments as starting values and as a check, and as the estimator for very short records (n < 25), where they are often more stable than ML. The ML estimate behaves poorly when \(\xi<-0.5\), where the support boundary dominates.
+- Block maxima use only one value per block. When data are plentiful, threshold exceedances (generalized Pareto) use more information. Check stationarity: trends in the series call for covariates in \(\mu\) or \(\sigma\).
+
+>> References
+
+- S. Coles (2001). *An Introduction to Statistical Modeling of Extreme Values*, ch. 3. Springer. doi:10.1007/978-1-4471-3675-0
+- A. F. Jenkinson (1955). The frequency distribution of the annual maximum (or minimum) values of meteorological elements. *Quarterly Journal of the Royal Meteorological Society* 81, 158-171. doi:10.1002/qj.49708134804
+- J. R. M. Hosking, J. R. Wallis and E. F. Wood (1985). Estimation of the generalized extreme-value distribution by the method of probability-weighted moments. *Technometrics* 27(3), 251-261. doi:10.1080/00401706.1985.10488049
+- E. Gilleland and R. W. Katz (2016). extRemes 2.0: An extreme value analysis package in R. *Journal of Statistical Software* 72(8), 1-39. doi:10.18637/jss.v072.i08

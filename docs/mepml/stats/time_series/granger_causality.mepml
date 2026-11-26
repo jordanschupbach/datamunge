@@ -1,0 +1,139 @@
+//? Title: Test Granger predictability in a VAR
+//? Exports: both
+//? Lang: en
+
+> Ask whether one series helps forecast another
+
+A series \(x\) Granger-causes \(z\) when past values of \(x\) improve forecasts of \(z\) beyond what the past of every other series in the information set already provides. In a VAR this is a block of zero restrictions: the coefficients of \(x_{t-1},\dots,x_{t-p}\) in the \(z\) equation all vanish. `granger_causality` forms the Wald statistic for that block from the full cross-equation covariance \((Z^\top Z)^{-1}\otimes\hat\Sigma_u\). It reports the statistic either against \(\chi^2_r\) or, divided by \(r\), against an F distribution.
+
+The result depends on the information set. The example simulates a chain \(x\to y\to z\), in which \(x\) affects \(z\) only through \(y\), plus an optional direct effect \(c\,x_{t-1}\) in the \(z\) equation:
+\[x_t=0.5x_{t-1}+e_{1t},\quad y_t=0.6x_{t-1}+0.3y_{t-1}+e_{2t},\quad z_t=0.6y_{t-1}+c\,x_{t-1}+0.3z_{t-1}+e_{3t}.\]
+It then compares the bivariate test, a VAR(2) on \((x,z)\) only, with the conditional test in the trivariate VAR(2).
+
+```{cpp, id=granger, file="figures/granger_power.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/var.hpp>
+
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+Matrix simulate(std::size_t n, double direct, std::mt19937_64& random) {
+    std::normal_distribution<double> e;
+    Matrix all(n + 50, 3);
+    for (std::size_t t = 1; t < n + 50; ++t) {
+        all(t, 0) = .5 * all(t - 1, 0) + e(random);
+        all(t, 1) = .6 * all(t - 1, 0) + .3 * all(t - 1, 1) + e(random);
+        all(t, 2) = .6 * all(t - 1, 1) + direct * all(t - 1, 0) + .3 * all(t - 1, 2)
+                    + e(random);
+    }
+    Matrix y(n, 3);
+    for (std::size_t t = 0; t < n; ++t)
+        for (std::size_t j = 0; j < 3; ++j)
+            y(t, j) = all(t + 50, j);
+    return y;
+}
+
+Matrix columns(const Matrix& y, std::size_t a, std::size_t b) {
+    Matrix out(y.rows(), 2);
+    for (std::size_t t = 0; t < y.rows(); ++t) {
+        out(t, 0) = y(t, a);
+        out(t, 1) = y(t, b);
+    }
+    return out;
+}
+
+struct Rates { double bivariate, conditional, reverse; };
+
+// Rejection rates at 5% of "x -> z" (bivariate and trivariate) and the true null "z -> x".
+Rates rates(std::size_t n, double direct, int replicates, std::mt19937_64& random) {
+    int bi = 0, tri = 0, rev = 0;
+    for (int r = 0; r < replicates; ++r) {
+        const auto y = simulate(n, direct, random);
+        const auto pair = dm::stats::fit_var(columns(y, 0, 2), {.lags = 2});
+        const auto full = dm::stats::fit_var(y, {.lags = 2});
+        bi += dm::stats::granger_causality(pair, {1}, {0}).p_value < .05;
+        tri += dm::stats::granger_causality(full, {2}, {0}).p_value < .05;
+        rev += dm::stats::granger_causality(full, {0}, {2}).p_value < .05;
+    }
+    return {bi / double(replicates), tri / double(replicates), rev / double(replicates)};
+}
+
+int main() {
+    std::mt19937_64 random(11);
+    const int replicates = 1000;
+    std::println("| n | Bivariate x → z | x → z given y | z → x given y |");
+    std::println("| ---: | ---: | ---: | ---: |");
+    for (const std::size_t n : {100, 300}) {
+        const auto r = rates(n, 0, replicates, random);
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} |", n, r.bivariate, r.conditional,
+                     r.reverse);
+    }
+
+    const std::vector<double> effects{0, .05, .1, .15, .2, .25, .3};
+    std::vector<double> p100, p300;
+    for (const double c : effects) {
+        p100.push_back(rates(100, c, 500, random).conditional);
+        p300.push_back(rates(300, c, 500, random).conditional);
+    }
+    std::println("\n| Direct effect c | Power, n = 100 | Power, n = 300 |");
+    std::println("| ---: | ---: | ---: |");
+    for (std::size_t i = 0; i < effects.size(); ++i)
+        std::println("| {:.2f} | {:.3f} | {:.3f} |", effects[i], p100[i], p300[i]);
+
+    // A joint block: do x and y together help predict z?  (F and chi-squared versions.)
+    const auto y = simulate(200, 0, random);
+    const auto full = dm::stats::fit_var(y, {.lags = 2});
+    const auto f = dm::stats::granger_causality(full, {2}, {0, 1});
+    const auto wald = dm::stats::GrangerStatistic::wald;
+    const auto w = dm::stats::granger_causality(full, {2}, {0, 1}, wald);
+    std::println("\nJoint test (x, y) → z, n = 200: F = {:.2f} on ({}, {:.0f}) df; "
+                 "Wald = {:.2f} on {} df.", f.statistic, f.restrictions, f.denominator_df,
+                 w.statistic, w.restrictions);
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.line({0, .3}, {.05, .05}, "Level 5%", {150, 154, 160}, 1)
+        .line(effects, p100, "n = 100", {176, 72, 43}, 1.8)
+        .line(effects, p300, "n = 300", {26, 90, 147}, 1.8)
+        .points(effects, p100, "", {176, 72, 43}, 5)
+        .points(effects, p300, "", {26, 90, 147}, 5)
+        .title("Power of the conditional Granger test for a direct effect")
+        .ylim(0, 1.3)
+        .x_label("Direct effect c of x on z")
+        .y_label("Rejection rate at 5%")
+        .size(740, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/granger_power.svg");
+}
+```
+// result_begin: markdown
+| n | Bivariate x → z | x → z given y | z → x given y |
+| ---: | ---: | ---: | ---: |
+| 100 | 0.909 | 0.061 | 0.060 |
+| 300 | 1.000 | 0.050 | 0.049 |
+
+| Direct effect c | Power, n = 100 | Power, n = 300 |
+| ---: | ---: | ---: |
+| 0.00 | 0.048 | 0.042 |
+| 0.05 | 0.076 | 0.132 |
+| 0.10 | 0.154 | 0.416 |
+| 0.15 | 0.304 | 0.720 |
+| 0.20 | 0.436 | 0.934 |
+| 0.25 | 0.626 | 0.992 |
+| 0.30 | 0.784 | 0.996 |
+
+Joint test (x, y) → z, n = 200: F = 29.24 on (4, 573) df; Wald = 116.95 on 4 df.
+\image(figures/granger_power.svg)
+// result_end
+\caption(Rejection rate of the 5% conditional test of x → z in the trivariate VAR(2), as a function of the direct effect c; 500 replicates per point.)
+\alttext(Both curves start near 5 percent at c = 0. For n = 300 power reaches about 42 percent at c = 0.1, 72 percent at 0.15 and over 99 percent from 0.25. For n = 100 it rises more slowly, to about 78 percent at c = 0.3.)
+
+Leaving out the mediator is not a harmless simplification. In the bivariate VAR, \(x\) predicts \(z\) because it predicts \(y\), which then predicts \(z\). The test rejects 91% of the time at \(n=100\) and always at \(n=300\), even though \(x\) has no direct effect. Once \(y\) is in the system, the conditional test holds its level (6.1% and 5.0%). This is the sense in which Granger causality is relative to an information set. It measures incremental predictive content, not structural causation, and an omitted common driver or mediator can create apparent causation as easily as it can hide real effects. The reverse direction \(z\to x\), which is null in both systems, is also correctly sized.
+
+The power curve shows how strong a direct effect must be before it can be detected next to the indirect route: about \(c=0.17\) at \(n=300\) and just over 0.3 at \(n=100\) for 80% power. The joint test of \((x,y)\to z\) restricts \(p\times1\times2=4\) coefficients and rejects decisively. The F version divides the Wald statistic by 4 and uses \(K(T-Kp-1)=3\times191=573\) denominator degrees of freedom, as statsmodels does. Statistics and p-values match `VARResults.test_causality`, including p-values near \(10^{-14}\), which are computed from the upper incomplete beta and gamma functions directly instead of as one minus the CDF.
+
+[Granger (1969)|https://doi.org/10.2307/1912791] · [Lütkepohl (2005)|https://doi.org/10.1007/978-3-540-27752-1] · [Sims (1972)|https://www.jstor.org/stable/1806097]

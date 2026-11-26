@@ -1,0 +1,190 @@
+//? Title: Hilbert-Schmidt independence criterion
+//? Exports: both
+//? Lang: en
+
+> Test whether two or more random vectors are (jointly) independent with kernel embeddings, and see how the kernel bandwidth decides which dependence the test can see
+
+The **Hilbert-Schmidt independence criterion** (Gretton et al. 2005) measures dependence as the distance between the kernel mean embeddings of the joint distribution and of the product of the marginals. With a characteristic kernel, such as the Gaussian \(k(x,x')=\exp(-\lVert x-x'\rVert^2/2\sigma^2)\), it is zero only under independence. For Gram matrices \(K\) and \(L\), the V-statistic is
+
+\[\widehat{\mathrm{HSIC}}=\frac1{n^2}\sum_{i,j}K_{ij}L_{ij}+\frac1{n^4}\sum_{i,j}K_{ij}\sum_{k,l}L_{kl}-\frac2{n^3}\sum_{i}\Bigl(\sum_jK_{ij}\Bigr)\Bigl(\sum_kL_{ik}\Bigr).\]
+
+**dHSIC** (Pfister et al. 2018) extends this to \(d\) variables and tests *joint* independence \(P_{X_1\cdots X_d}=P_{X_1}\otimes\cdots\otimes P_{X_d}\), which is stronger than pairwise independence. Two tests are available: a permutation test, which permutes variables \(2,\dots,d\) independently and is exact, and a gamma approximation to the null distribution of \(n\,\widehat{\mathrm{dHSIC}}\) with matched mean and variance, which is fast. Distance covariance is HSIC with a particular (distance-induced) kernel (Sejdinovic et al. 2013). HSIC's Gaussian kernel adds a scale: the bandwidth \(\sigma\), by default set by the median heuristic \(\sigma^2=\operatorname{median}\lVert x_i-x_j\rVert^2/2\).
+
+`hsic` takes any number of variables, each an \(n\times p_j\) matrix, with Gaussian kernels (median heuristic, optionally rescaled by `bandwidth_scale`, or a fixed bandwidth) or a discrete kernel for categorical data. It returns the statistic, the bandwidths, the gamma test and an optional permutation test. The tests reproduce `dHSIC` 2.1 (statistics, bandwidths and gamma p-values for two and three variables, fixed and discrete kernels) to \(10^{-9}\) relative, and its permutation p-values within Monte Carlo error.
+
+The example builds three variables that are pairwise independent but jointly dependent. The simulations check the size of the gamma and permutation tests, including for heavy-tailed data, and trace power against the bandwidth multiplier for a smooth signal and an oscillating one, with distance correlation as a benchmark.
+
+```{cpp, id=hs, file="figures/hsic.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/distance_correlation.hpp>
+#include <datamunge/stats/hsic.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+Matrix column(const std::vector<double>& v) {
+    Matrix m(v.size(), 1, 0.0);
+    for (std::size_t i = 0; i < v.size(); ++i) m(i, 0) = v[i];
+    return m;
+}
+
+int main() {
+    dm::random::SplitMix64 rng(31);
+
+    // X, Y independent normals; Z = sign(XY)|E|. Pairs are independent, the triple is not.
+    const std::size_t n = 200;
+    std::vector<double> x(n), y(n), z(n);
+    for (std::size_t i = 0; i < n; ++i) {
+        x[i] = rng.normal(), y[i] = rng.normal();
+        z[i] = (x[i] * y[i] > 0 ? 1 : -1) * std::abs(rng.normal());
+    }
+    const dm::stats::HsicOptions perm{.permutations = 1999, .seed = 2};
+    std::println("| Hypothesis (n = 200) | n x dHSIC | Gamma p | Permutation p |");
+    std::println("| --- | ---: | ---: | ---: |");
+    const auto show = [&](const char* name, const std::vector<Matrix>& vars) {
+        const auto h = dm::stats::hsic(vars, perm);
+        std::println("| {} | {:.4f} | {:.4f} | {:.4f} |", name, h.scaled_statistic,
+                     h.gamma_p_value, h.permutation_p_value);
+    };
+    show("X independent of Y", {column(x), column(y)});
+    show("X independent of Z", {column(x), column(z)});
+    show("Y independent of Z", {column(y), column(z)});
+    show("X, Y, Z jointly independent", {column(x), column(y), column(z)});
+    Matrix xy(n, 2, 0.0);
+    for (std::size_t i = 0; i < n; ++i) xy(i, 0) = x[i], xy(i, 1) = y[i];
+    show("(X, Y) independent of Z", {xy, column(z)});
+
+    // Size under independence: gamma approximation versus permutation.
+    std::println("\n| Independent data | n | Gamma test size | Permutation test size |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (const bool cauchy : {false, true})
+        for (const std::size_t m : {30uz, 100uz}) {
+            const int reps = 1000;
+            double g = 0, p = 0;
+            for (int r = 0; r < reps; ++r) {
+                std::vector<double> a(m), b(m);
+                for (std::size_t i = 0; i < m; ++i) {
+                    a[i] = cauchy ? std::tan(std::numbers::pi * (rng.uniform01() - 0.5))
+                                  : rng.normal();
+                    b[i] = cauchy ? std::tan(std::numbers::pi * (rng.uniform01() - 0.5))
+                                  : rng.normal();
+                }
+                const auto h = dm::stats::hsic(
+                    a, b, {.permutations = 199, .seed = static_cast<std::uint64_t>(r + 1)});
+                g += (h.gamma_p_value <= 0.05) / double(reps);
+                p += (h.permutation_p_value <= 0.05) / double(reps);
+            }
+            std::println("| {} | {} | {:.3f} | {:.3f} |", cauchy ? "Cauchy" : "Normal", m,
+                         g, p);
+        }
+
+    // Power against bandwidth multiplier, n = 100, gamma test at 5%.
+    const std::vector<double> scales{0.05, 0.1, 0.2, 0.35, 0.5, 1, 2, 4, 8};
+    const int reps = 400;
+    std::vector<std::vector<double>> power(2, std::vector<double>(scales.size(), 0.0));
+    double dcor_power[2] = {0, 0};
+    for (int signal = 0; signal < 2; ++signal)
+        for (int r = 0; r < reps; ++r) {
+            std::vector<double> a(100), b(100);
+            for (std::size_t i = 0; i < 100; ++i) {
+                a[i] = 2 * rng.uniform01() - 1;
+                const double e = rng.normal();
+                b[i] = signal == 0 ? a[i] * a[i] + 0.4 * e
+                                   : std::sin(6 * std::numbers::pi * a[i]) + 0.5 * e;
+            }
+            for (std::size_t s = 0; s < scales.size(); ++s) {
+                const auto h = dm::stats::hsic(a, b, {.bandwidth_scale = scales[s]});
+                power[signal][s] += (h.gamma_p_value <= 0.05) / double(reps);
+            }
+            const auto d = dm::stats::distance_correlation(
+                a, b, {.permutations = 199, .seed = static_cast<std::uint64_t>(r + 1)});
+            dcor_power[signal] += (d.permutation_p_value <= 0.05) / double(reps);
+        }
+    std::println("\n| Bandwidth / median heuristic | Quadratic: HSIC power | "
+                 "Sine (3 periods): HSIC power |");
+    std::println("| ---: | ---: | ---: |");
+    for (std::size_t s = 0; s < scales.size(); ++s)
+        std::println("| {:.2f} | {:.3f} | {:.3f} |", scales[s], power[0][s], power[1][s]);
+    std::println("| Distance correlation (permutation) | {:.3f} | {:.3f} |", dcor_power[0],
+                 dcor_power[1]);
+
+    std::vector<double> logs;
+    for (const double s : scales) logs.push_back(std::log2(s));
+    auto fig = dm::graphics::RPlot::create();
+    fig.line(logs, power[0], "Quadratic, HSIC", {176, 72, 43}, 3)
+        .line(logs, power[1], "Sine, HSIC", {26, 90, 147}, 3)
+        .line({logs.front(), logs.back()}, {dcor_power[0], dcor_power[0]},
+              "Quadratic, dCor", {232, 165, 135}, 2)
+        .line({logs.front(), logs.back()}, {dcor_power[1], dcor_power[1]}, "Sine, dCor",
+              {140, 182, 222}, 2)
+        .abline_v(0, {170, 170, 170})
+        .abline_h(0.05, {170, 170, 170})
+        .y_limits(0, 1.3)
+        .title("HSIC power depends on the kernel bandwidth (n = 100)")
+        .x_label("log2(bandwidth / median heuristic)")
+        .y_label("Rejection rate at 5%")
+        .size(640, 410);
+    std::filesystem::create_directories("build");
+    fig.save_svg("build/hsic.svg");
+}
+```
+// result_begin: markdown
+| Hypothesis (n = 200) | n x dHSIC | Gamma p | Permutation p |
+| --- | ---: | ---: | ---: |
+| X independent of Y | 0.5064 | 0.1029 | 0.1010 |
+| X independent of Z | 0.1929 | 0.8179 | 0.8465 |
+| Y independent of Z | 0.2300 | 0.7198 | 0.7330 |
+| X, Y, Z jointly independent | 2.1446 | 0.0000 | 0.0005 |
+| (X, Y) independent of Z | 1.3546 | 0.0000 | 0.0005 |
+
+| Independent data | n | Gamma test size | Permutation test size |
+| --- | ---: | ---: | ---: |
+| Normal | 30 | 0.057 | 0.054 |
+| Normal | 100 | 0.060 | 0.055 |
+| Cauchy | 30 | 0.064 | 0.060 |
+| Cauchy | 100 | 0.065 | 0.061 |
+
+| Bandwidth / median heuristic | Quadratic: HSIC power | Sine (3 periods): HSIC power |
+| ---: | ---: | ---: |
+| 0.05 | 0.085 | 0.350 |
+| 0.10 | 0.283 | 0.667 |
+| 0.20 | 0.645 | 0.572 |
+| 0.35 | 0.920 | 0.145 |
+| 0.50 | 0.967 | 0.103 |
+| 1.00 | 0.995 | 0.118 |
+| 2.00 | 0.985 | 0.150 |
+| 4.00 | 0.320 | 0.195 |
+| 8.00 | 0.110 | 0.200 |
+| Distance correlation (permutation) | 0.982 | 0.205 |
+\image(figures/hsic.svg)
+// result_end
+
+The first table is the case dHSIC was built for. Each pair among X, Y and Z is independent (Z's sign is a fair coin given either X or Y alone), and the pairwise tests give p = 0.10, 0.82 and 0.73. Yet Z is a deterministic function of the signs of X and Y together, and the joint test rejects with p < 0.001, as does the test of (X, Y) against Z. Pairwise screening, with any dependence measure, cannot find such structure. Only a test of joint independence can.
+
+Both tests hold their level well. The permutation test is exact up to Monte Carlo error (5.4–6.1% in 1000 replicates), and the gamma approximation is only slightly liberal (5.7–6.5%), even for Cauchy data, because the Gaussian kernel is bounded and needs no moments. Distance correlation, by contrast, requires finite first moments.
+
+The bandwidth decides what HSIC sees. For the smooth quadratic signal, power is above 92% for bandwidths from 0.35 to 2 times the median heuristic, which is itself near-optimal (99.5%, matching distance correlation's 98%). Very small bandwidths make the kernel nearly an indicator of identical points. Very large ones reduce it to \(1-\lVert x-x'\rVert^2/2\sigma^2\), where HSIC tends to squared linear covariance and the symmetric quadratic vanishes (11% power at 8×).
+
+The oscillating sine is the opposite case. Its three periods are local structure that the median bandwidth averages away (12% power). A bandwidth of a tenth of the median, comparable to a half-period, raises power to 67%, while distance correlation, which has no scale parameter, detects it in only 20% of samples. No single bandwidth is best for both signals.
+
+>> Practical guidance
+
+- Use dHSIC to test joint independence of several variables, for example the residuals of a causal model, or the sources in independent component analysis. Pairwise tests can miss higher-order dependence.
+- The median heuristic is a sound default for smooth dependence. If structure at smaller scales is plausible, fix the bandwidth or the multiplier before seeing the data. Choosing the bandwidth that gives the smallest p-value invalidates the test; if several bandwidths are tried, combine them with a Bonferroni or max-type permutation test.
+- Use the gamma approximation for screening and large studies, and the permutation test (999 or more replicates) for reported p-values.
+- Use the discrete kernel for categorical variables. It lets HSIC test mixed categorical and continuous data on the same footing.
+- Gram matrices take O(n²) memory and time. For n beyond a few thousand, use random Fourier features or incomplete Cholesky approximations.
+
+>> References
+
+- A. Gretton, O. Bousquet, A. Smola and B. Schölkopf (2005). Measuring statistical dependence with Hilbert-Schmidt norms. *Algorithmic Learning Theory*, LNCS 3734, 63-77. doi:10.1007/11564089_7
+- A. Gretton, K. Fukumizu, C. H. Teo, L. Song, B. Schölkopf and A. Smola (2008). A kernel statistical test of independence. *Advances in Neural Information Processing Systems* 20, 585-592.
+- N. Pfister, P. Bühlmann, B. Schölkopf and J. Peters (2018). Kernel-based tests for joint independence. *Journal of the Royal Statistical Society B* 80(1), 5-31. doi:10.1111/rssb.12235
+- D. Sejdinovic, B. Sriperumbudur, A. Gretton and K. Fukumizu (2013). Equivalence of distance-based and RKHS-based statistics in hypothesis testing. *Annals of Statistics* 41(5), 2263-2291. doi:10.1214/13-AOS1140

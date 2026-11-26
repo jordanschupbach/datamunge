@@ -1,0 +1,220 @@
+//? Title: Extremal index estimation
+//? Exports: both
+//? Lang: en
+
+> Measure how strongly extremes of a dependent series cluster, decluster the exceedances, and keep the clustering from distorting return levels and their uncertainty
+
+Extremes of a stationary series often arrive in clusters: a wet spell brings several heavy-rain days, a heat wave several hot nights. The **extremal index** \(\theta\in(0,1]\) summarizes this. For a high threshold, \(P(\max(X_1,\dots,X_n)\le u_n)\approx F(u_n)^{n\theta}\). The series behaves like \(n\theta\) independent observations at the extremes, and \(1/\theta\) is the limiting mean cluster size. Independence gives \(\theta=1\).
+
+Both estimators here work from the exceedance times \(S_1<\dots<S_N\) of a threshold \(u\) and the inter-exceedance times \(T_i=S_{i+1}-S_i\):
+
+- The **runs** estimator (Smith and Weissman 1994) declares a new cluster whenever a gap exceeds a run length \(r\), and sets \(\hat\theta=\) clusters \(/N\). The answer depends on the arbitrary \(r\).
+- The **intervals** estimator (Ferro and Segers 2003) uses the fact that normalized inter-exceedance times converge to a mixture: a point mass at zero with weight \(1-\theta\), and an exponential with weight \(\theta\). Its moment estimator \(\hat\theta=\min\{1,2(\sum(T_i-1))^2/((N-1)\sum(T_i-1)(T_i-2))\}\) needs no tuning parameter. It also yields a run length: the \(\lceil\hat\theta N\rceil-1\) largest gaps separate clusters.
+
+`extremal_index` computes both, with the Ferro–Segers bootstrap, which resamples whole clusters and inter-cluster gaps, for an interval. `decluster` returns the clusters and their maxima. `gpd_return_level` takes the extremal index to turn a fit into a return level for a clustered series. The tests reproduce `extRemes::extremalindex` (estimate, cluster count and run length at four thresholds, both methods) and runs declustering exactly. They match its bootstrap percentiles to within 0.01, and recover \(\theta=1-a\) for a max-autoregressive process. One edge case differs from extRemes: when \(\hat\theta=1\), every exceedance becomes its own cluster, where extRemes reports the smallest gap as the run length. Also, `extRemes::decluster(method = "intervals")` clusters with \(r=1\) whatever run length it reports.
+
+The example uses 100 years of daily precipitation at Fort Collins, Colorado (Katz, Parlange and Naveau 2002). The simulation uses the max-autoregressive process \(X_t=\max(aX_{t-1},(1-a)Z_t)\) with unit Fréchet \(Z_t\), whose extremal index is exactly \(1-a\).
+
+```{cpp, id=ei, file="figures/extremal_index.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/extremal_index.hpp>
+#include <datamunge/stats/gpd.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <fstream>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::ExtremalIndexMethod;
+
+std::vector<double> read_series(const std::string& path) {
+    std::ifstream in(path);
+    std::vector<double> v;
+    for (std::string line; std::getline(in, line);)
+        if (!line.empty() && line[0] != '#') v.push_back(std::stod(line));
+    return v;
+}
+
+double upper_quantile(std::vector<double> x, double p) {
+    const auto i = static_cast<std::size_t>(p * static_cast<double>(x.size() - 1));
+    std::ranges::nth_element(x, x.begin() + static_cast<std::ptrdiff_t>(i));
+    return x[i];
+}
+
+int main() {
+    const auto rain = read_series("data/fort.txt");
+    const double per_year = static_cast<double>(rain.size()) / 100;
+    std::println("{} days, maximum {:.2f} inches.\n", rain.size(), std::ranges::max(rain));
+
+    std::println("| Threshold (in) | Exceedances | Intervals theta [95% bootstrap] | "
+                 "Clusters | Estimated run length | Runs, r = 1 | Runs, r = 3 | "
+                 "Runs, r = 9 |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const double u : {0.395, 0.6, 1.0, 1.5}) {
+        const auto e = dm::stats::extremal_index(rain, u, {.bootstrap = 2000, .seed = 1});
+        std::string runs;
+        for (const std::size_t r : {1, 3, 9})
+            runs += std::format(" {:.3f} |", dm::stats::extremal_index(
+                                    rain, u, {.method = ExtremalIndexMethod::runs,
+                                              .run_length = r}).theta);
+        std::println("| {:.3f} | {} | {:.3f} [{:.3f}, {:.3f}] | {} | {} |{}", u,
+                     e.exceedances, e.theta, e.lower, e.upper, e.clusters, e.run_length,
+                     runs);
+    }
+
+    // Return levels at u = 0.395: three ways of handling the clusters.
+    const double u = 0.395;
+    const auto ei = dm::stats::extremal_index(rain, u);
+    const auto clusters = dm::stats::decluster(rain, u, ei.run_length);
+    auto declustered = rain;  // keep cluster maxima, set other exceedances to u
+    for (const std::size_t t : clusters.exceedance_index) declustered[t] = u;
+    for (std::size_t c = 0; c < clusters.cluster_maxima.size(); ++c)
+        declustered[clusters.cluster_maximum_index[c]] = clusters.cluster_maxima[c];
+    const auto all = dm::stats::fit_gpd(rain, u);
+    const auto peaks = dm::stats::fit_gpd(declustered, u);
+    std::println("\nAt u = {}: theta = {:.3f}, {} clusters (run length {}).\n", u, ei.theta,
+                 ei.clusters, ei.run_length);
+    std::println("| Fit | Excesses | sigma (SE) | xi (SE) | 100-year level (in) | "
+                 "Profile 95% |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    const auto row = [&](const char* name, const dm::stats::GpdFit& f, const auto& data,
+                         double theta) {
+        const auto r = dm::stats::gpd_return_level(f, data, 100, per_year, 0.95, theta);
+        std::println("| {} | {} | {:.4f} ({:.4f}) | {:.3f} ({:.3f}) | {:.2f} | "
+                     "[{:.2f}, {:.2f}] |", name, f.exceedances, f.scale, f.scale_se,
+                     f.shape, f.shape_se, r.level, r.profile_lower, r.profile_upper);
+    };
+    row("All exceedances, independence assumed", all, rain, 1.0);
+    row("All exceedances, rate scaled by theta", all, rain, ei.theta);
+    row("Cluster maxima (declustered series)", peaks, declustered, 1.0);
+
+    // Simulation: max-autoregressive and lag-3 moving-maximum processes with known theta.
+    dm::random::SplitMix64 rng(31);
+    const auto frechet = [&] { return -1 / std::log(rng.uniform01() * 0.999999 + 5e-7); };
+    struct Process {
+        std::string name;
+        double theta;
+        double a;    // ARMAX coefficient, or the moving-maximum weight
+        bool armax;
+    };
+    const std::vector<Process> processes{{"ARMAX, a = 0.75", 0.25, 0.75, true},
+                                         {"ARMAX, a = 0.5", 0.5, 0.5, true},
+                                         {"ARMAX, a = 0.2", 0.8, 0.2, true},
+                                         {"Moving maximum, lag 3", 0.5, 0.5, false}};
+    std::println("\n| Process | True theta | Intervals mean (RMSE) | Bootstrap coverage | "
+                 "Runs r = 1 mean (RMSE) | Runs r = 5 mean (RMSE) |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (const auto& pr : processes) {
+        const int reps = 200;
+        double cover = 0, m[3]{}, mse[3]{};
+        for (int rep = 0; rep < reps; ++rep) {
+            // ARMAX: X_t = max(a X_{t-1}, (1 - a) Z_t), theta = 1 - a.
+            // Moving maximum: X_t = max(a Z_t, (1 - a) Z_{t-3}), theta = max(a, 1 - a).
+            std::vector<double> x(10000), z(10003);
+            for (auto& v : z) v = frechet();
+            double prev = z[0];
+            for (std::size_t t = 0; t < x.size(); ++t)
+                x[t] = pr.armax ? (prev = std::max(pr.a * prev, (1 - pr.a) * z[t + 3]))
+                                : std::max(pr.a * z[t + 3], (1 - pr.a) * z[t]);
+            const double q = upper_quantile(x, 0.98);
+            const auto iv = dm::stats::extremal_index(
+                x, q, {.bootstrap = 300, .seed = static_cast<std::uint64_t>(rep + 1)});
+            const auto runs = [&](std::size_t r) {
+                return dm::stats::extremal_index(
+                           x, q, {.method = ExtremalIndexMethod::runs, .run_length = r})
+                    .theta;
+            };
+            const double est[3]{iv.theta, runs(1), runs(5)};
+            cover += (iv.lower <= pr.theta && pr.theta <= iv.upper) / double(reps);
+            for (int j = 0; j < 3; ++j)
+                m[j] += est[j] / reps, mse[j] += std::pow(est[j] - pr.theta, 2) / reps;
+        }
+        std::println("| {} | {:.2f} | {:.3f} ({:.3f}) | {:.2f} | {:.3f} ({:.3f}) | "
+                     "{:.3f} ({:.3f}) |", pr.name, pr.theta, m[0], std::sqrt(mse[0]), cover,
+                     m[1], std::sqrt(mse[1]), m[2], std::sqrt(mse[2]));
+    }
+
+    // Threshold stability for Fort Collins.
+    std::vector<double> us, ti, lo, hi, r1, r9;
+    for (double p = 0.95; p <= 0.9975; p += 0.0025) {
+        const double q = upper_quantile(rain, p);
+        if (!us.empty() && q <= us.back()) continue;
+        const auto e = dm::stats::extremal_index(rain, q, {.bootstrap = 1000, .seed = 2});
+        us.push_back(q), ti.push_back(e.theta);
+        lo.push_back(e.lower), hi.push_back(e.upper);
+        const auto runs = [&](std::size_t r) {
+            return dm::stats::extremal_index(
+                       rain, q, {.method = ExtremalIndexMethod::runs, .run_length = r})
+                .theta;
+        };
+        r1.push_back(runs(1)), r9.push_back(runs(9));
+    }
+    auto fig = dm::graphics::RPlot::create();
+    fig.line(us, hi, "Intervals 95% bootstrap", {140, 182, 222}, 1.5)
+        .line(us, lo, "", {140, 182, 222}, 1.5)
+        .line(us, r1, "Runs, r = 1", {150, 150, 150}, 1.5)
+        .line(us, r9, "Runs, r = 9", {178, 74, 38}, 2)
+        .line(us, ti, "Intervals", {26, 90, 147}, 2.5)
+        .y_limits(0.3, 1.3)
+        .title("Fort Collins daily precipitation: extremal index")
+        .x_label("Threshold (inches)")
+        .y_label("Estimated theta")
+        .size(640, 410);
+    std::filesystem::create_directories("build");
+    fig.save_svg("build/extremal_index.svg");
+}
+```
+// result_begin: markdown
+36524 days, maximum 4.63 inches.
+
+| Threshold (in) | Exceedances | Intervals theta [95% bootstrap] | Clusters | Estimated run length | Runs, r = 1 | Runs, r = 3 | Runs, r = 9 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.395 | 1061 | 0.625 [0.581, 0.676] | 651 | 9 | 0.840 | 0.781 | 0.614 |
+| 0.600 | 572 | 0.732 [0.661, 0.804] | 416 | 9 | 0.885 | 0.841 | 0.727 |
+| 1.000 | 213 | 0.845 [0.728, 0.989] | 181 | 7 | 0.934 | 0.911 | 0.822 |
+| 1.500 | 91 | 0.896 [0.745, 1.000] | 81 | 8 | 0.956 | 0.945 | 0.890 |
+
+At u = 0.395: theta = 0.625, 651 clusters (run length 9).
+
+| Fit | Excesses | sigma (SE) | xi (SE) | 100-year level (in) | Profile 95% |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| All exceedances, independence assumed | 1061 | 0.3225 (0.0157) | 0.212 (0.038) | 5.53 | [4.42, 7.35] |
+| All exceedances, rate scaled by theta | 1061 | 0.3225 (0.0157) | 0.212 (0.038) | 4.90 | [4.01, 6.33] |
+| Cluster maxima (declustered series) | 651 | 0.4364 (0.0262) | 0.136 (0.046) | 4.94 | [4.00, 6.59] |
+
+| Process | True theta | Intervals mean (RMSE) | Bootstrap coverage | Runs r = 1 mean (RMSE) | Runs r = 5 mean (RMSE) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| ARMAX, a = 0.75 | 0.25 | 0.252 (0.041) | 0.94 | 0.249 (0.027) | 0.245 (0.027) |
+| ARMAX, a = 0.5 | 0.50 | 0.508 (0.059) | 0.90 | 0.498 (0.035) | 0.478 (0.040) |
+| ARMAX, a = 0.2 | 0.80 | 0.811 (0.067) | 0.88 | 0.785 (0.030) | 0.737 (0.069) |
+| Moving maximum, lag 3 | 0.50 | 0.517 (0.053) | 0.87 | 0.980 (0.480) | 0.464 (0.038) |
+\image(figures/extremal_index.svg)
+// result_end
+
+Heavy precipitation at Fort Collins clusters noticeably. At the 0.395-inch threshold used by Katz, Parlange and Naveau, the intervals estimate is \(\hat\theta=0.62\) (bootstrap interval 0.58–0.68), a mean cluster size of about 1.6 days. Its implied run length is nine days. The runs estimate with \(r=9\) agrees (0.61), but with \(r=1\) it gives 0.84, because it treats storms with a dry day in between as separate events. The intervals estimator chooses that structure from the data. As the threshold rises, \(\hat\theta\) increases toward 1 (0.90 at 1.5 inches). The most extreme days tend to stand alone, which is consistent with convective storms. Above about one inch the bootstrap interval reaches 1. The figure shows the full threshold path: the intervals estimate and the \(r=9\) runs estimate agree, while \(r=1\) is consistently higher.
+
+The return-level table shows the practical consequence. Treating all 1061 exceedances as independent gives a 100-year daily rainfall of 5.53 inches. Each excess is counted at its full rate, so storms that last several days are counted several times. Scaling the exceedance rate by \(\hat\theta\) gives 4.90 inches. Fitting the generalized Pareto distribution to the 651 cluster maxima gives 4.94 inches, with a higher scale (cluster peaks are larger than typical exceedances) and a smaller shape. These two approaches agree. The independence fit's standard errors are also too small, since its 1061 excesses carry only about 651 independent pieces of information. The rate-scaled fit corrects the level but not that understatement. The declustered fit corrects both, which is why it is the usual recommendation.
+
+In the simulation, the intervals estimator is nearly unbiased for every process, and its bootstrap intervals cover 87–94% of the time, somewhat below the nominal level at 200 exceedances. For the max-autoregressive process, clusters are unbroken runs above the threshold, so runs declustering with \(r=1\) is exactly right and has the smallest error. A longer run length merges independent clusters and underestimates \(\theta\) (0.74 against 0.8). The moving-maximum process breaks each cluster with a three-step gap. There, \(r=1\) declares almost every exceedance its own cluster (\(\hat\theta=0.98\) against 0.5), while \(r=5\) and the intervals estimator both recover it. A runs estimate is only as good as its run length, and the intervals estimator does not need one.
+
+>> Practical guidance
+
+- Estimate \(\theta\) with the intervals estimator over a range of thresholds, and report it with a cluster-bootstrap interval. A stable path supports both the threshold and the clustering structure.
+- Decluster with the intervals run length, fit the generalized Pareto distribution to cluster maxima, and compute return levels from the cluster rate. Alternatively, scale the exceedance rate by \(\hat\theta\), but then the standard errors of a fit to all exceedances remain too small.
+- Treat a runs estimate with an arbitrary \(r\) as a sensitivity check. The right run length depends on the physical persistence of events, which the intervals estimator infers from the data.
+- Seasonality and trends masquerade as clustering. Estimate \(\theta\) within a season or after removing such structure, and remember that \(\theta\) itself may vary with the threshold, as it does here.
+
+>> References
+
+- C. A. T. Ferro and J. Segers (2003). Inference for clusters of extreme values. *Journal of the Royal Statistical Society B* 65(2), 545-556. doi:10.1111/1467-9868.00401
+- R. L. Smith and I. Weissman (1994). Estimating the extremal index. *Journal of the Royal Statistical Society B* 56(3), 515-528. doi:10.1111/j.2517-6161.1994.tb01997.x
+- M. R. Leadbetter, G. Lindgren and H. Rootzén (1983). *Extremes and Related Properties of Random Sequences and Processes*. Springer. doi:10.1007/978-1-4612-5449-2
+- S. Coles (2001). *An Introduction to Statistical Modeling of Extreme Values*, ch. 5. Springer. doi:10.1007/978-1-4471-3675-0
+- R. W. Katz, M. B. Parlange and P. Naveau (2002). Statistics of extremes in hydrology. *Advances in Water Resources* 25, 1287-1304. doi:10.1016/S0309-1708(02)00056-8
+- E. Gilleland and R. W. Katz (2016). extRemes 2.0: An extreme value analysis package in R. *Journal of Statistical Software* 72(8), 1-39. doi:10.18637/jss.v072.i08

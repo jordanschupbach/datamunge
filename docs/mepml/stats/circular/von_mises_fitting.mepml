@@ -1,0 +1,159 @@
+//? Title: von Mises fitting
+//? Exports: both
+//? Lang: en
+
+> Fit the circular analogue of the normal distribution by maximum likelihood, correct the small-sample bias in its concentration, and recognise when the data cannot identify a mean direction at all
+
+The von Mises distribution \(f(\theta)=e^{\kappa\cos(\theta-\mu)}/(2\pi I_0(\kappa))\) is the standard unimodal model for directions. \(\mu\) is the mean direction and \(\kappa\ge0\) the concentration. \(\kappa=0\) is the uniform distribution, and large \(\kappa\) gives an approximately normal distribution with variance \(1/\kappa\). The maximum-likelihood estimates have closed forms in terms of the sample:
+
+- The mean direction is \(\hat\mu=\operatorname{atan2}(\bar S,\bar C)\).
+- The concentration solves \(A_1(\hat\kappa)=\bar R\), where \(A_1=I_1/I_0\) is the von Mises mean resultant length.
+
+Two features make the fit delicate. First, \(\hat\kappa\) is biased upward in small samples, because \(\bar R\) is biased upward: even uniform data have \(E\bar R\approx\sqrt{\pi/(4n)}\). Second, as \(\bar R\to0\) the likelihood for \(\mu\) becomes flat. The estimate \(\hat\mu\) is still computed, but it is then determined by noise.
+
+`von_mises_fit` returns:
+
+- \(\hat\mu\) and \(\hat\kappa\);
+- the information-matrix standard errors of `circular::mle.vonmises`;
+- a Wald interval for \(\mu\);
+- a profile-likelihood interval for \(\kappa\), which reaches 0 when uniformity is plausible;
+- the log-likelihood and AIC;
+- three diagnostics: `boundary` (\(\hat\kappa=0\)), the Rayleigh p-value, and `vanishing_resultant` (no evidence of a mean direction).
+
+By default it solves \(A_1(\kappa)=\bar R\) exactly through Bessel-ratio recurrences. Alternatively it can use Fisher's piecewise approximation, as `circular` does, and it offers the Best–Fisher bias correction. `von_mises_a1`, `von_mises_a1_inverse`, `von_mises_log_likelihood` and `von_mises_cdf` are exposed as well. The CDF comes from the density's Fourier series and can serve as Kuiper's null for goodness of fit. The tests match `mle.vonmises` (with and without `bias = TRUE`, and with a known \(\mu\)), an exact `uniroot` inverse and an R profile interval to about \(10^{-10}\), and `pvonmises` to \(10^{-10}\).
+
+The study simulates 2000 samples per setting. It compares the three estimators of \(\kappa=2\) as \(n\) grows, along with the coverage of the 95% intervals, and then examines the diagnostics as \(\kappa\) approaches 0 with \(n=20\).
+
+```{cpp, id=vmfit, file="figures/von_mises_fitting.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/circular.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+const double pi = std::numbers::pi;
+
+double median(std::vector<double> v) {
+    std::ranges::sort(v);
+    return v[v.size() / 2];
+}
+
+int main() {
+    dm::random::SplitMix64 rng(4);
+    const double kappa = 2.0, mu = 1.0;
+    const int reps = 2000;
+    std::println("| n | Mean kappa-hat: exact MLE | Fisher approximation | "
+                 "Bias-corrected | Median MLE | Profile interval for kappa | "
+                 "Wald interval for mu |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+    std::vector<double> ns, mle_mean, cor_mean, med;
+    for (const std::size_t n : {8, 10, 15, 20, 30, 50, 100}) {
+        std::vector<double> ex, ap, co;
+        double kc = 0, mc = 0;
+        for (int r = 0; r < reps; ++r) {
+            const auto x = dm::stats::von_mises_sample(n, mu, kappa, rng.next_u64());
+            const auto f = dm::stats::von_mises_fit(x);
+            ex.push_back(std::min(f.concentration, 1e3));
+            ap.push_back(std::min(dm::stats::von_mises_fit(x, {.exact_inverse = false})
+                                      .concentration, 1e3));
+            co.push_back(
+                dm::stats::von_mises_fit(x, {.bias_correction = true}).concentration);
+            kc += f.concentration_lower <= kappa && kappa <= f.concentration_upper;
+            mc += !std::isnan(f.mean_lower) &&
+                  std::abs(std::remainder(f.mean_direction - mu, 2 * pi)) <=
+                      (f.mean_upper - f.mean_lower) / 2;
+        }
+        const auto mean = [](const std::vector<double>& v) {
+            double s = 0;
+            for (const double x : v)
+                s += x / v.size();
+            return s;
+        };
+        std::println("| {} | {:.2f} | {:.2f} | {:.2f} | {:.2f} | {:.3f} | {:.3f} |", n,
+                     mean(ex), mean(ap), mean(co), median(ex), kc / reps, mc / reps);
+        ns.push_back(double(n));
+        mle_mean.push_back(mean(ex)), cor_mean.push_back(mean(co));
+        med.push_back(median(ex));
+    }
+
+    std::println("\n| kappa (n = 20) | Bias-corrected kappa-hat = 0 | "
+                 "Vanishing-resultant flag | Mean kappa-hat | Wald interval for mu defined | Its coverage |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const double k : {0.0, 0.25, 0.5, 1.0, 2.0}) {
+        double b = 0, v = 0, km = 0, defined = 0, cover = 0;
+        for (int r = 0; r < reps; ++r) {
+            const auto x = dm::stats::von_mises_sample(20, mu, k, rng.next_u64());
+            const auto f = dm::stats::von_mises_fit(x);
+            b += dm::stats::von_mises_fit(x, {.bias_correction = true}).boundary;
+            v += f.vanishing_resultant, km += f.concentration / reps;
+            if (!std::isnan(f.mean_lower)) {
+                ++defined;
+                cover += std::abs(std::remainder(f.mean_direction - mu, 2 * pi)) <=
+                         (f.mean_upper - f.mean_lower) / 2;
+            }
+        }
+        std::println("| {} | {:.3f} | {:.3f} | {:.2f} | {:.3f} | {} |", k, b / reps,
+                     v / reps, km, defined / reps, k == 0 ? std::string("(no true mu)")
+                                                : std::format("{:.3f}", cover / defined));
+    }
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(ns, mle_mean, "Mean of exact MLE", {176, 72, 43}, 2)
+        .points(ns, mle_mean, "", {176, 72, 43}, 4)
+        .line(ns, med, "Median of exact MLE", {225, 160, 140}, 2)
+        .line(ns, cor_mean, "Mean of bias-corrected estimate", {26, 90, 147}, 2)
+        .points(ns, cor_mean, "", {26, 90, 147}, 4)
+        .abline_h(kappa, {120, 120, 120})
+        .y_limits(1.5, 3.6)
+        .title("Estimating kappa = 2: small-sample bias")
+        .x_label("Sample size n")
+        .y_label("Estimated concentration")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/von_mises_fitting.svg");
+}
+```
+// result_begin: markdown
+| n | Mean kappa-hat: exact MLE | Fisher approximation | Bias-corrected | Median MLE | Profile interval for kappa | Wald interval for mu |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 8 | 2.89 | 2.88 | 2.03 | 2.33 | 0.913 | 0.911 |
+| 10 | 2.60 | 2.59 | 1.99 | 2.25 | 0.933 | 0.916 |
+| 15 | 2.32 | 2.32 | 1.97 | 2.16 | 0.940 | 0.923 |
+| 20 | 2.26 | 2.25 | 2.01 | 2.14 | 0.951 | 0.942 |
+| 30 | 2.15 | 2.14 | 2.00 | 2.07 | 0.951 | 0.936 |
+| 50 | 2.09 | 2.08 | 2.00 | 2.06 | 0.954 | 0.932 |
+| 100 | 2.05 | 2.04 | 2.01 | 2.02 | 0.948 | 0.946 |
+
+| kappa (n = 20) | Bias-corrected kappa-hat = 0 | Vanishing-resultant flag | Mean kappa-hat | Wald interval for mu defined | Its coverage |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0.366 | 0.954 | 0.41 | 0.839 | (no true mu) |
+| 0.25 | 0.311 | 0.905 | 0.47 | 0.865 | 0.763 |
+| 0.5 | 0.142 | 0.740 | 0.65 | 0.941 | 0.878 |
+| 1 | 0.011 | 0.247 | 1.13 | 0.998 | 0.924 |
+| 2 | 0.000 | 0.002 | 2.22 | 1.000 | 0.931 |
+\image(figures/von_mises_fitting.svg)
+// result_end
+
+The exact MLE and Fisher's approximation agree to within 0.01 everywhere, so the approximation in `circular` is harmless for point estimation. Both are biased upward: on average \(\hat\kappa\) is 2.89 at \(n=8\) and 2.26 at \(n=20\) for a true \(\kappa=2\). The bias falls roughly as \(1/n\), and the skewed sampling distribution puts the median below the mean. The Best–Fisher correction removes the bias from \(n=8\) onward. The profile-likelihood interval for \(\kappa\) reaches 95% coverage by \(n=15\). The Wald interval for \(\mu\) runs 1–3 points below nominal until about \(n=100\), because it plugs in the upward-biased \(\hat\kappa\) and so is too narrow.
+
+Near uniformity the fit is misleading. With \(\mu\) estimated, \(\bar R\) is always positive, so the uncorrected \(\hat\kappa\) is never 0. Uniform data of size 20 give an average \(\hat\kappa\) of 0.41, and a finite Wald interval for a non-existent mean direction in 84% of samples. The vanishing-resultant flag (Rayleigh \(p>0.05\)) catches 95% of these samples. At \(\kappa=0.25\) the flag is still raised 90% of the time, and the Wald intervals that do exist cover only 76%: the reported direction is noise around \(\mu\), and the interval does not know it. The bias-corrected estimate reaches the boundary \(\hat\kappa=0\) in 37% of uniform samples, a second, more conservative signal. Only from \(\kappa\approx1\) (where \(n\bar R^2\approx4.6\)) does the flag become rare and the interval approach nominal coverage.
+
+>> Practical guidance
+
+- Report \(\hat\mu\), \(\hat\kappa\) and the profile interval for \(\kappa\). An interval reaching 0 means uniformity is consistent with the data, and then \(\hat\mu\) should not be interpreted.
+- Check the Rayleigh p-value, or the `vanishing_resultant` flag, before interpreting the mean direction. A computed \(\hat\mu\) with a finite interval is not evidence that a direction exists.
+- For \(n<30\), report the bias-corrected \(\hat\kappa\), or at least note the upward bias. Dispersion-based comparisons between groups of different sizes are otherwise confounded by sample size.
+- Check the von Mises shape with Kuiper's test against `von_mises_cdf` at the fitted parameters (the p-value is then conservative, so simulate from the fit when it is near the threshold). Use the sample summaries instead when the data are skewed, bimodal or heavy-tailed.
+
+>> References
+
+- N. I. Fisher (1993). *Statistical Analysis of Circular Data*. Cambridge University Press. doi:10.1017/CBO9780511564345
+- D. J. Best and N. I. Fisher (1981). The bias of the maximum likelihood estimators of the von Mises-Fisher concentration parameters. *Communications in Statistics - Simulation and Computation* 10(5), 493-502. doi:10.1080/03610918108812225
+- K. V. Mardia and P. E. Jupp (2000). *Directional Statistics*. Wiley. doi:10.1002/9780470316979
+- A. Pewsey, M. Neuhäuser and G. D. Ruxton (2013). *Circular Statistics in R*. Oxford University Press.

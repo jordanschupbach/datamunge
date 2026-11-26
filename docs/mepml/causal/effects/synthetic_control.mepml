@@ -1,0 +1,199 @@
+//? Title: Synthetic control
+//? Exports: both
+//? Lang: en
+
+> Build a weighted combination of untreated units that tracks the treated unit before treatment, and judge the post-treatment gap against placebo assignments
+
+Comparative case studies often have a single treated unit: one region that suffered terrorism, one state that passed a tobacco law, one country that joined a currency union. Difference in differences compares it with the average of untreated units, which assumes the treated unit would have followed the same trend as that average. When units respond differently to common shocks, so that outcomes follow a factor structure with unit-specific loadings, this fails whenever the treated unit's loadings differ from the average.
+
+The synthetic control method of Abadie, Diamond and Hainmueller replaces the average with a weighted combination of donors, with weights \(W\ge0\) summing to 1, chosen so that the combination matches the treated unit's pre-treatment predictors:
+
+\[
+\min_W\,(X_1-X_0W)^\top V\,(X_1-X_0W).
+\]
+
+The predictors \(X\) usually include pre-treatment outcome averages and covariates, and the diagonal matrix \(V\) sets their importance. \(V\) is chosen so the resulting synthetic unit tracks the treated unit's outcome over the pre-treatment fit periods. If a synthetic unit reproduces a long pre-treatment path, it must approximately match the treated unit's factor loadings, so it also tracks the untreated counterfactual after treatment. The weights are restricted to the simplex, so the synthetic unit interpolates between donors rather than extrapolating.
+
+Inference cannot rely on sampling from a population of treated units. Instead, each donor in turn is treated as if it had been treated, and the treated unit's ratio of post- to pre-treatment root mean squared prediction error (RMSPE) is ranked among these placebo ratios. `synthetic_control` solves the weight problem exactly with an active-set method and searches \(V\) as R's `Synth` does. `synthetic_control_placebos` runs the in-space placebos and returns the permutation p-value. On `Synth`'s Basque data, the tests reproduce the exact donor weights at fixed \(V\) and reach a pre-treatment fit at least as good as `Synth`'s, with the classic Cataluña–Madrid synthetic Basque Country.
+
+The simulation follows the linear factor model of Abadie, Diamond and Hainmueller (2010). There are 30 donors and one treated unit observed for 20 pre-treatment and 10 post-treatment periods. Outcomes are \(Y_{it}=\delta_t+\theta_t Z_i+\lambda_t^\top\mu_i+\varepsilon_{it}\), with one covariate \(Z_i\), two persistent common factors \(\lambda_t\), loadings \(\mu_i\sim U(0,1)^2\) and noise SD 0.5. The treated unit has loadings (0.85, 0.8), inside the donors' range but far from their average, and \(Z=0.7\). The predictors are \(Z\) and the averages of the outcome over four 5-period blocks. The table compares, over 400 panels, the estimate of the average post-treatment effect (true value 1) from difference in differences against the donor average and from synthetic controls with optimised or equal \(V\). It also gives the rejection rate of the placebo test at the 10% level, with no effect and with the effect. The figure shows one panel.
+
+```{cpp, id=synth, file="figures/synthetic_control.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/causal/synthetic_control.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+constexpr std::size_t donors = 30, pre = 20, periods = 30, blocks = 4;
+
+// One panel from the factor model; unit 0 is treated with a constant effect from period 20.
+dm::causal::SyntheticControlData simulate(dm::random::SplitMix64& rng, double effect) {
+    std::vector<double> delta(periods), theta(periods), f1(periods), f2(periods);
+    double a = 0, b = 0;
+    for (std::size_t t = 0; t < periods; ++t) {
+        a = 0.8 * a + rng.normal();
+        b = 0.8 * b + rng.normal();
+        delta[t] = 0.1 * static_cast<double>(t) + 0.3 * rng.normal();
+        theta[t] = 1 + 0.2 * rng.normal();
+        f1[t] = 2 * a;
+        f2[t] = 2 * b;
+    }
+    const auto path = [&](double z, double m1, double m2, double shift) {
+        std::vector<double> y(periods);
+        for (std::size_t t = 0; t < periods; ++t)
+            y[t] = delta[t] + theta[t] * z + f1[t] * m1 + f2[t] * m2 + 0.5 * rng.normal() +
+                   (t >= pre ? shift : 0);
+        return y;
+    };
+    const auto predictors = [&](double z, const std::vector<double>& y) {
+        std::vector<double> x{z};
+        for (std::size_t k = 0; k < blocks; ++k) {
+            double s = 0;
+            for (std::size_t t = 5 * k; t < 5 * k + 5; ++t)
+                s += y[t] / 5;
+            x.push_back(s);
+        }
+        return x;
+    };
+    dm::causal::SyntheticControlData d;
+    d.treated_outcome = path(0.7, 0.85, 0.8, effect);
+    d.treated_predictors = predictors(0.7, d.treated_outcome);
+    d.donor_predictors = Matrix(blocks + 1, donors, 0.0);
+    d.donor_outcomes = Matrix(periods, donors, 0.0);
+    for (std::size_t j = 0; j < donors; ++j) {
+        const double z = rng.uniform01();
+        const auto y = path(z, rng.uniform01(), rng.uniform01(), 0);
+        const auto x = predictors(z, y);
+        for (std::size_t r = 0; r <= blocks; ++r)
+            d.donor_predictors(r, j) = x[r];
+        for (std::size_t t = 0; t < periods; ++t)
+            d.donor_outcomes(t, j) = y[t];
+    }
+    for (std::size_t t = 0; t < pre; ++t)
+        d.fit_periods.push_back(t);
+    d.treatment_period = pre;
+    return d;
+}
+
+double post_mean(const std::vector<double>& gap) {
+    double s = 0;
+    for (std::size_t t = pre; t < periods; ++t)
+        s += gap[t] / (periods - pre);
+    return s;
+}
+
+// Difference in differences against the unweighted donor average.
+double did(const dm::causal::SyntheticControlData& d) {
+    double before = 0, after = 0;
+    for (std::size_t t = 0; t < periods; ++t) {
+        double avg = 0;
+        for (std::size_t j = 0; j < donors; ++j)
+            avg += d.donor_outcomes(t, j) / donors;
+        (t < pre ? before : after) +=
+            (d.treated_outcome[t] - avg) / static_cast<double>(t < pre ? pre : periods - pre);
+    }
+    return after - before;
+}
+
+int main() {
+    dm::random::SplitMix64 rng(2010);
+    const int reps = 400;
+    const std::vector<double> equal_v(blocks + 1, 1.0);
+    double sum[3]{}, sq[3]{}, reject[2]{};
+    for (int r = 0; r < reps; ++r) {
+        const auto d = simulate(rng, 1.0);
+        const double est[3]{did(d), post_mean(dm::causal::synthetic_control(d).gap),
+                            post_mean(dm::causal::synthetic_control(
+                                d, {.predictor_weights = equal_v}).gap)};
+        for (int k = 0; k < 3; ++k) {
+            sum[k] += est[k] - 1;
+            sq[k] += (est[k] - 1) * (est[k] - 1);
+        }
+        // Placebo tests (equal V for speed) without and with the effect.
+        const auto null_panel = simulate(rng, 0.0);
+        reject[0] += dm::causal::synthetic_control_placebos(
+                         null_panel, {.predictor_weights = equal_v}).p_value <= 0.1;
+        reject[1] += dm::causal::synthetic_control_placebos(
+                         d, {.predictor_weights = equal_v}).p_value <= 0.1;
+    }
+    const std::string names[3]{"Difference in differences (donor average)",
+                               "Synthetic control, optimised V", "Synthetic control, equal V"};
+    std::println("| Estimator | Bias | SD | RMSE |");
+    std::println("| --- | ---: | ---: | ---: |");
+    for (int k = 0; k < 3; ++k) {
+        const double bias = sum[k] / reps;
+        std::println("| {} | {:+.3f} | {:.3f} | {:.3f} |", names[k], bias,
+                     std::sqrt(sq[k] / reps - bias * bias), std::sqrt(sq[k] / reps));
+    }
+    std::println("\nPlacebo test at the 10% level (31 units, equal V): rejection rate {:.3f} "
+                 "with no effect, {:.3f} with effect 1.", reject[0] / reps, reject[1] / reps);
+
+    const auto d = simulate(rng, 1.0);
+    const auto f = dm::causal::synthetic_control(d);
+    std::vector<double> t(periods), avg(periods, 0.0);
+    for (std::size_t s = 0; s < periods; ++s) {
+        t[s] = static_cast<double>(s) + 1;
+        for (std::size_t j = 0; j < donors; ++j)
+            avg[s] += d.donor_outcomes(s, j) / donors;
+    }
+    int used = 0;
+    for (const double w : f.weights)
+        used += w > 0.01;
+    std::println("\nOne panel: {} donors with weight above 0.01; pre-treatment RMSPE {:.3f}, "
+                 "post-treatment mean gap {:.3f}.", used, f.pre_rmspe, post_mean(f.gap));
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(t, avg, "Donor average", {150, 150, 150}, 2)
+        .line(t, f.synthetic, "Synthetic control", {26, 90, 147}, 2)
+        .line(t, d.treated_outcome, "Treated unit", {176, 72, 43}, 2)
+        .abline_v(20.5, {60, 60, 60}, 1)
+        .y_limits(-6, 14)
+        .title("Treated unit, synthetic control and donor average")
+        .x_label("Period (treatment from period 21)")
+        .y_label("Outcome")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/synthetic_control.svg");
+}
+```
+// result_begin: markdown
+| Estimator | Bias | SD | RMSE |
+| --- | ---: | ---: | ---: |
+| Difference in differences (donor average) | +0.039 | 1.323 | 1.324 |
+| Synthetic control, optimised V | +0.074 | 0.335 | 0.343 |
+| Synthetic control, equal V | +0.033 | 0.408 | 0.409 |
+
+Placebo test at the 10% level (31 units, equal V): rejection rate 0.070 with no effect, 0.690 with effect 1.
+
+One panel: 3 donors with weight above 0.01; pre-treatment RMSPE 0.410, post-treatment mean gap 1.224.
+\image(figures/synthetic_control.svg)
+// result_end
+
+Difference in differences is unbiased on average here (+0.04), but only because the common factors are redrawn in every panel and average out over replications. In any one panel the treated unit's loadings differ from the donor average, so each factor movement after treatment enters the estimate as error. Its SD is 1.32, larger than the effect itself. This is the failure that matters in practice: a single case study has one realisation of the factors, and the DiD estimate inherits whatever they did after treatment.
+
+The synthetic control cuts the RMSE to 0.34 with optimised \(V\). Matching 20 pre-treatment periods forces the weights onto donors whose combined loadings are close to the treated unit's, so the factors largely cancel in the post-treatment gap. In the panel shown, three donors carry almost all the weight, and the synthetic path follows the treated unit through the large factor swings before period 21 that the donor average misses. Equal predictor weights do somewhat worse (RMSE 0.41), because the covariate gets the same weight as the outcome blocks that carry the factor information. Choosing \(V\) by pre-treatment fit lets the data decide this. The remaining error of the synthetic control comes from the noise: weights fitted to noisy pre-treatment outcomes match the loadings only approximately, and the post-treatment gap still contains the treated unit's own noise.
+
+The placebo test keeps its level: with no effect it rejects in 7.0% of panels at the 10% level, as expected for a permutation test when the treated unit is exchangeable with the donors. With 31 units the smallest attainable p-value is 1/31, so the test has limited resolution, yet it detects an effect of twice the noise SD in 69% of panels. The ratio of post- to pre-treatment RMSPE matters here: a donor at the edge of the loading distribution fits poorly before treatment and has large gaps afterwards as well, and dividing by the pre-treatment RMSPE prevents such placebos from looking like effects.
+
+>> Practical guidance
+
+- Use synthetic controls when there are few treated units and a long pre-treatment period. The method relies on matching many pre-treatment outcomes, and a short pre-period invites overfitting the noise.
+- Inspect the pre-treatment fit and the weights. A poor fit means the treated unit lies outside the donors' convex hull, and no weighting can reproduce it. Report which donors carry weight and check that they make substantive sense.
+- Restrict the donor pool to units that were not affected by the intervention or by large idiosyncratic shocks, and to units that are similar in the relevant respects.
+- Report the placebo distribution, not only the p-value, and consider excluding placebos with much worse pre-treatment fits (`max_pre_mspe_ratio`, for example 5). Remember that the p-value cannot be smaller than 1 over the number of units.
+- Check robustness by leaving out each donor that carries weight in turn (leave-one-out) and by backdating the treatment to a pre-treatment period, where no effect should appear.
+- The predictor weights \(V\) are often poorly identified, as the Basque test case shows: quite different \(V\) give the same weights and fit. Interpret the weights and fit, not \(V\).
+
+>> References
+
+- A. Abadie and J. Gardeazabal (2003). The economic costs of conflict: a case study of the Basque Country. *American Economic Review* 93(1), 113-132. doi:10.1257/000282803321455188
+- A. Abadie, A. Diamond and J. Hainmueller (2010). Synthetic control methods for comparative case studies: estimating the effect of California's tobacco control program. *Journal of the American Statistical Association* 105(490), 493-505. doi:10.1198/jasa.2009.ap08746
+- A. Abadie, A. Diamond and J. Hainmueller (2011). Synth: An R package for synthetic control methods in comparative case studies. *Journal of Statistical Software* 42(13), 1-17. doi:10.18637/jss.v042.i13
+- A. Abadie (2021). Using synthetic controls: feasibility, data requirements, and methodological aspects. *Journal of Economic Literature* 59(2), 391-425. doi:10.1257/jel.20191450

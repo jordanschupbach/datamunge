@@ -1,0 +1,168 @@
+//? Title: Entropy balancing for the effect on the treated
+//? Exports: both
+//? Lang: en
+
+> Reweight controls so their covariate moments match the treated group exactly, with the smallest change from uniform weights
+
+Propensity score weighting estimates a model for treatment and hopes the resulting weights balance the covariates. Entropy balancing reverses the logic. It imposes balance as constraints and finds the weights closest to uniform, in Kullback–Leibler divergence, that satisfy them. For the ATT, the control weights solve
+
+\[
+\min_w \sum_{i:A_i=0} w_i\log\frac{w_i}{q_i}\quad\text{subject to}\quad \sum_{i:A_i=0} w_i c(x_i)=\bar c_{treated},\ \ \sum_{i:A_i=0} w_i=n_0,
+\]
+
+where \(q_i\) are base weights and \(c\) are the moment functions to balance: the covariates, and with `moments = 2` also their squares. The solution has the exponential-tilting form \(w_i\propto q_i\exp(\lambda^\top c(x_i))\). The library solves the convex dual with the same damped Newton solver used for survey raking (`stats::calibrate_weights`). The exponential form is a logistic propensity model with the coefficients chosen for balance rather than likelihood. Entropy balancing is therefore doubly robust: it is consistent if either that logistic model is correct or the outcome is linear in the balanced moments (Zhao and Percival 2017).
+
+`entropy_balance` supports the ATT, ATC and ATE, base or sampling weights, and one or two moments. It reports the effective sample size of each group and balance before and after reweighting. `weighted_effect` gives the weighted contrast with an HC0 sandwich standard error. On `lalonde`, the tests reproduce WeightIt's weights, effective sample sizes and effect standard errors, and cobalt's balance statistics, for ATT, ATE, ATC, two moments and sampling weights.
+
+The simulation compares four estimators of the ATT in 400 samples of n = 600:
+- the unweighted difference in means;
+- inverse probability weighting with odds weights \(e/(1-e)\) for controls, from a main-effects logistic model;
+- entropy balancing of the means;
+- entropy balancing of the means and squares.
+
+There are three covariates, \(x_1\) and \(x_2\) normal and \(x_3\) binary. In the first scenario, treatment follows a main-effects logistic model and the outcome is linear. In the second, both treatment and outcome also depend on \(x_1^2\). The propensity model is then misspecified, and balancing means alone leaves the quadratic confounding. The effect is 2 for everyone.
+
+```{cpp, id=ebal, file="figures/entropy_balancing.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/causal/matching.hpp>
+#include <datamunge/causal/weighting.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+int main() {
+    const std::vector<std::string> names{"Unweighted", "Logistic IPW (odds)", "Entropy, means",
+                                         "Entropy, means + squares"};
+    const int reps = 400;
+    const std::size_t n = 600;
+    std::vector<double> rmse_plot[2];
+    for (int quadratic = 0; quadratic < 2; ++quadratic) {
+        dm::random::SplitMix64 rng(2012 + quadratic);
+        double sum[4]{}, sum2[4]{}, se[4]{}, cover[4]{}, ess[4]{}, se_adj[4]{}, cover_adj[4]{};
+        for (int r = 0; r < reps; ++r) {
+            Matrix x(n, 3);
+            std::vector<int> a(n);
+            std::vector<double> y(n);
+            for (std::size_t i = 0; i < n; ++i) {
+                const double x1 = rng.normal(), x2 = rng.normal(), x3 = rng.uniform01() < 0.5;
+                x(i, 0) = x1;
+                x(i, 1) = x2;
+                x(i, 2) = x3;
+                const double q = quadratic ? x1 * x1 - 1 : 0.0;
+                const double lp = -1 + 0.8 * x1 + 0.5 * x2 - 0.5 * x3 + 0.8 * q;
+                a[i] = rng.uniform01() < 1 / (1 + std::exp(-lp));
+                y[i] = 1 + x1 + x2 + x3 + 1.5 * q + 2 * a[i] + rng.normal();
+            }
+            std::vector<double> w[4];
+            w[0].assign(n, 1.0);
+            const auto ps = dm::causal::propensity_scores(a, x);
+            w[1].resize(n);
+            for (std::size_t i = 0; i < n; ++i)
+                w[1][i] = a[i] ? 1.0 : ps[i] / (1 - ps[i]);
+            w[2] = dm::causal::entropy_balance(a, x).weights;
+            w[3] = dm::causal::entropy_balance(a, x, {.moments = 2}).weights;
+            Matrix x2(n, 5); // balanced moments of the second entropy fit
+            for (std::size_t i = 0; i < n; ++i) {
+                for (std::size_t j = 0; j < 3; ++j)
+                    x2(i, j) = x(i, j);
+                x2(i, 3) = x(i, 0) * x(i, 0);
+                x2(i, 4) = x(i, 1) * x(i, 1);
+            }
+            for (int k = 0; k < 4; ++k) {
+                const auto e = dm::causal::weighted_effect(y, a, w[k]);
+                sum[k] += e.estimate;
+                sum2[k] += (e.estimate - 2) * (e.estimate - 2);
+                se[k] += e.standard_error / reps;
+                cover[k] += (e.lower <= 2 && 2 <= e.upper) / double(reps);
+                if (k >= 2) { // exact balance: adjusting leaves the estimate unchanged
+                    const auto adj = dm::causal::weighted_effect(y, a, w[k], k == 2 ? x : x2);
+                    se_adj[k] += adj.standard_error / reps;
+                    cover_adj[k] += (adj.lower <= 2 && 2 <= adj.upper) / double(reps);
+                }
+                double s = 0, s2 = 0;
+                for (std::size_t i = 0; i < n; ++i)
+                    if (a[i] == 0) {
+                        s += w[k][i];
+                        s2 += w[k][i] * w[k][i];
+                    }
+                ess[k] += s * s / s2 / reps;
+            }
+        }
+        std::println("{}\n", quadratic ? "Quadratic confounding (propensity model misspecified):"
+                                       : "Linear confounding (propensity model correct):");
+        std::println("| Method | Bias | Emp. SD | SE: plain / adj. | Coverage: plain / adj. "
+                     "| ESS |");
+        std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+        for (int k = 0; k < 4; ++k) {
+            const double bias = sum[k] / reps - 2;
+            const double sd = std::sqrt(sum2[k] / reps - bias * bias);
+            const auto adj = [&](double plain, double adjusted) {
+                return k >= 2 ? std::format("{:.3f} / {:.3f}", plain, adjusted)
+                              : std::format("{:.3f} / -", plain);
+            };
+            std::println("| {} | {:+.3f} | {:.3f} | {} | {} | {:.0f} |", names[k], bias, sd,
+                         adj(se[k], se_adj[k]), adj(cover[k], cover_adj[k]), ess[k]);
+            rmse_plot[quadratic].push_back(std::sqrt(sum2[k] / reps));
+        }
+        std::println("");
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.points({1, 2, 3, 4}, rmse_plot[0], "Linear confounding", {26, 90, 147}, 7)
+        .points({1, 2, 3, 4}, rmse_plot[1], "Quadratic confounding", {176, 72, 43}, 7)
+        .title("Root mean squared error of the ATT estimate")
+        .x_label("1 unweighted, 2 logistic IPW, 3 entropy means, 4 entropy means + squares")
+        .y_label("RMSE")
+        .size(660, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/entropy_balancing.svg");
+}
+```
+// result_begin: markdown
+Linear confounding (propensity model correct):
+
+| Method | Bias | Emp. SD | SE: plain / adj. | Coverage: plain / adj. | ESS |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Unweighted | +1.009 | 0.158 | 0.161 / - | 0.000 / - | 445 |
+| Logistic IPW (odds) | +0.002 | 0.133 | 0.194 / - | 0.992 / - | 200 |
+| Entropy, means | +0.004 | 0.106 | 0.192 / 0.106 | 0.992 / 0.952 | 201 |
+| Entropy, means + squares | +0.005 | 0.107 | 0.192 / 0.105 | 0.995 / 0.952 | 196 |
+
+Quadratic confounding (propensity model misspecified):
+
+| Method | Bias | Emp. SD | SE: plain / adj. | Coverage: plain / adj. | ESS |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Unweighted | +2.806 | 0.308 | 0.305 / - | 0.000 / - | 445 |
+| Logistic IPW (odds) | +2.168 | 0.320 | 0.331 / - | 0.000 / - | 271 |
+| Entropy, means | +1.769 | 0.302 | 0.365 / 0.284 | 0.005 / 0.003 | 188 |
+| Entropy, means + squares | -0.005 | 0.191 | 0.634 / 0.146 | 1.000 / 0.867 | 41 |
+
+\image(figures/entropy_balancing.svg)
+// result_end
+
+With linear confounding, both weighting methods remove the bias, but entropy balancing is more precise: its empirical SD is 0.106 against 0.133 for logistic odds weighting, despite almost the same effective sample size. The logistic weights balance the covariates only approximately in any one sample, and the leftover chance imbalance adds variance. Entropy balancing removes that imbalance exactly. This is the double robustness at work: with a linear outcome, exact mean balance alone makes the estimator unbiased, whatever the treatment model.
+
+When the confounding is quadratic, balancing the means is not enough. Logistic IPW and mean-only entropy balancing both keep most of the bias, because the main-effects propensity model and the mean constraints both miss \(x_1^2\). Adding the squares to the balance constraints removes the bias completely. The cost is visible in the effective sample size, which falls from about 190 to 41 controls: matching the treated group's spread in \(x_1\) needs a few controls in the tails with large weights. Which moments to balance is a substantive choice, and checking balance on squares and interactions after weighting shows when more constraints are needed.
+
+The plain HC0 standard error treats the weights as fixed. For balancing weights this is conservative, because estimating the weights removes the outcome variation that the covariates explain (coverage 99%). Adding the balanced covariates to the weighted outcome regression (`weighted_effect` with covariates) leaves the estimate unchanged under exact balance, but takes that explained variation out of the residuals. Its standard error equals the empirical SD in the linear case, with 95.2% coverage. With extreme weights, the sandwich becomes unreliable in the other direction. With only 41 effective controls the adjusted error is too small (coverage 87%), as robust errors generally are with few effective observations. A bootstrap that repeats the weighting, or reporting the effective sample size next to the interval, is prudent when weights are this concentrated.
+
+>> Practical guidance
+
+- Balance at least the means of every confounder, and add squares (`moments = 2`) or interactions for strong continuous confounders. Check the balance of moments that were not constrained.
+- Watch the effective sample size and the largest weight share. A large drop signals limited overlap, and the estimate then rests on a few controls.
+- Estimate the effect with the balanced covariates in the weighted outcome model. It gives the same point estimate under exact balance and a much better standard error.
+- If exact balance is infeasible (`converged` is false), the treated moments lie outside the controls' range. Reduce the constraints, trim the population, or reconsider the comparison.
+
+>> References
+
+- J. Hainmueller (2012). Entropy balancing for causal effects: A multivariate reweighting method to produce balanced samples in observational studies. *Political Analysis* 20(1), 25-46. doi:10.1093/pan/mpr025
+- Q. Zhao and D. Percival (2017). Entropy balancing is doubly robust. *Journal of Causal Inference* 5(1). doi:10.1515/jci-2016-0010
+- J. R. Zubizarreta (2015). Stable weights that balance covariates for estimation with incomplete outcome data. *Journal of the American Statistical Association* 110(511), 910-922. doi:10.1080/01621459.2015.1023805
+- N. Greifer. WeightIt: Weighting for covariate balance in observational studies. R package (version 1.5.1 used for the reference values). https://ngreifer.github.io/WeightIt/

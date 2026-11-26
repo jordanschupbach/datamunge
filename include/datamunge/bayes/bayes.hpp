@@ -7,6 +7,7 @@
 // distribution log-density library, an autodiff-to-DifferentiableFunction adapter, and
 // MAP/HMC/NUTS/RWM/Gibbs/ImportanceSampling/INLA inference algorithms.
 
+#include <datamunge/bayes/advi.hpp>
 #include <datamunge/bayes/autodiff_model.hpp>
 #include <datamunge/bayes/diagnostics.hpp>
 #include <datamunge/bayes/discrete_network.hpp>
@@ -20,6 +21,9 @@
 #include <datamunge/bayes/inla_diagnostics.hpp>
 #include <datamunge/bayes/map.hpp>
 #include <datamunge/bayes/nuts.hpp>
+#include <datamunge/bayes/psis_loo.hpp>
 #include <datamunge/bayes/normal_models.hpp>
 #include <datamunge/bayes/rwm.hpp>
+#include <datamunge/bayes/sbc.hpp>
 #include <datamunge/bayes/slice_sampling.hpp>
+#include <datamunge/bayes/smc.hpp>

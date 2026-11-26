@@ -1,0 +1,163 @@
+//? Title: Estimate regimes with a Markov-switching regression
+//? Exports: both
+//? Lang: en
+
+> Let an unobserved state switch the mean and variance, and infer the state from the data
+
+Hamilton's Markov-switching model lets the parameters of a regression depend on a hidden state \(s_t\in\{1,\dots,k\}\) that follows a Markov chain with transition probabilities \(p_{ij}=P(s_t=j\mid s_{t-1}=i)\):
+\[y_t=x_t^\top\beta_{s_t}+\varepsilon_t,\qquad \varepsilon_t\sim N(0,\sigma^2_{s_t}).\]
+In a growth-rate series the states might be expansions and recessions, each with its own mean growth and volatility. Persistent states (\(p_{ii}\) near 1) make the regimes last \(1/(1-p_{ii})\) periods on average.
+
+The likelihood comes from Hamilton's filter. It propagates \(P(s_t\mid y_{1:t-1})\) through the chain, weights each regime's normal density, and updates to the filtered probabilities \(P(s_t\mid y_{1:t})\). Kim's backward pass gives smoothed probabilities \(P(s_t\mid y_{1:n})\) that use the whole sample. `fit_markov_switching` follows statsmodels' `MarkovRegression`: it starts from statsmodels' default values, runs EM, then refines with quasi-Newton and Newton steps. The example simulates 300 quarters of growth with persistent expansions and short, volatile recessions. It compares the estimates with the truth and measures how well, and how quickly, filtered and smoothed probabilities identify the recessions.
+
+```{cpp, id=markov, file="figures/markov_switching.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/markov_switching.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+
+int main() {
+    std::mt19937_64 random(2024);
+    std::normal_distribution<double> z;
+    std::uniform_real_distribution<double> u(0, 1);
+    // Expansion: mean 0.9, s.d. 0.6, stays with prob .95.
+    // Recession: mean -0.6, s.d. 1.1, stays with prob .80.
+    const double mean[] = {0.9, -0.6}, sd[] = {0.6, 1.1}, stay[] = {.95, .80};
+    std::vector<int> state;
+    const auto simulate = [&] {
+        std::vector<double> y;
+        state.clear();
+        int s = 0;
+        for (int t = 0; t < 300; ++t) {
+            if (t > 0 && u(random) > stay[s])
+                s = 1 - s;
+            state.push_back(s);
+            y.push_back(mean[s] + sd[s] * z(random));
+        }
+        return y;
+    };
+    const dm::linalg::DenseMatrix<double> none(300, 0);
+    const auto y = simulate();
+    const auto fit = dm::stats::fit_markov_switching(y, none);
+    // Label the regime with the lower mean as the recession.
+    const std::size_t rec = fit.coefficients(0, 0) < fit.coefficients(1, 0) ? 0 : 1;
+    const std::size_t exp = 1 - rec;
+    // Parameter order: p[0->0], p[1->0], const[0], const[1], sigma2[0], sigma2[1].
+    const auto& se = fit.standard_errors;
+    const auto& b = fit.coefficients;
+    std::println("| Parameter | True | Estimate | s.e. |");
+    std::println("| --- | ---: | ---: | ---: |");
+    std::println("| Expansion mean | 0.90 | {:.3f} | {:.3f} |", b(exp, 0), se[2 + exp]);
+    std::println("| Recession mean | −0.60 | {:.3f} | {:.3f} |", b(rec, 0), se[2 + rec]);
+    std::println("| Expansion variance | 0.36 | {:.3f} | {:.3f} |", fit.variances[exp],
+                 se[4 + exp]);
+    std::println("| Recession variance | 1.21 | {:.3f} | {:.3f} |", fit.variances[rec],
+                 se[4 + rec]);
+    std::println("| P(stay in expansion) | 0.95 | {:.3f} | {:.3f} |", fit.transition(exp, exp),
+                 se[exp]);
+    std::println("| P(stay in recession) | 0.80 | {:.3f} | {:.3f} |", fit.transition(rec, rec),
+                 se[rec]);
+    std::println("\nExpected durations: expansion {:.1f}, recession {:.1f} quarters "
+                 "(true 20 and 5). Log likelihood {:.2f}.",
+                 fit.expected_durations[exp], fit.expected_durations[rec], fit.log_likelihood);
+
+    // Classification and real-time detection delay.
+    int filtered_right = 0, smoothed_right = 0, starts = 0, delay_total = 0, missed = 0;
+    for (std::size_t t = 0; t < y.size(); ++t) {
+        const int truth = state[t] == 1;
+        filtered_right += (fit.filtered_probabilities(t, rec) > .5) == truth;
+        smoothed_right += (fit.smoothed_probabilities(t, rec) > .5) == truth;
+        if (t > 0 && state[t] == 1 && state[t - 1] == 0) {
+            ++starts;
+            std::size_t d = t;
+            while (d < y.size() && state[d] == 1 && fit.filtered_probabilities(d, rec) <= .5)
+                ++d;
+            if (d < y.size() && state[d] == 1)
+                delay_total += int(d - t);
+            else
+                ++missed;
+        }
+    }
+    std::println("\nCorrectly classified quarters: filtered {:.3f}, smoothed {:.3f}. "
+                 "Of {} recessions, the filtered probability crossed 0.5 during {} after an "
+                 "average delay of {:.2f} quarters.",
+                 filtered_right / 300.0, smoothed_right / 300.0, starts, starts - missed,
+                 double(delay_total) / (starts - missed));
+
+    // Sampling behaviour over 200 further series: bias and 95% interval coverage.
+    const auto saved = state;
+    double bias_mean = 0, bias_stay = 0;
+    int cover_mean = 0, cover_stay = 0, used = 0;
+    for (int r = 0; r < 200; ++r) {
+        const auto f = dm::stats::fit_markov_switching(simulate(), none);
+        const std::size_t lo = f.coefficients(0, 0) < f.coefficients(1, 0) ? 0 : 1;
+        const double m = f.coefficients(lo, 0), sm = f.standard_errors[2 + lo];
+        const double p = f.transition(lo, lo), sp = f.standard_errors[lo];
+        if (!std::isfinite(sm) || !std::isfinite(sp))
+            continue;
+        ++used;
+        bias_mean += m + .6;
+        bias_stay += p - .8;
+        cover_mean += std::abs(m + .6) <= 1.96 * sm;
+        cover_stay += std::abs(p - .8) <= 1.96 * sp;
+    }
+    state = saved;
+    std::println("\nOver {} replicate series: recession mean bias {:+.3f}, coverage {:.2f}; "
+                 "P(stay in recession) bias {:+.3f}, coverage {:.2f}.", used, bias_mean / used,
+                 cover_mean / double(used), bias_stay / used, cover_stay / double(used));
+
+    std::vector<double> t, truth, smooth, filtered;
+    for (std::size_t i = 0; i < y.size(); ++i) {
+        t.push_back(double(i));
+        truth.push_back(state[i]);
+        smooth.push_back(fit.smoothed_probabilities(i, rec));
+        filtered.push_back(fit.filtered_probabilities(i, rec));
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(t, truth, "True recession", {200, 203, 208}, 2.5)
+        .line(t, filtered, "Filtered P(recession)", {176, 72, 43}, .9)
+        .line(t, smooth, "Smoothed P(recession)", {26, 90, 147}, 1.5)
+        .title("Recession probabilities from a two-regime model")
+        .x_label("Quarter")
+        .y_label("Probability")
+        .ylim(0, 1.45)
+        .size(740, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/markov_switching.svg");
+}
+```
+// result_begin: markdown
+| Parameter | True | Estimate | s.e. |
+| --- | ---: | ---: | ---: |
+| Expansion mean | 0.90 | 0.973 | 0.045 |
+| Recession mean | −0.60 | 0.005 | 0.264 |
+| Expansion variance | 0.36 | 0.331 | 0.048 |
+| Recession variance | 1.21 | 1.610 | 0.339 |
+| P(stay in expansion) | 0.95 | 0.926 | 0.034 |
+| P(stay in recession) | 0.80 | 0.711 | 0.110 |
+
+Expected durations: expansion 13.6, recession 3.5 quarters (true 20 and 5). Log likelihood -344.84.
+
+Correctly classified quarters: filtered 0.907, smoothed 0.933. Of 10 recessions, the filtered probability crossed 0.5 during 9 after an average delay of 0.89 quarters.
+
+Over 199 replicate series: recession mean bias -0.007, coverage 0.87; P(stay in recession) bias -0.026, coverage 0.94.
+\image(figures/markov_switching.svg)
+// result_end
+\caption(True recession quarters (grey) with the filtered and smoothed probabilities of the recession regime.)
+\alttext(A grey step line marks ten simulated recessions as blocks at 1 over 300 quarters. The blue smoothed probability rises to near 1 inside most blocks and stays near 0 between them. The orange filtered probability follows the same pattern but is noisier, with brief false spikes in expansions and a short lag at the start of each recession.)
+
+The fitted model separates the two regimes. Expansions are estimated at 0.97 mean growth with variance 0.33 and recessions as a volatile regime with variance 1.61. Smoothed probabilities classify 93% of quarters correctly, filtered probabilities 91%. In real time the filtered probability passed 0.5 in nine of the ten recessions, on average less than one quarter after it began.
+
+This sample also shows why single fits deserve caution. With only 41 recession quarters, the recession mean comes out at 0.005 rather than −0.6, and the transition estimates make both regimes shorter than they really are. A 200-start search with statsmodels reaches the same maximum, so this is sampling variability, not a failure to optimize. The overlapping regimes let the model reassign some volatile expansion quarters to the recession state. Across 199 further series the recession-mean estimator is nearly unbiased (−0.007), but its 95% Hessian intervals cover only 87% of the time. The persistence estimate is biased slightly toward shorter recessions (−0.026) and its intervals cover 94%. Parameters of a sparsely visited regime are the least well determined. The standard errors understate that uncertainty, so a parametric bootstrap is worth its cost when inference about that regime matters.
+
+Testing whether there is any switching at all is non-standard, because under one regime the transition probabilities are not identified. The usual likelihood-ratio statistic does not have a \(\chi^2\) distribution and needs Hansen's or Garcia's bounds, or a bootstrap.
+
+Transition probabilities, regression coefficients, regime variances (switching or shared), log likelihood, AIC and BIC, filtered and smoothed probabilities, expected durations and Hessian standard errors all match statsmodels' `MarkovRegression`, for two regimes with a regressor, two regimes with shared variance, and three regimes. Parameters and probabilities agree within \(2\times10^{-6}\) and standard errors within 0.05%.
+
+[Hamilton (1989)|https://doi.org/10.2307/1912559] · [Kim (1994)|https://doi.org/10.1016/0304-4076(94)90036-1]

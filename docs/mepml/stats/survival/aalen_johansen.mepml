@@ -1,0 +1,134 @@
+//? Title: Estimate cumulative incidence with competing risks by Aalen–Johansen
+//? Exports: both
+//? Lang: en
+
+> Do not treat a competing event as censoring when the question is "how many fail from this cause"
+
+With competing risks, each subject can fail from one of several causes, and the first one to happen removes the others. The quantity most studies want is the cumulative incidence of cause \(k\), \(F_k(t)=P(T\le t,\ \text{cause}=k)\), the fraction who have failed from cause \(k\) by time \(t\). A common mistake is to compute \(1-\hat S\) with Kaplan–Meier, treating failures from other causes as censored. That estimates the probability of failing from cause \(k\) in a hypothetical world where the other causes are removed, and it always exceeds the real cumulative incidence.
+
+The Aalen–Johansen estimator treats competing risks as a multi-state model: an event-free state and one absorbing state per cause. It estimates each transition intensity by a Nelson–Aalen increment \(d\hat A_{0k}(t)=d_k(t)/Y(t)\) and multiplies the matrices \(I+d\hat A(t)\) over time:
+\[\hat F_k(t)=\sum_{u\le t}\hat S(u-)\,\frac{d_k(u)}{Y(u)}.\]
+The same product integral covers general Markov multi-state models, such as illness–death, with transition matrices \(\hat P(s,t)\) between any two times. Standard errors use the infinitesimal jackknife, as in R's `survfit`.
+
+The example simulates two competing causes with constant hazards 0.10 (relapse) and 0.15 (death without relapse) and uniform censoring on (0, 12). The true relapse incidence is then \(F_1(t)=0.4\,(1-e^{-0.25t})\). It compares Aalen–Johansen with the naive \(1-\)KM and checks the coverage of the 95% interval.
+
+```{cpp, id=aj, file="figures/aalen_johansen.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/multistate.hpp>
+#include <datamunge/stats/survival.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::CompetingRiskObservation;
+
+const double relapse = .10, death = .15;
+
+double true_incidence(int cause, double t) {
+    const double total = relapse + death;
+    return (cause == 1 ? relapse : death) / total * (1 - std::exp(-total * t));
+}
+
+std::vector<CompetingRiskObservation> simulate(std::size_t n, std::mt19937_64& random) {
+    std::exponential_distribution<double> first(relapse + death);
+    std::uniform_real_distribution<double> u(0, 1);
+    std::vector<CompetingRiskObservation> out;
+    for (std::size_t i = 0; i < n; ++i) {
+        const double t = first(random), c = 12 * u(random);
+        const int cause = u(random) < relapse / (relapse + death) ? 1 : 2;
+        out.push_back(t <= c ? CompetingRiskObservation{t, cause}
+                             : CompetingRiskObservation{c, 0});
+    }
+    return out;
+}
+
+double naive_incidence(const std::vector<CompetingRiskObservation>& obs, double t) {
+    std::vector<dm::stats::SurvivalObservation> s;
+    for (const auto& o : obs)
+        s.push_back({o.time, o.cause == 1});
+    double v = 1;
+    for (const auto& p : dm::stats::kaplan_meier(s).points)
+        if (p.time <= t)
+            v = p.survival;
+    return 1 - v;
+}
+
+int main() {
+    std::mt19937_64 random(6);
+    const double checkpoints[3]{2, 5, 10};
+    double aj_mean[3]{}, naive_mean[3]{}, cover[3]{};
+    const int reps = 2000;
+    for (int r = 0; r < reps; ++r) {
+        const auto obs = simulate(200, random);
+        const auto e = dm::stats::cumulative_incidence(obs);
+        for (int k = 0; k < 3; ++k) {
+            const double t = checkpoints[k], truth = true_incidence(1, t);
+            std::size_t row = 0;
+            for (std::size_t i = 0; i < e.times.size(); ++i)
+                if (e.times[i] <= t)
+                    row = i;
+            const double est = e.probabilities(row, 1), se = e.standard_errors(row, 1);
+            aj_mean[k] += est / reps;
+            naive_mean[k] += naive_incidence(obs, t) / reps;
+            cover[k] += std::abs(est - truth) <= 1.96 * se;
+        }
+    }
+    std::println("| t | True relapse incidence | Aalen–Johansen mean | 95% coverage "
+                 "| 1 − KM mean |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    for (int k = 0; k < 3; ++k)
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", checkpoints[k],
+                     true_incidence(1, checkpoints[k]), aj_mean[k], cover[k] / reps,
+                     naive_mean[k]);
+
+    const auto obs = simulate(400, random);
+    const auto e = dm::stats::cumulative_incidence(obs);
+    std::vector<double> x{0}, f1{0}, f2{0}, naive{0}, grid, t1, t2;
+    for (std::size_t i = 0; i < e.times.size(); ++i) {
+        x.insert(x.end(), {e.times[i], e.times[i]});
+        f1.insert(f1.end(), {f1.back(), e.probabilities(i, 1)});
+        f2.insert(f2.end(), {f2.back(), e.probabilities(i, 2)});
+        naive.insert(naive.end(), {naive.back(), naive_incidence(obs, e.times[i])});
+    }
+    for (double t = 0; t <= 12; t += .05) {
+        grid.push_back(t);
+        t1.push_back(true_incidence(1, t));
+        t2.push_back(true_incidence(2, t));
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(grid, t1, "True incidences", {150, 154, 160}, 3)
+        .line(grid, t2, "", {150, 154, 160}, 3)
+        .line(x, f1, "Relapse, Aalen–Johansen", {26, 90, 147}, 1.6)
+        .line(x, f2, "Death without relapse, Aalen–Johansen", {46, 139, 87}, 1.6)
+        .line(x, naive, "Relapse, 1 − Kaplan–Meier", {176, 72, 43}, 1.6)
+        .title("Cumulative incidence with competing risks, n = 400")
+        .x_label("Time")
+        .y_label("Cumulative incidence")
+        .ylim(0, 1)
+        .size(700, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/aalen_johansen.svg");
+}
+```
+// result_begin: markdown
+| t | True relapse incidence | Aalen–Johansen mean | 95% coverage | 1 − KM mean |
+| ---: | ---: | ---: | ---: | ---: |
+| 2 | 0.157 | 0.158 | 0.944 | 0.181 |
+| 5 | 0.285 | 0.285 | 0.947 | 0.392 |
+| 10 | 0.367 | 0.367 | 0.940 | 0.632 |
+\image(figures/aalen_johansen.svg)
+// result_end
+\caption(Aalen–Johansen cumulative incidence of relapse (blue) and of death without relapse (green) in one simulated sample of 400, with the naive 1 − Kaplan–Meier estimate for relapse (orange) and the true incidences (grey).)
+\alttext(Two thick grey true curves rise and level off, the relapse curve towards 0.4 and the death curve towards 0.6. The blue and green step functions follow their grey curves closely. The orange naive relapse curve rises well above the blue one, to about 0.57 by time 10, while the blue curve stays near 0.32.)
+
+Aalen–Johansen recovers the true relapse incidence at every checkpoint, and its infinitesimal-jackknife interval covers it 94.0–94.7% of the time. The naive \(1-\)KM is already 15% too high at \(t=2\). By \(t=10\) it is 0.63 against a true 0.37, overstating relapse by 72%. The figure shows the reason. Treating deaths as censoring assumes that those who died would have gone on to relapse at the same rate as those still alive. The naive curve therefore heads towards 1 as if death were not a competing outcome, while the true incidence levels off at \(0.10/0.25=0.4\). The Aalen–Johansen incidences of the two causes and the event-free probability always add to one.
+
+The naive curve does estimate something: the relapse probability if death could be prevented, and only if relapse and death are independent, which the data cannot check. For prognosis and for planning resources, the Aalen–Johansen incidence is the relevant quantity. For effects on the cause-specific rate, a cause-specific Cox model is appropriate. The Gray test and the Fine–Gray model, in the next reports, compare and model the incidence directly.
+
+State probabilities, standard errors and risk sets match R's `survfit` with a factor status on the `mgus2` competing risks (progression vs death). They also match on a simulated illness–death process with several rows per subject (`id`) and transitions out of the illness state. Transition matrices satisfy the Chapman–Kolmogorov identity \(\hat P(0,t)=\hat P(0,s)\hat P(s,t)\).
+
+[Aalen and Johansen (1978)|https://www.jstor.org/stable/4615704] · [Putter, Fiocco and Geskus (2007)|https://doi.org/10.1002/sim.2712]

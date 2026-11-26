@@ -1,0 +1,172 @@
+//? Title: Draw fixed-size samples with probability proportional to size
+//? Exports: both
+//? Lang: en
+
+> Select n units with declared inclusion probabilities, and see how the choice of design affects the variance and whether it can be estimated
+
+When a size measure \(x_k\) is known for every unit, such as the enrollment of every school or the turnover of every firm, sampling with probability proportional to size makes the Horvitz–Thompson estimator \(\hat Y=\sum_{k\in s}y_k/\pi_k\) nearly exact when \(y_k\) is close to proportional to \(x_k\). `inclusion_probabilities` sets \(\pi_k=n\,x_k/\sum_jx_j\) and caps the largest units at 1, reallocating the remaining sample. `pps_sample` then draws exactly n distinct units with those probabilities.
+
+Many designs achieve the same first-order probabilities. They differ in the joint inclusion probabilities \(\pi_{kl}\), which decide both the variance of \(\hat Y\) and whether it can be estimated without bias.
+- Systematic sampling walks through the list with a single random start. It is simple and, along a sorted list, acts like implicit stratification. However, many pairs can never be selected together (\(\pi_{kl}=0\)), so no unbiased variance estimator exists.
+- Randomized systematic sampling first shuffles the list. This loses the stratification but makes every \(\pi_{kl}\) positive.
+- Sampford's rejective method has positive \(\pi_{kl}\) for every pair, with an exact formula, so the Sen–Yates–Grundy (SYG) estimator is unbiased.
+- Brewer's draw-by-draw method selects one unit at each of n steps with adjusted probabilities, without rejection.
+- The ordered pivotal method resolves the probabilities two units at a time along the list. It spreads the sample along the list order like systematic sampling but avoids its rigid spacing.
+
+The example uses 400 businesses sorted by size. Revenue \(y\) is roughly proportional to size, and n = 40. Each design draws 20,000 samples. The table reports the variance of \(\hat Y\) relative to Sampford, the share of pairs with \(\pi_{kl}=0\) (zero pairs), and the mean SYG variance estimate (computed with the exact joint probabilities, where they are available) divided by the true variance. It also reports the coverage of 95% intervals built from the SYG estimate and from the with-replacement approximation \(\frac{n}{n-1}\sum(\hat y_k-\hat Y/n)^2\), where \(\hat y_k=y_k/\pi_k\).
+
+```{cpp, id=pps, file="figures/pps_sampling.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/pps_sampling.hpp>
+#include <datamunge/stats/survey.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <optional>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::PpsMethod;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+int main() {
+    dm::random::SplitMix64 rng(2026);
+    const std::size_t N = 400, n = 40;
+    std::vector<double> size(N), y(N);
+    for (double& x : size)
+        x = std::exp(3 + 0.8 * rng.normal());
+    std::ranges::sort(size); // the frame is listed by size
+    double Y = 0;
+    for (std::size_t k = 0; k < N; ++k) {
+        y[k] = 12 * size[k] * (1 + 0.25 * rng.normal()) + 40;
+        Y += y[k];
+    }
+    const auto pi = dm::stats::inclusion_probabilities(size, n);
+    const auto sys_joint = dm::stats::systematic_joint_inclusion(pi);
+    const auto sam_joint = dm::stats::sampford_joint_inclusion(pi);
+    std::size_t certain = 0;
+    for (const double p : pi)
+        certain += p >= 1;
+
+    struct Design { const char* name; PpsMethod method; const Matrix* joint; };
+    const Design designs[5]{{"Systematic, sorted list", PpsMethod::systematic, &sys_joint},
+                            {"Randomized systematic", PpsMethod::randomized_systematic, nullptr},
+                            {"Sampford", PpsMethod::sampford, &sam_joint},
+                            {"Brewer", PpsMethod::brewer, nullptr},
+                            {"Ordered pivotal", PpsMethod::pivotal, nullptr}};
+    const int reps = 20000;
+    double variance[5]{}, syg_mean[5]{}, syg_cover[5]{}, wr_cover[5]{}, worst_z = 0;
+    for (int d = 0; d < 5; ++d) {
+        std::vector<double> count(N, 0.0);
+        double sum = 0, sum2 = 0;
+        for (int r = 0; r < reps; ++r) {
+            const auto s = dm::stats::pps_sample(pi, designs[d].method, rng);
+            std::vector<double> ys, ps;
+            for (const std::size_t k : s) {
+                count[k] += 1;
+                ys.push_back(y[k]);
+                ps.push_back(pi[k]);
+            }
+            const auto wr = dm::stats::horvitz_thompson(ys, ps);
+            const double est = wr.total.estimate;
+            sum += est;
+            sum2 += est * est;
+            wr_cover[d] += (wr.total.lower <= Y && Y <= wr.total.upper) / double(reps);
+            if (designs[d].joint) {
+                Matrix j(s.size(), s.size());
+                for (std::size_t a = 0; a < s.size(); ++a)
+                    for (std::size_t b = 0; b < s.size(); ++b)
+                        j(a, b) = (*designs[d].joint)(s[a], s[b]);
+                const auto syg = dm::stats::horvitz_thompson_joint(ys, j);
+                syg_mean[d] += syg.total.variance / reps;
+                syg_cover[d] += (syg.total.lower <= Y && Y <= syg.total.upper) / double(reps);
+            }
+        }
+        variance[d] = sum2 / reps - (sum / reps) * (sum / reps);
+        for (std::size_t k = 0; k < N; ++k)
+            if (pi[k] < 1)
+                worst_z = std::max(worst_z, std::abs(count[k] / reps - pi[k]) /
+                                                std::sqrt(pi[k] * (1 - pi[k]) / reps));
+    }
+    const auto zero_share = [&](const Matrix& j) {
+        double zero = 0, pairs = 0;
+        for (std::size_t k = 0; k < N; ++k)
+            for (std::size_t l = 0; l < k; ++l) {
+                pairs += 1;
+                zero += j(k, l) <= 1e-15;
+            }
+        return zero / pairs;
+    };
+    std::println("{} certainty units; largest deviation of an observed inclusion frequency from "
+                 "its declared probability, over all designs and units: {:.1f} standard errors.\n",
+                 certain, worst_z);
+    std::println("| Design | Var / Sampford | Zero pairs | SYG / true var | SYG cover | WR cover |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (int d = 0; d < 5; ++d) {
+        const auto* j = designs[d].joint;
+        std::println("| {} | {:.2f} | {} | {} | {} | {:.3f} |", designs[d].name,
+                     variance[d] / variance[2],
+                     j ? std::format("{:.1f}%", 100 * zero_share(*j)) : std::string("—"),
+                     j ? std::format("{:.2f}", syg_mean[d] / variance[d]) : std::string("—"),
+                     j ? std::format("{:.3f}", syg_cover[d]) : std::string("—"), wr_cover[d]);
+    }
+
+    // Joint probabilities of one mid-sized unit with every other unit, relative to independence.
+    const std::size_t k = N / 2;
+    std::vector<double> position, sys_ratio, sam_ratio;
+    for (std::size_t l = 0; l < N; ++l) {
+        if (l == k || pi[l] >= 1)
+            continue;
+        position.push_back(double(l));
+        sys_ratio.push_back(sys_joint(k, l) / (pi[k] * pi[l]));
+        sam_ratio.push_back(sam_joint(k, l) / (pi[k] * pi[l]));
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(position, sys_ratio, "Systematic (sorted list)", {176, 72, 43}, 1.5)
+        .line(position, sam_ratio, "Sampford", {26, 90, 147}, 2)
+        .title("Joint inclusion of unit 200 with each other unit")
+        .x_label("Position of the other unit in the size-sorted list")
+        .y_label("pi_kl / (pi_k pi_l)")
+        .size(700, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/pps_sampling.svg");
+}
+```
+// result_begin: markdown
+0 certainty units; largest deviation of an observed inclusion frequency from its declared probability, over all designs and units: 3.7 standard errors.
+
+| Design | Var / Sampford | Zero pairs | SYG / true var | SYG cover | WR cover |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Systematic, sorted list | 0.40 | 80.4% | -77.13 | 0.006 | 0.993 |
+| Randomized systematic | 1.00 | — | — | — | 0.966 |
+| Sampford | 1.00 | 0.0% | 1.01 | 0.943 | 0.965 |
+| Brewer | 1.01 | — | — | — | 0.964 |
+| Ordered pivotal | 0.88 | — | — | — | 0.976 |
+\image(figures/pps_sampling.svg)
+// result_end
+
+Every design reproduces the declared probabilities. Across 400 units and five designs, the largest gap between an observed inclusion frequency and its declared \(\pi_k\) is 3.7 Monte Carlo standard errors, about what 2,000 comparisons produce by chance. The unit tests check the exact joint probabilities against `sampling::UPsystematicpi2` and `sampling::UPsampfordpi2` to \(10^{-12}\), and inclusion probabilities against `sampling::inclusionprobabilities`.
+
+Spreading the sample along a sorted list pays off. Systematic sampling through the size-sorted list has 40% of the Sampford variance, and the ordered pivotal method has 88%. Both force the sample to cover the size range evenly, like stratifying by size, which absorbs the part of \(y\) that the probabilities do not explain (here the constant 40, which makes \(y_k/\pi_k\) vary with size). Randomized systematic, Sampford and Brewer have essentially the same variance. These designs have close to maximum entropy, so their joint probabilities are nearly the same.
+
+The price of systematic sampling is the variance estimator. The figure shows why. A mid-sized unit can be selected together only with units one sampling interval away. Its joint probability with 80% of the other units is exactly zero, and with the rest it is several times \(\pi_k\pi_l\). The SYG estimator divides by \(\pi_{kl}\) and assumes every pair is possible, so it is not even approximately unbiased. Here it averages −77 times the true variance, and its intervals cover the total 0.6% of the time, because the standard error is clamped at zero when the variance estimate is negative. In practice, systematic samples are analyzed with approximate estimators: the with-replacement formula (conservative here, with 99.3% coverage, because it ignores the implicit stratification), or collapsed pairs of successive units.
+
+Sampford sampling is the safe choice when an unbiased variance estimate matters. Its exact joint probabilities make the SYG estimator unbiased (mean ratio 1.01, coverage 94.3%). The with-replacement approximation works almost as well for this sampling fraction of 10% and stays slightly conservative. Brewer's method gives the same efficiency without rejection, which matters when n is a large share of the non-certainty units. Its joint probabilities have no closed form, so the variance must be approximated, for example by the with-replacement formula.
+
+>> Practical guidance
+
+- Compute probabilities with `inclusion_probabilities` and check for certainty units. Those are reported separately and contribute no sampling variance.
+- Use Sampford (or Brewer when Sampford is slow) when design-unbiased variance estimation is required. Pass `sampford_joint_inclusion` to `horvitz_thompson_joint` for the SYG estimate.
+- Use systematic or ordered pivotal sampling along a sorted list for efficiency, and analyze with a with-replacement or collapsed-strata variance. Avoid systematic sampling when the list order has a periodic pattern that could align with the sampling interval.
+- Keep the probabilities used for selection with the data. The estimators need them, not the size measures.
+
+>> References
+
+- M. R. Sampford (1967). On sampling without replacement with unequal probabilities of selection. *Biometrika* 54(3/4), 499-513. doi:10.1093/biomet/54.3-4.499
+- K. R. W. Brewer (1975). A simple procedure for sampling pi-pswor. *Australian Journal of Statistics* 17(3), 166-172. doi:10.1111/j.1467-842X.1975.tb00954.x
+- J.-C. Deville and Y. Tillé (1998). Unequal probability sampling without replacement through a splitting method. *Biometrika* 85(1), 89-101. doi:10.1093/biomet/85.1.89
+- C. Asok and B. V. Sukhatme (1976). On Sampford's procedure of unequal probability sampling without replacement. *Journal of the American Statistical Association* 71(356), 912-918. doi:10.1080/01621459.1976.10480968
+- Y. Tillé (2006). *Sampling Algorithms*. Springer.

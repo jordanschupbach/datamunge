@@ -1,0 +1,148 @@
+//? Title: Hartung–Knapp inference
+//? Exports: both
+//? Lang: en
+
+> Replace the normal-theory interval for the average effect with one that uses the observed residual heterogeneity and t quantiles, and check when that adjustment, or its truncated version, is needed
+
+The usual (Wald) random-effects interval \(\hat\mu\pm z\,\mathrm{SE}\) treats \(\hat\tau^2\) as if it were the true between-study variance. With few studies \(\hat\tau^2\) is very uncertain, often zero, and the interval undercovers. Hartung and Knapp (2001) and Sidik and Jonkman (2002) proposed two changes:
+
+- rescale the variance of \(\hat\mu\) by the generalised Q per degree of freedom, \(s^2=\sum w_i^*(y_i-\hat\mu)^2/(k-1)\);
+- use \(t_{k-1}\) quantiles instead of normal ones.
+
+The rescaling makes the interval reflect the spread actually observed around \(\hat\mu\). The \(t\) quantiles allow for the few degrees of freedom available to estimate that spread. When the studies agree more closely than their sampling variances imply, \(s^2<1\), and the Hartung–Knapp (HK) interval can be narrower than the Wald interval. The truncated ("ad hoc") variant prevents this with \(s^2\leftarrow\max(1,s^2)\) (Knapp and Hartung, 2003; Röver et al., 2015).
+
+`random_effects_meta(..., {.inference = MetaInference::hartung_knapp})` and `hartung_knapp_truncated` apply the adjustment to the test, the confidence interval and the prediction interval. They report the degrees of freedom and the scale factor \(s^2\). The tests reproduce `metafor::rma(test = "knha")` and `rma(test = "adhoc")` with DL and REML to \(10^{-9}\) on three datasets, one of which has \(s^2<1\).
+
+The simulation uses REML throughout, with \(\theta_i\sim N(0.3,\tau^2)\) and 4000 meta-analyses per setting. It compares the coverage and mean width of the three 95% intervals for \(\mu\) in two designs:
+
+- *similar*: study variances drawn from \(U(0.01,0.2)\);
+- *one large study*: one study with variance 0.002 and the rest with variance 0.1, a common pattern when a single large trial dominates.
+
+```{cpp, id=hk, file="figures/hartung_knapp.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/meta_analysis.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::MetaInference;
+
+struct Result {
+    double cover[3]{}, width[3]{};
+};
+
+Result simulate(std::size_t k, double tau2, bool one_large, std::uint64_t seed) {
+    dm::random::SplitMix64 rng(seed);
+    const MetaInference inf[3]{MetaInference::wald, MetaInference::hartung_knapp,
+                               MetaInference::hartung_knapp_truncated};
+    Result out;
+    const int reps = 4000;
+    const double mu = 0.3;
+    for (int r = 0; r < reps; ++r) {
+        std::vector<double> y(k), v(k);
+        for (std::size_t i = 0; i < k; ++i) {
+            v[i] = one_large ? (i == 0 ? 0.002 : 0.1) : 0.01 + 0.19 * rng.uniform01();
+            y[i] = mu + std::sqrt(tau2) * rng.normal() + std::sqrt(v[i]) * rng.normal();
+        }
+        for (int j = 0; j < 3; ++j) {
+            const auto m = dm::stats::random_effects_meta(y, v, {.inference = inf[j]});
+            out.cover[j] += (m.lower <= mu && mu <= m.upper) / double(reps);
+            out.width[j] += (m.upper - m.lower) / reps;
+        }
+    }
+    return out;
+}
+
+int main() {
+    std::println("| Design | tau2 | k | Coverage: Wald | HK | HK truncated | "
+                 "Mean width: Wald | HK | HK truncated |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+    std::vector<double> ks, wald, hk, hkt;
+    std::uint64_t seed = 1;
+    for (const bool one_large : {false, true})
+        for (const double tau2 : {0.0, 0.04, 0.16})
+            for (const std::size_t k : {3, 5, 10, 20}) {
+                const auto r = simulate(k, tau2, one_large, ++seed);
+                std::println("| {} | {} | {} | {:.3f} | {:.3f} | {:.3f} | {:.2f} | "
+                             "{:.2f} | {:.2f} |",
+                             one_large ? "One large study" : "Similar", tau2, k,
+                             r.cover[0], r.cover[1], r.cover[2], r.width[0], r.width[1],
+                             r.width[2]);
+            }
+
+    // Coverage against k for the one-large-study design with tau2 = 0.04.
+    for (std::size_t k = 3; k <= 30; k += 3) {
+        const auto r = simulate(k, 0.04, true, 100 + k);
+        ks.push_back(double(k));
+        wald.push_back(r.cover[0]), hk.push_back(r.cover[1]), hkt.push_back(r.cover[2]);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(ks, wald, "Wald (z)", {176, 72, 43}, 2)
+        .points(ks, wald, "", {176, 72, 43}, 4)
+        .line(ks, hk, "Hartung-Knapp", {26, 90, 147}, 2)
+        .points(ks, hk, "", {26, 90, 147}, 4)
+        .line(ks, hkt, "Hartung-Knapp, truncated", {67, 140, 70}, 2)
+        .points(ks, hkt, "", {67, 140, 70}, 4)
+        .abline_h(0.95, {150, 150, 150})
+        .y_limits(0.6, 1.02)
+        .title("Coverage for mu: one large study, tau2 = 0.04")
+        .x_label("Number of studies k")
+        .y_label("Coverage")
+        .size(640, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/hartung_knapp.svg");
+}
+```
+// result_begin: markdown
+| Design | tau2 | k | Coverage: Wald | HK | HK truncated | Mean width: Wald | HK | HK truncated |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Similar | 0 | 3 | 0.961 | 0.954 | 1.000 | 0.74 | 1.28 | 1.65 |
+| Similar | 0 | 5 | 0.958 | 0.950 | 0.994 | 0.54 | 0.65 | 0.77 |
+| Similar | 0 | 10 | 0.956 | 0.945 | 0.984 | 0.36 | 0.37 | 0.42 |
+| Similar | 0 | 20 | 0.955 | 0.948 | 0.972 | 0.24 | 0.24 | 0.26 |
+| Similar | 0.04 | 3 | 0.907 | 0.933 | 0.998 | 0.82 | 1.53 | 1.83 |
+| Similar | 0.04 | 5 | 0.915 | 0.934 | 0.980 | 0.62 | 0.82 | 0.90 |
+| Similar | 0.04 | 10 | 0.917 | 0.936 | 0.956 | 0.43 | 0.48 | 0.50 |
+| Similar | 0.04 | 20 | 0.935 | 0.946 | 0.955 | 0.30 | 0.32 | 0.33 |
+| Similar | 0.16 | 3 | 0.870 | 0.941 | 0.986 | 1.07 | 2.18 | 2.37 |
+| Similar | 0.16 | 5 | 0.878 | 0.935 | 0.955 | 0.84 | 1.17 | 1.21 |
+| Similar | 0.16 | 10 | 0.913 | 0.942 | 0.948 | 0.61 | 0.70 | 0.71 |
+| Similar | 0.16 | 20 | 0.932 | 0.946 | 0.949 | 0.44 | 0.47 | 0.47 |
+| One large study | 0 | 3 | 0.960 | 0.944 | 1.000 | 0.34 | 0.65 | 0.77 |
+| One large study | 0 | 5 | 0.971 | 0.952 | 0.998 | 0.28 | 0.36 | 0.41 |
+| One large study | 0 | 10 | 0.967 | 0.954 | 0.987 | 0.23 | 0.25 | 0.27 |
+| One large study | 0 | 20 | 0.948 | 0.946 | 0.968 | 0.19 | 0.19 | 0.20 |
+| One large study | 0.04 | 3 | 0.670 | 0.769 | 0.877 | 0.51 | 1.04 | 1.14 |
+| One large study | 0.04 | 5 | 0.738 | 0.785 | 0.835 | 0.45 | 0.61 | 0.66 |
+| One large study | 0.04 | 10 | 0.820 | 0.841 | 0.864 | 0.36 | 0.41 | 0.43 |
+| One large study | 0.04 | 20 | 0.876 | 0.887 | 0.899 | 0.29 | 0.30 | 0.31 |
+| One large study | 0.16 | 3 | 0.732 | 0.829 | 0.869 | 0.86 | 1.86 | 1.93 |
+| One large study | 0.16 | 5 | 0.821 | 0.879 | 0.894 | 0.75 | 1.05 | 1.08 |
+| One large study | 0.16 | 10 | 0.886 | 0.918 | 0.924 | 0.58 | 0.66 | 0.67 |
+| One large study | 0.16 | 20 | 0.932 | 0.949 | 0.950 | 0.43 | 0.46 | 0.47 |
+\image(figures/hartung_knapp.svg)
+// result_end
+
+With similar study sizes the HK interval does what it promises. The Wald interval undercovers whenever \(\tau^2>0\): 87–92% with 3–10 studies. HK restores 93–95% at every \(k\) and keeps 95% when there is no heterogeneity. The price is width, which is large with very few studies because \(t_2\) and \(t_4\) quantiles are big. At \(k=3\) the HK interval is roughly twice as wide as the Wald interval, which honestly reflects how little three studies say about \(\mu\). The truncated version is conservative with few studies: 98–100% coverage at \(k=3\), and about 0.1–0.4 wider than HK. By \(k=10\)–20 all three intervals are close.
+
+A single dominant study breaks all three methods. With one study of variance 0.002 among others of variance 0.1, and \(\tau^2=0.04\), the large study's weight makes \(\hat\mu\) close to that study's true effect \(\theta_1\). That effect deviates from \(\mu\) with variance \(\tau^2\), but the generalised Q mostly measures the scatter of the small studies, so the interval is too narrow. Coverage is 67–88% across methods at \(k\le10\), and 88–90% even at \(k=20\). The figure shows that HK improves on Wald throughout, and truncation helps further with few studies. The real problem is that one study cannot tell us how far its own true effect lies from the average. When a single study dominates, the random-effects average of \(\mu\) inherits that study's deviation, and no variance adjustment recovers it.
+
+>> Practical guidance
+
+- Use Hartung–Knapp inference by default for random-effects meta-analysis with fewer than about 20 studies. It costs little when heterogeneity is absent and fixes most of the Wald undercoverage when it is present.
+- Use the truncated variant when \(s^2<1\) would make the HK interval narrower than the Wald interval, especially with fewer than 5 studies. Report which variant was used.
+- Expect very wide intervals with 2–4 studies. That width reflects the data, and a Wald interval that looks precise is the misleading one.
+- When one study dominates the weights, no interval for \(\mu\) is reliable. Report the dominant study separately, run a sensitivity analysis without it, and interpret the pooled result as close to that study's estimate.
+
+>> References
+
+- J. Hartung and G. Knapp (2001). A refined method for the meta-analysis of controlled clinical trials with binary outcome. *Statistics in Medicine* 20(24), 3875-3889. doi:10.1002/sim.1009
+- K. Sidik and J. N. Jonkman (2002). A simple confidence interval for meta-analysis. *Statistics in Medicine* 21(21), 3153-3159. doi:10.1002/sim.1262
+- G. Knapp and J. Hartung (2003). Improved tests for a random effects meta-regression with a single covariate. *Statistics in Medicine* 22(17), 2693-2710. doi:10.1002/sim.1482
+- C. Röver, G. Knapp and T. Friede (2015). Hartung-Knapp-Sidik-Jonkman approach and its modification for random-effects meta-analysis with few studies. *BMC Medical Research Methodology* 15, 99. doi:10.1186/s12874-015-0091-1
+- J. IntHout, J. P. A. Ioannidis and G. F. Borm (2014). The Hartung-Knapp-Sidik-Jonkman method for random effects meta-analysis is straightforward and considerably outperforms the standard DerSimonian-Laird method. *BMC Medical Research Methodology* 14, 25. doi:10.1186/1471-2288-14-25
+- D. Jackson, M. Law, G. Rücker and G. Schwarzer (2017). The Hartung-Knapp modification for random-effects meta-analysis: a useful refinement but are there any residual concerns? *Statistics in Medicine* 36(25), 3923-3934. doi:10.1002/sim.7411

@@ -1,0 +1,235 @@
+//? Title: Cronbach's alpha and McDonald's omega
+//? Exports: both
+//? Lang: en
+
+> Estimate how reliable a sum score is from the inter-item covariances, see when alpha understates or overstates it compared with a one-factor omega, and compare the confidence intervals of both
+
+Reliability is the share of a test score's variance that comes from the trait being measured. With items \(X_j=\lambda_jF+e_j\) loading on one factor \(F\) (variance 1) with uncorrelated errors of variance \(\psi_j\), the sum score has reliability
+
+\[\omega=\frac{(\sum_j\lambda_j)^2}{(\sum_j\lambda_j)^2+\sum_j\psi_j}.\]
+
+**Cronbach's alpha**, \(\alpha=\frac p{p-1}\bigl(1-\sum_js_j^2/s_X^2\bigr)\), needs only the item and total variances. It equals \(\omega\) when items are *tau-equivalent* (equal loadings). It is a lower bound when loadings differ (*congeneric* items), and it can exceed the true reliability when errors are correlated, because shared error looks like true-score variance. **McDonald's omega** estimates the loadings from a one-factor model and plugs them into the formula.
+
+`cronbach_alpha` returns raw and standardized alpha, the mean inter-item correlation, and an item analysis (corrected item–rest correlation and alpha if the item is deleted). It gives two intervals:
+
+- Feldt's F interval, which assumes normal, compound-symmetric items;
+- the distribution-free asymptotic interval.
+
+`one_factor_fit` fits the one-factor model by maximum likelihood (EM) and gives its \(\chi^2\) test. `mcdonald_omega` returns model-based and observed-variance omega with percentile bootstrap intervals for omega and alpha. The tests reproduce:
+
+- `psych::alpha` (alpha, standardized alpha, average r, `ase`, Feldt limits, `r.drop`, `alpha.drop`) to \(10^{-12}\);
+- `lavaan::cfa(std.lv = TRUE)` loadings, residual variances and \(\chi^2\) to lavaan's optimiser tolerance;
+- the exact solution for a compound-symmetric covariance.
+
+The example scores a simulated six-item congeneric scale (n = 150, loadings 0.9 down to 0.4). The simulation draws 500 samples of n = 100 respondents from four six-item populations:
+
+- tau-equivalent normal items (all loadings 0.7);
+- congeneric normal items (0.9, 0.8, 0.7, 0.5, 0.4, 0.3);
+- tau-equivalent items with skewed errors (standardized \(\chi^2_1\));
+- tau-equivalent items in which two items share an error component (error covariance 0.25).
+
+The bootstrap intervals use 500 replicates.
+
+```{cpp, id=rel, file="figures/alpha_omega.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/reliability.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+struct Population {
+    const char* name;
+    std::vector<double> lambda;
+    bool skewed;
+    double error_cov;  // covariance of the errors of items 5 and 6
+};
+
+Matrix sample(dm::random::SplitMix64& rng, const Population& pop, std::size_t n) {
+    const std::size_t p = pop.lambda.size();
+    Matrix x(n, p, 0.0);
+    auto error = [&] {  // mean 0, variance 1
+        if (!pop.skewed) return rng.normal();
+        const double z = rng.normal();
+        return (z * z - 1) / std::sqrt(2.0);
+    };
+    for (std::size_t i = 0; i < n; ++i) {
+        const double f = rng.normal(), shared = error();
+        for (std::size_t j = 0; j < p; ++j) {
+            double psi = 1 - pop.lambda[j] * pop.lambda[j];
+            double e = 0;
+            if (j >= p - 2 && pop.error_cov > 0) {
+                e += std::sqrt(pop.error_cov) * shared;
+                psi -= pop.error_cov;
+            }
+            x(i, j) = pop.lambda[j] * f + e + std::sqrt(psi) * error();
+        }
+    }
+    return x;
+}
+
+// Population alpha and true sum-score reliability.
+std::pair<double, double> truth(const Population& pop) {
+    const double p = static_cast<double>(pop.lambda.size());
+    // Unit-variance items: var(sum) = (sum l)^2 + sum psi + 2 * error covariance.
+    double sl = 0, total = p + 2 * pop.error_cov;
+    for (const double l : pop.lambda) sl += l, total -= l * l;
+    total += sl * sl;
+    const double alpha = p / (p - 1) * (1 - p / total);
+    return {alpha, sl * sl / total};
+}
+
+int main() {
+    // Example: one congeneric scale.
+    dm::random::SplitMix64 rng(8);
+    const Population example{"", {0.9, 0.8, 0.7, 0.6, 0.5, 0.4}, false, 0.0};
+    const Matrix x = sample(rng, example, 150);
+    const auto a = dm::stats::cronbach_alpha(x);
+    const auto o = dm::stats::mcdonald_omega(x, {.replicates = 1000, .seed = 3});
+    std::println("| Item | Mean | SD | Item-rest r | Alpha if deleted | ML loading |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (std::size_t j = 0; j < 6; ++j) {
+        const auto& s = a.item_statistics[j];
+        std::println("| {} | {:.2f} | {:.2f} | {:.3f} | {:.3f} | {:.3f} |", j + 1, s.mean,
+                     s.sd, s.item_rest, s.alpha_if_deleted, o.fit.loadings[j]);
+    }
+    const auto [ta, tr] = truth(example);
+    std::println("\nAlpha {:.3f} (standardized {:.3f}); Feldt [{:.3f}, {:.3f}], "
+                 "asymptotic [{:.3f}, {:.3f}], bootstrap [{:.3f}, {:.3f}].", a.alpha,
+                 a.standardized_alpha, a.feldt_lower, a.feldt_upper, a.asymptotic_lower,
+                 a.asymptotic_upper, o.alpha_lower, o.alpha_upper);
+    std::println("Omega {:.3f} (observed-variance {:.3f}), bootstrap [{:.3f}, {:.3f}]. "
+                 "One-factor fit chi2 = {:.1f} on {} df (p = {:.3f}).", o.omega,
+                 o.omega_observed, o.omega_lower, o.omega_upper, o.fit.chi_square, o.fit.df,
+                 o.fit.p_value);
+    std::println("Population alpha {:.3f}, true reliability {:.3f}.\n", ta, tr);
+
+    // Simulation.
+    const std::vector<Population> pops{
+        {"Tau-equivalent", {0.7, 0.7, 0.7, 0.7, 0.7, 0.7}, false, 0.0},
+        {"Congeneric", {0.9, 0.8, 0.7, 0.5, 0.4, 0.3}, false, 0.0},
+        {"Tau-equivalent, skewed errors", {0.7, 0.7, 0.7, 0.7, 0.7, 0.7}, true, 0.0},
+        {"Tau-equivalent, correlated errors", {0.7, 0.7, 0.7, 0.7, 0.7, 0.7}, false, 0.25}};
+    std::println("| Population | Population alpha | True reliability | Mean alpha | "
+                 "Mean omega | Feldt covers alpha | Asymptotic | Bootstrap alpha | "
+                 "Bootstrap omega covers reliability | Fit test rejects |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+    struct Band { double mean, lo, hi; };
+    std::vector<Band> alpha_bands, omega_bands;
+    std::vector<double> rel;
+    const int reps = 500;
+    for (const auto& pop : pops) {
+        const auto [pa, pr] = truth(pop);
+        std::vector<double> al, om;
+        double feldt = 0, asym = 0, boot_a = 0, boot_o = 0, misfit = 0;
+        for (int r = 0; r < reps; ++r) {
+            const Matrix s = sample(rng, pop, 100);
+            const auto ea = dm::stats::cronbach_alpha(s);
+            const auto eo =
+                dm::stats::mcdonald_omega(s, {.replicates = 500, .seed = 1u + r});
+            al.push_back(ea.alpha), om.push_back(eo.omega);
+            feldt += ea.feldt_lower <= pa && pa <= ea.feldt_upper;
+            asym += ea.asymptotic_lower <= pa && pa <= ea.asymptotic_upper;
+            boot_a += eo.alpha_lower <= pa && pa <= eo.alpha_upper;
+            boot_o += eo.omega_lower <= pr && pr <= eo.omega_upper;
+            misfit += eo.fit.p_value <= 0.05;
+        }
+        auto band = [&](std::vector<double> v) {
+            std::ranges::sort(v);
+            double m = 0;
+            for (const double e : v) m += e / reps;
+            return Band{m, v[reps / 10], v[9 * reps / 10]};
+        };
+        alpha_bands.push_back(band(al)), omega_bands.push_back(band(om)), rel.push_back(pr);
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | "
+                     "{:.3f} | {:.3f} | {:.3f} |", pop.name, pa, pr,
+                     alpha_bands.back().mean,
+                     omega_bands.back().mean, feldt / reps, asym / reps, boot_a / reps,
+                     boot_o / reps, misfit / reps);
+    }
+
+    // Figure: 10%-90% ranges of alpha and omega against the true reliability.
+    auto plot = dm::graphics::RPlot::create();
+    std::vector<double> pa_pos, po_pos, am, alo, ahi, omn, olo, ohi, tp;
+    std::vector<std::string> labels;
+    for (std::size_t k = 0; k < pops.size(); ++k) {
+        const double base = 3.0 * static_cast<double>(pops.size() - 1 - k);
+        pa_pos.push_back(base + 1.4), po_pos.push_back(base + 0.6);
+        am.push_back(alpha_bands[k].mean), alo.push_back(alpha_bands[k].lo);
+        ahi.push_back(alpha_bands[k].hi), omn.push_back(omega_bands[k].mean);
+        olo.push_back(omega_bands[k].lo), ohi.push_back(omega_bands[k].hi);
+        tp.push_back(base + 1.0), labels.push_back(pops[k].name);
+    }
+    plot.forest(pa_pos, am, alo, ahi, {176, 72, 43})
+        .forest(po_pos, omn, olo, ohi, {26, 90, 147})
+        .points(rel, tp, "True reliability", {17, 24, 39}, 9)
+        .points(am, pa_pos, "Alpha (mean, 10%-90%)", {176, 72, 43}, 6)
+        .points(omn, po_pos, "Omega (mean, 10%-90%)", {26, 90, 147}, 6)
+        .y_ticks(tp, labels)
+        .margins(215, 20, 60, 60)
+        .x_limits(0.6, 0.95)
+        .y_limits(-0.5, 13.5)
+        .title("Alpha and omega across 500 samples of n = 100")
+        .x_label("Reliability estimate")
+        .y_label("")
+        .size(700, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/alpha_omega.svg");
+}
+```
+// result_begin: markdown
+| Item | Mean | SD | Item-rest r | Alpha if deleted | ML loading |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | -0.01 | 0.95 | 0.781 | 0.730 | 0.857 |
+| 2 | 0.05 | 1.04 | 0.754 | 0.732 | 0.856 |
+| 3 | -0.04 | 1.01 | 0.683 | 0.751 | 0.786 |
+| 4 | -0.05 | 0.95 | 0.461 | 0.800 | 0.499 |
+| 5 | 0.02 | 0.95 | 0.408 | 0.811 | 0.453 |
+| 6 | -0.01 | 0.99 | 0.350 | 0.825 | 0.373 |
+
+Alpha 0.808 (standardized 0.806); Feldt [0.756, 0.852], asymptotic [0.761, 0.855], bootstrap [0.744, 0.853].
+Omega 0.826 (observed-variance 0.831), bootstrap [0.765, 0.870]. One-factor fit chi2 = 13.5 on 9 df (p = 0.139).
+Population alpha 0.811, true reliability 0.822.
+
+| Population | Population alpha | True reliability | Mean alpha | Mean omega | Feldt covers alpha | Asymptotic | Bootstrap alpha | Bootstrap omega covers reliability | Fit test rejects |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Tau-equivalent | 0.852 | 0.852 | 0.847 | 0.849 | 0.954 | 0.960 | 0.924 | 0.942 | 0.058 |
+| Congeneric | 0.764 | 0.785 | 0.761 | 0.784 | 0.948 | 0.948 | 0.944 | 0.940 | 0.042 |
+| Tau-equivalent, skewed errors | 0.852 | 0.852 | 0.851 | 0.852 | 0.898 | 0.898 | 0.934 | 0.932 | 0.084 |
+| Tau-equivalent, correlated errors | 0.860 | 0.832 | 0.857 | 0.857 | 0.954 | 0.958 | 0.948 | 0.808 | 0.790 |
+\image(figures/alpha_omega.svg)
+// result_end
+
+In the example, all six items have item–rest correlations of 0.35 or more. Items 4–6 have smaller loadings, so deleting any of them would *raise* alpha slightly (to 0.80–0.83). Even so, they add trait information to the sum score. Omega (0.826) is a little higher than alpha (0.808) because the loadings differ. Omega is also closer to the true reliability of 0.822, while alpha is close to the population alpha of 0.811. The one-factor model fits (\(p=0.14\)). The Feldt, asymptotic and bootstrap intervals for alpha are similar here, about ±0.05 at n = 150.
+
+The simulation separates the bias of each coefficient from its sampling error:
+
+- **Tau-equivalent items.** Alpha and omega estimate the same quantity and agree. The Feldt and asymptotic intervals hold their level; the percentile bootstrap undercovers slightly (92%).
+- **Congeneric items.** Alpha averages 0.761, against a true reliability of 0.785: the lower-bound gap is about 0.02 for these fairly unequal loadings. Omega is unbiased, and its bootstrap interval covers the truth 94% of the time.
+- **Skewed errors.** Both coefficients remain unbiased, but Feldt's interval, which assumes normality, covers only 90% of the time. The supposedly distribution-free asymptotic interval does no better at n = 100. The bootstrap is closest to nominal.
+- **Correlated errors.** Shared error between two items inflates both coefficients: they average 0.857 against a true reliability of 0.832. The omega interval covers the truth only 81% of the time. Here the one-factor model is wrong, and its \(\chi^2\) test flags that in 79% of samples. Omega does not protect against a misspecified model.
+
+The figure shows that at n = 100 the sampling spread of either coefficient (10%–90% range about ±0.04–0.05) is larger than the alpha–omega gap in all but strongly congeneric scales.
+
+>> Practical guidance
+
+- Report omega from a one-factor model together with the model's fit, and alpha for comparability with earlier work. With roughly equal loadings the two coincide, and the difference only matters when loadings vary a lot.
+- Check unidimensionality and residual correlations before reporting either coefficient. Correlated errors from item wording, method effects or testlets inflate both, so fit a model with those correlations, or a bifactor model with hierarchical omega, when theory or misfit points to them.
+- Always give an interval. Use a bootstrap or the asymptotic interval when items are skewed or ordinal; Feldt's interval assumes normality and compound symmetry.
+- For Likert items with few categories or floor and ceiling effects, consider ordinal (polychoric-based) coefficients. Remember that "alpha if item deleted" is about internal consistency, not about whether an item measures the construct.
+
+>> References
+
+- L. J. Cronbach (1951). Coefficient alpha and the internal structure of tests. *Psychometrika* 16(3), 297-334. doi:10.1007/BF02310555
+- R. P. McDonald (1999). *Test Theory: A Unified Treatment*. Lawrence Erlbaum.
+- L. S. Feldt (1965). The approximate sampling distribution of Kuder–Richardson reliability coefficient twenty. *Psychometrika* 30(3), 357-370. doi:10.1007/BF02289499
+- J. M. van Zyl, H. Neudecker and D. G. Nel (2000). On the distribution of the maximum likelihood estimator of Cronbach's alpha. *Psychometrika* 65(3), 271-280. doi:10.1007/BF02296146
+- K. Sijtsma (2009). On the use, the misuse, and the very limited usefulness of Cronbach's alpha. *Psychometrika* 74(1), 107-120. doi:10.1007/s11336-008-9101-0
+- K. Kelley and S. Pornprasertmanit (2016). Confidence intervals for population reliability coefficients: Evaluation of methods, recommendations, and software for composite measures. *Psychological Methods* 21(1), 69-92. doi:10.1037/a0040086
+- D. B. Rubin and D. T. Thayer (1982). EM algorithms for ML factor analysis. *Psychometrika* 47(1), 69-76. doi:10.1007/BF02293851

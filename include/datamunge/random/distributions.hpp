@@ -5,6 +5,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <numbers>
 #include <cstddef>
 #include <limits>
 #include <numeric>
@@ -39,11 +40,10 @@ inline void require_nonnegative(double x, const char* fn, const char* name) {
   }
 }
 
-inline double normal_quantile_unit(double p) {
-  require_probability(p, "normal_quantile");
-  if (p == 0.0) return -std::numeric_limits<double>::infinity();
-  if (p == 1.0) return std::numeric_limits<double>::infinity();
-
+/// @brief Acklam's rational approximation to the standard normal quantile (relative error about 1e-9).
+/// @param p Probability in (0, 1).
+/// @return Approximate \f$\Phi^{-1}(p)\f$.
+inline double normal_quantile_acklam(double p) {
   static constexpr double a1 = -3.969683028665376e+01;
   static constexpr double a2 = 2.209460984245205e+02;
   static constexpr double a3 = -2.759285104469687e+02;
@@ -87,6 +87,24 @@ inline double normal_quantile_unit(double p) {
   const double r = q * q;
   return (((((a1 * r + a2) * r + a3) * r + a4) * r + a5) * r + a6) * q
        / (((((b1 * r + b2) * r + b3) * r + b4) * r + b5) * r + 1.0);
+}
+
+/// @brief Standard normal quantile: Acklam's approximation refined by one Halley step.
+///
+/// The Halley correction \f$x\leftarrow x-u/(1+xu/2)\f$ with \f$u=(\Phi(x)-p)\sqrt{2\pi}e^{x^2/2}\f$
+/// (using the smaller tail for accuracy) brings the error to a few units in the last place.
+/// @param p Probability in [0, 1].
+/// @return \f$\Phi^{-1}(p)\f$, infinite at 0 and 1.
+inline double normal_quantile_unit(double p) {
+  require_probability(p, "normal_quantile");
+  if (p == 0.0) return -std::numeric_limits<double>::infinity();
+  if (p == 1.0) return std::numeric_limits<double>::infinity();
+  const double x = normal_quantile_acklam(p);
+  // Phi(x) - p, from the lower tail when x < 0 and from the upper tail otherwise.
+  const double e = x < 0.0 ? 0.5 * std::erfc(-x / std::numbers::sqrt2) - p
+                           : (1.0 - p) - 0.5 * std::erfc(x / std::numbers::sqrt2);
+  const double u = e * std::sqrt(2.0 * std::numbers::pi) * std::exp(0.5 * x * x);
+  return x - u / (1.0 + 0.5 * x * u);
 }
 
 inline double poisson_pdf_nonneg(std::size_t k, double lambda) {
@@ -237,6 +255,50 @@ inline double log_choose(double n, double k) {
 }
 
 } // namespace detail
+
+/// @brief Digamma function \f$\psi(x)=\frac{d}{dx}\log\Gamma(x)\f$.
+///
+/// Uses the recurrence \f$\psi(x)=\psi(x+1)-1/x\f$ up to x >= 16, then the asymptotic series, and the
+/// reflection formula for negative noninteger x. Accurate to a few ulps for x > 0.
+/// @param x Argument (not a nonpositive integer).
+/// @return \f$\psi(x)\f$; NaN at nonpositive integers and for NaN input.
+/// @par Example
+/// @code
+/// std::println("{:.6f}", dm::random::digamma(1.0)); // -0.577216
+/// @endcode
+inline double digamma(double x) {
+  if (std::isnan(x) || (x <= 0 && std::floor(x) == x)) return std::numeric_limits<double>::quiet_NaN();
+  if (x < 0) return digamma(1 - x) - std::numbers::pi / std::tan(std::numbers::pi * x);
+  double shift = 0;
+  for (; x < 16; x += 1) shift -= 1 / x;
+  const double f = 1 / (x * x);
+  return shift + std::log(x) - 0.5 / x -
+         f * (1.0 / 12 - f * (1.0 / 120 - f * (1.0 / 252 - f * (1.0 / 240 - f * (1.0 / 132 - f * 691.0 / 32760)))));
+}
+
+/// @brief Trigamma function \f$\psi'(x)\f$.
+///
+/// Recurrence \f$\psi'(x)=\psi'(x+1)+1/x^2\f$ up to x >= 16, then the asymptotic series; reflection for negative
+/// noninteger x.
+/// @param x Argument (not a nonpositive integer).
+/// @return \f$\psi'(x)\f$; +infinity at nonpositive integers, NaN for NaN input.
+/// @par Example
+/// @code
+/// std::println("{:.6f}", dm::random::trigamma(1.0)); // 1.644934
+/// @endcode
+inline double trigamma(double x) {
+  if (std::isnan(x)) return x;
+  if (x <= 0 && std::floor(x) == x) return std::numeric_limits<double>::infinity();
+  if (x < 0) {
+    const double s = std::sin(std::numbers::pi * x);
+    return std::numbers::pi * std::numbers::pi / (s * s) - trigamma(1 - x);
+  }
+  double shift = 0;
+  for (; x < 16; x += 1) shift += 1 / (x * x);
+  const double f = 1 / (x * x);
+  return shift + 1 / x + f / 2 +
+         (f / x) * (1.0 / 6 - f * (1.0 / 30 - f * (1.0 / 42 - f * (1.0 / 30 - f * (5.0 / 66 - f * 691.0 / 2730)))));
+}
 
 inline double uniform_pdf(double x, double a = 0.0, double b = 1.0) {
   if (!(b > a)) throw std::invalid_argument("uniform_pdf: require b > a");
@@ -657,6 +719,26 @@ inline double chi_squared_cdf(double x, double df) {
   detail::require_positive(df, "chi_squared_cdf", "df");
   if (x <= 0.0) return 0.0;
   return detail::regularized_lower_incomplete_gamma(0.5 * df, 0.5 * x);
+}
+
+/// @brief Upper tail \f$P(X>x)\f$ of the chi-squared distribution, accurate far into the tail.
+///
+/// Unlike `1 - chi_squared_cdf(x, df)`, which rounds to 0 below about 1e-16, this evaluates the
+/// regularized upper incomplete gamma function directly (continued fraction for x/2 >= df/2 + 1).
+/// @param x Quantile.
+/// @param df Degrees of freedom (> 0).
+/// @return The survival probability in [0, 1].
+/// @throws std::invalid_argument If df is not positive.
+/// @par Example
+/// @code
+/// std::println("{:.3e}", dm::random::chi_squared_survival(152.233, 12.0)); // 1.997e-26
+/// @endcode
+inline double chi_squared_survival(double x, double df) {
+  detail::require_positive(df, "chi_squared_survival", "df");
+  if (x <= 0.0) return 1.0;
+  const double a = 0.5 * df, h = 0.5 * x;
+  if (h < a + 1.0) return 1.0 - detail::incomplete_gamma_series(a, h);
+  return detail::incomplete_gamma_cf(a, h);
 }
 
 inline double chi_squared_quantile(double p, double df) {

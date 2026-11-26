@@ -1,0 +1,186 @@
+//? Title: Generalized method of moments
+//? Exports: both
+//? Lang: en
+
+> Estimate parameters from moment conditions, weight the moments by their precision, and test the conditions that are not needed for identification
+
+Many models are defined by moment conditions rather than a full likelihood: an instrument is uncorrelated with a structural error, a consumption Euler equation holds in expectation, a distribution's moments are known functions of its parameters. The generalized method of moments (GMM) of Hansen (1982) writes these as \(E[g(x_i,\theta)]=0\) for \(q\) moment functions and \(k\le q\) parameters, and estimates \(\theta\) by making the sample means \(\bar g(\theta)\) as small as possible in a weighted norm:
+
+\[
+\hat\theta=\arg\min_\theta\ \bar g(\theta)^\top W\,\bar g(\theta).
+\]
+
+With as many moments as parameters the weights do not matter and \(\bar g(\hat\theta)=0\). With more moments, the weights decide how the moments trade off. Any positive definite \(W\) gives a consistent estimate (the one-step estimator), but the smallest asymptotic variance comes from \(W=S^{-1}\), the inverse covariance of the moment contributions. Because \(S\) depends on \(\theta\), the two-step estimator computes it at a first-step estimate. The iterated estimator keeps updating \(S\) until the estimate stops changing. The \(q-k\) surplus conditions can be tested: Hansen's \(J=n\,\bar g^\top S^{-1}\bar g\) is asymptotically \(\chi^2_{q-k}\) when every moment condition holds.
+
+`generalized_method_of_moments` takes a moment function returning the \(n\times q\) contributions, with an optional analytic Jacobian (central differences otherwise). It minimises each quadratic form by damped Gauss–Newton steps, and returns the estimates, their sandwich or efficient covariance, and the J test. The tests reproduce R's `gmm` package for two-step, iterated and identity-weighted fits of a heteroskedastic linear instrumental-variable model, and for a nonlinear model matching three moments of a gamma distribution.
+
+The simulation is a linear instrumental-variable model \(y=1+2x+u\) with four standard normal instruments, an endogenous regressor (error correlation 0.6), and errors whose spread grows with the first instrument, so that efficient weighting matters. The moment conditions are \(E[z_i(y_i-\beta_0-\beta_1x_i)]=0\) with \(z_i\) the instruments plus a constant: five moments for two parameters. The table compares, over 2000 samples of 250, 2SLS (one-step GMM with \(W=(Z^\top Z/n)^{-1}\)), identity-weighted one-step GMM, two-step GMM and iterated GMM, for the slope. The figure shows the power of the J test when the fourth instrument also enters the outcome equation with coefficient \(\gamma\), a violated exclusion restriction, for 250 and 1000 observations.
+
+```{cpp, id=gmm, file="figures/generalized_method_of_moments.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/linalg/cholesky.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/gmm_estimation.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::GmmEstimator;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+constexpr std::size_t q = 5; // constant and four instruments
+
+struct Sample {
+    std::vector<double> y, x;
+    Matrix z; // n-by-q, first column ones
+};
+
+Sample draw(dm::random::SplitMix64& rng, std::size_t n, double gamma) {
+    Sample s{{}, {}, Matrix(n, q, 1.0)};
+    for (std::size_t i = 0; i < n; ++i) {
+        double index = 0;
+        for (std::size_t j = 1; j < q; ++j) {
+            s.z(i, j) = rng.normal();
+            index += 0.3 * s.z(i, j);
+        }
+        const double v = rng.normal();
+        const double u = (0.6 * v + 0.8 * rng.normal()) * (0.3 + std::abs(s.z(i, 1)));
+        s.x.push_back(index + v);
+        s.y.push_back(1 + 2 * s.x.back() + gamma * s.z(i, 4) + u);
+    }
+    return s;
+}
+
+// The inverse of Z'Z / n, the 2SLS weighting matrix.
+Matrix tsls_weights(const Sample& s) {
+    const std::size_t n = s.y.size();
+    Matrix zz(q, q, 0.0);
+    for (std::size_t i = 0; i < n; ++i)
+        for (std::size_t a = 0; a < q; ++a)
+            for (std::size_t b = 0; b < q; ++b)
+                zz(a, b) += s.z(i, a) * s.z(i, b) / static_cast<double>(n);
+    const auto f = dm::linalg::cholesky(zz);
+    Matrix inv(q, q, 0.0);
+    for (std::size_t c = 0; c < q; ++c) {
+        std::vector<double> e(q, 0.0);
+        e[c] = 1;
+        const auto col = f.solve(e);
+        for (std::size_t r = 0; r < q; ++r)
+            inv(r, c) = col[r];
+    }
+    return inv;
+}
+
+dm::stats::GmmResult fit(const Sample& s, dm::stats::GmmOptions options) {
+    const auto moments = [&](const std::vector<double>& t) {
+        Matrix g(s.y.size(), q);
+        for (std::size_t i = 0; i < s.y.size(); ++i) {
+            const double e = s.y[i] - t[0] - t[1] * s.x[i];
+            for (std::size_t j = 0; j < q; ++j)
+                g(i, j) = s.z(i, j) * e;
+        }
+        return g;
+    };
+    return dm::stats::generalized_method_of_moments(moments, {0.0, 0.0}, options);
+}
+
+int main() {
+    dm::random::SplitMix64 rng(1982);
+    const int reps = 2000;
+    const std::string names[4]{"2SLS (one-step, W = (Z'Z/n)^-1)", "One-step, identity weights",
+                               "Two-step efficient", "Iterated"};
+    double sum[4]{}, sq[4]{}, se[4]{}, cover[4]{}, reject_j = 0;
+    for (int r = 0; r < reps; ++r) {
+        const Sample s = draw(rng, 250, 0.0);
+        const Matrix w = tsls_weights(s);
+        const dm::stats::GmmResult fits[4]{
+            fit(s, {.estimator = GmmEstimator::one_step, .initial_weights = w}),
+            fit(s, {.estimator = GmmEstimator::one_step}),
+            fit(s, {.estimator = GmmEstimator::two_step, .initial_weights = w}),
+            fit(s, {.estimator = GmmEstimator::iterated, .initial_weights = w})};
+        for (int k = 0; k < 4; ++k) {
+            const double e = fits[k].coefficients[1] - 2;
+            sum[k] += e;
+            sq[k] += e * e;
+            se[k] += fits[k].standard_errors[1] / reps;
+            cover[k] += fits[k].lower[1] <= 2 && 2 <= fits[k].upper[1];
+        }
+        reject_j += fits[2].j_p_value < 0.05;
+    }
+    std::println("| Estimator (n = 250) | Bias | SD | Mean SE | Coverage |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (int k = 0; k < 4; ++k) {
+        const double bias = sum[k] / reps;
+        std::println("| {} | {:+.4f} | {:.4f} | {:.4f} | {:.3f} |", names[k], bias,
+                     std::sqrt(sq[k] / reps - bias * bias), se[k], cover[k] / reps);
+    }
+    std::println("\nJ test (two-step) with valid instruments: rejection rate {:.3f} at the 5% "
+                 "level.", reject_j / reps);
+
+    const std::vector<double> gammas{0.0, 0.05, 0.1, 0.15, 0.2, 0.3};
+    std::vector<double> power_small, power_large;
+    for (const double g : gammas) {
+        double small = 0, large = 0;
+        for (int r = 0; r < 1000; ++r) {
+            const Sample a = draw(rng, 250, g), b = draw(rng, 1000, g);
+            small += fit(a, {.initial_weights = tsls_weights(a)}).j_p_value < 0.05;
+            large += fit(b, {.initial_weights = tsls_weights(b)}).j_p_value < 0.05;
+        }
+        power_small.push_back(small / 1000);
+        power_large.push_back(large / 1000);
+    }
+    std::println("\nJ test rejection rates at gamma = 0.1: {:.3f} (n = 250), {:.3f} (n = 1000).",
+                 power_small[2], power_large[2]);
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(gammas, power_small, "n = 250", {176, 72, 43}, 2)
+        .points(gammas, power_small, "", {176, 72, 43}, 5)
+        .line(gammas, power_large, "n = 1000", {26, 90, 147}, 2)
+        .points(gammas, power_large, "", {26, 90, 147}, 5)
+        .abline_h(0.05, {120, 120, 120}, 1)
+        .y_limits(0, 1.15)
+        .title("Power of the J test against an invalid instrument")
+        .x_label("Direct effect of instrument 4 on the outcome")
+        .y_label("Rejection rate at 5%")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/generalized_method_of_moments.svg");
+}
+```
+// result_begin: markdown
+| Estimator (n = 250) | Bias | SD | Mean SE | Coverage |
+| --- | ---: | ---: | ---: | ---: |
+| 2SLS (one-step, W = (Z'Z/n)^-1) | +0.0147 | 0.1548 | 0.1518 | 0.940 |
+| One-step, identity weights | +0.0144 | 0.1572 | 0.1532 | 0.936 |
+| Two-step efficient | +0.0124 | 0.1416 | 0.1363 | 0.939 |
+| Iterated | +0.0131 | 0.1412 | 0.1363 | 0.938 |
+
+J test (two-step) with valid instruments: rejection rate 0.057 at the 5% level.
+
+J test rejection rates at gamma = 0.1: 0.135 (n = 250), 0.453 (n = 1000).
+\image(figures/generalized_method_of_moments.svg)
+// result_end
+
+All four estimators are consistent and nearly unbiased. They differ in precision. Under heteroskedasticity 2SLS is no longer efficient, because it weights the moments as if the errors had constant variance. The two-step estimator weights them by their actual covariance and reduces the SD of the slope from 0.155 to 0.142, a 16% reduction in variance, without any change to the model. Identity weights are slightly worse than 2SLS here, since they ignore the scale and correlation of the instruments as well. Iterating the weights beyond the second step changes nothing of substance. Its advantage is that the estimate no longer depends on the arbitrary first-step weights, which also makes it invariant to how the moments are scaled.
+
+The efficient standard error is a little too small: 0.136 on average against an actual SD of 0.142. The formula \((G^\top S^{-1}G)^{-1}/n\) treats the estimated weighting matrix as known, and in small samples that matrix is estimated from the same residuals that determine the estimate. Coverage is still 94% here, but the gap grows with the number of moments. Windmeijer's (2005) correction addresses it for linear models. The one-step sandwich standard errors are correct, because their weights do not depend on the data in the same way.
+
+With valid instruments the J test rejects in 5.7% of samples at the 5% level, close to nominal. Its power against an invalid instrument rises with the size of the violation and with the sample: a direct effect of 0.1 on the outcome is detected 14% of the time with 250 observations and 45% with 1000. The J test detects violations only through disagreement among the moments. If all instruments are invalid in the same direction, or if there is only one instrument per parameter, it has no power at all. A non-significant J is therefore weak evidence that the instruments are valid, and the exclusion restrictions still need a substantive argument.
+
+>> Practical guidance
+
+- With more moments than parameters, use two-step or iterated GMM with a heteroskedasticity-robust \(S\), and report the J test with its degrees of freedom.
+- Prefer the iterated estimator, or a well-motivated first step such as 2SLS, over identity weights when the moments have very different scales.
+- Be cautious with many moments relative to the sample size. The two-step standard errors become too small and the estimates drift towards the biased ordinary least squares answer. Windmeijer-corrected errors or fewer, stronger moments help.
+- Treat the J test as a check for detectable disagreement among the moments, not as proof of validity, and use the weak-instrument diagnostics when instruments are involved.
+- Supply an analytic Jacobian when one is available. Central differences work but cost two moment evaluations per parameter at every Gauss–Newton step.
+
+>> References
+
+- L. P. Hansen (1982). Large sample properties of generalized method of moments estimators. *Econometrica* 50(4), 1029-1054. doi:10.2307/1912775
+- L. P. Hansen, J. Heaton and A. Yaron (1996). Finite-sample properties of some alternative GMM estimators. *Journal of Business & Economic Statistics* 14(3), 262-280. doi:10.1080/07350015.1996.10524656
+- F. Windmeijer (2005). A finite sample correction for the variance of linear efficient two-step GMM estimators. *Journal of Econometrics* 126(1), 25-51. doi:10.1016/j.jeconom.2004.02.005
+- P. Chaussé (2010). Computing generalized method of moments and generalized empirical likelihood with R. *Journal of Statistical Software* 34(11), 1-35. doi:10.18637/jss.v034.i11

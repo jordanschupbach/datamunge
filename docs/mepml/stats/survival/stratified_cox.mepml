@@ -1,0 +1,144 @@
+//? Title: Stratify a Cox model when baseline hazards differ in shape
+//? Exports: both
+//? Lang: en
+
+> Share the coefficients and let each stratum keep its own baseline hazard
+
+A Cox model with a categorical covariate assumes its levels multiply one common baseline hazard. When a nuisance factor, such as the enrolling centre, the tumour type or the calendar period, changes the *shape* of the hazard and not only its level, that assumption fails. Stratification avoids it. Each stratum \(s\) gets its own unspecified baseline \(h_{0s}(t)\), risk sets are formed within strata, and only the coefficients of interest are shared:
+\[h(t\mid x,s)=h_{0s}(t)\,e^{x^\top\beta},\qquad \ell(\beta)=\sum_s\ell_s(\beta).\]
+The price is that the stratifying factor gets no coefficient and its effect cannot be tested.
+
+The example simulates three centres with Weibull baseline hazards of shape 0.5 (decreasing), 2 (increasing) and 1 (constant). Treatment, with true log hazard ratio \(-0.5\), is given to 20%, 50% and 80% of subjects in the three centres, so centre confounds treatment. Follow-up is censored at time 2. The treatment effect is estimated without the centre, with centre as dummy covariates, and with centre as strata.
+
+```{cpp, id=strata, file="figures/stratified_cox.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/cox_counting.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::CountingRecord;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+const double shape[3]{.5, 2, 1}, scale[3]{1, 1, .7}, treated[3]{.2, .5, .8};
+const double beta = -.5;
+
+double true_hazard(int c, double t) { return std::pow(t / scale[c], shape[c]); }
+
+struct Data {
+    std::vector<CountingRecord> records;
+    std::vector<double> trt;
+    std::vector<int> centre;
+};
+
+Data simulate(std::size_t per_centre, std::mt19937_64& random) {
+    std::exponential_distribution<double> unit(1);
+    std::uniform_real_distribution<double> u(0, 1);
+    Data d;
+    for (int c = 0; c < 3; ++c)
+        for (std::size_t i = 0; i < per_centre; ++i) {
+            const double x = u(random) < treated[c] ? 1 : 0;
+            // H_c(T) exp(beta x) = E  =>  T = scale (E exp(-beta x))^(1/shape).
+            const double t = scale[c] * std::pow(unit(random) * std::exp(-beta * x),
+                                                 1 / shape[c]);
+            d.records.push_back({0, std::min(t, 2.0), t <= 2});
+            d.trt.push_back(x);
+            d.centre.push_back(c);
+        }
+    return d;
+}
+
+int main() {
+    std::mt19937_64 random(5);
+    const int reps = 1000;
+    double sum[3]{}, cover[3]{};
+    for (int r = 0; r < reps; ++r) {
+        const auto d = simulate(150, random);
+        const std::size_t n = d.trt.size();
+        Matrix dummies(n, 3);
+        for (std::size_t i = 0; i < n; ++i) {
+            dummies(i, 0) = d.trt[i];
+            dummies(i, 1) = d.centre[i] == 1;
+            dummies(i, 2) = d.centre[i] == 2;
+        }
+        const dm::stats::CoxCountingFit fits[3]{
+            dm::stats::fit_cox_counting(d.records, Matrix(n, 1, d.trt)),
+            dm::stats::fit_cox_counting(d.records, dummies),
+            dm::stats::fit_cox_counting(d.records, Matrix(n, 1, d.trt), {.strata = d.centre})};
+        for (int k = 0; k < 3; ++k) {
+            sum[k] += fits[k].coefficients[0];
+            cover[k] += std::abs(fits[k].coefficients[0] - beta) <=
+                        1.96 * fits[k].standard_errors[0];
+        }
+    }
+    const char* names[3]{"No centre adjustment", "Centre as covariates",
+                         "Stratified by centre"};
+    std::println("| Model | Mean treatment estimate (truth −0.5) | 95% coverage |");
+    std::println("| --- | ---: | ---: |");
+    for (int k = 0; k < 3; ++k)
+        std::println("| {} | {:.3f} | {:.3f} |", names[k], sum[k] / reps, cover[k] / reps);
+
+    // One larger trial: each stratum's estimated baseline (untreated) against the truth.
+    const auto d = simulate(600, random);
+    const auto fit = dm::stats::fit_cox_counting(d.records, Matrix(d.trt.size(), 1, d.trt),
+                                                 {.strata = d.centre});
+    const double to_untreated = std::exp(-fit.reference[0] * fit.coefficients[0]);
+    auto plot = dm::graphics::RPlot::create();
+    const dm::graphics::RGBA colours[3]{{26, 90, 147}, {176, 72, 43}, {46, 139, 87}};
+    const dm::graphics::RGBA tints[3]{{150, 185, 215}, {225, 170, 150}, {160, 210, 175}};
+    const char* labels[3]{"Shape 0.5", "Shape 2", "Shape 1"};
+    for (const auto& b : fit.baselines) {
+        std::vector<double> x{0}, y{0}, tx, ty;
+        for (std::size_t k = 0; k < b.event_times.size(); ++k) {
+            x.insert(x.end(), {b.event_times[k], b.event_times[k]});
+            y.insert(y.end(), {y.back(), b.cumulative_hazard[k] * to_untreated});
+        }
+        for (double t = 0; t <= 2.0001; t += .02) {
+            tx.push_back(t);
+            ty.push_back(true_hazard(b.stratum, t));
+        }
+        plot.line(tx, ty, "", tints[b.stratum], 3.5)
+            .line(x, y, labels[b.stratum], colours[b.stratum], 1.5);
+    }
+    std::println("\nEstimated treatment log hazard ratio in the 1800-subject trial: {:.3f} "
+                 "(SE {:.3f}).", fit.coefficients[0], fit.standard_errors[0]);
+    plot.title("Stratum baselines: estimated (steps) and true (light curves)")
+        .x_label("Time")
+        .y_label("Untreated cumulative hazard")
+        .ylim(0, 5)
+        .size(700, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/stratified_cox.svg");
+}
+```
+// result_begin: markdown
+| Model | Mean treatment estimate (truth −0.5) | 95% coverage |
+| --- | ---: | ---: |
+| No centre adjustment | -0.274 | 0.409 |
+| Centre as covariates | -0.443 | 0.930 |
+| Stratified by centre | -0.505 | 0.945 |
+
+Estimated treatment log hazard ratio in the 1800-subject trial: -0.560 (SE 0.060).
+\image(figures/stratified_cox.svg)
+// result_end
+\caption(Estimated untreated baseline cumulative hazards (steps) for the three centres of one 1800-subject trial fitted with strata, against the true Weibull cumulative hazards (light curves).)
+\alttext(Three pairs of curves. The blue shape-0.5 pair rises steeply at first and then flattens to about 1.4 at time 2. The green shape-1 pair is roughly linear, reaching about 2.9. The orange shape-2 pair starts flat and curves upward to about 4. Each step function tracks its light true curve closely.)
+
+Ignoring the centre roughly halves the treatment effect (\(-0.27\) against \(-0.5\)), and the interval covers the truth only 41% of the time. Treated subjects cluster in the third centre, whose baseline differs from the others. Adding the centre as covariates removes most of the confounding, but it imposes proportional hazards between centres whose hazards cross. That misspecification leaves the estimate attenuated to \(-0.44\), with 93% coverage. Stratifying makes no assumption about how the baselines relate and is unbiased (\(-0.505\), 94.5% coverage).
+
+The figure shows why the covariate model cannot fit. The centres' baselines have different shapes, decreasing, constant and increasing hazards, and no constant multiplier maps one onto another. With strata each step function follows its own true Weibull curve.
+
+The trade-offs are standard:
+- Stratification costs efficiency when the strata are small, because comparisons are made only within them.
+- The stratifying factor's own effect is not estimated.
+- Interactions between treatment and stratum must be added explicitly if needed.
+
+It is the natural choice for nuisance factors with many levels or obviously different hazard shapes, and for covariates that fail the proportional-hazards check described in the next report.
+
+Coefficients, standard errors, log likelihoods, the three global tests and every stratum's baseline hazard match R's `coxph(... + strata(celltype))` on the `veteran` data with Efron and Breslow ties. A stratified start/stop fit on the heart-transplant data matches too.
+
+[Therneau and Grambsch (2000), chapter 3|https://doi.org/10.1007/978-1-4757-3294-8]

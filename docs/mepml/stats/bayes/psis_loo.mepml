@@ -1,0 +1,215 @@
+//? Title: Pareto-smoothed importance sampling leave-one-out
+//? Exports: both
+//? Lang: en
+
+> Estimate leave-one-out predictive accuracy from a single posterior sample, stabilising the importance weights with a Pareto-smoothed tail and using the fitted tail shape as a reliability diagnostic
+
+Leave-one-out cross-validation scores a Bayesian model by \(\mathrm{elpd}_{\mathrm{loo}}=\sum_i\log p(y_i\mid y_{-i})\). Refitting the model \(n\) times is expensive, but the leave-one-out posterior is the full posterior reweighted by \(1/p(y_i\mid\theta)\), so a single set of draws \(\theta^{(1)},\dots,\theta^{(S)}\) is enough in principle:
+
+\[
+p(y_i\mid y_{-i})\approx\frac{\sum_s r_{is}\,p(y_i\mid\theta^{(s)})}{\sum_s r_{is}},\qquad r_{is}=\frac{1}{p(y_i\mid\theta^{(s)})}.
+\]
+
+The raw ratios can have infinite variance when observation \(i\) is influential, and the estimate is then dominated by a few draws. Pareto-smoothed importance sampling (PSIS) fits a generalized Pareto distribution to the largest \(M\approx\min(0.2S,3\sqrt{S/r_{\mathrm{eff}}})\) ratios, replaces them by the fitted quantiles and truncates the result. The fitted shape \(\hat k\) doubles as a diagnostic: the estimate is reliable when \(\hat k\) is below \(\min(1-1/\log_{10}S,\,0.7)\), and a large \(\hat k\) means that observation \(i\) changes the posterior so much that the full posterior is a poor proposal for the leave-one-out posterior.
+
+`pareto_smoothed_importance_sampling` smooths one vector of log ratios. `psis_loo` takes a draws-by-observations log-likelihood matrix and returns the totals \(\mathrm{elpd}_{\mathrm{loo}}\), \(p_{\mathrm{loo}}\) and LOOIC with standard errors, plus pointwise \(\hat k\) and effective sample sizes. `loo_compare` gives paired differences between models. The tests reproduce R's `loo` 2.9 to \(10^{-9}\), including per-observation relative efficiencies.
+
+The check uses a Gaussian linear regression with known error SD and a flat prior. Its exact leave-one-out predictive density is normal and available in closed form, so each method can be scored against the truth. Each dataset has 40 points with \(x\sim U(-2,2)\) and 2000 exact posterior draws. There are three scenarios: clean data, one outlier (\(+5\) at an ordinary \(x\)), and one outlier at a high-leverage point \(x=6\). The table reports over 300 datasets the mean absolute error of the total \(\mathrm{elpd}_{\mathrm{loo}}\) for PSIS-LOO, for raw importance sampling (IS-LOO) and for WAIC, and how often the largest \(\hat k\) exceeded the threshold of 0.70.
+
+```{cpp, id=psis, file="figures/psis_loo.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/bayes/diagnostics.hpp>
+#include <datamunge/bayes/psis_loo.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+
+#include <algorithm>
+#include <array>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+
+double log_normal(double y, double mean, double var) {
+    return -0.5 * std::log(2 * std::numbers::pi * var) - 0.5 * (y - mean) * (y - mean) / var;
+}
+
+struct Scores {
+    double exact = 0, psis = 0, is = 0, waic = 0, max_k = 0;
+    double is_i = 0, psis_i = 0, exact_i = 0;  // last observation
+    std::vector<double> k, psis_error;
+};
+
+// y = b0 + b1 x + N(0, 1), flat prior: the posterior of b is N(bhat, (X'X)^{-1}).
+Scores score(const std::vector<double>& x, const std::vector<double>& y,
+             dm::random::SplitMix64& rng, std::size_t draws) {
+    const std::size_t n = x.size();
+    double sx = 0, sxx = 0, sy = 0, sxy = 0;
+    for (std::size_t i = 0; i < n; ++i) {
+        sx += x[i], sxx += x[i] * x[i], sy += y[i], sxy += x[i] * y[i];
+    }
+    const auto solve = [](double a, double b, double c, double u, double v) {
+        const double det = a * c - b * b;  // [[a b][b c]]^{-1} [u v]
+        return std::array<double, 5>{(c * u - b * v) / det, (a * v - b * u) / det,
+                                     c / det, -b / det, a / det};
+    };
+    const auto full = solve(double(n), sx, sxx, sy, sxy);
+    // Cholesky of the posterior covariance [[V00 V01][V01 V11]].
+    const double l00 = std::sqrt(full[2]), l10 = full[3] / l00;
+    const double l11 = std::sqrt(full[4] - l10 * l10);
+    std::vector<std::vector<double>> ll(draws, std::vector<double>(n));
+    for (std::size_t s = 0; s < draws; ++s) {
+        const double z0 = rng.normal(), z1 = rng.normal();
+        const double b0 = full[0] + l00 * z0, b1 = full[1] + l10 * z0 + l11 * z1;
+        for (std::size_t i = 0; i < n; ++i)
+            ll[s][i] = log_normal(y[i], b0 + b1 * x[i], 1.0);
+    }
+    Scores out;
+    for (std::size_t i = 0; i < n; ++i) {
+        const auto m = solve(double(n - 1), sx - x[i], sxx - x[i] * x[i], sy - y[i],
+                             sxy - x[i] * y[i]);
+        const double var = 1 + m[2] + 2 * m[3] * x[i] + m[4] * x[i] * x[i];
+        out.exact += log_normal(y[i], m[0] + m[1] * x[i], var);
+        double top = -1e300, sum = 0;  // raw IS: elpd_i = log S - logsumexp(-ll)
+        for (std::size_t s = 0; s < draws; ++s)
+            top = std::max(top, -ll[s][i]);
+        for (std::size_t s = 0; s < draws; ++s)
+            sum += std::exp(-ll[s][i] - top);
+        out.is_i = std::log(double(draws)) - top - std::log(sum);
+        out.is += out.is_i;
+    }
+    const auto loo = dm::bayes::psis_loo(ll);
+    out.psis = loo.elpd_loo;
+    out.waic = dm::bayes::waic(ll).elpd;
+    for (std::size_t i = 0; i < n; ++i) {
+        const auto m = solve(double(n - 1), sx - x[i], sxx - x[i] * x[i], sy - y[i],
+                             sxy - x[i] * y[i]);
+        const double var = 1 + m[2] + 2 * m[3] * x[i] + m[4] * x[i] * x[i];
+        const double exact_i = log_normal(y[i], m[0] + m[1] * x[i], var);
+        out.k.push_back(loo.pointwise[i].pareto_k);
+        out.psis_error.push_back(loo.pointwise[i].elpd - exact_i);
+        out.max_k = std::max(out.max_k, loo.pointwise[i].pareto_k);
+        out.psis_i = loo.pointwise[i].elpd;
+        out.exact_i = exact_i;
+    }
+    return out;
+}
+
+int main() {
+    dm::random::SplitMix64 rng(17);
+    const std::size_t n = 40, draws = 2000;
+    const int reps = 300;
+    const char* names[3]{"Clean data", "Outlier at ordinary x", "Outlier at x = 6"};
+    std::vector<double> all_k, all_error;
+    std::println("| Scenario | PSIS-LOO | IS-LOO | WAIC | Datasets with max k > 0.70 |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (int scenario = 0; scenario < 3; ++scenario) {
+        double e_psis = 0, e_is = 0, e_waic = 0, high = 0;
+        for (int r = 0; r < reps; ++r) {
+            std::vector<double> x(n), y(n);
+            for (std::size_t i = 0; i < n; ++i) {
+                x[i] = -2 + 4 * rng.uniform01();
+                y[i] = 0.5 + 1.2 * x[i] + rng.normal();
+            }
+            if (scenario == 2)
+                x[n - 1] = 6, y[n - 1] = 0.5 + 1.2 * 6 + rng.normal();
+            if (scenario > 0)
+                y[n - 1] += 5;
+            const Scores sc = score(x, y, rng, draws);
+            e_psis += std::abs(sc.psis - sc.exact) / reps;
+            e_is += std::abs(sc.is - sc.exact) / reps;
+            e_waic += std::abs(sc.waic - sc.exact) / reps;
+            high += (sc.max_k > 0.7) / double(reps);
+            if (scenario == 2)
+                for (std::size_t i = 0; i < n; ++i) {
+                    all_k.push_back(sc.k[i]);
+                    all_error.push_back(std::abs(sc.psis_error[i]));
+                }
+        }
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", names[scenario], e_psis,
+                     e_is, e_waic, high);
+    }
+
+    // One leverage dataset, 300 independent posterior samples: the outlier's elpd_i.
+    std::vector<double> x(n), y(n);
+    for (std::size_t i = 0; i < n; ++i) {
+        x[i] = -2 + 4 * rng.uniform01();
+        y[i] = 0.5 + 1.2 * x[i] + rng.normal();
+    }
+    x[n - 1] = 6, y[n - 1] = 0.5 + 1.2 * 6 + 5;
+    double exact = 0, m[2]{}, q[2]{};
+    for (int r = 0; r < reps; ++r) {
+        const Scores sc = score(x, y, rng, draws);
+        exact = sc.exact_i;
+        const double v[2]{sc.psis_i, sc.is_i};
+        for (int j = 0; j < 2; ++j)
+            m[j] += v[j] / reps, q[j] += v[j] * v[j] / reps;
+    }
+    std::println("\nFixed leverage dataset, outlier's exact log p(y_i | y_-i) = {:.3f}:\n", exact);
+    std::println("| Estimator | Mean over 300 posterior samples | SD |");
+    std::println("| --- | ---: | ---: |");
+    const char* est[2]{"PSIS-LOO", "IS-LOO"};
+    for (int j = 0; j < 2; ++j)
+        std::println("| {} | {:.3f} | {:.3f} |", est[j], m[j], std::sqrt(q[j] - m[j] * m[j]));
+
+    // Pointwise error against k-hat in the leverage scenario, averaged within k bins.
+    std::vector<double> kmid, err_mean;
+    for (double lo = -0.2; lo < 1.4; lo += 0.1) {
+        double sum = 0;
+        int count = 0;
+        for (std::size_t j = 0; j < all_k.size(); ++j)
+            if (all_k[j] >= lo && all_k[j] < lo + 0.1)
+                sum += all_error[j], ++count;
+        if (count >= 5) {
+            kmid.push_back(lo + 0.05);
+            err_mean.push_back(std::log10(sum / count));
+        }
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(kmid, err_mean, "Mean |PSIS - exact| (log10)", {26, 90, 147}, 2)
+        .points(kmid, err_mean, "", {26, 90, 147}, 5)
+        .abline_v(0.7, {176, 72, 43}, 1)
+        .y_limits(-2.8, 0.7)
+        .title("Pointwise PSIS-LOO error by Pareto k")
+        .x_label("Estimated Pareto k, leverage scenario (bins of 0.1; line: threshold 0.7)")
+        .y_label("log10 mean absolute error of elpd_i")
+        .size(620, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/psis_loo.svg");
+}
+```
+// result_begin: markdown
+| Scenario | PSIS-LOO | IS-LOO | WAIC | Datasets with max k > 0.70 |
+| --- | ---: | ---: | ---: | ---: |
+| Clean data | 0.039 | 0.039 | 0.039 | 0.000 |
+| Outlier at ordinary x | 0.059 | 0.061 | 0.057 | 0.037 |
+| Outlier at x = 6 | 0.646 | 0.612 | 0.869 | 0.917 |
+
+Fixed leverage dataset, outlier's exact log p(y_i | y_-i) = -11.598:
+
+| Estimator | Mean over 300 posterior samples | SD |
+| --- | ---: | ---: |
+| PSIS-LOO | -10.403 | 0.415 |
+| IS-LOO | -10.683 | 0.771 |
+\image(figures/psis_loo.svg)
+// result_end
+
+On clean data and with an outlier at an ordinary \(x\), all three estimates agree with exact leave-one-out to within a few hundredths of a log unit. This is Monte Carlo error that is negligible against the standard error of \(\mathrm{elpd}_{\mathrm{loo}}\). \(\hat k\) stays below the threshold in 96% or more of the datasets. A high-leverage outlier changes this. Leaving it out moves the regression line a lot, the full posterior is a poor proposal for the leave-one-out posterior, and every single-fit method misestimates that one term by about two-thirds of a log unit on average (WAIC by almost 0.9). The value of PSIS here is the diagnostic: the largest \(\hat k\) exceeded 0.70 in 92% of these datasets and in none of the clean ones. The figure shows that the pointwise error is about 0.003 for \(\hat k<0.3\) and starts to grow from about \(\hat k=0.4\). Above the threshold it levels off at around 0.5 to 0.8 log units, so \(\hat k\) also indicates how far an estimate can be trusted.
+
+The second table isolates what the smoothing does. For a fixed dataset, the outlier's term is estimated from 300 independent posterior samples. Both estimators are biased upwards, because a finite sample rarely contains the draws that the leave-one-out posterior favours. Smoothing the tail halves the Monte Carlo SD (0.42 against 0.77) at the cost of a little more bias. The variance reduction makes estimates reproducible across reruns, and the bias that remains is flagged by \(\hat k\). PSIS does not make a bad proposal good. It makes the estimate stable and reports when the proposal is bad.
+
+>> Practical guidance
+
+- Pass the matrix of pointwise log likelihoods, with draws in rows and the units to be predicted in columns. For grouped data, sum the columns within a group to get leave-one-group-out.
+- For MCMC output, pass per-observation relative efficiencies \(r_{\mathrm{eff}}=\mathrm{ESS}/S\) of \(p(y_i\mid\theta)\). They set the tail length and the effective sample size.
+- Check `high_k`. For observations above the threshold, refit without them (exact LOO for those terms), use moment matching, or use K-fold cross-validation. Many high values also suggest a misspecified or very flexible model.
+- Compare models with `loo_compare`, using the paired standard error of the difference rather than the separate standard errors. Treat differences of less than about 4 as small.
+- Prefer PSIS-LOO to WAIC. They agree when all is well, and only PSIS-LOO warns when they do not.
+
+>> References
+
+- A. Vehtari, A. Gelman and J. Gabry (2017). Practical Bayesian model evaluation using leave-one-out cross-validation and WAIC. *Statistics and Computing* 27(5), 1413-1432. doi:10.1007/s11222-016-9696-4
+- A. Vehtari, D. Simpson, A. Gelman, Y. Yao and J. Gabry (2024). Pareto smoothed importance sampling. *Journal of Machine Learning Research* 25(72), 1-58.
+- J. Zhang and M. A. Stephens (2009). A new and efficient estimation method for the generalized Pareto distribution. *Technometrics* 51(3), 316-325. doi:10.1198/tech.2009.08017

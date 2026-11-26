@@ -1,0 +1,151 @@
+//? Title: Compare forecast accuracy with the Diebold–Mariano test
+//? Exports: both
+//? Lang: en
+
+> Test whether two forecasts have the same expected loss, allowing for overlapping errors
+
+Two forecasting methods produce errors \(e_{1t}\) and \(e_{2t}\) for the same targets. Under a loss \(L\), the Diebold–Mariano test asks whether the loss differential \(d_t=L(e_{1t})-L(e_{2t})\) has mean zero. Its statistic is \(\bar d/\sqrt{\hat V}\), where \(\hat V\) estimates the variance of \(\bar d\) from the autocovariances of \(d_t\). The test makes no assumption about how the forecasts were produced, only that \(d_t\) is covariance stationary.
+
+Overlap is the complication for multi-step forecasts. Errors of optimal \(h\)-step forecasts follow an MA(\(h-1\)) process because consecutive forecasts share \(h-1\) future shocks, so the differentials are autocorrelated too. Diebold and Mariano therefore include autocovariances up to lag \(h-1\). In small samples that test over-rejects. Harvey, Leybourne and Newbold proposed scaling the statistic by \(k=\sqrt{(n+1-2h+h(h-1)/n)/n}\) and using a \(t_{n-1}\) reference, which is what R's `dm.test` and `diebold_mariano_test` do.
+
+The example simulates two equally accurate 4-step forecasters whose errors share an overlapping AR(1) component, and compares the size of four versions of the test:
+- one that ignores the overlap (\(h=1\) variance)
+- the original normal-reference test
+- the corrected test
+- the corrected test with Bartlett weights, whose variance cannot be negative
+
+It then traces the power as one forecaster becomes noisier.
+
+```{cpp, id=dmtest, file="figures/diebold_mariano_power.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/diebold_mariano.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::DieboldMarianoOptions;
+using dm::stats::DmVariance;
+
+// h-step errors: a shared optimal AR(1) error (phi = .8) plus each forecaster's own
+// MA(h-1) noise with standard deviations s1 and s2.
+struct Errors {
+    std::vector<double> e1, e2;
+};
+
+Errors simulate(std::size_t n, std::size_t h, double s1, double s2, std::mt19937_64& random) {
+    std::normal_distribution<double> z;
+    std::vector<double> eps(n + h), a(n + h), b(n + h);
+    for (std::size_t t = 0; t < n + h; ++t) {
+        eps[t] = z(random);
+        a[t] = s1 / std::sqrt(double(h)) * z(random);
+        b[t] = s2 / std::sqrt(double(h)) * z(random);
+    }
+    Errors out;
+    for (std::size_t t = 0; t < n; ++t) {
+        double common = 0, u1 = 0, u2 = 0, w = 1;
+        for (std::size_t j = 0; j < h; ++j, w *= .8) {
+            common += w * eps[t + h - 1 - j];
+            u1 += a[t + h - 1 - j];
+            u2 += b[t + h - 1 - j];
+        }
+        out.e1.push_back(common + u1);
+        out.e2.push_back(common + u2);
+    }
+    return out;
+}
+
+double upper_normal(double x) { return .5 * std::erfc(x / std::sqrt(2.0)); }
+
+int main() {
+    std::mt19937_64 random(99);
+    const std::size_t h = 4;
+    const int reps = 4000;
+    std::println("| n | Ignore overlap | Original DM | Corrected (R default) "
+                 "| Corrected, Bartlett |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    std::vector<double> fallback_share;
+    for (const std::size_t n : {30u, 60u, 240u}) {
+        int ignore = 0, original = 0, corrected = 0, bartlett = 0, fallbacks = 0;
+        for (int r = 0; r < reps; ++r) {
+            const auto e = simulate(n, h, .6, .6, random);
+            const auto naive = dm::stats::diebold_mariano_test(e.e1, e.e2);
+            const auto hln = dm::stats::diebold_mariano_test(e.e1, e.e2, {.horizon = h});
+            const auto bart = dm::stats::diebold_mariano_test(
+                e.e1, e.e2, {.horizon = h, .variance = DmVariance::bartlett});
+            // Original test: undo the small-sample factor and use the normal reference.
+            const double z = hln.statistic / hln.correction;
+            ignore += naive.p_value < .05;
+            original += 2 * upper_normal(std::abs(z)) < .05;
+            corrected += hln.p_value < .05;
+            bartlett += bart.p_value < .05;
+            fallbacks += hln.horizon_used != h;
+        }
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", n, ignore / double(reps),
+                     original / double(reps), corrected / double(reps),
+                     bartlett / double(reps));
+        fallback_share.push_back(100.0 * fallbacks / reps);
+    }
+    std::println("\nThe acf variance was not positive, so the test fell back to h = 1, in "
+                 "{:.1f}%, {:.1f}% and {:.1f}% of samples at n = 30, 60 and 240.",
+                 fallback_share[0], fallback_share[1], fallback_share[2]);
+
+    // Power at n = 120 as forecaster 2's own noise grows.
+    std::vector<double> ratio, power_corrected, power_bartlett;
+    for (double s2 = .6; s2 <= 1.21; s2 += .05) {
+        int c = 0, b = 0;
+        for (int r = 0; r < 2000; ++r) {
+            const auto e = simulate(120, h, .6, s2, random);
+            c += dm::stats::diebold_mariano_test(e.e1, e.e2, {.horizon = h}).p_value < .05;
+            b += dm::stats::diebold_mariano_test(
+                     e.e1, e.e2, {.horizon = h, .variance = DmVariance::bartlett})
+                     .p_value < .05;
+        }
+        ratio.push_back(s2 / .6);
+        power_corrected.push_back(c / 2000.0);
+        power_bartlett.push_back(b / 2000.0);
+    }
+    std::println("\nPower at n = 120 when forecaster 2's noise s.d. is twice forecaster 1's: "
+                 "corrected {:.2f}, Bartlett {:.2f}.", power_corrected.back(),
+                 power_bartlett.back());
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(ratio, power_corrected, "Corrected (acf)", {26, 90, 147}, 2)
+        .line(ratio, power_bartlett, "Corrected (Bartlett)", {176, 72, 43}, 2)
+        .line({1, 2}, {.05, .05}, "5% level", {150, 154, 160}, 1)
+        .title("Diebold–Mariano power, 4-step forecasts, n = 120")
+        .x_label("Noise s.d. ratio, forecaster 2 / forecaster 1")
+        .y_label("Rejection rate")
+        .ylim(0, 1.25)
+        .size(700, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/diebold_mariano_power.svg");
+}
+```
+// result_begin: markdown
+| n | Ignore overlap | Original DM | Corrected (R default) | Corrected, Bartlett |
+| ---: | ---: | ---: | ---: | ---: |
+| 30 | 0.217 | 0.133 | 0.081 | 0.068 |
+| 60 | 0.227 | 0.088 | 0.066 | 0.080 |
+| 240 | 0.234 | 0.060 | 0.054 | 0.082 |
+
+The acf variance was not positive, so the test fell back to h = 1, in 0.5%, 0.1% and 0.0% of samples at n = 30, 60 and 240.
+
+Power at n = 120 when forecaster 2's noise s.d. is twice forecaster 1's: corrected 0.38, Bartlett 0.47.
+\image(figures/diebold_mariano_power.svg)
+// result_end
+\caption(Rejection rate of the corrected Diebold–Mariano test at the 5% level for 4-step forecasts and n = 120, as forecaster 2's own noise grows relative to forecaster 1's. The acf (truncated) and Bartlett variances are compared.)
+\alttext(Two rising curves start near the grey 5% line at ratio 1. The orange Bartlett curve sits above the blue acf curve throughout and reaches about 0.47 at ratio 2, against about 0.38 for the acf curve.)
+
+Ignoring the overlap is the costly mistake. With 4-step forecasts, a variance built only from \(\hat\gamma_0\) misses the positive autocovariances of the loss differential, and a nominal 5% test rejects a true null 22–23% of the time. Unlike the other versions, this does not improve with more data. The original Diebold–Mariano test gets the variance right asymptotically but over-rejects in small samples (13% at \(n=30\)). The Harvey–Leybourne–Newbold correction brings it to 8% at \(n=30\) and close to nominal by \(n=240\). This is the reason it is the default.
+
+Bartlett weights avoid the occasional negative variance of the truncated sum, which happened in 0.5% of samples at \(n=30\) and triggered the \(h=1\) fallback. They buy that with bias: they down-weight genuine autocovariances at lags 1 to 3. They therefore underestimate the variance of an MA(3) differential, and their size drifts upward to 8% as \(n\) grows. Their apparent power advantage in the figure comes from the same bias. For overlapping forecasts the truncated estimator with the small-sample correction is the better default, and Bartlett weights are a fallback for samples where its variance turns negative.
+
+Even at \(n=120\), a forecaster with twice the idiosyncratic noise is detected only 38% of the time, because the shared error component dominates both losses. Forecast-accuracy comparisons need long evaluation samples, or a loss differential with less common noise, before a non-rejection means much.
+
+The statistic, p-values for all three alternatives, both variance estimators, absolute and squared loss, and the fallback to \(h=1\) when the truncated variance is negative all match R's `forecast::dm.test`. `diebold_mariano_test_differentials` accepts differentials from any loss.
+
+[Diebold and Mariano (1995)|https://doi.org/10.1080/07350015.1995.10524599] · [Harvey, Leybourne and Newbold (1997)|https://doi.org/10.1016/S0169-2070(96)00719-4]

@@ -1,0 +1,193 @@
+//? Title: Propensity score matching with calipers and replacement
+//? Exports: both
+//? Lang: en
+
+> Match treated units to comparable controls, check covariate balance and estimate the effect on the treated
+
+In an observational study, treated and untreated units usually differ before treatment. Matching builds a comparison group that resembles the treated group on measured covariates. It pairs each treated unit with controls that have a similar propensity score, the estimated probability of treatment given the covariates, and then compares outcomes within the matched sample. Because each treated unit keeps its own match, the natural target is the average treatment effect on the treated (ATT).
+
+`propensity_score_match` fits a logistic propensity model and matches greedily on it, following MatchIt's nearest-neighbor algorithm. Treated units choose in descending order of propensity, so the hardest cases are matched first. The options control the main design choices:
+- `ratio`: the number of controls per treated unit;
+- `replace`: whether a control may serve several treated units;
+- `caliper`: the largest distance allowed for a match, in standard deviations of the score (`logit_distance` matches on the logit scale, as Austin recommends).
+
+Treated units without a control inside the caliper are dropped, which changes the estimand to the effect in the treated units that could be matched. The result includes MatchIt's weights and the balance of each covariate before and after matching: standardized mean differences on the treated-SD scale, variance ratios and the largest gap between the empirical CDFs. `matched_effect` fits the weighted outcome regression and clusters the standard error by matched set, or uses an HC1 robust error with replacement. On MatchIt's `lalonde` data, the unit tests reproduce MatchIt's matches, weights and balance tables, and sandwich standard errors, for 1:1, caliper, 2:1 and 2:1-with-replacement matching.
+
+The simulation has 1000 units and four confounders: \(x_1\) and \(x_2\) normal, \(x_3\) binary and \(x_4\) skewed (exponential). Treatment depends strongly on \(x_1\) and \(x_3\), and about 30% of units are treated. The outcome depends on all four confounders, and the treatment effect \(1+0.5x_1\) grows with \(x_1\), so the ATT (about 1.4) exceeds the average effect in the population (1). Each method's bias is measured against the sample ATT of the units it keeps. For caliper matching that is the ATT of the matched treated, so the table also reports the bias relative to the ATT of all treated units. The results cover 400 simulated studies.
+
+```{cpp, id=psm, file="figures/propensity_matching.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/causal/matching.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+
+#include <cmath>
+#include <algorithm>
+#include <filesystem>
+#include <format>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+using dm::causal::PropensityMatchOptions;
+
+struct Study {
+    Matrix x;
+    std::vector<int> a;
+    std::vector<double> y, tau;
+};
+
+Study simulate(dm::random::SplitMix64& rng, std::size_t n) {
+    Study s{Matrix(n, 4), {}, {}, {}};
+    for (std::size_t i = 0; i < n; ++i) {
+        const double x1 = rng.normal(), x2 = rng.normal();
+        const double x3 = rng.uniform01() < 0.4, x4 = -std::log(rng.uniform01());
+        s.x(i, 0) = x1;
+        s.x(i, 1) = x2;
+        s.x(i, 2) = x3;
+        s.x(i, 3) = x4;
+        const double lp = -1.6 + 1.1 * x1 - 0.4 * x2 + 0.9 * x3 + 0.3 * x4;
+        const int a = rng.uniform01() < 1 / (1 + std::exp(-lp));
+        const double tau = 1 + 0.5 * x1;
+        s.a.push_back(a);
+        s.tau.push_back(tau);
+        s.y.push_back(1 + 2 * x1 + x2 + 1.5 * x3 + x4 + tau * a + rng.normal());
+    }
+    return s;
+}
+
+int main() {
+    const std::vector<std::string> names{"Unmatched difference", "1:1 nearest neighbor",
+                                         "1:1, caliper 0.2 SD logit", "2:1 with replacement"};
+    const std::vector<PropensityMatchOptions> designs{
+        {}, {.caliper = 0.2, .logit_distance = true}, {.ratio = 2, .replace = true}};
+    dm::random::SplitMix64 rng(2010);
+    const int reps = 400;
+    const std::size_t n = 1000;
+    std::vector<double> est[4];
+    double bias[4]{}, bias_all[4]{}, se[4]{}, cover[4]{}, kept[4]{}, smd[4]{};
+    for (int r = 0; r < reps; ++r) {
+        const auto s = simulate(rng, n);
+        double att_all = 0, treated = 0, sum[2]{}, count[2]{};
+        for (std::size_t i = 0; i < n; ++i) {
+            sum[s.a[i]] += s.y[i];
+            count[s.a[i]] += 1;
+            if (s.a[i] == 1) {
+                att_all += s.tau[i];
+                treated += 1;
+            }
+        }
+        att_all /= treated;
+        const double diff = sum[1] / count[1] - sum[0] / count[0];
+        est[0].push_back(diff);
+        bias[0] += (diff - att_all) / reps;
+        bias_all[0] += (diff - att_all) / reps;
+        kept[0] += 1.0 / reps;
+        const auto ps = dm::causal::propensity_scores(s.a, s.x);
+        double worst_before = 0;
+        for (const double v : dm::causal::covariate_balance(s.a, s.x).standardized_difference)
+            worst_before = std::max(worst_before, std::abs(v));
+        smd[0] += worst_before / reps;
+        for (std::size_t k = 0; k < designs.size(); ++k) {
+            const auto m = dm::causal::match_on_propensity(s.a, ps, s.x, designs[k]);
+            const auto e = dm::causal::matched_effect(s.y, s.a, m);
+            double att = 0, matched = 0, worst = 0;
+            for (std::size_t i = 0; i < n; ++i)
+                if (s.a[i] == 1 && m.weights[i] > 0) {
+                    att += s.tau[i];
+                    matched += 1;
+                }
+            att /= matched;
+            for (const double v : m.after.standardized_difference)
+                worst = std::max(worst, std::abs(v));
+            est[k + 1].push_back(e.estimate);
+            bias[k + 1] += (e.estimate - att) / reps;
+            bias_all[k + 1] += (e.estimate - att_all) / reps;
+            se[k + 1] += e.standard_error / reps;
+            cover[k + 1] += (e.lower <= att && att <= e.upper) / double(reps);
+            kept[k + 1] += matched / treated / reps;
+            smd[k + 1] += worst / reps;
+        }
+    }
+    std::println("| Method | Bias (kept) | Bias (all treated) | Emp. SD / mean SE | Coverage "
+                 "| Treated kept |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (int k = 0; k < 4; ++k) {
+        double m = 0, v = 0;
+        for (const double x : est[k])
+            m += x / reps;
+        for (const double x : est[k])
+            v += (x - m) * (x - m) / (reps - 1);
+        const auto sds = k == 0 ? std::format("{:.3f} / -", std::sqrt(v))
+                                : std::format("{:.3f} / {:.3f}", std::sqrt(v), se[k]);
+        const auto cov = k == 0 ? std::string("-") : std::format("{:.3f}", cover[k]);
+        std::println("| {} | {:+.3f} | {:+.3f} | {} | {} | {:.0f}% |", names[k], bias[k],
+                     bias_all[k], sds, cov, 100 * kept[k]);
+    }
+    std::println("\nMean of the largest |standardized difference|: {:.3f} before matching, "
+                 "{:.3f} (1:1), {:.3f} (caliper), {:.3f} (2:1 replacement).", smd[0], smd[1],
+                 smd[2], smd[3]);
+
+    // Balance plot for one study: |SMD| of each covariate before and after caliper matching.
+    const auto s = simulate(rng, n);
+    const auto m = dm::causal::propensity_score_match(s.a, s.x, designs[1]);
+    std::vector<double> before, after, row{1, 2, 3, 4};
+    for (std::size_t j = 0; j < 4; ++j) {
+        before.push_back(std::abs(m.before.standardized_difference[j]));
+        after.push_back(std::abs(m.after.standardized_difference[j]));
+    }
+    std::size_t treated = 0;
+    for (const int a : s.a)
+        treated += a;
+    std::println("\nPlotted study: caliper matching kept {} of {} treated units.",
+                 m.matched_treated, treated);
+    auto plot = dm::graphics::RPlot::create();
+    plot.points(before, row, "Before matching", {176, 72, 43}, 6)
+        .points(after, row, "After caliper matching", {26, 90, 147}, 6)
+        .abline_v(0.1, {120, 120, 120}, 1)
+        .title("Covariate balance (rows: x1, x2, x3, x4)")
+        .x_label("Absolute standardized mean difference (line: 0.1)")
+        .y_label("Covariate")
+        .size(640, 380);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/propensity_matching.svg");
+}
+```
+// result_begin: markdown
+| Method | Bias (kept) | Bias (all treated) | Emp. SD / mean SE | Coverage | Treated kept |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Unmatched difference | +1.882 | +1.882 | 0.191 / - | - | 100% |
+| 1:1 nearest neighbor | +0.681 | +0.681 | 0.175 / 0.169 | 0.030 | 100% |
+| 1:1, caliper 0.2 SD logit | +0.157 | +0.067 | 0.127 / 0.179 | 0.945 | 83% |
+| 2:1 with replacement | +0.052 | +0.052 | 0.165 / 0.292 | 0.997 | 100% |
+
+Mean of the largest |standardized difference|: 0.933 before matching, 0.315 (1:1), 0.089 (caliper), 0.093 (2:1 replacement).
+
+Plotted study: caliper matching kept 263 of 323 treated units.
+\image(figures/propensity_matching.svg)
+// result_end
+
+The unmatched difference overstates the effect by 1.9, because treated units have much higher values of the confounders. Matching on the propensity score removes most of this bias, but how much depends on the design.
+
+Plain 1:1 matching without replacement is not enough here. The treated group is concentrated at high propensities, where controls are scarce, so after the closest controls are used up the remaining treated units must accept distant ones. The largest standardized difference after matching is still 0.32, the bias is 0.68, and the intervals cover the ATT only 3% of the time. Matching order cannot fix a shortage of comparable controls.
+
+A caliper of 0.2 SD of the logit propensity refuses poor matches. Balance becomes good (largest standardized difference 0.09 on average, below the usual 0.1 threshold; see the figure for one study), but 17% of the treated units are dropped. They are the units with the highest \(x_1\), and therefore the largest effects, so the estimand shifts to the effect in the treated units that could be matched. Relative to that target the estimate is biased by +0.16, residual imbalance within the caliper. It happens to lie closer to the full-sample ATT (bias +0.07) because the two errors partly cancel, which should not be relied on. The clustered standard error (0.18) exceeds the empirical SD of the estimate (0.13), and this conservatism gives nominal coverage despite the bias.
+
+2:1 matching with replacement keeps every treated unit and achieves similar balance, because well-matched controls can be reused. It has the smallest bias (0.05). The price is that heavily reused controls get large weights. The HC1 standard error treats those weights as fixed and is very conservative here (0.29 against an empirical SD of 0.17, coverage 99.7%). With replacement, a bootstrap that repeats the matching, or the Abadie–Imbens variance, gives more accurate intervals.
+
+>> Practical guidance
+
+- Check balance, not the propensity model's fit. Aim for standardized differences below 0.1 and variance ratios near 1 for every covariate, including squares and interactions of important confounders.
+- When treated units outnumber comparable controls, use a caliper or matching with replacement, and report which estimand results.
+- Report how many treated units were dropped and how they differ from those kept. A caliper estimate describes only the matched population.
+- Fit the outcome model in the matched sample with the matching weights, adding covariates for double robustness if needed, and cluster the standard errors by matched set.
+- Matching addresses only measured confounding. Pair it with a sensitivity analysis for hidden bias, such as Rosenbaum bounds.
+
+>> References
+
+- P. R. Rosenbaum and D. B. Rubin (1983). The central role of the propensity score in observational studies for causal effects. *Biometrika* 70(1), 41-55. doi:10.1093/biomet/70.1.41
+- E. A. Stuart (2010). Matching methods for causal inference: A review and a look forward. *Statistical Science* 25(1), 1-21. doi:10.1214/09-STS313
+- D. E. Ho, K. Imai, G. King and E. A. Stuart (2011). MatchIt: Nonparametric preprocessing for parametric causal inference. *Journal of Statistical Software* 42(8), 1-28. doi:10.18637/jss.v042.i08
+- P. C. Austin (2011). Optimal caliper widths for propensity-score matching when estimating differences in means and differences in proportions in observational studies. *Pharmaceutical Statistics* 10(2), 150-161. doi:10.1002/pst.433
+- A. Abadie and G. W. Imbens (2006). Large sample properties of matching estimators for average treatment effects. *Econometrica* 74(1), 235-267. doi:10.1111/j.1468-0262.2006.00655.x

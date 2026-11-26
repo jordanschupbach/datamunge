@@ -1,0 +1,119 @@
+//? Title: Locate an optimum with response-surface designs
+//? Exports: both
+//? Lang: en
+
+> Fit a quadratic near the optimum and read its canonical form
+
+A first-order design can show which direction improves a response, but it cannot locate an optimum. That requires curvature, so the design must give every factor at least three levels and support the full second-order model
+\[\hat y=b_0+\sum_j b_jx_j+\sum_{i<j}b_{ij}x_ix_j+\sum_j b_{jj}x_j^2=b_0+x^\top b+x^\top Bx.\]
+A central composite design adds \(2k\) axial runs at distance \(\alpha\) along each axis, plus center runs, to a two-level factorial. A Box–Behnken design takes the \(2^2\) factorial in every pair of factors with the other factors at their center, so it never runs at the extreme corners. In both designs, setting the gradient to zero gives the stationary point \(x_s=-\tfrac12B^{-1}b\). The eigenvalues \(\lambda_i\) of \(B\) then give the canonical form \(\hat y=\hat y_s+\sum\lambda_iw_i^2\) along its eigenvectors. When all eigenvalues are negative the point is a maximum. Mixed signs indicate a saddle, and an eigenvalue near zero indicates a ridge.
+
+`central_composite_design` and `box_behnken_design` return the run matrices in coded units, in the run order of `rsm` in R. `fit_quadratic_surface` estimates the model by QR least squares and performs the canonical analysis.
+
+The example optimizes a simulated chemical yield in temperature (coded \(x_1\), centered at 170 °C in steps of 10 °C) and reaction time (\(x_2\), centered at 60 min in steps of 15 min). The true yield peaks at 176 °C and 69 min. A rotatable 13-run central composite design is compared with a 15-run Box–Behnken design that also includes catalyst concentration (\(x_3\)), which has no effect.
+
+```{cpp, id=response-surface, file="figures/yield_contours.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/response_surface.hpp>
+
+#include <filesystem>
+#include <format>
+#include <print>
+#include <random>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::StationaryKind;
+
+// True yield in coded units: maximum 82% at x1 = 0.6, x2 = 0.6, with a tilted ridge.
+double true_yield(double x1, double x2) {
+    const double a = x1 - .6, b = x2 - .6;
+    return 82 - 3.2 * a * a - 1.6 * b * b + 1.4 * a * b;
+}
+
+void report(const char* name, const dm::stats::QuadraticSurface& s) {
+    const char* kind = s.kind == StationaryKind::maximum ? "maximum"
+                     : s.kind == StationaryKind::minimum ? "minimum"
+                     : s.kind == StationaryKind::saddle  ? "saddle"
+                                                         : "ridge";
+    std::string eigen;
+    for (const double l : s.eigenvalues)
+        eigen += std::format("{}{:.2f}", eigen.empty() ? "" : ", ", l);
+    std::println("| {} | {:.2f}, {:.2f} ({:.0f} °C, {:.0f} min) | {:.2f} | {} | {} |", name,
+                 s.stationary_point[0], s.stationary_point[1], 170 + 10 * s.stationary_point[0],
+                 60 + 15 * s.stationary_point[1], s.stationary_response, eigen, kind);
+}
+
+int main() {
+    std::mt19937_64 random(3);
+    std::normal_distribution<double> noise(0, .5);
+
+    const auto ccd = dm::stats::central_composite_design(2, {.factorial_center_points = 3});
+    std::vector<double> y_ccd;
+    for (std::size_t r = 0; r < ccd.runs.rows(); ++r)
+        y_ccd.push_back(true_yield(ccd.runs(r, 0), ccd.runs(r, 1)) + noise(random));
+    const auto fit_ccd = dm::stats::fit_quadratic_surface(ccd.runs, y_ccd);
+
+    const auto bbd = dm::stats::box_behnken_design(3, 3);
+    std::vector<double> y_bbd;
+    for (std::size_t r = 0; r < bbd.rows(); ++r)
+        y_bbd.push_back(true_yield(bbd(r, 0), bbd(r, 1)) + noise(random));
+    const auto fit_bbd = dm::stats::fit_quadratic_surface(bbd, y_bbd);
+
+    std::println("| Design | Stationary point | Yield (%) | Eigenvalues of B | Kind |");
+    std::println("| --- | --- | ---: | --- | --- |");
+    std::println("| Truth | 0.60, 0.60 (176 °C, 69 min) | 82.00 | -1.34, -3.46 | maximum |");
+    report("CCD (13 runs)", fit_ccd);
+    report("Box–Behnken (15)", fit_bbd);
+    std::println("\nCCD fit: residual SD {:.3f}, R² {:.4f}. Box–Behnken fit: residual SD {:.3f}, "
+                 "R² {:.4f}; catalyst coefficients {:.2f} (linear) and {:.2f} (quadratic).",
+                 fit_ccd.residual_sd, fit_ccd.r_squared, fit_bbd.residual_sd, fit_bbd.r_squared,
+                 fit_bbd.linear[2], fit_bbd.quadratic(2, 2));
+
+    // Contours of the fitted CCD surface with the design points and the stationary point.
+    std::vector<double> grid;
+    for (int i = 0; i <= 80; ++i)
+        grid.push_back(-1.6 + 3.2 * i / 80);
+    std::vector<std::vector<double>> z(grid.size(), std::vector<double>(grid.size()));
+    for (std::size_t iy = 0; iy < grid.size(); ++iy)
+        for (std::size_t ix = 0; ix < grid.size(); ++ix)
+            z[iy][ix] = dm::stats::predict_quadratic_surface(fit_ccd, {grid[ix], grid[iy]});
+    auto plot = dm::graphics::RPlot::create();
+    for (const double level : {66.0, 70.0, 74.0, 78.0, 80.0, 81.5})
+        plot.contour(grid, grid, z, level, {26, 90, 147}, 1.2);
+    std::vector<double> px, py;
+    for (std::size_t r = 0; r < ccd.runs.rows(); ++r) {
+        px.push_back(ccd.runs(r, 0));
+        py.push_back(ccd.runs(r, 1));
+    }
+    plot.points(px, py, "CCD runs", {80, 86, 96}, 6)
+        .points({fit_ccd.stationary_point[0]}, {fit_ccd.stationary_point[1]},
+                "Fitted maximum", {176, 72, 43}, 8)
+        .points({.6}, {.6}, "True maximum", {46, 139, 87}, 8)
+        .title("Fitted yield contours, 66–81.5%")
+        .x_label("Temperature, coded (170 °C ± 10 °C per unit)")
+        .y_label("Time, coded (60 min ± 15 min per unit)")
+        .size(640, 560);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/yield_contours.svg");
+}
+```
+// result_begin: markdown
+| Design | Stationary point | Yield (%) | Eigenvalues of B | Kind |
+| --- | --- | ---: | --- | --- |
+| Truth | 0.60, 0.60 (176 °C, 69 min) | 82.00 | -1.34, -3.46 | maximum |
+| CCD (13 runs) | 0.66, 0.69 (177 °C, 70 min) | 81.98 | -1.21, -3.43 | maximum |
+| Box–Behnken (15) | 0.58, 0.60 (176 °C, 69 min) | 82.23 | -0.32, -1.51, -3.62 | maximum |
+
+CCD fit: residual SD 0.734, R² 0.9783. Box–Behnken fit: residual SD 0.492, R² 0.9913; catalyst coefficients -0.03 (linear) and -0.38 (quadratic).
+\image(figures/yield_contours.svg)
+// result_end
+\caption(Contours of the second-order surface fitted to the 13-run rotatable central composite design, with the design runs, the fitted maximum and the true maximum.)
+\alttext(Elliptical contours tilted slightly from the axes surround a maximum near (0.66, 0.69) in coded units. The true maximum at (0.6, 0.6) lies just below and to its left. The design points form a square, a diamond of axial points at radius 1.41, and a center point.)
+
+Both designs locate the maximum within about 1 °C and 1 minute of the truth. The eigenvalues are all negative, so both fitted surfaces have a true maximum rather than a ridge or saddle. In the temperature–time plane, the eigenvalue of smaller magnitude belongs to the canonical axis along which yield falls off most slowly. This axis is tilted because of the positive interaction. When moving away from the optimum, this is the direction with the most room for compromise. In the Box–Behnken fit, the eigenvalue near −0.3 is the catalyst direction. Its curvature is small and comes from noise, so the stationary point's catalyst coordinate is poorly determined. In practice, a factor this flat would be held at a convenient level. Note that the Box–Behnken design reaches the same accuracy without running any corner of the three-factor cube. This is valuable when the extreme combinations are expensive or unsafe.
+
+The run orders, second-order coefficients, residual standard deviations, stationary points and eigenvalues match `rsm::ccd`, `rsm::bbd`, `rsm(y ~ SO(...))` and `canonical()` in R.
+
+[Box and Wilson (1951)|https://doi.org/10.1111/j.2517-6161.1951.tb00067.x] · [Box and Behnken (1960)|https://doi.org/10.1080/00401706.1960.10489912] · [Lenth (2009), rsm|https://doi.org/10.18637/jss.v032.i07]

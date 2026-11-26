@@ -1,0 +1,178 @@
+//? Title: Validate survival predictions with time-dependent AUC and Brier scores
+//? Exports: both
+//? Lang: en
+
+> Measure discrimination and calibration of a risk model on censored test data
+
+A survival model's predictions \(\hat S(t\mid x)\) can be judged at each horizon \(t\) as a binary prediction of "event by \(t\)". Two summaries cover the main questions.
+- Time-dependent AUC asks about discrimination. It is the probability that a subject who has the event by \(t\) (a case) was given higher risk than one who is event-free after \(t\) (a control).
+- Brier score asks about calibration and discrimination together. It is the mean squared difference between \(\hat S(t\mid x)\) and the survival indicator \(1(T>t)\). Its integral over a range of horizons, the integrated Brier score (IBS), summarises the whole curve. Comparing it with the Kaplan–Meier prediction (which ignores covariates) gives an explained-variation measure.
+
+Censoring hides the status at \(t\) of anyone censored before \(t\). Dropping those subjects is tempting but biased, because the dropped subjects are not a random part of the sample: the early events are all retained, and only the long survivors can be censored. Inverse-probability-of-censoring weighting (IPCW) instead upweights each observed case by \(1/\hat G(T_i-)\) and each control by \(1/\hat G(t)\), where \(\hat G\) is the Kaplan–Meier estimate of the censoring distribution. Each weighted observation stands for itself and for the comparable subjects that were censored. The estimates are unbiased under independent censoring, but only where \(\hat G(t)>0\), and they get noisier as \(\hat G(t)\) shrinks.
+
+The example fits a Cox model to a training sample of 400 subjects. The model has two normal covariates with log hazard ratios 0.8 and 0.4, a Weibull baseline with shape 1.5, and uniform censoring on (0, 8). It is then evaluated on an independent censored test sample of 400 subjects. Because the data are simulated, the test subjects' true event times are also known, so the "oracle" scores without censoring can be computed. The example compares the IPCW estimates and the complete-case shortcut with the oracle over 300 replications.
+
+```{cpp, id=acc, file="figures/survival_accuracy.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/cox_counting.hpp>
+#include <datamunge/stats/survival_accuracy.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::SurvivalObservation;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+struct Sample {
+    std::vector<SurvivalObservation> observed;
+    std::vector<double> true_time;
+    Matrix x;
+};
+
+Sample simulate(std::size_t n, std::mt19937_64& random) {
+    std::normal_distribution<double> z;
+    std::uniform_real_distribution<double> u(0, 1);
+    Sample s{{}, {}, Matrix(n, 2)};
+    for (std::size_t i = 0; i < n; ++i) {
+        s.x(i, 0) = z(random);
+        s.x(i, 1) = z(random);
+        const double rate = .1 * std::exp(.8 * s.x(i, 0) + .4 * s.x(i, 1));
+        const double t = std::pow(-std::log(u(random)) / rate, 1 / 1.5);
+        const double c = 8 * u(random);
+        s.true_time.push_back(t);
+        s.observed.push_back({std::min(t, c), t <= c});
+    }
+    return s;
+}
+
+// Unweighted AUC among the given cases and controls (ties count one half).
+double plain_auc(const std::vector<double>& cases, const std::vector<double>& controls) {
+    double pairs = 0;
+    for (const double a : cases)
+        for (const double b : controls)
+            pairs += a > b ? 1 : a == b ? .5 : 0;
+    return pairs / (double(cases.size()) * double(controls.size()));
+}
+
+int main() {
+    std::mt19937_64 random(21);
+    std::vector<double> grid;
+    for (double t = .25; t <= 6.001; t += .25)
+        grid.push_back(t);
+    const std::size_t m = grid.size();
+    const std::vector<std::size_t> report{3, 7, 11, 15, 19, 23}; // t = 1, 2, ..., 6
+    const int reps = 300;
+    std::vector<double> oracle_b(m), ipcw_b(m), naive_b(m), ipcw_b_sd(m);
+    std::vector<double> oracle_a(m), ipcw_a(m), naive_a(m), ipcw_a_sd(m);
+    double ibs = 0, null_ibs = 0;
+    for (int r = 0; r < reps; ++r) {
+        const auto train = simulate(400, random), test = simulate(400, random);
+        std::vector<dm::stats::CountingRecord> records;
+        for (const auto& o : train.observed)
+            records.push_back({0, o.time, o.event});
+        const auto fit = dm::stats::fit_cox_counting(records, train.x);
+        const std::size_t n = test.observed.size();
+        Matrix surv(n, m), risk(n, m);
+        for (std::size_t i = 0; i < n; ++i)
+            for (std::size_t k = 0; k < m; ++k) {
+                surv(i, k) = fit.predict_survival(grid[k], {test.x(i, 0), test.x(i, 1)});
+                risk(i, k) = 1 - surv(i, k);
+            }
+        const auto brier = dm::stats::brier_score(test.observed, surv, grid);
+        const auto auc = dm::stats::time_dependent_auc(test.observed, risk, grid);
+        ibs += brier.integrated / reps;
+        null_ibs += brier.null_integrated / reps;
+        for (std::size_t k = 0; k < m; ++k) {
+            double oracle = 0, naive = 0, kept = 0;
+            std::vector<double> o_case, o_control, n_case, n_control;
+            for (std::size_t i = 0; i < n; ++i) {
+                const bool died = test.true_time[i] <= grid[k];
+                const double e = (died ? 0.0 : 1.0) - surv(i, k);
+                oracle += e * e / double(n);
+                (died ? o_case : o_control).push_back(risk(i, k));
+                const auto& o = test.observed[i];
+                if (o.time > grid[k] || o.event) { // status at t is known
+                    naive += e * e;
+                    kept += 1;
+                    (died ? n_case : n_control).push_back(risk(i, k));
+                }
+            }
+            oracle_b[k] += oracle / reps;
+            naive_b[k] += naive / kept / reps;
+            ipcw_b[k] += brier.brier[k] / reps;
+            ipcw_b_sd[k] += (brier.brier[k] - oracle) * (brier.brier[k] - oracle) / reps;
+            const double oa = plain_auc(o_case, o_control);
+            oracle_a[k] += oa / reps;
+            naive_a[k] += plain_auc(n_case, n_control) / reps;
+            ipcw_a[k] += auc.auc[k] / reps;
+            ipcw_a_sd[k] += (auc.auc[k] - oa) * (auc.auc[k] - oa) / reps;
+        }
+    }
+    std::println("| t | True G(t) | Brier oracle | IPCW | Complete case | IPCW error SD |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const std::size_t k : report)
+        std::println("| {:.0f} | {:.3f} | {:.4f} | {:.4f} | {:.4f} | {:.4f} |", grid[k],
+                     1 - grid[k] / 8, oracle_b[k], ipcw_b[k], naive_b[k],
+                     std::sqrt(ipcw_b_sd[k]));
+    std::println("\n| t | AUC oracle | IPCW | Complete case | IPCW error SD |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    for (const std::size_t k : report)
+        std::println("| {:.0f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", grid[k], oracle_a[k],
+                     ipcw_a[k], naive_a[k], std::sqrt(ipcw_a_sd[k]));
+    std::println("\nMean integrated Brier score over (0.25, 6): Cox {:.4f}, "
+                 "Kaplan–Meier {:.4f}, explained {:.1f}%.", ibs, null_ibs,
+                 100 * (1 - ibs / null_ibs));
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(grid, oracle_b, "Oracle (true event times)", {170, 170, 170}, 4)
+        .line(grid, ipcw_b, "IPCW estimate", {26, 90, 147}, 1.8)
+        .line(grid, naive_b, "Complete-case estimate", {176, 72, 43}, 1.8)
+        .title("Mean Brier score of a Cox model on censored test data")
+        .x_label("Prediction horizon t")
+        .y_label("Brier score")
+        .ylim(0, .3)
+        .size(700, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/survival_accuracy.svg");
+}
+```
+// result_begin: markdown
+| t | True G(t) | Brier oracle | IPCW | Complete case | IPCW error SD |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.875 | 0.1013 | 0.1014 | 0.1055 | 0.0032 |
+| 2 | 0.750 | 0.1704 | 0.1707 | 0.1786 | 0.0046 |
+| 3 | 0.625 | 0.1900 | 0.1907 | 0.1938 | 0.0064 |
+| 4 | 0.500 | 0.1844 | 0.1847 | 0.1747 | 0.0075 |
+| 5 | 0.375 | 0.1679 | 0.1664 | 0.1398 | 0.0101 |
+| 6 | 0.250 | 0.1471 | 0.1457 | 0.1022 | 0.0136 |
+
+| t | AUC oracle | IPCW | Complete case | IPCW error SD |
+| ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.744 | 0.743 | 0.744 | 0.011 |
+| 2 | 0.759 | 0.759 | 0.761 | 0.012 |
+| 3 | 0.777 | 0.776 | 0.781 | 0.015 |
+| 4 | 0.793 | 0.793 | 0.802 | 0.018 |
+| 5 | 0.809 | 0.812 | 0.826 | 0.025 |
+| 6 | 0.827 | 0.830 | 0.848 | 0.035 |
+
+Mean integrated Brier score over (0.25, 6): Cox 0.1521, Kaplan–Meier 0.1946, explained 21.8%.
+\image(figures/survival_accuracy.svg)
+// result_end
+\caption(Mean over 300 replications of the Brier score of a fitted Cox model at horizons from 0.25 to 6 on censored test samples of 400. The thick grey curve uses the true event times, the blue curve is the IPCW estimate from the censored data, and the orange curve drops subjects censored before the horizon.)
+\alttext(The grey oracle curve rises from about 0.03 to a peak near 0.19 around t = 3 and falls to about 0.15 at t = 6. The blue IPCW curve lies on top of it throughout. The orange complete-case curve is slightly above it up to t = 3, then falls increasingly below, reaching about 0.10 at t = 6.)
+
+The IPCW estimates track the oracle at every horizon, for both the Brier score and the AUC, to within about 0.002. The complete-case shortcut is close only at early horizons, where little censoring has happened.
+- Brier score. The complete-case shortcut drifts below the oracle and underestimates the error by 30% at \(t=6\). The subjects it drops are long survivors whose status at \(t\) is uncertain, so the retained sample is dominated by early events and clear survivors, which are easy to predict.
+- AUC. The shortcut is optimistic in the same way, by about 0.02 at \(t=6\).
+
+The cost of IPCW appears in the error SD column. As the censoring survival \(G(t)\) falls from 0.875 to 0.25, the weights grow and the replication-to-replication error of the IPCW Brier score quadruples. The error of the AUC triples. Beyond the last time with \(\hat G(t)>0\), no reweighting can recover the information, so the functions reject such horizons. In practice the evaluation horizon should stop well before that point.
+
+The integrated Brier score over (0.25, 6) is 0.152 for the Cox model against 0.195 for the covariate-free Kaplan–Meier prediction, so the model explains about 22% of the prediction error. The Kaplan–Meier benchmark makes the IBS interpretable. On its own, a Brier score depends heavily on how many events occur by \(t\).
+
+The AUC matches `riskRegression::Score` and the Brier and integrated Brier scores (with the Kaplan–Meier reference) match `pec::pec` and `pec::crps` on the `pbc` data, including tied markers and a grid that does not start at 0.
+
+[Graf, Schmoor, Sauerbrei and Schumacher (1999)|https://doi.org/10.1002/(SICI)1097-0258(19990915/30)18:17/18%3C2529::AID-SIM274%3E3.0.CO;2-5] · [Heagerty, Lumley and Pepe (2000)|https://doi.org/10.1111/j.0006-341X.2000.00337.x] · [Blanche, Dartigues and Jacqmin-Gadda (2013)|https://doi.org/10.1002/sim.5958]

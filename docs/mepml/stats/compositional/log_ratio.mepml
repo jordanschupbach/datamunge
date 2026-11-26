@@ -1,0 +1,414 @@
+//? Title: Compositional log-ratio analysis
+//? Exports: both
+//? Lang: en
+
+> Analyse parts of a whole through log-ratios: centered, additive and isometric coordinates, the Aitchison distance, coherent summaries, and principled replacement of zeros
+
+Data that carry only relative information, such as budget shares, mineral or microbial abundances, time-use or vote shares, are **compositions**. Their total is either fixed or uninformative, so the parts are constrained and cannot vary independently. Correlations between raw proportions are distorted by this constraint (Pearson 1897; Chayes 1960). They also change when parts are added or removed, so conclusions about Food and Other expenditures depend on whether Housing was recorded. Aitchison (1982, 1986) resolved this by analysing log-ratios, which depend only on relative information and are unchanged by rescaling or by dropping other parts.
+
+The log-ratio coordinates map the simplex to real space:
+
+- **clr**: \(\log x_j-\overline{\log x}\) is symmetric in the parts, but its \(D\) coordinates sum to zero, so their covariance is singular.
+- **alr**: \(\log(x_j/x_D)\) gives \(D-1\) unconstrained coordinates, but distances depend on the choice of reference part.
+- **ilr**: \(\mathrm{clr}(x)\,V\), for any \(D\times(D-1)\) contrast matrix \(V\) with orthonormal columns, gives real coordinates that preserve distances and angles. A **sequential binary partition** produces interpretable *balances*, \(\sqrt{rs/(r+s)}\,\log(g(x_+)/g(x_-))\), contrasting the geometric means of two groups of parts.
+
+The **Aitchison distance** is the Euclidean distance between clr vectors. Summaries follow from the same geometry: the center is the closed geometric mean, the **variation matrix** is \(\tau_{jk}=\mathrm{var}\log(x_j/x_k)\), and the total variance is \(\sum\tau_{jk}/(2D)\).
+
+Log-ratios cannot handle zeros, so zeros must be replaced in a way that depends on their origin. **Rounded zeros**, values below a detection limit, are replaced by a fraction of that limit, and the other parts are rescaled multiplicatively so that their ratios are unchanged (Martín-Fernández et al. 2003). **Count zeros** come from finite sampling of a positive proportion. They are replaced by posterior estimates under a Dirichlet prior built from the other samples: the geometric Bayesian (GBM), square-root (SQ) and Bayes–Laplace (BL) priors, or by count-zero multiplicative replacement (CZM). All four come from Martín-Fernández, Hron, Templ, Filzmoser and Palarea-Albaladejo (2015).
+
+The module `stats/compositional.hpp` provides all of these. Its tests reproduce `compositions` (clr, alr, ilr, `ilrBase`, `gsi.buildilrBase`, `variation`, `mvar`, the center and `dist`) and `zCompositions` (`multRepl`, and `cmultRepl` with each prior, with and without adjustment) to rounding. They also check every inverse, the orthonormality of each basis, and the identity linking the pivot basis to the Helmert basis.
+
+The example uses Aitchison's household expenditures (20 men and 20 women, four commodity groups) and the `Pigs` location counts (29 sows, six locations, many zeros). The simulation compares zero-replacement strategies on multinomial counts drawn from known logistic-normal compositions.
+
+```{cpp, id=coda, file="figures/log_ratio.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/compositional.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <fstream>
+#include <functional>
+#include <print>
+#include <sstream>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+std::vector<std::vector<double>> read_rows(const std::string& path) {
+    std::ifstream in(path);
+    std::vector<std::vector<double>> rows;
+    for (std::string line; std::getline(in, line);) {
+        if (line.empty() || line[0] == '#') continue;
+        std::istringstream s(line);
+        rows.emplace_back();
+        for (double v; s >> v;) rows.back().push_back(v);
+    }
+    return rows;
+}
+
+Matrix columns(const std::vector<std::vector<double>>& rows, const std::vector<int>& cols) {
+    Matrix m(rows.size(), cols.size(), 0.0);
+    for (std::size_t i = 0; i < rows.size(); ++i)
+        for (std::size_t j = 0; j < cols.size(); ++j) m(i, j) = rows[i][cols[j]];
+    return m;
+}
+
+double correlation(const std::vector<double>& a, const std::vector<double>& b) {
+    const double n = static_cast<double>(a.size());
+    double ma = 0, mb = 0, sab = 0, saa = 0, sbb = 0;
+    for (std::size_t i = 0; i < a.size(); ++i) ma += a[i] / n, mb += b[i] / n;
+    for (std::size_t i = 0; i < a.size(); ++i) {
+        sab += (a[i] - ma) * (b[i] - mb);
+        saa += (a[i] - ma) * (a[i] - ma), sbb += (b[i] - mb) * (b[i] - mb);
+    }
+    return sab / std::sqrt(saa * sbb);
+}
+
+double euclid(const std::vector<double>& a, const std::vector<double>& b) {
+    double s = 0;
+    for (std::size_t j = 0; j < a.size(); ++j) s += (a[j] - b[j]) * (a[j] - b[j]);
+    return std::sqrt(s);
+}
+
+int main() {
+    const auto house = read_rows("data/household.txt");
+    const auto x = columns(house, {0, 1, 2, 3});  // Housing, Food, Other, Services
+    const auto sub = columns(house, {1, 2, 3});   // drop Housing
+    const auto p = dm::stats::closure(x), ps = dm::stats::closure(sub);
+
+    // 1. Coherence: share correlations change with the subcomposition; log-ratios do not.
+    const auto tf = dm::stats::variation_matrix(x), ts = dm::stats::variation_matrix(sub);
+    std::println("| Pair | Share correlation, 4 parts | Share correlation, Housing "
+                 "dropped | var log-ratio, 4 parts | var log-ratio, Housing dropped |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    const char* names[]{"Housing", "Food", "Other", "Services"};
+    for (const auto& [j, k] : {std::pair{1, 2}, std::pair{1, 3}, std::pair{2, 3}})
+        std::println("| {}/{} | {:+.3f} | {:+.3f} | {:.4f} | {:.4f} |", names[j], names[k],
+                     correlation(p.col(j), p.col(k)),
+                     correlation(ps.col(j - 1), ps.col(k - 1)), tf(j, k), ts(j - 1, k - 1));
+
+    // Subcompositional dominance: distances should not grow when parts are dropped.
+    int euclid_grows = 0, aitchison_grows = 0, pairs = 0;
+    for (std::size_t i = 0; i < x.rows(); ++i)
+        for (std::size_t k = i + 1; k < x.rows(); ++k, ++pairs) {
+            euclid_grows += euclid(ps.row(i), ps.row(k)) > euclid(p.row(i), p.row(k));
+            aitchison_grows += dm::stats::aitchison_distance(sub.row(i), sub.row(k)) >
+                               dm::stats::aitchison_distance(x.row(i), x.row(k)) + 1e-12;
+        }
+    std::println("\nOf {} pairs of households, dropping Housing increases the Euclidean "
+                 "distance between shares for {} and the Aitchison distance for {}.", pairs,
+                 euclid_grows, aitchison_grows);
+
+    // 2. alr is not isometric: the same two households at different references.
+    std::print("\nDistance between households 1 and 2 — Aitchison {:.4f}; "
+               "alr, by reference:", dm::stats::aitchison_distance(x.row(0), x.row(1)));
+    for (std::size_t r = 0; r < 4; ++r) {
+        const auto a = dm::stats::alr(x, r);
+        std::print(" {} {:.4f}{}", names[r], euclid(a.row(0), a.row(1)),
+                   r < 3 ? ";" : ".\n");
+    }
+
+    // 3. Balances from a sequential binary partition, compared between men and women.
+    const Matrix partition(4, 3, {1, 1, 0, -1, 0, 1, -1, 0, -1, 1, -1, 0});
+    const auto basis = dm::stats::balance_basis(partition);
+    const auto z = dm::stats::ilr(x, basis);
+    const char* balances[]{"Housing, Services vs Food, Other", "Housing vs Services",
+                           "Food vs Other"};
+    std::println("\n| Balance | Men mean | Women mean | Welch t | p |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    std::vector<double> men[3], women[3];
+    for (std::size_t i = 0; i < x.rows(); ++i)
+        for (int b = 0; b < 3; ++b) (house[i][4] > 0 ? men : women)[b].push_back(z(i, b));
+    for (int b = 0; b < 3; ++b) {
+        const auto moments = [](const std::vector<double>& v) {
+            double m = 0, s = 0;
+            for (const double a : v) m += a / v.size();
+            for (const double a : v) s += (a - m) * (a - m) / (v.size() - 1);
+            return std::pair{m, s / v.size()};
+        };
+        const auto [m1, v1] = moments(men[b]);
+        const auto [m2, v2] = moments(women[b]);
+        const double t = (m1 - m2) / std::sqrt(v1 + v2);
+        const double df = (v1 + v2) * (v1 + v2) / (v1 * v1 / 19 + v2 * v2 / 19);
+        std::println("| {} | {:+.3f} | {:+.3f} | {:+.2f} | {:.2g} |", balances[b], m1, m2,
+                     t, 2 * dm::random::student_t_cdf(-std::abs(t), df));
+    }
+    std::vector<std::vector<double>> by_sex[2];
+    for (std::size_t i = 0; i < x.rows(); ++i)
+        by_sex[house[i][4] > 0 ? 0 : 1].push_back(x.row(i));
+    for (int s = 0; s < 2; ++s) {
+        Matrix g(by_sex[s].size(), 4, 0.0);
+        for (std::size_t i = 0; i < by_sex[s].size(); ++i)
+            for (int j = 0; j < 4; ++j) g(i, j) = by_sex[s][i][j];
+        const auto c = dm::stats::compositional_center(g);
+        std::println("{} center (shares): Housing {:.3f}, Food {:.3f}, Other {:.3f}, "
+                     "Services {:.3f}; total variance {:.3f}.", s == 0 ? "Men" : "Women",
+                     c[0], c[1], c[2], c[3], dm::stats::total_variance(g));
+    }
+
+    // 4. Count zeros: the Pigs data.
+    const auto pig_rows = read_rows("data/pigs.txt");
+    const auto pigs = columns(pig_rows, {0, 1, 2, 3, 4, 5});
+    int zeros = 0;
+    for (std::size_t i = 0; i < pigs.rows(); ++i)
+        for (std::size_t j = 0; j < 6; ++j) zeros += pigs(i, j) == 0;
+    std::println("\nPigs: {} of {} counts are zero.\n", zeros, pigs.rows() * 6);
+    const auto pseudo = [](const Matrix& c, double add) {
+        Matrix m = c;
+        for (std::size_t i = 0; i < m.rows(); ++i)
+            for (std::size_t j = 0; j < m.cols(); ++j) m(i, j) += add;
+        return dm::stats::closure(m);
+    };
+    using dm::stats::CountZeroMethod;
+    const std::vector<std::pair<std::string, std::function<Matrix(const Matrix&)>>> methods{
+        {"GBM", [](const Matrix& c) { return dm::stats::count_zero_replacement(c); }},
+        {"SQ", [](const Matrix& c) { return dm::stats::count_zero_replacement(
+                     c, {.method = CountZeroMethod::square_root}); }},
+        {"BL", [](const Matrix& c) { return dm::stats::count_zero_replacement(
+                     c, {.method = CountZeroMethod::bayes_laplace}); }},
+        {"CZM", [](const Matrix& c) { return dm::stats::count_zero_replacement(
+                     c, {.method = CountZeroMethod::count_zero_multiplicative}); }},
+        {"Pseudo-count 0.5", [&](const Matrix& c) { return pseudo(c, 0.5); }},
+        {"Pseudo-count 1", [&](const Matrix& c) { return pseudo(c, 1.0); }}};
+    std::println("| Replacement | Sow 1 HALF.BED (count 0) | Sow 1 BED (count 11) | "
+                 "Total variance | var log(HALF.BED/HALF.PASS) |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (const auto& [name, f] : methods) {
+        const auto r = f(pigs);
+        std::println("| {} | {:.4f} | {:.4f} | {:.3f} | {:.3f} |", name, r(0, 1), r(0, 0),
+                     dm::stats::total_variance(r), dm::stats::variation_matrix(r)(1, 3));
+    }
+
+    // 5. Simulations from logistic-normal compositions with two rare parts.
+    const std::size_t D = 5, rows = 60;
+    const auto V = dm::stats::ilr_basis(D);
+    const Matrix centre(1, D, {0.45, 0.3, 0.15, 0.07, 0.03});
+    const auto mu = dm::stats::ilr(centre, V);
+    const auto centre_clr = dm::stats::clr(centre);
+    const double sigma = 0.5;  // ilr covariance sigma^2 I: total variance 1, every tau 0.5
+    dm::random::SplitMix64 rng(41);
+    const auto normal = [&] {
+        return dm::random::normal_quantile(rng.uniform01() * 0.999999 + 5e-7);
+    };
+    const auto draw = [&] {
+        Matrix coords(rows, D - 1, 0.0);
+        for (std::size_t i = 0; i < rows; ++i)
+            for (std::size_t k = 0; k < D - 1; ++k)
+                coords(i, k) = mu(0, k) + sigma * normal();
+        return dm::stats::ilr_inverse(coords, V);
+    };
+    struct Score {
+        double tv = 0, tau = 0, err = 0, n = 0;
+        void add(const Matrix& r) {
+            tv += dm::stats::total_variance(r), tau += dm::stats::variation_matrix(r)(3, 4);
+            const auto c = dm::stats::clr(Matrix(1, 5, dm::stats::compositional_center(r)));
+            double e = 0;
+            for (std::size_t j = 0; j < 5; ++j) e += std::pow(c(0, j) - c0(0, j), 2);
+            err += e, n += 1;
+        }
+        Matrix c0;
+    };
+    const auto report = [](const std::string& name, const Score& s,
+                           const std::string& zeros) {
+        std::println("| {} | {} | {:.3f} | {:.3f} | {:.3f} |", name, zeros, s.tv / s.n,
+                     s.tau / s.n, std::sqrt(s.err / s.n));
+    };
+    const int reps = 200;
+
+    // 5a. Rounded zeros: parts 4 and 5 below limits 0.035 and 0.015 are recorded as 0.
+    const std::vector<double> dl{1, 1, 1, 0.035, 0.015};
+    const std::vector<std::pair<std::string, double>> fractions{
+        {"Multiplicative, 0.65 DL", 0.65}, {"Multiplicative, 0.5 DL", 0.5},
+        {"Multiplicative, 0.01 DL", 0.01}};
+    std::vector<Score> rounded(fractions.size() + 2, Score{.c0 = centre_clr});
+    double rounded_zeros = 0, dropped = 0;
+    for (int rep = 0; rep < reps; ++rep) {
+        const auto truth = draw();
+        Matrix observed = truth;
+        std::vector<std::size_t> complete;
+        for (std::size_t i = 0; i < rows; ++i) {
+            bool any = false;
+            for (std::size_t j = 3; j < D; ++j)
+                if (observed(i, j) < dl[j]) observed(i, j) = 0, any = true;
+            for (std::size_t j = 3; j < D; ++j) rounded_zeros += observed(i, j) == 0;
+            if (!any) complete.push_back(i);
+        }
+        rounded[0].add(truth);
+        for (std::size_t f = 0; f < fractions.size(); ++f)
+            rounded[f + 1].add(dm::stats::multiplicative_replacement(observed, dl,
+                                                                     fractions[f].second));
+        Matrix kept(complete.size(), D, 0.0);
+        for (std::size_t r = 0; r < complete.size(); ++r)
+            for (std::size_t j = 0; j < D; ++j) kept(r, j) = observed(complete[r], j);
+        dropped += double(rows - complete.size()) / reps;
+        rounded.back().add(kept);
+    }
+    std::println("\nRounded zeros: {:.0f} zeros per data set of {} compositions on "
+                 "average; "
+                 "truth total variance 1.00 and tau(part 4, part 5) 0.50.\n",
+                 rounded_zeros / reps, rows);
+    std::println("| Method | Rows used | Total variance | tau(part 4, part 5) | "
+                 "RMSE of center (clr) |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    report("True compositions", rounded[0], std::to_string(rows));
+    for (std::size_t f = 0; f < fractions.size(); ++f)
+        report(fractions[f].first, rounded[f + 1], std::to_string(rows));
+    report("Drop rows with zeros", rounded.back(), std::format("{:.0f}", rows - dropped));
+
+    // 5b. Count zeros: multinomial counts of the same compositions.
+    auto sim_methods = methods;
+    for (const int trials : {30, 100}) {
+        std::vector<Score> scores(sim_methods.size() + 1, Score{.c0 = centre_clr});
+        double zero_count = 0;
+        for (int rep = 0; rep < reps; ++rep) {
+            const auto truth = draw();
+            Matrix counts(rows, D, 0.0);
+            for (std::size_t i = 0; i < rows; ++i)
+                for (int t = 0; t < trials; ++t) {
+                    double u = rng.uniform01(), c = 0;
+                    std::size_t j = 0;
+                    while (j + 1 < D && u > (c += truth(i, j))) ++j;
+                    counts(i, j) += 1;
+                }
+            for (std::size_t i = 0; i < rows; ++i)
+                for (std::size_t j = 0; j < D; ++j) zero_count += counts(i, j) == 0;
+            scores[0].add(truth);
+            for (std::size_t m = 0; m < sim_methods.size(); ++m)
+                scores[m + 1].add(sim_methods[m].second(counts));
+        }
+        std::println("\nCount zeros, {} counts per composition: {:.0f} zeros per data "
+                     "set.\n", trials, zero_count / reps);
+        std::println("| Method | Rows used | Total variance | tau(part 4, part 5) | "
+                     "RMSE of center (clr) |");
+        std::println("| --- | ---: | ---: | ---: | ---: |");
+        report("True compositions", scores[0], std::to_string(rows));
+        for (std::size_t m = 0; m < sim_methods.size(); ++m)
+            report(sim_methods[m].first, scores[m + 1], std::to_string(rows));
+    }
+
+    // Figure: two balances, men against women, with group centers.
+    std::vector<double> bx[2], by[2];
+    for (std::size_t i = 0; i < x.rows(); ++i) {
+        const int s = house[i][4] > 0 ? 0 : 1;
+        bx[s].push_back(z(i, 0)), by[s].push_back(z(i, 2));
+    }
+    const auto mean = [](const std::vector<double>& v) {
+        double m = 0;
+        for (const double a : v) m += a / v.size();
+        return m;
+    };
+    auto fig = dm::graphics::RPlot::create();
+    fig.points(bx[0], by[0], "Men", {26, 90, 147}, 4.5)
+        .points(bx[1], by[1], "Women", {178, 74, 38}, 4.5)
+        .points({mean(bx[0])}, {mean(by[0])}, "", {26, 90, 147}, 9)
+        .points({mean(bx[1])}, {mean(by[1])}, "", {178, 74, 38}, 9)
+        .abline_v(0, {180, 180, 180})
+        .abline_h(0, {180, 180, 180})
+        .x_limits(-0.4, 1.3)
+        .y_limits(-2.8, 3.4)
+        .title("Household budgets as balances")
+        .x_label("Balance: Housing, Services vs Food, Other")
+        .y_label("Balance: Food vs Other")
+        .size(640, 430);
+    std::filesystem::create_directories("build");
+    fig.save_svg("build/log_ratio.svg");
+}
+```
+// result_begin: markdown
+| Pair | Share correlation, 4 parts | Share correlation, Housing dropped | var log-ratio, 4 parts | var log-ratio, Housing dropped |
+| --- | ---: | ---: | ---: | ---: |
+| Food/Other | -0.662 | -0.961 | 3.4406 | 3.4406 |
+| Food/Services | -0.203 | -0.499 | 1.3259 | 1.3259 |
+| Other/Services | +0.435 | +0.240 | 0.5389 | 0.5389 |
+
+Of 780 pairs of households, dropping Housing increases the Euclidean distance between shares for 485 and the Aitchison distance for 0.
+
+Distance between households 1 and 2 — Aitchison 0.3258; alr, by reference: Housing 0.3406; Food 0.3262; Other 0.5251; Services 0.5927.
+
+| Balance | Men mean | Women mean | Welch t | p |
+| --- | ---: | ---: | ---: | ---: |
+| Housing, Services vs Food, Other | +0.105 | +0.833 | -11.52 | 6.9e-14 |
+| Housing vs Services | +0.428 | +0.974 | -4.63 | 4.3e-05 |
+| Food vs Other | +0.490 | -0.833 | +3.66 | 0.00076 |
+Men center (shares): Housing 0.338, Food 0.318, Other 0.159, Services 0.185; total variance 1.543.
+Women center (shares): Housing 0.566, Food 0.069, Other 0.223, Services 0.143; total variance 1.426.
+
+Pigs: 50 of 174 counts are zero.
+
+| Replacement | Sow 1 HALF.BED (count 0) | Sow 1 BED (count 11) | Total variance | var log(HALF.BED/HALF.PASS) |
+| --- | ---: | ---: | ---: | ---: |
+| GBM | 0.0018 | 0.1131 | 8.800 | 2.749 |
+| SQ | 0.0009 | 0.1132 | 10.940 | 4.421 |
+| BL | 0.0006 | 0.1133 | 12.659 | 5.743 |
+| CZM | 0.0034 | 0.1126 | 7.012 | 1.166 |
+| Pseudo-count 0.5 | 0.0050 | 0.1150 | 6.201 | 0.943 |
+| Pseudo-count 1 | 0.0097 | 0.1165 | 5.050 | 0.452 |
+
+Rounded zeros: 16 zeros per data set of 60 compositions on average; truth total variance 1.00 and tau(part 4, part 5) 0.50.
+
+| Method | Rows used | Total variance | tau(part 4, part 5) | RMSE of center (clr) |
+| --- | ---: | ---: | ---: | ---: |
+| True compositions | 60 | 0.989 | 0.498 | 0.126 |
+| Multiplicative, 0.65 DL | 60 | 1.029 | 0.544 | 0.130 |
+| Multiplicative, 0.5 DL | 60 | 1.154 | 0.682 | 0.149 |
+| Multiplicative, 0.01 DL | 60 | 6.030 | 6.250 | 0.723 |
+| Drop rows with zeros | 45 | 0.800 | 0.350 | 0.221 |
+
+Count zeros, 30 counts per composition: 38 zeros per data set.
+
+| Method | Rows used | Total variance | tau(part 4, part 5) | RMSE of center (clr) |
+| --- | ---: | ---: | ---: | ---: |
+| True compositions | 60 | 1.008 | 0.504 | 0.129 |
+| GBM | 60 | 2.510 | 1.807 | 0.318 |
+| SQ | 60 | 2.828 | 2.174 | 0.395 |
+| BL | 60 | 2.943 | 2.301 | 0.419 |
+| CZM | 60 | 2.374 | 1.484 | 0.232 |
+| Pseudo-count 0.5 | 60 | 1.886 | 1.156 | 0.292 |
+| Pseudo-count 1 | 60 | 1.239 | 0.612 | 0.565 |
+
+Count zeros, 100 counts per composition: 7 zeros per data set.
+
+| Method | Rows used | Total variance | tau(part 4, part 5) | RMSE of center (clr) |
+| --- | ---: | ---: | ---: | ---: |
+| True compositions | 60 | 0.999 | 0.487 | 0.127 |
+| GBM | 60 | 1.944 | 1.440 | 0.251 |
+| SQ | 60 | 1.830 | 1.306 | 0.232 |
+| BL | 60 | 2.099 | 1.623 | 0.277 |
+| CZM | 60 | 1.842 | 1.313 | 0.222 |
+| Pseudo-count 0.5 | 60 | 1.531 | 1.008 | 0.164 |
+| Pseudo-count 1 | 60 | 1.227 | 0.703 | 0.239 |
+\image(figures/log_ratio.svg)
+// result_end
+
+The first table shows why raw shares are unreliable. The correlation between the Food and Other shares is −0.66 in the full budget, but −0.96 once Housing is left out, even though nothing about those two expenditures has changed. Their log-ratio variance (3.44) is identical in both, because log-ratios carry only relative information. Distances behave in the same way. Dropping Housing increases the Euclidean distance between share vectors for 485 of 780 pairs of households, but never the Aitchison distance (subcompositional dominance). The alr coordinates show the price of convenience. Depending on the reference part, the distance between the first two households ranges from 0.33 to 0.59, while the Aitchison distance is 0.33. Only clr and ilr coordinates preserve the geometry.
+
+Balances make group comparisons interpretable, as the figure shows. The first balance contrasts Housing and Services with Food and Other. It separates the sexes almost completely (Welch t = −11.5): women allocate far more to Housing and Services relative to Food and Other. Within those groups, women spend relatively more on Housing than on Services, and men relatively more on Food than on Other. Each balance is an ordinary real-valued variable, so standard tests and models apply directly. Their conclusions are statements about ratios and do not depend on total spending.
+
+Zeros dominate the analysis of the Pigs counts, where 50 of 174 counts are zero. The four Bayesian-multiplicative priors and two pseudo-counts replace the same zero by values from 0.0006 to 0.0097, a sixteen-fold range. The total variance of the replaced data then ranges from 5.1 to 12.7. The log-ratio variance between the two rare locations ranges from 0.45 to 5.7. Each nonzero part changes by less than 3%, but the log-ratios involving zeros depend mainly on the replacement chosen.
+
+The simulations show which choices are defensible. For rounded zeros, the analysis can be nearly unaffected: multiplicative replacement at 0.65 of the detection limit recovers the total variance (1.03 against 0.99), the rare-part variation (0.54 against 0.50) and the center. Replacing with 0.5 of the limit inflates the dispersion moderately. Replacing with a "tiny" value, 1% of the limit, is a common practice and is disastrous: the total variance rises sixfold and the rare-part variation twelvefold. Dropping the 25% of compositions that contain zeros is also biased: it removes the compositions where the rare parts are smallest, so the dispersion shrinks (0.80) and the center error almost doubles.
+
+Count zeros are harder, because counting noise is part of the observed variation, whatever is done about the zeros. With 30 counts per composition, every method roughly doubles the latent total variance. The more aggressive priors (SQ and BL) do so most, and a pseudo-count of 1 appears accurate only because it shrinks every ratio toward 1, at the cost of the worst center (RMSE 0.57). With 100 counts, zeros are rarer and the methods converge, while the inflation from counting noise remains. For sparse counts, a multinomial-logistic or Dirichlet-multinomial model of the counts themselves is often better than replacing zeros and treating the result as observed compositions.
+
+>> Practical guidance
+
+- Analyse compositions through log-ratios. Use clr for symmetric summaries and biplots, ilr balances from a sequential binary partition for models and tests, and alr only when a natural reference part exists. Do not interpret alr distances.
+- Summarize with the center (closed geometric mean), the variation matrix and the total variance. These are subcompositionally coherent, while correlations of shares are not.
+- Identify the origin of each zero. Use multiplicative replacement at about 0.65 of the detection limit for rounded zeros, Bayesian-multiplicative replacement (GBM by default, CZM when counts are very small) for count zeros, and amalgamation or a separate model for structural zeros (parts that are truly absent). Never use an arbitrary tiny value.
+- Report the sensitivity of key results to the replacement method whenever zeros are common, as they are in the Pigs data.
+
+>> References
+
+- J. Aitchison (1982). The statistical analysis of compositional data. *Journal of the Royal Statistical Society B* 44(2), 139-177. doi:10.1111/j.2517-6161.1982.tb01195.x
+- J. Aitchison (1986). *The Statistical Analysis of Compositional Data*. Chapman and Hall. doi:10.1007/978-94-009-4109-0
+- J. J. Egozcue, V. Pawlowsky-Glahn, G. Mateu-Figueras and C. Barceló-Vidal (2003). Isometric logratio transformations for compositional data analysis. *Mathematical Geology* 35(3), 279-300. doi:10.1023/A:1023818214614
+- J. J. Egozcue and V. Pawlowsky-Glahn (2005). Groups of parts and their balances in compositional data analysis. *Mathematical Geology* 37(7), 795-828. doi:10.1007/s11004-005-7381-9
+- J. A. Martín-Fernández, C. Barceló-Vidal and V. Pawlowsky-Glahn (2003). Dealing with zeros and missing values in compositional data sets using nonparametric imputation. *Mathematical Geology* 35(3), 253-278. doi:10.1023/A:1023866030544
+- J. A. Martín-Fernández, K. Hron, M. Templ, P. Filzmoser and J. Palarea-Albaladejo (2015). Bayesian-multiplicative treatment of count zeros in compositional data sets. *Statistical Modelling* 15(2), 134-158. doi:10.1177/1471082X14535524
+- J. Palarea-Albaladejo and J. A. Martín-Fernández (2015). zCompositions — R package for multivariate imputation of left-censored data under a compositional approach. *Chemometrics and Intelligent Laboratory Systems* 143, 85-96. doi:10.1016/j.chemolab.2015.02.019
+- K. G. van den Boogaart and R. Tolosana-Delgado (2013). *Analyzing Compositional Data with R*. Springer. doi:10.1007/978-3-642-36809-7

@@ -1,0 +1,108 @@
+//? Title: Test for a unit root with Dickey–Fuller and Phillips–Perron
+//? Exports: both
+//? Lang: en
+
+> Decide whether shocks fade or persist
+
+A series with a unit root, \(y_t=y_{t-1}+u_t\), never forgets a shock. Regressions between such series can be spurious, and forecast intervals widen without bound. The Dickey–Fuller test regresses \(\Delta y_t\) on \(y_{t-1}\) and tests \(\gamma=0\). Under the null, the \(t\) statistic does not have a \(t\) distribution. It follows a Brownian-motion functional that depends on which deterministic terms are included, which is why separate MacKinnon critical values are needed for no constant, a constant, and a linear trend. The two tests differ in how they handle serial correlation in \(u_t\):
+
+- the augmented Dickey–Fuller (ADF) test adds lagged differences, chosen here by AIC on a common sample,
+- the Phillips–Perron (PP) test keeps the simple regression and corrects the statistic with a Newey–West long-run variance.
+
+`augmented_dickey_fuller` and `phillips_perron` return the statistic, a MacKinnon (1994) p-value and MacKinnon (2010) finite-sample critical values. Their results match `statsmodels` and `arch` in Python.
+
+The example estimates rejection rates at 5% for AR(1) series \(y_t=\phi y_{t-1}+u_t\) with a constant, for \(n=100\) and \(n=250\). It then repeats the null case with MA(1) errors \(u_t=e_t-0.8e_{t-1}\). With these errors the series behaves almost like white noise, a case known to distort unit-root tests.
+
+```{cpp, id=unit-root, file="figures/unit_root_power.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/unit_root.hpp>
+
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+
+struct Rates { double adf, pp; };
+
+Rates rejection(double phi, double theta, std::size_t n, int replicates, std::mt19937_64& random) {
+    std::normal_distribution<double> noise;
+    int adf = 0, pp = 0;
+    std::vector<double> y(n);
+    for (int r = 0; r < replicates; ++r) {
+        double level = 0, e_prev = noise(random);
+        for (std::size_t t = 0; t < n + 50; ++t) {  // 50-step burn-in (none matters for phi = 1)
+            const double e = noise(random);
+            level = phi * level + e + theta * e_prev;
+            e_prev = e;
+            if (t >= 50)
+                y[t - 50] = 5 + level;
+        }
+        adf += dm::stats::augmented_dickey_fuller(y).p_value < .05;
+        pp += dm::stats::phillips_perron(y).p_value < .05;
+    }
+    return {double(adf) / replicates, double(pp) / replicates};
+}
+
+int main() {
+    std::mt19937_64 random(99);
+    const int replicates = 2000;
+    const std::vector<double> phis{1, .98, .95, .9, .85, .8};
+    std::println("| φ | ADF, n = 100 | PP, n = 100 | ADF, n = 250 | PP, n = 250 |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    std::vector<double> adf100, pp100, adf250, pp250;
+    for (const double phi : phis) {
+        const auto a = rejection(phi, 0, 100, replicates, random);
+        const auto b = rejection(phi, 0, 250, replicates, random);
+        adf100.push_back(a.adf);
+        pp100.push_back(a.pp);
+        adf250.push_back(b.adf);
+        pp250.push_back(b.pp);
+        std::println("| {:.2f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", phi, a.adf, a.pp, b.adf, b.pp);
+    }
+    const auto ma = rejection(1, -.8, 250, replicates, random);
+    std::println("\nUnit root with MA(1) errors, θ = −0.8, n = 250: size {:.3f} (ADF) and {:.3f} (PP).",
+                 ma.adf, ma.pp);
+    const auto c = dm::stats::unit_root_critical_values(dm::stats::UnitRootTrend::constant, 249);
+    std::println("Critical values with a constant, T = 249: {:.3f} (1%), {:.3f} (5%), {:.3f} (10%).",
+                 c.one_percent, c.five_percent, c.ten_percent);
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.line({.8, 1}, {.05, .05}, "Level 5%", {150, 154, 160}, 1)
+        .line(phis, adf100, "ADF, n = 100", {26, 90, 147}, 1.6)
+        .line(phis, pp100, "PP, n = 100", {176, 72, 43}, 1.6)
+        .line(phis, adf250, "ADF, n = 250", {26, 90, 147}, 1)
+        .line(phis, pp250, "PP, n = 250", {176, 72, 43}, 1)
+        .points(phis, adf250, "", {26, 90, 147}, 5)
+        .points(phis, pp250, "", {176, 72, 43}, 5)
+        .title("Rejection rate of 5% unit-root tests for AR(1) series")
+        .x_label("Autoregressive coefficient φ (φ = 1 is the null)")
+        .y_label("Rejection rate")
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/unit_root_power.svg");
+}
+```
+// result_begin: markdown
+| φ | ADF, n = 100 | PP, n = 100 | ADF, n = 250 | PP, n = 250 |
+| ---: | ---: | ---: | ---: | ---: |
+| 1.00 | 0.061 | 0.063 | 0.055 | 0.056 |
+| 0.98 | 0.095 | 0.081 | 0.140 | 0.143 |
+| 0.95 | 0.158 | 0.155 | 0.481 | 0.502 |
+| 0.90 | 0.358 | 0.377 | 0.945 | 0.974 |
+| 0.85 | 0.650 | 0.690 | 0.988 | 1.000 |
+| 0.80 | 0.845 | 0.899 | 0.996 | 1.000 |
+
+Unit root with MA(1) errors, θ = −0.8, n = 250: size 0.221 (ADF) and 0.978 (PP).
+Critical values with a constant, T = 249: -3.457 (1%), -2.873 (5%), -2.573 (10%).
+\image(figures/unit_root_power.svg)
+// result_end
+\caption(Rejection rates at the 5% level for AR(1) series with a constant, 2,000 replicates per point; φ = 1 gives the size and smaller φ the power.)
+\alttext(At φ = 1 all four curves are near 5 percent. For n = 250 they rise steeply, passing 50 percent at φ = 0.95 and nearly 100 percent at 0.9. For n = 100 they rise more slowly, reaching about 35 percent at 0.9 and 85 to 90 percent at 0.8.)
+
+With AR(1) data both tests hold their size near 5%. The slight excess at \(n=100\) comes from finite-sample lag selection and long-run variance estimation. Power depends on \(n(1-\phi)\), not on \(\phi\) alone, so a test that cannot distinguish \(\phi=0.95\) from a unit root with 100 observations does so about half the time with 250. Near-integrated series of typical macroeconomic length therefore often fail to reject. Failing to reject is not evidence of a unit root.
+
+The MA(1) case shows where the two tests differ. When \(\theta=-0.8\), the moving-average root nearly cancels the unit root, and the series looks stationary over short spans. The Bartlett long-run variance with four lags is far too small, so PP rejects a true unit root 98% of the time. ADF partly absorbs the MA component with its lagged differences, but its size is still 22%. This is the Schwert (1989) result: with strongly negative MA errors, ADF with many lags is the safer choice, and KPSS can serve as a complementary check with stationarity as the null.
+
+[Dickey and Fuller (1979)|https://doi.org/10.1080/01621459.1979.10482531] · [Said and Dickey (1984)|https://doi.org/10.1093/biomet/71.3.599] · [Phillips and Perron (1988)|https://doi.org/10.1093/biomet/75.2.335] · [MacKinnon (1994)|https://doi.org/10.1080/07350015.1994.10510005] · [Schwert (1989)|https://doi.org/10.1080/07350015.1989.10509723]

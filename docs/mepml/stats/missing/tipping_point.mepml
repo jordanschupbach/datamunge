@@ -1,0 +1,174 @@
+//? Title: Find the departure from missing at random that overturns a conclusion
+//? Exports: both
+//? Lang: en
+
+> Shift imputed outcomes by a specified amount and locate the tipping point of a multiply imputed analysis
+
+Multiple imputation assumes that data are missing at random (MAR): given the observed data, dropouts would have had outcomes like comparable completers. The data cannot verify this. Regulators and careful analysts therefore ask how far the assumption could be wrong before the conclusion changes. The pattern-mixture delta adjustment answers this directly. It imputes under MAR, then adds a shift \(\delta\) to the imputed outcomes of a chosen pattern, typically dropouts in the active arm, which assumes they did \(\delta\) worse than MAR predicts. `tipping_point_analysis` repeats this over a grid of shifts, analyzes and pools each set of imputations, and reports two points by linear interpolation between grid points:
+- the tipping point, the \(\delta\) at which the effect stops being significant;
+- the null point, the \(\delta\) at which the pooled effect reaches zero.
+
+It reuses the same random seed for every \(\delta\), so the curve reflects only the shift and not Monte Carlo noise. When the shifted column is the only incomplete variable, the estimate is then exactly linear in \(\delta\). The shift is added each time the column is imputed, so with several incomplete variables it also feeds into their imputations, as `mice`'s post-processing does.
+
+The example is a simulated two-arm trial with 100 patients per arm. The outcome is the change from baseline in a symptom score, with SD about 8 and a true benefit of 3 points. About a quarter of active and a fifth of control patients drop out, more often when their baseline severity was high (MAR on baseline). The analysis is an ANCOVA of outcome on treatment and baseline, fitted to each of 20 imputations by PMM and pooled with Barnard–Rubin degrees of freedom. The first scenario shifts only the active arm's dropouts ("active" columns, with the fraction of missing information). The second shifts dropouts in both arms by the same amount ("both" columns). The figure shades the 95% interval for the first scenario.
+
+```{cpp, id=tip, file="figures/tipping_point.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/linalg/cholesky.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/multiple_imputation.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <limits>
+#include <optional>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+// ANCOVA y ~ 1 + treatment + baseline; returns coefficients and their OLS covariance.
+std::pair<std::vector<double>, Matrix> ancova(const Matrix& c) {
+    const std::size_t n = c.rows();
+    Matrix xtx(3, 3);
+    std::vector<double> xty(3, 0.0);
+    for (std::size_t i = 0; i < n; ++i) {
+        const double row[3]{1, c(i, 0), c(i, 1)};
+        for (int a = 0; a < 3; ++a) {
+            xty[a] += row[a] * c(i, 2);
+            for (int b = 0; b < 3; ++b)
+                xtx(a, b) += row[a] * row[b];
+        }
+    }
+    const auto f = dm::linalg::cholesky(xtx);
+    const auto beta = f.solve(xty);
+    double rss = 0;
+    for (std::size_t i = 0; i < n; ++i) {
+        const double e = c(i, 2) - beta[0] - beta[1] * c(i, 0) - beta[2] * c(i, 1);
+        rss += e * e;
+    }
+    const double s2 = rss / double(n - 3);
+    Matrix cov(3, 3);
+    for (int b = 0; b < 3; ++b) {
+        std::vector<double> e(3, 0.0);
+        e[b] = 1;
+        const auto col = f.solve(e);
+        for (int a = 0; a < 3; ++a)
+            cov(a, b) = col[a] * s2;
+    }
+    return {beta, cov};
+}
+
+int main() {
+    dm::random::SplitMix64 rng(2010);
+    const double na = std::numeric_limits<double>::quiet_NaN();
+    const std::size_t n = 200;
+    Matrix d(n, 3); // treatment, baseline severity, outcome
+    std::vector<bool> active(n), all(n, true);
+    double dropped[2]{};
+    for (std::size_t i = 0; i < n; ++i) {
+        active[i] = i < n / 2;
+        d(i, 0) = active[i];
+        d(i, 1) = rng.normal();
+        const double y = -2 - 4 * d(i, 1) + 3 * d(i, 0) + 6.9 * rng.normal();
+        const double p = 1 / (1 + std::exp(-((active[i] ? -1.05 : -1.4) + 0.8 * d(i, 1))));
+        const bool drop = rng.uniform01() < p;
+        dropped[active[i]] += drop;
+        d(i, 2) = drop ? na : y;
+    }
+    std::println("Dropout: {:.0f}% active, {:.0f}% control.\n", dropped[1], dropped[0]);
+    std::vector<double> deltas;
+    for (double delta = 0; delta >= -12.01; delta -= 0.5)
+        deltas.push_back(delta);
+    const dm::stats::MiceOptions mice{.imputations = 20, .iterations = 5};
+    const auto one = dm::stats::tipping_point_analysis(
+        d, ancova, {.column = 2, .shifted_rows = active, .deltas = deltas, .parameter = 1,
+                    .complete_df = double(n - 3), .mice = mice, .seed = 42});
+    const auto both = dm::stats::tipping_point_analysis(
+        d, ancova, {.column = 2, .shifted_rows = all, .deltas = deltas, .parameter = 1,
+                    .complete_df = double(n - 3), .mice = mice, .seed = 42});
+    std::println("| Delta | Effect, active | p, active | FMI | Effect, both | p, both |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (std::size_t k = 0; k < deltas.size(); k += 2) {
+        const auto& a = one.rows[k].result;
+        const auto& b = both.rows[k].result;
+        std::println("| {:.0f} | {:.2f} | {:.4f} | {:.2f} | {:.2f} | {:.4f} |", deltas[k],
+                     a.estimate, a.p_value, a.fmi, b.estimate, b.p_value);
+    }
+    const auto show = [](const std::optional<double>& v) {
+        return v ? std::format("{:.2f}", *v) : std::string("not reached");
+    };
+    std::println("\nActive arm shifted: tipping point delta = {}, null point delta = {}.",
+                 show(one.tipping_delta), show(one.null_delta));
+    std::println("Both arms shifted: tipping point delta = {}.", show(both.tipping_delta));
+
+    std::vector<double> x, est, lo, hi, est2; // plotted in increasing delta
+    for (std::size_t k = deltas.size(); k-- > 0;) {
+        x.push_back(deltas[k]);
+        est.push_back(one.rows[k].result.estimate);
+        lo.push_back(one.rows[k].result.lower);
+        hi.push_back(one.rows[k].result.upper);
+        est2.push_back(both.rows[k].result.estimate);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.ribbon(x, lo, hi, {26, 90, 147, 0.2})
+        .line(x, est, "Effect, active dropouts shifted", {26, 90, 147}, 2)
+        .line(x, est2, "Effect, all dropouts shifted", {176, 72, 43}, 2)
+        .abline_h(0, {60, 60, 60}, 1);
+    if (one.tipping_delta)
+        plot.abline_v(*one.tipping_delta, {120, 120, 120}, 1);
+    plot.title("Treatment effect under departures from MAR")
+        .x_label("Delta added to imputed outcomes (points; vertical line: tipping point)")
+        .y_label("Pooled treatment effect")
+        .size(680, 430);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/tipping_point.svg");
+}
+```
+// result_begin: markdown
+Dropout: 24% active, 22% control.
+
+| Delta | Effect, active | p, active | FMI | Effect, both | p, both |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 2.49 | 0.0173 | 0.20 | 2.49 | 0.0173 |
+| -1 | 2.24 | 0.0323 | 0.20 | 2.45 | 0.0193 |
+| -2 | 1.99 | 0.0577 | 0.20 | 2.42 | 0.0219 |
+| -3 | 1.74 | 0.0983 | 0.19 | 2.38 | 0.0252 |
+| -4 | 1.49 | 0.1595 | 0.19 | 2.35 | 0.0292 |
+| -5 | 1.23 | 0.2455 | 0.19 | 2.31 | 0.0342 |
+| -6 | 0.98 | 0.3589 | 0.19 | 2.28 | 0.0403 |
+| -7 | 0.73 | 0.4986 | 0.18 | 2.24 | 0.0475 |
+| -8 | 0.48 | 0.6600 | 0.18 | 2.21 | 0.0560 |
+| -9 | 0.23 | 0.8351 | 0.17 | 2.17 | 0.0659 |
+| -10 | -0.02 | 0.9859 | 0.17 | 2.14 | 0.0771 |
+| -11 | -0.27 | 0.8127 | 0.16 | 2.10 | 0.0899 |
+| -12 | -0.52 | 0.6533 | 0.16 | 2.07 | 0.1040 |
+
+Active arm shifted: tipping point delta = -1.73, null point delta = -9.92.
+Both arms shifted: tipping point delta = -7.31.
+\image(figures/tipping_point.svg)
+// result_end
+
+Under MAR the pooled treatment effect is 2.49 points (p = 0.017). The conclusion is fragile in the direction that matters. If active-arm dropouts did on average only 1.7 points worse than MAR predicts, about a fifth of the outcome SD, the effect would no longer be significant at 5%. Because only a quarter of the arm is shifted, the estimate falls by about a quarter of \(\delta\) per point, and it reaches zero only at \(\delta\approx-9.9\). Whether a 1.7-point penalty for dropping out of active treatment is plausible is a clinical question. Discontinuing patients often lose the benefit of treatment, so a shift of the size of the treatment effect itself (here 3 points) is a natural benchmark, and it lies beyond the tipping point.
+
+Shifting dropouts in both arms by the same amount barely moves the estimate: the bias largely cancels. The small decline comes from the slightly higher dropout rate and different baseline mix in the active arm, and significance survives up to \(\delta\approx-7.3\). This is why sensitivity analyses that shift all dropouts are uninformative about the treatment effect. The departures that matter are differential between arms, as in "jump to reference" and similar reference-based assumptions.
+
+The fraction of missing information falls slightly as \(\delta\) grows. The shift is a constant added to the imputations and adds no between-imputation variance, while the within-imputation variance grows a little as imputed values move away from the observed ones. Reusing the seed makes the estimate exactly linear in \(\delta\), which the unit tests verify, and makes the interpolated tipping point reproducible.
+
+>> Practical guidance
+
+- Choose the delta scale and direction with clinicians before seeing the results, and express it in outcome units or SD units.
+- Shift the arm and pattern whose departure from MAR would favor the treatment, usually active-arm dropouts after discontinuation. Equal shifts in both arms answer a different and less relevant question.
+- Report the tipping point together with the MAR result and a judgment of plausibility. A tipping point far beyond credible departures supports robustness.
+- Use enough imputations (here 20) and a fixed seed, so that the tipping point is not dominated by Monte Carlo error.
+- For several incomplete variables, remember that the shift propagates through the chained equations. Shift only the outcome whose missingness is in question.
+
+>> References
+
+- J. R. Carpenter and M. G. Kenward (2013). *Multiple Imputation and its Application*. Wiley, chapter 10.
+- National Research Council (2010). *The Prevention and Treatment of Missing Data in Clinical Trials*. National Academies Press. doi:10.17226/12955
+- G. Molenberghs and M. G. Kenward (2007). *Missing Data in Clinical Studies*. Wiley.
+- J. R. Carpenter, J. H. Roger and M. G. Kenward (2013). Analysis of longitudinal trials with protocol deviation: a framework for relevant, accessible assumptions, and inference via multiple imputation. *Journal of Biopharmaceutical Statistics* 23(6), 1352-1371. doi:10.1080/10543406.2013.834911

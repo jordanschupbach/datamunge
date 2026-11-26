@@ -1,0 +1,134 @@
+//? Title: Decompose and forecast with structural time-series models
+//? Exports: both
+//? Lang: en
+
+> Write the series as a sum of components, each driven by its own noise
+
+A structural (unobserved-components) model writes an observation as a sum of interpretable states plus noise. The basic structural model of Harvey has a level \(\mu_t\), a slope \(\nu_t\) and a dummy seasonal \(\gamma_t\) with period \(s\):
+\[y_t=\mu_t+\gamma_t+\varepsilon_t,\quad \mu_{t+1}=\mu_t+\nu_t+\xi_t,\quad \nu_{t+1}=\nu_t+\zeta_t,\quad \gamma_{t+1}=-\sum_{j=1}^{s-1}\gamma_{t+1-j}+\omega_t.\]
+Each of the four variances says how quickly its component may change. A variance of zero freezes that component, so the slope becomes a fixed drift or the seasonal pattern becomes fixed. Dropping the slope and seasonal gives the local level model, and dropping only the seasonal gives the local linear trend.
+
+`fit_structural` puts the model in state-space form and maximizes the Kalman-filter likelihood over the variances. It then returns filtered states \(a_{t|t}\) and fixed-interval smoothed states, and `forecast_structural` extends the filter past the sample. The example fits a basic structural model to a simulated quarterly series whose seasonal pattern drifts slowly. A second simulation shows a known feature of these likelihoods: when the level variance is small relative to the noise, maximum likelihood often puts it exactly at zero ("pile-up").
+
+```{cpp, id=structural, file="figures/structural_decomposition.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/structural.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::StructuralModel;
+
+int main() {
+    std::mt19937_64 random(8);
+    std::normal_distribution<double> z;
+
+    // 30 years of quarters. Variances: slope 0.0004, level 0.01, seasonal 0.02, noise 0.25.
+    std::vector<double> y, true_level;
+    double level = 10, slope = .05;
+    std::vector<double> season{1.5, -.5, -2, 1};
+    for (int t = 0; t < 120; ++t) {
+        const double gamma = season[t % 4];
+        y.push_back(level + gamma + .5 * z(random));
+        true_level.push_back(level);
+        level += slope + .1 * z(random);
+        slope += .02 * z(random);
+        // New seasonal effect = minus the sum of the other three, plus noise.
+        const double next = -(season[(t + 1) % 4] + season[(t + 2) % 4] + season[(t + 3) % 4]);
+        season[t % 4] = next + std::sqrt(.02) * z(random);
+    }
+    const auto fit = dm::stats::fit_structural(
+        y, {.model = StructuralModel::basic_seasonal, .period = 4});
+    std::println("| Variance | True | Estimate |");
+    std::println("| --- | ---: | ---: |");
+    std::println("| Level ξ | 0.0100 | {:.4f} |", fit.level_variance);
+    std::println("| Slope ζ | 0.0004 | {:.4f} |", fit.slope_variance);
+    std::println("| Seasonal ω | 0.0200 | {:.4f} |", fit.seasonal_variance);
+    std::println("| Irregular ε | 0.2500 | {:.4f} |", fit.irregular_variance);
+    double error = 0;
+    for (std::size_t t = 0; t < y.size(); ++t)
+        error += std::pow(fit.smoothed(t, 0) - true_level[t], 2);
+    std::println("\nLog likelihood {:.2f}; RMS error of the smoothed level {:.3f} "
+                 "(noise s.d. 0.5).", fit.log_likelihood, std::sqrt(error / y.size()));
+
+    // Pile-up: local level, n = 100, irregular variance 1, varying level variance q.
+    std::println("\n| q | Share with level variance at 0 | Median estimate |");
+    std::println("| ---: | ---: | ---: |");
+    for (const double q : {0.002, 0.01, 0.05, 0.2}) {
+        std::vector<double> estimates;
+        int zeros = 0;
+        for (int r = 0; r < 300; ++r) {
+            std::vector<double> x;
+            double m = 0;
+            for (int t = 0; t < 100; ++t) {
+                x.push_back(m + z(random));
+                m += std::sqrt(q) * z(random);
+            }
+            const auto f = dm::stats::fit_structural(x);
+            zeros += f.level_variance < 1e-6;
+            estimates.push_back(f.level_variance);
+        }
+        std::ranges::sort(estimates);
+        std::println("| {} | {:.2f} | {:.4f} |", q, zeros / 300.0, estimates[150]);
+    }
+
+    // Data, smoothed level and three years of forecasts with 95% bands.
+    const auto forecast = dm::stats::forecast_structural(fit, 12);
+    std::vector<double> t, smooth_level, tf, upper, lower;
+    for (std::size_t i = 0; i < y.size(); ++i) {
+        t.push_back(double(i));
+        smooth_level.push_back(fit.smoothed(i, 0));
+    }
+    for (std::size_t h = 0; h < 12; ++h) {
+        tf.push_back(double(y.size() + h));
+        upper.push_back(forecast.mean[h] + 1.96 * forecast.standard_error[h]);
+        lower.push_back(forecast.mean[h] - 1.96 * forecast.standard_error[h]);
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(t, y, "Observed", {150, 154, 160}, 1)
+        .line(t, true_level, "True level", {46, 139, 87}, 1.2)
+        .line(t, smooth_level, "Smoothed level", {26, 90, 147}, 1.8)
+        .line(tf, forecast.mean, "Forecast", {176, 72, 43}, 1.8)
+        .line(tf, upper, "95% band", {176, 72, 43}, .9)
+        .line(tf, lower, "", {176, 72, 43}, .9)
+        .title("Basic structural model: smoothed level and forecast")
+        .x_label("Quarter")
+        .y_label("y")
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/structural_decomposition.svg");
+}
+```
+// result_begin: markdown
+| Variance | True | Estimate |
+| --- | ---: | ---: |
+| Level ξ | 0.0100 | 0.0000 |
+| Slope ζ | 0.0004 | 0.0029 |
+| Seasonal ω | 0.0200 | 0.0467 |
+| Irregular ε | 0.2500 | 0.2745 |
+
+Log likelihood -155.46; RMS error of the smoothed level 0.210 (noise s.d. 0.5).
+
+| q | Share with level variance at 0 | Median estimate |
+| ---: | ---: | ---: |
+| 0.002 | 0.42 | 0.0005 |
+| 0.01 | 0.11 | 0.0095 |
+| 0.05 | 0.02 | 0.0479 |
+| 0.2 | 0.00 | 0.1849 |
+\image(figures/structural_decomposition.svg)
+// result_end
+\caption(The simulated quarterly series with its true and smoothed level, followed by 12 quarters of forecasts and 95% prediction bands.)
+\alttext(A grey seasonal series starts near 10, drifts up to about 13 around quarter 60 and then falls to about 5 by quarter 120. The blue smoothed level runs through the middle of the seasonal swings and stays close to the green true level. After quarter 120 an orange forecast continues the seasonal pattern and the downward trend, and its 95% band widens with the horizon.)
+
+The decomposition works: the smoothed level follows the true level with an RMS error of 0.21, well below the noise standard deviation of 0.5, and the forecasts carry the seasonal pattern forward. The individual variances are less well determined. The fit puts the level variance at zero and makes the slope variance about seven times its true value. A random walk in the level and a slowly changing slope both produce a wandering trend, and 120 observations cannot tell them apart well. The smoothed level and the forecasts depend mostly on the total trend flexibility, so they are much more reliable than any single variance.
+
+The pile-up table shows the same boundary effect in the simplest model. With 100 observations and a level variance of 0.2% of the noise variance, 42% of maximum-likelihood fits set it exactly to zero, which is a constant-mean model. The share falls quickly as the signal-to-noise ratio grows. A zero estimate is therefore weak evidence that the level is really constant, and tests of a zero variance need a boundary-adjusted (mixture of \(\chi^2\)) reference distribution.
+
+The filter, likelihood, smoother and forecasts are ports of R's `KalmanLike`, `KalmanSmooth` and `KalmanFore`, including the diffuse-style start \(a_0=(y_1,0,\dots)\), \(P_0=10^6\,\mathrm{var}(y)/100\). Variances, log likelihoods, filtered and smoothed states, standardized residuals and forecasts match R's `StructTS`, `tsSmooth` and `predict` for the local level and local linear trend on `Nile`, the basic structural model on `log10(UKgas)`, and a series with missing values. `fit_structural` reaches a slightly higher likelihood than R's L-BFGS-B stopping point (by about \(6\times10^{-6}\) for the basic structural model). With missing values R rescales the reported likelihood by \(n/n_{\text{obs}}\), and `fit_structural` reports the unscaled likelihood.
+
+[Harvey (1989)|https://doi.org/10.1017/CBO9781107049994] · [Durbin and Koopman (2012)|https://doi.org/10.1093/acprof:oso/9780199641178.001.0001]

@@ -1,0 +1,165 @@
+//? Title: Cross-fitted AIPW with machine-learning nuisance models
+//? Exports: both
+//? Lang: en
+
+> Estimate the average treatment effect doubly robustly, using out-of-fold predictions so flexible learners do not overfit the estimate
+
+The augmented inverse probability weighted (AIPW) estimator combines an outcome regression with a propensity model. For each unit it forms
+
+\[
+\psi_i=\hat\mu_1(X_i)-\hat\mu_0(X_i)+\frac{A_i\{Y_i-\hat\mu_1(X_i)\}}{\hat e(X_i)}-\frac{(1-A_i)\{Y_i-\hat\mu_0(X_i)\}}{1-\hat e(X_i)},
+\]
+
+and estimates the ATE by the average of \(\psi_i\), with standard error \(\mathrm{SD}(\psi)/\sqrt n\). The estimate is consistent if either nuisance model is right. It is also insensitive to first-order errors in both models, so it stays root-n consistent and asymptotically normal even when the nuisances are estimated by flexible machine-learning methods that converge more slowly. That is the premise of double/debiased machine learning.
+
+The insensitivity has a precondition. A flexible learner evaluated on its own training data can memorize the outcomes, so its residuals \(Y_i-\hat\mu(X_i)\) are too small and correlated with the noise. Cross-fitting removes the problem. `cross_fitted_aipw` splits the units into folds, stratified by treatment, and predicts every unit's nuisances from models trained on the other folds. The learners are callbacks: by default a main-effects logistic propensity model and arm-specific least squares, and here the library's random forest. The unit tests reproduce a hand-written R implementation exactly with the same folds, and check the stratification, reproducibility and double robustness.
+
+The simulation uses \(n=500\) and five uniform covariates. Both nuisance functions are nonlinear. The outcome follows Friedman's benchmark function \(10\sin(\pi x_1x_2)+20(x_3-0.5)^2+10x_4+5x_5\) plus an effect of 3 and normal noise. Treatment probability depends on \(\sin(\pi x_1x_2)\) and \(x_4\). Four estimators are compared in 100 samples:
+- AIPW with linear and logistic nuisances, both misspecified;
+- AIPW with random forests fitted and evaluated on the same data;
+- AIPW with random forests and 2-fold cross-fitting;
+- AIPW with random forests and 5-fold cross-fitting.
+
+Each forest has 50 trees and considers all five covariates at every split. With the default of one covariate per split, the forests could not capture the \(x_1x_2\) interaction, and even 5-fold cross-fitted AIPW had a bias of 0.74 in a pilot run. Double robustness forgives slow nuisance estimates, but not inconsistent ones. The outcome forests grow to leaves of a single observation, which lets them interpolate the training data. The propensity forest regresses the treatment indicator with leaves of at least 10. Propensities are clipped to [0.025, 0.975].
+
+```{cpp, id=aipw, file="figures/cross_fitted_aipw.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/causal/aipw.hpp>
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/random_forest_regressor.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+// Random-forest regression of a response on all covariates, predicted for new rows.
+std::vector<double> forest(const Matrix& x, const std::vector<double>& y, const Matrix& test,
+                           std::size_t leaf) {
+    dm::dstruct::DataFrame train, query;
+    train.add_column("y", y);
+    std::string formula = "y ~ ";
+    for (std::size_t j = 0; j < x.cols(); ++j) {
+        std::vector<double> a(x.rows()), b(test.rows());
+        for (std::size_t i = 0; i < x.rows(); ++i)
+            a[i] = x(i, j);
+        for (std::size_t i = 0; i < test.rows(); ++i)
+            b[i] = test(i, j);
+        const auto name = "x" + std::to_string(j + 1);
+        train.add_column(name, a);
+        query.add_column(name, b);
+        formula += (j ? " + " : "") + name;
+    }
+    const dm::stats::RandomForestRegressor model(
+        train, formula,
+        {.n_trees = 50, .max_depth = 12, .min_samples_leaf = leaf, .max_features = 5, .seed = 7});
+    return model.predict(query);
+}
+
+int main() {
+    const auto outcome_rf = [](const Matrix& x, const std::vector<double>& y, const Matrix& t) {
+        return forest(x, y, t, 1);
+    };
+    const auto propensity_rf = [](const Matrix& x, const std::vector<int>& a, const Matrix& t) {
+        return forest(x, std::vector<double>(a.begin(), a.end()), t, 10);
+    };
+    const std::vector<std::string> names{"Linear / logistic", "Forest, no cross-fitting",
+                                         "Forest, 2-fold cross-fitting",
+                                         "Forest, 5-fold cross-fitting"};
+    const int reps = 100;
+    const std::size_t n = 500;
+    dm::random::SplitMix64 rng(2018);
+    std::vector<double> z[4];
+    double sum[4]{}, sq[4]{}, se[4]{}, cover[4]{};
+    for (int r = 0; r < reps; ++r) {
+        Matrix x(n, 5);
+        std::vector<int> a(n);
+        std::vector<double> y(n);
+        for (std::size_t i = 0; i < n; ++i) {
+            for (std::size_t j = 0; j < 5; ++j)
+                x(i, j) = rng.uniform01();
+            const double s = std::sin(std::numbers::pi * x(i, 0) * x(i, 1));
+            const double mu = 10 * s + 20 * (x(i, 2) - 0.5) * (x(i, 2) - 0.5) + 10 * x(i, 3) +
+                              5 * x(i, 4);
+            const double e = 1 / (1 + std::exp(-(-2 + 2.5 * s + 1.5 * x(i, 3))));
+            a[i] = rng.uniform01() < e;
+            y[i] = mu + 3 * a[i] + rng.normal();
+        }
+        const dm::causal::AipwOptions base{.seed = std::uint64_t(r + 1),
+                                           .propensity_bound = 0.025};
+        std::vector<dm::causal::AipwOptions> designs(4, base);
+        designs[1].folds = 1;
+        designs[2].folds = 2;
+        for (int k = 1; k < 4; ++k) {
+            designs[k].propensity = propensity_rf;
+            designs[k].outcome = outcome_rf;
+        }
+        for (int k = 0; k < 4; ++k) {
+            const auto fit = dm::causal::cross_fitted_aipw(y, a, x, designs[k]);
+            sum[k] += (fit.ate - 3) / reps;
+            sq[k] += (fit.ate - 3) * (fit.ate - 3) / reps;
+            se[k] += fit.standard_error / reps;
+            cover[k] += (fit.lower <= 3 && 3 <= fit.upper) / double(reps);
+            z[k].push_back((fit.ate - 3) / fit.standard_error);
+        }
+    }
+    std::println("| Method | Bias | Emp. SD | Mean SE | RMSE | Coverage |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (int k = 0; k < 4; ++k)
+        std::println("| {} | {:+.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", names[k], sum[k],
+                     std::sqrt(sq[k] - sum[k] * sum[k]), se[k], std::sqrt(sq[k]), cover[k]);
+
+    std::vector<double> q;
+    for (int i = 0; i < reps; ++i)
+        q.push_back(dm::random::normal_quantile((i + 0.5) / reps));
+    for (auto& v : z)
+        std::ranges::sort(v);
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(q, q, "Standard normal", {120, 120, 120}, 1)
+        .line(q, z[1], "Forest, no cross-fitting", {176, 72, 43}, 2)
+        .line(q, z[3], "Forest, 5-fold cross-fitting", {26, 90, 147}, 2)
+        .line(q, z[0], "Linear / logistic", {110, 160, 80}, 2)
+        .title("Normal QQ plot of standardized AIPW errors")
+        .x_label("Standard normal quantile")
+        .y_label("(estimate - 3) / standard error")
+        .size(640, 440);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/cross_fitted_aipw.svg");
+}
+```
+// result_begin: markdown
+| Method | Bias | Emp. SD | Mean SE | RMSE | Coverage |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Linear / logistic | +1.089 | 0.319 | 0.340 | 1.135 | 0.100 |
+| Forest, no cross-fitting | +0.807 | 0.213 | 0.125 | 0.834 | 0.000 |
+| Forest, 2-fold cross-fitting | -0.112 | 0.436 | 0.406 | 0.450 | 0.950 |
+| Forest, 5-fold cross-fitting | -0.137 | 0.335 | 0.377 | 0.362 | 0.990 |
+\image(figures/cross_fitted_aipw.svg)
+// result_end
+
+The misspecified linear and logistic models are both wrong in the same direction, so double robustness gives no protection. The bias is 1.1, and the intervals cover only 10% of the time, with correctly sized but misplaced standard errors.
+
+Random forests can learn both nuisances, but only out of sample. Fitted and evaluated on the same data, the outcome forests nearly reproduce each unit's own outcome. The residuals in the correction terms become almost zero, and the estimator degenerates to the difference of two overfitted regressions. The result is the worst of both worlds: a bias of 0.81 from the forests' smoothing in sparse regions, which the vanished residuals can no longer correct, and a standard error (0.13) far below the true variability (0.21). Not one interval covers the truth. The QQ plot shows the standardized errors shifted by several units and stretched.
+
+Cross-fitting restores the theory. With out-of-fold predictions the residuals are honest, the correction terms remove most of the forests' bias (−0.11 with two folds, −0.14 with five), and the influence-function standard error matches the sampling variability. The 5-fold version is more precise than the 2-fold one, because each forest is trained on 80% rather than 50% of the data. Its intervals are slightly conservative here (99%), because forest predictions are themselves noisy, which inflates the variance of \(\psi_i\). Remaining bias of this size reflects how slowly forests converge with 500 units, and should shrink with more data.
+
+>> Practical guidance
+
+- Always cross-fit when the nuisance learners are flexible: forests, boosting, neural networks or anything with tuning chosen on the same data. Five or ten folds are a good default.
+- Flexible learners must still be consistent for the nuisance functions. Check that they fit well out of fold, for example with cross-validated loss or calibration of the propensities.
+- Inspect the out-of-fold propensities and the number clipped. Many values near the bounds mean poor overlap, and the effect is then estimated with large variance or must be redefined (trimming, or the overlap-weighted effect).
+- Different fold splits give slightly different estimates. With small samples, repeat the cross-fitting with several seeds and report the median, as Chernozhukov et al. recommend.
+
+>> References
+
+- J. M. Robins, A. Rotnitzky and L. P. Zhao (1994). Estimation of regression coefficients when some regressors are not always observed. *Journal of the American Statistical Association* 89(427), 846-866. doi:10.1080/01621459.1994.10476818
+- V. Chernozhukov, D. Chetverikov, M. Demirer, E. Duflo, C. Hansen, W. Newey and J. Robins (2018). Double/debiased machine learning for treatment and structural parameters. *The Econometrics Journal* 21(1), C1-C68. doi:10.1111/ectj.12097
+- E. H. Kennedy (2016). Semiparametric theory and empirical processes in causal inference. In *Statistical Causal Inferences and Their Applications in Public Health Research*, Springer, 141-167. doi:10.1007/978-3-319-41259-7_8
+- J. H. Friedman (1991). Multivariate adaptive regression splines. *The Annals of Statistics* 19(1), 1-67. doi:10.1214/aos/1176347963

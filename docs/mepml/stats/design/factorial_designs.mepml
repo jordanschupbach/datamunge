@@ -1,0 +1,124 @@
+//? Title: Screen factors with two-level fractional factorial designs
+//? Exports: both
+//? Lang: en
+
+> Trade runs for aliasing with a defining relation
+
+A full two-level factorial in \(k\) factors needs \(2^k\) runs, which is 128 runs for seven factors. A \(2^{k-q}\) fraction keeps a full factorial in \(k-q\) base factors. It sets each remaining factor equal to a product of base columns, called its generator. These choices give a defining relation \(I=w_1=w_2=\dots\), where each word \(w\) is a product of generators. Two effects whose product is such a word use the same contrast and cannot be separated; they are aliased. The resolution is the length of the shortest word. In a resolution IV design no main effect is aliased with another main effect or with a two-factor interaction.
+
+`fractional_factorial_design` builds the run matrix in standard order from generator words, as `FrF2` does in R. It returns the defining relation, word length pattern and resolution. `alias_sets` lists the effects that share each column.
+
+The example runs a \(2^{7-3}\) screening experiment with generators \(E=ABC\), \(F=BCD\) and \(G=ACD\). The simulated response has three active main effects (\(A\), \(C\), \(F\)) and one interaction, \(AC\), plus noise. Each of the 15 contrasts is estimated as the difference between the mean response at the high level and at the low level. A half-normal plot then shows which contrasts stand out from the noise.
+
+```{cpp, id=factorial-designs, file="figures/half_normal_effects.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/stats/factorial_design.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+
+int main() {
+    const auto design = dm::stats::fractional_factorial_design(7, {"ABC", "BCD", "ACD"});
+    std::print("Defining relation: I");
+    for (const auto& w : design.defining_relation)
+        std::print(" = {}", w);
+    std::println(". Resolution {}, {} runs.\n", design.resolution, design.runs.rows());
+
+    // Response: 3A + 2.5C - 2F + 2AC + N(0, 1).
+    std::mt19937_64 random(7);
+    std::normal_distribution<double> noise;
+    const auto& x = design.runs;
+    std::vector<double> y(x.rows());
+    for (std::size_t r = 0; r < x.rows(); ++r)
+        y[r] = 50 + 3 * x(r, 0) + 2.5 * x(r, 2) - 2 * x(r, 5) + 2 * x(r, 0) * x(r, 2) +
+               noise(random);
+
+    // One contrast per alias set (orders up to 3 cover all 15 columns),
+    // plus main effects that are aliased with nothing of order 3 or less.
+    auto sets = dm::stats::alias_sets(design, 3);
+    for (const auto& f : design.factors)
+        if (std::ranges::none_of(sets, [&](const auto& s) { return s.front() == f; }))
+            sets.push_back({f});
+    std::ranges::sort(sets, [](const auto& a, const auto& b) {
+        return a.front().size() != b.front().size() ? a.front().size() < b.front().size()
+                                                    : a.front() < b.front();
+    });
+    struct Effect { std::string label; double value; };
+    std::vector<Effect> effects;
+    for (const auto& s : sets) {
+        double high = 0, low = 0;
+        for (std::size_t r = 0; r < x.rows(); ++r) {
+            double sign = 1;
+            for (const char c : s.front())
+                sign *= x(r, std::string("ABCDEFG").find(c));
+            (sign > 0 ? high : low) += y[r] / (x.rows() / 2.0);
+        }
+        std::string label = s.front();
+        for (std::size_t i = 1; i < s.size() && s[i].size() <= 2; ++i)
+            label += "=" + s[i];
+        effects.push_back({label, high - low});
+    }
+    std::ranges::sort(effects, [](const Effect& a, const Effect& b) {
+        return std::abs(a.value) > std::abs(b.value);
+    });
+    std::println("| Contrast (aliases up to order 2) | Effect |");
+    std::println("| --- | ---: |");
+    for (const auto& e : effects)
+        std::println("| {} | {:.2f} |", e.label, e.value);
+
+    // Half-normal plot: sorted |effect| against quantiles Phi^-1(0.5 + 0.5 (i - 0.5) / m).
+    const std::size_t m = effects.size();
+    std::vector<double> q, a;
+    for (std::size_t i = 0; i < m; ++i) {
+        q.push_back(dm::random::normal_quantile(.5 + .5 * (i + .5) / m));
+        a.push_back(std::abs(effects[m - 1 - i].value));
+    }
+    auto plot = dm::graphics::RPlot::create();
+    plot.points(q, a, "Absolute effect", {26, 90, 147}, 6);
+    for (std::size_t i = m - 4; i < m; ++i)
+        plot.text(q[i] + .04, a[i], effects[m - 1 - i].label.substr(0, 2));
+    plot.title("Half-normal plot of the 15 contrasts")
+        .x_label("Half-normal quantile").y_label("|Effect|")
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/half_normal_effects.svg");
+}
+```
+// result_begin: markdown
+Defining relation: I = ABCE = ABFG = ACDG = ADEF = BCDF = BDEG = CEFG. Resolution 4, 16 runs.
+
+| Contrast (aliases up to order 2) | Effect |
+| --- | ---: |
+| A | 6.64 |
+| C | 4.54 |
+| AC=BE=DG | 4.03 |
+| F | -3.34 |
+| B | 1.15 |
+| AE=BC=DF | 0.84 |
+| G | -0.74 |
+| AB=CE=FG | 0.58 |
+| AG=BF=CD | 0.55 |
+| E | -0.44 |
+| AD=CG=EF | 0.34 |
+| ABD | -0.28 |
+| AF=BG=DE | 0.09 |
+| BD=CF=EG | -0.08 |
+| D | -0.02 |
+\image(figures/half_normal_effects.svg)
+// result_end
+\caption(Half-normal plot of the absolute values of the 15 contrasts from the 16-run design; the four largest are labelled.)
+\alttext(Eleven contrasts lie on a shallow line near zero. A, C, the AC alias chain and F lie well above it, with A the largest at about 6.6.)
+
+The defining relation has seven words of length four, so this is a resolution IV design. Main effects are therefore free of two-factor interactions. Each two-factor interaction shares its column with two others. Because the effect is measured from the low level to the high level, it equals twice the model coefficient. The three main effects come out near their true values of 6, 5 and −4. The contrast for the \(AC=BE=DG\) chain is about 4, matching the true \(AC\) coefficient of 2. Most of the remaining contrasts fall along the line through the origin that pure noise would produce.
+
+The data alone cannot tell which interaction in the chain is active. Because \(A\) and \(C\) are both large, effect heredity points to \(AC\) rather than \(BE\) or \(DG\). A fold-over on \(B\), \(D\) or \(E\) would separate them with 16 more runs. The run matrices, generators and two-factor alias chains match `FrF2` and `design.info()$aliased` in R.
+
+[Box and Hunter (1961)|https://doi.org/10.1080/00401706.1961.10489951] · [Fries and Hunter (1980)|https://doi.org/10.1080/00401706.1980.10486210] · [R FrF2|https://cran.r-project.org/package=FrF2]

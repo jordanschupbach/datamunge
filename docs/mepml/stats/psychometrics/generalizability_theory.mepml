@@ -1,0 +1,190 @@
+//? Title: Generalizability theory
+//? Exports: both
+//? Lang: en
+
+> Split the variability of ratings into persons, raters, occasions and their interactions, then predict how reliable a score averaged over a different number of raters or occasions would be
+
+Classical reliability lumps all measurement error together. Generalizability theory (G theory) separates it by source. In a fully crossed design every person \(p\) is scored by every rater \(r\) on every occasion \(o\), and each score decomposes into random effects:
+
+\[X_{pro}=\mu+\nu_p+\nu_r+\nu_o+\nu_{pr}+\nu_{po}+\nu_{ro}+\nu_{pro,e}.\]
+
+A **G-study** estimates the seven variance components from the ANOVA mean squares by solving the expected-mean-square equations. A **D-study** then predicts the error of a score averaged over \(n'_r\) raters and \(n'_o\) occasions, because averaging divides each component involving a facet by the number of conditions of that facet. Two kinds of error matter:
+
+- *Relative* error \(\sigma^2_\delta=\sigma^2_{pr}/n'_r+\sigma^2_{po}/n'_o+\sigma^2_{pro,e}/(n'_rn'_o)\) counts only person-by-facet interactions. It gives the generalizability coefficient \(E\rho^2\) for ranking people.
+- *Absolute* error \(\sigma^2_\Delta\) adds the rater and occasion main effects (lenient raters, easy days). It gives the dependability coefficient \(\Phi\) for decisions against a fixed cut score.
+
+`g_study` estimates all components of a balanced, fully crossed random design with any number of facets. It reports mean squares, raw and truncated estimates, Brennan's standard errors and percentages. `d_study` returns both error variances, \(E\rho^2\), \(\Phi\) and the standard errors of measurement for any facet sizes. The tests reproduce `aov` mean squares and an independent full-system EMS solution to \(10^{-10}\), including a four-factor design with negative raw estimates. They also agree with `lme4` REML to the optimiser's tolerance, and check that the one-facet \(E\rho^2\) equals `psych::alpha`.
+
+The example simulates an essay-rating study: 30 students, 3 raters and 2 occasions, with true components \(\sigma^2_p=0.5\), \(\sigma^2_r=0.1\), \(\sigma^2_o=0.05\), \(\sigma^2_{pr}=0.1\), \(\sigma^2_{po}=0.15\), \(\sigma^2_{ro}=0.02\) and \(\sigma^2_{pro,e}=0.6\). It then repeats the G-study 2000 times at two sizes and checks how well each predicts the reliability of a planned design with 2 raters and 4 occasions.
+
+```{cpp, id=gt, file="figures/generalizability_theory.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/generalizability.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+
+// True components in G-study order: p, r, o, pr, po, ro, pro.
+const double truth[7] = {0.5, 0.1, 0.05, 0.1, 0.15, 0.02, 0.6};
+
+std::vector<double> simulate(dm::random::SplitMix64& rng, std::size_t np, std::size_t nr,
+                             std::size_t no) {
+    auto draw = [&](std::size_t n, double var) {
+        std::vector<double> e(n);
+        for (double& v : e) v = std::sqrt(var) * rng.normal();
+        return e;
+    };
+    const auto p = draw(np, truth[0]), r = draw(nr, truth[1]), o = draw(no, truth[2]);
+    const auto pr = draw(np * nr, truth[3]), po = draw(np * no, truth[4]);
+    const auto ro = draw(nr * no, truth[5]);
+    std::vector<double> y;
+    for (std::size_t i = 0; i < np; ++i)
+        for (std::size_t j = 0; j < nr; ++j)
+            for (std::size_t k = 0; k < no; ++k)
+                y.push_back(3 + p[i] + r[j] + o[k] + pr[i * nr + j] + po[i * no + k] +
+                            ro[j * no + k] + std::sqrt(truth[6]) * rng.normal());
+    return y;
+}
+
+// True D-study coefficients from the generating components.
+dm::stats::DStudy true_d(double nr, double no) {
+    dm::stats::GStudy g;
+    g.levels = {2, 2, 2};
+    const std::vector<std::vector<std::size_t>> f{{0},    {1},    {2},      {0, 1},
+                                                  {0, 2}, {1, 2}, {0, 1, 2}};
+    for (int i = 0; i < 7; ++i)
+        g.components.push_back({.factors = f[i], .variance = truth[i]});
+    return dm::stats::d_study(g, {nr, no});
+}
+
+int main() {
+    dm::random::SplitMix64 rng(17);
+    const auto g = dm::stats::g_study(simulate(rng, 30, 3, 2), {30, 3, 2});
+    const char* names[7] = {"Persons (p)", "Raters (r)", "Occasions (o)", "p x r", "p x o",
+                            "r x o", "p x r x o, error"};
+    std::println("| Effect | df | Mean square | Estimate (SE) | % of total | True |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (int i = 0; i < 7; ++i) {
+        const auto& c = g.components[i];
+        std::println("| {} | {} | {:.3f} | {:.3f} ({:.3f}) | {:.1f} | {} |", names[i], c.df,
+                     c.mean_square, c.raw_variance, c.standard_error, c.percent, truth[i]);
+    }
+    std::println("\n| Raters | Occasions | Rel. error | E rho^2 | Phi | True E rho^2 | "
+                 "True Phi |");
+    std::println("| ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (const auto [nr, no] : {std::pair{1.0, 1.0}, {3.0, 2.0}, {2.0, 4.0}, {6.0, 1.0},
+                                {1.0, 6.0}, {4.0, 4.0}}) {
+        const auto d = dm::stats::d_study(g, {nr, no});
+        const auto t = true_d(nr, no);
+        std::println("| {} | {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", nr, no,
+                     d.relative_error, d.generalizability, d.dependability,
+                     t.generalizability, t.dependability);
+    }
+
+    // Repeated G-studies: predicted E rho^2 and Phi for 2 raters x 4 occasions.
+    const auto target = true_d(2, 4);
+    std::println("\nTarget design 2 raters x 4 occasions: true E rho^2 = {:.3f}, "
+                 "Phi = {:.3f}.\n", target.generalizability, target.dependability);
+    std::println("| G-study (p x r x o) | Mean predicted E rho^2 | 10%-90% range | "
+                 "Mean Phi | 10%-90% range | Some raw estimate < 0 |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: |");
+    for (const auto [np, nr, no] : {std::tuple{30uz, 3uz, 2uz}, {100uz, 6uz, 4uz}}) {
+        std::vector<double> er, ph;
+        double neg = 0;
+        const int reps = 2000;
+        for (int r = 0; r < reps; ++r) {
+            const auto gs = dm::stats::g_study(simulate(rng, np, nr, no), {np, nr, no});
+            const auto d = dm::stats::d_study(gs, {2, 4});
+            er.push_back(d.generalizability), ph.push_back(d.dependability);
+            neg += std::ranges::any_of(gs.components, [](const auto& c) {
+                return c.raw_variance < 0;
+            });
+        }
+        std::ranges::sort(er), std::ranges::sort(ph);
+        double me = 0, mp = 0;
+        for (int r = 0; r < reps; ++r)
+            me += er[r] / reps, mp += ph[r] / reps;
+        std::println("| {} x {} x {} | {:.3f} | {:.3f}-{:.3f} | {:.3f} | {:.3f}-{:.3f} | "
+                     "{:.3f} |", np, nr, no, me, er[reps / 10], er[9 * reps / 10], mp,
+                     ph[reps / 10], ph[9 * reps / 10], neg / reps);
+    }
+
+    // D-study curves from the example G-study (solid) and the truth (thin).
+    auto plot = dm::graphics::RPlot::create();
+    const dm::graphics::RGBA col[3] = {{176, 72, 43}, {26, 90, 147}, {67, 140, 70}};
+    int c = 0;
+    for (const double no : {1.0, 2.0, 4.0}) {
+        std::vector<double> x, est, tru;
+        for (double nr = 1; nr <= 10; ++nr) {
+            x.push_back(nr);
+            est.push_back(dm::stats::d_study(g, {nr, no}).generalizability);
+            tru.push_back(true_d(nr, no).generalizability);
+        }
+        plot.line(x, est, std::format("{} occasion{} (estimated)", no, no > 1 ? "s" : ""),
+                  col[c], 2.5)
+            .points(x, est, "", col[c], 4)
+            .line(x, tru, "", col[c], 1);
+        ++c;
+    }
+    plot.abline_h(0.8, {150, 150, 150})
+        .y_limits(0.3, 1.12)
+        .title("D-study generalizability (thin lines: truth)")
+        .x_label("Number of raters")
+        .y_label("E rho^2")
+        .size(660, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/generalizability_theory.svg");
+}
+```
+// result_begin: markdown
+| Effect | df | Mean square | Estimate (SE) | % of total | True |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Persons (p) | 29 | 6.216 | 0.819 (0.269) | 43.7 | 0.5 |
+| Raters (r) | 2 | 5.463 | 0.029 (0.076) | 1.6 | 0.1 |
+| Occasions (o) | 1 | 4.527 | 0.007 (0.050) | 0.4 | 0.05 |
+| p x r | 58 | 0.898 | 0.109 (0.103) | 5.8 | 0.1 |
+| p x o | 29 | 1.085 | 0.135 (0.101) | 7.2 | 0.15 |
+| r x o | 2 | 3.491 | 0.094 (0.082) | 5.0 | 0.02 |
+| p x r x o, error | 58 | 0.680 | 0.680 (0.124) | 36.3 | 0.6 |
+
+| Raters | Occasions | Rel. error | E rho^2 | Phi | True E rho^2 | True Phi |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1 | 0.924 | 0.470 | 0.437 | 0.370 | 0.329 |
+| 3 | 2 | 0.217 | 0.791 | 0.769 | 0.706 | 0.649 |
+| 2 | 4 | 0.173 | 0.826 | 0.803 | 0.755 | 0.687 |
+| 6 | 1 | 0.266 | 0.755 | 0.736 | 0.652 | 0.598 |
+| 1 | 6 | 0.245 | 0.770 | 0.738 | 0.690 | 0.598 |
+| 4 | 4 | 0.103 | 0.888 | 0.874 | 0.833 | 0.783 |
+
+Target design 2 raters x 4 occasions: true E rho^2 = 0.755, Phi = 0.687.
+
+| G-study (p x r x o) | Mean predicted E rho^2 | 10%-90% range | Mean Phi | 10%-90% range | Some raw estimate < 0 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 30 x 3 x 2 | 0.729 | 0.573-0.850 | 0.662 | 0.498-0.806 | 0.754 |
+| 100 x 6 x 4 | 0.751 | 0.707-0.792 | 0.684 | 0.618-0.745 | 0.049 |
+\image(figures/generalizability_theory.svg)
+// result_end
+
+In this sample the persons component (0.82) is overestimated relative to its true value (0.5): with 30 people its standard error is 0.27. The other components are within about one standard error of the truth. Persons account for 44% of the variance and the residual for 36%. The raters, occasions and rater-by-occasion estimates rest on 1–2 degrees of freedom, and their standard errors are as large as the estimates. The D-study table shows how the error budget translates into design choices. One rating on one occasion would give \(E\rho^2=0.47\) here (true 0.37). Because \(\sigma^2_{po}\) exceeds \(\sigma^2_{pr}\), adding occasions helps a little more than adding raters: 1 rater × 6 occasions beats 6 raters × 1 occasion. \(\Phi\) is always below \(E\rho^2\), because absolute decisions also pay for rater leniency and occasion difficulty.
+
+The repeated G-studies show how uncertain a D-study projection is. A G-study of 30 × 3 × 2, a common pilot size, predicts \(E\rho^2\) for the planned 2 × 4 design with an average of 0.73 (true 0.755). One study in five, however, falls outside 0.57–0.85: a pilot could as easily recommend extra raters as declare the design sufficient. Three G-studies in four produce at least one negative raw estimate, which is then truncated at 0. A 100 × 6 × 4 G-study narrows the range to 0.71–0.79, and negative estimates almost disappear (5%). The facet main effects and their interaction, estimated from 2–6 levels, are what keep \(\Phi\) uncertain.
+
+>> Practical guidance
+
+- Design the G-study with enough levels of each facet, at least 4–6 raters and occasions, not just enough persons. Variance components of facets with 2–3 levels are very imprecise, and they drive both \(\Phi\) and the D-study recommendations.
+- Report all components with their standard errors and the raw negative estimates. Truncate at 0 only when computing coefficients.
+- Use \(E\rho^2\) for norm-referenced decisions (ranking, correlational research) and \(\Phi\) for criterion-referenced ones (pass/fail against a fixed standard). Choose the number of raters and occasions by where the large person-by-facet components are.
+- Treat D-study projections from small G-studies as rough, and confirm the chosen design with a larger study when stakes are high. Unbalanced or nested designs need REML variance components instead of the ANOVA solution.
+
+>> References
+
+- L. J. Cronbach, G. C. Gleser, H. Nanda and N. Rajaratnam (1972). *The Dependability of Behavioral Measurements: Theory of Generalizability for Scores and Profiles*. Wiley.
+- R. L. Brennan (2001). *Generalizability Theory*. Springer. doi:10.1007/978-1-4757-3456-0
+- R. J. Shavelson and N. M. Webb (1991). *Generalizability Theory: A Primer*. Sage.
+- S. R. Searle, G. Casella and C. E. McCulloch (1992). *Variance Components*. Wiley. doi:10.1002/9780470316856

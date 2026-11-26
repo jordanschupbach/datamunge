@@ -1,0 +1,214 @@
+//? Title: Estimate variances for stratified multistage samples by Taylor linearization
+//? Exports: both
+//? Lang: en
+
+> Get standard errors that respect strata, clusters and finite populations, for means, ratios and domains
+
+Most large surveys do not sample people directly. They stratify (by region, for example), sample primary sampling units (PSUs) such as schools or districts within each stratum, and then sample people within the selected PSUs. People in the same PSU tend to resemble each other, so a cluster sample carries less information than its count of people suggests. Strata work in the other direction and remove between-stratum variation.
+
+Taylor linearization handles any smooth estimator of totals: a mean (a ratio of two totals), a ratio, or an estimate within a domain. It replaces the estimator by a weighted total of linearized values \(z_i\), aggregates those to PSU totals \(z_{hc}\), and estimates the variance from their spread within strata,
+\[\widehat{\operatorname{Var}}=\sum_h(1-f_h)\frac{n_h}{n_h-1}\sum_{c=1}^{n_h}(z_{hc}-\bar z_h)^2,\]
+where \(n_h\) is the number of sampled PSUs in stratum \(h\) and \(f_h\) is the first-stage sampling fraction. This "ultimate cluster" formula needs only the first-stage design. All variation from later stages is already inside the PSU totals.
+
+Domains, such as subgroups not fixed by the design, need care. The domain's sample size is random. The correct estimator keeps every PSU and gives non-members the value zero. Subsetting the data to the domain first and analysing the subset as if it were the design loses PSUs that happened to contain no members. It also treats the domain's size as fixed.
+
+The example simulates a population of 4 regions, each with 60 schools of 40 students. Scores have intra-class correlation \(\rho\) within schools. The design samples 8 schools per region without replacement, then 10 students per school, so each sampled student has weight 30. A rural subgroup is concentrated in a quarter of the schools. Over 500 samples per \(\rho\), the example compares three standard errors: the naive one treating students as independent, the linearized one for the full design, and, for the subgroup, the linearized one after subsetting. For the subgroup it estimates both its mean score and its size, the number of rural students. Each SE ratio is the mean estimated standard error divided by the empirical SD of the estimates. A correct standard error gives 1.
+
+```{cpp, id=taylor, file="figures/taylor_linearization.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/survey.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <format>
+#include <numeric>
+#include <print>
+#include <random>
+#include <string>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::SurveyDesign;
+
+struct Population {
+    std::vector<double> y;
+    std::vector<bool> rural;
+};
+const int regions = 4, schools = 60, students = 40, take_schools = 8, take_students = 10;
+
+Population make_population(double icc, std::mt19937_64& random) {
+    std::normal_distribution<double> z;
+    std::uniform_real_distribution<double> u(0, 1);
+    Population p;
+    for (int h = 0; h < regions; ++h)
+        for (int s = 0; s < schools; ++s) {
+            const double school = std::sqrt(icc * 100) * z(random);
+            const bool rural_school = u(random) < .25;
+            for (int k = 0; k < students; ++k) {
+                const bool rural = u(random) < (rural_school ? .6 : .05);
+                p.rural.push_back(rural);
+                p.y.push_back(50 + 3 * h + school + (rural ? 5 : 0) +
+                              std::sqrt((1 - icc) * 100) * z(random));
+            }
+        }
+    return p;
+}
+
+int main() {
+    std::mt19937_64 random(12);
+    const std::vector<double> iccs{0, .05, .1, .2, .3};
+    const int reps = 500;
+    const double w = double(schools) / take_schools * students / take_students;
+    std::vector<double> naive_ratio, design_ratio;
+    std::vector<std::string> overall_rows, domain_rows;
+    std::vector<int> school_ids(schools), student_ids(students);
+    std::iota(school_ids.begin(), school_ids.end(), 0);
+    std::iota(student_ids.begin(), student_ids.end(), 0);
+    for (const double icc : iccs) {
+        const auto pop = make_population(icc, random);
+        double mean = 0, rural_sum = 0, rural_n = 0;
+        for (std::size_t i = 0; i < pop.y.size(); ++i) {
+            mean += pop.y[i] / pop.y.size();
+            rural_sum += pop.rural[i] ? pop.y[i] : 0;
+            rural_n += pop.rural[i];
+        }
+        const double truth[7]{mean, mean, rural_sum / rural_n, rural_sum / rural_n,
+                              rural_sum / rural_n, rural_n, rural_n};
+        // 0-1: overall mean (naive, design); 2-4: rural mean (naive, domain, subset);
+        // 5-6: number of rural students (domain, subset).
+        std::vector<double> est[7], se[7];
+        double cover[7]{};
+        for (int r = 0; r < reps; ++r) {
+            SurveyDesign design{.lonely_psu = dm::stats::LonelyPsu::certainty};
+            SurveyDesign naive, subset{.lonely_psu = dm::stats::LonelyPsu::certainty};
+            std::vector<double> y, y_sub;
+            std::vector<bool> rural;
+            for (int h = 0; h < regions; ++h) {
+                std::ranges::shuffle(school_ids, random);
+                for (int c = 0; c < take_schools; ++c) {
+                    std::ranges::shuffle(student_ids, random);
+                    for (int k = 0; k < take_students; ++k) {
+                        const std::size_t school = std::size_t(h) * schools + school_ids[c];
+                        const std::size_t i = school * students + student_ids[k];
+                        y.push_back(pop.y[i]);
+                        rural.push_back(pop.rural[i]);
+                        design.weights.push_back(w);
+                        design.strata.push_back(h);
+                        design.clusters.push_back(school_ids[c]);
+                        design.population_psus.push_back(schools);
+                        naive.weights.push_back(w);
+                        if (pop.rural[i]) {
+                            y_sub.push_back(pop.y[i]);
+                            subset.weights.push_back(w);
+                            subset.strata.push_back(h);
+                            subset.clusters.push_back(school_ids[c]);
+                            subset.population_psus.push_back(schools);
+                        }
+                    }
+                }
+            }
+            const std::vector<double> ones(y.size(), 1.0), sub_ones(y_sub.size(), 1.0);
+            const dm::stats::SurveyEstimate e[7]{
+                dm::stats::survey_mean(naive, y), dm::stats::survey_mean(design, y),
+                dm::stats::survey_mean(naive, y, rural),
+                dm::stats::survey_mean(design, y, rural),
+                dm::stats::survey_mean(subset, y_sub),
+                dm::stats::survey_total(design, ones, rural),
+                dm::stats::survey_total(subset, sub_ones)};
+            for (int k = 0; k < 7; ++k) {
+                est[k].push_back(e[k].estimate);
+                se[k].push_back(e[k].standard_error);
+                cover[k] += e[k].lower <= truth[k] && truth[k] <= e[k].upper;
+            }
+        }
+        double ratio[7];
+        for (int k = 0; k < 7; ++k) {
+            const double m = std::accumulate(est[k].begin(), est[k].end(), 0.0) / reps;
+            double ss = 0;
+            for (const double v : est[k])
+                ss += (v - m) * (v - m);
+            ratio[k] = std::accumulate(se[k].begin(), se[k].end(), 0.0) / reps /
+                       std::sqrt(ss / (reps - 1));
+            cover[k] /= reps;
+        }
+        naive_ratio.push_back(ratio[0]);
+        design_ratio.push_back(ratio[1]);
+        overall_rows.push_back(std::format("| {:.2f} | {:.2f} | {:.3f} | {:.2f} | {:.3f} |",
+                                           icc, ratio[0], cover[0], ratio[1], cover[1]));
+        if (icc == .3) {
+            const char* rows[5]{"Rural mean, independent students", "Rural mean, domain",
+                                "Rural mean, after subsetting", "Number rural, domain",
+                                "Number rural, after subsetting"};
+            for (int k = 2; k < 7; ++k)
+                domain_rows.push_back(std::format("| {} | {:.2f} | {:.3f} |", rows[k - 2],
+                                                  ratio[k], cover[k]));
+        }
+    }
+    std::println("Overall mean:\n");
+    std::println("| ρ | Independent: SE ratio | Coverage "
+                 "| Full design: SE ratio | Coverage |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    for (const auto& row : overall_rows)
+        std::println("{}", row);
+    std::println("\nRural domain at ρ = 0.3:\n");
+    std::println("| Estimate and standard error | SE ratio | Coverage |");
+    std::println("| --- | ---: | ---: |");
+    for (const auto& row : domain_rows)
+        std::println("{}", row);
+
+    const std::vector<double> one(iccs.size(), 1.0);
+    auto plot = dm::graphics::RPlot::create();
+    plot.line(iccs, one, "Correct", {170, 170, 170}, 1.5)
+        .line(iccs, naive_ratio, "Students treated as independent", {176, 72, 43}, 2)
+        .points(iccs, naive_ratio, dm::graphics::RGBA{176, 72, 43}, 4)
+        .line(iccs, design_ratio, "Linearized, full design", {26, 90, 147}, 2)
+        .points(iccs, design_ratio, dm::graphics::RGBA{26, 90, 147}, 4)
+        .title("Estimated / actual standard error of the overall mean")
+        .x_label("Intra-class correlation within schools")
+        .y_label("Mean SE / empirical SD")
+        .ylim(0, 1.4)
+        .size(700, 400);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/taylor_linearization.svg");
+}
+```
+// result_begin: markdown
+Overall mean:
+
+| ρ | Independent: SE ratio | Coverage | Full design: SE ratio | Coverage |
+| ---: | ---: | ---: | ---: | ---: |
+| 0.00 | 1.00 | 0.948 | 0.94 | 0.928 |
+| 0.05 | 0.92 | 0.936 | 0.97 | 0.942 |
+| 0.10 | 0.81 | 0.882 | 0.96 | 0.930 |
+| 0.20 | 0.66 | 0.802 | 0.97 | 0.930 |
+| 0.30 | 0.57 | 0.724 | 0.97 | 0.932 |
+
+Rural domain at ρ = 0.3:
+
+| Estimate and standard error | SE ratio | Coverage |
+| --- | ---: | ---: |
+| Rural mean, independent students | 0.58 | 0.768 |
+| Rural mean, domain | 0.82 | 0.880 |
+| Rural mean, after subsetting | 0.82 | 0.880 |
+| Number rural, domain | 1.01 | 0.946 |
+| Number rural, after subsetting | 0.79 | 0.878 |
+\image(figures/taylor_linearization.svg)
+// result_end
+\caption(Mean estimated standard error of the overall mean divided by the actual (empirical) standard deviation of the estimates, as the intra-class correlation within schools increases. 500 stratified two-stage samples per point.)
+\alttext(A grey reference line at 1. The blue linearized-design line stays between about 0.94 and 0.97 at every correlation. The orange independent-students line starts at 1 when the correlation is 0 and falls steadily to about 0.57 at a correlation of 0.3.)
+
+Treating the 320 students as independent is fine when there is no clustering (\(\rho=0\)). Even a modest intra-class correlation makes it badly optimistic. At \(\rho=0.3\) its standard error is 57% of the real one, and nominal 95% intervals cover 72% of the time. Each school contributes ten students, so the design effect is about \(1+9\rho\): 3.7 at \(\rho=0.3\), close to the \((1/0.57)^2\approx3.1\) observed. The linearized standard error tracks the truth at every \(\rho\), slightly below 1 because 32 PSUs in 4 strata give only 28 degrees of freedom.
+
+For the rural subgroup, the domain estimator and the subsetting shortcut give the same mean and the same standard error. For a domain *mean* the shortcut is harmless as long as no stratum loses all its domain members. Both standard errors are too small, though (ratio 0.82, coverage 88%). Rural students are concentrated in about a quarter of the schools, so the domain effectively rests on only eight or so sampled schools, and the normal approximation suffers. A \(t\) reference with design degrees of freedom would help.
+
+The domain *size* is where subsetting fails. Its variance comes partly from how many sampled schools happen to contain rural students. Dropping the schools with none removes that variation, so the shortcut's standard error is 21% too small. The domain estimator, which keeps all PSUs with zeros, is right on target (ratio 1.01, coverage 94.6%).
+
+Totals, means, ratios and domain estimates with their standard errors match `survey::svytotal`, `svymean`, `svyratio` and `svyby` on:
+- `apistrat` (strata and finite-population correction);
+- `apiclus1` (clusters with correction, and domains by school type);
+- `apiclus2` (two stages, ultimate cluster);
+- `nhanes` (stratified clusters, with missing cholesterol handled as a domain);
+- a stratum with one PSU under `survey.lonely.psu = "certainty"`.
+
+[Lumley (2004)|https://doi.org/10.18637/jss.v009.i08] · [Wolter (2007)|https://doi.org/10.1007/978-0-387-35099-8]

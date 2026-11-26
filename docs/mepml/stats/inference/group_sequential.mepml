@@ -1,0 +1,108 @@
+//? Title: Plan interim analyses with group-sequential boundaries
+//? Exports: both
+//? Lang: en
+
+> Spend the type I error across looks
+
+Testing accumulating data at several interim analyses with an unadjusted critical value inflates the type I error. Four looks at \(z\ge1.96\) give an overall one-sided error of 6.3% instead of 2.5%. A group-sequential design raises the boundary at each look so that the probability of ever crossing under the null equals \(\alpha\). In the Lan–DeMets approach, a spending function \(\alpha(t)\) fixes how much error is used by information fraction \(t\). Boundary \(b_k\) then solves
+\[P_0(Z_1<b_1,\dots,Z_{k-1}<b_{k-1},Z_k\ge b_k)=\alpha(t_k)-\alpha(t_{k-1}).\]
+Because only the spending function is fixed in advance, the number and timing of looks can change during the trial.
+
+`group_sequential_boundaries` computes the boundaries for O'Brien–Fleming-type, Pocock-type, power and Hwang–Shih–DeCani spending. It evaluates the multivariate normal probabilities with the Armitage–McPherson–Rowe recursion and Simpson's rule. `boundary_crossing_probabilities` gives the stagewise power and expected stopping time for a drift \(\theta\), the mean of \(Z\) at full information. `drift_for_power` solves for the drift that gives the target power.
+
+The example designs a one-sided 2.5% trial with 90% power and four equally spaced looks under three spending functions. The maximum information each design needs is expressed relative to a fixed design.
+
+```{cpp, id=group-sequential, file="figures/group_sequential.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/distributions.hpp>
+#include <datamunge/stats/group_sequential.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::SpendingFunction;
+
+int main() {
+    const std::vector<double> looks{.25, .5, .75, 1};
+    const double fixed_drift = dm::random::normal_quantile(.975) + dm::random::normal_quantile(.9);
+
+    // Unadjusted repeated testing at 1.96.
+    const auto naive = dm::stats::boundary_crossing_probabilities(looks, {1.96, 1.96, 1.96, 1.96}, 0);
+    std::println("Four unadjusted looks at z = 1.96 have one-sided size {:.4f}.\n", naive.total);
+
+    struct Design { const char* name; dm::stats::AlphaSpending spending; dm::graphics::RGBA color; };
+    const std::vector<Design> designs{
+        {"O'Brien–Fleming", {.function = SpendingFunction::obrien_fleming}, {26, 90, 147}},
+        {"Power ρ = 3", {.function = SpendingFunction::power, .parameter = 3}, {46, 139, 87}},
+        {"Pocock", {.function = SpendingFunction::pocock}, {176, 72, 43}},
+    };
+    std::println("| Spending | z at looks 1–4 | Final p | Max. info "
+                 "| Mean, H1 | Mean, H0 |");
+    std::println("| --- | --- | ---: | ---: | ---: | ---: |");
+    auto plot = dm::graphics::RPlot::create();
+    std::mt19937_64 random(5);
+    std::normal_distribution<double> normal;
+    std::vector<double> simulated;
+    for (const auto& d : designs) {
+        const auto b = dm::stats::group_sequential_boundaries(looks, d.spending);
+        const double drift = dm::stats::drift_for_power(looks, b.z, .9);
+        const double inflation = drift * drift / (fixed_drift * fixed_drift);
+        const auto h1 = dm::stats::boundary_crossing_probabilities(looks, b.z, drift);
+        const auto h0 = dm::stats::boundary_crossing_probabilities(looks, b.z, 0);
+        std::println("| {} | {:.3f}, {:.3f}, {:.3f}, {:.3f} | {:.4f} | {:.3f} | {:.3f} | {:.3f} |",
+                     d.name, b.z[0], b.z[1], b.z[2], b.z[3], b.nominal_alpha[3], inflation,
+                     inflation * h1.expected_fraction, inflation * h0.expected_fraction);
+        plot.line(looks, b.z, d.name, d.color, 1.8).points(looks, b.z, "", d.color, 6);
+
+        // Monte Carlo check of the size: Brownian motion observed at the four looks.
+        const int trials = 400000;
+        int rejected = 0;
+        for (int r = 0; r < trials; ++r) {
+            double score = 0, previous = 0;
+            for (std::size_t k = 0; k < looks.size(); ++k) {
+                score += std::sqrt(looks[k] - previous) * normal(random);
+                previous = looks[k];
+                if (score / std::sqrt(looks[k]) >= b.z[k]) {
+                    ++rejected;
+                    break;
+                }
+            }
+        }
+        simulated.push_back(double(rejected) / trials);
+    }
+    std::println("\nSimulated size from 400,000 null trials: O'Brien–Fleming {:.4f}, power {:.4f}, "
+                 "Pocock {:.4f}.", simulated[0], simulated[1], simulated[2]);
+
+    plot.line({.25, 1}, {1.96, 1.96}, "Fixed-design 1.96", {150, 154, 160}, 1)
+        .title("One-sided efficacy boundaries, α = 0.025, four looks")
+        .x_label("Information fraction")
+        .y_label("Critical value for Z")
+        .size(700, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/group_sequential.svg");
+}
+```
+// result_begin: markdown
+Four unadjusted looks at z = 1.96 have one-sided size 0.0631.
+
+| Spending | z at looks 1–4 | Final p | Max. info | Mean, H1 | Mean, H0 |
+| --- | --- | ---: | ---: | ---: | ---: |
+| O'Brien–Fleming | 4.333, 2.963, 2.359, 2.014 | 0.0220 | 1.018 | 0.777 | 1.015 |
+| Power ρ = 3 | 3.359, 2.760, 2.359, 2.029 | 0.0212 | 1.025 | 0.751 | 1.021 |
+| Pocock | 2.368, 2.368, 2.358, 2.350 | 0.0094 | 1.178 | 0.697 | 1.164 |
+
+Simulated size from 400,000 null trials: O'Brien–Fleming 0.0251, power 0.0255, Pocock 0.0249.
+\image(figures/group_sequential.svg)
+// result_end
+\caption(Critical values for the standardized statistic at the four looks under O'Brien–Fleming-type, power (ρ = 3) and Pocock-type spending, with the fixed-design value 1.96 for reference.)
+\alttext(The O'Brien–Fleming boundary falls steeply from 4.33 to 2.01, the power-family boundary falls from 3.36 to 2.03, and the Pocock boundary stays flat near 2.36. All of them lie above 1.96.)
+
+All three designs have overall size 2.5%. The boundaries and stagewise probabilities agree with multivariate normal probabilities from `mvtnorm` (Miwa algorithm) to about \(10^{-7}\), and with `ldbounds` in R to the accuracy of its grid. The simulated sizes agree to within Monte Carlo error. The information columns are multiples of the information a fixed-sample design needs for 90% power. "Max. info" is the inflation factor, and the two "Mean" columns give the average information used at stopping under the alternative and under the null.
+
+The spending functions trade the maximum against the average. O'Brien–Fleming-type spending keeps the early boundaries very high, so it almost never stops a trial on early noise. Its final critical value, 2.014, is close to 1.96, and it needs only 1.8% more information than a fixed design. Under the alternative, early stopping still saves about 22% of the fixed sample size on average. Pocock-type spending stops most quickly when the treatment works, using 70% of the fixed sample size on average. However, it needs 18% more information if the trial runs to the end, and its final look must reach \(p<0.0094\). The power family with \(\rho=3\) falls between the two. Under the null, every design runs past the fixed sample size, because efficacy-only boundaries rarely stop early. Adding a futility boundary is the usual remedy.
+
+[Lan and DeMets (1983)|https://doi.org/10.1093/biomet/70.3.659] · [Armitage, McPherson and Rowe (1969)|https://doi.org/10.2307/2343787] · [Jennison and Turnbull (2000)|https://doi.org/10.1201/9781584888581] · [R ldbounds|https://cran.r-project.org/package=ldbounds]

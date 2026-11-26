@@ -1,0 +1,105 @@
+//? Title: Test unimodality with Hartigan's dip
+//? Exports: both
+//? Lang: en
+
+> Measure how far a sample is from the nearest unimodal distribution
+
+A unimodal distribution function is convex up to its mode and concave after it. Hartigan's dip is the largest vertical distance between the empirical distribution function and the closest such function, divided by two. The algorithm fits a greatest convex minorant and a least concave majorant over a shrinking modal interval, with linear cost after sorting. A sample from one smooth peak has a dip close to \(1/(2n)\). Two separated groups have a large dip, up to \(1/4\).
+
+The uniform distribution is the hardest unimodal case: its dip is stochastically the largest among unimodal laws. `dip_test` therefore calibrates the observed dip against the dips of uniform samples of the same size. This gives a p-value that is valid, though conservative, for every unimodal population. `dip_statistic` also returns the modal interval of the fitted unimodal function.
+
+The example tests a sample of 200 reaction times that mixes two populations. It then estimates power for equal mixtures of two unit-variance normals as the distance between their means increases. Such a mixture is bimodal only when the means are more than two standard deviations apart.
+
+```{cpp, id=dip-test, file="figures/dip_power.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/dip_test.hpp>
+
+#include <algorithm>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+
+int main() {
+    std::mt19937_64 random(21);
+    std::normal_distribution<double> fast(420, 40), slow(610, 55);
+    std::vector<double> times(200);
+    for (std::size_t i = 0; i < times.size(); ++i)
+        times[i] = i < 120 ? fast(random) : slow(random);
+    const auto test = dm::stats::dip_test(times, {.replicates = 5000});
+    std::println("Dip {:.4f}, modal interval [{:.0f}, {:.0f}] ms, p-value {:.4f} "
+                 "from {} uniform samples.\n",
+                 test.dip.statistic, test.dip.modal_lower, test.dip.modal_upper, test.p_value,
+                 test.replicates);
+
+    // 95th percentile of the uniform null for n = 100, then power for two-normal mixtures.
+    const std::size_t n = 100;
+    std::uniform_real_distribution<double> unit(0, 1);
+    std::vector<double> null(5000), u(n);
+    for (auto& d : null) {
+        for (auto& v : u)
+            v = unit(random);
+        d = dm::stats::dip_statistic(u).statistic;
+    }
+    std::ranges::sort(null);
+    const double critical = null[static_cast<std::size_t>(.95 * null.size())];
+    std::normal_distribution<double> normal;
+    std::vector<double> separation, power;
+    std::println("| Distance between means (SD) | Shape | Power at 5% |");
+    std::println("| ---: | --- | ---: |");
+    for (const double delta : {0.0, 1.0, 2.0, 2.5, 3.0, 3.5, 4.0, 5.0}) {
+        int reject = 0;
+        const int replicates = 1000;
+        for (int r = 0; r < replicates; ++r) {
+            std::vector<double> x(n);
+            for (std::size_t i = 0; i < n; ++i)
+                x[i] = normal(random) + (i % 2 ? delta : 0);
+            reject += dm::stats::dip_statistic(x).statistic > critical;
+        }
+        separation.push_back(delta);
+        power.push_back(double(reject) / replicates);
+        std::println("| {:.1f} | {} | {:.3f} |", delta, delta > 2 ? "bimodal" : "unimodal",
+                     power.back());
+    }
+    std::println("\nUniform-null 95th percentile of the dip for n = {}: {:.4f}.", n, critical);
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.line({2, 2}, {0, 1}, "Bimodal beyond 2 SD", {150, 154, 160}, 1)
+        .line({0, 5}, {.05, .05}, "Level 5%", {200, 160, 150}, 1)
+        .line(separation, power, "Dip test, n = 100", {26, 90, 147}, 1.8)
+        .points(separation, power, "", {26, 90, 147}, 5)
+        .title("Power of the dip test for an equal mixture of two normals")
+        .x_label("Distance between component means (standard deviations)")
+        .y_label("Rejection rate")
+        .size(740, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/dip_power.svg");
+}
+```
+// result_begin: markdown
+Dip 0.0538, modal interval [366, 477] ms, p-value 0.0004 from 5000 uniform samples.
+
+| Distance between means (SD) | Shape | Power at 5% |
+| ---: | --- | ---: |
+| 0.0 | unimodal | 0.000 |
+| 1.0 | unimodal | 0.000 |
+| 2.0 | unimodal | 0.004 |
+| 2.5 | bimodal | 0.021 |
+| 3.0 | bimodal | 0.125 |
+| 3.5 | bimodal | 0.499 |
+| 4.0 | bimodal | 0.838 |
+| 5.0 | bimodal | 1.000 |
+
+Uniform-null 95th percentile of the dip for n = 100: 0.0513.
+\image(figures/dip_power.svg)
+// result_end
+\caption(Rejection rate of the 5% dip test for equal mixtures of two unit-variance normals, by the distance between their means, with n = 100.)
+\alttext(Power stays below 1 percent up to a separation of 2, where the mixture becomes bimodal, rises to about 50 percent at 3.5 and reaches 100 percent at 5.)
+
+The 200 reaction times have a dip of 0.054, and only 1 of 5000 uniform samples has a dip as large, so unimodality is rejected. The modal interval, 366 to 477 ms, lies within the faster group.
+
+The power curve shows the cost of the uniform calibration. When the mixture is unimodal, with means at most 2 SD apart, the test rejects far less often than 5%. This is the required behavior. Just past that point the mixture's two modes are shallow, and the test rarely detects them. Power reaches 50% at about 3.5 SD and is essentially complete by 5 SD. The statistic and modal interval match `diptest::dip` in R. The p-value uses the same uniform calibration as `dip.test(simulate.p.value = TRUE)`, but adds one to the count of exceedances and to the number of samples. As a result, the smallest attainable p-value is \(1/(B+1)\).
+
+[Hartigan and Hartigan (1985)|https://doi.org/10.1214/aos/1176346577] · [Hartigan (1985), AS 217|https://doi.org/10.2307/2347485] · [R diptest|https://cran.r-project.org/package=diptest]

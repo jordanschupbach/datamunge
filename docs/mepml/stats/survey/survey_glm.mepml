@@ -1,0 +1,182 @@
+//? Title: Fit regression models to survey data with design-based standard errors
+//? Exports: both
+//? Lang: en
+
+> Estimate population regression coefficients by weighted estimating equations, and get the uncertainty from the sampling design
+
+A survey-weighted GLM estimates the coefficients that the model would have if fitted to the whole finite population: the census parameter. It solves the census estimating equations \(\sum_iw_ix_i(y_i-\mu_i)=0\) with the sampling weights \(w_i\). This is consistent for the census parameter whether or not the model is correct. The weights alone do not give valid standard errors, however. Clustering makes the scores of units in the same PSU correlated, and the weights change the variance in a way that ordinary weighted least squares misstates. `fit_survey_glm` uses the linearization sandwich \(A^{-1}BA^{-1}\), where \(A=\sum_iw_iv(\mu_i)x_ix_i^\top\) and B is the design covariance of the summed scores (Binder, 1983). Inference uses t distributions on the design degrees of freedom, and `survey_glm_wald_test` gives F tests of several coefficients.
+
+Weighting matters most when sampling is informative, meaning that selection depends on the outcome after accounting for the covariates. The simulation draws a population of 400 schools with 60 students each. Scores follow \(y=50+5x+u_c+e\), with a school effect \(u_c\) (SD 6) and a student error \(e\) (SD 10). Each sample takes 40 schools and then samples students in two ways.
+- In the informative scheme, students scoring above the population median are sampled with probability 0.3 and the rest with probability 0.06, as when high achievers are oversampled.
+- In the non-informative scheme, the same probabilities depend on \(x>0\) instead, so selection depends only on a covariate in the model.
+
+The target is the census slope. Each method is applied to 2000 samples per scheme.
+- The unweighted fit ignores the weights and the clustering.
+- The weighted fit with model-based SEs is ordinary weighted regression.
+- The survey GLM is weighted, with sandwich SEs and schools as PSUs.
+
+The table reports bias, the ratio of the mean SE to the true SD, 95% coverage and RMSE.
+
+```{cpp, id=sglm, file="figures/survey_glm.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/survey_glm.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <filesystem>
+#include <numeric>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+int main() {
+    dm::random::SplitMix64 rng(11);
+    const std::size_t schools = 400, size = 60, sampled = 40;
+    std::vector<double> x, y;
+    std::vector<int> school;
+    for (std::size_t c = 0; c < schools; ++c) {
+        const double u = 6 * rng.normal();
+        for (std::size_t i = 0; i < size; ++i) {
+            const double xi = rng.normal();
+            x.push_back(xi);
+            y.push_back(50 + 5 * xi + u + 10 * rng.normal());
+            school.push_back(int(c));
+        }
+    }
+    const std::size_t N = x.size();
+    std::vector<double> sorted = y;
+    std::ranges::nth_element(sorted, sorted.begin() + N / 2);
+    const double median = sorted[N / 2];
+    Matrix X(N, 2);
+    for (std::size_t i = 0; i < N; ++i) {
+        X(i, 0) = 1;
+        X(i, 1) = x[i];
+    }
+    // Census parameter: the population least-squares slope.
+    const double target =
+        dm::stats::fit_survey_glm({.weights = std::vector<double>(N, 1.0)}, X, y).coefficients[1];
+
+    const char* methods[3]{"Unweighted", "Weighted, model SE", "Survey GLM"};
+    const char* schemes[2]{"Informative", "Non-informative"};
+    const int reps = 2000;
+    double bias[2][3]{}, se[2][3]{}, sq[2][3]{}, cover[2][3]{}, sum[2][3]{};
+    std::vector<double> slopes[2]; // informative: unweighted and survey GLM
+    std::vector<std::size_t> order(schools);
+    std::iota(order.begin(), order.end(), std::size_t{0});
+    for (int s = 0; s < 2; ++s)
+        for (int r = 0; r < reps; ++r) {
+            for (std::size_t k = 0; k < sampled; ++k) // simple random sample of schools
+                std::swap(order[k], order[k + rng.uniform_u64(0, schools - k - 1)]);
+            dm::stats::SurveyDesign design, unweighted;
+            std::vector<double> ys;
+            std::vector<double> rows;
+            for (std::size_t k = 0; k < sampled; ++k)
+                for (std::size_t i = order[k] * size; i < (order[k] + 1) * size; ++i) {
+                    const bool high = s == 0 ? y[i] > median : x[i] > 0;
+                    const double p = high ? 0.3 : 0.06;
+                    if (rng.uniform01() >= p)
+                        continue;
+                    design.weights.push_back(double(schools) / sampled / p);
+                    design.clusters.push_back(int(k));
+                    design.population_psus.push_back(double(schools));
+                    unweighted.weights.push_back(1);
+                    unweighted.clusters.push_back(int(ys.size()));
+                    ys.push_back(y[i]);
+                    rows.push_back(x[i]);
+                }
+            Matrix xs(ys.size(), 2);
+            for (std::size_t i = 0; i < ys.size(); ++i) {
+                xs(i, 0) = 1;
+                xs(i, 1) = rows[i];
+            }
+            const auto plain = dm::stats::fit_survey_glm(unweighted, xs, ys);
+            const auto survey = dm::stats::fit_survey_glm(design, xs, ys);
+            const double est[3]{plain.coefficients[1], survey.coefficients[1],
+                                survey.coefficients[1]};
+            // Model-based intervals use 1.96; the survey GLM uses its t interval on the design df.
+            const bool covered[3]{
+                std::abs(plain.coefficients[1] - target) <= 1.96 * plain.model_standard_errors[1],
+                std::abs(survey.coefficients[1] - target) <= 1.96 * survey.model_standard_errors[1],
+                survey.lower[1] <= target && target <= survey.upper[1]};
+            const double err[3]{plain.model_standard_errors[1], survey.model_standard_errors[1],
+                                survey.standard_errors[1]};
+            for (int m = 0; m < 3; ++m) {
+                const double e = est[m] - target;
+                bias[s][m] += e / reps;
+                sq[s][m] += e * e / reps;
+                sum[s][m] += est[m] / reps;
+                se[s][m] += err[m] / reps;
+                cover[s][m] += covered[m] / double(reps);
+            }
+            if (s == 0) {
+                slopes[0].push_back(est[0]);
+                slopes[1].push_back(est[2]);
+            }
+        }
+    std::println("Census slope: {:.3f}.\n", target);
+    std::println("| Sampling | Method | Bias | Mean SE / SD | Coverage | RMSE |");
+    std::println("| --- | --- | ---: | ---: | ---: | ---: |");
+    for (int s = 0; s < 2; ++s)
+        for (int m = 0; m < 3; ++m) {
+            const double sd = std::sqrt(sq[s][m] - bias[s][m] * bias[s][m]);
+            std::println("| {} | {} | {:+.3f} | {:.2f} | {:.3f} | {:.3f} |", schemes[s], methods[m],
+                         bias[s][m], se[s][m] / sd, cover[s][m], std::sqrt(sq[s][m]));
+        }
+
+    auto plot = dm::graphics::RPlot::create();
+    plot.density(slopes[0], "Unweighted", {176, 72, 43})
+        .density(slopes[1], "Survey GLM (weighted)", {26, 90, 147})
+        .abline_v(target, {60, 60, 60}, 1.5)
+        .title("Slope estimates under informative sampling")
+        .x_label("Estimated slope (vertical line: census slope)")
+        .y_label("Density")
+        .size(640, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/survey_glm.svg");
+}
+```
+// result_begin: markdown
+Census slope: 5.003.
+
+| Sampling | Method | Bias | Mean SE / SD | Coverage | RMSE |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Informative | Unweighted | -1.229 | 0.92 | 0.311 | 1.340 |
+| Informative | Weighted, model SE | +0.037 | 0.75 | 0.855 | 0.743 |
+| Informative | Survey GLM | +0.037 | 0.91 | 0.922 | 0.743 |
+| Non-informative | Unweighted | -0.043 | 1.04 | 0.955 | 0.629 |
+| Non-informative | Weighted, model SE | -0.010 | 0.77 | 0.864 | 0.719 |
+| Non-informative | Survey GLM | -0.010 | 0.94 | 0.929 | 0.719 |
+\image(figures/survey_glm.svg)
+// result_end
+
+Under informative sampling, the unweighted regression is badly biased. High scorers are oversampled, and among students with low \(x\) only those with unusually high scores tend to be selected. That flattens the fitted line, and the slope is 1.23 too small, a quarter of the true slope. The intervals cover the census slope 31% of the time. The figure shows the problem: the unweighted estimates are tightly concentrated around the wrong value. Weighting removes the bias (+0.04) at the cost of a larger spread, and still halves the RMSE.
+
+Weighting alone does not give valid standard errors. Treated as ordinary weighted regression, the model-based SE is a quarter too small. It ignores both the school clustering and the extra variability from unequal weights, and the intervals cover 86% of the time. The sandwich SE accounts for both, and the coverage rises to 92–93% with t intervals on 38 degrees of freedom. The remaining shortfall is the known small-sample downward bias of the linearization sandwich with only 40 PSUs (its mean is 91–94% of the true SD). With few PSUs, consider bias-reduced variants or a replicate-weight design.
+
+When selection depends only on a covariate in the model, the unweighted fit is unbiased and more efficient (RMSE 0.63 against 0.72). Its model-based SE is nevertheless trustworthy here only because the school effect does not interact with \(x\). Weighted estimation is the robust default. It answers the census question whatever the model, while the unweighted fit is better only when the model is right and selection is ignorable given \(x\). A practical check is to fit both and test whether the weighted and unweighted coefficients differ (DuMouchel–Duncan). Agreement supports the more efficient unweighted fit.
+
+The implementation matches `survey::svyglm` on R's `api` data:
+- Gaussian, logistic and Poisson fits on stratified and cluster designs;
+- a domain fit, where units outside the domain stay in the design and the degrees of freedom count only domain PSUs and strata;
+- the model-based SEs of `glm` with rescaled weights;
+- `regTermTest` Wald F tests.
+
+Coefficients agree to \(10^{-8}\). Gaussian SEs also agree to \(10^{-8}\), and logistic and Poisson SEs to \(10^{-5}\), because R evaluates the IRLS weights one iteration before convergence.
+
+>> Practical guidance
+
+- Use the design weights and clusters for population-level (census) coefficients. Report design-based SEs and t inference on the design degrees of freedom, which `fit_survey_glm` does by default.
+- For subpopulation models, pass a `domain` rather than subsetting the data, so that the variance reflects the full design.
+- Compare `design_effects` to see how much clustering and weighting inflate each coefficient's variance.
+- Test groups of coefficients, such as all levels of a factor, with `survey_glm_wald_test`, not with individual t tests.
+- With fewer than about 30-50 PSUs, expect the sandwich to understate the variance somewhat.
+
+>> References
+
+- D. A. Binder (1983). On the variances of asymptotically normal estimators from complex surveys. *International Statistical Review* 51(3), 279-292. doi:10.2307/1402588
+- W. H. DuMouchel and G. J. Duncan (1983). Using sample survey weights in multiple regression analyses of stratified samples. *Journal of the American Statistical Association* 78(383), 535-543. doi:10.1080/01621459.1983.10478006
+- D. Pfeffermann (1993). The role of sampling weights when modeling survey data. *International Statistical Review* 61(2), 317-337. doi:10.2307/1403631
+- T. Lumley (2010). *Complex Surveys: A Guide to Analysis Using R*. Wiley, chapter 5.

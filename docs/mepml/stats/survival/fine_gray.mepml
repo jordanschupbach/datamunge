@@ -1,0 +1,145 @@
+//? Title: Model cumulative incidence with Fine–Gray regression
+//? Exports: both
+//? Lang: en
+
+> Regress the incidence of one cause on covariates, in the presence of competing events
+
+Cox regression with competing events censored estimates *cause-specific* hazard ratios: effects on the rate of a cause among those still event-free. When the question is how covariates change the *probability* of the cause, a covariate can act on the cumulative incidence through every cause at once. Fine and Gray model the subdistribution hazard
+\[\lambda_1^*(t\mid x)=-\frac{d}{dt}\log\{1-F_1(t\mid x)\}=\lambda_{10}^*(t)\,e^{x^\top\beta},\]
+so \(e^{\beta_j}\) multiplies the subdistribution hazard and \(F_1(t\mid x)=1-\exp\{-\Lambda_{10}^*(t)e^{x^\top\beta}\}\) moves in the same direction as \(\beta_j\).
+
+The risk set at time \(t\) keeps subjects who already failed from a competing cause. They can never fail from cause 1, but they still count in its incidence denominator. With censoring, they are weighted by \(\hat G(t-)/\hat G(T_i-)\), the estimated probability that they would still have been under observation at \(t\). Because the weights are estimated, the variance is a sandwich that includes a correction term for \(\hat G\).
+
+The example simulates Fine and Gray's (1999) design. Cause 1 has subdistribution \(F_1(t\mid x)=1-\{1-0.4(1-e^{-t})\}^{\exp(x^\top\beta)}\) with \(\beta=(0.5,-0.5)\) for a binary and a standard normal covariate. Cause 2 is exponential among the rest, with rate \(e^{0.5x_1+0.5x_2}\). Censoring is uniform on (0, 4). With 300 subjects and 500 replications, the table gives the mean Fine–Gray (FG) estimate and its empirical SD. It also gives the mean robust and model-based standard errors with their 95% interval coverage, and the mean cause-specific (CS) Cox coefficient.
+
+```{cpp, id=finegray, file="figures/fine_gray.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/stats/cox_counting.hpp>
+#include <datamunge/stats/fine_gray.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <print>
+#include <random>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::CompetingRiskObservation;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+const double beta[2]{.5, -.5}, p = .4;
+
+double true_incidence(double t, double x1, double x2) {
+    const double e = std::exp(beta[0] * x1 + beta[1] * x2);
+    return 1 - std::pow(1 - p * (1 - std::exp(-t)), e);
+}
+
+void simulate(std::size_t n, std::mt19937_64& random,
+              std::vector<CompetingRiskObservation>& obs, Matrix& x) {
+    std::uniform_real_distribution<double> u(0, 1);
+    std::normal_distribution<double> z;
+    obs.clear();
+    x = Matrix(n, 2);
+    for (std::size_t i = 0; i < n; ++i) {
+        const double x1 = u(random) < .5, x2 = z(random);
+        const double e = std::exp(beta[0] * x1 + beta[1] * x2);
+        const double total = 1 - std::pow(1 - p, e); // P(cause 1)
+        double t;
+        int cause;
+        const double v = u(random);
+        if (v < total) { // invert F1(t | x) = v
+            t = -std::log(1 - (1 - std::pow(1 - v, 1 / e)) / p);
+            cause = 1;
+        } else {
+            t = std::exponential_distribution<double>(std::exp(.5 * x1 + .5 * x2))(random);
+            cause = 2;
+        }
+        const double c = 4 * u(random);
+        obs.push_back(t <= c ? CompetingRiskObservation{t, cause}
+                             : CompetingRiskObservation{c, 0});
+        x(i, 0) = x1;
+        x(i, 1) = x2;
+    }
+}
+
+int main() {
+    std::mt19937_64 random(10);
+    const int reps = 500;
+    double mean[2]{}, robust_cover[2]{}, model_cover[2]{}, robust_se[2]{}, model_se[2]{},
+        empirical[2]{}, cs_mean[2]{};
+    std::vector<CompetingRiskObservation> obs;
+    Matrix x;
+    for (int r = 0; r < reps; ++r) {
+        simulate(300, random, obs, x);
+        const auto f = dm::stats::fit_fine_gray(obs, x);
+        std::vector<dm::stats::CountingRecord> records;
+        for (const auto& o : obs)
+            records.push_back({0, o.time, o.cause == 1});
+        const auto cs = dm::stats::fit_cox_counting(records, x);
+        for (int a = 0; a < 2; ++a) {
+            const double b = f.coefficients[a], se = f.standard_errors[a];
+            const auto& I = f.information; // model SE from the 2 x 2 inverse information
+            const double det = I(0, 0) * I(1, 1) - I(0, 1) * I(1, 0);
+            const double mse = std::sqrt(I(1 - a, 1 - a) / det);
+            mean[a] += b / reps;
+            empirical[a] += b * b / reps;
+            robust_se[a] += se / reps;
+            model_se[a] += mse / reps;
+            robust_cover[a] += std::abs(b - beta[a]) <= 1.96 * se;
+            model_cover[a] += std::abs(b - beta[a]) <= 1.96 * mse;
+            cs_mean[a] += cs.coefficients[a] / reps;
+        }
+    }
+    std::println("| Covariate | True β | FG mean | SD | Robust SE | Cover | Model SE | Cover "
+                 "| CS Cox mean |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+    const char* names[2]{"Binary x1", "Normal x2"};
+    for (int a = 0; a < 2; ++a)
+        std::println("| {} | {:+.1f} | {:+.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} "
+                     "| {:+.3f} |", names[a], beta[a], mean[a],
+                     std::sqrt(empirical[a] - mean[a] * mean[a]), robust_se[a],
+                     robust_cover[a] / reps, model_se[a], model_cover[a] / reps, cs_mean[a]);
+
+    simulate(1000, random, obs, x);
+    const auto f = dm::stats::fit_fine_gray(obs, x);
+    auto plot = dm::graphics::RPlot::create();
+    const dm::graphics::RGBA dark[2]{{26, 90, 147}, {176, 72, 43}};
+    const dm::graphics::RGBA light[2]{{150, 185, 215}, {225, 170, 150}};
+    for (int g = 0; g < 2; ++g) {
+        std::vector<double> grid, truth, fitted;
+        for (double t = 0; t <= 4; t += .02) {
+            grid.push_back(t);
+            truth.push_back(true_incidence(t, g, 0));
+            fitted.push_back(f.predict_incidence(t, {double(g), 0}));
+        }
+        plot.line(grid, truth, g ? "True, x1 = 1" : "True, x1 = 0", light[g], 3.5)
+            .line(grid, fitted, g ? "Fine-Gray, x1 = 1" : "Fine-Gray, x1 = 0", dark[g], 1.6);
+    }
+    plot.title("Predicted cumulative incidence of cause 1 at x2 = 0, n = 1000")
+        .x_label("Time")
+        .y_label("Cumulative incidence")
+        .ylim(0, .7)
+        .size(700, 420);
+    std::filesystem::create_directories("build");
+    plot.save_svg("build/fine_gray.svg");
+}
+```
+// result_begin: markdown
+| Covariate | True β | FG mean | SD | Robust SE | Cover | Model SE | Cover | CS Cox mean |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Binary x1 | +0.5 | +0.499 | 0.192 | 0.189 | 0.954 | 0.191 | 0.956 | +0.560 |
+| Normal x2 | -0.5 | -0.508 | 0.098 | 0.097 | 0.966 | 0.098 | 0.968 | -0.268 |
+\image(figures/fine_gray.svg)
+// result_end
+\caption(True (light) and Fine–Gray predicted (dark) cumulative incidence of cause 1 for the two levels of the binary covariate at x2 = 0, fitted to one sample of 1000.)
+\alttext(Two pairs of rising curves. The orange x1 = 1 pair rises to about 0.56 by time 4, and the blue x1 = 0 pair to about 0.39. In each pair the dark fitted curve lies almost on top of the light true curve.)
+
+Fine–Gray estimates are essentially unbiased (+0.499 and −0.508). The robust standard errors match the empirical standard deviations, and 95% intervals cover at 95–97%. In this design the model-based standard errors from the inverse information are close to the robust ones. They ignore the variability of \(\hat G\), so the robust sandwich, which is what `crr` reports, is the safe default.
+
+The last column shows why the choice of model matters. The cause-specific Cox coefficient for the normal covariate is −0.27, about half the subdistribution effect. The two are different quantities, not one estimate and a biased one. The covariate raises the hazard of the competing cause, which removes subjects before they can experience cause 1. The cause-specific model attributes only part of the drop in cause-1 incidence to the covariate. The subdistribution model includes the competing-cause pathway as well. For the binary covariate, which does both, the cause-specific coefficient (+0.56) is larger than the subdistribution one.
+
+Use cause-specific hazards to study how a covariate acts on the event process, and Fine–Gray to predict or compare the probability of the event. Proportionality cannot hold on both scales at once in general, so each model is an approximation on the other's scale.
+
+Coefficients, the sandwich covariance, the information, the log likelihoods, the baseline cumulative subdistribution hazard and the predicted incidence match `cmprsk::crr` and `predict.crr` on 500 `mgus2` subjects. This covers both causes and separate censoring distributions by sex.
+
+[Fine and Gray (1999)|https://doi.org/10.1080/01621459.1999.10474144] · [Austin, Lee and Fine (2016)|https://doi.org/10.1161/CIRCULATIONAHA.115.017719]

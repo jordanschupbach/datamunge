@@ -1,0 +1,192 @@
+//? Title: Distance correlation
+//? Exports: both
+//? Lang: en
+
+> Measure dependence of any form between random vectors of any dimension with distance covariance, which is zero only under independence, and test it by permutation
+
+Pearson correlation sees only linear association: \(Y=X^2\) with symmetric \(X\) has correlation zero. **Distance covariance** (Székely, Rizzo and Bakirov 2007) compares the joint characteristic function with the product of the marginals, and \(\mathcal V^2(X,Y)=0\) if and only if \(X\) and \(Y\) are independent (given finite first moments). Its sample version uses only pairwise distances. Let \(a_{ij}=\lVert x_i-x_j\rVert\), with \(b_{ij}\) defined likewise for \(y\), and let \(A\) and \(B\) be the double-centred matrices (row, column and grand means removed). Then
+
+\[\mathcal V_n^2=\frac{1}{n^2}\sum_{i,j}A_{ij}B_{ij},\qquad \mathcal R_n=\frac{\mathcal V_n(X,Y)}{\sqrt{\mathcal V_n(X,X)\,\mathcal V_n(Y,Y)}}\in[0,1].\]
+
+\(\mathcal R_n=1\) only for similarity transformations (\(y=a+bCx\) with \(C\) orthogonal), and \(x\) and \(y\) may have different dimensions. The V-statistic is biased upward, increasingly so in high dimension. The U-centred version gives an unbiased \(\Omega_n\) and a **bias-corrected** \(\mathcal R^*_n\). With \(M=n(n-3)/2\), the statistic \(T=\sqrt{M-1}\,\mathcal R^*_n/\sqrt{1-\mathcal R^{*2}_n}\) is approximately \(t_{M-1}\) under independence when the dimensions are large (Székely and Rizzo 2013). The **permutation test** of \(n\mathcal V_n^2\), which shuffles \(y\) against \(x\), is exact at any dimension. **Partial distance correlation** removes the dependence on a third vector \(z\) in the U-centred Hilbert space.
+
+`distance_correlation` returns all of these, with an optional permutation test and the distance exponent `index` \(\in(0,2)\). `partial_distance_correlation` gives the partial version. The tests reproduce `energy` 1.7.12 (`dcov.test` estimates and \(n\mathcal V_n^2\) for three exponents, `bcdcor`, `dcorT.test`, `dcovU` and `pdcor`) to \(10^{-11}\), and its permutation p-values within Monte Carlo error.
+
+The example compares Pearson, Spearman and distance correlation on six relationships with n = 100, averaging estimates and rejection rates over 500 samples each. The simulations estimate the size of each test under independence, including high dimension, where the t test is meant to work, and the power for linear and quadratic signals as noise grows.
+
+```{cpp, id=dc, file="figures/distance_correlation.svg", results="markdown", flags="-std=c++23 -O2 $(pkg-config --cflags --libs datamunge) -Wl,-rpath,$(pkg-config --variable=libdir datamunge)"}
+#include <datamunge/plot/plot.hpp>
+#include <datamunge/random/random.hpp>
+#include <datamunge/stats/distance_correlation.hpp>
+#include <datamunge/stats/partial_correlation.hpp>
+
+#include <cmath>
+#include <filesystem>
+#include <numbers>
+#include <print>
+#include <vector>
+
+namespace dm = datamunge;
+using dm::stats::PartialMethod;
+using Matrix = dm::linalg::DenseMatrix<double>;
+
+// Relationship k with noise level s: returns (x, y).
+std::pair<std::vector<double>, std::vector<double>> draw(dm::random::SplitMix64& rng, int k,
+                                                         std::size_t n, double s) {
+    std::vector<double> x(n), y(n);
+    for (std::size_t i = 0; i < n; ++i) {
+        const double u = 2 * rng.uniform01() - 1, e = rng.normal();
+        switch (k) {
+        case 0: x[i] = u, y[i] = u + s * e; break;                          // linear
+        case 1: x[i] = u, y[i] = u * u + s * e; break;                      // quadratic
+        case 2: {                                                           // circle
+            const double a = 2 * std::numbers::pi * rng.uniform01();
+            x[i] = std::cos(a) + s * rng.normal(), y[i] = std::sin(a) + s * e;
+            break;
+        }
+        case 3: x[i] = u, y[i] = std::sin(4 * std::numbers::pi * u) + s * e; break;  // sine
+        case 4: x[i] = u, y[i] = (0.1 + std::abs(u)) * e; break;            // variance only
+        default: x[i] = u, y[i] = e;                                        // independent
+        }
+    }
+    return {x, y};
+}
+
+int main() {
+    dm::random::SplitMix64 rng(23);
+    const char* names[6] = {"Linear", "Quadratic", "Circle", "Sine (2 periods)",
+                            "Variance depends on x", "Independent"};
+    const double noise[6] = {0.5, 0.1, 0.05, 0.3, 0, 0};
+    std::println("| Relationship (n = 100) | Mean Pearson r | Mean dCor | "
+                 "Mean bias-corrected dCor | Pearson power | Spearman power | "
+                 "dCor permutation power | dCor t power |");
+    std::println("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |");
+    for (int k = 0; k < 6; ++k) {
+        const int reps = 500;
+        double r = 0, dc = 0, bc = 0, pw[4] = {0, 0, 0, 0};
+        for (int rep = 0; rep < reps; ++rep) {
+            const auto [x, y] = draw(rng, k, 100, noise[k]);
+            const auto p = dm::stats::partial_correlation(x, y, {});
+            const dm::stats::PartialOptions ranks{.method = PartialMethod::spearman};
+            const auto s = dm::stats::partial_correlation(x, y, {}, ranks);
+            const auto d = dm::stats::distance_correlation(
+                x, y, {.permutations = 199, .seed = static_cast<std::uint64_t>(rep + 1)});
+            r += p.estimate / reps, dc += d.dcor / reps, bc += d.dcor_bias_corrected / reps;
+            pw[0] += p.p_value <= 0.05, pw[1] += s.p_value <= 0.05;
+            pw[2] += d.permutation_p_value <= 0.05, pw[3] += d.t_p_value <= 0.05;
+        }
+        std::println("| {} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} | "
+                     "{:.3f} |", names[k], r, dc, bc, pw[0] / reps, pw[1] / reps,
+                     pw[2] / reps, pw[3] / reps);
+    }
+
+    // Size under independence: univariate n = 30, and p = q = 50 with n = 30.
+    std::println("\n| Independent data | Mean dCor | Mean bias-corrected dCor | "
+                 "Permutation test size | t test size |");
+    std::println("| --- | ---: | ---: | ---: | ---: |");
+    for (const std::size_t dim : {1uz, 50uz}) {
+        const int reps = 1000;
+        double mean = 0, mean_bc = 0, perm = 0, t = 0;
+        for (int r = 0; r < reps; ++r) {
+            Matrix x(30, dim, 0.0), y(30, dim, 0.0);
+            for (std::size_t i = 0; i < 30; ++i)
+                for (std::size_t j = 0; j < dim; ++j)
+                    x(i, j) = rng.normal(), y(i, j) = rng.normal();
+            const auto d = dm::stats::distance_correlation(
+                x, y, {.permutations = 199, .seed = static_cast<std::uint64_t>(r + 1)});
+            mean += d.dcor / reps, mean_bc += d.dcor_bias_corrected / reps;
+            perm += (d.permutation_p_value <= 0.05) / double(reps);
+            t += (d.t_p_value <= 0.05) / double(reps);
+        }
+        std::println("| n = 30, dimension {} each | {:.3f} | {:.4f} | {:.3f} | {:.3f} |",
+                     dim, mean, mean_bc, perm, t);
+    }
+
+    // Power against noise for linear and quadratic signals (n = 50, 5% level).
+    const std::vector<double> levels{0.1, 0.2, 0.35, 0.5, 0.75, 1.0, 1.5, 2.0};
+    std::vector<std::vector<double>> power(4, std::vector<double>(levels.size(), 0.0));
+    const int reps = 300;
+    for (std::size_t l = 0; l < levels.size(); ++l)
+        for (int k = 0; k < 2; ++k)
+            for (int r = 0; r < reps; ++r) {
+                const auto [x, y] = draw(rng, k, 50, levels[l]);
+                const double pp = dm::stats::partial_correlation(x, y, {}).p_value;
+                const double pd = dm::stats::distance_correlation(
+                    x, y, {.permutations = 199, .seed = static_cast<std::uint64_t>(r + 1)})
+                                      .permutation_p_value;
+                power[2 * k][l] += (pp <= 0.05) / double(reps);
+                power[2 * k + 1][l] += (pd <= 0.05) / double(reps);
+            }
+    std::println("\n| Noise SD | Linear: Pearson | Linear: dCor | Quadratic: Pearson | "
+                 "Quadratic: dCor |");
+    std::println("| ---: | ---: | ---: | ---: | ---: |");
+    for (std::size_t l = 0; l < levels.size(); ++l)
+        std::println("| {:.2f} | {:.3f} | {:.3f} | {:.3f} | {:.3f} |", levels[l],
+                     power[0][l], power[1][l], power[2][l], power[3][l]);
+
+    auto fig = dm::graphics::RPlot::create();
+    fig.line(levels, power[0], "Linear, Pearson", {140, 182, 222}, 2.5)
+        .line(levels, power[1], "Linear, dCor", {26, 90, 147}, 3.5)
+        .line(levels, power[2], "Quadratic, Pearson", {232, 165, 135}, 2.5)
+        .line(levels, power[3], "Quadratic, dCor", {176, 72, 43}, 3.5)
+        .abline_h(0.05, {170, 170, 170})
+        .y_limits(0, 1.3)
+        .title("Power of independence tests (n = 50, 5% level)")
+        .x_label("Noise standard deviation")
+        .y_label("Rejection rate")
+        .size(640, 410);
+    std::filesystem::create_directories("build");
+    fig.save_svg("build/distance_correlation.svg");
+}
+```
+// result_begin: markdown
+| Relationship (n = 100) | Mean Pearson r | Mean dCor | Mean bias-corrected dCor | Pearson power | Spearman power | dCor permutation power | dCor t power |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Linear | 0.753 | 0.738 | 0.535 | 1.000 | 1.000 | 1.000 | 1.000 |
+| Quadratic | 0.007 | 0.485 | 0.213 | 0.092 | 0.122 | 1.000 | 1.000 |
+| Circle | -0.000 | 0.232 | 0.036 | 0.004 | 0.000 | 0.594 | 0.868 |
+| Sine (2 periods) | -0.183 | 0.250 | 0.042 | 0.442 | 0.448 | 0.562 | 0.646 |
+| Variance depends on x | 0.000 | 0.238 | 0.024 | 0.132 | 0.094 | 0.414 | 0.374 |
+| Independent | 0.006 | 0.163 | 0.000 | 0.046 | 0.048 | 0.048 | 0.070 |
+
+| Independent data | Mean dCor | Mean bias-corrected dCor | Permutation test size | t test size |
+| --- | ---: | ---: | ---: | ---: |
+| n = 30, dimension 1 each | 0.308 | -0.0003 | 0.054 | 0.069 |
+| n = 30, dimension 50 each | 0.932 | 0.0021 | 0.050 | 0.057 |
+
+| Noise SD | Linear: Pearson | Linear: dCor | Quadratic: Pearson | Quadratic: dCor |
+| ---: | ---: | ---: | ---: | ---: |
+| 0.10 | 1.000 | 1.000 | 0.113 | 1.000 |
+| 0.20 | 1.000 | 1.000 | 0.140 | 0.997 |
+| 0.35 | 1.000 | 1.000 | 0.073 | 0.767 |
+| 0.50 | 1.000 | 1.000 | 0.077 | 0.400 |
+| 0.75 | 1.000 | 1.000 | 0.067 | 0.203 |
+| 1.00 | 0.963 | 0.937 | 0.053 | 0.130 |
+| 1.50 | 0.730 | 0.660 | 0.057 | 0.063 |
+| 2.00 | 0.543 | 0.473 | 0.067 | 0.073 |
+\image(figures/distance_correlation.svg)
+// result_end
+
+For a linear signal, distance correlation is nearly as good as Pearson: both reject in every sample at n = 100, and at n = 50 the dCor permutation test loses only 3–7 points of power as the noise grows. For anything non-monotone, Pearson and Spearman are blind. The quadratic, the circle and the variance-only dependence all have zero correlation, while distance correlation rejects in 100%, 59% and 41% of samples. The circle and the two-period sine are the hard cases for dCor too: dependence that is local rather than global is diluted when averaged over all pairs of distances.
+
+Raw dCor is not centred at zero under independence. It averages 0.16 for n = 100 and 0.31 for n = 30, and 0.93 for 50-dimensional independent vectors with n = 30, so its value alone cannot be read as strength of dependence. The bias-corrected \(\mathcal R^*_n\) averages zero in all three cases, and is the estimate to report.
+
+The permutation test holds its level in every setting. The t test is designed for high dimension and is accurate there (5.7% at dimension 50), but it is somewhat liberal for univariate data (6.9% at n = 30, 7.0% at n = 100). It earns its place in the circle example, where it has more power (87% against 59%), but with univariate data its edge partly reflects that excess size.
+
+There is a final warning in the power table. At low noise the Pearson t test rejects 11–14% of quadratic samples, although the population correlation is exactly zero. The t test assumes independence, not merely zero correlation, so it is not a valid test of "no linear association" when the data are dependent in other ways.
+
+>> Practical guidance
+
+- Use distance correlation when the form of dependence is unknown, or when x and y are vectors of different dimensions. Report the bias-corrected estimate, and test with the permutation test (at least 999 replicates for p-values near 0.01).
+- Use the t test for high-dimensional data (dozens of coordinates or more), where it is fast and accurate. For low dimension, prefer the permutation test.
+- The default exponent `index` = 1 suits most uses. Smaller exponents downweight large distances, adding robustness to outliers and heavy tails, which matters because the moments behind dCor need not exist.
+- For a known, monotone relationship, Pearson or Spearman correlation is more interpretable and slightly more powerful. Use dCor as a screen, then model the dependence it finds.
+- The direct computation needs O(n²) memory and time. Beyond a few thousand observations, subsample or use an O(n log n) univariate algorithm.
+
+>> References
+
+- G. J. Székely, M. L. Rizzo and N. K. Bakirov (2007). Measuring and testing dependence by correlation of distances. *Annals of Statistics* 35(6), 2769-2794. doi:10.1214/009053607000000505
+- G. J. Székely and M. L. Rizzo (2013). The distance correlation t-test of independence in high dimension. *Journal of Multivariate Analysis* 117, 193-213. doi:10.1016/j.jmva.2013.02.012
+- G. J. Székely and M. L. Rizzo (2014). Partial distance correlation with methods for dissimilarities. *Annals of Statistics* 42(6), 2382-2412. doi:10.1214/14-AOS1255
+- M. L. Rizzo and G. J. Székely (2022). energy: E-Statistics: Multivariate Inference via the Energy of Data. R package version 1.7.
+- N. Simon and R. Tibshirani (2014). Comment on "Detecting novel associations in large data sets". arXiv:1401.7645.
